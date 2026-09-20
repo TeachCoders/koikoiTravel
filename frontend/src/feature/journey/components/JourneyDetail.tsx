@@ -2,6 +2,7 @@
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ChevronRight,
   ChevronLeft,
@@ -205,10 +206,13 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         heroImages.length === 3 ? "col-span-1 row-span-2" : "col-span-1 row-span-1"
                       )}
                     >
-                      <img
+                      <Image
                         src={heroImages[0]}
                         alt={journey.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                        fill
+                        priority
+                        sizes="(max-width: 1024px) 100vw, 55vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       />
                     </button>
 
@@ -219,10 +223,13 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         onClick={() => openLightbox(1)}
                         className="w-full h-full rounded-[16px] md:rounded-3xl overflow-hidden cursor-pointer group relative block p-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] col-span-1 row-span-1"
                       >
-                        <img
+                        <Image
                           src={heroImages[1]}
                           alt={journey.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                          fill
+                          loading="lazy"
+                          sizes="(max-width: 1024px) 50vw, 27vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                       </button>
                     )}
@@ -234,10 +241,13 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         onClick={() => openLightbox(2)}
                         className="w-full h-full rounded-[16px] md:rounded-3xl overflow-hidden cursor-pointer group relative block p-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] col-span-1 row-span-1"
                       >
-                        <img
+                        <Image
                           src={heroImages[2]}
                           alt={journey.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                          fill
+                          loading="lazy"
+                          sizes="(max-width: 1024px) 50vw, 27vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                       </button>
                     )}
@@ -249,10 +259,13 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         onClick={() => openLightbox(3)}
                         className="w-full h-full rounded-[16px] md:rounded-3xl overflow-hidden cursor-pointer group relative block p-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] col-span-1 row-span-1"
                       >
-                        <img
+                        <Image
                           src={heroImages[3]}
                           alt={journey.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                          fill
+                          loading="lazy"
+                          sizes="(max-width: 1024px) 50vw, 27vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                         {/* +More Photos overlay for 4+ images */}
                         {heroImages.length > 4 && (
@@ -725,7 +738,16 @@ function DayItem({
             </div>
           )}
           {day.image && (
-            <img src={day.image} alt={day.day.replace(/^Day\s*\d+\s*:\s*/i, "")} className="mt-4 rounded-2xl w-full h-[200px] md:h-[280px] object-cover shadow-sm" />
+            <div className="relative mt-4 w-full h-[200px] md:h-[280px] rounded-2xl overflow-hidden shadow-sm">
+              <Image
+                src={day.image}
+                alt={day.day.replace(/^Day\s*\d+\s*:\s*/i, "")}
+                fill
+                loading="lazy"
+                sizes="100vw"
+                className="object-cover"
+              />
+            </div>
           )}
         </div>
       </div>

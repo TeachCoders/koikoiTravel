@@ -3,7 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import CmsPageDetail from "@/feature/cms/components/CmsPageDetail";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema } from "@/lib/jsonLd";
-import { fetchBySlug } from "@/feature/destinations/api/public-server";
+import { fetchBySlugCached } from "@/feature/destinations/api/public-server";
 import { stripHtml } from "@/lib/utils";
 import type { City } from "@/feature/city/type";
 import type { CmsPage } from "@/feature/cms/type";
@@ -14,7 +14,7 @@ type Props = { params: Promise<{ country: string; stateSlug: string; citySlug: s
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { country: countrySlug, stateSlug, citySlug } = await params;
-  const city = await fetchBySlug<City>("/city/by-slug", citySlug);
+  const city = await fetchBySlugCached<City>("/city/by-slug", citySlug);
   if (
     city &&
     city.state?.slug === stateSlug &&
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     };
   }
-  const page = await fetchBySlug<CmsPage>(
+  const page = await fetchBySlugCached<CmsPage>(
     "/cms/by-slug",
     `${countrySlug}/${stateSlug}/${citySlug}`,
   );
@@ -53,7 +53,7 @@ async function cmsMetadata(page: CmsPage | null): Promise<Metadata> {
 
 export default async function OldCityRedirectPage({ params }: Props) {
   const { country: countrySlug, stateSlug, citySlug } = await params;
-  const city = await fetchBySlug<City>("/city/by-slug", citySlug);
+  const city = await fetchBySlugCached<City>("/city/by-slug", citySlug);
   if (
     city &&
     city.state?.slug === stateSlug &&
@@ -64,7 +64,7 @@ export default async function OldCityRedirectPage({ params }: Props) {
     );
   }
 
-  const page = await fetchBySlug<CmsPage>(
+  const page = await fetchBySlugCached<CmsPage>(
     "/cms/by-slug",
     `${countrySlug}/${stateSlug}/${citySlug}`,
   );

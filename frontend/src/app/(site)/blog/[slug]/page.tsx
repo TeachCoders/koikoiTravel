@@ -7,7 +7,7 @@ import BlogSidebar from "@/feature/blog/components/BlogSidebar";
 import RichContent from "@/components/shared/RichContent";
 import JsonLd from "@/components/shared/JsonLd";
 import { articleSchema, breadcrumbSchema } from "@/lib/jsonLd";
-import { fetchBySlug, SERVER_API_BASE } from "@/feature/destinations/api/public-server";
+import { fetchBySlugCached, SERVER_API_BASE } from "@/feature/destinations/api/public-server";
 import { stripHtml, absoluteUrl } from "@/lib/utils";
 import type { BlogPost } from "@/feature/blog/type";
 import { FallbackImage } from "@/components/shared/FallbackImage";
@@ -19,7 +19,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = await fetchBySlug<BlogPost>("/blog/by-slug", slug);
+  const post = await fetchBySlugCached<BlogPost>("/blog/by-slug", slug);
   if (!post) return { title: "Blog Post Not Found | Koikoi travel" };
   const seoDescription = stripHtml(post.seoDescription || post.moreDescription || "").slice(0, 160);
   const title = post.seoTitle || post.title;
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 async function fetchRelated(category?: string, excludeId?: number): Promise<BlogPost[]> {
   try {
     const url = `${SERVER_API_BASE}/blog?limit=3&isActive=true${category ? `&category=${encodeURIComponent(category)}` : ""}`;
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, { next: { revalidate: 60 } });
     if (!res.ok) return [];
     const json = await res.json();
     return (json?.data || []).filter((p: BlogPost) => p.id !== excludeId).slice(0, 3);
@@ -63,7 +63,7 @@ async function fetchRelated(category?: string, excludeId?: number): Promise<Blog
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = await fetchBySlug<BlogPost>("/blog/by-slug", slug);
+  const post = await fetchBySlugCached<BlogPost>("/blog/by-slug", slug);
   if (!post) return notFound();
 
   const related = await fetchRelated(post.category, post.id);

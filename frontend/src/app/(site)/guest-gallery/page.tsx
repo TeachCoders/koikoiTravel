@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema } from "@/lib/jsonLd";
-import { fetchBySlug, fetchPublicJson } from "@/feature/destinations/api/public-server";
+import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
 import RichContent from "@/components/shared/RichContent";
 import GuestGalleryClient from "@/feature/guestGallery/components/GuestGalleryClient";
 import type { PaginatedGuestGallery } from "@/feature/guestGallery/type";
@@ -13,7 +13,7 @@ import { stripHtml } from "@/lib/utils";
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const cmsPage = await fetchBySlug<CmsPage>("/cms/by-slug", "guest-gallery");
+  const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "guest-gallery");
 
   const title = cmsPage?.seoTitle || cmsPage?.title || "Guest Photo Gallery | Koikoi travel";
   const description =
@@ -37,10 +37,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function GuestGalleryPage() {
   // Fetch CMS page content created/managed in CMS (/dashboard/cms-page)
-  const cmsPage = await fetchBySlug<CmsPage>("/cms/by-slug", "guest-gallery");
+  const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "guest-gallery");
 
   // Fetch uploaded guest gallery photos
-  const galleryResponse = await fetchPublicJson<PaginatedGuestGallery>(
+  const galleryResponse = await fetchPublicJsonCached<PaginatedGuestGallery>(
     "/guest-gallery?limit=100&isActive=true"
   );
 

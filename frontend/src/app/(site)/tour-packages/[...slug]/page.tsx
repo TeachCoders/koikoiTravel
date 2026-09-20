@@ -7,7 +7,7 @@ import JourneyDetail from "@/feature/journey/components/JourneyDetail";
 import CmsFallbackPage from "@/feature/cms/components/CmsFallbackPage";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema, faqSchema, touristDestinationSchema, touristTripSchema, itemListSchema, graphSchema } from "@/lib/jsonLd";
-import { fetchBySlug, fetchPublicJson } from "@/feature/destinations/api/public-server";
+import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
 import { stripHtml } from "@/lib/utils";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { Country } from "@/feature/country/type";
@@ -60,27 +60,27 @@ async function resolveSlug(slug: string[]): Promise<Resolved> {
 
   if (slug.length === 1) {
     const segment = slug[0];
-    const journey = await fetchBySlug<Journey>("/journey/by-slug", segment);
+    const journey = await fetchBySlugCached<Journey>("/journey/by-slug", segment);
     if (journey) return { type: "journey", journey };
-    const country = await fetchBySlug<Country>("/country/by-slug", segment);
+    const country = await fetchBySlugCached<Country>("/country/by-slug", segment);
     if (country) return { type: "country", country };
-    const cms = await fetchBySlug<CmsPage>("/cms/by-slug", segment);
+    const cms = await fetchBySlugCached<CmsPage>("/cms/by-slug", segment);
     if (cms) return { type: "cms", cms };
     return { type: "notfound" };
   }
 
   if (slug.length === 2) {
     const [countrySlug, stateSlug] = slug;
-    const state = await fetchBySlug<State>("/state/by-slug", stateSlug);
+    const state = await fetchBySlugCached<State>("/state/by-slug", stateSlug);
     if (state && state.country?.slug === countrySlug) return { type: "state", state };
-    const cms = await fetchBySlug<CmsPage>("/cms/by-slug", slug.join("/"));
+    const cms = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug.join("/"));
     if (cms) return { type: "cms", cms };
     return { type: "notfound" };
   }
 
   if (slug.length === 3) {
     const [countrySlug, stateSlug, citySlug] = slug;
-    const city = await fetchBySlug<City>("/city/by-slug", citySlug);
+    const city = await fetchBySlugCached<City>("/city/by-slug", citySlug);
     if (
       city &&
       city.state?.slug === stateSlug &&
@@ -88,12 +88,12 @@ async function resolveSlug(slug: string[]): Promise<Resolved> {
     ) {
       return { type: "city", city };
     }
-    const cms = await fetchBySlug<CmsPage>("/cms/by-slug", slug.join("/"));
+    const cms = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug.join("/"));
     if (cms) return { type: "cms", cms };
     return { type: "notfound" };
   }
 
-  const cms = await fetchBySlug<CmsPage>("/cms/by-slug", slug.join("/"));
+  const cms = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug.join("/"));
   if (cms) return { type: "cms", cms };
   return { type: "notfound" };
 }
@@ -238,9 +238,9 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
       const { country } = resolved;
       const [initialStates, initialJourneys] = await Promise.all([
         country
-          ? fetchPublicJson<StatePage<State>>(`/state?limit=100&countryId=${country.id}`)
+          ? fetchPublicJsonCached<StatePage<State>>(`/state?limit=100&countryId=${country.id}`)
           : null,
-        fetchPublicJson<JourneyPage<Journey>>("/journey?limit=100&isActive=true"),
+        fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true"),
       ]);
 
       const schema = graphSchema([
@@ -284,7 +284,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
       const initialJourneys =
         state?.journeys && state.journeys.length > 0
           ? null
-          : await fetchPublicJson<JourneyPage<Journey>>(
+          : await fetchPublicJsonCached<JourneyPage<Journey>>(
               "/journey?limit=100&isActive=true"
             );
       const stateJourneys = state?.journeys?.length
@@ -325,7 +325,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
 
     case "city": {
       const { city } = resolved;
-      const initialJourneys = await fetchPublicJson<JourneyPage<Journey>>(
+      const initialJourneys = await fetchPublicJsonCached<JourneyPage<Journey>>(
         "/journey?limit=100&isActive=true"
       );
       const schema = graphSchema([

@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema } from "@/lib/jsonLd";
-import { fetchBySlug } from "@/feature/destinations/api/public-server";
+import { fetchBySlugCached } from "@/feature/destinations/api/public-server";
 import RichContent from "@/components/shared/RichContent";
 import type { CmsPage } from "@/feature/cms/type";
 import { stripHtml } from "@/lib/utils";
@@ -29,7 +29,7 @@ const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919136739178
 const CLEAN_PHONE = SALES_PHONE.replace(/[^0-9+]/g, "");
 
 export async function generateMetadata(): Promise<Metadata> {
-  const cmsPage = await fetchBySlug<CmsPage>("/cms/by-slug", "contact-us");
+  const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "contact-us");
 
   const title =
     cmsPage?.seoTitle || cmsPage?.title || "Contact Us | Koikoi travel - Get in Touch for Custom Tours";
@@ -57,7 +57,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ContactUsPage() {
   // Fetch CMS page content created/managed in CMS (/dashboard/cms-page) with slug 'contact-us'
-  const cmsPage = await fetchBySlug<CmsPage>("/cms/by-slug", "contact-us");
+  const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "contact-us");
 
   const displayTitle = cmsPage?.h1Title || cmsPage?.title || "Contact Us";
   const cmsDescription = cmsPage?.moreDescription || cmsPage?.seoDescription;

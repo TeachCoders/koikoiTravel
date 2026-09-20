@@ -3,7 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import CmsPageDetail from "@/feature/cms/components/CmsPageDetail";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema } from "@/lib/jsonLd";
-import { fetchBySlug } from "@/feature/destinations/api/public-server";
+import { fetchBySlugCached } from "@/feature/destinations/api/public-server";
 import { stripHtml, absoluteUrl } from "@/lib/utils";
 import type { Country } from "@/feature/country/type";
 import type { Journey } from "@/feature/journey/type";
@@ -17,7 +17,7 @@ type Props = { params: Promise<{ country: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { country: slug } = await params;
 
-  const journey = await fetchBySlug<Journey>("/journey/by-slug", slug);
+  const journey = await fetchBySlugCached<Journey>("/journey/by-slug", slug);
   if (journey) {
     const title = journey.seoTitle || journey.title;
     const description = stripHtml(journey.seoDescription || journey.overView || "").slice(0, 160);
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const country = await fetchBySlug<Country>("/country/by-slug", slug);
+  const country = await fetchBySlugCached<Country>("/country/by-slug", slug);
   if (country) {
     const title =
       country.seoTitle ||
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const season = await fetchBySlug<Season>("/season/by-slug", slug);
+  const season = await fetchBySlugCached<Season>("/season/by-slug", slug);
   if (season) {
     const title = season.seoTitle || season.title;
     const description = stripHtml(season.seoDescription || season.overView || "").slice(0, 160);
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const page = await fetchBySlug<CmsPage>("/cms/by-slug", slug);
+  const page = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug);
   if (!page) return { title: "Page Not Found | Koikoi travel" };
   const seoDescription = stripHtml(page.seoDescription || page.moreDescription || "").slice(0, 160);
   const title = page.seoTitle || page.title;
@@ -90,16 +90,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function OldCountryRedirectPage({ params }: Props) {
   const { country: slug } = await params;
 
-  const journey = await fetchBySlug<Journey>("/journey/by-slug", slug);
+  const journey = await fetchBySlugCached<Journey>("/journey/by-slug", slug);
   if (journey) redirect(`/tour-packages/${journey.slug}`);
 
-  const country = await fetchBySlug<Country>("/country/by-slug", slug);
+  const country = await fetchBySlugCached<Country>("/country/by-slug", slug);
   if (country) redirect(`/tour-packages/${country.slug}`);
 
-  const season = await fetchBySlug<Season>("/season/by-slug", slug);
+  const season = await fetchBySlugCached<Season>("/season/by-slug", slug);
   if (season) redirect(`/season/${season.slug}`);
 
-  const page = await fetchBySlug<CmsPage>("/cms/by-slug", slug);
+  const page = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug);
   if (!page) notFound();
 
   return (

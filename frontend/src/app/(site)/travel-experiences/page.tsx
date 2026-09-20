@@ -15,7 +15,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { stripHtml } from "@/lib/utils";
-import { SERVER_API_BASE, fetchBySlug } from "@/feature/destinations/api/public-server";
+import { SERVER_API_BASE, fetchBySlugCached } from "@/feature/destinations/api/public-server";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import FaqSection from "@/feature/home/components/FaqSection";
 import type { CmsPage } from "@/feature/cms/type";
@@ -35,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 async function fetchExperiences() {
   const url = `${SERVER_API_BASE}/holidays?isActive=true`;
-  const res = await fetch(url, { method: "GET", cache: "no-store" });
+  const res = await fetch(url, { method: "GET", next: { revalidate: 60 } });
   if (!res.ok) throw new Error("Failed to fetch experiences");
   const json = await res.json();
   return json?.data || [];
@@ -43,7 +43,7 @@ async function fetchExperiences() {
 
 async function fetchAllJourneys() {
   const url = `${SERVER_API_BASE}/journey?limit=200&isActive=true`;
-  const res = await fetch(url, { method: "GET", cache: "no-store" });
+  const res = await fetch(url, { method: "GET", next: { revalidate: 60 } });
   if (!res.ok) return [];
   const json = await res.json();
   return json?.data || [];
@@ -136,7 +136,7 @@ export default async function TravelExperiencesPage() {
     }
   ];
 
-  const cmsPage = await fetchBySlug<CmsPage>("/cms/by-slug", "travel-experiences");
+  const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "travel-experiences");
   const cmsFaqs = (cmsPage?.faqs || [])
     .filter((f) => f?.ques && f?.ans)
     .map((f) => ({ question: f.ques, answer: f.ans }));

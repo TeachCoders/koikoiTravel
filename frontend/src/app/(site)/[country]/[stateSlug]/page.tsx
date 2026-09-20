@@ -3,7 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import CmsPageDetail from "@/feature/cms/components/CmsPageDetail";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema } from "@/lib/jsonLd";
-import { fetchBySlug } from "@/feature/destinations/api/public-server";
+import { fetchBySlugCached } from "@/feature/destinations/api/public-server";
 import { stripHtml } from "@/lib/utils";
 import type { State } from "@/feature/state/type";
 import type { CmsPage } from "@/feature/cms/type";
@@ -14,7 +14,7 @@ type Props = { params: Promise<{ country: string; stateSlug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { country: countrySlug, stateSlug } = await params;
-  const state = await fetchBySlug<State>("/state/by-slug", stateSlug);
+  const state = await fetchBySlugCached<State>("/state/by-slug", stateSlug);
   if (state && state.country?.slug === countrySlug) {
     const title = state.seoTitle || state.title;
     const description = stripHtml(state.seoDescription || state.overView || "").slice(0, 160);
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       alternates: { canonical: `/tour-packages/${countrySlug}/${state.slug}` },
     };
   }
-  const page = await fetchBySlug<CmsPage>("/cms/by-slug", `${countrySlug}/${stateSlug}`);
+  const page = await fetchBySlugCached<CmsPage>("/cms/by-slug", `${countrySlug}/${stateSlug}`);
   return cmsMetadata(page);
 }
 
@@ -44,12 +44,12 @@ async function cmsMetadata(page: CmsPage | null): Promise<Metadata> {
 
 export default async function OldStateRedirectPage({ params }: Props) {
   const { country: countrySlug, stateSlug } = await params;
-  const state = await fetchBySlug<State>("/state/by-slug", stateSlug);
+  const state = await fetchBySlugCached<State>("/state/by-slug", stateSlug);
   if (state && state.country?.slug === countrySlug) {
     redirect(`/tour-packages/${state.country.slug}/${state.slug}`);
   }
 
-  const page = await fetchBySlug<CmsPage>("/cms/by-slug", `${countrySlug}/${stateSlug}`);
+  const page = await fetchBySlugCached<CmsPage>("/cms/by-slug", `${countrySlug}/${stateSlug}`);
   if (!page) notFound();
 
   return (

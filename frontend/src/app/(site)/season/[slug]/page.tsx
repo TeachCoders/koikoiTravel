@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import SeasonDetail from "@/feature/season/components/SeasonDetail";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema, touristDestinationSchema, itemListSchema, faqSchema, graphSchema } from "@/lib/jsonLd";
-import { fetchBySlug, fetchPublicJson } from "@/feature/destinations/api/public-server";
+import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
 import { stripHtml } from "@/lib/utils";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { Season } from "@/feature/season/type";
@@ -23,7 +23,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const season = await fetchBySlug<Season>("/season/by-slug", slug);
+  const season = await fetchBySlugCached<Season>("/season/by-slug", slug);
 
   if (!season) return { title: "Page Not Found | Koikoi travel" };
 
@@ -55,11 +55,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SeasonPage({ params }: Props) {
   const { slug } = await params;
-  const season = await fetchBySlug<Season>("/season/by-slug", slug);
+  const season = await fetchBySlugCached<Season>("/season/by-slug", slug);
 
   if (!season) return notFound();
 
-  const initialJourneys = await fetchPublicJson<JourneyPage<Journey>>("/journey?limit=100&isActive=true");
+  const initialJourneys = await fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true");
 
   const seasonFaqs =
     season.faqs && season.faqs.length > 0

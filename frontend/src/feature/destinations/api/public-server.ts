@@ -46,3 +46,51 @@ export async function fetchBySlug<T>(path: string, slug: string | string[]): Pro
   const slugStr = Array.isArray(slug) ? slug.join("/") : slug;
   return fetchPublic<T>(`${path}/${slugStr}`);
 }
+
+/**
+ * ISR-friendly fetch for PUBLIC marketing data.
+ * Unlike fetchPublic/fetchPublicJson these do NOT touch `cookies()` and do NOT use
+ * `cache: "no-store"`, so pages that use them can be statically rendered / revalidated
+ * with `export const revalidate`. Keep auth-dependent fetches on the non-cached helpers.
+ */
+export async function fetchPublicCached<T>(
+  path: string,
+  init?: RequestInit,
+  revalidate = 60
+): Promise<T | null> {
+  try {
+    const url = `${API_BASE}${path.startsWith("/") ? path : `/${path}`}`;
+    const res = await fetch(url, { next: { revalidate }, ...init });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json?.data ?? json ?? null;
+  } catch (err) {
+    console.error(`[fetchPublicCached] Error for ${path}:`, err);
+    return null;
+  }
+}
+
+export async function fetchPublicJsonCached<T>(
+  path: string,
+  init?: RequestInit,
+  revalidate = 60
+): Promise<T | null> {
+  try {
+    const url = `${API_BASE}${path.startsWith("/") ? path : `/${path}`}`;
+    const res = await fetch(url, { next: { revalidate }, ...init });
+    if (!res.ok) return null;
+    return (await res.json()) as T;
+  } catch (err) {
+    console.error(`[fetchPublicJsonCached] Error for ${path}:`, err);
+    return null;
+  }
+}
+
+export async function fetchBySlugCached<T>(
+  path: string,
+  slug: string | string[],
+  revalidate = 60
+): Promise<T | null> {
+  const slugStr = Array.isArray(slug) ? slug.join("/") : slug;
+  return fetchPublicCached<T>(`${path}/${slugStr}`, undefined, revalidate);
+}

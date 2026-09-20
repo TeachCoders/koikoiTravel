@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import CmsPageDetail from "@/feature/cms/components/CmsPageDetail";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema } from "@/lib/jsonLd";
-import { fetchBySlug } from "@/feature/destinations/api/public-server";
+import { fetchBySlugCached } from "@/feature/destinations/api/public-server";
 import { stripHtml, absoluteUrl } from "@/lib/utils";
 import type { CmsPage } from "@/feature/cms/type";
 
@@ -13,7 +13,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const page = await fetchBySlug<CmsPage>("/cms/by-slug", slug);
+  const page = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug);
   if (!page) return { title: "Page Not Found | Koikoi travel" };
   const seoDescription = stripHtml(page.seoDescription || page.moreDescription || "").slice(0, 160);
   const title = page.seoTitle || page.title;
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CmsPageRoute({ params }: Props) {
   const { slug } = await params;
-  const page = await fetchBySlug<CmsPage>("/cms/by-slug", slug);
+  const page = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug);
   if (!page) return notFound();
 
   return (

@@ -7,10 +7,17 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: ["isomorphic-dompurify"],
   images: {
-    unoptimized: true,
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    formats: ["image/webp", "image/avif"],
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       { protocol: "https", hostname: "res.cloudinary.com" },
       { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "koikoitravel.com" },
+      { protocol: "https", hostname: "api.koikoitravel.com" },
+      { protocol: "https", hostname: "www.koikoitravel.com" },
       ...(process.env.NODE_ENV !== "production"
         ? [{ protocol: "http" as const, hostname: "localhost" }]
         : []),

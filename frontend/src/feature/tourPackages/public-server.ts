@@ -1,4 +1,4 @@
-import { fetchPublic } from "@/feature/destinations/api/public-server";
+import { fetchPublicCached } from "@/feature/destinations/api/public-server";
 
 export interface PublicTourPackage {
   id: number;
@@ -22,10 +22,10 @@ export interface PublicTourPackage {
 }
 
 export async function fetchPackages(): Promise<PublicTourPackage[]> {
-  const data = await fetchPublic<{ data: PublicTourPackage[] }>("/tour-packages?limit=100");
+  const data = await fetchPublicCached<{ data: PublicTourPackage[] }>("/tour-packages?limit=100");
   return data?.data || [];
 }
 
 export async function fetchPackageBySlug(slug: string): Promise<PublicTourPackage | null> {
-  return fetchPublic<PublicTourPackage>(`/tour-packages/by-slug/${encodeURIComponent(slug)}`);
+  return fetchPublicCached<PublicTourPackage>(`/tour-packages/by-slug/${encodeURIComponent(slug)}`);
 }

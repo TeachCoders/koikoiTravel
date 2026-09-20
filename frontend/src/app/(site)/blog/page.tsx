@@ -27,7 +27,7 @@ title: "Travel Blog — Guides, Itineraries and India Tour Tips | Koikoi travel"
 async function fetchPosts(search?: string): Promise<BlogPost[]> {
   try {
     const url = `${SERVER_API_BASE}/blog?limit=100&isActive=true${search ? `&search=${encodeURIComponent(search)}` : ""}`;
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, { next: { revalidate: 60 } });
     if (!res.ok) return [];
     const json = await res.json();
     return json?.data || [];
@@ -39,7 +39,7 @@ async function fetchPosts(search?: string): Promise<BlogPost[]> {
 async function fetchCategories(): Promise<string[]> {
   try {
     const url = `${SERVER_API_BASE}/blog-category?limit=100&isActive=true`;
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, { next: { revalidate: 60 } });
     if (!res.ok) return [];
     const json = await res.json();
     return (json?.data || []).map((c: { name: string }) => c.name);

@@ -11,7 +11,7 @@ const FALLBACK_IMAGE = "/destinationImage/image/agra-6.webp";
 async function fetchRecent(excludeId?: number): Promise<BlogPost[]> {
   try {
     const url = `${SERVER_API_BASE}/blog?limit=6&isActive=true`;
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, { next: { revalidate: 60 } });
     if (!res.ok) return [];
     const json = await res.json();
     return (json?.data || []).filter((p: BlogPost) => p.id !== excludeId).slice(0, 5);
@@ -23,7 +23,7 @@ async function fetchRecent(excludeId?: number): Promise<BlogPost[]> {
 async function fetchTopJourneys(): Promise<any[]> {
   try {
     const url = `${SERVER_API_BASE}/journey?limit=100&isActive=true`;
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, { next: { revalidate: 60 } });
     if (!res.ok) return [];
     const json = await res.json();
     let journeys = json?.data || [];
