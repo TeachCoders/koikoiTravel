@@ -34,19 +34,27 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 async function fetchExperiences() {
-  const url = `${SERVER_API_BASE}/holidays?isActive=true`;
-  const res = await fetch(url, { method: "GET", next: { revalidate: 60 } });
-  if (!res.ok) throw new Error("Failed to fetch experiences");
-  const json = await res.json();
-  return json?.data || [];
+  try {
+    const url = `${SERVER_API_BASE}/holidays?isActive=true`;
+    const res = await fetch(url, { method: "GET", next: { revalidate: 60 } });
+    if (!res.ok) return [];
+    const json = await res.json();
+    return json?.data || [];
+  } catch {
+    return [];
+  }
 }
 
 async function fetchAllJourneys() {
-  const url = `${SERVER_API_BASE}/journey?limit=200&isActive=true`;
-  const res = await fetch(url, { method: "GET", next: { revalidate: 60 } });
-  if (!res.ok) return [];
-  const json = await res.json();
-  return json?.data || [];
+  try {
+    const url = `${SERVER_API_BASE}/journey?limit=200&isActive=true`;
+    const res = await fetch(url, { method: "GET", next: { revalidate: 60 } });
+    if (!res.ok) return [];
+    const json = await res.json();
+    return json?.data || [];
+  } catch {
+    return [];
+  }
 }
 
 import { FallbackImage } from "@/components/shared/FallbackImage";
