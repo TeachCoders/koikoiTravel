@@ -4,6 +4,7 @@ import { Monitor } from "lucide-react";
 import { useAnalyticsRange } from "@/feature/analytics/range-context";
 import { useDeviceBreakdown } from "@/feature/analytics/api/useAnalytics";
 import type { NameCount } from "@/feature/analytics/api";
+import { countryFlag, countryLabel } from "@/lib/countryFlag";
 import ExportMenu from "./ExportMenu";
 
 interface GroupDef {
@@ -79,7 +80,14 @@ export default function DevicesBreakdown() {
                     {items.map((it) => (
                       <tr key={it.name} className="transition-colors hover:bg-slate-50">
                         <td className="max-w-[12rem] truncate px-4 py-2.5 font-medium text-slate-800" title={it.name}>
-                          {it.name || "—"}
+                          {g.key === "countries" ? (
+                            <span className="inline-flex items-center gap-1.5">
+                              <span className="text-base leading-none">{countryFlag(it.name)}</span>
+                              <span>{countryLabel(it.name)}</span>
+                            </span>
+                          ) : (
+                            it.name || "—"
+                          )}
                         </td>
                         <td className="whitespace-nowrap px-4 py-2.5 text-right font-semibold tabular-nums text-slate-700">
                           {it.count.toLocaleString()}

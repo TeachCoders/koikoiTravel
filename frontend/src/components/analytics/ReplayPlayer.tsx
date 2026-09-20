@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { ReplayData } from "@/feature/analytics/api";
+import { countryFlag, countryLabel } from "@/lib/countryFlag";
 
 interface ReplayPlayerProps {
   replay: ReplayData;
@@ -72,6 +73,18 @@ export default function ReplayPlayer({ replay }: ReplayPlayerProps) {
 
   return (
     <div className="space-y-3">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
+        <span className="inline-flex items-center gap-1.5 font-semibold text-slate-800">
+          <span className="text-base leading-none">{countryFlag(replay.country)}</span>
+          {countryLabel(replay.country)}
+        </span>
+        {replay.deviceType && (
+          <span className="rounded-full bg-white px-2 py-0.5 font-medium ring-1 ring-slate-200">
+            {replay.deviceType}
+          </span>
+        )}
+        <span className="text-slate-400">session {replay.sessionId.slice(0, 8)}…</span>
+      </div>
       <div
         ref={playerHostRef}
         className="mx-auto w-full overflow-hidden rounded-md border bg-slate-900 [&>*]:mx-auto"
@@ -89,7 +102,7 @@ export default function ReplayPlayer({ replay }: ReplayPlayerProps) {
       )}
       <div className="flex items-center justify-between text-xs text-gray-500">
         <span>
-          {replay.count.toLocaleString()} events · session {replay.sessionId.slice(0, 8)}…
+          {replay.count.toLocaleString()} events
         </span>
         <Button variant="outline" size="sm" onClick={downloadJson}>
           Download (.json)

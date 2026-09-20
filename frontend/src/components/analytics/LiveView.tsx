@@ -2,6 +2,7 @@
 
 import { Globe2, MonitorSmartphone, Radio } from "lucide-react";
 import { useLiveNow } from "@/feature/analytics/api/useAnalytics";
+import { countryFlag, countryLabel } from "@/lib/countryFlag";
 import Panel from "./Panel";
 
 const EVENT_STYLES: Record<string, string> = {
@@ -61,7 +62,10 @@ export default function LiveView() {
             <ul className="space-y-1.5">
               {byCountry.slice(0, 6).map((c, i) => (
                 <li key={`${c.name}-${i}`} className="flex items-center justify-between text-xs">
-                  <span className="font-medium text-slate-700">{c.name}</span>
+                  <span className="font-medium text-slate-700">
+                    <span className="mr-1.5">{countryFlag(c.name)}</span>
+                    {countryLabel(c.name)}
+                  </span>
                   <span className="rounded-full bg-emerald-50 px-2 py-0.5 font-bold text-emerald-700">{c.count}</span>
                 </li>
               ))}

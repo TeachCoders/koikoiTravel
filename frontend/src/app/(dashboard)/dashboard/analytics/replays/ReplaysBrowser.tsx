@@ -14,6 +14,7 @@ import {
 import ReplayPlayer from "@/components/analytics/ReplayPlayer";
 import type { ReplaySessionInfo } from "@/feature/analytics/api";
 import { useAnalyticsRange } from "@/feature/analytics/range-context";
+import { countryFlag, countryLabel } from "@/lib/countryFlag";
 
 function fmtDate(iso: string | null) {
   if (!iso) return "—";
@@ -246,7 +247,12 @@ export default function ReplaysBrowser() {
                         <td className="whitespace-nowrap px-5 py-2.5 font-medium text-slate-800">{fmtDate(s.startedAt)}</td>
                         <td className="whitespace-nowrap px-5 py-2.5 text-slate-600">{fmtDuration(s.durationSec)}</td>
                         <td className="whitespace-nowrap px-5 py-2.5 text-slate-600">{fmtDate(s.lastEventAt)}</td>
-                        <td className="whitespace-nowrap px-5 py-2.5 text-slate-600">{s.country || "—"}</td>
+                        <td className="whitespace-nowrap px-5 py-2.5 text-slate-600">
+                          <span className="inline-flex items-center gap-1.5">
+                            <span className="text-base leading-none">{countryFlag(s.country)}</span>
+                            <span>{countryLabel(s.country)}</span>
+                          </span>
+                        </td>
                         <td className="whitespace-nowrap px-5 py-2.5">
                           {s.isBot ? (
                             <span

@@ -3,6 +3,7 @@ import { prisma } from '../utils/prismaConnection.js';
 import rateLimit from 'express-rate-limit';
 import { requireSuperAdmin } from '../middleware/requireSuperAdmin.js';
 import { purgeExpiredAnalytics } from '../utils/analyticsRetention.js';
+import { resolveCountry, countryFromHeaders } from '../utils/geo.js';
 
 const router = Router();
 
@@ -113,28 +114,7 @@ function isCloudIp(ip = '') {
   return cloud.has(a);
 }
 
-// Best-effort IP → country resolution (fire-and-forget, cached per IP).
-// Uses ip-api.com (free, no key). Returns null on localhost/private IPs or any error.
-const ipCountryCache = new Map();
-async function resolveCountry(ip) {
-  if (!ip || ip === '::1' || ip === '127.0.0.1' || ip.startsWith('::ffff:127.')) return null;
-  if (ipCountryCache.has(ip)) return ipCountryCache.get(ip);
-  try {
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 2500);
-    const res = await fetch(
-      `http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,country,message`,
-      { signal: ctrl.signal, headers: { 'Cache-Control': 'no-cache' } }
-    );
-    clearTimeout(timer);
-    const data = await res.json();
-    const country = data?.status === 'success' ? data.country : null;
-    ipCountryCache.set(ip, country);
-    return country;
-  } catch {
-    return null;
-  }
-}
+
 
 // Known search engines (organic). Each maps to the query params that carry the
 // visitor's typed search (Google redacts `q` since 2013; Bing/Yandex/Yahoo/etc.
@@ -248,7 +228,8 @@ router.post('/events', analyticsLimiter, async (req, res) => {
 
     // Best-effort geolocation for the country column (fire-and-forget, cached).
     if (req.ip) {
-      resolveCountry(req.ip).then(c => {
+      const headerCountry = countryFromHeaders(req.headers);
+      Promise.resolve(headerCountry || resolveCountry(req.ip)).then(c => {
         if (!c) return;
         prisma.userSession.updateMany({
           where: { id: sessionId, country: null },
@@ -1192,7 +1173,17 @@ router.get('/replay/:sessionId', requireSuperAdmin, async (req, res) => {
     });
     // Batches were flushed sequentially; restore order by flattening.
     const events = batches.flatMap(b => Array.isArray(b.events) ? b.events : []);
-    res.json({ sessionId: req.params.sessionId, count: events.length, events });
+    const meta = await prisma.userSession.findUnique({
+      where: { id: req.params.sessionId },
+      select: { country: true, deviceType: true, startedAt: true, totalTimeSpent: true },
+    });
+    res.json({
+      sessionId: req.params.sessionId,
+      count: events.length,
+      events,
+      country: meta?.country || null,
+      deviceType: meta?.deviceType || null,
+    });
   } catch (err) {
     console.error('[ANALYTICS] replay fetch error', err);
     res.status(500).json({ error: 'internal error' });

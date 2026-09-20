@@ -258,6 +258,8 @@ export interface ReplayData {
   sessionId: string;
   count: number;
   events: Record<string, unknown>[];
+  country?: string | null;
+  deviceType?: string | null;
 }
 
 export async function getReplaySessions(params?: {
