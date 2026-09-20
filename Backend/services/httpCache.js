@@ -1,5 +1,5 @@
 import { isPublicRequest } from "../utils/authHelpers.js";
-import { cacheGet as redisCacheGet, cacheSet, redisReady } from "./redisClient.js";
+import { cacheGet as redisCacheGet, cacheSet, redisReady, cacheClearAll } from "./redisClient.js";
 
 const DEFAULT_TTL = Number(process.env.REDIS_CACHE_TTL || 60) || 60;
 
@@ -31,16 +31,21 @@ export function cacheGet(ttl = DEFAULT_TTL) {
       }
 
       const json = res.json.bind(res);
-      res.json = (body) => {
-        json(body);
-        if (res.statusCode >= 200 && res.statusCode < 400) {
-          cacheSet(key, JSON.stringify(body), ttl);
-        } else {
-          res.set("X-Koikoi-Cache", "SKIP");
-        }
-        return res;
-      };
+
       res.set("X-Koikoi-Cache", "MISS");
+
+      res.json = (body) => {
+        const statusCode = res.statusCode;
+
+        if (statusCode >= 200 && statusCode < 400) {
+          void cacheSet(key, JSON.stringify(body), ttl).catch((err) => {
+            console.error("[httpCache] cacheSet error:", err.message);
+          });
+        }
+
+        return json(body);
+      };
+
       return next();
     } catch (err) {
       console.error("[httpCache] cacheGet error:", err.message);
@@ -50,3 +55,22 @@ export function cacheGet(ttl = DEFAULT_TTL) {
 }
 
 export { cacheClear } from "./redisClient.js";
+
+/**
+ * Flushes the whole public response cache on any write request.
+ *
+ * Mount globally (before routers) once — any POST/PUT/PATCH/DELETE invalidates
+ * every cached public GET so admin/dashboard edits reflect on the site
+ * immediately instead of waiting for the TTL to expire.
+ */
+export function clearCacheOnWrite() {
+  return async (req, res, next) => {
+    if (req.method === "GET" || req.method === "HEAD" || req.method === "OPTIONS") return next();
+    try {
+      await cacheClearAll();
+    } catch (err) {
+      console.error("[httpCache] clearCacheOnWrite error:", err.message);
+    }
+    return next();
+  };
+}

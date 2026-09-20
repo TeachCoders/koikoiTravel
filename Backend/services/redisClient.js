@@ -49,15 +49,33 @@ export async function cacheSet(key, value, ttlSeconds) {
   }
 }
 
+const toCacheKeys = (item) => {
+  const arr = (Array.isArray(item) ? item : [item]).flat();
+  return arr.filter((k) => typeof k === "string" && k.length > 0);
+};
+
 export async function cacheClear(prefix) {
   if (!redisReady()) return;
   try {
     const match = `koikoi:http:${prefix}*`;
-    for await (const key of redis.scanIterator({ MATCH: match, COUNT: 200 })) {
-      await redis.del(key);
+    for await (const item of redis.scanIterator({ MATCH: match, COUNT: 200 })) {
+      const keys = toCacheKeys(item);
+      if (keys.length) await redis.del(...keys);
     }
   } catch (err) {
     logger.warn(`[redis] cacheClear failed: ${err.message}`);
+  }
+}
+
+export async function cacheClearAll() {
+  if (!redisReady()) return;
+  try {
+    for await (const item of redis.scanIterator({ MATCH: "koikoi:http:*", COUNT: 200 })) {
+      const keys = toCacheKeys(item);
+      if (keys.length) await redis.del(...keys);
+    }
+  } catch (err) {
+    logger.warn(`[redis] cacheClearAll failed: ${err.message}`);
   }
 }
 

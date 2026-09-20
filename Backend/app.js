@@ -48,7 +48,7 @@ import gscRouter from "./routes/gsc.js";
 import adLandingPageRouter from "./router/adLandingPage.js";
 import guestGalleryRouter from "./router/guestGallery.js";
 import { scheduleAnalyticsRetention } from "./utils/analyticsRetention.js";
-import { cacheGet } from "./services/httpCache.js";
+import { cacheGet, clearCacheOnWrite } from "./services/httpCache.js";
 import * as Sentry from "@sentry/node";
 
 const isProduction = process.env.NODE_ENV === "production";
@@ -186,6 +186,10 @@ app.use((req, res, next) => {
 });
 
 app.use(requestLogger);
+
+// Any write (admin/dashboard/portal) invalidates the public GET cache so
+// edits reflect immediately on the marketing site.
+app.use(clearCacheOnWrite());
 
 const PRIVATE_UPLOAD_FOLDERS = ["documents", "user"];
 
