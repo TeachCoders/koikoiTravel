@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   description:
     "Leading India inbound tour operator offering bespoke luxury tours, private cab rentals, and custom holiday packages across India.",
   alternates: { canonical: "https://koikoitravel.com" },
+  verification: { google: "El1jKO1piAq20XL3gueQKlsrPhBvrZFOUF-Jg6addow" },
   openGraph: {
     title: "Koikoi travel | Premier India Inbound Tour Operator & Local DMC",
     description:
