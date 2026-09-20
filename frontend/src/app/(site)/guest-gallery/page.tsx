@@ -15,10 +15,10 @@ export const revalidate = 60;
 export async function generateMetadata(): Promise<Metadata> {
   const cmsPage = await fetchBySlug<CmsPage>("/cms/by-slug", "guest-gallery");
 
-  const title = cmsPage?.seoTitle || cmsPage?.title || "Guest Photo Gallery | Flag Journeys";
+  const title = cmsPage?.seoTitle || cmsPage?.title || "Guest Photo Gallery | Koikoi travel";
   const description =
     stripHtml(cmsPage?.seoDescription || cmsPage?.moreDescription || "").slice(0, 160) ||
-    "Explore real moments captured by our travelers during their journeys across India. Authentic travel memories with Flag Journeys.";
+    "Explore real moments captured by our travelers during their journeys across India. Authentic travel memories with Koikoi travel.";
   const canonical = cmsPage?.canonical || "/guest-gallery";
 
   return {

@@ -33,7 +33,7 @@ const FormActionButton = forwardRef<HTMLButtonElement, FormActionButtonProps>(
         };
 
         const variantStyles = {
-            primary: "bg-[#D4561A] text-white shadow-sm hover:bg-[#C24D15] hover:shadow-md",
+            primary: "bg-[#F8904D] text-white shadow-sm hover:bg-[#D87E43] hover:shadow-md",
             outline: "border-2 border-brand-navy text-brand-navy bg-transparent hover:bg-brand-navy hover:text-white",
             ghost: "bg-transparent text-brand-navy hover:bg-brand-navy/10",
             danger: "bg-red-600 text-white shadow-lg shadow-red-600/20 hover:bg-red-700 hover:shadow-red-600/30",

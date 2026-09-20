@@ -26,7 +26,7 @@ const nextConfig: NextConfig = {
     ];
   },
   async headers() {
-    const apiOrigin = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/^https?:\/\//, "") || "api.flagjourneys.com";
+    const apiOrigin = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/^https?:\/\//, "") || "api.koikoitravel.com";
     return [
       {
         source: "/:path*",

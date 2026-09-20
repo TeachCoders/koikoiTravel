@@ -437,11 +437,11 @@ export default function Layout({ children }: LayoutProps) {
           {/* Logo Area */}
           <div className="px-5 py-5 border-b shrink-0" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #D4561A, #b83e10)" }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #F8904D, #b66a39)" }}>
                 <LayoutDashboard size={17} className="text-white" />
               </div>
               <div>
-                <p className="text-sm font-extrabold text-white leading-tight tracking-tight">Flag Journeys</p>
+                <p className="text-sm font-extrabold text-white leading-tight tracking-tight">Koikoi travel</p>
                 <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#2E8B8B" }}>Admin Panel</p>
               </div>
             </div>
@@ -556,7 +556,7 @@ export default function Layout({ children }: LayoutProps) {
                 <Menu size={22} />
               </button>
               <div className="relative h-10 w-44 flex items-center">
-                <Image src="/logo.png" alt="Logo" fill className="object-contain object-left" />
+                <Image src="/logo-with-name.png" alt="Logo" fill className="object-contain object-left" />
               </div>
             </div>
             {user && (

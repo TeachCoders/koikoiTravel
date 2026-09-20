@@ -37,16 +37,12 @@ export function AuthClient() {
         <div className="relative z-10 flex flex-col justify-center px-16 text-white">
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg">
-                <img src="/logo.png" alt="Flag Journeys" className="w-full h-full object-contain" />
-              </div>             
-           
-            <h1 className="text-4xl font-extrabold leading-tight mb-4">
-              Flag Journeys<br />
-            
-            </h1>
-             </div>
-            <p className="text-white/70 text-lg max-w-md leading-relaxed">
+              <div className="w-72 h-20 flex items-center justify-center overflow-hidden">
+                <img src="/logo-white.png" alt="Koikoi travel" className="w-full h-full object-contain" />
+              </div>
+             
+            </div>
+            <p className="text-white/70 text-lg max-w-md leading-relaxed mb-4">
               Manage destinations, packages, and bookings — all from one powerful dashboard.
             </p>
           </div>
@@ -81,7 +77,7 @@ export function AuthClient() {
 
           {/* Footer */}
           <p className="text-center text-xs text-slate-400 mt-6">
-            &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_BRAND_NAME || "Flag Journeys"}. All rights reserved.
+            &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_BRAND_NAME || "Koikoi travel"}. All rights reserved.
           </p>
         </div>
       </div>

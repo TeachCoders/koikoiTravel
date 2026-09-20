@@ -17,7 +17,7 @@ export const WhatsAppPriceButton: React.FC<WhatsAppPriceButtonProps> = ({
   packageName,
   message,
   label = "Price on WhatsApp",
-  className = "py-3.5 bg-[#D4561A] hover:bg-[#b84513] text-white font-bold rounded-xl transition flex items-center justify-center gap-1.5 text-base cursor-pointer",
+  className = "py-3.5 bg-[#F8904D] hover:bg-[#b84513] text-white font-bold rounded-xl transition flex items-center justify-center gap-1.5 text-base cursor-pointer",
   iconClassName = "w-3.5 h-3.5 fill-current shrink-0",
 }) => {
   const defaultMsg = packageName

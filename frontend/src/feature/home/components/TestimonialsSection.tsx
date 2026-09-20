@@ -144,11 +144,6 @@ export const TestimonialsSection: React.FC = () => {
             <h2 className="h2 text-[#1C1C1C] mt-2">Real Stories From Our Guests</h2>
             <p className="mt-2 text-sm sm:text-base text-[#555] max-w-xl">Real stories from our guests who experienced the perfect holiday with zero stress.</p>
           </div>
-          <div className="flex items-center gap-1.5 text-sm font-semibold text-[#1C1C1C]">
-            <Star className="w-5 h-5 text-orange-500 fill-orange-500" />
-            <span>4.9</span>
-            <span className="text-[#888] font-normal">/5 Rating</span>
-          </div>
         </div>
 
         <div className={`relative transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>

@@ -6,7 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const LOG_DIR = path.join(__dirname, "..", "logs");
 
 const MAX_FILE_BYTES = 50 * 1024 * 1024; // 50 MB
-const RETENTION_DAYS = 30;
+const RETENTION_DAYS = 2; // keep logs ~48 hours, per cron cleanup schedule
 
 const mkdir = () => {
   if (!fs.existsSync(LOG_DIR)) fs.mkdirSync(LOG_DIR, { recursive: true });

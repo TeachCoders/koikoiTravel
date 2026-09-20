@@ -3,7 +3,7 @@ import AnalyticsLayout from '@/components/analytics/AnalyticsLayout';
 import ReplaysBrowser from './ReplaysBrowser';
 
 export const metadata = {
-  title: 'Session Replays | Flag Journeys',
+  title: 'Session Replays | Koikoi travel',
 };
 
 export default async function SessionReplaysPage() {

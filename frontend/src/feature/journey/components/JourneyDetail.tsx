@@ -25,7 +25,7 @@ import {
   SunMoon,
   Timer,
 } from "lucide-react";
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, useState, Fragment, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useJourneyBySlug } from "@/feature/journey/api/useJourney";
 import type { Journey } from "@/feature/journey/type";
@@ -33,30 +33,38 @@ import { groupMonthsBySeason } from "@/components/shared/seasonUtils";
 import PageLoader from "@/components/shared/PageLoader";
 import TourBookingForm from "@/feature/leads/components/TourBookingForm";
 import { travelExperienceIcon } from "@/components/shared/TravelExperiencePills";
-import RichContent from "@/components/shared/RichContent";
+import RichContent, { sanitizeHtml } from "@/components/shared/RichContent";
 import { QuoteModal } from "@/components/shared/QuoteModal";
+import { linkKeywords, buildExperienceLinkRules, type AutoLinkRule } from "@/lib/autoInternalLink";
 import { cn, stripHtml } from "@/lib/utils";
 
 const JourneyLightbox = dynamic(() => import("./JourneyLightbox"), { ssr: false });
 
 export default function JourneyDetail({ slug, initialJourney }: { slug: string; initialJourney?: Journey | null }) {
   const { journey, isLoading } = useJourneyBySlug(slug, initialJourney);
-  const [openDays, setOpenDays] = useState<number[]>([1]);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [pageUrl, setPageUrl] = useState("");
 
+  const cityLinkRules = useMemo<AutoLinkRule[]>(
+    () =>
+      (journey?.cities ?? [])
+        .filter((c) => c.state?.slug && c.state?.country?.slug && c.slug)
+        .map((c) => ({
+          term: c.title,
+          href: `/tour-packages/${c.state!.country!.slug}/${c.state!.slug}/${c.slug}`,
+        })),
+    [journey]
+  );
+
+  const paragraphLinkRules = useMemo<AutoLinkRule[]>(
+    () => [...buildExperienceLinkRules(), ...cityLinkRules],
+    [cityLinkRules]
+  );
+
   useEffect(() => {
     setPageUrl(window.location.href);
   }, []);
-
-  const toggleAllDays = () => {
-    if (journey?.days && openDays.length === journey.days.length) {
-      setOpenDays([]);
-    } else {
-      setOpenDays(journey?.days?.map((_, i) => i + 1) || []);
-    }
-  };
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
@@ -283,7 +291,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                       <div className="relative z-10">
                         <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-2">Starting Price</p>
                         <div className="flex items-baseline gap-2">
-                          <span className="text-4xl font-black text-[#D4561A]">
+                          <span className="text-4xl font-black text-[#F8904D]">
                             ₹{(journey.pricePerPerson ?? 0).toLocaleString()}
                           </span>
                           {(journey.discountPrice ?? 0) > 0 && (
@@ -301,7 +309,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   {/* 2. Quick Facts / Trip Overview */}
                   <div className="mb-6 relative z-10 space-y-5">
                     <h3 className="text-[17px] font-extrabold text-[#1C1C1C] flex items-center gap-2">
-                      <Sparkles size={18} className="text-[#D4561A]" />
+                      <Sparkles size={18} className="text-[#F8904D]" />
                       Trip Overview
                     </h3>
 
@@ -365,7 +373,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         {journey.travelExperiences!.map((e) => (
                           <span
                             key={e.id}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-50/80 hover:bg-orange-50/60 text-slate-700 hover:text-[#D4561A] text-[12.5px] font-bold border border-slate-200/80 hover:border-orange-200 transition-all shadow-2xs"
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-50/80 hover:bg-orange-50/60 text-slate-700 hover:text-[#F8904D] text-[12.5px] font-bold border border-slate-200/80 hover:border-orange-200 transition-all shadow-2xs"
                           >
                             <span className="text-[#2E8B8B] shrink-0">{travelExperienceIcon(e.title)}</span>
                             <span>{e.title}</span>
@@ -407,7 +415,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     <QuoteModal>
                       <button
                         type="button"
-                        className="w-full flex items-center justify-center gap-1.5 px-3 py-2.5 sm:px-4 sm:py-3.5 rounded-xl bg-[#D4561A] hover:bg-[#b84513] active:scale-95 text-white text-[12.5px] sm:text-[14.5px] font-bold shadow-md shadow-[#D4561A]/20 transition-all text-center cursor-pointer"
+                        className="w-full flex items-center justify-center gap-1.5 px-3 py-2.5 sm:px-4 sm:py-3.5 rounded-xl bg-[#F8904D] hover:bg-[#b84513] active:scale-95 text-white text-[12.5px] sm:text-[14.5px] font-bold shadow-md shadow-[#F8904D]/20 transition-all text-center cursor-pointer"
                       >
                         <CalendarDays size={16} className="shrink-0" />
                         <span>Book Now</span>
@@ -417,11 +425,6 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
                   {/* Trust Badges Micro Row */}
                   <div className="pt-2 flex items-center justify-around text-center text-[11px] font-bold text-slate-500 border-t border-slate-200/60 mt-1">
-                    <span className="flex items-center gap-1 text-slate-600">
-                      <Star size={12} className="text-[#F5B041] fill-[#F5B041]" />
-                      4.9 (200+ Reviews)
-                    </span>
-                    <span className="text-slate-300">•</span>
                     <span className="flex items-center gap-1 text-slate-600">
                       <ShieldCheck size={13} className="text-[#2E8B8B]" />
                       100% Customized
@@ -464,7 +467,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               <span className="accent-label">Overview</span>
               <h2 className="h3 text-[#1C1C1C] mt-3 mb-6">About This Tour</h2>
               <div className="bg-white rounded-3xl p-5 md:p-9 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-base text-slate-600 leading-[1.8]">
-                <RichContent html={journey.overView} />
+                <RichContent html={linkKeywords(journey.overView, paragraphLinkRules)} className="rich-text-plain-links" />
               </div>
             </section>
           )}
@@ -474,15 +477,8 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               <div className="flex flex-wrap items-end justify-between gap-4 mb-5 md:mb-8">
                 <div>
                   <span className="accent-label">Itinerary</span>
-                  <h2 className="h3 text-[#1C1C1C] mt-2">Day-by-Day Itinerary</h2>
+                  <h2 className="h3 text-[#1C1C1C] mt-2">Day By Day Itinerary</h2>
                 </div>
-                <button
-                  type="button"
-                  onClick={toggleAllDays}
-                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
-                >
-                  {openDays.length === journey.days.length ? "Collapse All" : "Expand All"}
-                </button>
               </div>
               <div className="relative bg-white rounded-3xl p-4 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
                 {journey.days.map((day, i) => (
@@ -490,14 +486,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     key={day.id}
                     index={i + 1}
                     day={day}
-                    isOpen={openDays.includes(i + 1)}
-                    onToggle={() => {
-                      if (openDays.includes(i + 1)) {
-                        setOpenDays(openDays.filter((d) => d !== i + 1));
-                      } else {
-                        setOpenDays([...openDays, i + 1]);
-                      }
-                    }}
+                    cityLinkRules={cityLinkRules}
                   />
                 ))}
               </div>
@@ -508,8 +497,8 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
             <div className="grid grid-cols-1 gap-6 lg:gap-8">
               {(journey.inclusions?.length ?? 0) > 0 && (
                 <div className="bg-emerald-50/40 border border-emerald-100 rounded-3xl p-5 md:p-9 shadow-[0_8px_30px_rgb(16,185,129,0.04)]">
-                  <h3 className="text-[12px] font-black uppercase tracking-[0.2em] text-emerald-700 mb-6 flex items-center gap-2.5">
-                    <CheckCircle2 size={18} className="text-emerald-500" /> What's Included
+                  <h3 className="font-heading text-lg md:text-xl font-bold text-emerald-800 mb-5 flex items-center gap-2.5">
+                    <CheckCircle2 size={22} className="text-emerald-500" /> What's Included
                   </h3>
                   <ul className="space-y-4">
                     {(journey.inclusions ?? []).map((item, i) => (
@@ -522,8 +511,8 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               )}
               {(journey.exclusions?.length ?? 0) > 0 && (
                 <div className="bg-red-50/40 border border-red-100 rounded-3xl p-5 md:p-9 shadow-[0_8px_30px_rgb(239,68,68,0.04)]">
-                  <h3 className="text-[12px] font-black uppercase tracking-[0.2em] text-red-700 mb-6 flex items-center gap-2.5">
-                    <XCircle size={18} className="text-red-500" /> What's Excluded
+                  <h3 className="font-heading text-lg md:text-xl font-bold text-red-800 mb-5 flex items-center gap-2.5">
+                    <XCircle size={22} className="text-red-500" /> What's Excluded
                   </h3>
                   <ul className="space-y-4">
                     {(journey.exclusions ?? []).map((item, i) => (
@@ -569,7 +558,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               <h2 className="h3 text-[#1C1C1C] mt-2 mb-4 md:mb-6">Frequently Asked Questions</h2>
               <div className="space-y-3">
                 {(journey.faqs ?? []).map((f) => (
-                  <FaqItem key={f.id} q={f.ques} a={f.ans} />
+                  <FaqItem key={f.id} q={f.ques} a={f.ans} linkRules={paragraphLinkRules} />
                 ))}
               </div>
             </section>
@@ -585,7 +574,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           {(journey.bookingPolicyList?.length ?? 0) > 0 && (
             <div className="rounded-3xl bg-slate-50 border border-slate-100 p-7">
               <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5 flex items-center gap-2">
-                <Sparkles size={16} className="text-[#D4561A]" />
+                <Sparkles size={16} className="text-[#F8904D]" />
                 Booking Policy
               </h4>
               <ul className="space-y-3.5">
@@ -625,11 +614,11 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               <h2 className="h3 text-[#1C1C1C] mt-2 mb-5 md:mb-8">Everything About {journey.title}</h2>
 
               {journey.seoDescription && (
-                <RichContent html={journey.seoDescription} />
+                <RichContent html={linkKeywords(journey.seoDescription, paragraphLinkRules)} />
               )}
 
               {journey.moreDescription && (
-                <RichContent html={journey.moreDescription} className="mt-8" />
+                <RichContent html={linkKeywords(journey.moreDescription, paragraphLinkRules)} className="mt-8" />
               )}
             </div>
           </div>
@@ -664,7 +653,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
         <QuoteModal>
           <button
             type="button"
-            className="flex-1 flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-[#D4561A] hover:bg-[#b84513] active:scale-95 text-white text-[13.5px] font-bold shadow-sm transition-all cursor-pointer"
+            className="flex-1 flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-[#F8904D] hover:bg-[#b84513] active:scale-95 text-white text-[13.5px] font-bold shadow-sm transition-all cursor-pointer"
           >
             <CalendarDays size={16} className="shrink-0" />
             <span>Book Now</span>
@@ -675,7 +664,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
   );
 }
 
-function FaqItem({ q, a }: { q: string; a: string }) {
+function FaqItem({ q, a, linkRules }: { q: string; a: string; linkRules: AutoLinkRule[] }) {
   const [open, setOpen] = useState(false);
   return (
     <div className={cn("rounded-2xl border transition-all duration-300 overflow-hidden", open ? "border-[#2E8B8B]/20 shadow-md bg-white" : "border-slate-100 bg-white hover:border-slate-200")}>
@@ -690,7 +679,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         </span>
       </button>
       <div className={cn("px-6 pb-6 text-[15.5px] text-slate-600 leading-relaxed", !open && "hidden")}>
-        <RichContent html={a} />
+        <RichContent html={linkKeywords(a, linkRules)} />
       </div>
     </div>
   );
@@ -699,13 +688,11 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 function DayItem({
   index,
   day,
-  isOpen,
-  onToggle,
+  cityLinkRules,
 }: {
   index: number;
   day: { id: number; day: string; description?: string; image?: string };
-  isOpen: boolean;
-  onToggle: () => void;
+  cityLinkRules: AutoLinkRule[];
 }) {
   return (
     <div className="relative pl-0 md:pl-12 py-4 md:py-5 first:pt-0 last:pb-0 group">
@@ -713,44 +700,33 @@ function DayItem({
       <div className="hidden md:block absolute left-[15px] top-0 bottom-0 w-[2px] bg-slate-200 group-last:bottom-auto group-last:h-full" />
 
       {/* Timeline Dot */}
-      <div className="hidden md:flex absolute left-0 top-4 w-8 h-8 rounded-full bg-white border-[3px] border-[#2E8B8B] items-center justify-center shadow-sm z-10 transition-colors duration-300 group-hover:border-[#D4561A]">
-        <span className="text-xs font-black text-[#2E8B8B] transition-colors duration-300 group-hover:text-[#D4561A]">{index}</span>
+      <div className="hidden md:flex absolute left-0 top-4 w-8 h-8 rounded-full bg-white border-[3px] border-[#2E8B8B] items-center justify-center shadow-sm z-10 transition-colors duration-300 group-hover:border-[#F8904D]">
+        <span className="text-xs font-black text-[#2E8B8B] transition-colors duration-300 group-hover:text-[#F8904D]">{index}</span>
       </div>
 
       <div className="w-full">
-        <button
-          type="button"
-          onClick={onToggle}
-          className={cn("w-full flex items-center justify-between gap-4 pb-3 border-b text-left cursor-pointer group/btn", isOpen ? "border-slate-100" : "border-slate-100/50")}
-        >
-          <h3 className="font-heading text-lg md:text-xl font-bold text-[#1C1C1C] transition-colors duration-300 group-hover/btn:text-[#D4561A]">
-            <span className={cn("mr-2 transition-colors duration-300", isOpen ? "text-[#D4561A]" : "text-[#2E8B8B] group-hover/btn:text-[#D4561A]")}>Day {index}:</span>
-            {day.day}
+        <div className="w-full flex items-center justify-between gap-4 pb-3 border-b border-slate-100">
+          <h3 className="font-heading text-lg md:text-xl font-bold text-[#1C1C1C] rich-text-plain-links">
+            <span className="mr-2 text-[#F8904D]">Day {index}:</span>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(
+                  linkKeywords(day.day.replace(/^Day\s*\d+\s*:\s*/i, "").trim(), cityLinkRules)
+                ),
+              }}
+            />
           </h3>
-          <span className={cn("w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300", isOpen ? "text-[#D4561A] rotate-180" : "text-slate-400 group-hover/btn:text-[#D4561A]")}>
-            <ChevronDown size={20} />
-          </span>
-        </button>
+        </div>
 
-        {/* SEO Friendly Accordion Content using CSS Grid */}
-        <div
-          className={cn(
-            "grid transition-all duration-300",
-            isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-          )}
-        >
-          <div className="overflow-hidden">
-            <div className="pt-3 pb-4 md:pb-5">
-              {day.description && (
-                <div className="text-[15px] text-slate-600 leading-[1.8]">
-                  <RichContent html={day.description} />
-                </div>
-              )}
-              {day.image && (
-                <img src={day.image} alt={day.day} className="mt-4 rounded-2xl w-full h-[200px] md:h-[280px] object-cover shadow-sm" />
-              )}
+        <div className="pt-3 pb-4 md:pb-5">
+          {day.description && (
+            <div className="text-[15px] text-slate-600 leading-[1.8]">
+              <RichContent html={linkKeywords(day.description, cityLinkRules)} className="rich-text-plain-links" />
             </div>
-          </div>
+          )}
+          {day.image && (
+            <img src={day.image} alt={day.day.replace(/^Day\s*\d+\s*:\s*/i, "")} className="mt-4 rounded-2xl w-full h-[200px] md:h-[280px] object-cover shadow-sm" />
+          )}
         </div>
       </div>
     </div>

@@ -24,11 +24,11 @@ const sizeStyles = {
 
 const variantStyles = {
   primary:
-    "bg-[#D4561A] text-white shadow-sm hover:bg-[#C24D15] hover:shadow-md",
+    "bg-[#F8904D] text-white shadow-sm hover:bg-[#D87E43] hover:shadow-md",
   outline:
-    "border border-[#D4561A]/30 text-[#D4561A] bg-transparent hover:bg-[#D4561A] hover:text-white",
+    "border border-[#F8904D]/30 text-[#F8904D] bg-transparent hover:bg-[#F8904D] hover:text-white",
   ghost:
-    "bg-transparent text-[#D4561A] hover:bg-[#D4561A]/10",
+    "bg-transparent text-[#F8904D] hover:bg-[#F8904D]/10",
   danger:
     "bg-red-600 text-white shadow-sm hover:bg-red-700 hover:shadow-md",
   success:

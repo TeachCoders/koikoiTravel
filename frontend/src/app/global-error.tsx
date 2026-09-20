@@ -17,7 +17,7 @@ export default function GlobalError({
     <html lang="en">
       <body className="bg-white text-[#1C1C1C] antialiased">
         <div className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
-          <p className="text-[#D4561A] text-sm font-bold uppercase tracking-widest mb-3">
+          <p className="text-[#F8904D] text-sm font-bold uppercase tracking-widest mb-3">
             Critical Error
           </p>
           <h1 className="text-4xl md:text-5xl font-extrabold">

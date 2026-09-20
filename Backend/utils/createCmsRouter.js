@@ -7,6 +7,16 @@ import { sendWebhook } from "../services/webhookService.js";
 import { isPublicRequest } from "../utils/authHelpers.js";
 import { logger } from "./logger.js";
 
+const orderByList = (items = [], order = []) => {
+  if (!Array.isArray(order) || order.length === 0) return items;
+  const orderMap = new Map(order.map((id, i) => [id, i]));
+  return [...items].sort((a, b) => {
+    const ia = orderMap.has(a.id) ? orderMap.get(a.id) : Number.MAX_SAFE_INTEGER;
+    const ib = orderMap.has(b.id) ? orderMap.get(b.id) : Number.MAX_SAFE_INTEGER;
+    return ia - ib;
+  });
+};
+
 const CASCADE = {
   country: async (id) => {
     const states = await prisma.state.findMany({ where: { countryId: id }, select: { id: true, isActive: true } });
@@ -36,7 +46,7 @@ const CASCADE = {
   },
 };
 
-function createCmsRouter({ modelName, entityType, schema, searchFields, parentField, childInclude, parentInclude, extraFilters, tourCountWhere, listSelect }) {
+function createCmsRouter({ modelName, entityType, schema, searchFields, parentField, childInclude, parentInclude, extraFilters, tourCountWhere, listSelect, relations = [] }) {
   const router = express.Router();
 
   // PATCH /:id/toggle-active
@@ -235,11 +245,19 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
         tourCounts = new Map(ids.map((id, idx) => [id, counts[idx]]));
       }
 
-      const data = items.map((item) => ({
-        ...item,
-        banner: bannerMap.get(item.id) || null,
-        ...(tourCountWhere ? { tourCount: tourCounts.get(item.id) || 0 } : {}),
-      }));
+      const data = items.map((item) => {
+        const ordered = { ...item };
+        for (const rel of relations) {
+          if (rel.orderField && Array.isArray(ordered[rel.field])) {
+            ordered[rel.field] = orderByList(ordered[rel.field], ordered[rel.orderField]);
+          }
+        }
+        return {
+          ...ordered,
+          banner: bannerMap.get(item.id) || null,
+          ...(tourCountWhere ? { tourCount: tourCounts.get(item.id) || 0 } : {}),
+        };
+      });
 
       return res.status(200).json({
         success: true,
@@ -317,6 +335,9 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       const include = {};
       if (parentInclude) include[parentInclude.model] = { select: parentInclude.select };
       if (childInclude) include[childInclude.model] = { select: childInclude.select, orderBy: { title: "asc" } };
+      for (const rel of relations) {
+        include[rel.field] = rel.select ? { select: rel.select } : true;
+      }
 
       const item = await prisma[modelName].findUnique({ where: { slug }, include });
       if (!item) return res.status(404).json({ success: false, message: `${modelName} not found` });
@@ -324,6 +345,11 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
 
       const banner = await getBanner(entityType, item.id);
       const faqs = await getFaqs(entityType, item.id);
+      for (const rel of relations) {
+        if (rel.orderField && Array.isArray(item[rel.field])) {
+          item[rel.field] = orderByList(item[rel.field], item[rel.orderField]);
+        }
+      }
 
       return res.status(200).json({ success: true, data: { ...item, banner, faqs } });
     } catch (err) {
@@ -341,6 +367,9 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       const include = {};
       if (parentInclude) include[parentInclude.model] = { select: parentInclude.select };
       if (childInclude) include[childInclude.model] = { select: childInclude.select, orderBy: { title: "asc" } };
+      for (const rel of relations) {
+        include[rel.field] = rel.select ? { select: rel.select } : true;
+      }
 
       const item = await prisma[modelName].findUnique({ where: { id }, include });
       if (!item) return res.status(404).json({ success: false, message: `${modelName} not found` });
@@ -348,6 +377,11 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
 
       const banner = await getBanner(entityType, id);
       const faqs = await getFaqs(entityType, id);
+      for (const rel of relations) {
+        if (rel.orderField && Array.isArray(item[rel.field])) {
+          item[rel.field] = orderByList(item[rel.field], item[rel.orderField]);
+        }
+      }
 
       return res.status(200).json({ success: true, data: { ...item, banner, faqs } });
     } catch (err) {
@@ -374,7 +408,19 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       const { slug: inputSlug, ...rest } = parsed.data;
       const slug = inputSlug || generateSlug(rest.title);
 
-      const item = await prisma[modelName].create({ data: { ...rest, slug } });
+      const relationOps = {};
+      for (const rel of relations) {
+        const idsRaw = rest[rel.inputKey];
+        if (Array.isArray(idsRaw)) {
+          const ids = [...new Set(idsRaw.map(Number).filter((x) => Number.isInteger(x) && x > 0))];
+          if (ids.length > 0) relationOps[rel.field] = { connect: ids.map((id) => ({ id })) };
+          if (rel.orderField) relationOps[rel.orderField] = idsRaw;
+        }
+      }
+      const cleanRest = { ...rest };
+      for (const rel of relations) delete cleanRest[rel.inputKey];
+
+      const item = await prisma[modelName].create({ data: { ...cleanRest, slug, ...relationOps } });
       const banner = await upsertBanner(entityType, item.id, bannerData);
       
       const faqsInput = Array.isArray(req.body.faqs) ? req.body.faqs : [];
@@ -421,9 +467,23 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       const { slug: inputSlug, ...rest } = parsed.data;
       const slug = inputSlug || (rest.title ? generateSlug(rest.title) : undefined);
 
+      const relationOps = {};
+      for (const rel of relations) {
+        if (rest[rel.inputKey] !== undefined) {
+          const idsRaw = rest[rel.inputKey];
+          const ids = Array.isArray(idsRaw)
+            ? [...new Set(idsRaw.map(Number).filter((x) => Number.isInteger(x) && x > 0))]
+            : [];
+          relationOps[rel.field] = { set: ids.map((id) => ({ id })) };
+          if (rel.orderField) relationOps[rel.orderField] = Array.isArray(idsRaw) ? idsRaw : [];
+        }
+      }
+      const cleanRest = { ...rest };
+      for (const rel of relations) delete cleanRest[rel.inputKey];
+
       const item = await prisma[modelName].update({
         where: { id },
-        data: { ...rest, ...(slug && { slug }) },
+        data: { ...cleanRest, ...(slug && { slug }), ...relationOps },
       });
 
       const banner = await upsertBanner(entityType, id, bannerData);

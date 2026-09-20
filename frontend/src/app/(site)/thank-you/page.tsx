@@ -10,9 +10,9 @@ import {
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
 
 export const metadata: Metadata = {
-  title: "Thank You | Flag Journeys - Inquiry Received",
+  title: "Thank You | Koikoi travel - Inquiry Received",
   description:
-    "Thank you for contacting Flag Journeys. Your travel inquiry has been received and our destination specialists will contact you shortly.",
+    "Thank you for contacting Koikoi travel. Your travel inquiry has been received and our destination specialists will contact you shortly.",
 };
 
 const SALES_PHONE = process.env.NEXT_PUBLIC_SALES_PHONE || "+91 91367 39178";
@@ -36,7 +36,7 @@ export default async function ThankYouPage() {
                 <span>Submission Successful</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-heading">
-                Thank You for Choosing Flag Journeys!
+                Thank You for Choosing Koikoi travel!
               </h1>
               <p className="text-slate-500 text-sm sm:text-base leading-relaxed">
                 Your travel inquiry has been received. Our destination specialists are working on your custom plan and will connect with you shortly.
@@ -63,7 +63,7 @@ export default async function ThankYouPage() {
               </div>
 
               <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-100 space-y-2">
-                <div className="w-8 h-8 rounded-xl bg-[#D4561A]/10 text-[#D4561A] flex items-center justify-center font-bold text-sm">
+                <div className="w-8 h-8 rounded-xl bg-[#F8904D]/10 text-[#F8904D] flex items-center justify-center font-bold text-sm">
                   2
                 </div>
                 <h4 className="font-bold text-slate-900 text-sm">Tailored Proposal</h4>

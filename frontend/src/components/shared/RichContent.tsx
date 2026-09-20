@@ -1,7 +1,7 @@
 import DOMPurify from "isomorphic-dompurify";
 import { cn } from "@/lib/utils";
 
-function sanitizeHtml(html: string): string {
+export function sanitizeHtml(html: string): string {
   const clean = DOMPurify.sanitize(html, {
     USE_PROFILES: { html: true },
     FORBID_TAGS: ["style", "script", "iframe", "form", "input", "button"],

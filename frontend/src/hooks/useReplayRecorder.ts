@@ -10,7 +10,7 @@ import {
   refreshIdentity,
 } from "@/lib/analyticsIdentity";
 
-const FLUSH_INTERVAL_MS = 5000;
+const FLUSH_INTERVAL_MS = 3000;
 const MAX_BATCH_BYTES = 400_000;
 const MAX_RECORDING_MS = 30 * 60 * 1000; // cap a single recording at 30 minutes
 const REPLAY_API_PATH = "/api/analytics/replay";
@@ -25,12 +25,19 @@ function isRecordablePath(pathname: string | null): boolean {
   );
 }
 
+function deviceFromUA(ua: string): string {
+  if (/ipad/i.test(ua)) return "Tablet";
+  if (/mobi/i.test(ua)) return "Mobile";
+  return "Desktop";
+}
+
 function buildPayload(events: unknown[]) {
   return {
     sessionId: getSessionId(),
     visitorId: getVisitorId(),
     userId: getUserId(),
     userAgent: navigator.userAgent,
+    deviceType: deviceFromUA(navigator.userAgent),
     events,
   };
 }
@@ -42,7 +49,7 @@ async function postEvents(
   const payload = buildPayload(events);
   if (useKeepalive) {
     // Survives tab close / navigation unload.
-    await fetch(REPLAY_API_PATH, {
+    const res = await fetch(REPLAY_API_PATH, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,6 +58,7 @@ async function postEvents(
       body: JSON.stringify(payload),
       keepalive: true,
     });
+    if (!res.ok) throw new Error(`replay upload failed: HTTP ${res.status}`);
   } else {
     await apiClient.post("/analytics/replay", payload);
   }
@@ -69,8 +77,11 @@ async function drainAndSend(buffer: unknown[], useKeepalive: boolean) {
     const chunk = buffer.splice(0, size);
     try {
       await postEvents(chunk, useKeepalive);
-    } catch {
-      // Analytics must never break browsing – swallow errors.
+    } catch (err) {
+      // Analytics must never break browsing, but silent drops hide problems:
+      // surface the failure and re-queue the chunk for the next flush.
+      console.warn("[replay] upload failed – will retry", err);
+      if (!useKeepalive) buffer.unshift(...chunk);
       break;
     }
   }
@@ -130,6 +141,14 @@ export function useReplayRecorder() {
             }
           : null;
 
+      // Session-start beacon: ship a small batch immediately so even a quick
+      // visit (tab opened, few seconds, closed) still appears in the list.
+      buffer.current.push({
+        type: 5 as unknown, // rrweb Custom event
+        data: { tag: "replay:start", href: window.location.href, ts: Date.now() },
+      });
+      void drainAndSend(eventBuffer, false);
+
       flushTimer = setInterval(() => {
         if (Date.now() - startedAt.current > MAX_RECORDING_MS) return; // recording stops at cap
         // Cheap login re-check (cached ≤5 min, no network spam).
@@ -142,13 +161,23 @@ export function useReplayRecorder() {
       void drainAndSend(buffer.current, true);
     };
 
+    const handleVisibility = () => {
+      // Timers are throttled in hidden/background tabs – flush on hide instead
+      // of waiting for the next (slowed) interval tick.
+      if (document.visibilityState === "hidden") {
+        void drainAndSend(buffer.current, true);
+      }
+    };
+
     void start();
     window.addEventListener("pagehide", handlePageHide);
+    document.addEventListener("visibilitychange", handleVisibility);
 
     return () => {
       cancelled = true;
       if (flushTimer) clearInterval(flushTimer);
       window.removeEventListener("pagehide", handlePageHide);
+      document.removeEventListener("visibilitychange", handleVisibility);
       stopFn?.();
       stopFn = null;
       // Flush whatever was captured when leaving a recordable page.

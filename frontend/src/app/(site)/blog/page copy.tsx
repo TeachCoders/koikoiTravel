@@ -10,7 +10,7 @@ import { API_BASE } from "@/lib/apiClient";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Travel Blog | Flag Journeys",
+  title: "Travel Blog | Koikoi travel",
   description:
     "Travel guides, itineraries and tips for India tours — destinations, honeymoon, heritage and more.",
   alternates: { canonical: "/blog" },
@@ -71,8 +71,8 @@ export default async function BlogPage({
           />
           
           <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 text-center">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.2em] text-[#D4561A] mb-6 drop-shadow-md bg-white rounded-full">
-              <Sparkles size={14} className="text-[#D4561A]" /> FlagJourney Travel Blog
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.2em] text-[#F8904D] mb-6 drop-shadow-md bg-white rounded-full">
+              <Sparkles size={14} className="text-[#F8904D]" /> Koikoi travel Travel Blog
             </span>
             <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-tight drop-shadow-2xl [text-shadow:_0_4px_24px_rgb(0_0_0_/_0.8)] max-w-[1400px] mx-auto">
               Stories, Guides & Travel Inspiration
@@ -92,7 +92,7 @@ export default async function BlogPage({
                   placeholder="What are you looking for?"
                   className="w-full bg-transparent py-4 pl-14 pr-32 text-[15px] font-medium text-slate-900 placeholder:text-slate-400 outline-none"
                 />
-                <button type="submit" className="absolute right-2 top-2 bottom-2 bg-[#D4561A] text-white px-5 rounded-xl text-sm font-bold shadow-md hover:bg-[#b84a16] transition-colors flex items-center gap-2">
+                <button type="submit" className="absolute right-2 top-2 bottom-2 bg-[#F8904D] text-white px-5 rounded-xl text-sm font-bold shadow-md hover:bg-[#d57c42] transition-colors flex items-center gap-2">
                   Search
                 </button>
               </form>
@@ -127,7 +127,7 @@ export default async function BlogPage({
               </h2>
               <Link
                 href="/blog"
-                className="text-sm font-bold text-[#D4561A] hover:underline flex items-center gap-1 ml-auto bg-orange-50 px-3 py-1.5 rounded-full"
+                className="text-sm font-bold text-[#F8904D] hover:underline flex items-center gap-1 ml-auto bg-orange-50 px-3 py-1.5 rounded-full"
               >
                 Clear Search
               </Link>

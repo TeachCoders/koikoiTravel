@@ -11,14 +11,14 @@ import { FallbackImage } from "@/components/shared/FallbackImage";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Travel Blog — Guides, Itineraries and India Tour Tips | Flag Journeys",
+  title: "Travel Blog — Guides, Itineraries and India Tour Tips | Koikoi travel",
   description:
-    "Explore expert travel guides, holiday itineraries, budgeting tips, and hidden destination insights for India tours — curated by Flag Journeys.",
+    "Explore expert travel guides, holiday itineraries, budgeting tips, and hidden destination insights for India tours — curated by Koikoi travel.",
   alternates: { canonical: "/blog" },
   openGraph: {
-title: "Travel Blog — Guides, Itineraries and India Tour Tips | Flag Journeys",
+title: "Travel Blog — Guides, Itineraries and India Tour Tips | Koikoi travel",
     description:
-      "Explore expert travel guides, holiday itineraries, budgeting tips, and hidden destination insights for India tours — curated by Flag Journeys.",
+      "Explore expert travel guides, holiday itineraries, budgeting tips, and hidden destination insights for India tours — curated by Koikoi travel.",
     url: "/blog",
     type: "website",
   },
@@ -81,7 +81,7 @@ export default async function BlogPage({
         <section className="relative h-[480px] md:h-[560px] overflow-hidden bg-slate-900 flex items-center justify-center">
           <FallbackImage
             src="/destinationImage/image/agra-6.webp"
-            alt="FlagJourney Travel Blog Background"
+            alt="Koikoi travel Travel Blog Background"
             fill
             priority
             className="object-cover object-center"
@@ -90,7 +90,7 @@ export default async function BlogPage({
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/50 to-slate-950/30" />
           
           <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 text-center py-8">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white bg-[#D4561A] rounded-full mb-5 shadow-lg">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white bg-[#F8904D] rounded-full mb-5 shadow-lg">
               <Sparkles size={14} className="text-white" /> Travel Guides & Inspiration
             </span>
             <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight drop-shadow-2xl max-w-4xl mx-auto">
@@ -111,7 +111,7 @@ export default async function BlogPage({
                   placeholder="Search destination guides, travel tips..."
                   className="w-full bg-transparent py-4 pl-14 pr-32 text-[15px] font-medium text-slate-900 placeholder:text-slate-400 outline-none"
                 />
-                <button type="submit" className="absolute right-2 top-2 bottom-2 bg-[#D4561A] text-white px-5 rounded-xl text-sm font-bold shadow-md hover:bg-[#b84a16] transition-colors flex items-center gap-2">
+                <button type="submit" className="absolute right-2 top-2 bottom-2 bg-[#F8904D] text-white px-5 rounded-xl text-sm font-bold shadow-md hover:bg-[#d57c42] transition-colors flex items-center gap-2">
                   Search
                 </button>
               </form>
@@ -157,7 +157,7 @@ export default async function BlogPage({
               </h2>
               <Link
                 href="/blog"
-                className="text-sm font-bold text-[#D4561A] hover:underline flex items-center gap-1 ml-auto bg-orange-50 px-3 py-1.5 rounded-full"
+                className="text-sm font-bold text-[#F8904D] hover:underline flex items-center gap-1 ml-auto bg-orange-50 px-3 py-1.5 rounded-full"
               >
                 Clear Search
               </Link>
@@ -193,7 +193,7 @@ export default async function BlogPage({
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/tour-packages"
-                className="btn-primary px-7 py-3.5 text-sm font-bold flex items-center gap-2 shadow-lg shadow-[#D4561A]/20"
+                className="btn-primary px-7 py-3.5 text-sm font-bold flex items-center gap-2 shadow-lg shadow-[#F8904D]/20"
               >
                 <Compass size={16} />
                 <span>Explore Tour Packages</span>

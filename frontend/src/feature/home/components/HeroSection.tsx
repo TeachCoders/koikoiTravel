@@ -69,7 +69,7 @@ export const HeroSection: React.FC = () => {
       <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 w-full text-center">
 
         <h1 className="hero-heading text-white leading-[1.12] max-w-4xl mx-auto drop-shadow-lg transition-all duration-700">
-          Find Your Perfect <span className="text-[#D4561A]">Holiday</span>
+          Find Your Perfect <span className="text-[#F8904D]">Holiday</span>
         </h1>
 
         <div className="mt-10">

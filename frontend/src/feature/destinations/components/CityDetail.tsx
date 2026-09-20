@@ -183,7 +183,7 @@ function CityContent({
             <QuoteModal>
               <button
                 type="button"
-                className="btn-primary px-4 py-2.5 sm:px-7 sm:py-3.5 text-xs sm:text-sm font-bold tracking-wide flex items-center gap-2 cursor-pointer shadow-lg shadow-[#D4561A]/30 active:scale-95 transition-all"
+                className="btn-primary px-4 py-2.5 sm:px-7 sm:py-3.5 text-xs sm:text-sm font-bold tracking-wide flex items-center gap-2 cursor-pointer shadow-lg shadow-[#F8904D]/30 active:scale-95 transition-all"
               >
                 <Sparkles size={16} />
                 <span>Plan My {city.title} Trip</span>
@@ -309,7 +309,7 @@ function CityContent({
                   <Sparkles className="absolute -top-4 -right-4 w-24 h-24 text-[#2E8B8B]/10 rotate-12" />
                   <div className="w-full flex items-center justify-between gap-3 text-left relative z-10">
                     <h3 className="flex items-center gap-2.5 text-lg font-black text-[#1C1C1C]">
-                      <Sparkles size={18} className="text-[#D4561A]" />
+                      <Sparkles size={18} className="text-[#F8904D]" />
                       Famous For
                     </h3>
                   </div>
@@ -330,7 +330,7 @@ function CityContent({
                 <div className="rounded-2xl border border-slate-100 bg-white p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
                   <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5 flex items-center justify-between">
                     Top 10 Tour Packages
-                    <span className="text-[10px] font-black text-[#D4561A] bg-[#D4561A]/10 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[10px] font-black text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-0.5 rounded-full">
                       {Math.min(
                         10,
                         cityJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length
@@ -364,7 +364,7 @@ function CityContent({
                                 {((j.discountPrice ?? 0) > 0 || (j.pricePerPerson ?? 0) > 0) ? (
                                   <>
                                     <span>•</span>
-                                    <span className="text-[#D4561A] font-extrabold">
+                                    <span className="text-[#F8904D] font-extrabold">
                                       ₹{((j.discountPrice || j.pricePerPerson) as number).toLocaleString("en-IN")}
                                     </span>
                                   </>

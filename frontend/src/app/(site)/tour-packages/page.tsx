@@ -11,9 +11,9 @@ import { QuoteModal } from "@/components/shared/QuoteModal";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Tour Packages in India and Worldwide | Flag Journeys",
+  title: "Tour Packages in India and Worldwide | Koikoi travel",
   description:
-    "Explore hand-crafted tour packages across India and worldwide destinations. Filter by state, city, travel experience, season & duration. Book your dream trip with Flag Journeys.",
+    "Explore handcrafted tour packages across India. Filter by state, city, travel experience, season & duration. Book your dream trip with Koikoi travel.",
   alternates: { canonical: "/tour-packages" },
 };
 
@@ -59,7 +59,7 @@ export default async function TourPackagesPage({
       <section className="relative bg-slate-900 border-b border-slate-800 py-16 md:py-20 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#2E8B8B]/25 via-slate-950/80 to-slate-950" />
         <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 text-center flex flex-col items-center">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#D4561A]/10 border border-[#D4561A]/30 text-[#D4561A] text-xs font-extrabold uppercase tracking-widest mb-4">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#F8904D]/10 border border-[#F8904D]/30 text-[#F8904D] text-xs font-extrabold uppercase tracking-widest mb-4">
             <Sparkles size={13} /> Tailor-Made Holiday Packages
           </span>
           <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-wide drop-shadow-md">
@@ -75,7 +75,7 @@ export default async function TourPackagesPage({
             <QuoteModal>
               <button
                 type="button"
-                className="btn-primary px-8 py-3.5 text-sm font-bold tracking-wide flex items-center gap-2 cursor-pointer shadow-lg shadow-[#D4561A]/30 active:scale-95 transition-all"
+                className="btn-primary px-8 py-3.5 text-sm font-bold tracking-wide flex items-center gap-2 cursor-pointer shadow-lg shadow-[#F8904D]/30 active:scale-95 transition-all"
               >
                 <Sparkles size={16} />
                 <span>Get Customized Trip Quote</span>

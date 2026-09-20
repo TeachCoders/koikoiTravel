@@ -2,7 +2,7 @@ export type SeasonKey = "winter" | "spring" | "monsoon";
 
 export const SEASON_META: Record<string, { label: string; color: string }> = {
   winter: { label: "Winter Special", color: "#2E8B8B" },
-  spring: { label: "Spring", color: "#D4561A" },
+  spring: { label: "Spring", color: "#F8904D" },
   monsoon: { label: "Monsoon", color: "#5B8DEF" },
 };
 

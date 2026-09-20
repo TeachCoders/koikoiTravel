@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Sparkles, Star, ArrowRight } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import TourBookingForm from "@/feature/leads/components/TourBookingForm";
 
@@ -88,18 +88,6 @@ export default function AdLandingHero({
               >
                 Plan My Trip
               </button>
-            </div>
-
-            {/* Trust Rating Footer */}
-            <div className="flex items-center gap-2 text-xs text-slate-100 font-bold pt-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-              <div className="flex items-center gap-0.5 text-amber-400">
-                <Star size={14} fill="currentColor" />
-                <Star size={14} fill="currentColor" />
-                <Star size={14} fill="currentColor" />
-                <Star size={14} fill="currentColor" />
-                <Star size={14} fill="currentColor" />
-              </div>
-              <span className="font-bold text-white">4.9/5 Traveller Rating</span>
             </div>
 
           </div>

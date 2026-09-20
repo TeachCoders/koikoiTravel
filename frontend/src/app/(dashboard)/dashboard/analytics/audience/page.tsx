@@ -3,7 +3,7 @@ import AnalyticsLayout from '@/components/analytics/AnalyticsLayout';
 import DevicesBreakdown from '@/components/analytics/DevicesBreakdown';
 
 export const metadata = {
-  title: 'Devices | Flag Journeys',
+  title: 'Devices | Koikoi travel',
 };
 
 export default async function DevicesPage() {

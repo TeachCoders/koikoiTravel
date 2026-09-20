@@ -371,7 +371,7 @@ router.get("/by-slug/:slug", async (req, res) => {
         },
         months: { select: { id: true, title: true, slug: true, season: true } },
         travelExperiences: { select: { id: true, title: true, slug: true } },
-        days: true,
+        days: { orderBy: { id: "asc" } },
       },
     });
     if (!item) return res.status(404).json({ success: false, message: "Journey not found" });
@@ -437,7 +437,7 @@ router.get("/:id", async (req, res) => {
         },
         months: { select: { id: true, title: true, slug: true, season: true } },
         travelExperiences: { select: { id: true, title: true, slug: true } },
-        days: true,
+        days: { orderBy: { id: "asc" } },
       },
     });
     if (!item) return res.status(404).json({ success: false, message: "Journey not found" });

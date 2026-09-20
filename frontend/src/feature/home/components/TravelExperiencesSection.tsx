@@ -83,7 +83,7 @@ export const TravelExperiencesSection: React.FC = () => {
                       {theme.icon || <Compass size={18} />}
                     </div>
                     {count > 0 && (
-                      <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#D4561A] text-white text-[10px] font-bold shadow-lg">
+                      <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#F8904D] text-white text-[10px] font-bold shadow-lg">
                         <Crown size={11} /> {count} Tours
                       </span>
                     )}
@@ -100,9 +100,9 @@ export const TravelExperiencesSection: React.FC = () => {
                     </p>
                     <div className="mt-4 pt-4 border-t border-[#f0f0f0] flex items-center justify-between">
                       <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#1C1C1C] group-hover:text-[#2E8B8B] transition-colors">
-                        Explore <ArrowRight size={15} className="text-[#D4561A] transition-transform duration-300 group-hover:translate-x-1" />
+                        Explore <ArrowRight size={15} className="text-[#F8904D] transition-transform duration-300 group-hover:translate-x-1" />
                       </span>
-                      <Sparkles size={14} className="text-[#D4561A]" />
+                      <Sparkles size={14} className="text-[#F8904D]" />
                     </div>
                   </div>
                 </Link>

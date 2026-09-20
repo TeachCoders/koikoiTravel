@@ -2,11 +2,16 @@ import { Router } from 'express';
 import { prisma } from '../utils/prismaConnection.js';
 import rateLimit from 'express-rate-limit';
 import { requireSuperAdmin } from '../middleware/requireSuperAdmin.js';
+import { purgeExpiredAnalytics } from '../utils/analyticsRetention.js';
 
 const router = Router();
 
 const RETENTION_KEY = 'retentionDays';
-const DEFAULT_RETENTION_DAYS = 30;
+const DEFAULT_RETENTION_DAYS = 2;
+
+// Rate-limit the "authenticated session discarded" log line to once per session,
+// so an admin browsing the public site doesn't spam the server console.
+const loggedAuthDiscards = new Set();
 
 // Rate limiting to prevent abuse
 const analyticsLimiter = rateLimit({
@@ -131,13 +136,55 @@ async function resolveCountry(ip) {
   }
 }
 
+// Known search engines (organic). Each maps to the query params that carry the
+// visitor's typed search (Google redacts `q` since 2013; Bing/Yandex/Yahoo/etc.
+// still pass it through).
+const SEARCH_ENGINES = [
+  { match: 'google.', params: ['q'] },
+  { match: 'bing.', params: ['q'] },
+  { match: 'yahoo.', params: ['p'] },
+  { match: 'duckduckgo.', params: ['q'] },
+  { match: 'yandex.', params: ['text'] },
+  { match: 'startpage.', params: ['query', 'q'] },
+  { match: 'ecosia.', params: ['q'] },
+  { match: 'baidu.', params: ['wd'] },
+  { match: 'brave.', params: ['q'] },
+  { match: 'naver.', params: ['query'] },
+  { match: 'seznam.', params: ['q'] },
+  { match: 'ask.', params: ['q'] },
+];
+
+function searchEngineFor(host) {
+  const bare = host.replace(/^www\./, '').toLowerCase();
+  return SEARCH_ENGINES.find(e => bare.includes(e.match)) || null;
+}
+
+// Extract the actual query a visitor typed before landing here, from the
+// referring search engine's URL. Returns null when there is none.
+function extractSearchKeyword(referrer) {
+  if (!referrer) return null;
+  let url;
+  try {
+    url = new URL(referrer);
+  } catch {
+    return null;
+  }
+  const engine = searchEngineFor(url.hostname);
+  if (!engine) return null;
+  for (const param of engine.params) {
+    const value = (url.searchParams.get(param) || '').trim();
+    if (value) return value;
+  }
+  return null;
+}
+
 // Classify a referrer (string or null) into an acquisition channel.
 function channelFromReferrer(referrer) {
   if (!referrer) return 'Direct';
   try {
     const host = new URL(referrer).hostname.replace(/^www\./, '').toLowerCase();
     if (host === locationHost()) return 'Direct';
-    if (/(^|\.)google\./.test(host) || /(^|\.)bing\./.test(host) || /(^|\.)bing\.com/.test(host) || /(^|\.)yahoo\./.test(host) || /(^|\.)duckduckgo\./.test(host)) return 'Organic Search';
+    if (searchEngineFor(host)) return 'Organic Search';
     if (/(^|\.)(facebook|instagram|twitter|x|linkedin|youtube|whatsapp|pinterest|telegram|tiktok|reddit)\./.test(host)) return 'Social';
     return 'Referral';
   } catch {
@@ -157,6 +204,10 @@ router.post('/events', analyticsLimiter, async (req, res) => {
   try {
     // Guests only: silently ignore batches from authenticated sessions.
     if (req.session?.user?.id != null) {
+      if (!loggedAuthDiscards.has(sessionId)) {
+        loggedAuthDiscards.add(sessionId);
+        console.warn(`[ANALYTICS] events discarded: authenticated session ${sessionId}`);
+      }
       return res.status(202).json({ success: true, discarded: 'authenticated-session' });
     }
 
@@ -789,15 +840,13 @@ router.get('/sources', requireSuperAdmin, async (req, res) => {
     const channels = [...sessionsByChannel.entries()].map(([channel, set]) => ({ channel, sessions: set.size }));
     const total = channels.reduce((s, c) => s + c.sessions, 0) || 1;
 
-    // Search keywords extracted from organic search referrers (?q= / ?query=).
+    // Search keywords extracted from organic search referrers (per-engine query
+    // params — Google `q`, Yahoo `p`, Yandex `text`, Baidu `wd`, etc.).
     const keywordMap = new Map();
     for (const ref of sessionsRef.values()) {
-      if (!ref) continue;
-      let url;
-      try { url = new URL(ref); } catch { continue; }
-      const q = (url.searchParams.get('q') || url.searchParams.get('query') || '').trim();
-      if (!q) continue;
-      const k = q.toLowerCase();
+      const keyword = extractSearchKeyword(ref);
+      if (!keyword) continue;
+      const k = keyword.toLowerCase();
       keywordMap.set(k, (keywordMap.get(k) || 0) + 1);
     }
     const keywords = [...keywordMap.entries()].map(([keyword, count]) => ({ keyword, count })).sort((a, b) => b.count - a.count).slice(0, 25);
@@ -869,7 +918,7 @@ export default router;
 
 const replayLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 120,
+  max: 300,
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -882,6 +931,10 @@ router.post('/replay', replayLimiter, async (req, res) => {
   try {
     // Guests only: silently ignore recordings from authenticated sessions.
     if (req.session?.user?.id != null) {
+      if (!loggedAuthDiscards.has(sessionId)) {
+        loggedAuthDiscards.add(sessionId);
+        console.warn(`[ANALYTICS] replay discarded: authenticated session ${sessionId}`);
+      }
       return res.status(202).json({ success: true, discarded: 'authenticated-session' });
     }
 
@@ -909,6 +962,17 @@ router.post('/replay', replayLimiter, async (req, res) => {
         ...(userId !== null ? { userId } : {}),
       },
     }).catch(err => console.error('[ANALYTICS] replay session upsert error', err));
+
+    // Best-effort geolocation for the country column (same as /events).
+    if (req.ip) {
+      resolveCountry(req.ip).then(c => {
+        if (!c) return;
+        prisma.userSession.updateMany({
+          where: { id: sessionId, country: null },
+          data: { country: c },
+        }).catch(() => {});
+      }).catch(() => {});
+    }
 
     // Split oversized batches into chunks to stay well within column/body limits
     const CHUNK = 500;
@@ -938,12 +1002,14 @@ router.get('/replay-sessions', requireSuperAdmin, async (req, res) => {
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);
     const pageSize = Math.min(50, Math.max(1, parseInt(req.query.pageSize, 10) || 20));
     const kind = ['all', 'humans', 'bots'].includes(req.query.kind) ? req.query.kind : 'all';
+    const range = parseDateRange(req, 30);
 
     const groups = await prisma.replayEvent.groupBy({
       by: ['sessionId'],
       _count: { id: true },
       _min: { createdAt: true },
       _max: { createdAt: true },
+      where: range ? { createdAt: { gte: range.gte, lte: range.lte } } : undefined,
       orderBy: { _max: { createdAt: 'desc' } },
     });
 
@@ -993,6 +1059,9 @@ router.get('/replay-sessions', requireSuperAdmin, async (req, res) => {
         batchCount: r._count.id,
         startedAt: s?.startedAt || r._min.createdAt,
         lastEventAt: r._max.createdAt,
+        durationSec: s?.startedAt && s?.endedAt
+          ? Math.max(0, (new Date(s.endedAt).getTime() - new Date(s.startedAt).getTime()) / 1000)
+          : null,
       };
     });
 
@@ -1173,9 +1242,56 @@ router.put('/retention-days', requireSuperAdmin, async (req, res) => {
       update: { value: String(days) },
       create: { key: RETENTION_KEY, value: String(days) },
     });
-    res.json({ success: true, retentionDays: days });
+    // Apply the new policy immediately instead of waiting for the nightly job.
+    const deleted = await purgeExpiredAnalytics();
+    res.json({ success: true, retentionDays: days, deleted });
   } catch (err) {
     console.error('[ANALYTICS] retention set error', err);
+    res.status(500).json({ error: 'internal error' });
+  }
+});
+
+/**
+ * POST /analytics/data/purge  (super admin)
+ * Run the retention purge right now (deletes everything older than retentionDays).
+ */
+router.post('/data/purge', requireSuperAdmin, async (req, res) => {
+  try {
+    const deleted = await purgeExpiredAnalytics();
+    res.json({ success: true, deleted });
+  } catch (err) {
+    console.error('[ANALYTICS] purge error', err);
+    res.status(500).json({ error: 'internal error' });
+  }
+});
+
+/**
+ * POST /analytics/data/delete-all  (super admin)
+ * Hard wipe of ALL analytics data (sessions + activity logs + search intents +
+ * replay recordings). Cascades remove children automatically.
+ */
+router.post('/data/delete-all', requireSuperAdmin, async (req, res) => {
+  try {
+    const deleted = await prisma.userSession.deleteMany();
+    res.json({ success: true, deleted });
+  } catch (err) {
+    console.error('[ANALYTICS] delete-all error', err);
+    res.status(500).json({ error: 'internal error' });
+  }
+});
+
+/**
+ * POST /analytics/data/delete-gsc  (super admin)
+ * Clears stored Google Search Console OAuth tokens + cached data.
+ */
+router.post('/data/delete-gsc', requireSuperAdmin, async (req, res) => {
+  try {
+    const deleted = await prisma.analyticsSetting.deleteMany({
+      where: { key: { startsWith: 'gsc_' } },
+    });
+    res.json({ success: true, deleted: deleted.count });
+  } catch (err) {
+    console.error('[ANALYTICS] delete-gsc error', err);
     res.status(500).json({ error: 'internal error' });
   }
 });

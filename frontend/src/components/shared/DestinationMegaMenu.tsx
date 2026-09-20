@@ -74,7 +74,7 @@ export const DestinationMegaMenu: React.FC<DestinationMegaMenuProps> = ({
           <div className="w-[210px] bg-slate-50 border-r border-[#ececec] shrink-0 py-5 px-3 flex flex-col overflow-y-auto custom-scrollbar">
             <div className="h-7 flex items-center mb-2 px-2">
               <span className="text-[13px] font-extrabold tracking-widest text-[#888] uppercase flex items-center gap-1.5">
-                <Compass size={14} className="text-[#D4561A]" />
+                <Compass size={14} className="text-[#F8904D]" />
                 Country
               </span>
             </div>
@@ -206,7 +206,7 @@ export const DestinationMegaMenu: React.FC<DestinationMegaMenuProps> = ({
                   <Link
                     href={activeState.href}
                     onClick={onClose}
-                    className="text-[16px] font-bold text-[#D4561A] hover:opacity-80 transition-opacity inline-flex items-center gap-1"
+                    className="text-[16px] font-bold text-[#F8904D] hover:opacity-80 transition-opacity inline-flex items-center gap-1"
                   >
                     <span>{activeState.cities.length > 9 ? `View all ${activeState.cities.length} destinations` : "View All"}</span>
                     <span aria-hidden>→</span>

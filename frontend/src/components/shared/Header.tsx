@@ -15,7 +15,7 @@ import type { TravelExperience } from "@/feature/travelExperience/type";
 import { stripTourSuffix, pickPriorityLinks, type NavChild } from "@/lib/utils";
 import { QuoteModal } from "./QuoteModal";
 import { RequestCallbackModal } from "./RequestCallbackModal";
-import { DestinationMegaMenu, DestinationTreeCountry, DestinationTreeState } from "./DestinationMegaMenu";
+import { DestinationTreeCountry, DestinationTreeState } from "./DestinationMegaMenu";
 
 const DEFAULT_DESTINATION_LINKS: NavChild[] = [
   { href: "/tour-packages/india", label: "India" },
@@ -146,14 +146,6 @@ export const Header: React.FC = () => {
   const destinationTree = useMemo(() => {
     if (!states || states.length === 0) return [];
 
-    // Only show cities that actually have tour packages/journeys in the menu.
-    const journeyCityIds = new Set<number>();
-    (journeys || []).forEach((j) => {
-      (j.cities || []).forEach((c) => {
-        if (typeof c.id === "number") journeyCityIds.add(c.id);
-      });
-    });
-
     const countryMap = new Map<number, DestinationTreeCountry>();
 
     states.forEach(state => {
@@ -172,7 +164,6 @@ export const Header: React.FC = () => {
       const countryEntry = countryMap.get(state.country.id)!;
 
       const sortedCities = [...(state.cities || [])]
-        .filter((city) => typeof city.id === "number" && journeyCityIds.has(city.id))
         .sort((a, b) => {
           const aOrder = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999;
           const bOrder = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
@@ -185,16 +176,14 @@ export const Header: React.FC = () => {
           href: `/tour-packages/${state.country!.slug}/${state.slug}/${city.slug}`
         }));
 
-      if (sortedCities.length > 0) {
-        countryEntry.states.push({
-          id: state.id,
-          title: stripTourSuffix(state.h1Title || state.title || ""),
-          slug: state.slug,
-          href: `/tour-packages/${state.country.slug}/${state.slug}`,
-          displayOrder: state.displayOrder && state.displayOrder > 0 ? state.displayOrder : 999,
-          cities: sortedCities
-        });
-      }
+      countryEntry.states.push({
+        id: state.id,
+        title: stripTourSuffix(state.h1Title || state.title || ""),
+        slug: state.slug,
+        href: `/tour-packages/${state.country.slug}/${state.slug}`,
+        displayOrder: state.displayOrder && state.displayOrder > 0 ? state.displayOrder : 999,
+        cities: sortedCities
+      });
     });
 
     const result = Array.from(countryMap.values())
@@ -211,7 +200,7 @@ export const Header: React.FC = () => {
     });
 
     return result;
-  }, [states, journeys]);
+  }, [states]);
 
   const tourLinks = useMemo(() => {
     const links = pickPriorityLinks<Journey>(
@@ -244,6 +233,16 @@ export const Header: React.FC = () => {
     [destinationTree]
   );
 
+  const destinationLinks = useMemo<NavChild[]>(() => {
+    const links: NavChild[] = [];
+    safeDestinationTree.forEach((country) =>
+      country.states.forEach((state) =>
+        links.push({ href: state.href, label: state.title })
+      )
+    );
+    return links.length > 0 ? links.slice(0, 12) : DEFAULT_DESTINATION_LINKS;
+  }, [safeDestinationTree]);
+
   type NavLink = {
     href: string;
     label: string;
@@ -263,8 +262,12 @@ export const Header: React.FC = () => {
       {
         href: "/tour-packages/india",
         label: "Destinations",
-        isDestinationMega: true,
-        tree: safeDestinationTree,
+        children: destinationLinks,
+        dropdownStyle: "mega",
+        dropdownColumns: 2,
+        seeAllHref: "/tour-packages",
+        dropdownTitle: "Top Destinations",
+        dropdownSubtext: "Explore all destinations worldwide",
       },
       {
         href: "/tour-packages",
@@ -298,7 +301,7 @@ export const Header: React.FC = () => {
         dropdownTitle: "About Company",
       },
     ],
-    [safeDestinationTree, tourLinks, experienceLinks]
+    [destinationLinks, tourLinks, experienceLinks]
   );
 
   useEffect(() => {
@@ -371,7 +374,7 @@ export const Header: React.FC = () => {
                         <Link
                           href={country.href}
                           onClick={handleMobileClose}
-                          className="flex items-center gap-1 px-4 py-2 text-[13px] font-bold text-[#D4561A]"
+                          className="flex items-center gap-1 px-4 py-2 text-[13px] font-bold text-[#F8904D]"
                         >
                           View all {country.title} tours <span aria-hidden>→</span>
                         </Link>
@@ -411,7 +414,7 @@ export const Header: React.FC = () => {
                                   <Link
                                     href={state.href}
                                     onClick={handleMobileClose}
-                                    className="flex items-center gap-1 px-6 py-2 text-[13px] font-bold text-[#D4561A]"
+                                    className="flex items-center gap-1 px-6 py-2 text-[13px] font-bold text-[#F8904D]"
                                   >
                                     View all {state.title} tours <span aria-hidden>→</span>
                                   </Link>
@@ -443,7 +446,7 @@ export const Header: React.FC = () => {
                   <Link
                     href={link.seeAllHref}
                     onClick={handleMobileClose}
-                    className="flex items-center gap-1 px-4 py-2.5 text-[13px] font-bold text-[#D4561A]"
+                    className="flex items-center gap-1 px-4 py-2.5 text-[13px] font-bold text-[#F8904D]"
                   >
                     See All <span aria-hidden>→</span>
                   </Link>
@@ -469,7 +472,7 @@ export const Header: React.FC = () => {
           <Link href="/" className="flex items-center gap-2 group shrink-0">
             <img
               src="/logo-with-name.png"
-              alt="Flag Journeys"
+              alt="Koikoi travel"
               className="h-[68px] sm:h-[72px] md:h-[76px] w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
             />
           </Link>
@@ -514,17 +517,7 @@ export const Header: React.FC = () => {
                     </Link>
                   )}
 
-                  {link.isDestinationMega && link.tree && link.tree.length > 0 && (
-                    <DestinationMegaMenu
-                      tree={link.tree as DestinationTreeCountry[]}
-                      isOpen={openDesktopDropdown === link.href}
-                      onMouseEnter={() => { clearMegaMenuCloseTimer(); setOpenDesktopDropdown(link.href); }}
-                      onMouseLeave={() => scheduleMegaMenuClose()}
-                      onClose={() => setOpenDesktopDropdown(null)}
-                    />
-                  )}
-
-                  {link.children && link.dropdownStyle === "mega" && !link.isDestinationMega && (
+                  {link.children && link.dropdownStyle === "mega" && (
                     <div
                       // Keep dropdown open while mouse is over the dropdown area
                       onMouseEnter={() => setOpenDesktopDropdown(link.href)}
@@ -570,7 +563,7 @@ export const Header: React.FC = () => {
                             <Link
                               href={link.seeAllHref}
                               onClick={() => setOpenDesktopDropdown(null)}
-                              className="text-[15px] font-bold text-[#D4561A] hover:opacity-80 transition-opacity flex items-center gap-1"
+                              className="text-[15px] font-bold text-[#F8904D] hover:opacity-80 transition-opacity flex items-center gap-1"
                             >
                               <span>See All</span>
                               <span aria-hidden>→</span>
@@ -645,7 +638,7 @@ export const Header: React.FC = () => {
                   onClick={handleMobileClose}
                   className="text-[19px] font-extrabold tracking-tight text-[#1C1C1C]"
                 >
-                  FlagJourney<span className="text-[#2E8B8B]"> Holidays</span>
+                  Koikoi travel<span className="text-[#2E8B8B]"> Holidays</span>
                 </Link>
                 <button
                   onClick={handleMobileClose}
@@ -669,7 +662,7 @@ export const Header: React.FC = () => {
                   </button>
                 </QuoteModal>
                 <a
-                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919136739178"}?text=${encodeURIComponent("Hi Flag Journeys, I want to inquire about a custom holiday tour package.")}`}
+                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919136739178"}?text=${encodeURIComponent("Hi Koikoi travel, I want to inquire about a custom holiday tour package.")}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2E8B8B] py-3 text-base font-bold text-white transition-colors hover:bg-[#266f6f] active:scale-95"

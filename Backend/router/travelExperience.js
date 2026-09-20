@@ -19,7 +19,18 @@ const schema = z.object({
   highlights: z.string().optional(),
   isActive: z.boolean().optional(),
   displayOrder: z.number().int().optional(),
+  cityIds: z.array(z.number().int()).optional(),
 });
+
+const citySelect = {
+  id: true,
+  title: true,
+  slug: true,
+  thumbImg: true,
+  state: {
+    select: { id: true, title: true, slug: true, country: { select: { id: true, title: true, slug: true } } },
+  },
+};
 
 export default createCmsRouter({
   modelName: "travelExperience",
@@ -38,6 +49,16 @@ export default createCmsRouter({
     overView: true,
     isActive: true,
     displayOrder: true,
+    cityOrder: true,
+    cities: { select: citySelect },
   },
+  relations: [
+    {
+      field: "cities",
+      inputKey: "cityIds",
+      orderField: "cityOrder",
+      select: citySelect,
+    },
+  ],
   tourCountWhere: (id) => ({ travelExperiences: { some: { id } } }),
 });

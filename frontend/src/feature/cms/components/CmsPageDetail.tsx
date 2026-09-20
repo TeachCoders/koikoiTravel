@@ -2,12 +2,13 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import RichContent from "@/components/shared/RichContent";
 import TrackMissingContent from "@/components/shared/TrackMissingContent";
+import { autoLinkKeywords } from "@/lib/autoInternalLink";
 import type { CmsPage } from "@/feature/cms/type";
 import CmsGuestGalleryWrapper from "@/feature/guestGallery/components/CmsGuestGalleryWrapper";
 
 const cleanTitle = (rawTitle: string) => {
   if (!rawTitle) return "";
-  return rawTitle.replace(/\s*\|\s*FlagJourney\s*Holidays?/gi, "").trim();
+  return rawTitle.replace(/\s*\|\s*Koikoi travel\s*Holidays?/gi, "").trim();
 };
 
 export default function CmsPageDetail({ page }: { page: CmsPage }) {
@@ -66,7 +67,7 @@ export default function CmsPageDetail({ page }: { page: CmsPage }) {
       <section className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-12 md:py-16 space-y-10">
         {page.moreDescription && (
           <div className="prose prose-lg max-w-none">
-            <RichContent html={page.moreDescription} />
+            <RichContent html={autoLinkKeywords(page.moreDescription)} />
           </div>
         )}
 

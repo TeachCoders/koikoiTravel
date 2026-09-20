@@ -10,6 +10,10 @@ import SeoFields from "@/components/shared/SeoFields";
 import BannerSection from "@/components/shared/BannerSection";
 import RichTextEditor from "@/components/shared/RichTextEditor";
 import FaqEditor, { FaqData } from "@/components/shared/FaqEditor";
+import AsyncMultiSelect from "@/components/shared/AsyncMultiSelect";
+import { getCities } from "@/feature/city/api";
+import { getStates } from "@/feature/state/api";
+import { getCountries } from "@/feature/country/api";
 import {
   useCreateTravelExperience,
   useUpdateTravelExperience,
@@ -57,6 +61,26 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
   const [faqs, setFaqs] = useState<FaqData[]>(initialData?.faqs || []);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const [cityIds, setCityIds] = useState<number[]>(
+    (initialData?.cities ?? []).map((c) => c.id)
+  );
+  const [filterCountryIds, setFilterCountryIds] = useState<number[]>(
+    () =>
+      Array.from(
+        new Set(
+          (initialData?.cities ?? []).map((c) => c.state?.country?.id).filter((x): x is number => Boolean(x))
+        )
+      ) as number[]
+  );
+  const [filterStateIds, setFilterStateIds] = useState<number[]>(
+    () =>
+      Array.from(
+        new Set(
+          (initialData?.cities ?? []).map((c) => c.state?.id).filter((x): x is number => Boolean(x))
+        )
+      ) as number[]
+  );
+
   const initializedRef = React.useRef(false);
 
   React.useEffect(() => {
@@ -78,6 +102,21 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
       setBannerImages(initialData.banner?.images || []);
       setMoreDescription(initialData.moreDescription || "");
       setFaqs(initialData.faqs || []);
+      setCityIds((initialData.cities ?? []).map((c) => c.id));
+      setFilterCountryIds(
+        Array.from(
+          new Set(
+            (initialData.cities ?? []).map((c) => c.state?.country?.id).filter((x): x is number => Boolean(x))
+          )
+        ) as number[]
+      );
+      setFilterStateIds(
+        Array.from(
+          new Set(
+            (initialData.cities ?? []).map((c) => c.state?.id).filter((x): x is number => Boolean(x))
+          )
+        ) as number[]
+      );
     }
   }, [initialData]);
 
@@ -144,6 +183,7 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
       bannerImages: finalBannerImages.length > 0 ? finalBannerImages : undefined,
       moreDescription: moreDescription.trim() || undefined,
       faqs,
+      cityIds,
     };
 
     if (mode === "edit" && initialData?.id) {
@@ -207,6 +247,110 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
           }
           folderPath={formData.slug ? `${formData.slug}/holiday` : ""}
         />
+
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-5">
+          <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Destinations (Cities)</h2>
+
+          <div className="space-y-3 p-4 bg-slate-50 border border-slate-200 rounded-lg">
+            <label className="text-sm font-semibold text-slate-700">
+              Linked Cities{" "}
+              <span className="text-xs font-normal text-slate-500">
+                — in public page ke Explore More section yehi cards dikhte hain
+              </span>
+            </label>
+            <div className="text-xs text-slate-500 mb-2">
+              Pehle country filter karein, phir sahi city list select karein. Selected cities ko drag karke order
+              set kar sakte hain.
+            </div>
+
+            <div className="flex flex-col md:flex-row gap-3">
+              <div className="flex-1">
+                <AsyncMultiSelect
+                  selectedIds={filterCountryIds}
+                  onChange={(ids) => {
+                    const hasOverlap =
+                      filterCountryIds.length === 0 || ids.some((id) => filterCountryIds.includes(id));
+                    setFilterCountryIds(ids);
+                    if (!hasOverlap) {
+                      setFilterStateIds([]);
+                      setCityIds([]);
+                    }
+                  }}
+                  fetchOptions={async (search) => {
+                    const res = await getCountries({ search, limit: 20 });
+                    return res.data;
+                  }}
+                  initialOptions={(initialData?.cities ?? [])
+                    .map((c) => c.state?.country)
+                    .filter((x): x is NonNullable<typeof x> => Boolean(x))
+                    .map((c) => ({ id: c.id, title: c.title }))}
+                  placeholder="Filter by Countries"
+                  searchPlaceholder="Search countries..."
+                />
+              </div>
+
+              <div className="flex-1">
+                <AsyncMultiSelect
+                  selectedIds={filterStateIds}
+                  onChange={(ids) => {
+                    const hasOverlap =
+                      filterStateIds.length === 0 || ids.some((id) => filterStateIds.includes(id));
+                    setFilterStateIds(ids);
+                    if (!hasOverlap) setCityIds([]);
+                  }}
+                  fetchOptions={async (search) => {
+                    const countryId =
+                      filterCountryIds.length > 0 ? filterCountryIds.join(",") : undefined;
+                    const res = await getStates({ search, limit: 100, countryId });
+                    return res.data;
+                  }}
+                  initialOptions={(initialData?.cities ?? [])
+                    .map((c) => c.state)
+                    .filter((x): x is NonNullable<typeof x> => Boolean(x))
+                    .map((s) => ({ id: s.id, title: s.title }))}
+                  placeholder="Filter by States"
+                  searchPlaceholder="Search states..."
+                />
+              </div>
+
+              <div className="flex-1">
+                <AsyncMultiSelect
+                  selectedIds={cityIds}
+                  onChange={setCityIds}
+                  fetchOptions={async (search) => {
+                    const stateId =
+                      filterStateIds.length > 0 ? filterStateIds.join(",") : undefined;
+                    const res = await getCities({ search, limit: 100, stateId });
+                    return res.data;
+                  }}
+                  initialOptions={initialData?.cities || []}
+                  placeholder="Select Cities *"
+                  searchPlaceholder="Search cities..."
+                  onReorder={(fromId, toId) => {
+                    const arr = [...cityIds];
+                    const fromIdx = arr.indexOf(fromId);
+                    const toIdx = arr.indexOf(toId);
+                    if (fromIdx !== -1 && toIdx !== -1) {
+                      const [item] = arr.splice(fromIdx, 1);
+                      arr.splice(toIdx, 0, item);
+                      setCityIds(arr);
+                    }
+                  }}
+                />
+              </div>
+            </div>
+
+            {cityIds.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setCityIds([])}
+                className="text-[10px] font-bold text-red-500 hover:text-red-700 uppercase tracking-wider cursor-pointer"
+              >
+                Clear All Cities
+              </button>
+            )}
+          </div>
+        </div>
 
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
           <label className="text-sm font-bold text-slate-700 uppercase tracking-wider block mb-2">More Description</label>

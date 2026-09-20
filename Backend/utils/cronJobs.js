@@ -74,11 +74,10 @@ const runAutoClose = async () => {
 };
 cron.schedule("30 3 * * *", runAutoClose);
 
-// ── 12 PM daily: log cleanup + lead summary ───────────────────
-cron.schedule("0 12 * * *", async () => {
-  logger.info("[CRON] 12 PM daily job started");
+// ── Log cleanup: every 48 hours at midnight (00:00) ─────────────
+cron.schedule("0 0 */2 * *", async () => {
+  logger.info("[CRON] Log cleanup job started");
 
-  // 1) Prune log files older than 30 days
   try {
     const deleted = pruneOldLogs();
     if (deleted > 0) {
@@ -88,7 +87,14 @@ cron.schedule("0 12 * * *", async () => {
     logger.error("[CRON] Log cleanup failed", { error: err.message });
   }
 
-  // 2) Daily lead summary
+  logger.info("[CRON] Log cleanup job completed");
+});
+
+// ── 12 PM daily: lead summary ──────────────────────────────────
+cron.schedule("0 12 * * *", async () => {
+  logger.info("[CRON] 12 PM daily job started");
+
+  // Daily lead summary
   try {
     const now = new Date();
     const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());

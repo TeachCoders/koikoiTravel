@@ -109,7 +109,7 @@ export default function HeroSearchBar() {
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <div className="relative bg-gradient-to-r from-[#D4561A]/50 via-[#2E8B8B]/50 to-[#D4561A]/50 p-[1.5px] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.55)]">
+      <div className="relative bg-gradient-to-r from-[#F8904D]/50 via-[#2E8B8B]/50 to-[#F8904D]/50 p-[1.5px] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.55)]">
         <div className="bg-white rounded-[14px] p-2 sm:p-3">
           <div className="flex flex-col sm:flex-row items-stretch gap-0">
             <div className="relative flex-1">
@@ -125,7 +125,7 @@ export default function HeroSearchBar() {
                 onBlur={() => setTimeout(() => setOpen(false), 150)}
                 onKeyDown={(e) => e.key === "Enter" && go()}
                 placeholder="Where do you want to go? Try 'Jaipur', 'Honeymoon'..."
-                className="w-full rounded-l-xl rounded-r-none border border-[#1C1C1C]/10 bg-[#f8f8f8] pl-12 pr-4 py-4 text-lg font-medium text-[#1C1C1C] placeholder-[#aaa] outline-none focus:border-[#D4561A] focus:ring-2 focus:ring-[#D4561A]/20 transition-all"
+                className="w-full rounded-l-xl rounded-r-none border border-[#1C1C1C]/10 bg-[#f8f8f8] pl-12 pr-4 py-4 text-lg font-medium text-[#1C1C1C] placeholder-[#aaa] outline-none focus:border-[#F8904D] focus:ring-2 focus:ring-[#F8904D]/20 transition-all"
               />
 
               {open && merged.length > 0 && (
@@ -144,7 +144,7 @@ export default function HeroSearchBar() {
                             }}
                             className="w-full flex items-center gap-2.5 px-4 py-2 text-left text-sm text-[#1C1C1C] hover:bg-[#f5f5f5] transition-colors"
                           >
-                            <span className="w-4 h-4 shrink-0 text-[#D4561A]">
+                            <span className="w-4 h-4 shrink-0 text-[#F8904D]">
                               {travelExperienceIcon(r.title)}
                             </span>
                             <span className="flex-1 truncate">{r.title}</span>
@@ -216,7 +216,7 @@ export default function HeroSearchBar() {
                     onClick={() => {
                       toggleExp(e);
                     }}
-                    className="inline-flex items-center gap-1 text-[13px] font-medium text-[#1C1C1C]/75 bg-white border border-[#1C1C1C]/10 hover:border-[#D4561A] hover:text-[#D4561A] rounded-full px-3 py-1 transition-colors"
+                    className="inline-flex items-center gap-1 text-[13px] font-medium text-[#1C1C1C]/75 bg-white border border-[#1C1C1C]/10 hover:border-[#F8904D] hover:text-[#F8904D] rounded-full px-3 py-1 transition-colors"
                   >
                     <Sparkles className="w-3.5 h-3.5" />
                     {e.title}
@@ -237,7 +237,7 @@ export default function HeroSearchBar() {
                   <button
                     type="button"
                     onClick={() => setSelectedCities((prev) => prev.filter((s) => s !== slug))}
-                    className="text-[#1C1C1C]/50 hover:text-[#D4561A] transition-colors"
+                    className="text-[#1C1C1C]/50 hover:text-[#F8904D] transition-colors"
                     aria-label={`Remove ${cityLabel(slug)}`}
                   >
                     <X className="w-3.5 h-3.5" />
@@ -247,16 +247,16 @@ export default function HeroSearchBar() {
               {selectedExperiences.map((title) => (
                 <span
                   key={title}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1C1C1C] bg-[#fdf0e6] border border-[#D4561A]/25 rounded-full px-3 py-1.5"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1C1C1C] bg-[#fdf0e6] border border-[#F8904D]/25 rounded-full px-3 py-1.5"
                 >
-                  <Sparkles className="w-3 h-3 text-[#D4561A]" />
+                  <Sparkles className="w-3 h-3 text-[#F8904D]" />
                   {expLabel(title)}
                   <button
                     type="button"
                     onClick={() =>
                       setSelectedExperiences((prev) => prev.filter((t) => t !== title))
                     }
-                    className="text-[#1C1C1C]/50 hover:text-[#D4561A] transition-colors"
+                    className="text-[#1C1C1C]/50 hover:text-[#F8904D] transition-colors"
                     aria-label={`Remove ${title}`}
                   >
                     <X className="w-3.5 h-3.5" />

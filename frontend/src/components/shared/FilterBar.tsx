@@ -83,17 +83,17 @@ function FilterSelect({ section: s }: { section: FilterSection }) {
           className={cn(
             "inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold border bg-white transition-colors duration-200 cursor-pointer",
             selectedCount > 0
-              ? "border-slate-300 text-[#1C1C1C]"
+              ? "border-[#F8904D] bg-[#F8904D] text-white hover:bg-[#D87E43]"
               : "border-slate-200 text-[#555] hover:border-slate-300 hover:text-[#1C1C1C]"
           )}
         >
           <span className="flex items-center gap-2 min-w-0">
-            <span className={selectedCount > 0 ? "text-[#2E8B8B]" : "text-slate-400"}>
+            <span className={selectedCount > 0 ? "text-white" : "text-slate-400"}>
               {s.icon}
             </span>
             <span className="truncate">{s.title}</span>
             {selectedCount > 0 && (
-              <span className="inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold">
+              <span className="inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-white text-[#F8904D] text-[10px] font-bold">
                 {selectedCount}
               </span>
             )}
@@ -101,8 +101,9 @@ function FilterSelect({ section: s }: { section: FilterSection }) {
           <ChevronDown
             size={15}
             className={cn(
-              "transition-transform duration-200 text-slate-400 shrink-0",
-              open && "rotate-180"
+              "transition-transform duration-200 shrink-0",
+              open && "rotate-180",
+              selectedCount > 0 ? "text-white" : "text-slate-400"
             )}
           />
         </button>
@@ -156,7 +157,7 @@ function FilterSelect({ section: s }: { section: FilterSection }) {
                     <span
                       className={cn(
                         "flex items-center justify-center w-[18px] h-[18px] rounded border transition-colors shrink-0",
-                        checked ? "bg-slate-800 border-slate-800 text-white" : "border-slate-300"
+                        checked ? "bg-[#F8904D] border-[#F8904D] text-white" : "border-slate-300"
                       )}
                     >
                       {checked && <Check size={11} strokeWidth={3.5} />}

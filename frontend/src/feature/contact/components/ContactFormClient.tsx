@@ -236,7 +236,7 @@ export default function ContactFormClient() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-4 px-6 rounded-2xl bg-[#D4561A] hover:bg-[#b84814] text-white font-bold text-base transition-colors duration-200 shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 mt-2"
+        className="w-full py-4 px-6 rounded-2xl bg-[#F8904D] hover:bg-[#b84814] text-white font-bold text-base transition-colors duration-200 shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 mt-2"
       >
         {loading ? (
           <>

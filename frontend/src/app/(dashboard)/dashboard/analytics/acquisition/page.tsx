@@ -3,7 +3,7 @@ import AnalyticsLayout from '@/components/analytics/AnalyticsLayout';
 import TrafficSourcesPanel from '@/components/analytics/TrafficSourcesPanel';
 
 export const metadata = {
-  title: 'Traffic Sources | Flag Journeys',
+  title: 'Traffic Sources | Koikoi travel',
 };
 
 export default async function TrafficSourcesPage() {

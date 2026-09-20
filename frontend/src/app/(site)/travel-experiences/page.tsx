@@ -20,7 +20,7 @@ import { QuoteModal } from "@/components/shared/QuoteModal";
 import FaqSection from "@/feature/home/components/FaqSection";
 import type { CmsPage } from "@/feature/cms/type";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://flagjourneys.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 
 export const revalidate = 60;
 
@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Travel Experiences",
     description:
-      "Hand-picked travel experiences across India — honeymoons, heritage, culinary, yoga, nature & more. Book your perfect trip with Flag Journeys.",
+      "Hand-picked travel experiences across India — honeymoons, heritage, culinary, yoga, nature & more. Book your perfect trip with Koikoi travel.",
     alternates: { canonical: "/travel-experiences" },
   };
 }
@@ -123,7 +123,7 @@ export default async function TravelExperiencesPage() {
 
   const defaultFaqs = [
     {
-      question: "What are Travel Experiences at Flag Journeys?",
+      question: "What are Travel Experiences at Koikoi travel?",
       answer: "Travel Experiences are theme-based tour packages categorized by your trip style — such as Honeymoon, Heritage & Culture, Wellness & Yoga, Wildlife Safaris, and Pilgrimage Tours across India."
     },
     {
@@ -223,7 +223,7 @@ export default async function TravelExperiencesPage() {
             <QuoteModal>
               <button
                 type="button"
-                className="btn-primary px-7 py-3.5 text-sm font-bold tracking-wide flex items-center gap-2 cursor-pointer shadow-lg shadow-[#D4561A]/30 active:scale-95 transition-all"
+                className="btn-primary px-7 py-3.5 text-sm font-bold tracking-wide flex items-center gap-2 cursor-pointer shadow-lg shadow-[#F8904D]/30 active:scale-95 transition-all"
               >
                 <Sparkles size={16} />
                 <span>Plan My Custom Trip</span>
@@ -262,7 +262,7 @@ export default async function TravelExperiencesPage() {
                       </span>
                     </div>
                     {count > 0 && (
-                      <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#D4561A] text-white text-[11px] font-bold shadow-lg">
+                      <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F8904D] text-white text-[11px] font-bold shadow-lg">
                         <Crown size={12} /> {count} Tours
                       </span>
                     )}
@@ -282,7 +282,7 @@ export default async function TravelExperiencesPage() {
                         Explore Tours
                         <ArrowRight
                           size={16}
-                          className="text-[#D4561A] transition-transform duration-300 group-hover:translate-x-1"
+                          className="text-[#F8904D] transition-transform duration-300 group-hover:translate-x-1"
                         />
                       </span>
                     </div>

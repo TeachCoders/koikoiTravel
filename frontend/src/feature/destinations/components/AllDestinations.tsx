@@ -85,14 +85,14 @@ export const AllDestinations: React.FC<AllDestinationsProps> = ({
     <div className="bg-slate-50 min-h-screen">
       {/* Hero Section */}
       <section className="relative pt-24 pb-20 overflow-hidden bg-[#1C1C1C]">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#2E8B8B]/20 via-transparent to-[#D4561A]/20 opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#2E8B8B]/20 via-transparent to-[#F8904D]/20 opacity-40" />
         
         <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 text-center">
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/90 text-sm font-semibold mb-6 border border-white/20 backdrop-blur-md">
             <Globe2 className="w-4 h-4" /> Explore the World
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-6">
-            Find Your Next <span className="text-[#D4561A]">Adventure</span>
+            Find Your Next <span className="text-[#F8904D]">Adventure</span>
           </h1>
           <p className="text-lg text-white/70 max-w-2xl mx-auto mb-10 font-medium">
             Discover curated tour packages across {totals.countries} countries, {totals.states} states, and {totals.cities} cities.
@@ -100,14 +100,14 @@ export const AllDestinations: React.FC<AllDestinationsProps> = ({
 
           <div className="max-w-2xl mx-auto relative group">
             <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
-              <Search className="w-5 h-5 text-slate-400 group-focus-within:text-[#D4561A] transition-colors" />
+              <Search className="w-5 h-5 text-slate-400 group-focus-within:text-[#F8904D] transition-colors" />
             </div>
             <input
               type="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by country, state, or city..."
-              className="w-full pl-14 pr-6 py-4 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 text-white placeholder-white/50 focus:outline-none focus:bg-white focus:text-[#1C1C1C] focus:placeholder-slate-400 focus:ring-4 focus:ring-[#D4561A]/30 transition-all duration-300 text-lg shadow-2xl"
+              className="w-full pl-14 pr-6 py-4 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 text-white placeholder-white/50 focus:outline-none focus:bg-white focus:text-[#1C1C1C] focus:placeholder-slate-400 focus:ring-4 focus:ring-[#F8904D]/30 transition-all duration-300 text-lg shadow-2xl"
             />
           </div>
         </div>
@@ -163,7 +163,7 @@ export const AllDestinations: React.FC<AllDestinationsProps> = ({
                     </div>
                     <Link
                       href={`/tour-packages/${country.slug}`}
-                      className="hidden sm:flex items-center gap-2 text-sm font-bold text-[#D4561A] hover:text-[#b34713] transition-colors group"
+                      className="hidden sm:flex items-center gap-2 text-sm font-bold text-[#F8904D] hover:text-[#c6733e] transition-colors group"
                     >
                       Explore Country
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -182,11 +182,11 @@ export const AllDestinations: React.FC<AllDestinationsProps> = ({
                           {/* State Header */}
                           <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-100">
                             <div className="flex items-center gap-4">
-                              <Link href={`/tour-packages/${country.slug}/${state.slug}`} className="w-14 h-14 rounded-xl bg-orange-50 border border-orange-100 text-[#D4561A] hover:bg-[#D4561A] hover:text-white transition-colors duration-300 flex items-center justify-center shrink-0">
+                              <Link href={`/tour-packages/${country.slug}/${state.slug}`} className="w-14 h-14 rounded-xl bg-orange-50 border border-orange-100 text-[#F8904D] hover:bg-[#F8904D] hover:text-white transition-colors duration-300 flex items-center justify-center shrink-0">
                                  <Building2 className="w-6 h-6" />
                               </Link>
                               <Link href={`/tour-packages/${country.slug}/${state.slug}`}>
-                                <h3 className="text-2xl font-bold text-[#1C1C1C] hover:text-[#D4561A] transition-colors">
+                                <h3 className="text-2xl font-bold text-[#1C1C1C] hover:text-[#F8904D] transition-colors">
                                   {state.title}
                                 </h3>
                               </Link>
@@ -220,7 +220,7 @@ export const AllDestinations: React.FC<AllDestinationsProps> = ({
                                       />
                                     ) : (
                                       <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-slate-100">
-                                        <Landmark className="w-10 h-10 text-slate-300 group-hover/city:text-[#D4561A] transition-colors" />
+                                        <Landmark className="w-10 h-10 text-slate-300 group-hover/city:text-[#F8904D] transition-colors" />
                                       </div>
                                     )}
                                     
@@ -272,7 +272,7 @@ export const AllDestinations: React.FC<AllDestinationsProps> = ({
                   <div className="mt-6 sm:hidden">
                     <Link
                       href={`/tour-packages/${country.slug}`}
-                      className="flex items-center justify-center gap-2 text-sm font-bold text-[#D4561A] bg-orange-50 hover:bg-orange-100 transition-colors px-4 py-3 rounded-xl"
+                      className="flex items-center justify-center gap-2 text-sm font-bold text-[#F8904D] bg-orange-50 hover:bg-orange-100 transition-colors px-4 py-3 rounded-xl"
                     >
                       Explore All of {country.title}
                       <ArrowRight className="w-4 h-4" />

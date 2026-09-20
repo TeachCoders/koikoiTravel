@@ -26,7 +26,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, crea
       baseClasses,
       isDisabled && disabledClasses,
       isActive
-        ? "bg-[#D4561A] border-[#D4561A] text-white"
+        ? "bg-[#F8904D] border-[#F8904D] text-white"
         : "border-slate-300 bg-white text-slate-600 hover:bg-slate-50"
     );
 

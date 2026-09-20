@@ -180,25 +180,32 @@ export const uploadImage = (folderName = "images") => {
 export const deleteOldImage = (filePath) => {
   if (!filePath) return;
 
-  let fullPath;
+  const publicRoot = path.join(process.cwd(), "public");
+  const candidates = [];
+
   if (filePath.startsWith("http")) {
     const urlPath = new URL(filePath).pathname;
-    fullPath = path.join(process.cwd(), "public", urlPath);
+    candidates.push(path.join(publicRoot, urlPath));
   } else if (filePath.startsWith("/")) {
-    fullPath = path.join(process.cwd(), "public", filePath);
+    candidates.push(path.join(publicRoot, filePath));
   } else {
-    fullPath = path.join(process.cwd(), "public", filePath);
+    candidates.push(path.join(publicRoot, filePath));
+    candidates.push(path.join(publicRoot, "user", filePath));
   }
 
-  if (fs.existsSync(fullPath)) {
+  for (const fullPath of candidates) {
+    const rel = path.relative(publicRoot, fullPath);
+    if (rel.startsWith("..")) continue; // path traversal guard
+    if (!fs.existsSync(fullPath)) continue;
     try {
       fs.unlinkSync(fullPath);
       logger.info("Old image deleted:", { fullPath });
+      return;
     } catch (err) {
       logger.error("Failed to delete old image:", { fullPath, message: err.message });
     }
   }
-};
+};;
 
 // Delete image by relative path (e.g. "india/trip/india.webp")
 export const deleteMediaFile = (relativePath) => {

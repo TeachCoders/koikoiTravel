@@ -40,12 +40,12 @@ export default function TravellerPortalPage() {
 
   // Check saved session
   useEffect(() => {
-    const saved = localStorage.getItem("flagjourney_traveller_session");
+    const saved = localStorage.getItem("koikoitravel_traveller_session");
     if (saved) {
       try {
         setTravellerData(JSON.parse(saved));
       } catch (e) {
-        localStorage.removeItem("flagjourney_traveller_session");
+        localStorage.removeItem("koikoitravel_traveller_session");
       }
     }
   }, []);
@@ -73,7 +73,7 @@ export default function TravellerPortalPage() {
       }
 
       setTravellerData(data.data);
-      localStorage.setItem("flagjourney_traveller_session", JSON.stringify(data.data));
+      localStorage.setItem("koikoitravel_traveller_session", JSON.stringify(data.data));
     } catch (err: any) {
       setErrorMsg(err.message || "An unexpected error occurred.");
     } finally {
@@ -82,7 +82,7 @@ export default function TravellerPortalPage() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("flagjourney_traveller_session");
+    localStorage.removeItem("koikoitravel_traveller_session");
     setTravellerData(null);
     setUploadSuccessMsg("");
   };
@@ -142,11 +142,11 @@ export default function TravellerPortalPage() {
         {/* Header Branding */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-200">
           <div>
-            <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#D4561A] mb-1">
+            <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#F8904D] mb-1">
               <ShieldCheck size={16} /> Official Traveller Portal
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1C1C1C]">
-              Flag Journeys <span className="text-[#2E8B8B]">Trip Portal</span>
+              Koikoi travel <span className="text-[#2E8B8B]">Trip Portal</span>
             </h1>
           </div>
 
@@ -169,7 +169,7 @@ export default function TravellerPortalPage() {
         {!travellerData ? (
           <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-xl border border-slate-200/80 max-w-lg mx-auto">
             <div className="text-center mb-8">
-              <div className="w-14 h-14 bg-gradient-to-tr from-[#FFF5F0] to-[#FFE6D9] text-[#D4561A] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-[#FFD0B8]">
+              <div className="w-14 h-14 bg-gradient-to-tr from-[#FFF5F0] to-[#FFE6D9] text-[#F8904D] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-[#FFD0B8]">
                 <User size={28} />
               </div>
               <h2 className="text-xl font-bold text-[#1C1C1C]">Track Your Trip & Upload Receipt</h2>
@@ -198,7 +198,7 @@ export default function TravellerPortalPage() {
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
                     placeholder="e.g. 9876543210 or AH-1042"
-                    className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#D4561A] transition-all"
+                    className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F8904D] transition-all"
                   />
                 </div>
               </div>
@@ -212,14 +212,14 @@ export default function TravellerPortalPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter PIN if provided by agent"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#D4561A] transition-all"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F8904D] transition-all"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3.5 bg-gradient-to-r from-[#D4561A] to-[#B34310] hover:from-[#B34310] hover:to-[#96370C] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+                className="w-full py-3.5 bg-gradient-to-r from-[#F8904D] to-[#B96B39] hover:from-[#B96B39] hover:to-[#96572E] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
               >
                 {isLoading ? "Accessing Portal..." : "Access Traveller Portal"}
                 <ArrowRight size={18} />
@@ -228,7 +228,7 @@ export default function TravellerPortalPage() {
 
             <div className="mt-8 pt-6 border-t border-slate-100 text-center">
               <p className="text-xs text-slate-400">
-                Need assistance? Call FlagJourney Concierge at{" "}
+                Need assistance? Call Koikoi travel Concierge at{" "}
                 <a href={`tel:${(process.env.NEXT_PUBLIC_SALES_PHONE || "+919136739178").replace(/[^0-9+]/g, "")}`} className="text-[#2E8B8B] font-bold hover:underline">
                   {process.env.NEXT_PUBLIC_SALES_PHONE || "+91 91367 39178"}
                 </a>
@@ -285,7 +285,7 @@ export default function TravellerPortalPage() {
             {/* Assigned Manager & Concierge Info */}
             <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
               <h3 className="text-lg font-bold text-[#1C1C1C] mb-4 flex items-center gap-2">
-                <User size={20} className="text-[#D4561A]" /> Assigned Travel Advisor
+                <User size={20} className="text-[#F8904D]" /> Assigned Travel Advisor
               </h3>
 
               {assignedAgent ? (
@@ -327,7 +327,7 @@ export default function TravellerPortalPage() {
                   <h3 className="text-lg font-bold text-[#1C1C1C] flex items-center gap-2">
                     <FileText size={20} className="text-[#2E8B8B]" /> Your Official Quotation
                   </h3>
-                  <span className="text-xs font-bold text-[#D4561A] bg-[#FFF5F0] px-3 py-1 rounded-full border border-[#FFD0B8]">
+                  <span className="text-xs font-bold text-[#F8904D] bg-[#FFF5F0] px-3 py-1 rounded-full border border-[#FFD0B8]">
                     Quote #{latestInvoice.quotationNo || `QT-${latestInvoice.id}`}
                   </span>
                 </div>
@@ -344,7 +344,7 @@ export default function TravellerPortalPage() {
                     </div>
                     <div className="text-left sm:text-right">
                       <span className="text-xs text-slate-500 block">Total Quoted Price</span>
-                      <span className="text-2xl font-extrabold text-[#D4561A]">
+                      <span className="text-2xl font-extrabold text-[#F8904D]">
                         ₹{Number(latestInvoice.grandTotal || 0).toLocaleString("en-IN")}
                       </span>
                     </div>
@@ -367,14 +367,14 @@ export default function TravellerPortalPage() {
             )}
 
             {/* DIRECT PAYMENT RECEIPT UPLOAD (Anti-Fraud Founder Shield) */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md border-2 border-[#D4561A]/20">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md border-2 border-[#F8904D]/20">
               <div className="mb-6">
-                <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#D4561A] mb-1">
+                <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#F8904D] mb-1">
                   <ShieldCheck size={16} /> Direct Customer Payment Verification
                 </div>
                 <h3 className="text-xl font-bold text-[#1C1C1C]">Upload Advance Payment Receipt</h3>
                 <p className="text-xs text-slate-500 mt-1">
-                  If you have transferred advance booking amount to freeze your hotels & cabs, upload the receipt/screenshot here. This directly registers your payment into Flag Journeys official audit ledger!
+                  If you have transferred advance booking amount to freeze your hotels & cabs, upload the receipt/screenshot here. This directly registers your payment into Koikoi travel official audit ledger!
                 </p>
               </div>
 
@@ -399,7 +399,7 @@ export default function TravellerPortalPage() {
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
                         placeholder="e.g. 10000"
-                        className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#D4561A]"
+                        className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F8904D]"
                       />
                     </div>
                   </div>
@@ -413,7 +413,7 @@ export default function TravellerPortalPage() {
                       value={transactionId}
                       onChange={(e) => setTransactionId(e.target.value)}
                       placeholder="e.g. UPI/1234567890"
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#D4561A]"
+                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F8904D]"
                     />
                   </div>
                 </div>
@@ -427,14 +427,14 @@ export default function TravellerPortalPage() {
                     value={screenshotUrl}
                     onChange={(e) => setScreenshotUrl(e.target.value)}
                     placeholder="e.g. https://drive.google.com/... or uploaded image URL"
-                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#D4561A]"
+                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F8904D]"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmittingReceipt}
-                  className="w-full py-3 bg-[#D4561A] hover:bg-[#B34310] text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm"
+                  className="w-full py-3 bg-[#F8904D] hover:bg-[#B96B39] text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm"
                 >
                   <Upload size={16} />
                   {isSubmittingReceipt ? "Submitting Payment Proof..." : "Confirm & Submit Payment Proof"}

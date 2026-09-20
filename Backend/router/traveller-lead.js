@@ -5,7 +5,7 @@ import { prisma } from "../utils/prismaConnection.js";
 import { requireSalesOrAdmin } from "../middleware/requireSalesOrAdmin.js";
 import rateLimit from "express-rate-limit";
 import { leadSchema } from "../utils/validation.js";
-import { sendCancellationEmail, sendPaymentConfirmationEmail, sendEmail } from "../utils/emailSender.js";
+import { sendCancellationEmail, sendPaymentConfirmationEmail, sendEmail, sendPartnerLeadEmail } from "../utils/emailSender.js";
 import { generateRequirementsEmailHTML } from "../templates/travellerEmailTemplate.js";
 import { createLead } from "../services/leadService.js";
 import { clientIpFromReq } from "../services/geoService.js";
@@ -373,6 +373,42 @@ router.patch("/:leadId/assign", requireSalesOrAdmin, async (req, res) => {
     }
 
     logger.info("info", { info });
+
+    // Notify + email the assigned member (official or unofficial email)
+    try {
+      if (assignedToUserId) {
+        const assignee = await prisma.users.findUnique({
+          where: { id: Number(assignedToUserId) },
+          select: { id: true, email: true, name: true },
+        });
+
+        if (assignee?.email) {
+          try {
+            await prisma.notification.create({
+              data: {
+                userId: assignee.id,
+                type: "ASSIGNED_LEAD",
+                title: "New Lead Assigned",
+                message: `You have been assigned lead ${isHasLead?.travellerId || ""} (${isHasLead?.name || "N/A"} | ${isHasLead?.phone || "N/A"} | ${isHasLead?.country || "India"})`,
+                link: "/dashboard/my-leads",
+              },
+            });
+            logger.info("Assignee notified in-app:", { to: assignee.email });
+          } catch (notifErr) {
+            logger.error("Failed to notify assignee in-app:", { message: notifErr.message });
+          }
+
+          try {
+            await sendPartnerLeadEmail(assignee.email, isHasLead, assignee.name);
+            logger.info("Assignment email sent:", { to: assignee.email, leadId: isHasLead?.travellerId });
+          } catch (mailErr) {
+            logger.error("Failed to send assignment email:", { message: mailErr.message });
+          }
+        }
+      }
+    } catch (assignErr) {
+      logger.error("Assignment notification error:", { message: assignErr.message });
+    }
 
     res.json({ success: true, info });
   } catch (error) {
@@ -904,7 +940,7 @@ router.get("/:leadId/requirements-preview", requireSalesOrAdmin, async (req, res
     }
 
     const r = traveller.requirement;
-    const brandName = process.env.BRAND_NAME || "Flag Journeys";
+    const brandName = process.env.BRAND_NAME || "Koikoi travel";
     const formatDate = (d) => d ? new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "—";
 
     const rows = [
@@ -989,7 +1025,7 @@ router.post("/:leadId/requirements/send-email", requireSalesOrAdmin, async (req,
     );
     await sendEmail(
       traveller.email,
-      `📋 Your Travel Quotation & Requirements - ${traveller.travellerId} | ${process.env.BRAND_NAME || 'Flag Journeys'}`,
+      `📋 Your Travel Quotation & Requirements - ${traveller.travellerId} | ${process.env.BRAND_NAME || 'Koikoi travel'}`,
       htmlContent
     );
 

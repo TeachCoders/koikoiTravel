@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Package, Star, MapPin, Clock, Users, CheckCircle2, XCircle, Hotel, Car, Navigation, ArrowLeft } from "lucide-react";
 import JsonLd from "@/components/shared/JsonLd";
-import { breadcrumbSchema, touristTripSchema } from "@/lib/jsonLd";
+import { breadcrumbSchema, graphSchema, touristTripSchema } from "@/lib/jsonLd";
 import RichContent from "@/components/shared/RichContent";
 import { fetchPackageBySlug } from "@/feature/tourPackages/public-server";
 import { stripHtml } from "@/lib/utils";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://flagjourneys.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 
 function absoluteUrl(src?: string): string | undefined {
   if (!src) return undefined;
@@ -20,7 +20,7 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const pkg = await fetchPackageBySlug(slug);
-  if (!pkg) return { title: "Package Not Found | Flag Journeys" };
+  if (!pkg) return { title: "Package Not Found | Koikoi travel" };
   const title = pkg.name;
   const description = stripHtml(pkg.shortDescription || pkg.description || "").slice(0, 160);
   const canonical = `/packages/${pkg.slug}`;
@@ -86,14 +86,13 @@ export default async function PackageDetailPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-slate-50">
       <JsonLd
-          data={touristTripSchema({
-            name: pkg.name,
-            description: pkg.shortDescription || pkg.description || undefined,
-            image: bannerUrl || undefined,
-            url: `/packages/${pkg.slug}`,
-            price: pkg.pricePerPerson && pkg.pricePerPerson > 0 ? pkg.pricePerPerson : undefined,
-          })}
-        />
+        data={graphSchema([touristTripSchema({
+          name: pkg.name,
+          description: pkg.shortDescription || pkg.description || undefined,
+          image: bannerUrl || undefined,
+          url: `/packages/${pkg.slug}`,
+        })])}
+      />
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
@@ -168,7 +167,7 @@ export default async function PackageDetailPage({ params }: Props) {
             {/* Day-wise Itinerary */}
             {itinerary.length > 0 && (
               <div className="bg-white rounded-xl border border-slate-200 p-6">
-                <h2 className="text-lg font-bold text-slate-900 mb-6">Day-by-Day Itinerary</h2>
+                <h2 className="text-lg font-bold text-slate-900 mb-6">Day By Day Itinerary</h2>
                 <div className="space-y-6">
                   {itinerary.map((day, i) => (
                     <div key={i} className="flex gap-4">

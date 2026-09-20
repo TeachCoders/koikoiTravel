@@ -16,19 +16,20 @@ import type { Season, PaginatedResponse as SeasonPage } from "@/feature/season/t
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://flagjourneys.com"),
-  title: "Flag Journeys | Premier India Inbound Tour Operator & Local DMC",
+  metadataBase: new URL("https://koikoitravel.com"),
+  title: "Koikoi travel | Premier India Inbound Tour Operator & Local DMC",
   description:
-    "Leading India Inbound Tour Operator offering bespoke luxury tours, private car rentals, certified local guides, and custom holiday packages across India for international travelers.",
-  alternates: { canonical: "https://flagjourneys.com" },
+    "Leading India inbound tour operator offering bespoke luxury tours, private cab rentals, and custom holiday packages across India.",
+  alternates: { canonical: "https://koikoitravel.com" },
   openGraph: {
-    title: "Flag Journeys | Premier India Inbound Tour Operator & Local DMC",
+    title: "Koikoi travel | Premier India Inbound Tour Operator & Local DMC",
     description:
       "Bespoke India holiday packages, private luxury transport, and local tour guides for international tourists.",
-    url: "https://flagjourneys.com",
-    siteName: "Flag Journeys India",
+    url: "https://koikoitravel.com",
+    siteName: "Koikoi travel India",
     locale: "en_US", // International inbound clients target karne ke liye en_US optimal hai
     type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Koikoi travel" }],
   },
   other: {
     "geo.region": "IN",

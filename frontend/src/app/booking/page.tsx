@@ -21,7 +21,7 @@ export default function BookingPage() {
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
       <section className="relative h-56 md:h-64 overflow-hidden bg-[#1C1C1C]">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#2E8B8B] via-[#1C1C1C] to-[#D4561A]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#2E8B8B] via-[#1C1C1C] to-[#F8904D]" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20" />
         <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-center">
           <span className="mb-3 inline-flex self-start text-white bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 text-sm">

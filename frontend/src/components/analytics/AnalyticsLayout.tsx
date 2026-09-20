@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
-import { Activity, BarChart3, Compass, MousePointerClick, Radio, Video } from "lucide-react";
+import { Activity, BarChart3, Compass, MousePointerClick, Radio, Search, Video, TrendingUp } from "lucide-react";
 import { AnalyticsRangeProvider } from "@/feature/analytics/range-context";
 import PrivatePageHeading from "@/components/shared/PrivatePageHeading";
 import { cn } from "@/lib/utils";
@@ -19,6 +19,8 @@ const TABS: Tab[] = [
   { href: "/dashboard/analytics/behavior", label: "Engagement", icon: MousePointerClick },
   { href: "/dashboard/analytics/events", label: "Search Intent", icon: Radio },
   { href: "/dashboard/analytics/replays", label: "Visitor Activity (Video)", icon: Video },
+  { href: "/dashboard/analytics/search-console", label: "Search Console", icon: Search },
+  { href: "/dashboard/analytics/search-insights", label: "Search Insights", icon: TrendingUp },
 ];
 
 interface AnalyticsLayoutProps {
@@ -62,7 +64,7 @@ export default function AnalyticsLayout({ title, subtitle, actions, children, hi
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-xl border px-4 py-2.5 text-xs font-bold transition-all",
                   active
-                    ? "border-[#D4561A] bg-[#D4561A] text-white shadow-sm"
+                    ? "border-[#F8904D] bg-[#F8904D] text-white shadow-sm"
                     : "border-slate-200 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-100 hover:text-slate-800"
                 )}
               >

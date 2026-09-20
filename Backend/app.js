@@ -44,6 +44,7 @@ import mediaRouter from "./router/media.js";
 import { prisma } from "./utils/prismaConnection.js";
 import { logger, requestLogger } from "./utils/logger.js";
 import analyticsRouter from "./router/analytics.js";
+import gscRouter from "./routes/gsc.js";
 import adLandingPageRouter from "./router/adLandingPage.js";
 import guestGalleryRouter from "./router/guestGallery.js";
 import { scheduleAnalyticsRetention } from "./utils/analyticsRetention.js";
@@ -134,7 +135,7 @@ app.use(
       secure: isProduction,
       httpOnly: true,
       sameSite: "lax",
-      ...(isProduction && { domain: ".flagjourneys.com" }),
+      ...(isProduction && { domain: ".koikoitravel.com" }),
     },
   })
 );
@@ -291,6 +292,7 @@ app.use("/journey", journeyRouter);
 app.use("/media", mediaRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/analytics", analyticsRouter);
+app.use("/analytics/gsc", gscRouter);
 app.use("/ad-landing-pages", adLandingPageRouter);
 app.use("/guest-gallery", guestGalleryRouter);
 scheduleAnalyticsRetention();

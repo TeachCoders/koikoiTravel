@@ -57,11 +57,11 @@ export default function BlogCard({ post }: { post: BlogPost }) {
         </p>
 
         <div className="mt-5 pt-5 border-t border-slate-100 flex items-center justify-between">
-          <span className="text-[13px] font-bold text-[#D4561A]">
+          <span className="text-[13px] font-bold text-[#F8904D]">
             Read Article
           </span>
-          <div className="w-9 h-9 rounded-full bg-orange-50 flex items-center justify-center border border-orange-100 group-hover:bg-[#D4561A] group-hover:border-[#D4561A] group-hover:shadow-md transition-all duration-300">
-            <ArrowRight size={15} className="text-[#D4561A] group-hover:text-white transition-all duration-300 group-hover:-rotate-45" />
+          <div className="w-9 h-9 rounded-full bg-orange-50 flex items-center justify-center border border-orange-100 group-hover:bg-[#F8904D] group-hover:border-[#F8904D] group-hover:shadow-md transition-all duration-300">
+            <ArrowRight size={15} className="text-[#F8904D] group-hover:text-white transition-all duration-300 group-hover:-rotate-45" />
           </div>
         </div>
       </div>

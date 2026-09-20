@@ -27,7 +27,8 @@ export async function purgeExpiredAnalytics() {
   }
 }
 
-/** Runs the purge once at boot and then every day at 03:00. */
+/** Runs the purge once at boot, nightly at 03:00, and a 6-hourly safety sweep
+ *  so a missed 03:00 (server asleep/off) never stalls deletion. */
 export function scheduleAnalyticsRetention() {
   setTimeout(() => {
     purgeExpiredAnalytics();
@@ -37,5 +38,9 @@ export function scheduleAnalyticsRetention() {
     purgeExpiredAnalytics();
   });
 
-  console.log('[ANALYTICS] retention scheduler active (daily at 03:00)');
+  cron.schedule('0 */6 * * *', () => {
+    purgeExpiredAnalytics();
+  });
+
+  console.log('[ANALYTICS] retention scheduler active (boot + nightly 03:00 + every 6h)');
 }

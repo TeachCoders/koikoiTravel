@@ -47,21 +47,21 @@ export function QuoteModal({ children }: { children: ReactNode }) {
 
             <ul className="space-y-6 mb-12 flex-1">
               <li className="flex gap-4">
-                <div className="w-2 h-2 rounded-full bg-[#D4561A] mt-2.5 shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-[#F8904D] mt-2.5 shrink-0" />
                 <p className="text-[#5B6375] text-[15px] md:text-base leading-relaxed">
                   Tell us details of your holiday plan.
                 </p>
               </li>
               <li className="flex gap-4">
-                <div className="w-2 h-2 rounded-full bg-[#D4561A] mt-2.5 shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-[#F8904D] mt-2.5 shrink-0" />
                 <p className="text-[#5B6375] text-[15px] md:text-base leading-relaxed">
                   After you submit the form, one of our travel experts will get back to you with customised holiday package based on your requirement, within 24 hours.
                 </p>
               </li>
               <li className="flex gap-4">
-                <div className="w-2 h-2 rounded-full bg-[#D4561A] mt-2.5 shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-[#F8904D] mt-2.5 shrink-0" />
                 <p className="text-[#5B6375] text-[15px] md:text-base leading-relaxed">
-                  Grab the deal and start packing your bags for an indelible holiday with Flag Journeys.
+                  Grab the deal and start packing your bags for an indelible holiday with Koikoi travel.
                 </p>
               </li>
             </ul>

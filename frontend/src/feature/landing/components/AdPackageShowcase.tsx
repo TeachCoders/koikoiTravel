@@ -35,7 +35,7 @@ function PackageImageWithFallback({ src, alt }: { src?: string; alt?: string }) 
   return (
     <FallbackImage
       src={src}
-      alt={alt || "Flag Journeys Package"}
+      alt={alt || "Koikoi travel Package"}
       className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       fallbackSrc="/logo-with-name.png"
       theme="dark"
@@ -284,7 +284,7 @@ export default function AdPackageShowcase({
               {selectedDetailsPkg.highlights && selectedDetailsPkg.highlights.length > 0 && (
                 <div className="bg-[#2E8B8B]/5 border border-[#2E8B8B]/15 rounded-xl sm:rounded-2xl p-3.5 sm:p-5 space-y-2.5 sm:space-y-3">
                   <h4 className="text-sm sm:text-lg font-black text-[#1C1C1C] flex items-center gap-2">
-                    <Sparkles size={18} className="text-[#D4561A] shrink-0" />
+                    <Sparkles size={18} className="text-[#F8904D] shrink-0" />
                     Package Highlights
                   </h4>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5 pt-1">
@@ -303,19 +303,19 @@ export default function AdPackageShowcase({
                 <div>
                   <h4 className="text-sm sm:text-lg font-black text-[#1C1C1C] mb-4 flex items-center gap-2">
                     <CalendarDays size={18} className="text-[#2E8B8B] shrink-0" />
-                    Day-by-Day Itinerary
+                    Day By Day Itinerary
                   </h4>
-                  <div className="relative pl-6 sm:pl-9 space-y-5 sm:space-y-6 border-l-2 border-[#D4561A]/30 ml-3 sm:ml-4 pt-1">
+                  <div className="relative pl-6 sm:pl-9 space-y-5 sm:space-y-6 border-l-2 border-[#F8904D]/30 ml-3 sm:ml-4 pt-1">
                     {selectedDetailsPkg.days.map((day: any, i: number) => (
                       <div key={i} className="relative group space-y-1.5 sm:space-y-2">
                         {/* Timeline Step Dot Badge */}
-                        <div className="absolute -left-[39px] sm:-left-[51px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white border-2 border-[#D4561A] text-[#D4561A] font-black text-[11px] sm:text-xs flex items-center justify-center shadow-sm group-hover:bg-[#D4561A] group-hover:text-white transition-all">
+                        <div className="absolute -left-[39px] sm:-left-[51px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white border-2 border-[#F8904D] text-[#F8904D] font-black text-[11px] sm:text-xs flex items-center justify-center shadow-sm group-hover:bg-[#F8904D] group-hover:text-white transition-all">
                           {i + 1}
                         </div>
 
                         {/* Title */}
                         <h5 className="font-extrabold text-slate-900 text-xs sm:text-base leading-snug pt-0.5">
-                          <span className="text-[#D4561A] font-black mr-1.5">Day {i + 1}:</span>
+                          <span className="text-[#F8904D] font-black mr-1.5">Day {i + 1}:</span>
                           {day.day?.replace(/^Day\s*\d+\s*:\s*/i, "")}
                         </h5>
 

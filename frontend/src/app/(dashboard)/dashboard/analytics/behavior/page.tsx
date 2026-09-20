@@ -3,7 +3,7 @@ import AnalyticsLayout from '@/components/analytics/AnalyticsLayout';
 import EngagementPanel from '@/components/analytics/EngagementPanel';
 
 export const metadata = {
-  title: 'Engagement | Flag Journeys',
+  title: 'Engagement | Koikoi travel',
 };
 
 export default async function EngagementPage() {

@@ -7,6 +7,7 @@ import { FileUpload } from "@/components/shared/fileUpload";
 import { useGetCurrentUser } from "@/feature/auth/api/useAuth";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { PasswordInput } from "@/components/shared/PasswordInput";
+import { userImageUrl } from "@/lib/mediaUrl";
 
 /**
  * Modal form to edit the logged‑in user's profile.
@@ -17,6 +18,7 @@ export default function EditProfileModal() {
   const { updateProfile, isUpdatingProfile } = useUpdateProfile();
 
   const [name, setName] = useState(user?.name ?? "");
+  const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
   const [profileFile, setProfileFile] = useState<File | null>(null);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
@@ -24,6 +26,7 @@ export default function EditProfileModal() {
   const handleSubmit = async () => {
     const formData = new FormData();
     if (name) formData.append("name", name);
+    if (oldPassword) formData.append("oldPassword", oldPassword);
     if (password) formData.append("password", password);
     if (profileFile) formData.append("profileImage", profileFile);
     if (bannerFile) formData.append("bannerImage", bannerFile);
@@ -53,7 +56,15 @@ export default function EditProfileModal() {
             onChange={(e) => setName(e.target.value)}
           />
 
-          {/* Password */}
+          {/* Old Password (required to set a new password) */}
+          <PasswordInput
+            placeholder="Current Password"
+            className="w-full p-2 border rounded"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+          />
+
+          {/* New Password */}
           <PasswordInput
             placeholder="New Password (leave blank to keep current)"
             className="w-full p-2 border rounded"

@@ -24,7 +24,7 @@ export interface FallbackImageProps extends Omit<React.ImgHTMLAttributes<HTMLIma
  */
 export const FallbackImage: React.FC<FallbackImageProps> = ({
   src,
-  alt = "Flag Journeys",
+  alt = "Koikoi travel",
   fallbackSrc = "/logo-with-name.png",
   className = "",
   containerClassName = "",

@@ -643,6 +643,7 @@ model City {
   activeSnapshot Json?
   displayOrder Int      @default(0)
   journeys    Journey[]
+  travelExperiences TravelExperience[]
 }
 
 model Month {
@@ -687,6 +688,8 @@ model TravelExperience {
   isActive    Boolean   @default(true)
   activeSnapshot Json?
   displayOrder Int      @default(0)
+  cities      City[]
+  cityOrder   Int[]
   journeys    Journey[]
 }
 

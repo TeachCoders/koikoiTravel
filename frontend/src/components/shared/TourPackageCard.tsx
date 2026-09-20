@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Clock, Star, ArrowRight, CheckCircle2, Compass } from "lucide-react";
+import { MapPin, Clock, Star, ArrowRight, CheckCircle2, Compass, Hotel, Car, Utensils, Ticket } from "lucide-react";
 import type { Journey } from "@/feature/journey/type";
 import { journeyPackageHref } from "@/feature/journey/filterOptions";
 import { travelExperienceIcon } from "@/components/shared/TravelExperiencePills";
@@ -15,7 +15,7 @@ function PackageImageWithFallback({ src, alt }: { src?: string; alt?: string }) 
   return (
     <FallbackImage
       src={src}
-      alt={alt || "Flag Journeys Package"}
+      alt={alt || "Koikoi travel Package"}
       className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       fallbackSrc="/logo-with-name.png"
       theme="light"
@@ -46,7 +46,7 @@ export default function TourPackageCard({ journey, contextName }: { journey: Jou
     : 0;
   const state = journey.cities?.[0]?.state?.title;
   const href = journeyPackageHref(journey);
-  const { rating, reviewsCount } = getUniquePackageRating(journey);
+  const { rating, reviewsCount } = contextName ? getUniquePackageRating(journey) : { rating: null, reviewsCount: 0 };
 
   return (
     <div
@@ -56,7 +56,7 @@ export default function TourPackageCard({ journey, contextName }: { journey: Jou
       <Link href={href} className="relative h-[240px] w-full overflow-hidden shrink-0 block">
         <PackageImageWithFallback
           src={journey.thumbImg || journey.banner?.images?.[0] || ""}
-          alt={`${journey.h1Title || journey.title}${journey.destination ? ` - ${journey.destination}` : ""} Tour Package | Flag Journeys`}
+          alt={`${journey.h1Title || journey.title}${journey.destination ? ` - ${journey.destination}` : ""} Tour Package | Koikoi travel`}
         />
 
         {/* Gradients */}
@@ -73,7 +73,7 @@ export default function TourPackageCard({ journey, contextName }: { journey: Jou
             )}
           </div>
           {hasDiscount && offPercent > 0 && (
-            <span className="bg-[#D4561A] text-white text-[11px] font-black px-3 py-1.5 rounded-full shadow-lg pointer-events-auto">
+            <span className="bg-[#F8904D] text-white text-[11px] font-black px-3 py-1.5 rounded-full shadow-lg pointer-events-auto">
               {offPercent}% OFF
             </span>
           )}
@@ -97,11 +97,13 @@ export default function TourPackageCard({ journey, contextName }: { journey: Jou
               {journey.noDays === 1 ? "1 Day" : `${journey.noDays - 1}N / ${journey.noDays}D`}
             </span>
           )}
-          <span className="inline-flex items-center gap-1 text-[11.5px] font-bold text-amber-300 bg-black/45 backdrop-blur-md border border-white/20 px-2.5 py-1 rounded-full shadow-sm">
-            <Star size={11} fill="currentColor" className="text-amber-400 shrink-0" />
-            <span>{rating} <span className="text-white/80 font-normal">({reviewsCount})</span></span>
-          </span>
-        </div>
+          {contextName && rating && (
+            <span className="inline-flex items-center gap-1 text-[11.5px] font-bold text-amber-300 bg-black/45 backdrop-blur-md border border-white/20 px-2.5 py-1 rounded-full shadow-sm">
+              <Star size={11} fill="currentColor" className="text-amber-400 shrink-0" />
+              <span>{rating} <span className="text-white/80 font-normal">({reviewsCount})</span></span>
+            </span>
+          )}
+          </div>
       </Link>
 
       {/* Content Container */}
@@ -123,21 +125,21 @@ export default function TourPackageCard({ journey, contextName }: { journey: Jou
         )}
 
         {/* Inclusions Feature Badges */}
-        <div className="flex items-center justify-between gap-1.5 py-2 px-3 mb-4 rounded-xl bg-slate-50 border border-slate-100 text-[11px] font-bold text-slate-600">
+        <div className="flex items-center justify-between gap-1.5 py-2 px-3 mb-4 rounded-xl bg-[#F8904D]/10 border border-[#F8904D]/20 text-[11px] font-bold text-slate-600">
           <span title="3★/4★ Handpicked Hotels" className="flex items-center gap-1">
-            🏨 Hotel
+            <Hotel size={13} className="text-black" /> Hotel
           </span>
           <span className="text-slate-300">•</span>
           <span title="Private Cab Transfers" className="flex items-center gap-1">
-            🚗 Cab
+            <Car size={13} className="text-black" /> Cab
           </span>
           <span className="text-slate-300">•</span>
           <span title="Daily Breakfast Included" className="flex items-center gap-1">
-            🍳 Meals
+            <Utensils size={13} className="text-black" /> Meals
           </span>
           <span className="text-slate-300">•</span>
           <span title="Guided Sightseeing" className="flex items-center gap-1">
-            🎟️ Tours
+            <Ticket size={13} className="text-black" /> Tours
           </span>
         </div>
 
@@ -180,11 +182,11 @@ export default function TourPackageCard({ journey, contextName }: { journey: Jou
 
           {/* Column 2: Details Navigation with Animated Arrow */}
           <Link href={href} className="flex items-center gap-1.5 group/btn shrink-0" title="View Details">
-            <span className="text-[14.5px] sm:text-[15.5px] font-bold text-[#D4561A] group-hover/btn:underline whitespace-nowrap">
+            <span className="text-[14.5px] sm:text-[15.5px] font-bold text-[#F8904D] group-hover/btn:underline whitespace-nowrap">
               View Details
             </span>
-            <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center border border-orange-100 group-hover/btn:bg-[#D4561A] group-hover/btn:border-[#D4561A] group-hover/btn:shadow-sm transition-all duration-300 shrink-0">
-              <ArrowRight size={14} className="text-[#D4561A] group-hover/btn:text-white transition-all duration-300 group-hover/btn:-rotate-45" />
+            <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center border border-orange-100 group-hover/btn:bg-[#F8904D] group-hover/btn:border-[#F8904D] group-hover/btn:shadow-sm transition-all duration-300 shrink-0">
+              <ArrowRight size={14} className="text-[#F8904D] group-hover/btn:text-white transition-all duration-300 group-hover/btn:-rotate-45" />
             </div>
           </Link>
         </div>

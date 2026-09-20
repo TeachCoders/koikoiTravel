@@ -152,8 +152,8 @@ router.post("/login", async (req, res) => {
     // Clear any stale session cookies from previous domain/deployment so the
     // freshly regenerated session isn't shadowed by an older cookie that the
     // browser may still be sending for the api subdomain.
-    res.clearCookie("connect.sid", { domain: ".flagjourneys.com", path: "/" });
-    res.clearCookie("connect.sid", { domain: "api.flagjourneys.com", path: "/" });
+    res.clearCookie("connect.sid", { domain: ".koikoitravel.com", path: "/" });
+    res.clearCookie("connect.sid", { domain: "api.koikoitravel.com", path: "/" });
     res.clearCookie("connect.sid");
 
     req.session.regenerate((regenErr) => {
@@ -247,8 +247,8 @@ router.post("/logout", (req, res) => {
     if (err) {
       return res.status(500).send({ success: false, message: "Logout failed" });
     }
-    res.clearCookie("connect.sid", { domain: ".flagjourneys.com", path: "/" });
-    res.clearCookie("connect.sid", { domain: "api.flagjourneys.com", path: "/" });
+    res.clearCookie("connect.sid", { domain: ".koikoitravel.com", path: "/" });
+    res.clearCookie("connect.sid", { domain: "api.koikoitravel.com", path: "/" });
     res.clearCookie("connect.sid");
     res.clearCookie("csrf-token");
     res.clearCookie("__Host-csrf-token");
@@ -353,12 +353,24 @@ router.put(
         if (existing.profileImage && profileImage) deleteOldImage(existing.profileImage);
         if (existing.bannerImage && bannerImage) deleteOldImage(existing.bannerImage);
 
+        const clearProfileImage = req.body.removeProfileImage === "true" || req.body.removeProfileImage === true;
+        const clearBannerImage = req.body.removeBannerImage === "true" || req.body.removeBannerImage === true;
+
+        if (clearProfileImage && existing.profileImage) {
+          deleteOldImage(existing.profileImage);
+        }
+        if (clearBannerImage && existing.bannerImage) {
+          deleteOldImage(existing.bannerImage);
+        }
+
         updated = await prisma.users.update({
           where: { id: existing.id },
           data: {
             ...(name && { name }),
             ...(profileImage && { profileImage }),
             ...(bannerImage && { bannerImage }),
+            ...(clearProfileImage && { profileImage: null }),
+            ...(clearBannerImage && { bannerImage: null }),
             ...(hashedPassword && { hasPassword: hashedPassword }),
           },
         });

@@ -9,15 +9,15 @@ function absoluteImage(src?: string): string | undefined {
 export const organizationSchema: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
-  name: "Flag Journeys",
-  alternateName: ["Flag Journeys India", "FlagJourney Inbound India"],
+  name: "Koikoi travel",
+  alternateName: ["Koikoi travel India", "Koikoi travel Inbound India"],
   url: SITE_URL,
-  logo: `${SITE_URL}/logo.png`,
-  image: `${SITE_URL}/logo.png`,
+  logo: `${SITE_URL}/logo-with-name.png`,
+  image: `${SITE_URL}/logo-with-name.png`,
   telephone: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
     ? `+${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`
     : "+919136739178",
-  email: "support@flagjourneys.com",
+  email: "support@koikoitravel.com",
   address: {
     "@type": "PostalAddress",
     addressCountry: "IN",
@@ -36,14 +36,14 @@ export const organizationSchema: Record<string, unknown> = {
 export const websiteSchema: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Flag Journeys",
-  alternateName: "Flag Journeys - India Inbound Travel Specialist",
+  name: "Koikoi travel",
+  alternateName: "Koikoi travel - India Inbound Travel Specialist",
   url: SITE_URL,
   description: "Bespoke India tour packages, private luxury stays, verified drivers, and local guides for foreign travelers.",
   inLanguage: ["en", "en-US"],
   publisher: {
     "@type": "TravelAgency",
-    name: "Flag Journeys India",
+    name: "Koikoi travel India",
   },
 };
 
@@ -83,11 +83,11 @@ export function articleSchema(post: ArticleInput): Record<string, unknown> {
     dateModified: post.dateModified || undefined,
     author: post.author
       ? { "@type": "Organization", name: post.author }
-      : { "@type": "Organization", name: "Flag Journeys" },
+      : { "@type": "Organization", name: "Koikoi travel" },
     publisher: {
       "@type": "Organization",
-      name: "Flag Journeys",
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
+      name: "Koikoi travel",
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo-with-name.png` },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
@@ -101,36 +101,22 @@ interface TouristTripInput {
   description?: string;
   image?: string;
   url: string;
-  price?: number;
   itinerary?: { day: string; description?: string }[];
   touristType?: string[];
 }
 
 export function touristTripSchema(trip: TouristTripInput): Record<string, unknown> {
   return {
-    "@type": "Product",
+    "@type": "TouristTrip",
     name: trip.name,
     description: trip.description ? stripHtml(trip.description).slice(0, 160) : undefined,
     image: absoluteImage(trip.image),
     url: `${SITE_URL}${trip.url}`,
-    brand: {
-      "@type": "Organization",
-      name: "Flag Journeys",
+    provider: {
+      "@type": "TravelAgency",
+      name: "Koikoi travel",
       url: SITE_URL,
     },
-    ...(trip.price && trip.price > 0
-      ? {
-        offers: {
-          "@type": "Offer",
-          name: "Customised holiday quote",
-          description: "Personalised itinerary and custom quote within 24 hours.",
-          price: trip.price,
-          priceCurrency: "INR",
-          availability: "https://schema.org/InStock",
-          url: `${SITE_URL}${trip.url}`,
-        },
-      }
-      : {}),
     ...(trip.touristType && trip.touristType.length > 0 ? { touristType: trip.touristType } : {}),
     ...(trip.itinerary && trip.itinerary.length > 0
       ? {

@@ -9,6 +9,7 @@ import AssignLeadDialog from "@/feature/leads/components/assign-lead-dialog";
 import { STATUS_BADGE, PAYMENT_BADGE, getLeadStatus, getAssignedType, getAssignedPerson, getVendorInfo, getInvoiceTotal, getPaymentPaid } from "./myLeadsHelpers";
 import { LeadExpandedDetail } from "./LeadExpandedDetail";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { userImageUrl } from "@/lib/mediaUrl";
 
 interface LeadsTableProps {
   searchedLeads: any[];
@@ -85,14 +86,14 @@ export function LeadsTable({
           <div className="flex items-center gap-1 mb-[-1px] ml-4 relative z-10">
             <button
               onClick={() => setViewMode("leads")}
-              className={`px-5 py-2.5 text-xs font-bold rounded-t-xl border border-b-0 transition-all ${viewMode === "leads" ? "bg-[#D4561A] text-white border-[#D4561A]" : "bg-slate-900 text-slate-300 border-slate-900 hover:text-white"
+              className={`px-5 py-2.5 text-xs font-bold rounded-t-xl border border-b-0 transition-all ${viewMode === "leads" ? "bg-[#F8904D] text-white border-[#F8904D]" : "bg-slate-900 text-slate-300 border-slate-900 hover:text-white"
                 }`}
             >
               Active Follow-ups
             </button>
             <button
               onClick={() => setViewMode("performance")}
-              className={`px-5 py-2.5 text-xs font-bold rounded-t-xl border border-b-0 transition-all flex items-center gap-2 ${viewMode === "performance" ? "bg-[#D4561A] text-white border-[#D4561A]" : "bg-slate-900 text-slate-300 border-slate-900 hover:text-white"
+              className={`px-5 py-2.5 text-xs font-bold rounded-t-xl border border-b-0 transition-all flex items-center gap-2 ${viewMode === "performance" ? "bg-[#F8904D] text-white border-[#F8904D]" : "bg-slate-900 text-slate-300 border-slate-900 hover:text-white"
                 }`}
             >
               Assigned Leads followup
@@ -293,7 +294,7 @@ export function LeadsTable({
                                     {assignedPerson.name ? (
                                       <div className="flex items-start gap-3">
                                         {assignedPerson.profileImage ? (
-                                          <img src={assignedPerson.profileImage} alt={assignedPerson.name} className="w-8 h-8 rounded-full object-cover shadow-sm shrink-0 border border-slate-200" />
+                                          <img src={userImageUrl(assignedPerson.profileImage) ?? undefined} alt={assignedPerson.name} className="w-8 h-8 rounded-full object-cover shadow-sm shrink-0 border border-slate-200" />
                                         ) : (
                                           <div className="w-8 h-8 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center font-bold text-xs shrink-0 shadow-sm border border-brand-primary/20">
                                             {assignedPerson.name.charAt(0).toUpperCase()}

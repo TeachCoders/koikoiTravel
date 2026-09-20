@@ -12,6 +12,7 @@ import { useGetTeam } from "@/feature/teams/api/useTeam";
 import { TeamForm } from "@/feature/teams/components/teamForm";
 import { UserForm } from "@/components/shared/forms/userForm";
 import { useGetCurrentUser } from "@/feature/auth/api/useAuth";
+import { userImageUrl } from "@/lib/mediaUrl";
 
 type Member = {
   name: string;
@@ -273,10 +274,7 @@ export default function Teams() {
               ) : (
                 <div className="grid gap-3">
                   {membersToDisplay.map((member: any, index: number) => {
-                    const imageSrc = member.profileImage;
-                    const src = imageSrc
-                      ? (imageSrc.startsWith("http") || imageSrc.startsWith("data:") ? imageSrc : `${process.env.NEXT_PUBLIC_API_BASE_URL}/images/${imageSrc}`)
-                      : null;
+                    const src = userImageUrl(member.profileImage);
 
                     return (
                       <div key={index} className="flex items-center justify-between p-4 rounded-xl border border-gray-100 bg-white hover:border-brand-primary/30 hover:shadow-md transition-all duration-200 group">

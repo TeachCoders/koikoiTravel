@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Users, MapPin, Award, Star } from "lucide-react";
+import { Users, MapPin, Award } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 interface StatItem {
@@ -15,7 +15,6 @@ const STATS: StatItem[] = [
   { icon: <Users className="w-6 h-6" />, label: "Happy Guests", value: 500, suffix: "+" },
   { icon: <MapPin className="w-6 h-6" />, label: "Destinations Covered", value: 50, suffix: "+" },
   { icon: <Award className="w-6 h-6" />, label: "Tours Conducted", value: 650, suffix: "+" },
-  { icon: <Star className="w-6 h-6" />, label: "Average Rating", value: 4.9, suffix: "/5" },
 ];
 
 function useCountUp(target: number, duration: number, start: boolean) {
@@ -59,7 +58,7 @@ export const StatsCounter: React.FC = () => {
   return (
     <section ref={ref} className="py-14 bg-[#1C1C1C]">
       <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
           {STATS.map((stat, i) => (
             <StatCard key={i} item={stat} start={isVisible} />
           ))}

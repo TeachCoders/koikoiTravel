@@ -214,13 +214,13 @@ export default function PackagesExplorer({
       <div className="mt-8">
         {isLoading ? (
           <div className="flex items-center justify-center py-24">
-            <Loader2 className="w-8 h-8 animate-spin text-[#D4561A]" />
+            <Loader2 className="w-8 h-8 animate-spin text-[#F8904D]" />
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-20 bg-white border border-[#ececec] rounded-2xl">
             <X size={40} className="mx-auto text-slate-300 mb-3" />
             <p className="text-slate-500 font-medium">No tours match your filters</p>
-            <button onClick={clearAll} className="mt-3 text-sm font-semibold text-[#D4561A] hover:underline cursor-pointer">
+            <button onClick={clearAll} className="mt-3 text-sm font-semibold text-[#F8904D] hover:underline cursor-pointer">
               Clear all filters
             </button>
           </div>

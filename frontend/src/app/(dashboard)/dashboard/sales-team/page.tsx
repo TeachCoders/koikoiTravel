@@ -9,6 +9,7 @@ import PageLoader from "@/components/shared/PageLoader";
 import StatsCardGrid from "@/components/shared/StatsCardGrid";
 import PrivatePageHeading from "@/components/shared/PrivatePageHeading";
 import FilterBox from "@/components/shared/FilterBox";
+import { userImageUrl } from "@/lib/mediaUrl";
 
 export default function SalesTeamPage() {
   const { teams = [], isLoading } = useGetTeam();
@@ -89,10 +90,7 @@ export default function SalesTeamPage() {
               </thead>
               <tbody className="divide-y divide-brand-neutral-light">
                 {members.map((member: any) => {
-                  const imageSrc = member.profileImage;
-                  const src = imageSrc
-                    ? (imageSrc.startsWith("http") || imageSrc.startsWith("data:") ? imageSrc : `${process.env.NEXT_PUBLIC_API_BASE_URL}/images/${imageSrc}`)
-                    : null;
+                  const src = userImageUrl(member.profileImage);
 
                   return (
                     <tr key={member.id} className="hover:bg-brand-neutral-light/50 transition-colors">

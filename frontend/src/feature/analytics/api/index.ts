@@ -243,6 +243,7 @@ export interface ReplaySessionInfo {
   batchCount: number;
   startedAt: string;
   lastEventAt: string;
+  durationSec: number | null;
 }
 
 export interface ReplaySessionsPage {
@@ -263,9 +264,15 @@ export async function getReplaySessions(params?: {
   page?: number;
   pageSize?: number;
   kind?: "all" | "humans" | "bots";
+  range?: DateRange;
 }): Promise<ReplaySessionsPage> {
   const res = await apiClient.get<ReplaySessionsPage>("/analytics/replay-sessions", {
-    params: { page: params?.page ?? 1, pageSize: params?.pageSize ?? 20, kind: params?.kind ?? "all" },
+    params: {
+      page: params?.page ?? 1,
+      pageSize: params?.pageSize ?? 20,
+      kind: params?.kind ?? "all",
+      ...(params?.range ? dateRangeParams(params.range) : {}),
+    },
   });
   return res.data ?? { sessions: [], totals: { all: 0, humans: 0, bots: 0 }, page: 1, pageSize: 20, totalPages: 1 };
 }
@@ -333,4 +340,96 @@ export async function getRetentionDays(): Promise<number> {
 
 export async function setRetentionDays(days: number): Promise<void> {
   await apiClient.put("/analytics/retention-days", { retentionDays: days });
+}
+
+/* ───────────── Data management (admin) ───────────── */
+
+export async function purgeAnalyticsNow(): Promise<{ success: boolean; deleted: number }> {
+  const res = await apiClient.post<{ success: boolean; deleted: number }>("/analytics/data/purge");
+  return res.data ?? { success: true, deleted: 0 };
+}
+
+export async function deleteAllAnalyticsData(): Promise<{ success: boolean; deleted: number }> {
+  const res = await apiClient.post<{ success: boolean; deleted: number }>("/analytics/data/delete-all");
+  return res.data ?? { success: true, deleted: 0 };
+}
+
+export async function deleteGscData(): Promise<{ success: boolean; deleted: number }> {
+  const res = await apiClient.post<{ success: boolean; deleted: number }>("/analytics/data/delete-gsc");
+  return res.data ?? { success: true, deleted: 0 };
+}
+
+/* ───────────── Google Search Console ───────────── */
+
+export interface GscStatus {
+  configured: boolean;
+  connected: boolean;
+  siteUrl: string | null;
+}
+
+export interface GscRow {
+  keys: string[];
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+}
+
+export interface GscPerformance {
+  dimension: string;
+  rows: GscRow[];
+}
+
+export interface GscSitemap {
+  path: string;
+  lastSubmitted: string | null;
+  lastDownloaded: string | null;
+  isPending: boolean;
+  errors: number;
+  contents: { type: string; submitted: number; indexed: number }[];
+}
+
+export interface GscInspection {
+  url: string;
+  indexStatus: string;
+  coverageState: string;
+  crawlingAllowed: boolean;
+  indexingAllowed: boolean;
+  lastCrawlTime: string | null;
+  robotsTxtState: string | null;
+  pageFetchState: string | null;
+}
+
+export async function getGscStatus(): Promise<GscStatus> {
+  const res = await apiClient.get<GscStatus>("/analytics/gsc/status");
+  return (
+    res.data ?? { configured: false, connected: false, siteUrl: null }
+  );
+}
+
+export async function getGscPerformance(params: {
+  from: string;
+  to: string;
+  dimension: "query" | "page" | "country" | "device";
+  rows?: number;
+}): Promise<GscPerformance> {
+  const res = await apiClient.get<GscPerformance>("/analytics/gsc/search-performance", {
+    params: { startDate: params.from, endDate: params.to, dimension: params.dimension, rows: params.rows ?? 20 },
+  });
+  return res.data ?? { dimension: params.dimension, rows: [] };
+}
+
+export async function getGscSitemaps(): Promise<GscSitemap[]> {
+  const res = await apiClient.get<GscSitemap[]>("/analytics/gsc/sitemaps");
+  return res.data ?? [];
+}
+
+export async function sendGscUrlInspection(url: string): Promise<GscInspection> {
+  const res = await apiClient.post<GscInspection>("/analytics/gsc/url-inspection", { url });
+  return res.data;
+}
+
+export async function disconnectGsc(): Promise<{ success: boolean }> {
+  const res = await apiClient.post<{ success: boolean }>("/analytics/gsc/disconnect");
+  return res.data ?? { success: true };
 }

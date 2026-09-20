@@ -19,14 +19,14 @@ export default function AdTestimonials({ destinationName = "our destination" }: 
     {
       name: "Robert Chang",
       location: "Sydney, Australia",
-      text: `I've traveled to 30+ countries and India was the most complex trip to plan. FlagJourney sorted everything over WhatsApp. When our flight got delayed on day 3, the ground team reshuffled our hotel pickup the same night without extra charge. Boat ride in Varanasi at dawn was unbelievable!`,
+      text: `I've traveled to 30+ countries and India was the most complex trip to plan. Koikoi travel sorted everything over WhatsApp. When our flight got delayed on day 3, the ground team reshuffled our hotel pickup the same night without extra charge. Boat ride in Varanasi at dawn was unbelievable!`,
       rating: 5,
       trip: "Rajasthan & Varanasi · 10 Days",
     },
     {
       name: "Sofia & Luca",
       location: "Milan, Italy",
-      text: `Our honeymoon in Kerala was magical. Many agencies gave us identical copy-paste packages. FlagJourney listened to what we actually wanted (less temples, more nature and calm backwaters) and built a custom plan. The private houseboat in Alleppey with just the two of us was unforgettable!`,
+      text: `Our honeymoon in Kerala was magical. Many agencies gave us identical copy-paste packages. Koikoi travel listened to what we actually wanted (less temples, more nature and calm backwaters) and built a custom plan. The private houseboat in Alleppey with just the two of us was unforgettable!`,
       rating: 5,
       trip: "Kerala Honeymoon · 8 Days",
     }
@@ -61,7 +61,7 @@ export default function AdTestimonials({ destinationName = "our destination" }: 
               </p>
               
               <div className="flex items-center gap-4 relative z-10 mt-auto border-t border-slate-100 pt-6">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#D4561A] to-[#E8A317] text-white font-black text-lg flex items-center justify-center shrink-0 shadow-sm border-2 border-white select-none">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#F8904D] to-[#E8A317] text-white font-black text-lg flex items-center justify-center shrink-0 shadow-sm border-2 border-white select-none">
                   {(t.name || "A").trim().charAt(0).toUpperCase()}
                 </div>
                 <div>

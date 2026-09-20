@@ -91,7 +91,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             <QuoteModal>
               <button
                 type="button"
-                className="btn-primary px-5 py-3 text-xs sm:text-sm font-bold tracking-wide flex items-center gap-2 cursor-pointer shadow-md shadow-[#D4561A]/30 active:scale-95 transition-all"
+                className="btn-primary px-5 py-3 text-xs sm:text-sm font-bold tracking-wide flex items-center gap-2 cursor-pointer shadow-md shadow-[#F8904D]/30 active:scale-95 transition-all"
               >
                 <Sparkles size={15} />
                 <span>Ask Travel Specialist</span>

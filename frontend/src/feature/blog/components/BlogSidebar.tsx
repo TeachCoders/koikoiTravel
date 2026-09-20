@@ -65,7 +65,7 @@ export default async function BlogSidebar({
 
       {/* ===== PLAN MY TRIP CTA CARD ===== */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-7 text-white shadow-xl relative overflow-hidden">
-        <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[#D4561A]/30 blur-2xl pointer-events-none" />
+        <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[#F8904D]/30 blur-2xl pointer-events-none" />
         <span className="text-[11px] font-black uppercase tracking-widest text-[#F5B041] mb-2 block">
           Customized Holiday Tour
         </span>
@@ -79,7 +79,7 @@ export default async function BlogSidebar({
           <QuoteModal>
             <button
               type="button"
-              className="w-full btn-primary py-3 px-5 text-sm font-bold flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[#D4561A]/30 active:scale-95 transition-all"
+              className="w-full btn-primary py-3 px-5 text-sm font-bold flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[#F8904D]/30 active:scale-95 transition-all"
             >
               <Sparkles size={16} />
               <span>Get Free Itinerary Quote</span>
@@ -111,7 +111,7 @@ export default async function BlogSidebar({
         <div className="bg-white rounded-3xl border border-slate-200/60 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
           <h3 className="font-heading text-xs font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5 flex items-center justify-between">
             Top 10 Tour Packages
-            <span className="text-[10px] font-black text-[#D4561A] bg-[#D4561A]/10 px-2.5 py-0.5 rounded-full">
+            <span className="text-[10px] font-black text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-0.5 rounded-full">
               {topJourneys.length}
             </span>
           </h3>

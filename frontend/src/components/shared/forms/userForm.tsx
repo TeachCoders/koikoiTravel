@@ -27,13 +27,15 @@ export function UserForm({ onSuccess, teamId, teamName, initialData }: UserFormP
   const { createUser, isCreatingUser } = useCreateNewUser();
   const { updateUser, isUpdatingUser } = useUpdateUser();
   const { teams = [] } = useGetTeam();
-  
+
   const isEditing = !!initialData?.id;
   const autoRole = teamName ? teamName.toLowerCase().replace(/[\s-]+/g, "_").replace(/\s+/g, "_") : "";
 
   const [formData, setFormData] = useState({
     name: initialData?.name || "",
-    emailPrefix: initialData?.email ? initialData.email.split("@")[0] : "",
+    emailType: initialData?.email && !/^[^@]+@koikoitravel\.com$/i.test(initialData.email) ? "unofficial" : "official",
+    emailPrefix: initialData?.email && /^[^@]+@koikoitravel\.com$/i.test(initialData.email) ? initialData.email.split("@")[0] : "",
+    customEmail: initialData?.email && !/^[^@]+@koikoitravel\.com$/i.test(initialData.email) ? initialData.email : "",
     mobile: initialData?.mobile || "",
     role: initialData?.role || autoRole || "team_member",
     teamId: initialData?.teamId?.toString() || teamId?.toString() || "",
@@ -68,9 +70,9 @@ export function UserForm({ onSuccess, teamId, teamName, initialData }: UserFormP
     }
   };
 
-const handleSubmit = async (
-  e: React.FormEvent<HTMLFormElement>
-) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
 
     if (!initialData?.id && !formData.password) {
@@ -78,9 +80,22 @@ const handleSubmit = async (
       return;
     }
 
-    const activeDomain = "flagjourneys.com";
+    const activeDomain = "koikoitravel.com";
 
-    const fullEmail = `${formData.emailPrefix}@${activeDomain}`;
+    const fullEmail =
+      formData.emailType === "unofficial"
+        ? formData.customEmail.trim()
+        : `${formData.emailPrefix}@${activeDomain}`;
+
+    if (!fullEmail) {
+      errorToast("Email is required.");
+      return;
+    }
+    if (formData.emailType === "unofficial" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fullEmail)) {
+      errorToast("Please enter a valid unofficial email address.");
+      return;
+    }
+
     const submissionData = new FormData();
     submissionData.append("name", formData.name);
     submissionData.append("email", fullEmail);
@@ -104,10 +119,10 @@ const handleSubmit = async (
         await createUser(submissionData);
         successToast(`Member created successfully with email: ${fullEmail}`);
       }
-      
+
       if (onSuccess) onSuccess();
       // Reset form after success
-      setFormData({ name: "", emailPrefix: "", mobile: "", role: "team_member", teamId: "", password: "", isActive: true });
+      setFormData({ name: "", emailType: "official", emailPrefix: "", customEmail: "", mobile: "", role: "team_member", teamId: "", password: "", isActive: true });
       setFiles({ profile: null, banner: null });
     } catch (error: any) {
       console.error("Submission Error:", error);
@@ -133,22 +148,57 @@ const handleSubmit = async (
           />
         </div>
 
-        {/* Email with Domain Suffix */}
+        {/* Email — Official or Unofficial */}
         <div className="space-y-2">
-          <Label htmlFor="emailPrefix" className="text-sm font-medium text-gray-700">Email Username</Label>
-          <div className="flex items-center">
-            <Input
-              id="emailPrefix"
-              name="emailPrefix"
-              placeholder="john.doe"
-              value={formData.emailPrefix}
-              onChange={handleInputChange}
-              className="rounded-r-none border-r-0 border-gray-200 focus:border-brand-500 focus:ring-0"
-            />
-            <div className="bg-gray-50 border border-gray-200 border-l-0 px-3 py-1 text-sm text-gray-500 rounded-r-lg min-w-fit h-8 flex items-center justify-center">
-              @flagjourneys.com
-            </div>
+          <Label htmlFor="emailPrefix" className="text-sm font-medium text-gray-700">Email</Label>
+          <div className="flex rounded-lg border border-gray-200 bg-gray-100 p-0.5">
+            <button
+              type="button"
+              onClick={() => setFormData((prev) => ({ ...prev, emailType: "official" }))}
+              className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition ${formData.emailType === "official"
+                  ? "bg-white text-brand-700 shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+                }`}
+            >
+              Official
+            </button>
+            <button
+              type="button"
+              onClick={() => setFormData((prev) => ({ ...prev, emailType: "unofficial" }))}
+              className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition ${formData.emailType === "unofficial"
+                  ? "bg-white text-brand-700 shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+                }`}
+            >
+              Unofficial
+            </button>
           </div>
+          {formData.emailType === "official" ? (
+            <div className="flex items-center">
+              <Input
+                id="emailPrefix"
+                name="emailPrefix"
+                placeholder="john.doe"
+                value={formData.emailPrefix}
+                onChange={handleInputChange}
+                className="rounded-r-none border-r-0 border-gray-200 focus:border-brand-500 focus:ring-0"
+              />
+              <div className="bg-gray-50 border border-gray-200 border-l-0 px-3 py-1 text-sm text-gray-500 rounded-r-lg min-w-fit h-8 flex items-center justify-center">
+                @koikoitravel.com
+              </div>
+            </div>
+          ) : (
+            <Input
+              id="customEmail"
+              name="customEmail"
+              type="email"
+              placeholder="member@gmail.com"
+              value={formData.customEmail}
+              onChange={handleInputChange}
+              className="border-gray-200 focus:border-brand-500"
+            />
+          )}
+
         </div>
 
         {/* Mobile Number */}

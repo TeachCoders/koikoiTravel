@@ -20,7 +20,7 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await fetchBySlug<BlogPost>("/blog/by-slug", slug);
-  if (!post) return { title: "Blog Post Not Found | Flag Journeys" };
+  if (!post) return { title: "Blog Post Not Found | Koikoi travel" };
   const seoDescription = stripHtml(post.seoDescription || post.moreDescription || "").slice(0, 160);
   const title = post.seoTitle || post.title;
   const canonical = post.canonical || `/blog/${post.slug}`;
@@ -105,7 +105,7 @@ export default async function BlogPostPage({ params }: Props) {
 
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 text-center py-8">
           {post.category && (
-            <span className="inline-block px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white bg-[#D4561A] rounded-full mb-5 shadow-lg">
+            <span className="inline-block px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white bg-[#F8904D] rounded-full mb-5 shadow-lg">
               {post.category}
             </span>
           )}
@@ -177,7 +177,7 @@ export default async function BlogPostPage({ params }: Props) {
                   <QuoteModal>
                     <button
                       type="button"
-                      className="btn-primary px-7 py-3.5 text-sm font-bold flex items-center gap-2 cursor-pointer shadow-lg shadow-[#D4561A]/20"
+                      className="btn-primary px-7 py-3.5 text-sm font-bold flex items-center gap-2 cursor-pointer shadow-lg shadow-[#F8904D]/20"
                     >
                       <Sparkles size={16} />
                       <span>Plan My Trip Now</span>
@@ -208,7 +208,7 @@ export default async function BlogPostPage({ params }: Props) {
         <section className="bg-white border-t border-slate-200/60 py-20">
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
             <div className="text-center mb-12">
-              <span className="text-[#D4561A] font-black tracking-widest text-xs uppercase mb-3 block">More Reading</span>
+              <span className="text-[#F8904D] font-black tracking-widest text-xs uppercase mb-3 block">More Reading</span>
               <h2 className="font-heading text-4xl font-extrabold text-[#1C1C1C]">Related Articles</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

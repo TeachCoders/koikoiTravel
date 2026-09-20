@@ -14,6 +14,14 @@ import {
   getTrafficSources,
   getSearchIntents,
   getLiveNow,
+  purgeAnalyticsNow,
+  deleteAllAnalyticsData,
+  deleteGscData,
+  getGscStatus,
+  getGscPerformance,
+  getGscSitemaps,
+  sendGscUrlInspection,
+  disconnectGsc,
   type ActivityBatchPayload,
   type DateRange,
 } from ".";
@@ -85,15 +93,17 @@ export const useReplaySessions = (opts?: {
   page?: number;
   pageSize?: number;
   kind?: "all" | "humans" | "bots";
+  range?: DateRange;
   enabled?: boolean;
 }) => {
   const page = opts?.page ?? 1;
   const pageSize = opts?.pageSize ?? 20;
   const kind = opts?.kind ?? "all";
+  const range = opts?.range;
   const enabled = opts?.enabled ?? true;
   const query = useQuery({
-    queryKey: ["replay-sessions", page, pageSize, kind],
-    queryFn: () => getReplaySessions({ page, pageSize, kind }),
+    queryKey: ["replay-sessions", page, pageSize, kind, range?.from ?? "all", range?.to ?? "all"],
+    queryFn: () => getReplaySessions({ page, pageSize, kind, range }),
     enabled,
     staleTime: 30 * 1000,
   });
@@ -166,6 +176,97 @@ export const useRetentionDays = () => {
     isLoading: query.isLoading,
     save,
   };
+};
+
+export const usePurgeAnalyticsNow = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: purgeAnalyticsNow,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["analytics-stats"] });
+      void queryClient.invalidateQueries({ queryKey: ["analytics-breakdown"] });
+      void queryClient.invalidateQueries({ queryKey: ["analytics-sources"] });
+      void queryClient.invalidateQueries({ queryKey: ["analytics-search-intents"] });
+      void queryClient.invalidateQueries({ queryKey: ["replay-sessions"] });
+      void queryClient.invalidateQueries({ queryKey: ["analytics-retention"] });
+      void queryClient.invalidateQueries({ queryKey: ["analytics-live-now"] });
+    },
+  });
+};
+
+export const useDeleteAllAnalyticsData = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteAllAnalyticsData,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["analytics-stats"] });
+      void queryClient.invalidateQueries({ queryKey: ["replay-sessions"] });
+      void queryClient.invalidateQueries({ queryKey: ["analytics-live-now"] });
+    },
+  });
+};
+
+export const useDeleteGscData = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteGscData,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["gsc-status"] });
+    },
+  });
+};
+
+/* ───────────── Google Search Console ───────────── */
+
+export const useGscStatus = () => {
+  const query = useQuery({
+    queryKey: ["gsc-status"],
+    queryFn: getGscStatus,
+    staleTime: 60 * 1000,
+  });
+  return { status: query.data ?? null, isLoading: query.isLoading, error: query.error };
+};
+
+export const useGscPerformance = (
+  range: DateRange | undefined,
+  dimension: "query" | "page" | "country" | "device" = "query",
+  enabled = true
+) => {
+  const query = useQuery({
+    queryKey: ["gsc-performance", dimension, range?.from ?? "all", range?.to ?? "all"],
+    queryFn: () => getGscPerformance({ from: range!.from, to: range!.to, dimension }),
+    enabled: enabled && !!range,
+    staleTime: 5 * 60 * 1000,
+  });
+  return { data: query.data ?? null, isLoading: query.isLoading, isError: query.isError };
+};
+
+export const useGscSitemaps = (enabled: boolean) => {
+  const query = useQuery({
+    queryKey: ["gsc-sitemaps"],
+    queryFn: getGscSitemaps,
+    enabled,
+    staleTime: 5 * 60 * 1000,
+  });
+  return { data: query.data ?? null, isLoading: query.isLoading, isError: query.isError };
+};
+
+export const useGscUrlInspection = (enabled: boolean) => {
+  return useMutation({
+    mutationFn: sendGscUrlInspection,
+  });
+};
+
+export const useDisconnectGsc = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: disconnectGsc,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["gsc-status"] });
+      void queryClient.invalidateQueries({ queryKey: ["gsc-performance"] });
+      void queryClient.invalidateQueries({ queryKey: ["gsc-sitemaps"] });
+    },
+  });
 };
 
 export const useResolveNotFound = () => {

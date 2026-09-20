@@ -183,7 +183,7 @@ export default function InvoiceMainSection({
     lines.push("I've also sent the detailed quotation to your email. Please go through it and let me know if you'd like any changes — we're happy to customize it for you!");
     lines.push("");
     lines.push("Looking forward to making your trip memorable!");
-    lines.push(`- ${process.env.NEXT_PUBLIC_BRAND_NAME || "Flag Journeys"}`);
+    lines.push(`- ${process.env.NEXT_PUBLIC_BRAND_NAME || "Koikoi travel"}`);
     return lines.join("\n");
   };
 
@@ -435,7 +435,7 @@ export default function InvoiceMainSection({
 
       <div className="border rounded-lg p-4 shadow-sm bg-white mb-4">
         <h3 className="font-bold text-brand-neutral mb-3 flex items-center gap-2 text-sm">
-          <History size={16} className="text-brand-primary" /> Day-by-Day Itinerary
+          <History size={16} className="text-brand-primary" />Day By Day Itinerary
         </h3>
         <DayItineraryEditor value={itinerary} onChange={setItinerary} />
       </div>
@@ -462,7 +462,7 @@ export default function InvoiceMainSection({
             <div>
               <img
                 src="/logo-with-name.png"
-                alt="Flag Journeys"
+                alt="Koikoi travel"
                 className="h-14 w-auto object-contain mb-2"
                 onError={(e) => {
                   (e.target as HTMLElement).style.display = 'none';
@@ -495,7 +495,7 @@ export default function InvoiceMainSection({
                 OFFICIAL QUOTATION
               </span>
               <h2 className="text-base font-black text-slate-900 uppercase tracking-wide">
-                {(process.env.NEXT_PUBLIC_BRAND_NAME || "FLAG JOURNEYS").toUpperCase()}
+                {(process.env.NEXT_PUBLIC_BRAND_NAME || "KOIKOITRAVEL").toUpperCase()}
               </h2>
               <div className="text-xs text-slate-500 space-y-0.5 mt-1 font-medium">
                 {quotationNo && <p className="font-mono text-slate-700 font-bold">Quote #{quotationNo}</p>}
@@ -534,7 +534,7 @@ export default function InvoiceMainSection({
           {Array.isArray(itinerary) && itinerary.length > 0 && (
             <div className="mb-8">
               <h3 className="text-sm font-bold text-brand-primary uppercase tracking-wider mb-3 flex items-center gap-2">
-                <History size={16} /> Day-by-Day Itinerary
+                <History size={16} /> Day By Day Itinerary
               </h3>
               <div className="space-y-4">
                 {itinerary.map((day, idx) => (
@@ -773,7 +773,7 @@ export default function InvoiceMainSection({
           )}
 
           <div className="mt-10 pt-6 border-t border-brand-neutral-border text-center">
-            <p className="text-sm font-bold text-brand-neutral">Thank You for Choosing {process.env.NEXT_PUBLIC_BRAND_NAME || "Flag Journeys"}</p>
+            <p className="text-sm font-bold text-brand-neutral">Thank You for Choosing {process.env.NEXT_PUBLIC_BRAND_NAME || "Koikoi travel"}</p>
             <p className="text-xs text-slate-400 mt-1">Premium Travel Experiences</p>
           </div>
         </div>

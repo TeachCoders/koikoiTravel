@@ -27,7 +27,7 @@ const SEASON_WORDS = ["summer", "winter", "monsoon", "spring", "autumn", "fall"]
 // but must never act as a "place" match.
 const GENERIC_TOKEN_BLOCK = new Set([
   "package", "packages", "tour", "tours", "trip", "trips", "day", "days",
-  "from", "with", "road", "custom", "itinerary", "flagjourney", "holidays",
+  "from", "with", "road", "custom", "itinerary", "koikoitravel", "holidays",
   "holiday", "booking", "book", "price", "per", "person", "best", "seller",
 ]);
 

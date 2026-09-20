@@ -94,7 +94,7 @@ export const DestinationsAccordion: React.FC<DestinationsAccordionProps> = ({ de
               <div
                 key={group.state}
                 className={`bg-white rounded-xl border overflow-hidden transition-colors ${
-                  isOpen ? "border-[#D4561A]/30 shadow-sm" : "border-[#e5e5e5]"
+                  isOpen ? "border-[#F8904D]/30 shadow-sm" : "border-[#e5e5e5]"
                 }`}
               >
                 <button
@@ -104,16 +104,16 @@ export const DestinationsAccordion: React.FC<DestinationsAccordionProps> = ({ de
                   <div className="flex items-center gap-3 sm:gap-4">
                     <span
                       className={`text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg shrink-0 ${
-                        isOpen ? "bg-[#D4561A] text-white" : "bg-[#f0f0f0] text-[#555]"
+                        isOpen ? "bg-[#F8904D] text-white" : "bg-[#f0f0f0] text-[#555]"
                       }`}
                     >
                       {group.destinations.length}
                     </span>
-                    <h2 className="h4 text-[#1C1C1C] group-hover:text-[#D4561A] transition-colors">{group.state}</h2>
+                    <h2 className="h4 text-[#1C1C1C] group-hover:text-[#F8904D] transition-colors">{group.state}</h2>
                   </div>
                   <div
                     className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-all ${
-                      isOpen ? "bg-[#D4561A] text-white rotate-180" : "bg-[#f0f0f0] text-[#555]"
+                      isOpen ? "bg-[#F8904D] text-white rotate-180" : "bg-[#f0f0f0] text-[#555]"
                     }`}
                   >
                     <ChevronDown className="w-5 h-5" />
@@ -127,7 +127,7 @@ export const DestinationsAccordion: React.FC<DestinationsAccordionProps> = ({ de
                         <button
                           key={destination.slug}
                           onClick={() => showImage(destination, 0)}
-                          className="group text-left rounded-xl overflow-hidden bg-white border border-[#e5e5e5] hover:border-[#D4561A]/40 hover:shadow-md transition-all focus:outline-none"
+                          className="group text-left rounded-xl overflow-hidden bg-white border border-[#e5e5e5] hover:border-[#F8904D]/40 hover:shadow-md transition-all focus:outline-none"
                         >
                           <div className="relative aspect-[4/3] overflow-hidden bg-[#f0f0f0]">
                             <Image
@@ -149,7 +149,7 @@ export const DestinationsAccordion: React.FC<DestinationsAccordionProps> = ({ de
                             <p className="mt-1 text-xs text-[#888] leading-relaxed line-clamp-2">
                               {destination.attractions.join(", ")}
                             </p>
-                            <span className="mt-2.5 inline-flex items-center gap-1 text-xs font-semibold text-[#D4561A]">
+                            <span className="mt-2.5 inline-flex items-center gap-1 text-xs font-semibold text-[#F8904D]">
                               <ExternalLink className="w-3.5 h-3.5" /> View gallery
                             </span>
                           </div>

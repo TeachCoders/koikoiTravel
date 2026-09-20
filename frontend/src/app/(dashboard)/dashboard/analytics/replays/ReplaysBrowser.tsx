@@ -6,13 +6,26 @@ import {
   useReplaySessions,
   useReplay,
   useDeleteReplay,
+  useRetentionDays,
+  usePurgeAnalyticsNow,
+  useDeleteAllAnalyticsData,
+  useDeleteGscData,
 } from "@/feature/analytics/api/useAnalytics";
 import ReplayPlayer from "@/components/analytics/ReplayPlayer";
 import type { ReplaySessionInfo } from "@/feature/analytics/api";
+import { useAnalyticsRange } from "@/feature/analytics/range-context";
 
 function fmtDate(iso: string | null) {
   if (!iso) return "—";
   return new Date(iso).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+}
+
+function fmtDuration(sec: number | null | undefined) {
+  if (sec === null || sec === undefined) return "—";
+  if (sec < 60) return `${Math.round(sec)}s`;
+  const m = Math.floor(sec / 60);
+  const s = Math.round(sec % 60);
+  return `${m}m ${s}s`;
 }
 
 const BOT_LABEL: Record<string, string> = {
@@ -23,11 +36,123 @@ const BOT_LABEL: Record<string, string> = {
   multi_ua: "Multi-UA device farm (same IP, many devices)",
 };
 
+function DataManagementCard() {
+  const { retentionDays, isLoading: retentionLoading, save } = useRetentionDays();
+  const purge = usePurgeAnalyticsNow();
+  const deleteAll = useDeleteAllAnalyticsData();
+  const deleteGsc = useDeleteGscData();
+  const [draft, setDraft] = useState<string>("2");
+  const [confirmAll, setConfirmAll] = useState(false);
+  const [confirmGsc, setConfirmGsc] = useState(false);
+
+  return (
+    <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <h3 className="text-sm font-semibold text-slate-800">Data Management</h3>
+      <p className="mt-1 text-xs text-slate-500">
+        Analytics data (visits, sessions, replays, search intents) is deleted automatically once it is older than
+        the retention period. Runs nightly (03:00) plus a safety sweep every 6 hours.
+      </p>
+
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <div className="flex items-center gap-2">
+          <label className="text-xs font-medium text-slate-600">Delete after</label>
+          <input
+            type="number"
+            min={1}
+            max={3650}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            className="w-20 rounded-lg border border-slate-200 px-2 py-1.5 text-sm"
+          />
+          <span className="text-xs text-slate-500">days</span>
+        </div>
+        <Button
+          size="sm"
+          variant="default"
+          disabled={save.isPending}
+          onClick={() => {
+            const n = Number(draft);
+            if (!Number.isInteger(n) || n < 1) return;
+            save.mutate(n);
+          }}
+        >
+          {save.isPending ? "Saving…" : `Save (current: ${retentionLoading ? "…" : retentionDays})`}
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={purge.isPending}
+          onClick={() => { void purge.mutate(); }}
+        >
+          {purge.isPending ? "Purging…" : "Purge now"}
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={deleteAll.isPending}
+          onClick={() => { void deleteAll.mutate(); }}
+        >
+          {deleteAll.isPending ? "Deleting…" : "Delete ALL analytics data"}
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={deleteGsc.isPending}
+          onClick={() => { void deleteGsc.mutate(); }}
+        >
+          {deleteGsc.isPending ? "Clearing…" : "Clear Google (GSC) data"}
+        </Button>
+      </div>
+
+      {(purge.data || deleteAll.data || deleteGsc.data) && (
+        <p className="mt-3 text-xs font-medium text-emerald-700">
+          Done —{" "}
+          {[
+            purge.data && `purge deleted ${purge.data.deleted} session(s)`,
+            deleteAll.data && `wipe removed ${deleteAll.data.deleted} session(s)`,
+            deleteGsc.data && `GSC: ${deleteGsc.data.deleted} record(s) cleared`,
+          ]
+            .filter(Boolean)
+            .join(" · ")}
+        </p>
+      )}
+      {(purge.error || deleteAll.error || deleteGsc.error) && (
+        <p className="mt-3 text-xs font-medium text-red-600">
+          Failed: {(purge.error || deleteAll.error || deleteGsc.error)?.message}
+        </p>
+      )}
+      {(confirmAll || confirmGsc) && (
+        <div className="mt-3 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700">
+          <span>
+            {confirmGsc
+              ? "Clear stored Google Search Console tokens & cached data — Google account access will be removed."
+              : "This permanently deletes ALL visitor analytics data (sessions, logs, replays). Irreversible."}
+          </span>
+          <Button
+            size="sm"
+            variant="destructive"
+            onClick={() => {
+              if (confirmGsc) { void deleteGsc.mutate(); setConfirmGsc(false); }
+              if (confirmAll) { void deleteAll.mutate(); setConfirmAll(false); }
+            }}
+          >
+            Yes, delete
+          </Button>
+          <Button size="sm" variant="ghost" onClick={() => { setConfirmAll(false); setConfirmGsc(false); }}>
+            Cancel
+          </Button>
+        </div>
+      )}
+    </section>
+  );
+}
+
 export default function ReplaysBrowser() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [kind, setKind] = useState<"all" | "humans" | "bots">("all");
   const [page, setPage] = useState(1);
-  const { sessions, totals, page: currentPage, totalPages, isLoading, error } = useReplaySessions({ page, kind });
+  const { range } = useAnalyticsRange();
+  const { sessions, totals, page: currentPage, totalPages, isLoading, error } = useReplaySessions({ page, kind, range });
   const { replay, isLoading: replayLoading } = useReplay(selectedId);
   const deleteReplay = useDeleteReplay();
 
@@ -39,6 +164,8 @@ export default function ReplaysBrowser() {
 
   return (
     <div className="space-y-6">
+      <DataManagementCard />
+
       {!isLoading && !error && (
         <div className="flex flex-wrap items-center gap-2">
           {(
@@ -86,7 +213,7 @@ export default function ReplaysBrowser() {
         <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center text-sm text-slate-500 shadow-sm">
           {kind === "bots"
             ? "No bot sessions on record. Nice."
-            : "No recordings yet. Browse the public site in another tab — batches arrive every ~5 seconds and appear here."}
+            : "No recordings in this range yet. Browse the public site in another tab — the first batch arrives within seconds and appears here."}
         </div>
       )}
 
@@ -97,6 +224,7 @@ export default function ReplaysBrowser() {
               <thead>
                 <tr className="bg-slate-800 text-xs uppercase tracking-wider text-white">
                   <th className="rounded-tl-lg px-5 py-2.5 font-medium">Started</th>
+                  <th className="px-5 py-2.5 font-medium">Duration</th>
                   <th className="px-5 py-2.5 font-medium">Last Activity</th>
                   <th className="px-5 py-2.5 font-medium">Country</th>
                   <th className="px-5 py-2.5 font-medium">Type</th>
@@ -116,6 +244,7 @@ export default function ReplaysBrowser() {
                         }`}
                       >
                         <td className="whitespace-nowrap px-5 py-2.5 font-medium text-slate-800">{fmtDate(s.startedAt)}</td>
+                        <td className="whitespace-nowrap px-5 py-2.5 text-slate-600">{fmtDuration(s.durationSec)}</td>
                         <td className="whitespace-nowrap px-5 py-2.5 text-slate-600">{fmtDate(s.lastEventAt)}</td>
                         <td className="whitespace-nowrap px-5 py-2.5 text-slate-600">{s.country || "—"}</td>
                         <td className="whitespace-nowrap px-5 py-2.5">
@@ -156,7 +285,7 @@ export default function ReplaysBrowser() {
                       </tr>
                       {isOpen && (
                         <tr className="bg-white">
-                          <td colSpan={7} className="border-b border-indigo-100 p-0">
+                          <td colSpan={8} className="border-b border-indigo-100 p-0">
                             <div className="border-t border-indigo-100 bg-slate-50">
                               <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-2.5">
                                 <span className="text-sm font-medium text-slate-700">

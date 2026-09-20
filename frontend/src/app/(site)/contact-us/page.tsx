@@ -23,7 +23,7 @@ import ContactFormClient from "@/feature/contact/components/ContactFormClient";
 
 export const revalidate = 60;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://flagjourneys.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 const SALES_PHONE = process.env.NEXT_PUBLIC_SALES_PHONE || "+91 91367 39178";
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919136739178";
 const CLEAN_PHONE = SALES_PHONE.replace(/[^0-9+]/g, "");
@@ -32,10 +32,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const cmsPage = await fetchBySlug<CmsPage>("/cms/by-slug", "contact-us");
 
   const title =
-    cmsPage?.seoTitle || cmsPage?.title || "Contact Us | Flag Journeys - Get in Touch for Custom Tours";
+    cmsPage?.seoTitle || cmsPage?.title || "Contact Us | Koikoi travel - Get in Touch for Custom Tours";
   const description =
     stripHtml(cmsPage?.seoDescription || cmsPage?.moreDescription || "").slice(0, 160) ||
-    "Contact Flag Journeys for custom India tour packages, cab rentals, and 24/7 travel assistance. Reach us via phone, email, or visit our head office in New Delhi.";
+    "Contact Koikoi travel for custom India tour packages, cab rentals, and 24/7 travel assistance. Reach us via phone, email, or visit our head office in New Delhi.";
   const canonical = cmsPage?.canonical || "/contact-us";
 
   return {
@@ -43,13 +43,14 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     keywords:
       cmsPage?.seoKeyword ||
-      "contact flagjourney holiday, travel agency contact delhi, india tour package inquiry, flagjourney holidays phone number",
+      "contact koikoitravel holiday, travel agency contact delhi, india tour package inquiry, koikoitravel holidays phone number",
     alternates: { canonical },
     openGraph: {
       title,
       description,
       url: canonical,
       type: "website",
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Koikoi travel" }],
     },
   };
 }
@@ -65,13 +66,13 @@ export default async function ContactUsPage() {
   const contactOrganizationSchema = {
     "@context": "https://schema.org",
     "@type": "TravelAgency",
-    name: "Flag Journeys",
+    name: "Koikoi travel",
     url: SITE_URL,
-    logo: `${SITE_URL}/logo.png`,
-    image: `${SITE_URL}/logo.png`,
+    logo: `${SITE_URL}/logo-with-name.png`,
+    image: `${SITE_URL}/logo-with-name.png`,
     priceRange: "₹₹",
     telephone: CLEAN_PHONE,
-    email: "support@flagjourneys.com",
+    email: "support@koikoitravel.com",
     address: {
       "@type": "PostalAddress",
       streetAddress: "102, Destination Hub, MG Road",
@@ -160,7 +161,7 @@ export default async function ContactUsPage() {
                 </div>
                 <div>
                   <h3 className="text-xl font-extrabold text-slate-900 font-heading">Why Plan With Us?</h3>
-                  <p className="text-xs font-semibold text-[#2E8B8B]">Flag Journeys Travel Promise</p>
+                  <p className="text-xs font-semibold text-[#2E8B8B]">Koikoi travel Travel Promise</p>
                 </div>
               </div>
 
@@ -178,7 +179,7 @@ export default async function ContactUsPage() {
                 </div>
 
                 <div className="flex items-start gap-3.5">
-                  <div className="w-9 h-9 rounded-xl bg-orange-50 text-[#D4561A] flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-9 h-9 rounded-xl bg-orange-50 text-[#F8904D] flex items-center justify-center shrink-0 mt-0.5">
                     <ShieldCheck size={18} />
                   </div>
                   <div>
@@ -250,18 +251,18 @@ export default async function ContactUsPage() {
           {/* Card 2: Phone / WhatsApp (Using Environment Variables) */}
           <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between space-y-4">
             <div className="space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-[#D4561A]/10 text-[#D4561A] flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-[#F8904D]/10 text-[#F8904D] flex items-center justify-center">
                 <Phone size={24} />
               </div>
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#D4561A]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#F8904D]">
                   24/7 Helpline
                 </span>
                 <h3 className="text-lg font-bold text-slate-900 mt-0.5">Call / WhatsApp</h3>
                 <div className="text-sm text-slate-600 leading-relaxed mt-2 space-y-1">
                   <p>
                     <strong>Phone:</strong>{" "}
-                    <a href={`tel:${CLEAN_PHONE}`} className="hover:text-[#D4561A] transition-colors font-medium">
+                    <a href={`tel:${CLEAN_PHONE}`} className="hover:text-[#F8904D] transition-colors font-medium">
                       {SALES_PHONE}
                     </a>
                   </p>
@@ -271,7 +272,7 @@ export default async function ContactUsPage() {
                       href={`https://wa.me/${WHATSAPP_NUMBER}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-[#D4561A] transition-colors font-medium"
+                      className="hover:text-[#F8904D] transition-colors font-medium"
                     >
                       +{WHATSAPP_NUMBER}
                     </a>
@@ -297,13 +298,13 @@ export default async function ContactUsPage() {
                 <h3 className="text-lg font-bold text-slate-900 mt-0.5">Send an Email</h3>
                 <div className="text-sm text-slate-600 leading-relaxed mt-2 space-y-1">
                   <p>
-                    <a href="mailto:support@flagjourneys.com" className="hover:text-indigo-600 transition-colors font-medium">
-                      support@flagjourneys.com
+                    <a href="mailto:support@koikoitravel.com" className="hover:text-indigo-600 transition-colors font-medium">
+                      support@koikoitravel.com
                     </a>
                   </p>
                   <p>
-                    <a href="mailto:info@flagjourneys.com" className="hover:text-indigo-600 transition-colors font-medium">
-                      info@flagjourneys.com
+                    <a href="mailto:info@koikoitravel.com" className="hover:text-indigo-600 transition-colors font-medium">
+                      info@koikoitravel.com
                     </a>
                   </p>
                 </div>
@@ -370,7 +371,7 @@ export default async function ContactUsPage() {
                 <span>Can I customize an itinerary according to my budget?</span>
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed pl-6">
-                Yes, absolutely! Every package listed on Flag Journeys can be tailored to suit your specific dates, preferred hotel category (Standard, Deluxe, Luxury), vehicle type, and budget.
+                Yes, absolutely! Every package listed on Koikoi travel can be tailored to suit your specific dates, preferred hotel category (Standard, Deluxe, Luxury), vehicle type, and budget.
               </p>
             </div>
 

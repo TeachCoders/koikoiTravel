@@ -1,4 +1,4 @@
-# Architecture — Flag Journeys
+# Architecture — Koikoi travel
 
 ## High-level
 

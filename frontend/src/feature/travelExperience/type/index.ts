@@ -5,6 +5,19 @@ export interface Banner {
   images: string[];
 }
 
+export interface TravelExperienceCity {
+  id: number;
+  title: string;
+  slug: string;
+  thumbImg?: string;
+  state?: {
+    id: number;
+    title: string;
+    slug: string;
+    country?: { id: number; title: string; slug: string };
+  };
+}
+
 export interface TravelExperience {
   id: number;
   title: string;
@@ -26,6 +39,8 @@ export interface TravelExperience {
   displayOrder?: number;
   banner?: Banner | null;
   faqs?: { id?: number; ques: string; ans: string }[];
+  cities?: TravelExperienceCity[];
+  cityOrder?: number[];
 }
 
 export interface TravelExperiencePayload {
@@ -50,6 +65,7 @@ export interface TravelExperiencePayload {
   bannerTag?: string;
   bannerImages?: string[];
   faqs?: { ques: string; ans: string }[];
+  cityIds?: number[];
 }
 
 export interface PaginatedResponse<T> {

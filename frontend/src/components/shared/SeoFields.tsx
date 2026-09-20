@@ -75,7 +75,7 @@ export default function SeoFields({
 }: SeoFieldsProps) {
   const [mediaOpen, setMediaOpen] = useState(false);
   const userEditedSlug = useRef(false);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://flagjourneys.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 
   useEffect(() => {
     if (formData.slug) {
@@ -144,7 +144,7 @@ export default function SeoFields({
               placeholder="e.g. Best India Tour Packages"
             />
             <p className="text-[10px] text-slate-400">
-              Appears in the browser tab and Google search results.
+              Appears in the browser tab and Google search results. Write the full title — add " | Koikoi travel" at the end yourself if you want the brand to show; it is not added automatically.
             </p>
           </div>
 

@@ -102,7 +102,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
 
   return embedded ? (
     <div className="w-full">
-      <div className={cn("p-4", !hideHeader && "bg-[#FFF4EE] border border-[#D4561A]/15 rounded-2xl shadow-sm")}>
+      <div className={cn("p-4", !hideHeader && "bg-[#FFF4EE] border border-[#F8904D]/15 rounded-2xl shadow-sm")}>
         {!hideHeader && embeddedHeader}
         <form onSubmit={handleSubmit} className="space-y-3">
           <Field hideLabel label="Full Name" name="name" type="text" value={data.name} onChange={handleChange} placeholder="Full Name *" required />
@@ -213,7 +213,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
             className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm placeholder-slate-400 focus:outline-none focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 transition-all duration-150 resize-none font-medium" />
 
           <button type="submit" disabled={isLoading}
-            className="w-full bg-[#D4561A] hover:bg-[#b84a16] text-white active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed font-bold text-sm uppercase tracking-wider py-3.5 rounded-xl transition-all duration-150 shadow-md shadow-[#D4561A]/20 flex items-center justify-center gap-2 mt-2">
+            className="w-full bg-[#F8904D] hover:bg-[#d57c42] text-white active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed font-bold text-sm uppercase tracking-wider py-3.5 rounded-xl transition-all duration-150 shadow-md shadow-[#F8904D]/20 flex items-center justify-center gap-2 mt-2">
             {isLoading ? (
               <>
                 <PageLoader size="inline" />

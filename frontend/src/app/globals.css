@@ -63,15 +63,15 @@
 
   --color-brand-navy: #1C1C1C;
   --color-brand-teal: #2E8B8B;
-  --color-brand-gold: #D4561A;
+  --color-brand-gold: #F8904D;
 
   --color-brand-primary: #1C1C1C;
   --color-brand-primary-light: #f0f0f0;
   --color-brand-primary-hover: #333333;
-  --color-brand-primary-focus: #D4561A;
+  --color-brand-primary-focus: #F8904D;
 
   --color-brand-success: #1C1C1C;
-  --color-brand-warning: #D4561A;
+  --color-brand-warning: #F8904D;
 
 
   --color-brand-neutral: #475569;
@@ -225,19 +225,19 @@
   /* ===== Buttons ===== */
 
   .btn-primary {
-    @apply bg-[#D4561A] text-white font-semibold rounded-xl shadow-sm hover:bg-[#C24D15] hover:shadow-md transition-all duration-200 cursor-pointer;
+    @apply bg-[#F8904D] text-white font-semibold rounded-xl shadow-sm hover:bg-[#D87E43] hover:shadow-md transition-all duration-200 cursor-pointer;
   }
 
   .btn-primary-sm {
-    @apply bg-[#D4561A] text-white font-semibold text-xs rounded-lg px-3.5 py-1.5 shadow-sm hover:bg-[#C24D15] hover:shadow-md transition-all duration-200 cursor-pointer;
+    @apply bg-[#F8904D] text-white font-semibold text-xs rounded-lg px-3.5 py-1.5 shadow-sm hover:bg-[#D87E43] hover:shadow-md transition-all duration-200 cursor-pointer;
   }
 
   .btn-outline {
-    @apply border border-[#D4561A]/30 text-[#D4561A] bg-transparent font-semibold rounded-xl hover:bg-[#D4561A] hover:text-white transition-all duration-200 cursor-pointer;
+    @apply border border-[#F8904D]/30 text-[#F8904D] bg-transparent font-semibold rounded-xl hover:bg-[#F8904D] hover:text-white transition-all duration-200 cursor-pointer;
   }
 
   .btn-ghost {
-    @apply bg-transparent text-[#D4561A] font-semibold rounded-xl hover:bg-[#D4561A]/5 transition-all duration-200 cursor-pointer;
+    @apply bg-transparent text-[#F8904D] font-semibold rounded-xl hover:bg-[#F8904D]/5 transition-all duration-200 cursor-pointer;
   }
 
   /* ===== Lightbox prev/next buttons ===== */
@@ -295,15 +295,15 @@
   }
 
   .btn-gold {
-    @apply bg-[#D4561A] text-white font-bold rounded-xl shadow-sm hover:bg-[#C24D15] hover:shadow-md transition-all duration-200 cursor-pointer;
+    @apply bg-[#F8904D] text-white font-bold rounded-xl shadow-sm hover:bg-[#D87E43] hover:shadow-md transition-all duration-200 cursor-pointer;
   }
 
   .btn-cta {
-    @apply bg-[#D4561A] text-white font-semibold rounded-xl hover:bg-[#C24D15] transition-all duration-200 cursor-pointer;
+    @apply bg-[#F8904D] text-white font-semibold rounded-xl hover:bg-[#D87E43] transition-all duration-200 cursor-pointer;
   }
 
   .btn-faq-open {
-    @apply bg-[#D4561A] text-white;
+    @apply bg-[#F8904D] text-white;
   }
 
   .btn-faq-closed {
@@ -319,7 +319,7 @@
   /* ===== Accent / Label Utilities ===== */
 
   .accent-bar {
-    @apply w-1 h-5 rounded-full inline-block bg-[#D4561A];
+    @apply w-1 h-5 rounded-full inline-block bg-[#F8904D];
   }
 
   .accent-label {
@@ -331,7 +331,7 @@
   }
 
   .tag-badge {
-    @apply text-[11px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1 bg-[#D4561A] text-white;
+    @apply text-[11px] font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1 bg-[#F8904D] text-white;
   }
 
   .faq-tag {
@@ -339,7 +339,7 @@
   }
 
   .faq-card-open {
-    @apply border-[#D4561A]/30;
+    @apply border-[#F8904D]/30;
   }
 
   .faq-card-closed {
@@ -353,7 +353,7 @@
   /* ===== Icon / Color Utilities ===== */
 
   .text-accent {
-    @apply text-[#D4561A];
+    @apply text-[#F8904D];
   }
 
   .text-teal {
@@ -651,6 +651,11 @@
   .rich-text a {
     color: #2E8B8B;
     text-decoration: underline;
+  }
+
+  .rich-text-plain-links a {
+    color: inherit;
+    text-decoration: none;
   }
 
   .rich-text strong {

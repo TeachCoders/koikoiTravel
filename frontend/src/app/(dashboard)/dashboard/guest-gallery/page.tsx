@@ -128,13 +128,13 @@ export default function GuestGalleryAdmin() {
           <h1 className="text-2xl font-bold text-slate-800">Guest Gallery & Traveler Moments</h1>
           <p className="text-slate-500 mt-1">Manage traveler photos shown in the slider and upcoming gallery page.</p>
         </div>
-        <Button onClick={openAddModal} className="flex items-center gap-2 bg-[#D4561A] hover:bg-[#b04513]">
+        <Button onClick={openAddModal} className="flex items-center gap-2 bg-[#F8904D] hover:bg-[#c3713d]">
           <Plus size={18} /> Add Photo
         </Button>
       </div>
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-20"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#D4561A]"></div></div>
+        <div className="flex items-center justify-center py-20"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F8904D]"></div></div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {[...(data?.data || [])].sort((a, b) => a.displayOrder - b.displayOrder).map((item) => (
@@ -145,7 +145,7 @@ export default function GuestGalleryAdmin() {
                   <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">Hidden</div>
                 )}
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                  <button onClick={() => openEditModal(item)} className="p-2 bg-white rounded-full text-slate-800 hover:text-[#D4561A] transition-colors"><Edit2 size={18} /></button>
+                  <button onClick={() => openEditModal(item)} className="p-2 bg-white rounded-full text-slate-800 hover:text-[#F8904D] transition-colors"><Edit2 size={18} /></button>
                   <button onClick={() => handleDelete(item.id)} className="p-2 bg-white rounded-full text-slate-800 hover:text-red-600 transition-colors"><Trash2 size={18} /></button>
                 </div>
               </div>
@@ -198,7 +198,7 @@ export default function GuestGalleryAdmin() {
                 <label className="block text-sm font-semibold text-slate-700 mb-1">Caption</label>
                 <input 
                   type="text" 
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#D4561A]/20 focus:border-[#D4561A] outline-none" 
+                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#F8904D]/20 focus:border-[#F8904D] outline-none" 
                   value={formData.caption} 
                   onChange={(e) => setFormData({...formData, caption: e.target.value})} 
                   placeholder="e.g. Amazing time at the Taj Mahal!"
@@ -209,7 +209,7 @@ export default function GuestGalleryAdmin() {
                 <label className="block text-sm font-semibold text-slate-700 mb-1">Location</label>
                 <input 
                   type="text" 
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#D4561A]/20 focus:border-[#D4561A] outline-none" 
+                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#F8904D]/20 focus:border-[#F8904D] outline-none" 
                   value={formData.location} 
                   onChange={(e) => setFormData({...formData, location: e.target.value})} 
                   placeholder="e.g. Agra, India"
@@ -221,7 +221,7 @@ export default function GuestGalleryAdmin() {
                   <label className="block text-sm font-semibold text-slate-700 mb-1">Display Order</label>
                   <input 
                     type="number" 
-                    className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#D4561A]/20 focus:border-[#D4561A] outline-none" 
+                    className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-[#F8904D]/20 focus:border-[#F8904D] outline-none" 
                     value={formData.displayOrder} 
                     onChange={(e) => setFormData({...formData, displayOrder: Number(e.target.value)})} 
                   />
@@ -230,7 +230,7 @@ export default function GuestGalleryAdmin() {
                   <label className="flex items-center gap-2 mb-3 cursor-pointer">
                     <input 
                       type="checkbox" 
-                      className="w-5 h-5 rounded text-[#D4561A] focus:ring-[#D4561A]"
+                      className="w-5 h-5 rounded text-[#F8904D] focus:ring-[#F8904D]"
                       checked={formData.isActive}
                       onChange={(e) => setFormData({...formData, isActive: e.target.checked})}
                     />
@@ -241,7 +241,7 @@ export default function GuestGalleryAdmin() {
 
               <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
                 <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-                <Button type="submit" disabled={isUploading || createMutation.isPending || updateMutation.isPending} className="bg-[#D4561A] hover:bg-[#b04513]">
+                <Button type="submit" disabled={isUploading || createMutation.isPending || updateMutation.isPending} className="bg-[#F8904D] hover:bg-[#c3713d]">
                   {isUploading ? 'Uploading...' : editingId ? 'Save Changes' : 'Upload Photo'}
                 </Button>
               </div>
