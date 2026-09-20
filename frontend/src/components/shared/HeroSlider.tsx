@@ -46,15 +46,8 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
         style={{ transform: `translateX(-${current * 100}%)` }}
       >
         {validImages.map((img, i) => (
-          <div key={i} className="relative w-full h-full shrink-0">
-            <Image
-              src={img}
-              alt={alt}
-              fill
-              priority={i === 0}
-              sizes="100vw"
-              className="object-cover object-center"
-            />
+          <div key={i} className="relative w-full h-full shrink-0 bg-[#1C1C1C]">
+            <SlideImage src={img} alt={alt} priority={i === 0} />
           </div>
         ))}
       </div>
@@ -78,5 +71,28 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
         </>
       )}
     </div>
+  );
+}
+
+function SlideImage({ src, alt, priority }: { src: string; alt: string; priority?: boolean }) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      priority={priority}
+      loading={priority ? undefined : "eager"}
+      sizes="100vw"
+      onLoad={() => setLoaded(true)}
+      unoptimized={
+        typeof src === "string" &&
+        src.startsWith("/") &&
+        /\.(webp|avif)$/i.test(src)
+      }
+      className={`object-cover object-center transition-opacity duration-700 ease-out ${
+        loaded ? "opacity-100" : "opacity-0"
+      }`}
+    />
   );
 }

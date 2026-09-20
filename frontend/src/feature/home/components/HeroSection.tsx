@@ -29,7 +29,7 @@ export const HeroSection: React.FC = () => {
   }, [next]);
 
   return (
-    <section className="relative min-h-[600px] lg:min-h-[680px] flex items-center justify-center overflow-hidden py-14 lg:py-20 bg-slate-900">
+    <section className="relative min-h-[600px] lg:min-h-[680px] flex items-center justify-center overflow-hidden py-14 lg:py-20 bg-[#1C1C1C]">
       <div className="absolute inset-0 flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${current * 100}%)` }}>
         {SLIDES.map((s, i) => (
           <div key={i} className="relative w-full h-full shrink-0">
@@ -38,6 +38,8 @@ export const HeroSection: React.FC = () => {
               alt={s.alt}
               fill
               priority={i === 0}
+              unoptimized
+              {...(!i ? {} : { loading: "eager" as const, decoding: "async" as const })}
               className="object-cover object-center"
               theme="dark"
             />

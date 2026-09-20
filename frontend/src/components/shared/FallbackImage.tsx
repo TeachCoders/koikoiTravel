@@ -14,6 +14,7 @@ export interface FallbackImageProps extends Omit<React.ImgHTMLAttributes<HTMLIma
   fill?: boolean;
   priority?: boolean;
   quality?: number;
+  unoptimized?: boolean;
 }
 
 /**
@@ -33,6 +34,7 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
   fill,
   priority,
   quality = 80,
+  unoptimized,
   ...props
 }) => {
   const isThirdParty =
@@ -42,9 +44,11 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
       src.includes("placeholder.com"));
 
   const [error, setError] = useState(!src || isThirdParty);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setError(!src || isThirdParty);
+    setLoaded(false);
   }, [src, isThirdParty]);
 
   if (error || !src || isThirdParty) {
@@ -56,7 +60,7 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
           fill ? "absolute inset-0" : "relative"
         } flex flex-col items-center justify-center overflow-hidden select-none p-4 w-full h-full ${
           isDark
-            ? "bg-slate-950/90"
+            ? "bg-[#1C1C1C]/90"
             : "bg-slate-100/70 border border-slate-200/60"
         } ${containerClassName || className}`}
         style={aspectRatio ? { aspectRatio } : undefined}
@@ -88,9 +92,18 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
     <Image
       src={src}
       alt={alt}
-      className={className}
+      className={`${className} transition-opacity duration-700 ease-out ${
+        loaded ? "opacity-100" : "opacity-0"
+      }`}
+      onLoad={() => setLoaded(true)}
       onError={() => setError(true)}
-      unoptimized={typeof src === "string" && (src.startsWith("http") || src.startsWith("//"))}
+      unoptimized={
+        unoptimized ??
+        (typeof src === "string" &&
+          (src.startsWith("//") ||
+            src.startsWith("http") ||
+            (src.startsWith("/") && /\.(webp|avif|gif|svg)$/i.test(src))))
+      }
       fill={fill}
       priority={priority}
       quality={quality}
