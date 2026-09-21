@@ -74,11 +74,13 @@ export async function createLead({
   countryId = geoResolved.countryId;
   location = geoResolved.location;
 
-  // ── Duplicate prevention: reuse existing lead within 30 days ──
-  const LEAD_REUSE_MS = 30 * 24 * 60 * 60 * 1000;
+  // ── Duplicate prevention: reuse the existing lead for this phone ──
+  // Traveller.phone is UNIQUE, so a 30-day window would break when an old
+  // lead (>30 days) exists → unique constraint (P2002) on create. Match the
+  // schema and look up by phone with no time window.
   if (phone) {
     const existing = await prisma.traveller.findFirst({
-      where: { phone, createdAt: { gte: new Date(Date.now() - LEAD_REUSE_MS) } },
+      where: { phone },
       orderBy: { createdAt: "desc" },
     });
     if (existing) {
