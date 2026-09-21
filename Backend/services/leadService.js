@@ -112,6 +112,25 @@ export async function createLead({
         logger.error("Failed to send Telegram alert for repeat lead:", { message: tgErr.message });
       }
 
+      // 🔔 Notify the dashboard bell for repeat inquiries too (repeat leads
+      // previously never peaked the notification bell because notifications
+      // were only created on the brand-new-lead path).
+      const repeatSourceLabel = source === "chat" ? "Chat" : "Website";
+      const repeatNotifDetail = `${updated.name} | ${updated.phone || "N/A"} | ${repeatSourceLabel}`;
+      try {
+        await prisma.notification.create({
+          data: {
+            type: "NEW_LEAD",
+            targetRole: "all",
+            title: "New Lead Received",
+            message: `${repeatNotifDetail} | ${updated.country || "India"} | ${updated.travellerId} | From: ${updated.pageReference || "unknown"}`,
+            link: "/dashboard/my-leads",
+          },
+        });
+      } catch (notifErr) {
+        logger.error("Failed to create notification for repeat lead:", { message: notifErr.message });
+      }
+
       return updated;
     }
   }
