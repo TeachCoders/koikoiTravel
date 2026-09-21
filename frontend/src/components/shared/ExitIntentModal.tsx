@@ -1,9 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import TourBookingForm from "@/feature/leads/components/TourBookingForm";
 import { Sparkles, CheckCircle2, ShieldCheck, Gift } from "lucide-react";
+
+// The booking form pulls in react-day-picker / date-fns / the country data file,
+// so it is only fetched if the visitor actually triggers the exit-intent dialog.
+const TourBookingForm = dynamic(
+  () => import("@/feature/leads/components/TourBookingForm"),
+  { ssr: false }
+);
 
 export default function ExitIntentModal() {
   const [open, setOpen] = useState(false);

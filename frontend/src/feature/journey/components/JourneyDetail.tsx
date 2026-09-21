@@ -624,7 +624,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
             <div className="max-w-5xl">
               <span className="accent-label">Know More</span>
-              <h2 className="h3 text-[#1C1C1C] mt-2 mb-5 md:mb-8">Everything About {journey.title}</h2>
+              <h2 className="h3 text-[#1C1C1C] mt-2 mb-5 md:mb-8">Everything About {pageH1}</h2>
 
               {journey.seoDescription && (
                 <RichContent html={linkKeywords(journey.seoDescription, paragraphLinkRules)} />

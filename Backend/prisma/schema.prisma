@@ -691,6 +691,7 @@ model TravelExperience {
   cities      City[]
   cityOrder   Int[]
   journeys    Journey[]
+  featuredJourneyOrder Int[] @default([])
 }
 
 model Faq {

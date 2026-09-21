@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import RichContent from "@/components/shared/RichContent";
-import TrackMissingContent from "@/components/shared/TrackMissingContent";
 import { autoLinkKeywords } from "@/lib/autoInternalLink";
 import type { CmsPage } from "@/feature/cms/type";
 import CmsGuestGalleryWrapper from "@/feature/guestGallery/components/CmsGuestGalleryWrapper";
@@ -14,14 +13,10 @@ const cleanTitle = (rawTitle: string) => {
 export default function CmsPageDetail({ page }: { page: CmsPage }) {
   const displayTitle = cleanTitle(page.h1Title || page.title || "Page");
   const hasThumb = Boolean(page.thumbImg);
-  const hasContent = Boolean(page.seoDescription) || Boolean(page.moreDescription);
   const isGuestGalleryPage = page.slug === "guest-gallery" || page.title?.toLowerCase().includes("guest gallery");
 
   return (
     <div>
-      {/* Track rendered-but-empty pages (data not found) under 404 analytics */}
-      {!hasContent && !isGuestGalleryPage && <TrackMissingContent />}
-
       {/* ===== HERO / HEADER ===== */}
       <section
         className={`relative ${

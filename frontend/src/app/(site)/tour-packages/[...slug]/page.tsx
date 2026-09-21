@@ -190,7 +190,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
     case "journey": {
       const { journey } = resolved;
-      const title = journey.seoTitle || journey.title;
+      const title = journey.seoTitle || journey.h1Title || journey.title;
       const seoDescription = stripHtml(journey.seoDescription || journey.overView).slice(0, 160);
       const canonical = journeySlugCanonical(journey.slug, journey.canonical);
       const ogImage = absoluteUrl(journey.thumbImg);
@@ -297,9 +297,9 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
           image: state.thumbImg || undefined,
           url: `/tour-packages/${state.country?.slug}/${state.slug}`,
         }),
-        itemListSchema(
+itemListSchema(
           stateJourneys.slice(0, 10).map((j) => ({
-            name: j.title.split("|")[0].trim(),
+            name: (j.h1Title || j.title).split("|")[0].trim(),
             url: `/tour-packages/${j.slug}`,
           }))
         ),
@@ -337,7 +337,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
         }),
         itemListSchema(
           (initialJourneys?.data || []).slice(0, 10).map((j) => ({
-            name: j.title.split("|")[0].trim(),
+            name: (j.h1Title || j.title).split("|")[0].trim(),
             url: `/tour-packages/${j.slug}`,
           }))
         ),
@@ -385,10 +385,10 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
           path: `/tour-packages/${firstCity.state.country.slug}/${firstCity.state.slug}`,
         });
       }
-      breadcrumbItems.push({ name: journey.title, path: canonical });
+      breadcrumbItems.push({ name: journey.h1Title || journey.title, path: canonical });
 
       const tourProductNode = touristTripSchema({
-        name: journey.title,
+        name: journey.h1Title || journey.title,
         description: journey.seoDescription || journey.overView || undefined,
         image: journey.banner?.images?.[0] || journey.thumbImg || undefined,
         url: canonical,

@@ -1,9 +1,16 @@
 "use client";
 
 import React, { ReactNode, useState } from "react";
+import dynamic from "next/dynamic";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
-import TourBookingForm from "@/feature/leads/components/TourBookingForm";
 import Link from "next/link";
+
+// The booking form pulls in react-day-picker / date-fns / the country data file,
+// so it is only fetched the first time the dialog is opened.
+const TourBookingForm = dynamic(
+  () => import("@/feature/leads/components/TourBookingForm"),
+  { ssr: false }
+);
 
 const SALES_PHONE = process.env.NEXT_PUBLIC_SALES_PHONE || "+919136739178";
 

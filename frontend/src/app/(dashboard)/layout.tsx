@@ -126,7 +126,7 @@ const sidebarSections: SidebarSection[] = [{
   teams: ["it"],
   bgColor: "", headerBg: "", headerText: "",
   items: [
-    { name: "Analytics(Visiter tracking)", href: "/dashboard/analytics", icon: LineChart, teams: ["it"], superAdminOnly: true },
+    { name: "Analytics(Video Replay)", href: "/dashboard/analytics/replays", icon: LineChart, teams: ["it"], superAdminOnly: true },
     { name: "System Settings", href: "/dashboard/it", icon: MonitorCog, teams: ["it"] },
     { name: "Top Selling Packages", href: "/dashboard/best-selling", icon: TrendingUp, teams: ["it"] },
     { name: "Countries", href: "/dashboard/country", icon: Globe, teams: ["it"] },

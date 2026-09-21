@@ -9,7 +9,6 @@ import {
   useRetentionDays,
   usePurgeAnalyticsNow,
   useDeleteAllAnalyticsData,
-  useDeleteGscData,
 } from "@/feature/analytics/api/useAnalytics";
 import ReplayPlayer from "@/components/analytics/ReplayPlayer";
 import type { ReplaySessionInfo } from "@/feature/analytics/api";
@@ -41,16 +40,14 @@ function DataManagementCard() {
   const { retentionDays, isLoading: retentionLoading, save } = useRetentionDays();
   const purge = usePurgeAnalyticsNow();
   const deleteAll = useDeleteAllAnalyticsData();
-  const deleteGsc = useDeleteGscData();
-  const [draft, setDraft] = useState<string>("2");
+  const [draft, setDraft] = useState<string>("15");
   const [confirmAll, setConfirmAll] = useState(false);
-  const [confirmGsc, setConfirmGsc] = useState(false);
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <h3 className="text-sm font-semibold text-slate-800">Data Management</h3>
       <p className="mt-1 text-xs text-slate-500">
-        Analytics data (visits, sessions, replays, search intents) is deleted automatically once it is older than
+        Visitor session recordings are deleted automatically once they are older than
         the retention period. Runs nightly (03:00) plus a safety sweep every 6 hours.
       </p>
 
@@ -95,51 +92,37 @@ function DataManagementCard() {
         >
           {deleteAll.isPending ? "Deleting…" : "Delete ALL analytics data"}
         </Button>
-        <Button
-          size="sm"
-          variant="outline"
-          disabled={deleteGsc.isPending}
-          onClick={() => { void deleteGsc.mutate(); }}
-        >
-          {deleteGsc.isPending ? "Clearing…" : "Clear Google (GSC) data"}
-        </Button>
       </div>
 
-      {(purge.data || deleteAll.data || deleteGsc.data) && (
+      {(purge.data || deleteAll.data) && (
         <p className="mt-3 text-xs font-medium text-emerald-700">
           Done —{" "}
           {[
             purge.data && `purge deleted ${purge.data.deleted} session(s)`,
             deleteAll.data && `wipe removed ${deleteAll.data.deleted} session(s)`,
-            deleteGsc.data && `GSC: ${deleteGsc.data.deleted} record(s) cleared`,
           ]
             .filter(Boolean)
             .join(" · ")}
         </p>
       )}
-      {(purge.error || deleteAll.error || deleteGsc.error) && (
+      {(purge.error || deleteAll.error) && (
         <p className="mt-3 text-xs font-medium text-red-600">
-          Failed: {(purge.error || deleteAll.error || deleteGsc.error)?.message}
+          Failed: {(purge.error || deleteAll.error)?.message}
         </p>
       )}
-      {(confirmAll || confirmGsc) && (
+      {confirmAll && (
         <div className="mt-3 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700">
           <span>
-            {confirmGsc
-              ? "Clear stored Google Search Console tokens & cached data — Google account access will be removed."
-              : "This permanently deletes ALL visitor analytics data (sessions, logs, replays). Irreversible."}
+            This permanently deletes ALL visitor session recordings. Irreversible.
           </span>
           <Button
             size="sm"
             variant="destructive"
-            onClick={() => {
-              if (confirmGsc) { void deleteGsc.mutate(); setConfirmGsc(false); }
-              if (confirmAll) { void deleteAll.mutate(); setConfirmAll(false); }
-            }}
+            onClick={() => { void deleteAll.mutate(); setConfirmAll(false); }}
           >
             Yes, delete
           </Button>
-          <Button size="sm" variant="ghost" onClick={() => { setConfirmAll(false); setConfirmGsc(false); }}>
+          <Button size="sm" variant="ghost" onClick={() => setConfirmAll(false)}>
             Cancel
           </Button>
         </div>

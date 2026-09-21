@@ -13,6 +13,7 @@ import FaqEditor, { FaqData } from "@/components/shared/FaqEditor";
 import AsyncMultiSelect from "@/components/shared/AsyncMultiSelect";
 import { getCities } from "@/feature/city/api";
 import { getStates } from "@/feature/state/api";
+import { getJourneys } from "@/feature/journey/api";
 import { getCountries } from "@/feature/country/api";
 import {
   useCreateTravelExperience,
@@ -63,6 +64,9 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
 
   const [cityIds, setCityIds] = useState<number[]>(
     (initialData?.cities ?? []).map((c) => c.id)
+  );
+  const [journeyIds, setJourneyIds] = useState<number[]>(
+    (initialData?.journeys ?? []).map((j) => j.id)
   );
   const [filterCountryIds, setFilterCountryIds] = useState<number[]>(
     () =>
@@ -184,6 +188,7 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
       moreDescription: moreDescription.trim() || undefined,
       faqs,
       cityIds,
+      journeyIds,
     };
 
     if (mode === "edit" && initialData?.id) {
@@ -350,6 +355,52 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
               </button>
             )}
           </div>
+        </div>
+
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+          <label className="text-sm font-bold text-slate-700 uppercase tracking-wider block mb-2">
+            Linked Journeys{" "}
+            <span className="text-xs font-normal text-slate-500">
+              — is experience page par top par &quot;Explore More&quot; mein yahi journeys cards dikhte hain, isi
+              order mein.
+            </span>
+          </label>
+          <div className="text-xs text-slate-500 mb-3">
+            Sirf unhi journeys ko select karein jo is experience page par dikhni chahiye. Selected journeys ko
+            drag karke top-order set kar sakte hain.
+          </div>
+
+          <AsyncMultiSelect
+            selectedIds={journeyIds}
+            onChange={setJourneyIds}
+            fetchOptions={async (search) => {
+              const res = await getJourneys({ search, isActive: "true", limit: 100 });
+              return res.data;
+            }}
+            initialOptions={(initialData?.journeys ?? []).map((j) => ({ id: j.id, title: j.title }))}
+            placeholder="Select Journeys *"
+            searchPlaceholder="Search journeys..."
+            onReorder={(fromId, toId) => {
+              const arr = [...journeyIds];
+              const fromIdx = arr.indexOf(fromId);
+              const toIdx = arr.indexOf(toId);
+              if (fromIdx !== -1 && toIdx !== -1) {
+                const [item] = arr.splice(fromIdx, 1);
+                arr.splice(toIdx, 0, item);
+                setJourneyIds(arr);
+              }
+            }}
+          />
+
+          {journeyIds.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setJourneyIds([])}
+              className="text-[10px] font-bold text-red-500 hover:text-red-700 uppercase tracking-wider cursor-pointer mt-3"
+            >
+              Clear All Journeys
+            </button>
+          )}
         </div>
 
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">

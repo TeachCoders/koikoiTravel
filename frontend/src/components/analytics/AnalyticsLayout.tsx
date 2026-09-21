@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
-import { Activity, BarChart3, Compass, MousePointerClick, Radio, Search, Video, TrendingUp } from "lucide-react";
+import { Video } from "lucide-react";
 import { AnalyticsRangeProvider } from "@/feature/analytics/range-context";
 import PrivatePageHeading from "@/components/shared/PrivatePageHeading";
 import { cn } from "@/lib/utils";
@@ -13,14 +13,7 @@ import DateRangeFilter from "./DateRangeFilter";
 type Tab = { href: string; label: string; icon: LucideIcon; exact?: boolean };
 
 const TABS: Tab[] = [
-  { href: "/dashboard/analytics", label: "Overview", icon: BarChart3, exact: true },
-  { href: "/dashboard/analytics/audience", label: "Devices", icon: Activity },
-  { href: "/dashboard/analytics/acquisition", label: "Traffic Sources", icon: Compass },
-  { href: "/dashboard/analytics/behavior", label: "Engagement", icon: MousePointerClick },
-  { href: "/dashboard/analytics/events", label: "Search Intent", icon: Radio },
   { href: "/dashboard/analytics/replays", label: "Visitor Activity (Video)", icon: Video },
-  { href: "/dashboard/analytics/search-console", label: "Search Console", icon: Search },
-  { href: "/dashboard/analytics/search-insights", label: "Search Insights", icon: TrendingUp },
 ];
 
 interface AnalyticsLayoutProps {

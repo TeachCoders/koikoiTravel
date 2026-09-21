@@ -64,9 +64,18 @@ function ExperienceContent({ experience }: { experience: any }) {
     limit: 100,
     isActive: "true",
   });
-  const experienceJourneys = journeys.filter((j) =>
-    (j.travelExperiences || []).some((e: any) => e.slug === experience.slug)
-  );
+  const experienceJourneys = (journeys || [])
+    .filter((j) =>
+      (j.travelExperiences || []).some((e: any) => e.slug === experience.slug)
+    )
+    .sort((a, b) => {
+      const order = experience.featuredJourneyOrder || [];
+      const ai = order.indexOf(a.id);
+      const bi = order.indexOf(b.id);
+      const aRank = ai === -1 ? Number.MAX_SAFE_INTEGER : ai;
+      const bRank = bi === -1 ? Number.MAX_SAFE_INTEGER : bi;
+      return aRank - bRank;
+    });
 
   const [durSelected, setDurSelected] = useState<string[]>([]);
   const [citySelected, setCitySelected] = useState<string[]>([]);

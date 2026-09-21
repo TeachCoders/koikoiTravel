@@ -18,6 +18,14 @@ export interface TravelExperienceCity {
   };
 }
 
+export interface TravelExperienceJourney {
+  id: number;
+  title: string;
+  slug: string;
+  thumbImg?: string;
+  destination?: string;
+}
+
 export interface TravelExperience {
   id: number;
   title: string;
@@ -41,6 +49,8 @@ export interface TravelExperience {
   faqs?: { id?: number; ques: string; ans: string }[];
   cities?: TravelExperienceCity[];
   cityOrder?: number[];
+  journeys?: TravelExperienceJourney[];
+  featuredJourneyOrder?: number[];
 }
 
 export interface TravelExperiencePayload {
@@ -66,6 +76,7 @@ export interface TravelExperiencePayload {
   bannerImages?: string[];
   faqs?: { ques: string; ans: string }[];
   cityIds?: number[];
+  journeyIds?: number[];
 }
 
 export interface PaginatedResponse<T> {

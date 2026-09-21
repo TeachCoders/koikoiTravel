@@ -142,7 +142,10 @@ export default function TourPackagesList({
     }
   };
 
-  const title = country?.title.replace(/\s*Tour$/i, "") || countrySlug;
+  const title =
+    country?.h1Title?.replace(/\s*Tour$/i, "") ||
+    country?.title.replace(/\s*Tour$/i, "") ||
+    countrySlug;
 
   const heroImages = country?.banner?.images?.length
     ? country.banner.images

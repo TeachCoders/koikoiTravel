@@ -1,16 +1,6 @@
-"use client";
-
-import { useEffect } from "react";
 import Link from "next/link";
-import { queueNotFound } from "@/lib/analyticsNotFoundBuffer";
 
 export default function NotFound() {
-  // Let the analytics tracker know the visitor landed on a broken URL.
-  useEffect(() => {
-    queueNotFound();
-    window.dispatchEvent(new CustomEvent("analytics:notfound"));
-  }, []);
-
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-6 text-center">
       <p className="text-[#2E8B8B] text-sm font-bold uppercase tracking-widest mb-3">404</p>

@@ -10,6 +10,9 @@ import {
   refreshIdentity,
 } from "@/lib/analyticsIdentity";
 
+// Replay is ON by default and disabled only when the deployment explicitly
+// opts out at build time (NEXT_PUBLIC_REPLAY_ENABLED=false).
+const REPLAY_ENABLED = process.env.NEXT_PUBLIC_REPLAY_ENABLED !== "false";
 const FLUSH_INTERVAL_MS = 3000;
 const MAX_BATCH_BYTES = 400_000;
 const MAX_RECORDING_MS = 30 * 60 * 1000; // cap a single recording at 30 minutes
@@ -99,6 +102,7 @@ export function useReplayRecorder() {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (!REPLAY_ENABLED) return;
     let cancelled = false;
     let stopFn: (() => void) | null = null;
     let flushTimer: ReturnType<typeof setInterval> | null = null;
