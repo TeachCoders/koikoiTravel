@@ -244,12 +244,8 @@ function ExperienceContent({ experience }: { experience: any }) {
             <div className="lg:col-span-2">
               <span className="accent-label">Know More</span>
 
-              {experience.seoDescription && (
-                <RichContent html={experience.seoDescription} />
-              )}
-
               {experience.moreDescription && (
-                <RichContent html={experience.moreDescription} className={experience.seoDescription ? "mt-8" : ""} />
+                <RichContent html={experience.moreDescription} />
               )}
             </div>
 
