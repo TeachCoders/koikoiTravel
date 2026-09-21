@@ -115,6 +115,8 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
     const newErrors: Record<string, string> = {};
     if (!formData.title.trim()) newErrors.title = "Title is required";
     if (!formData.seoDescription.trim()) newErrors.seoDescription = "Description is required";
+    if (formData.seoDescription.length > 500) newErrors.seoDescription = "Description must be under 500 characters";
+    if (formData.overView.length > 1200) newErrors.overView = "Overview should be under 200 words";
     if (!formData.countryId) newErrors.countryId = "Country is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;

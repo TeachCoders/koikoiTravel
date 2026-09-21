@@ -131,7 +131,7 @@ export default function PackagesExplorer({
     selectedSeasons.length +
     selectedDurations.length;
 
-  const PAGE_SIZE = 12;
+  const PAGE_SIZE = 16;
   const [currentPage, setCurrentPage] = useState(1);
 
   const key = filtered.map((j) => String(j.id ?? "")).join(",");

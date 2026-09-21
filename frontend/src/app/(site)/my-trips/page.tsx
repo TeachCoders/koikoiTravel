@@ -146,7 +146,7 @@ export default function TravellerPortalPage() {
               <ShieldCheck size={16} /> Official Traveller Portal
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1C1C1C]">
-              Koikoi travel <span className="text-[#2E8B8B]">Trip Portal</span>
+              KoiKoi Travel <span className="text-[#2E8B8B]">Trip Portal</span>
             </h1>
           </div>
 
@@ -228,7 +228,7 @@ export default function TravellerPortalPage() {
 
             <div className="mt-8 pt-6 border-t border-slate-100 text-center">
               <p className="text-xs text-slate-400">
-                Need assistance? Call Koikoi travel Concierge at{" "}
+                Need assistance? Call KoiKoi Travel Concierge at{" "}
                 <a href={`tel:${(process.env.NEXT_PUBLIC_SALES_PHONE || "+919136739178").replace(/[^0-9+]/g, "")}`} className="text-[#2E8B8B] font-bold hover:underline">
                   {process.env.NEXT_PUBLIC_SALES_PHONE || "+91 91367 39178"}
                 </a>
@@ -374,7 +374,7 @@ export default function TravellerPortalPage() {
                 </div>
                 <h3 className="text-xl font-bold text-[#1C1C1C]">Upload Advance Payment Receipt</h3>
                 <p className="text-xs text-slate-500 mt-1">
-                  If you have transferred advance booking amount to freeze your hotels & cabs, upload the receipt/screenshot here. This directly registers your payment into Koikoi travel official audit ledger!
+                  If you have transferred advance booking amount to freeze your hotels & cabs, upload the receipt/screenshot here. This directly registers your payment into KoiKoi Travel official audit ledger!
                 </p>
               </div>
 

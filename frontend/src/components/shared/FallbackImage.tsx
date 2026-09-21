@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { ImageWatermark } from "@/components/shared/ImageWatermark";
 
 export interface FallbackImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src"> {
   src?: string | null;
@@ -25,7 +26,7 @@ export interface FallbackImageProps extends Omit<React.ImgHTMLAttributes<HTMLIma
  */
 export const FallbackImage: React.FC<FallbackImageProps> = ({
   src,
-  alt = "Koikoi travel",
+  alt = "KoiKoi Travel",
   fallbackSrc = "/logo-with-name.png",
   className = "",
   containerClassName = "",
@@ -52,65 +53,51 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
   }, [src, isThirdParty]);
 
   if (error || !src || isThirdParty) {
-    const isDark = theme === "dark";
-
     return (
       <div
         className={`${
           fill ? "absolute inset-0" : "relative"
-        } flex flex-col items-center justify-center overflow-hidden select-none p-4 w-full h-full ${
-          isDark
-            ? "bg-[#1C1C1C]/90"
-            : "bg-slate-100/70 border border-slate-200/60"
-        } ${containerClassName || className}`}
+        } flex flex-col items-center justify-center overflow-hidden select-none p-4 w-full h-full ${containerClassName || className}`}
         style={aspectRatio ? { aspectRatio } : undefined}
       >
-        {/* Decorative subtle ambient circle watermark */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
-          <div className={`w-40 h-40 border-[10px] rounded-full ${isDark ? "border-white" : "border-slate-500"}`} />
-        </div>
-
-        {/* Centered Grayscale Brand Logo with Soft Light Opacity */}
-        <div className="relative w-40 h-16 max-w-[75%] max-h-[65%] flex items-center justify-center z-10">
-          <Image
-            src={fallbackSrc}
-            alt={alt}
-            width={160}
-            height={70}
-            className={`object-contain filter grayscale opacity-35 hover:opacity-55 transition-all duration-300 ${
-              isDark ? "invert opacity-40 hover:opacity-60" : ""
-            }`}
-            unoptimized
-          />
-        </div>
+        <ImageWatermark theme={theme} logo={fallbackSrc} alt={alt} />
       </div>
     );
   }
 
   // Next.js Image for fast, optimized loading
+  // While the image is still loading, show the premium watermark underneath so
+  // the user never sees a raw black/dark block behind the fading image.
   return (
-    <Image
-      src={src}
-      alt={alt}
-      className={`${className} transition-opacity duration-700 ease-out ${
-        loaded ? "opacity-100" : "opacity-0"
-      }`}
-      onLoad={() => setLoaded(true)}
-      onError={() => setError(true)}
-      unoptimized={
-        unoptimized ??
-        (typeof src === "string" &&
-          (src.startsWith("//") ||
-            src.startsWith("http") ||
-            (src.startsWith("/") && /\.(webp|avif|gif|svg)$/i.test(src))))
-      }
-      fill={fill}
-      priority={priority}
-      quality={quality}
-      width={!fill ? (props.width ? Number(props.width) : 800) : undefined}
-      height={!fill ? (props.height ? Number(props.height) : 600) : undefined}
-      {...(props as any)}
-    />
+    <>
+      {!loaded && (
+        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none" aria-hidden="true">
+          <ImageWatermark theme={theme} logo={fallbackSrc} alt={alt} />
+        </div>
+      )}
+      <Image
+        src={src}
+        alt={alt}
+        className={`${className} transition-opacity duration-700 ease-out ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
+        onLoad={() => setLoaded(true)}
+        onError={() => setError(true)}
+        unoptimized={
+          unoptimized ??
+          (typeof src === "string" &&
+            (src.startsWith("//") ||
+              src.startsWith("http") ||
+              (src.startsWith("/") && /\.(webp|avif|gif|svg)$/i.test(src))))
+        }
+        fill={fill}
+        priority={priority}
+        quality={quality}
+        width={!fill ? (props.width ? Number(props.width) : 800) : undefined}
+        height={!fill ? (props.height ? Number(props.height) : 600) : undefined}
+        {...(props as any)}
+      />
+    </>
   );
 };
 

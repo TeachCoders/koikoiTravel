@@ -11,9 +11,9 @@ import { QuoteModal } from "@/components/shared/QuoteModal";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Tour Packages in India and Worldwide | Koikoi travel",
+  title: "Tour Packages in India and Worldwide | KoiKoi Travel",
   description:
-    "Explore handcrafted tour packages across India. Filter by state, city, travel experience, season & duration. Book your dream trip with Koikoi travel.",
+    "Explore handcrafted tour packages across India. Filter by state, city, travel experience, season & duration. Book your dream trip with KoiKoi Travel.",
   alternates: { canonical: "/tour-packages" },
 };
 

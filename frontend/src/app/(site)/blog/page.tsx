@@ -11,14 +11,14 @@ import { FallbackImage } from "@/components/shared/FallbackImage";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Travel Blog — Guides, Itineraries and India Tour Tips | Koikoi travel",
+  title: "Travel Blog — Guides, Itineraries and India Tour Tips | KoiKoi Travel",
   description:
-    "Explore expert travel guides, holiday itineraries, budgeting tips, and hidden destination insights for India tours — curated by Koikoi travel.",
+    "Explore expert travel guides, holiday itineraries, budgeting tips, and hidden destination insights for India tours — curated by KoiKoi Travel.",
   alternates: { canonical: "/blog" },
   openGraph: {
-title: "Travel Blog — Guides, Itineraries and India Tour Tips | Koikoi travel",
+title: "Travel Blog — Guides, Itineraries and India Tour Tips | KoiKoi Travel",
     description:
-      "Explore expert travel guides, holiday itineraries, budgeting tips, and hidden destination insights for India tours — curated by Koikoi travel.",
+      "Explore expert travel guides, holiday itineraries, budgeting tips, and hidden destination insights for India tours — curated by KoiKoi Travel.",
     url: "/blog",
     type: "website",
   },
@@ -81,7 +81,7 @@ export default async function BlogPage({
         <section className="relative h-[480px] md:h-[560px] overflow-hidden bg-slate-900 flex items-center justify-center">
           <FallbackImage
             src="/destinationImage/image/agra-6.webp"
-            alt="Koikoi travel Travel Blog Background"
+            alt="KoiKoi Travel Travel Blog Background"
             fill
             priority
             className="object-cover object-center"

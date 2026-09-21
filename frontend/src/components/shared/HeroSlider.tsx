@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ImageWatermark } from "@/components/shared/ImageWatermark";
 
 interface HeroSliderProps {
   images: string[];
@@ -46,7 +47,7 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
         style={{ transform: `translateX(-${current * 100}%)` }}
       >
         {validImages.map((img, i) => (
-          <div key={i} className="relative w-full h-full shrink-0 bg-[#1C1C1C]">
+          <div key={i} className="relative w-full h-full shrink-0 bg-slate-200">
             <SlideImage src={img} alt={alt} priority={i === 0} />
           </div>
         ))}
@@ -77,22 +78,25 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
 function SlideImage({ src, alt, priority }: { src: string; alt: string; priority?: boolean }) {
   const [loaded, setLoaded] = useState(false);
   return (
-    <Image
-      src={src}
-      alt={alt}
-      fill
-      priority={priority}
-      loading={priority ? undefined : "eager"}
-      sizes="100vw"
-      onLoad={() => setLoaded(true)}
-      unoptimized={
-        typeof src === "string" &&
-        src.startsWith("/") &&
-        /\.(webp|avif)$/i.test(src)
-      }
-      className={`object-cover object-center transition-opacity duration-700 ease-out ${
-        loaded ? "opacity-100" : "opacity-0"
-      }`}
-    />
+    <>
+      {!loaded && <ImageWatermark theme="dark" />}
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        loading={priority ? undefined : "eager"}
+        sizes="100vw"
+        onLoad={() => setLoaded(true)}
+        unoptimized={
+          typeof src === "string" &&
+          src.startsWith("/") &&
+          /\.(webp|avif)$/i.test(src)
+        }
+        className={`object-cover object-center transition-opacity duration-700 ease-out ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
+      />
+    </>
   );
 }

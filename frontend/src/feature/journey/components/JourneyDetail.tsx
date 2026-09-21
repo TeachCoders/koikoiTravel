@@ -2,7 +2,8 @@
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+import { FallbackImage } from "@/components/shared/FallbackImage";
+import { ImageWatermark } from "@/components/shared/ImageWatermark";
 import {
   ChevronRight,
   ChevronLeft,
@@ -206,7 +207,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         heroImages.length === 3 ? "col-span-1 row-span-2" : "col-span-1 row-span-1"
                       )}
                     >
-                      <Image
+                      <FallbackImage
                         src={heroImages[0]}
                         alt={journey.title}
                         fill
@@ -223,7 +224,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         onClick={() => openLightbox(1)}
                         className="w-full h-full rounded-[16px] md:rounded-3xl overflow-hidden cursor-pointer group relative block p-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] col-span-1 row-span-1"
                       >
-                        <Image
+                        <FallbackImage
                           src={heroImages[1]}
                           alt={journey.title}
                           fill
@@ -241,7 +242,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         onClick={() => openLightbox(2)}
                         className="w-full h-full rounded-[16px] md:rounded-3xl overflow-hidden cursor-pointer group relative block p-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] col-span-1 row-span-1"
                       >
-                        <Image
+                        <FallbackImage
                           src={heroImages[2]}
                           alt={journey.title}
                           fill
@@ -259,7 +260,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         onClick={() => openLightbox(3)}
                         className="w-full h-full rounded-[16px] md:rounded-3xl overflow-hidden cursor-pointer group relative block p-0 shadow-[0_8px_30px_rgb(0,0,0,0.04)] col-span-1 row-span-1"
                       >
-                        <Image
+                        <FallbackImage
                           src={heroImages[3]}
                           alt={journey.title}
                           fill
@@ -286,7 +287,9 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   </div>
                 </div>
               ) : (
-                <div className="h-[260px] md:h-[380px] bg-[#1C1C1C] rounded-3xl" />
+                <div className="relative h-[260px] md:h-[380px] bg-slate-200 rounded-3xl overflow-hidden">
+                  <ImageWatermark theme="light" />
+                </div>
               )}
             </section>
 
@@ -494,14 +497,17 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                 </div>
               </div>
               <div className="relative bg-white rounded-3xl p-4 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
-                {journey.days.map((day, i) => (
-                  <DayItem
-                    key={day.id}
-                    index={i + 1}
-                    day={day}
-                    cityLinkRules={cityLinkRules}
-                  />
-                ))}
+                <div className="day-accordion">
+                  {journey.days.map((day, i) => (
+                    <DayItem
+                      key={day.id}
+                      index={i + 1}
+                      day={day}
+                      cityLinkRules={cityLinkRules}
+                      defaultOpen={i === 0}
+                    />
+                  ))}
+                </div>
               </div>
             </section>
           )}
@@ -702,56 +708,70 @@ function DayItem({
   index,
   day,
   cityLinkRules,
+  defaultOpen,
 }: {
   index: number;
   day: { id: number; day: string; description?: string; image?: string };
   cityLinkRules: AutoLinkRule[];
+  defaultOpen?: boolean;
 }) {
+  const dayTitle = sanitizeHtml(
+    linkKeywords(day.day.replace(/^Day\s*\d+\s*:\s*/i, "").trim(), cityLinkRules)
+  );
+
+  const handleToggle = (e: React.SyntheticEvent<HTMLDetailsElement>) => {
+    const details = e.currentTarget;
+    if (!details.open) return;
+    const container = details.closest(".day-accordion");
+    if (!container) return;
+    container
+      .querySelectorAll<HTMLDetailsElement>("details[open]")
+      .forEach((other) => {
+        if (other !== details) other.open = false;
+      });
+  };
+
   return (
-    <div className="relative pl-0 md:pl-12 py-4 md:py-5 first:pt-0 last:pb-0 group">
-      {/* Timeline Line */}
-      <div className="hidden md:block absolute left-[15px] top-0 bottom-0 w-[2px] bg-slate-200 group-last:bottom-auto group-last:h-full" />
+    <details
+      open={defaultOpen}
+      onToggle={handleToggle}
+      className="day-accordion-item group relative pl-0 md:pl-12 py-1 md:py-2 first:pt-0 last:pb-0 border-b border-slate-100 last:border-b-0"
+    >
+      <summary className="flex items-center justify-between gap-4 py-3 md:py-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden select-none">
+        <span className="flex items-center gap-3 font-heading text-lg md:text-xl font-bold text-[#1C1C1C] rich-text-plain-links">
+          {/* Timeline Dot */}
+          <span className="hidden md:flex w-8 h-8 rounded-full bg-white border-[3px] border-[#2E8B8B] items-center justify-center shadow-sm z-10 transition-colors duration-300 shrink-0">
+            <span className="text-xs font-black text-[#2E8B8B]">{index}</span>
+          </span>
+          <span className="mr-2 text-[#F8904D]">Day {index}:</span>
+          <span dangerouslySetInnerHTML={{ __html: dayTitle }} />
+        </span>
+        <ChevronDown
+          size={20}
+          className="shrink-0 text-[#2E8B8B] transition-transform duration-300 group-open:rotate-180"
+        />
+      </summary>
 
-      {/* Timeline Dot */}
-      <div className="hidden md:flex absolute left-0 top-4 w-8 h-8 rounded-full bg-white border-[3px] border-[#2E8B8B] items-center justify-center shadow-sm z-10 transition-colors duration-300 group-hover:border-[#F8904D]">
-        <span className="text-xs font-black text-[#2E8B8B] transition-colors duration-300 group-hover:text-[#F8904D]">{index}</span>
-      </div>
-
-      <div className="w-full">
-        <div className="w-full flex items-center justify-between gap-4 pb-3 border-b border-slate-100">
-          <h3 className="font-heading text-lg md:text-xl font-bold text-[#1C1C1C] rich-text-plain-links">
-            <span className="mr-2 text-[#F8904D]">Day {index}:</span>
-            <span
-              dangerouslySetInnerHTML={{
-                __html: sanitizeHtml(
-                  linkKeywords(day.day.replace(/^Day\s*\d+\s*:\s*/i, "").trim(), cityLinkRules)
-                ),
-              }}
+      <div className="pt-1 md:pt-2 pb-5 md:pl-[44px]">
+        {day.description && (
+          <div className="text-[15px] text-slate-600 leading-[1.8]">
+            <RichContent html={linkKeywords(day.description, cityLinkRules)} className="rich-text-plain-links" />
+          </div>
+        )}
+        {day.image && (
+          <div className="relative mt-4 w-full h-[200px] md:h-[280px] rounded-2xl overflow-hidden shadow-sm">
+            <FallbackImage
+              src={day.image}
+              alt={day.day.replace(/^Day\s*\d+\s*:\s*/i, "")}
+              fill
+              loading="lazy"
+              sizes="100vw"
+              className="object-cover"
             />
-          </h3>
-        </div>
-
-        <div className="pt-3 pb-4 md:pb-5">
-          {day.description && (
-            <div className="text-[15px] text-slate-600 leading-[1.8]">
-              <RichContent html={linkKeywords(day.description, cityLinkRules)} className="rich-text-plain-links" />
-            </div>
-          )}
-          {day.image && (
-            <div className="relative mt-4 w-full h-[200px] md:h-[280px] rounded-2xl overflow-hidden shadow-sm">
-              <Image
-                src={day.image}
-                alt={day.day.replace(/^Day\s*\d+\s*:\s*/i, "")}
-                fill
-                loading="lazy"
-                sizes="100vw"
-                className="object-cover"
-              />
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-    </div>
+    </details>
   );
 }
 

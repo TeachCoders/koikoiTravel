@@ -7,7 +7,7 @@ import CmsGuestGalleryWrapper from "@/feature/guestGallery/components/CmsGuestGa
 
 const cleanTitle = (rawTitle: string) => {
   if (!rawTitle) return "";
-  return rawTitle.replace(/\s*\|\s*Koikoi travel\s*Holidays?/gi, "").trim();
+  return rawTitle.replace(/\s*\|\s*KoiKoi Travel\s*Holidays?/gi, "").trim();
 };
 
 export default function CmsPageDetail({ page }: { page: CmsPage }) {
@@ -20,18 +20,18 @@ export default function CmsPageDetail({ page }: { page: CmsPage }) {
       {/* ===== HERO / HEADER ===== */}
       <section
         className={`relative ${
-          hasThumb ? "h-[360px] md:h-[440px]" : "bg-[#1C1C1C]"
+          hasThumb ? "h-[360px] md:h-[440px]" : "bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900"
         } overflow-hidden`}
       >
         {hasThumb ? (
-          <>
+          <div className="absolute inset-0">
             <img
               src={page.thumbImg}
               alt={displayTitle}
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/30" />
-          </>
+          </div>
         ) : (
           <div
             className="absolute inset-0 opacity-[0.06]"

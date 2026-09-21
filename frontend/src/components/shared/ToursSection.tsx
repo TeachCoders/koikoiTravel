@@ -37,7 +37,7 @@ export default function ToursSection({
   const pathname = usePathname();
 
   const page = parseInt(searchParams.get("page") || "1", 10);
-  const pageSize = showCount ?? 24;
+  const pageSize = showCount ?? 16;
 
   const totalPages = Math.ceil(journeys.length / pageSize);
   const currentPage = Math.min(Math.max(page, 1), totalPages || 1);

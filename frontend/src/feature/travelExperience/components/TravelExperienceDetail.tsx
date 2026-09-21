@@ -152,7 +152,7 @@ function ExperienceContent({ experience }: { experience: any }) {
   return (
     <div>
       {/* ===== HERO ===== */}
-      <section className="relative h-[480px] md:h-[560px] overflow-hidden bg-[#1C1C1C]">
+      <section className="relative h-[480px] md:h-[560px] overflow-hidden bg-slate-200">
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={h1Title} />
@@ -174,7 +174,7 @@ function ExperienceContent({ experience }: { experience: any }) {
 
         <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-center items-center py-8 text-center">
           {heroTag && (
-            <p className="max-w-2xl mx-auto mb-2 text-base sm:text-lg font-bold tracking-wider uppercase text-white/90 leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
+            <p className="hidden sm:block max-w-2xl mx-auto mb-2 text-base sm:text-lg font-bold tracking-wider uppercase text-white/90 leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
               {heroTag}
             </p>
           )}
@@ -183,7 +183,7 @@ function ExperienceContent({ experience }: { experience: any }) {
             {heroTitle}
           </h1>
 
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+          <div className="hidden sm:flex mt-7 flex-wrap items-center justify-center gap-3">
             <QuoteModal>
               <button
                 type="button"
@@ -228,7 +228,7 @@ function ExperienceContent({ experience }: { experience: any }) {
         h1Title={experience.h1Title}
         overView={experience.overView ?? undefined}
         emptyLabel={`No tours found for ${h1Title} yet`}
-        showCount={4}
+        showCount={16}
         filterBar={experienceJourneys.length > 0 ? filterBar : undefined}
         onClearFilters={clearFilters}
         contextName={h1Title}

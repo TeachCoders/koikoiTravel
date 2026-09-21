@@ -6,7 +6,7 @@ const schema = z.object({
   slug: z.string().optional(),
   season: z.string().optional(),
   seoDescription: z.string().min(1, "Description is required").max(500),
-  overView: z.string().max(500).optional(),
+  overView: z.string().max(1200, "Short seoDescription should be under 200 words").optional(),
   seoKeyword: z.string().optional(),
   canonical: z.string().optional(),
   seoTitle: z.string().optional(),

@@ -19,14 +19,14 @@ export default function AdTestimonials({ destinationName = "our destination" }: 
     {
       name: "Robert Chang",
       location: "Sydney, Australia",
-      text: `I've traveled to 30+ countries and India was the most complex trip to plan. Koikoi travel sorted everything over WhatsApp. When our flight got delayed on day 3, the ground team reshuffled our hotel pickup the same night without extra charge. Boat ride in Varanasi at dawn was unbelievable!`,
+      text: `I've traveled to 30+ countries and India was the most complex trip to plan. KoiKoi Travel sorted everything over WhatsApp. When our flight got delayed on day 3, the ground team reshuffled our hotel pickup the same night without extra charge. Boat ride in Varanasi at dawn was unbelievable!`,
       rating: 5,
       trip: "Rajasthan & Varanasi · 10 Days",
     },
     {
       name: "Sofia & Luca",
       location: "Milan, Italy",
-      text: `Our honeymoon in Kerala was magical. Many agencies gave us identical copy-paste packages. Koikoi travel listened to what we actually wanted (less temples, more nature and calm backwaters) and built a custom plan. The private houseboat in Alleppey with just the two of us was unforgettable!`,
+      text: `Our honeymoon in Kerala was magical. Many agencies gave us identical copy-paste packages. KoiKoi Travel listened to what we actually wanted (less temples, more nature and calm backwaters) and built a custom plan. The private houseboat in Alleppey with just the two of us was unforgettable!`,
       rating: 5,
       trip: "Kerala Honeymoon · 8 Days",
     }

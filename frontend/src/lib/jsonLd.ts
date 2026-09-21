@@ -9,8 +9,8 @@ function absoluteImage(src?: string): string | undefined {
 export const organizationSchema: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
-  name: "Koikoi travel",
-  alternateName: ["Koikoi travel India", "Koikoi travel Inbound India"],
+  name: "KoiKoi Travel",
+  alternateName: ["KoiKoi Travel India", "KoiKoi Travel Inbound India"],
   url: SITE_URL,
   logo: `${SITE_URL}/logo-with-name.png`,
   image: `${SITE_URL}/logo-with-name.png`,
@@ -36,14 +36,14 @@ export const organizationSchema: Record<string, unknown> = {
 export const websiteSchema: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Koikoi travel",
-  alternateName: "Koikoi travel - India Inbound Travel Specialist",
+  name: "KoiKoi Travel",
+  alternateName: "KoiKoi Travel - India Inbound Travel Specialist",
   url: SITE_URL,
   description: "Bespoke India tour packages, private luxury stays, verified drivers, and local guides for foreign travelers.",
   inLanguage: ["en", "en-US"],
   publisher: {
     "@type": "TravelAgency",
-    name: "Koikoi travel India",
+    name: "KoiKoi Travel India",
   },
 };
 
@@ -83,10 +83,10 @@ export function articleSchema(post: ArticleInput): Record<string, unknown> {
     dateModified: post.dateModified || undefined,
     author: post.author
       ? { "@type": "Organization", name: post.author }
-      : { "@type": "Organization", name: "Koikoi travel" },
+      : { "@type": "Organization", name: "KoiKoi Travel" },
     publisher: {
       "@type": "Organization",
-      name: "Koikoi travel",
+      name: "KoiKoi Travel",
       logo: { "@type": "ImageObject", url: `${SITE_URL}/logo-with-name.png` },
     },
     mainEntityOfPage: {
@@ -114,7 +114,7 @@ export function touristTripSchema(trip: TouristTripInput): Record<string, unknow
     url: `${SITE_URL}${trip.url}`,
     provider: {
       "@type": "TravelAgency",
-      name: "Koikoi travel",
+      name: "KoiKoi Travel",
       url: SITE_URL,
     },
     ...(trip.touristType && trip.touristType.length > 0 ? { touristType: trip.touristType } : {}),

@@ -24,7 +24,7 @@ export default function AdFooter({ destinationName = "Holidays" }: AdFooterProps
           {/* Col 1: Brand & Bio with WhatsApp CTA */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <span className="text-2xl font-black text-orange-500 tracking-tighter">Koikoi travel</span>
+              <span className="text-2xl font-black text-orange-500 tracking-tighter">KoiKoi Travel</span>
               <span className="text-2xl font-black text-white tracking-tighter">Holidays</span>
             </div>
             <p className="text-[#a8a8a8] text-sm leading-relaxed">
@@ -118,7 +118,7 @@ export default function AdFooter({ destinationName = "Holidays" }: AdFooterProps
 
         {/* Bottom Copyright Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#777]">
-          <p>© {new Date().getFullYear()} Koikoi travel. All Rights Reserved.</p>
+          <p>© {new Date().getFullYear()} KoiKoi Travel. All Rights Reserved.</p>
           <div className="flex items-center gap-6 text-[#a8a8a8]">
             <span className="hover:text-white transition cursor-pointer">Privacy Policy</span>
             <span className="hover:text-white transition cursor-pointer">Terms of Service</span>

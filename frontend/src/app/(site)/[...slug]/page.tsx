@@ -14,7 +14,7 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const page = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug);
-  if (!page) return { title: "Page Not Found | Koikoi travel" };
+  if (!page) return { title: "Page Not Found | KoiKoi Travel" };
   const seoDescription = stripHtml(page.seoDescription || page.moreDescription || "").slice(0, 160);
   const title = page.seoTitle || page.title;
   const canonical = page.canonical || `/${page.slug}`;

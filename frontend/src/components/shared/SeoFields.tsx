@@ -144,7 +144,7 @@ export default function SeoFields({
               placeholder="e.g. Best India Tour Packages"
             />
             <p className="text-[10px] text-slate-400">
-              Appears in the browser tab and Google search results. Write the full title — add " | Koikoi travel" at the end yourself if you want the brand to show; it is not added automatically.
+              Appears in the browser tab and Google search results. Write the full title — add " | KoiKoi Travel" at the end yourself if you want the brand to show; it is not added automatically.
             </p>
           </div>
 
@@ -255,10 +255,15 @@ export default function SeoFields({
               content={formData.overView}
               onChange={onDescriptionChange}
               placeholder="Input under 200 words"
+              className={errors.overView ? "border-red-500" : ""}
             />
-            <p className="text-[10px] text-slate-400">
-              A short intro/overview shown in the page content.
-            </p>
+            {errors.overView ? (
+              <p className="text-xs text-red-500">{errors.overView}</p>
+            ) : (
+              <p className="text-[10px] text-slate-400">
+                A short intro/overview shown in the page content.
+              </p>
+            )}
           </div>
         )}
 

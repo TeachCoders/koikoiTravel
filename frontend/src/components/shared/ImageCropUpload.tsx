@@ -85,13 +85,13 @@ export default function ImageCropUpload({
     }
   };
 
-  const getCoverDimensions = useCallback((cw: number, ch: number, imgW: number, imgH: number) => {
+  const getContainDimensions = useCallback((cw: number, ch: number, imgW: number, imgH: number) => {
     const imgRatio = imgW / imgH;
     const contRatio = cw / ch;
     if (contRatio > imgRatio) {
-      return { baseW: cw, baseH: cw / imgRatio };
+      return { baseW: ch * imgRatio, baseH: ch };
     }
-    return { baseW: ch * imgRatio, baseH: ch };
+    return { baseW: cw, baseH: cw / imgRatio };
   }, []);
 
   const renderCanvas = useCallback(() => {
@@ -107,7 +107,7 @@ export default function ImageCropUpload({
     const ctx = canvas.getContext("2d")!;
     ctx.clearRect(0, 0, cw, ch);
 
-    const { baseW, baseH } = getCoverDimensions(cw, ch, img.naturalWidth, img.naturalHeight);
+    const { baseW, baseH } = getContainDimensions(cw, ch, img.naturalWidth, img.naturalHeight);
     const scale = imgScaleRef.current;
     const offset = imgOffsetRef.current;
     const drawW = baseW * scale;
@@ -116,7 +116,7 @@ export default function ImageCropUpload({
     const drawY = (ch - drawH) / 2 + offset.y;
 
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
-  }, [getCoverDimensions]);
+  }, [getContainDimensions]);
 
   const loadImg = useCallback((imgSrc: string) => {
     const img = new Image();
@@ -127,8 +127,8 @@ export default function ImageCropUpload({
       if (!container) return;
       const cw = container.clientWidth;
       const ch = container.clientHeight;
-      const { baseW, baseH } = getCoverDimensions(cw, ch, img.naturalWidth, img.naturalHeight);
-      const initialScale = Math.max(cw / baseW, ch / baseH, 1);
+      const { baseW, baseH } = getContainDimensions(cw, ch, img.naturalWidth, img.naturalHeight);
+      const initialScale = 1;
       imgScaleRef.current = initialScale;
       imgOffsetRef.current = { x: 0, y: 0 };
       setZoomPercent(Math.round(initialScale * 100));
@@ -142,7 +142,7 @@ export default function ImageCropUpload({
       renderCanvas();
     };
     img.src = imgSrc;
-  }, [getCoverDimensions, renderCanvas]);
+  }, [getContainDimensions, renderCanvas]);
 
   useEffect(() => {
     if (src && cropOpen) loadImg(src);
@@ -243,7 +243,7 @@ export default function ImageCropUpload({
 
     const cw = container.clientWidth;
     const ch = container.clientHeight;
-    const { baseW, baseH } = getCoverDimensions(cw, ch, img.naturalWidth, img.naturalHeight);
+    const { baseW, baseH } = getContainDimensions(cw, ch, img.naturalWidth, img.naturalHeight);
     const scale = imgScaleRef.current;
     const offset = imgOffsetRef.current;
     const drawW = baseW * scale;
@@ -294,7 +294,7 @@ export default function ImageCropUpload({
       setUrlInput("");
       onFileSelect(file);
     }, outputFormat, quality);
-  }, [maxWidth, maxHeight, outputFormat, quality, onFileSelect, getCoverDimensions]);
+  }, [maxWidth, maxHeight, outputFormat, quality, onFileSelect, getContainDimensions]);
 
   const handleClear = () => { if (preview) URL.revokeObjectURL(preview); setPreview(null); setSrc(null); setCropOpen(false); setUrlInput(""); onClear?.(); };
   const handleReCrop = () => { if (preview) { URL.revokeObjectURL(preview); setPreview(null); } fileInputRef.current?.click(); };

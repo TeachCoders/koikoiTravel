@@ -21,7 +21,7 @@ import {
   journeyMatchesSeasons,
 } from "@/feature/journey/filterOptions";
 
-const PAGE_SIZE = 24;
+const PAGE_SIZE = 16;
 
 export default function TourPackagesList({
   countrySlug,
@@ -160,7 +160,7 @@ export default function TourPackagesList({
           <HeroSlider images={heroImages} alt={title} />
         ) : (
           <div className="absolute inset-0 w-full h-full bg-slate-900 flex items-center justify-center">
-            <img src="/logo-with-name.png" alt="Koikoi travel" className="w-64 h-auto opacity-10 object-contain grayscale" />
+            <img src="/logo-with-name.png" alt="KoiKoi Travel" className="w-64 h-auto opacity-10 object-contain grayscale" />
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />

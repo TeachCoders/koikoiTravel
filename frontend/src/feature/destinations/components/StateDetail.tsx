@@ -187,7 +187,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   return (
     <div>
       {/* ===== HERO ===== */}
-      <section className="relative h-[300px] sm:h-[380px] md:h-[520px] overflow-hidden bg-[#1C1C1C]">
+      <section className="relative h-[300px] sm:h-[380px] md:h-[520px] overflow-hidden bg-slate-200">
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={state.title} />

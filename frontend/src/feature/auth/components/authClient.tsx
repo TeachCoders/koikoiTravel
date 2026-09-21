@@ -38,7 +38,7 @@ export function AuthClient() {
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-72 h-20 flex items-center justify-center overflow-hidden">
-                <img src="/logo-white.png" alt="Koikoi travel" className="w-full h-full object-contain" />
+                <img src="/logo-white.png" alt="KoiKoi Travel" className="w-full h-full object-contain" />
               </div>
              
             </div>
@@ -77,7 +77,7 @@ export function AuthClient() {
 
           {/* Footer */}
           <p className="text-center text-xs text-slate-400 mt-6">
-            &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_BRAND_NAME || "Koikoi travel"}. All rights reserved.
+            &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_BRAND_NAME || "KoiKoi Travel"}. All rights reserved.
           </p>
         </div>
       </div>

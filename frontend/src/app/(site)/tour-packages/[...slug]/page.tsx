@@ -225,7 +225,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       };
     }
     default:
-      return { title: "Page Not Found | Koikoi travel" };
+      return { title: "Page Not Found | KoiKoi Travel" };
   }
 }
 

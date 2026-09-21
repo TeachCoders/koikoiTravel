@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Travel Experiences",
     description:
-      "Hand-picked travel experiences across India — honeymoons, heritage, culinary, yoga, nature & more. Book your perfect trip with Koikoi travel.",
+      "Hand-picked travel experiences across India — honeymoons, heritage, culinary, yoga, nature & more. Book your perfect trip with KoiKoi Travel.",
     alternates: { canonical: "/travel-experiences" },
   };
 }
@@ -131,7 +131,7 @@ export default async function TravelExperiencesPage() {
 
   const defaultFaqs = [
     {
-      question: "What are Travel Experiences at Koikoi travel?",
+      question: "What are Travel Experiences at KoiKoi Travel?",
       answer: "Travel Experiences are theme-based tour packages categorized by your trip style — such as Honeymoon, Heritage & Culture, Wellness & Yoga, Wildlife Safaris, and Pilgrimage Tours across India."
     },
     {
