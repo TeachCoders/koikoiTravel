@@ -3,11 +3,20 @@ import { prisma } from '../utils/prismaConnection.js';
 import rateLimit from 'express-rate-limit';
 import { requireSuperAdmin } from '../middleware/requireSuperAdmin.js';
 import { purgeExpiredAnalytics, DEFAULT_RETENTION_DAYS } from '../utils/analyticsRetention.js';
-import { resolveCountry } from '../utils/geo.js';
+import { resolveCountry, countryFromHeaders } from '../utils/geo.js';
 
 const router = Router();
 
 const RETENTION_KEY = 'retentionDays';
+
+// Rate limiting to prevent abuse on the public ingest endpoint.
+const analyticsLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 300,
+  message: { error: 'Too many analytics events, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // Rate-limit the "authenticated session discarded" log line to once per session,
 // so an admin browsing the public site doesn't spam the server console.
@@ -359,6 +368,220 @@ router.put('/retention-days', requireSuperAdmin, async (req, res) => {
     res.json({ success: true, retentionDays: days, deleted });
   } catch (err) {
     console.error('[ANALYTICS] retention set error', err);
+    res.status(500).json({ error: 'internal error' });
+  }
+});
+
+/* ─────────────────────────────────────────────
+ * BROKEN-PAGE / 404 TRACKING
+ * ───────────────────────────────────────────── */
+
+/**
+ * POST /analytics/events  (public)
+ * Batched ingestion of activity events (BROKEN_LINK, PAGE_VIEW, etc).
+ * Guests only: authenticated sessions are silently ignored.
+ */
+router.post('/events', analyticsLimiter, async (req, res) => {
+  try {
+    const sessionId = req.body?.sessionId;
+    const events = req.body?.events;
+
+    // Guests only — admin sessions are never recorded.
+    if (req.session?.user?.id != null) {
+      const sid = String(sessionId || 'anonymous');
+      if (!loggedAuthDiscards.has(sid)) {
+        loggedAuthDiscards.add(sid);
+        console.warn(`[ANALYTICS] events discarded: authenticated session ${sid}`);
+      }
+      return res.status(202).json({ success: true, discarded: 'authenticated-session' });
+    }
+
+    if (!sessionId || !Array.isArray(events) || events.length === 0) {
+      return res.status(400).json({ error: 'sessionId and events array required' });
+    }
+
+    const { visitorId, userId, userAgent, deviceType, referrer, totalTimeSpent, country } = req.body;
+
+    const bodyUserId = Number(userId);
+    const resolvedUserId = Number.isInteger(req.session?.user?.id)
+      ? req.session.user.id
+      : Number.isInteger(bodyUserId)
+        ? bodyUserId
+        : null;
+
+    await prisma.userSession.upsert({
+      where: { id: sessionId },
+      update: {
+        endedAt: new Date(),
+        totalTimeSpent: totalTimeSpent || 0,
+        ...(referrer ? { referrer } : {}),
+        ...(resolvedUserId !== null ? { userId: resolvedUserId } : {}),
+      },
+      create: {
+        id: sessionId,
+        visitorId,
+        country,
+        userAgent,
+        deviceType: deviceType || parseUserAgent(userAgent).device,
+        ipAddress: req.ip,
+        ...(referrer ? { referrer } : {}),
+        ...(resolvedUserId !== null ? { userId: resolvedUserId } : {}),
+      },
+    }).catch(err => console.error('[ANALYTICS] session upsert error', err));
+
+    if (req.ip) {
+      const headerCountry = countryFromHeaders(req.headers);
+      Promise.resolve(headerCountry || resolveCountry(req.ip)).then(c => {
+        if (!c) return;
+        prisma.userSession.updateMany({
+          where: { id: sessionId, country: null },
+          data: { country: c },
+        }).catch(() => {});
+      }).catch(() => {});
+    }
+
+    const activityLogs = events
+      .filter(e => e.type !== 'SEARCH_INTENT')
+      .map(e => ({
+        sessionId,
+        eventName: e.eventName,
+        pagePath: e.pagePath,
+        sectionId: e.sectionId,
+        dwellTimeMs: e.dwellTimeMs ? Math.round(e.dwellTimeMs) : undefined,
+        element: e.element,
+        metadata: e.metadata || {},
+        createdAt: e.createdAt ? new Date(e.createdAt) : new Date(),
+      }));
+
+    if (activityLogs.length > 0) {
+      await prisma.activityLog.createMany({ data: activityLogs, skipDuplicates: true });
+    }
+
+    res.status(202).json({ success: true, processed: events.length });
+  } catch (err) {
+    console.error('[ANALYTICS] events error', err);
+    res.status(500).json({ error: 'internal error' });
+  }
+});
+
+/**
+ * GET /analytics/broken-pages  (super admin)
+ * Aggregates BROKEN_LINK hits per page path. Health-checks each URL; if a page
+ * now resolves (200/3xx) its BROKEN_LINK rows are auto-deleted. Returns the
+ * still-broken pages with the source pages visitors were redirected from.
+ */
+router.get('/broken-pages', requireSuperAdmin, async (req, res) => {
+  try {
+    const range = parseDateRange(req, 30);
+    const gte = range?.gte ?? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const lte = range?.lte ?? new Date();
+
+    const brokenRows = await prisma.$queryRaw`
+      SELECT
+        "pagePath",
+        COUNT(*) AS "hits",
+        COUNT(DISTINCT "sessionId") AS "visitors"
+      FROM "activity_logs"
+      WHERE "eventName" = 'BROKEN_LINK'
+        AND "createdAt" >= ${gte}
+        AND "createdAt" <= ${lte}
+      GROUP BY "pagePath"
+      ORDER BY "hits" DESC
+      LIMIT 50;
+    `;
+
+    // Health check each tracked URL; auto-resolve any that now load.
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL || 'http://localhost:3000';
+    const checkUrl = async (path) => {
+      try {
+        const res = await fetch(`${baseUrl}${path}`, {
+          method: 'HEAD',
+          signal: AbortSignal.timeout(4000),
+          redirect: 'follow',
+        });
+        return { path, ok: res.ok || (res.status >= 300 && res.status < 400) };
+      } catch {
+        return { path, ok: false };
+      }
+    };
+    const uniquePaths = [...new Set(brokenRows.map(r => r.pagePath).filter(Boolean))];
+    const healthResults = [];
+    for (let i = 0; i < uniquePaths.length; i += 5) {
+      healthResults.push(...await Promise.all(uniquePaths.slice(i, i + 5).map(checkUrl)));
+    }
+    const resolvedPaths = healthResults.filter(r => r.ok).map(r => r.path);
+    if (resolvedPaths.length > 0) {
+      await prisma.activityLog.deleteMany({
+        where: { eventName: 'BROKEN_LINK', pagePath: { in: resolvedPaths } },
+      });
+    }
+
+    const stillBroken = brokenRows.filter(r => !resolvedPaths.includes(r.pagePath));
+
+    let pages = [];
+    if (stillBroken.length > 0) {
+      const logs = await prisma.activityLog.findMany({
+        where: {
+          eventName: 'BROKEN_LINK',
+          pagePath: { in: stillBroken.map(r => r.pagePath) },
+          createdAt: { gte, lte },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 500,
+      });
+
+      pages = stillBroken.map(p => {
+        const pageLogs = logs.filter(l => l.pagePath === p.pagePath);
+        const fromMap = new Map();
+        for (const l of pageLogs) {
+          const from = l.metadata?.from || 'Direct / Unknown';
+          const cur = fromMap.get(from) || { source: from, count: 0, lastAt: null };
+          cur.count += 1;
+          if (!cur.lastAt || new Date(l.createdAt) > new Date(cur.lastAt)) cur.lastAt = l.createdAt;
+          fromMap.set(from, cur);
+        }
+        const fromPages = [...fromMap.values()]
+          .sort((a, b) => b.count - a.count)
+          .map(s => ({ source: s.source, count: s.count, lastAt: s.lastAt }));
+        const issues = pageLogs.slice(0, 20).map(l => ({
+          source: l.metadata?.from || 'Direct / Unknown',
+          clickedLink: l.element || null,
+          clickedText: l.metadata?.clickedText || null,
+          referrer: l.metadata?.referrer || null,
+          sessionId: l.sessionId,
+          createdAt: l.createdAt,
+        }));
+        return {
+          pagePath: p.pagePath,
+          hits: Number(p.hits),
+          visitors: Number(p.visitors),
+          fromPages,
+          issues,
+        };
+      });
+    }
+
+    res.json({ success: true, pages, resolvedPaths });
+  } catch (err) {
+    console.error('[ANALYTICS] broken-pages error', err);
+    res.status(500).json({ error: 'internal error' });
+  }
+});
+
+/**
+ * POST /analytics/resolve-404  (super admin)
+ * Manually clear all BROKEN_LINK rows for a page path (issue fixed).
+ */
+router.post('/resolve-404', requireSuperAdmin, async (req, res) => {
+  try {
+    const { pagePath } = req.body;
+    if (!pagePath) return res.status(400).json({ error: 'pagePath required' });
+    const deleted = await prisma.activityLog.deleteMany({
+      where: { eventName: 'BROKEN_LINK', pagePath },
+    });
+    res.json({ success: true, deleted: deleted.count });
+  } catch (err) {
+    console.error('[ANALYTICS] resolve-404 error', err);
     res.status(500).json({ error: 'internal error' });
   }
 });

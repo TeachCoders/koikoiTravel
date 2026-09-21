@@ -1,5 +1,92 @@
 import apiClient from "@/lib/apiClient";
 
+/* ───────────── Activity events & broken-page / 404 tracking ───────────── */
+
+export type ActivityEventType =
+  | "PAGE_VIEW"
+  | "SECTION_DWELL"
+  | "DWELL"
+  | "RAGE_CLICK"
+  | "DEAD_CLICK"
+  | "CLICK"
+  | "BROKEN_LINK"
+  | "SEARCH_INTENT";
+
+/** Human-friendly names shown in dashboards instead of raw event codes. */
+export const EVENT_LABELS: Record<string, string> = {
+  PAGE_VIEW: "Page Visit",
+  PAGE_DWELL: "Time on Page",
+  SECTION_DWELL: "Section Time",
+  CLICK: "Click",
+  RAGE_CLICK: "Rage Click",
+  DEAD_CLICK: "Dead Click",
+  BROKEN_LINK: "Broken Link",
+  SEARCH_INTENT: "Search",
+};
+
+export const eventLabel = (name: string | null | undefined): string =>
+  name ? (EVENT_LABELS[name] ?? name) : "";
+
+export interface ActivityEvent {
+  id: string;
+  type: ActivityEventType;
+  eventName: string;
+  pagePath: string;
+  sectionId?: string;
+  dwellTimeMs?: number;
+  element?: string;
+  metadata?: Record<string, unknown>;
+  createdAt: string;
+}
+
+export interface ActivityBatchPayload {
+  sessionId: string;
+  visitorId: string;
+  userId?: number | null;
+  userAgent?: string;
+  deviceType?: string;
+  country?: string;
+  referrer?: string;
+  totalTimeSpent?: number;
+  events: Omit<ActivityEvent, "id">[];
+}
+
+/**
+ * Sends a batch of user-activity events to the backend analytics ingestion API.
+ */
+export async function sendActivityBatch(payload: ActivityBatchPayload): Promise<void> {
+  await apiClient.post("/analytics/events", payload);
+}
+
+export interface BrokenPage {
+  pagePath: string;
+  hits: number;
+  visitors: number;
+  fromPages: { source: string; count: number; lastAt: string }[];
+  issues: {
+    source: string;
+    clickedLink: string | null;
+    clickedText: string | null;
+    referrer: string | null;
+    sessionId: string;
+    createdAt: string;
+  }[];
+}
+
+export async function getBrokenPages(range?: DateRange): Promise<{ pages: BrokenPage[]; resolvedPaths: string[] }> {
+  const res = await apiClient.get<{ pages: BrokenPage[]; resolvedPaths: string[] }>("/analytics/broken-pages", {
+    params: {
+      ...(range?.from ? { from: range.from } : {}),
+      ...(range?.to ? { to: range.to } : {}),
+    },
+  });
+  return res.data ?? { pages: [], resolvedPaths: [] };
+}
+
+export async function resolveNotFound(pagePath: string): Promise<void> {
+  await apiClient.post("/analytics/resolve-404", { pagePath });
+}
+
 /* ───────────── Session replay (video) ───────────── */
 
 export interface DateRange {

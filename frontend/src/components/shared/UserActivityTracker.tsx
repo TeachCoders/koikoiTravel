@@ -1,12 +1,12 @@
 "use client";
 
-import { useReplayRecorder } from "@/hooks/useReplayRecorder";
+import { useUserActivityTracker } from "@/hooks/useUserActivityTracker";
 
 /**
- * Global, invisible tracker mounted once in the root layout.
- * Records rrweb session replay (video) on public storefront pages only.
+ * Mounts the guest activity tracker (page dwell, clicks, broken/404 links).
+ * Renders nothing – its job is to wire up global analytics listeners.
  */
 export default function UserActivityTracker() {
-  useReplayRecorder();
+  useUserActivityTracker();
   return null;
 }

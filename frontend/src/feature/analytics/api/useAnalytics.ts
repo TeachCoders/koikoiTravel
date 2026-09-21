@@ -7,8 +7,52 @@ import {
   setRetentionDays,
   purgeAnalyticsNow,
   deleteAllAnalyticsData,
+  sendActivityBatch,
+  getBrokenPages,
+  resolveNotFound,
   type DateRange,
+  type ActivityBatchPayload,
+  type BrokenPage,
 } from ".";
+
+/**
+ * Fire-and-forget mutation that flushes a batch of activity events.
+ * Analytics must never break the UI, so failures are logged silently.
+ */
+export const useFlushActivityEvents = () => {
+  return useMutation({
+    mutationFn: (payload: ActivityBatchPayload) => sendActivityBatch(payload),
+    onError: (error) => {
+      console.warn("[Analytics] failed to send activity batch", error);
+    },
+  });
+};
+
+export const useBrokenPages = (range?: DateRange, enabled = true) => {
+  const query = useQuery({
+    queryKey: ["analytics-broken-pages", range?.from ?? "all", range?.to ?? "all"],
+    queryFn: () => getBrokenPages(range),
+    enabled,
+    staleTime: 30 * 1000,
+  });
+  return {
+    pages: query.data?.pages ?? ([] as BrokenPage[]),
+    resolvedPaths: query.data?.resolvedPaths ?? ([] as string[]),
+    isLoading: query.isLoading,
+    error: query.error,
+    refetch: query.refetch,
+  };
+};
+
+export const useResolveNotFound = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (pagePath: string) => resolveNotFound(pagePath),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["analytics-broken-pages"] });
+    },
+  });
+};
 
 export const useReplaySessions = (opts?: {
   page?: number;

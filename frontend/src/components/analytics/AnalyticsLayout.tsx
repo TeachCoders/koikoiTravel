@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
-import { Video } from "lucide-react";
+import { Video, Link2Off } from "lucide-react";
 import { AnalyticsRangeProvider } from "@/feature/analytics/range-context";
 import PrivatePageHeading from "@/components/shared/PrivatePageHeading";
 import { cn } from "@/lib/utils";
@@ -14,6 +14,7 @@ type Tab = { href: string; label: string; icon: LucideIcon; exact?: boolean };
 
 const TABS: Tab[] = [
   { href: "/dashboard/analytics/replays", label: "Visitor Activity (Video)", icon: Video },
+  { href: "/dashboard/analytics/broken-pages", label: "Broken Pages (404)", icon: Link2Off },
 ];
 
 interface AnalyticsLayoutProps {

@@ -1,6 +1,7 @@
 import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
 import ExitIntentModal from "@/components/shared/ExitIntentModal";
+import UserActivityTracker from "@/components/shared/UserActivityTracker";
 import { ReactNode } from "react";
 
 type LayoutProps = {
@@ -14,6 +15,7 @@ export default function Layout({ children }: LayoutProps) {
       <main className="flex-1">{children}</main>
       <Footer />
       <ExitIntentModal />
+      <UserActivityTracker />
     </div>
   );
 }
