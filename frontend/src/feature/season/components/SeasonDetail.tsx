@@ -126,7 +126,7 @@ export default function SeasonDetail({
   return (
     <div>
       {/* ===== HERO ===== */}
-      <section className="relative h-[480px] md:h-[560px] overflow-hidden bg-slate-200">
+      <section className="relative aspect-[1200/400] min-h-[300px] sm:min-h-[380px] md:min-h-[520px] overflow-hidden bg-slate-200">
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={initialSeason.title} />

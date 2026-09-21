@@ -217,8 +217,8 @@ export default function BannerImageUpload({
     const sh = cropBox.h * scaleY;
 
     let outW = Math.round(sw), outH = Math.round(sh);
-    if (outW > 1920) { outH = Math.round((outH / outW) * 1920); outW = 1920; }
-    if (outH > 1080) { outW = Math.round((outW / outH) * 1080); outH = 1080; }
+    if (outW > 1200) { outH = Math.round((outH / outW) * 1200); outW = 1200; }
+    if (outH > 400) { outW = Math.round((outW / outH) * 400); outH = 400; }
 
     const outCanvas = document.createElement("canvas");
     outCanvas.width = outW; outCanvas.height = outH;

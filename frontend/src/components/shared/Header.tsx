@@ -473,7 +473,7 @@ export const Header: React.FC = () => {
             <img
               src="/logo-with-name.png"
               alt="KoiKoi Travel"
-              className="h-[68px] sm:h-[72px] md:h-[76px] w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+              className="h-[48px] sm:h-[52px] md:h-[56px] w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
             />
           </Link>
 
