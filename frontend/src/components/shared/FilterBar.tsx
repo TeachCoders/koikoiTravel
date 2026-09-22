@@ -14,6 +14,8 @@ export interface FilterOption {
 export interface FilterSection {
   id: string;
   title: string;
+  /** Shorter label shown on mobile-only (e.g. "Season" instead of "Best Season / Month"). */
+  shortTitle?: string;
   icon?: ReactNode;
   options: FilterOption[];
   selected: string[];
@@ -34,7 +36,7 @@ export default function FilterBar({
   totalCount: number;
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-3 py-1">
+    <div className="flex items-center gap-2 py-1 -mx-1 px-1 overflow-x-auto sm:flex-wrap sm:overflow-visible sm:-mx-0 sm:px-0 md:gap-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       <span className="hidden lg:flex items-center gap-2 pl-1 pr-1 text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400">
         <SlidersHorizontal size={14} className="text-slate-400" />
         Refine
@@ -81,7 +83,7 @@ function FilterSelect({ section: s }: { section: FilterSection }) {
         <button
           type="button"
           className={cn(
-            "inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold border bg-white transition-colors duration-200 cursor-pointer",
+            "inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold border bg-white transition-colors duration-200 cursor-pointer whitespace-nowrap shrink-0",
             selectedCount > 0
               ? "border-[#F8904D] bg-[#F8904D] text-white hover:bg-[#D87E43]"
               : "border-slate-200 text-[#555] hover:border-slate-300 hover:text-[#1C1C1C]"
@@ -91,7 +93,10 @@ function FilterSelect({ section: s }: { section: FilterSection }) {
             <span className={selectedCount > 0 ? "text-white" : "text-slate-400"}>
               {s.icon}
             </span>
-            <span className="truncate">{s.title}</span>
+            <span className="sm:hidden truncate">
+              {s.shortTitle ?? s.title}
+            </span>
+            <span className="hidden sm:inline truncate">{s.title}</span>
             {selectedCount > 0 && (
               <span className="inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-white text-[#F8904D] text-[10px] font-bold">
                 {selectedCount}
@@ -113,7 +118,7 @@ function FilterSelect({ section: s }: { section: FilterSection }) {
         <Popover.Content
           align="start"
           sideOffset={8}
-          className="z-40 min-w-[300px] sm:min-w-[340px] max-w-[420px] w-auto rounded-2xl bg-white p-0 outline-none ring-1 ring-slate-200/70 shadow-xl border border-slate-100"
+          className="z-40 min-w-[280px] w-[420px] max-w-[calc(100vw_-_1.5rem)] rounded-2xl bg-white p-0 outline-none ring-1 ring-slate-200/70 shadow-xl border border-slate-100"
         >
           <div className="flex items-center justify-between px-4 py-3.5 border-b border-slate-100">
             <span className="text-sm font-bold text-[#1C1C1C] flex items-center gap-2">

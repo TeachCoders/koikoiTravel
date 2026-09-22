@@ -9,6 +9,77 @@ interface ReplayPlayerProps {
   replay: ReplayData;
 }
 
+// rrweb numeric event identifiers (kept as literals to avoid pulling the full
+// runtime enum surface into this bundle).
+const EVENT_INCREMENTAL_SNAPSHOT = 3;
+const SOURCE_MOUSE_INTERACTION = 2;
+const MOUSE_CLICK = 2;
+const MOUSE_DBL_CLICK = 3;
+
+const RIPPLE_CLASS = "rrweb-click-ripple";
+const RIPPLE_STYLE_ID = "rrweb-click-ripple-style";
+
+type ReplayerLike = {
+  iframe?: HTMLIFrameElement | null;
+};
+
+function ensureRippleStyles(doc: Document) {
+  if (doc.getElementById(RIPPLE_STYLE_ID)) return;
+  const style = doc.createElement("style");
+  style.id = RIPPLE_STYLE_ID;
+  style.textContent = `
+    @keyframes rrwebRippleFade {
+      0%   { transform: translate(-50%, -50%) scale(0.25); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1.7);   opacity: 0; }
+    }
+    .${RIPPLE_CLASS} {
+      position: fixed;
+      z-index: 2147483647;
+      width: 30px;
+      height: 30px;
+      border-radius: 9999px;
+      border: 3px solid rgba(248, 144, 77, 0.95);
+      background: rgba(248, 144, 77, 0.2);
+      pointer-events: none;
+      animation: rrwebRippleFade 0.65s ease-out forwards;
+    }
+  `;
+  doc.head.appendChild(style);
+}
+
+function drawRipple(replayer: ReplayerLike, x: number, y: number) {
+  const doc = replayer.iframe?.contentDocument;
+  if (!doc || !doc.body) return;
+  ensureRippleStyles(doc);
+  const marker = doc.createElement("div");
+  marker.className = RIPPLE_CLASS;
+  marker.style.left = `${x}px`;
+  marker.style.top = `${y}px`;
+  doc.body.appendChild(marker);
+  window.setTimeout(() => marker.remove(), 750);
+}
+
+/**
+ * rrweb plugin that draws a quick highlight ring on the replay video wherever
+ * the visitor clicked, so you can see exactly what they interacted with.
+ */
+function createClickHighlightPlugin() {
+  return {
+    handler(
+      event: unknown,
+      _isSync: boolean,
+      context: { replayer: ReplayerLike }
+    ) {
+      const snapshot = event as { type?: number; data?: Record<string, unknown> };
+      if (!snapshot || snapshot.type !== EVENT_INCREMENTAL_SNAPSHOT) return;
+      const data = snapshot.data;
+      if (!data || data.source !== SOURCE_MOUSE_INTERACTION) return;
+      if (data.type !== MOUSE_CLICK && data.type !== MOUSE_DBL_CLICK) return;
+      drawRipple(context.replayer, Number(data.x), Number(data.y));
+    },
+  };
+}
+
 /**
  * Renders a recorded visitor session with rrweb-player and offers a
  * re-playable .json download of the recording.
@@ -46,6 +117,8 @@ export default function ReplayPlayer({ replay }: ReplayPlayerProps) {
           showController: true,
           speedOption: [1, 2, 4, 8],
           width: Number(host.clientWidth) || 800,
+          mouseTail: true,
+          plugins: [createClickHighlightPlugin()],
         },
       });
       setReady(true);

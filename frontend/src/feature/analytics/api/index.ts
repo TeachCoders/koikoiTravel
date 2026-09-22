@@ -58,31 +58,6 @@ export async function sendActivityBatch(payload: ActivityBatchPayload): Promise<
   await apiClient.post("/analytics/events", payload);
 }
 
-export interface BrokenPage {
-  pagePath: string;
-  hits: number;
-  visitors: number;
-  fromPages: { source: string; count: number; lastAt: string }[];
-  issues: {
-    source: string;
-    clickedLink: string | null;
-    clickedText: string | null;
-    referrer: string | null;
-    sessionId: string;
-    createdAt: string;
-  }[];
-}
-
-export async function getBrokenPages(range?: DateRange): Promise<{ pages: BrokenPage[]; resolvedPaths: string[] }> {
-  const res = await apiClient.get<{ pages: BrokenPage[]; resolvedPaths: string[] }>("/analytics/broken-pages", {
-    params: {
-      ...(range?.from ? { from: range.from } : {}),
-      ...(range?.to ? { to: range.to } : {}),
-    },
-  });
-  return res.data ?? { pages: [], resolvedPaths: [] };
-}
-
 export async function resolveNotFound(pagePath: string): Promise<void> {
   await apiClient.post("/analytics/resolve-404", { pagePath });
 }
@@ -120,12 +95,25 @@ export interface ReplaySessionsPage {
   totalPages: number;
 }
 
+export interface ActivityLogItem {
+  id: number;
+  type: string;
+  eventName: string;
+  pagePath: string;
+  sectionId?: string | null;
+  dwellTimeMs?: number | null;
+  element?: string | null;
+  metadata?: Record<string, unknown> | null;
+  createdAt: string;
+}
+
 export interface ReplayData {
   sessionId: string;
   count: number;
   events: Record<string, unknown>[];
   country?: string | null;
   deviceType?: string | null;
+  activity?: ActivityLogItem[];
 }
 
 export async function getReplaySessions(params?: {

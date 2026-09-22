@@ -11,6 +11,7 @@ import {
   useDeleteAllAnalyticsData,
 } from "@/feature/analytics/api/useAnalytics";
 import ReplayPlayer from "@/components/analytics/ReplayPlayer";
+import ReplayActivityTimeline from "@/components/analytics/ReplayActivityTimeline";
 import type { ReplaySessionInfo } from "@/feature/analytics/api";
 import { useAnalyticsRange } from "@/feature/analytics/range-context";
 import { countryFlag, countryLabel } from "@/lib/countryFlag";
@@ -299,7 +300,12 @@ export default function ReplaysBrowser() {
                                     No events recorded for this session.
                                   </p>
                                 ) : (
-                                  <ReplayPlayer replay={replay} />
+                                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
+                                    <ReplayPlayer replay={replay} />
+                                    <div className="rounded-xl border border-slate-200 bg-white p-3">
+                                      <ReplayActivityTimeline activity={replay.activity ?? []} />
+                                    </div>
+                                  </div>
                                 )}
                               </div>
                             </div>

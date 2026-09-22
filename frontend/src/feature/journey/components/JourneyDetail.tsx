@@ -496,7 +496,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   <h2 className="h3 text-[#1C1C1C] mt-2">Day By Day Itinerary</h2>
                 </div>
               </div>
-              <div className="relative bg-white rounded-3xl p-4 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
+              <div className="relative bg-white rounded-3xl p-2 md:p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
                 <div className="day-accordion">
                   {journey.days.map((day, i) => (
                     <DayItem
@@ -735,7 +735,7 @@ function DayItem({
     <details
       open={defaultOpen}
       onToggle={handleToggle}
-      className="day-accordion-item group relative pl-0 md:pl-12 py-1 md:py-2 first:pt-0 last:pb-0 border-b border-slate-100 last:border-b-0"
+      className="day-accordion-item group relative pl-0 py-1 md:py-2 first:pt-0 last:pb-0 border-b border-slate-100 last:border-b-0"
     >
       <summary className="flex items-center justify-between gap-4 py-3 md:py-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden select-none">
         <span className="flex items-center gap-3 font-heading text-lg md:text-xl font-bold text-[#1C1C1C] rich-text-plain-links">

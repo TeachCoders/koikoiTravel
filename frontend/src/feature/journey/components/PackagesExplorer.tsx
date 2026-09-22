@@ -175,6 +175,7 @@ export default function PackagesExplorer({
           {
             id: "city",
             title: "Destination",
+            shortTitle: "City",
             icon: <MapPin size={14} />,
             options: cityOptions,
             selected: selectedCities,
@@ -183,6 +184,7 @@ export default function PackagesExplorer({
           {
             id: "experience",
             title: "Travel Experience",
+            shortTitle: "Experience",
             icon: <Sparkles size={14} />,
             options: travelExperienceOptions(journeys),
             selected: selectedExperiences,
@@ -191,6 +193,7 @@ export default function PackagesExplorer({
           {
             id: "season",
             title: "Best Season / Month",
+            shortTitle: "Season",
             icon: <Sun size={14} />,
             options: seasonOptions(journeys),
             selected: selectedSeasons,

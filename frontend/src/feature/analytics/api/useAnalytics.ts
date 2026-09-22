@@ -8,11 +8,9 @@ import {
   purgeAnalyticsNow,
   deleteAllAnalyticsData,
   sendActivityBatch,
-  getBrokenPages,
   resolveNotFound,
   type DateRange,
   type ActivityBatchPayload,
-  type BrokenPage,
 } from ".";
 
 /**
@@ -26,22 +24,6 @@ export const useFlushActivityEvents = () => {
       console.warn("[Analytics] failed to send activity batch", error);
     },
   });
-};
-
-export const useBrokenPages = (range?: DateRange, enabled = true) => {
-  const query = useQuery({
-    queryKey: ["analytics-broken-pages", range?.from ?? "all", range?.to ?? "all"],
-    queryFn: () => getBrokenPages(range),
-    enabled,
-    staleTime: 30 * 1000,
-  });
-  return {
-    pages: query.data?.pages ?? ([] as BrokenPage[]),
-    resolvedPaths: query.data?.resolvedPaths ?? ([] as string[]),
-    isLoading: query.isLoading,
-    error: query.error,
-    refetch: query.refetch,
-  };
 };
 
 export const useResolveNotFound = () => {

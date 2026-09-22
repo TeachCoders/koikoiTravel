@@ -303,16 +303,34 @@ router.get('/replay/:sessionId', requireSuperAdmin, async (req, res) => {
     });
     // Batches were flushed sequentially; restore order by flattening.
     const events = batches.flatMap(b => Array.isArray(b.events) ? b.events : []);
-    const meta = await prisma.userSession.findUnique({
-      where: { id: req.params.sessionId },
-      select: { country: true, deviceType: true, startedAt: true, totalTimeSpent: true },
-    });
+    const [meta, activityLogs] = await Promise.all([
+      prisma.userSession.findUnique({
+        where: { id: req.params.sessionId },
+        select: { country: true, deviceType: true, startedAt: true, totalTimeSpent: true },
+      }),
+      prisma.activityLog.findMany({
+        where: { sessionId: req.params.sessionId },
+        orderBy: { createdAt: 'asc' },
+      }),
+    ]);
+    const activity = activityLogs.map(a => ({
+      id: a.id,
+      type: a.eventName,
+      eventName: a.eventName,
+      pagePath: a.pagePath,
+      sectionId: a.sectionId,
+      dwellTimeMs: a.dwellTimeMs,
+      element: a.element,
+      metadata: a.metadata || null,
+      createdAt: a.createdAt.toISOString(),
+    }));
     res.json({
       sessionId: req.params.sessionId,
       count: events.length,
       events,
       country: meta?.country || null,
       deviceType: meta?.deviceType || null,
+      activity,
     });
   } catch (err) {
     console.error('[ANALYTICS] replay fetch error', err);
