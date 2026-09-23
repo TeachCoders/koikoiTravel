@@ -20,7 +20,11 @@ export const metadata: Metadata = {
 export default async function TourPackagesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ city?: string | string[]; exp?: string | string[] }>;
+  searchParams: Promise<{
+    city?: string | string[];
+    exp?: string | string[];
+    state?: string | string[];
+  }>;
 }) {
   const params = await searchParams;
   const first = (v: string | string[] | undefined) =>
@@ -30,6 +34,10 @@ export default async function TourPackagesPage({
     .map((s) => s.trim())
     .filter(Boolean);
   const experiences = first(params.exp)
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const states = first(params.state)
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
@@ -101,6 +109,7 @@ export default async function TourPackagesPage({
         <PackagesExplorer
           initialCities={cities}
           initialExperiences={experiences}
+          initialStates={states}
           initialJourneys={initialJourneys}
         />
       </div>

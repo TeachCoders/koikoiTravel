@@ -19,10 +19,12 @@ import {
 export default function PackagesExplorer({
   initialCities = [],
   initialExperiences = [],
+  initialStates = [],
   initialJourneys = null,
 }: {
   initialCities?: string[];
   initialExperiences?: string[];
+  initialStates?: string[];
   initialJourneys?: PaginatedResponse<Journey> | null;
 }) {
   const { journeys, isLoading } = useGetJourneys(
@@ -31,7 +33,7 @@ export default function PackagesExplorer({
   );
 
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [selectedStates, setSelectedStates] = useState<string[]>([]);
+  const [selectedStates, setSelectedStates] = useState<string[]>(initialStates);
   const [selectedCities, setSelectedCities] = useState<string[]>(initialCities);
   const [selectedExperiences, setSelectedExperiences] = useState<string[]>(initialExperiences);
   const [selectedSeasons, setSelectedSeasons] = useState<string[]>([]);

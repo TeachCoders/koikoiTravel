@@ -26,26 +26,30 @@ interface Suggestion {
   item: ExpOption | CityOption;
 }
 
-const FALLBACK_POPULAR_CITIES: CityOption[] = [
-  { id: -1, slug: "jaipur", title: "Jaipur", stateTitle: null },
-  { id: -2, slug: "goa", title: "Goa", stateTitle: null },
-  { id: -3, slug: "manali", title: "Manali", stateTitle: null },
-  { id: -4, slug: "kerala", title: "Kerala", stateTitle: null },
-];
+interface PopularChip {
+  label: string;
+  kind: "exp" | "state";
+  value: string;
+}
 
-const FALLBACK_POPULAR_EXPERIENCES: ExpOption[] = [
-  { id: -1, slug: "honeymoon", title: "Honeymoon" },
-  { id: -2, slug: "adventure", title: "Adventure" },
+const POPULAR_CHIPS: PopularChip[] = [
+  { label: "Golden Triangle Tours", kind: "exp", value: "Golden Triangle" },
+  { label: "Agra Jaipur Tours", kind: "exp", value: "Taj Mahal" },
+  { label: "Rajasthan Tours", kind: "state", value: "Rajasthan" },
+  { label: "Kerala Tours", kind: "state", value: "Kerala" },
+  { label: "Wildlife India Tours", kind: "exp", value: "Wildlife" },
+  { label: "Weekend Tours", kind: "exp", value: "Weekend Tours in India" },
 ];
 
 export default function HeroSearchBar() {
   const router = useRouter();
-  const { cities, experiences, isLoading } = useJourneyFilters();
+  const { cities, experiences } = useJourneyFilters();
 
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedExperiences, setSelectedExperiences] = useState<string[]>([]);
+  const [selectedStates, setSelectedStates] = useState<string[]>([]);
 
   const q = query.trim().toLowerCase();
 
@@ -87,19 +91,29 @@ export default function HeroSearchBar() {
     setSelectedExperiences((prev) => (prev.includes(e.title) ? prev : [...prev, e.title]));
   };
 
+  const toggleState = (s: string) => {
+    setSelectedStates((prev) => (prev.includes(s) ? prev : [...prev, s]));
+  };
+
+  const selectChip = (chip: PopularChip) => {
+    if (chip.kind === "exp") {
+      toggleExp({ id: -1, slug: chip.value, title: chip.value });
+    } else {
+      toggleState(chip.value);
+    }
+  };
+
   const go = () => {
     const params = new URLSearchParams();
     if (selectedCities.length > 0) params.set("city", selectedCities.join(","));
     if (selectedExperiences.length > 0) params.set("exp", selectedExperiences.join(","));
+    if (selectedStates.length > 0) params.set("state", selectedStates.join(","));
     const qs = params.toString();
     router.push(qs ? `/tour-packages?${qs}` : "/tour-packages");
   };
 
   const cityLabel = (slug: string) => cities.find((c) => c.slug === slug)?.title || slug;
   const expLabel = (title: string) => title;
-
-  const popularCities = (cities.length > 0 ? cities : FALLBACK_POPULAR_CITIES).slice(0, 4);
-  const popularExps = (experiences.length > 0 ? experiences : FALLBACK_POPULAR_EXPERIENCES).slice(0, 2);
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -177,49 +191,35 @@ export default function HeroSearchBar() {
 
           {selectedCities.length === 0 &&
             selectedExperiences.length === 0 &&
-            !open &&
-            (isLoading || popularCities.length > 0 || popularExps.length > 0) && (
+            selectedStates.length === 0 &&
+            !open && (
               <div className="flex flex-wrap items-center gap-2 mt-2 px-1 pb-1">
                 <span className="text-[11px] font-bold uppercase tracking-wide text-[#999]">
                   Popular
                 </span>
-                {isLoading
-                  ? [0, 1, 2, 3].map((i) => (
-                      <span
-                        key={i}
-                        className="h-6 w-16 rounded-full bg-[#f0f0f0] animate-pulse"
-                      />
-                    ))
-                  : popularCities.map((c) => (
+                {POPULAR_CHIPS.map((chip) => (
                   <button
-                    key={c.slug}
+                    key={chip.label}
                     type="button"
                     onClick={() => {
-                      toggleCity(c);
+                      selectChip(chip);
                     }}
                     className="inline-flex items-center gap-1 text-[13px] font-medium text-[#1C1C1C]/75 bg-white border border-[#1C1C1C]/10 hover:border-[#2E8B8B] hover:text-[#2E8B8B] rounded-full px-3 py-1 transition-colors"
                   >
-                    <MapPin className="w-3.5 h-3.5" />
-                    {c.title}
-                  </button>
-                ))}
-                {popularExps.map((e) => (
-                  <button
-                    key={e.slug}
-                    type="button"
-                    onClick={() => {
-                      toggleExp(e);
-                    }}
-                    className="inline-flex items-center gap-1 text-[13px] font-medium text-[#1C1C1C]/75 bg-white border border-[#1C1C1C]/10 hover:border-[#F8904D] hover:text-[#F8904D] rounded-full px-3 py-1 transition-colors"
-                  >
-                    <Sparkles className="w-3.5 h-3.5" />
-                    {e.title}
+                    {chip.kind === "exp" ? (
+                      <Sparkles className="w-3.5 h-3.5" />
+                    ) : (
+                      <MapPin className="w-3.5 h-3.5" />
+                    )}
+                    {chip.label}
                   </button>
                 ))}
               </div>
             )}
 
-          {(selectedCities.length > 0 || selectedExperiences.length > 0) && (
+          {(selectedCities.length > 0 ||
+            selectedExperiences.length > 0 ||
+            selectedStates.length > 0) && (
             <div className="flex flex-wrap items-center gap-2 mt-2 px-1 pb-1">
               {selectedCities.map((slug) => (
                 <span
@@ -250,6 +250,23 @@ export default function HeroSearchBar() {
                     onClick={() =>
                       setSelectedExperiences((prev) => prev.filter((t) => t !== title))
                     }
+                    className="text-[#1C1C1C]/50 hover:text-[#F8904D] transition-colors"
+                    aria-label={`Remove ${title}`}
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </span>
+              ))}
+              {selectedStates.map((title) => (
+                <span
+                  key={title}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1C1C1C] bg-[#eef6f6] border border-[#2E8B8B]/25 rounded-full px-3 py-1.5"
+                >
+                  <MapPin className="w-3 h-3 text-[#2E8B8B]" />
+                  {title}
+                  <button
+                    type="button"
+                    onClick={() => setSelectedStates((prev) => prev.filter((s) => s !== title))}
                     className="text-[#1C1C1C]/50 hover:text-[#F8904D] transition-colors"
                     aria-label={`Remove ${title}`}
                   >

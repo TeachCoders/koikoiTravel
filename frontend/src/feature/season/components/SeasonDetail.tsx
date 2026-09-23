@@ -148,7 +148,7 @@ export default function SeasonDetail({
 
         <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-center items-center py-8 text-center">
           {heroTag && (
-            <p className="max-w-2xl mx-auto mb-2 text-base sm:text-lg font-bold tracking-wider uppercase text-white/90 leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
+            <p className="hidden sm:block max-w-2xl mx-auto mb-2 text-base sm:text-lg font-bold tracking-wider uppercase text-white/90 leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
               {heroTag}
             </p>
           )}
@@ -157,7 +157,7 @@ export default function SeasonDetail({
             {heroTitle}
           </h1>
 
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+          <div className="hidden sm:flex mt-7 flex-wrap items-center justify-center gap-3">
             <QuoteModal>
               <button
                 type="button"
