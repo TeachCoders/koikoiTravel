@@ -1,4 +1,4 @@
-# Architecture — Koikoi travel
+# Architecture — KoiKoi Travel
 
 ## High-level
 

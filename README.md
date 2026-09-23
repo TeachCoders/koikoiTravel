@@ -1,4 +1,4 @@
-# Koikoi travel — Travel Booking Platform
+# KoiKoi Travel — Travel Booking Platform
 
 Full-stack travel platform: public holiday-package website + admin dashboard + sales/booking backend.
 
@@ -72,7 +72,7 @@ npm run dev               # http://localhost:3000
 | Var | Example | Purpose |
 |---|---|---|
 | `NEXT_PUBLIC_API_BASE_URL` | `http://localhost:5000` | Backend base URL |
-| `NEXT_PUBLIC_BRAND_NAME` | `Koikoi travel` | Branding |
+| `NEXT_PUBLIC_BRAND_NAME` | `KoiKoi Travel` | Branding |
 | `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` | Public site URL |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | `919136739178` | WhatsApp deep links |
 | `NEXT_PUBLIC_SALES_PHONE` | `+918447273005` | Sales contact |

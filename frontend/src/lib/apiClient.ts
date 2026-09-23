@@ -55,7 +55,9 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401 && typeof window !== "undefined") {
       const failedUrl = error.config?.url || "";
       const isGuestCheck =
-        failedUrl.includes("/auth/me") || failedUrl.includes("/auth/csrf-token");
+        failedUrl.includes("/auth/me") ||
+        failedUrl.includes("/auth/csrf-token") ||
+        failedUrl.includes("/analytics/resolve-404");
       const alreadyOnAuthPage = window.location.pathname.startsWith("/auth");
       if (!isGuestCheck && !alreadyOnAuthPage) {
         localStorage.removeItem("token");
