@@ -757,7 +757,7 @@ function DayItem({
         />
       </summary>
 
-      <div className="pt-1 md:pt-2 pb-5 md:pl-[44px]">
+      <div className="day-accordion-content pt-1 md:pt-2 pb-5 md:pl-[44px]">
         {day.description && (
           <div className="text-[15px] text-slate-600 leading-[1.8]">
             <RichContent html={linkKeywords(day.description, cityLinkRules)} className="rich-text-plain-links" />
