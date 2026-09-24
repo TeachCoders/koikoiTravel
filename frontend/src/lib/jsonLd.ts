@@ -30,7 +30,8 @@ export const organizationSchema: Record<string, unknown> = {
     "Customized India Tour Packages",
     "Private Chauffeur & Cab Rentals India",
     "Luxury Golden Triangle Tours"
-  ]
+  ],
+  sameAs: ["https://www.facebook.com/koikoiTravel/"]
 };
 
 export const websiteSchema: Record<string, unknown> = {
