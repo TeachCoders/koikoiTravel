@@ -42,9 +42,9 @@ export function QuoteModal({ children }: { children: ReactNode }) {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-5xl w-[95vw] p-0 overflow-hidden bg-white rounded-[24px] md:rounded-[32px] border-none shadow-2xl">
+      <DialogContent className="sm:max-w-5xl w-[95vw] p-0 bg-white rounded-[24px] md:rounded-[32px] border-none shadow-2xl">
         <DialogTitle className="sr-only">Request a Quote</DialogTitle>
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.4fr] max-h-[90vh] md:max-h-[85vh]">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.4fr] md:max-h-[85vh]">
 
           {/* Left Panel - Information */}
           <div className="p-8 md:p-12 flex flex-col bg-[#F3F4F6] border-b md:border-b-0 md:border-r border-slate-200">

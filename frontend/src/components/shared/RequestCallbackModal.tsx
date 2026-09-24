@@ -63,7 +63,7 @@ export function RequestCallbackModal({ children, destinationName = "Holiday Pack
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-xl md:max-w-2xl w-[95vw] p-0 overflow-hidden bg-white rounded-3xl border-none shadow-2xl">
+      <DialogContent className="sm:max-w-xl md:max-w-2xl w-[95vw] p-0 bg-white rounded-3xl border-none shadow-2xl">
         <DialogTitle className="sr-only">Request Best Price Callback</DialogTitle>
 
         <div className="relative p-6 sm:p-8 bg-gradient-to-b from-orange-500/10 via-amber-500/5 to-white">

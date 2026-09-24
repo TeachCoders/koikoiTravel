@@ -47,9 +47,9 @@ export default function ExitIntentModal() {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-5xl w-[95vw] p-0 overflow-hidden bg-white rounded-[24px] md:rounded-[32px] border-none shadow-2xl">
+      <DialogContent className="sm:max-w-5xl w-[95vw] p-0 bg-white rounded-[24px] md:rounded-[32px] border-none shadow-2xl">
         <DialogTitle className="sr-only">Exclusive Travel Offer</DialogTitle>
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.35fr] max-h-[90vh] md:max-h-[85vh]">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.35fr] md:max-h-[85vh]">
           {/* Left Panel - Value Proposition */}
           <div className="p-8 md:p-12 flex flex-col justify-between bg-gradient-to-br from-[#FFF5F0] via-[#FAF9F6] to-[#F4F6F8] border-b md:border-b-0 md:border-r border-slate-200 text-[#1C1C1C] relative overflow-hidden">
             <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-[#F8904D]/10 blur-3xl pointer-events-none" />
@@ -91,7 +91,7 @@ export default function ExitIntentModal() {
           </div>
 
           {/* Right Panel - Form Container (Custom scrollbar-none to prevent ugly browser scrollbars) */}
-          <div className="p-6 md:p-10 overflow-y-auto max-h-[85vh] bg-white scrollbar-none">
+          <div className="p-6 md:p-10 overflow-y-auto md:max-h-[85vh] bg-white scrollbar-none">
             <div className="mb-6">
               <h3 className="text-2xl font-bold text-[#1C1C1C] tracking-tight">
                 Get Instant Free Itinerary Quote

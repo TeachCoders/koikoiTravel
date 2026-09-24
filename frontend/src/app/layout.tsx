@@ -13,6 +13,7 @@ import { ChatWidgetWrapper } from "@/components/shared/ChatWidgetWrapper";
 import WhatsAppWidget from "@/components/shared/WhatsAppWidget";
 import MobileStickyActionBar from "@/components/shared/MobileStickyActionBar";
 import UserActivityTracker from "@/components/shared/UserActivityTracker";
+import ReplayRecorder from "@/components/shared/ReplayRecorder";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
@@ -108,6 +109,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <WhatsAppWidget />
           <MobileStickyActionBar />
           <UserActivityTracker />
+          <ReplayRecorder />
         </AppProviders>
       </body>
     </html>

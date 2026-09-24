@@ -152,7 +152,7 @@ function ExperienceContent({ experience }: { experience: any }) {
   return (
     <div>
       {/* ===== HERO ===== */}
-      <section className="relative aspect-[1200/400] min-h-[300px] sm:min-h-[380px] md:min-h-[520px] overflow-hidden bg-slate-200">
+      <section className="relative w-full h-[300px] sm:h-[380px] md:h-[520px] overflow-hidden bg-slate-200">
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={h1Title} />
