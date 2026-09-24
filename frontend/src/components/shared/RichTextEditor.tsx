@@ -8,11 +8,15 @@ import StarterKit from "@tiptap/starter-kit";
 import TiptapImage from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
+import { Table } from "@tiptap/extension-table/table";
+import { TableRow } from "@tiptap/extension-table/row";
+import { TableCell } from "@tiptap/extension-table/cell";
+import { TableHeader } from "@tiptap/extension-table/header";
 import {
   Bold, Italic, Underline as UnderlineIcon, Strikethrough, Link2,
   Heading1, Heading2, Heading3, Heading4,
   List, ListOrdered, ImagePlus, Undo2, Redo2, Upload,
-  Pilcrow, Minus, X, Check, Crop,
+  Pilcrow, Minus, X, Check, Crop, Table2, Rows3, Columns3, Trash2,
 } from "lucide-react";
 
 interface RichTextEditorProps {
@@ -136,6 +140,10 @@ export default function RichTextEditor({
       EditorShortcuts,
       TiptapImage.configure({ inline: false, allowBase64: true }),
       Placeholder.configure({ placeholder }),
+      Table.configure({ resizable: true }),
+      TableRow,
+      TableCell,
+      TableHeader,
     ],
     content,
     onUpdate: ({ editor }) => {
@@ -337,6 +345,11 @@ export default function RichTextEditor({
         <div className="w-px h-5 bg-slate-200 mx-1" />
         <ToolbarButton onClick={() => editor.chain().focus().setHorizontalRule().run()} title="Horizontal Line (Ctrl+Alt+H)"><Minus size={14} /></ToolbarButton>
         <div className="w-px h-5 bg-slate-200 mx-1" />
+        <ToolbarButton onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()} active={editor.isActive("table")} title="Insert Table"><Table2 size={14} /></ToolbarButton>
+        <ToolbarButton onClick={() => editor.chain().focus().addRowAfter().run()} title="Add Row Below"><Rows3 size={14} /></ToolbarButton>
+        <ToolbarButton onClick={() => editor.chain().focus().addColumnAfter().run()} title="Add Column Right"><Columns3 size={14} /></ToolbarButton>
+        <ToolbarButton onClick={() => editor.chain().focus().deleteTable().run()} title="Delete Table"><Trash2 size={14} /></ToolbarButton>
+        <div className="w-px h-5 bg-slate-200 mx-1" />
         <ToolbarButton onClick={() => editor.chain().focus().undo().run()} title="Undo (Ctrl+Z)"><Undo2 size={14} /></ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().redo().run()} title="Redo (Ctrl+Shift+Z)"><Redo2 size={14} /></ToolbarButton>
       </div>
@@ -523,6 +536,13 @@ export default function RichTextEditor({
         .rte-editor .tiptap a { color: #2563eb; text-decoration: underline; }
         .rte-editor .tiptap blockquote { border-left: 3px solid #6366f1; padding-left: 1rem; margin: 0.5rem 0; color: #64748b; font-style: italic; }
         .rte-editor .tiptap hr { border: none; border-top: 2px solid #e2e8f0; margin: 1rem 0; }
+        .rte-editor .tiptap .tableWrapper { overflow-x: auto; margin: 0.75rem 0; }
+        .rte-editor .tiptap table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        .rte-editor .tiptap td, .rte-editor .tiptap th { border: 1px solid #e2e8f0; padding: 0.5rem 0.75rem; position: relative; vertical-align: top; min-width: 40px; color: #334155; }
+        .rte-editor .tiptap th { background: #f8f8f8; font-weight: 700; color: #1e293b; }
+        .rte-editor .tiptap .selectedCell::after { content: ""; position: absolute; inset: 0; background: rgba(99, 102, 241, 0.15); pointer-events: none; }
+        .rte-editor .tiptap .column-resize-handle { background-color: #6366f1; bottom: -2px; position: absolute; right: -2px; pointer-events: none; top: 0; width: 4px; }
+        .rte-editor .tiptap .resize-cursor { cursor: col-resize; }
       `}</style>
     </div>
   );
