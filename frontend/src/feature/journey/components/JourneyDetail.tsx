@@ -737,6 +737,11 @@ function DayItem({
       onToggle={handleToggle}
       className="day-accordion-item group relative pl-0 py-1 md:py-2 first:pt-0 last:pb-0 border-b border-slate-100 last:border-b-0"
     >
+      {/* Vertical Timeline Line */}
+      <span
+        aria-hidden="true"
+        className="hidden md:block absolute left-[15px] top-0 bottom-0 w-[2px] bg-[#2E8B8B]/20 z-0"
+      />
       <summary className="flex items-center justify-between gap-4 py-3 md:py-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden select-none">
         <span className="flex items-center gap-3 font-heading text-lg md:text-xl font-bold text-[#1C1C1C] rich-text-plain-links">
           {/* Timeline Dot */}
