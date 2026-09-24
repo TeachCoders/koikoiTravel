@@ -26,6 +26,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.koikoitravel.com" }],
+        destination: "https://koikoitravel.com/:path*",
+        permanent: true,
+      },
+      {
         source: "/destinations",
         destination: "/tour-packages",
         permanent: true,
