@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { CalendarDays, Tag, ArrowRight } from "lucide-react";
+import { CalendarDays, Tag, ArrowRight, Sparkles } from "lucide-react";
 import type { BlogPost } from "@/feature/blog/type";
 import { formatBlogDate } from "@/lib/dateUtils";
 import { SERVER_API_BASE } from "@/feature/destinations/api/public-server";
 import { journeyPackageHref } from "@/feature/journey/filterOptions";
 import { FallbackImage } from "@/components/shared/FallbackImage";
+import { QuoteModal } from "@/components/shared/QuoteModal";
 
 async function fetchCategories(): Promise<{ name: string; slug: string }[]> {
   try {
@@ -58,6 +59,29 @@ export default async function BlogSidebar({
 
   return (
     <aside className="space-y-8">
+      {/* ===== FREE QUOTE POPUP TRIGGER ===== */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#2E8B8B] to-[#206b6b] rounded-3xl p-7 text-white shadow-xl">
+        <div className="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-[#F8904D]/30 blur-2xl pointer-events-none" />
+        <span className="text-[11px] font-black uppercase tracking-widest text-[#F5B041] block">
+          KoiKoi Travel
+        </span>
+        <h4 className="font-heading text-xl font-extrabold text-white leading-snug mt-1.5">
+          Planning Your Trip?
+        </h4>
+        <p className="mt-1.5 text-sm text-teal-50/90 leading-relaxed">
+          Share your travel details and get a tailor-made itinerary with the best prices.
+        </p>
+        <QuoteModal>
+          <button
+            type="button"
+            className="mt-5 w-full bg-white text-[#2E8B8B] py-3 px-5 rounded-full text-sm font-black uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95 transition-all hover:bg-teal-50"
+          >
+            <Sparkles size={16} />
+            Get Free Quote
+          </button>
+        </QuoteModal>
+      </div>
+
       {/* ===== TAGS ===== */}
       {tags && tags.length > 0 && (
         <div className="bg-white rounded-3xl border border-slate-200/60 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
