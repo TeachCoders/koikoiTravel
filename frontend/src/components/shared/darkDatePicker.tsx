@@ -38,7 +38,7 @@ export function DarkDatePicker({ value, onChange, label, minDate }: DarkDatePick
         </PopoverTrigger>
         <PopoverContent
           align="start"
-          className="w-auto p-0 bg-white border-brand-neutral-border shadow-xl shadow-slate-200/50"
+          className="w-auto p-0 bg-white border-brand-neutral-border shadow-xl shadow-slate-200/50 overscroll-x-contain touch-pan-y"
         >
           <Calendar
             mode="single"

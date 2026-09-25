@@ -44,7 +44,7 @@ export function QuoteModal({ children }: { children: ReactNode }) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-5xl w-[95vw] p-0 bg-white rounded-[24px] md:rounded-[32px] border-none shadow-2xl">
         <DialogTitle className="sr-only">Request a Quote</DialogTitle>
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] lg:max-h-[85vh]">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] lg:max-h-[85vh] overscroll-x-contain">
 
           {/* Left Panel - Information */}
           <div className="hidden lg:flex p-12 flex-col bg-[#F3F4F6] lg:border-r border-slate-200">
