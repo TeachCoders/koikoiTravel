@@ -99,8 +99,8 @@ export function QuoteModal({ children }: { children: ReactNode }) {
 
           {/* Right Panel - Form */}
           <div className="p-6 sm:p-8 lg:p-12 bg-white flex flex-col overflow-y-auto custom-scrollbar relative">
-            <div className="mb-8 flex items-end gap-2">
-              <h2 className="text-[32px] md:text-[40px] font-normal text-[#3B4254] leading-none">
+            <div className="mb-4 flex items-end gap-2">
+              <h2 className="text-[28px] md:text-[36px] lg:text-[40px] font-normal text-[#3B4254] leading-none">
                 Request a <span className="font-bold text-[#E96A1E] relative inline-block">
                   QUOTE
                   <div className="absolute -bottom-2 left-0 w-full h-[2px] bg-[#E96A1E] opacity-60" />

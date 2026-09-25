@@ -16,7 +16,7 @@ export function DarkDatePicker({ value, onChange, label, minDate }: DarkDatePick
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 min-w-0">
       {label && (
         <label className="block text-[11px] font-bold uppercase tracking-widest text-brand-primary mb-1.5">
           {label}
