@@ -9,6 +9,18 @@ import { QuoteModal } from "@/components/shared/QuoteModal";
 
 const FALLBACK_IMAGE = "/destinationImage/image/agra-6.webp";
 
+async function fetchCategories(): Promise<{ name: string; slug: string }[]> {
+  try {
+    const url = `${SERVER_API_BASE}/blog-category?limit=100&isActive=true`;
+    const res = await fetch(url, { next: { revalidate: 60 } });
+    if (!res.ok) return [];
+    const json = await res.json();
+    return (json?.data || []).map((c: { name: string; slug: string }) => ({ name: c.name, slug: c.slug }));
+  } catch {
+    return [];
+  }
+}
+
 async function fetchRecent(excludeId?: number): Promise<BlogPost[]> {
   try {
     const url = `${SERVER_API_BASE}/blog?limit=6&isActive=true`;
@@ -45,6 +57,7 @@ export default async function BlogSidebar({
 }) {
   const recent = await fetchRecent(excludeId);
   const topJourneys = await fetchTopJourneys();
+  const categories = await fetchCategories();
 
   return (
     <aside className="space-y-8">
@@ -101,6 +114,25 @@ export default async function BlogSidebar({
                 className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#2E8B8B] bg-[#2E8B8B]/5 border border-[#2E8B8B]/10 rounded-full transition-all hover:bg-[#2E8B8B] hover:text-white hover:shadow-md hover:-translate-y-0.5"
               >
                 <Tag size={12} /> {t}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ===== CATEGORIES ===== */}
+      {categories.length > 0 && (
+        <div className="bg-white rounded-3xl border border-slate-200/60 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
+          <h3 className="font-heading text-lg font-extrabold text-[#1C1C1C] mb-5">Categories</h3>
+          <div className="flex flex-col gap-1">
+            {categories.map((c) => (
+              <Link
+                key={c.slug}
+                href={`/blog?search=${encodeURIComponent(c.name)}`}
+                className="flex items-center justify-between gap-2 px-3 py-2.5 -mx-3 rounded-xl text-[14px] font-bold text-slate-700 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 transition-colors"
+              >
+                <span>{c.name}</span>
+                <ArrowRight size={15} className="text-slate-300 group-hover:text-[#2E8B8B] transition-colors shrink-0" />
               </Link>
             ))}
           </div>
