@@ -193,6 +193,7 @@ export default function RichTextEditor({
   const [btnBg, setBtnBg] = useState("#2E8B8B");
   const [cellColorOpen, setCellColorOpen] = useState(false);
   const [rowMode, setRowMode] = useState(false);
+  const [bubbleColorOpen, setBubbleColorOpen] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -616,7 +617,46 @@ export default function RichTextEditor({
       <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
       <EditorContent editor={editor} className={`rte-editor ${minHeight}`} />
 
-      <BubbleMenu editor={editor} options={{ placement: "top" }} className="flex items-center gap-0.5 rounded-xl border border-slate-200 bg-white px-1.5 py-1 shadow-xl">
+      <BubbleMenu editor={editor} options={{ placement: "top" }} className="relative flex items-center gap-0.5 rounded-xl border border-slate-200 bg-white px-1.5 py-1 shadow-xl">
+        {editor.isActive("table") && (
+          <>
+            <BubbleButton onClick={() => { setCellColorOpen(false); setBubbleColorOpen((v) => !v); }} active={bubbleColorOpen || !!currentCellBg} title="Cell / Row Background Color"><PaintBucket size={14} /></BubbleButton>
+            {bubbleColorOpen && (
+              <>
+                <div className="fixed inset-0 z-[68]" onMouseDown={() => setBubbleColorOpen(false)} />
+                <div className="absolute right-0 top-full mt-2 z-[70] w-60 rounded-xl border border-slate-200 bg-white p-3 shadow-2xl">
+                  <p className="text-[11px] font-bold text-slate-600 mb-1 uppercase tracking-wide">
+                    Table Row / Cell Background
+                  </p>
+                  <label className="flex items-center justify-between rounded-lg bg-brand-neutral-light px-2 py-1.5 mb-1.5 cursor-pointer">
+                    <span className="text-[11px] font-semibold text-slate-600">Whole Row</span>
+                    <input type="checkbox" checked={rowMode} onChange={(e) => setRowMode(e.target.checked)} className="accent-brand-primary" />
+                  </label>
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {RTE_BG_COLORS.map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => { applyCellColor(c); setBubbleColorOpen(false); }}
+                        aria-label={`Background ${c}`}
+                        className={`h-7 w-full rounded-lg border transition-transform hover:scale-105 ${currentCellBg?.toLowerCase() === c.toLowerCase() ? "border-slate-900 ring-2 ring-slate-900/20" : "border-slate-200"}`}
+                        style={{ background: c }}
+                      />
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => { applyCellColor(null); setBubbleColorOpen(false); }}
+                    className="mt-2 w-full rounded-lg border border-slate-200 py-1.5 text-[11px] font-semibold text-slate-500 hover:bg-slate-50 transition-colors"
+                  >
+                    No Background
+                  </button>
+                </div>
+              </>
+            )}
+            <div className="w-px h-5 bg-slate-200 mx-1" />
+          </>
+        )}
         <BubbleButton onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive("bold")} title="Bold (Ctrl+B)"><Bold size={14} /></BubbleButton>
         <BubbleButton onClick={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive("italic")} title="Italic (Ctrl+I)"><Italic size={14} /></BubbleButton>
         <BubbleButton onClick={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive("underline")} title="Underline (Ctrl+U)"><UnderlineIcon size={14} /></BubbleButton>
