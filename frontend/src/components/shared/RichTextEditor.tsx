@@ -3,6 +3,7 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { Extension, Node, mergeAttributes } from "@tiptap/core";
+import { TextSelection } from "@tiptap/pm/state";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import TiptapImage from "@tiptap/extension-image";
@@ -17,7 +18,7 @@ import {
   Heading1, Heading2, Heading3, Heading4,
   List, ListOrdered, ImagePlus, Undo2, Redo2, Upload,
   Pilcrow, Minus, X, Check, Crop, Table2, Rows3, Columns3, Trash2,
-  SquarePlus, PaintBucket, ArrowUp, ArrowDown, XCircle,
+  SquarePlus, PaintBucket, ArrowUp, ArrowDown, XCircle, Plus,
 } from "lucide-react";
 
 interface RichTextEditorProps {
@@ -208,6 +209,7 @@ export default function RichTextEditor({
   const [cellColorOpen, setCellColorOpen] = useState(false);
   const [rowMode, setRowMode] = useState(false);
   const [bubbleColorOpen, setBubbleColorOpen] = useState(false);
+  const [rowBar, setRowBar] = useState<{ left: number; top: number } | null>(null);
 
   const editor = useEditor({
     extensions: [
@@ -250,6 +252,65 @@ export default function RichTextEditor({
     window.addEventListener(OPEN_LINK_DIALOG_EVENT, handleOpenLinkDialog);
     return () => window.removeEventListener(OPEN_LINK_DIALOG_EVENT, handleOpenLinkDialog);
   }, [openLinkModal]);
+
+  useEffect(() => {
+    if (!editor) return;
+    const updateRowBar = () => {
+      const { $from } = editor.state.selection;
+      for (let d = $from.depth; d > 0; d--) {
+        if ($from.node(d).type.name === "table") {
+          const dom = editor.view.nodeDOM($from.before(d)) as HTMLElement | null;
+          if (dom) {
+            const r = dom.getBoundingClientRect();
+            setRowBar({ left: r.left + r.width / 2, top: r.bottom + 10 });
+            return;
+          }
+        }
+      }
+      setRowBar(null);
+    };
+    editor.on("transaction", updateRowBar);
+    editor.on("selectionUpdate", updateRowBar);
+    window.addEventListener("scroll", updateRowBar, true);
+    window.addEventListener("resize", updateRowBar);
+    return () => {
+      editor.off("transaction", updateRowBar);
+      editor.off("selectionUpdate", updateRowBar);
+      window.removeEventListener("scroll", updateRowBar, true);
+      window.removeEventListener("resize", updateRowBar);
+    };
+  }, [editor]);
+
+  const addRowAtBottom = () => {
+    if (!editor) return;
+    const { state } = editor;
+    const { $from } = state.selection;
+    let lastCellStart = 0;
+    let lastCellEnd = 0;
+    for (let d = $from.depth; d > 0; d--) {
+      const table = $from.node(d);
+      if (table.type.name === "table") {
+        const tableStart = $from.before(d);
+        let lastRowStart = tableStart + 1;
+        table.forEach((child: any, offset: number) => {
+          if (child.type.name === "tableRow") lastRowStart = tableStart + 1 + offset;
+        });
+        const lastRowNode = table.child(table.childCount - 1);
+        lastRowNode.forEach((cell: any, offset: number) => {
+          if (cell.type.name === "tableCell" || cell.type.name === "tableHeader") {
+            lastCellStart = lastRowStart + 1 + offset;
+            lastCellEnd = lastCellStart + cell.nodeSize;
+          }
+        });
+        break;
+      }
+    }
+    if (!lastCellEnd) return;
+    editor.view.dispatch(
+      editor.state.tr.setSelection(TextSelection.create(editor.state.doc, lastCellStart, lastCellEnd))
+    );
+    editor.chain().focus().addRowAfter().run();
+  };
 
   const applyLink = () => {
     if (!editor) return;
@@ -825,6 +886,19 @@ export default function RichTextEditor({
             </div>
           </div>
         </div>
+      )}
+
+      {rowBar && (
+        <button
+          type="button"
+          className="fixed z-[65] -translate-x-1/2 rounded-full bg-[#F8904D] text-white text-[11px] font-bold px-4 py-2 shadow-lg flex items-center gap-1.5 hover:bg-[#e07f33] transition-colors"
+          style={{ left: rowBar.left, top: rowBar.top }}
+          title="Add Row Below (last row ke niche)"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={addRowAtBottom}
+        >
+          <Plus size={13} /> Add Row
+        </button>
       )}
 
       <style jsx global>{`
