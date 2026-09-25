@@ -59,69 +59,6 @@ export default async function BlogSidebar({
 
   return (
     <aside className="space-y-8">
-      {/* ===== FREE QUOTE POPUP TRIGGER ===== */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#2E8B8B] to-[#206b6b] rounded-3xl p-7 text-white shadow-xl">
-        <div className="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-[#F8904D]/30 blur-2xl pointer-events-none" />
-        <span className="text-[11px] font-black uppercase tracking-widest text-[#F5B041] block">
-          KoiKoi Travel
-        </span>
-        <h4 className="font-heading text-xl font-extrabold text-white leading-snug mt-1.5">
-          Planning Your Trip?
-        </h4>
-        <p className="mt-1.5 text-sm text-teal-50/90 leading-relaxed">
-          Share your travel details and get a tailor-made itinerary with the best prices.
-        </p>
-        <QuoteModal>
-          <button
-            type="button"
-            className="mt-5 w-full bg-white text-[#2E8B8B] py-3 px-5 rounded-full text-sm font-black uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95 transition-all hover:bg-teal-50"
-          >
-            <Sparkles size={16} />
-            Get Free Quote
-          </button>
-        </QuoteModal>
-      </div>
-
-      {/* ===== TAGS ===== */}
-      {tags && tags.length > 0 && (
-        <div className="bg-white rounded-3xl border border-slate-200/60 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
-          <h3 className="font-heading text-lg font-extrabold text-[#1C1C1C] mb-5">Tags</h3>
-          <div className="flex flex-wrap gap-2.5">
-            {tags.map((t) => (
-              <Link
-                key={t}
-                href={`/blog?search=${encodeURIComponent(t)}`}
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#2E8B8B] bg-[#2E8B8B]/5 border border-[#2E8B8B]/10 rounded-full transition-all hover:bg-[#2E8B8B] hover:text-white hover:shadow-md hover:-translate-y-0.5"
-              >
-                <Tag size={12} /> {t}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* ===== CATEGORIES ===== */}
-      {categories.length > 0 && (
-        <div className="bg-white rounded-3xl border border-slate-200/60 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
-          <h3 className="font-heading text-lg font-extrabold text-[#1C1C1C] mb-5">Categories</h3>
-          <div className="grid grid-cols-3 gap-2.5">
-            {categories.map((c, i) => (
-              <Link
-                key={c.slug}
-                href={`/blog?search=${encodeURIComponent(c.name)}`}
-                className={`flex items-center justify-center px-2 py-2.5 rounded-xl text-[12px] font-bold text-center border transition-all ${
-                  i === 0
-                    ? "bg-[#2E8B8B] border-[#2E8B8B] text-white shadow-md hover:bg-[#1f6d6d] hover:border-[#1f6d6d]"
-                    : "bg-slate-50 border-slate-100 text-slate-700 hover:text-white hover:bg-[#2E8B8B] hover:border-[#2E8B8B]"
-                }`}
-              >
-                {c.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* ===== TOP 10 TOUR PACKAGES ===== */}
       {topJourneys.length > 0 && (
         <div className="bg-white rounded-3xl border border-slate-200/60 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
@@ -148,6 +85,69 @@ export default async function BlogSidebar({
               </li>
             ))}
           </ol>
+        </div>
+      )}
+
+      {/* ===== FREE QUOTE POPUP TRIGGER ===== */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#2E8B8B] to-[#206b6b] rounded-3xl p-7 text-white shadow-xl">
+        <div className="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-[#F8904D]/30 blur-2xl pointer-events-none" />
+        <span className="text-[11px] font-black uppercase tracking-widest text-[#F5B041] block">
+          KoiKoi Travel
+        </span>
+        <h4 className="font-heading text-xl font-extrabold text-white leading-snug mt-1.5">
+          Planning Your Trip?
+        </h4>
+        <p className="mt-1.5 text-sm text-teal-50/90 leading-relaxed">
+          Share your travel details and get a tailor-made itinerary with the best prices.
+        </p>
+        <QuoteModal>
+          <button
+            type="button"
+            className="mt-5 w-full bg-white text-[#2E8B8B] py-3 px-5 rounded-full text-sm font-black uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95 transition-all hover:bg-teal-50"
+          >
+            <Sparkles size={16} />
+            Get Free Quote
+          </button>
+        </QuoteModal>
+      </div>
+
+      {/* ===== CATEGORIES ===== */}
+      {categories.length > 0 && (
+        <div className="bg-white rounded-3xl border border-slate-200/60 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
+          <h3 className="font-heading text-lg font-extrabold text-[#1C1C1C] mb-5">Categories</h3>
+          <div className="grid grid-cols-3 gap-2.5">
+            {categories.map((c, i) => (
+              <Link
+                key={c.slug}
+                href={`/blog?search=${encodeURIComponent(c.name)}`}
+                className={`flex items-center justify-center px-2 py-2.5 rounded-xl text-sm font-bold text-center border transition-all ${
+                  i === 0
+                    ? "bg-[#2E8B8B] border-[#2E8B8B] text-white shadow-md hover:bg-[#1f6d6d] hover:border-[#1f6d6d]"
+                    : "bg-slate-50 border-slate-100 text-slate-700 hover:text-white hover:bg-[#2E8B8B] hover:border-[#2E8B8B]"
+                }`}
+              >
+                {c.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ===== TAGS ===== */}
+      {tags && tags.length > 0 && (
+        <div className="bg-white rounded-3xl border border-slate-200/60 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
+          <h3 className="font-heading text-lg font-extrabold text-[#1C1C1C] mb-5">Tags</h3>
+          <div className="flex flex-wrap gap-2.5">
+            {tags.map((t) => (
+              <Link
+                key={t}
+                href={`/blog?search=${encodeURIComponent(t)}`}
+                className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#2E8B8B] bg-[#2E8B8B]/5 border border-[#2E8B8B]/10 rounded-full transition-all hover:bg-[#2E8B8B] hover:text-white hover:shadow-md hover:-translate-y-0.5"
+              >
+                <Tag size={12} /> {t}
+              </Link>
+            ))}
+          </div>
         </div>
       )}
 
