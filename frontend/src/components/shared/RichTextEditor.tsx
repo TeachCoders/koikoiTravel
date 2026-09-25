@@ -2,7 +2,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useEditor, EditorContent } from "@tiptap/react";
-import { Extension, Node, mergeAttributes } from "@tiptap/core";
+import { Extension, Node, Mark, mergeAttributes } from "@tiptap/core";
 import { TextSelection } from "@tiptap/pm/state";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
@@ -18,7 +18,7 @@ import {
   Heading1, Heading2, Heading3, Heading4,
   List, ListOrdered, ImagePlus, Undo2, Redo2, Upload,
   Pilcrow, Minus, X, Check, Crop, Table2, Rows3, Columns3, Trash2,
-  SquarePlus, PaintBucket, ArrowUp, ArrowDown, XCircle, Plus,
+  SquarePlus, PaintBucket, ArrowUp, ArrowDown, XCircle, Plus, Palette,
 } from "lucide-react";
 
 interface RichTextEditorProps {
@@ -165,6 +165,31 @@ function withCellBackground(ext: typeof TableCell) {
 const ColorableTableCell = withCellBackground(TableCell);
 const ColorableTableHeader = withCellBackground(TableHeader);
 
+const TextColorMark = Mark.create({
+  name: "textColor",
+  addAttributes() {
+    return {
+      color: {
+        default: null,
+        parseHTML: (element: HTMLElement) => element.style.color || null,
+        renderHTML: (attributes: { color?: string }) =>
+          attributes.color ? { style: `color: ${attributes.color}` } : {},
+      },
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: "span[style]",
+        getAttrs: (element) => ((element as HTMLElement).style.color ? {} : false),
+      },
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["span", HTMLAttributes, 0];
+  },
+});
+
 function BubbleButton({ onClick, active, title, children }: {
   onClick: () => void;
   active?: boolean;
@@ -209,6 +234,8 @@ export default function RichTextEditor({
   const [cellColorOpen, setCellColorOpen] = useState(false);
   const [rowMode, setRowMode] = useState(false);
   const [bubbleColorOpen, setBubbleColorOpen] = useState(false);
+  const [textColorOpen, setTextColorOpen] = useState(false);
+  const [bubbleTextColorOpen, setBubbleTextColorOpen] = useState(false);
   const [rowBar, setRowBar] = useState<{ left: number; top: number } | null>(null);
 
   const editor = useEditor({
@@ -231,6 +258,7 @@ export default function RichTextEditor({
       ColorableTableCell,
       ColorableTableHeader,
       RteButton,
+      TextColorMark,
     ],
     content,
     onUpdate: ({ editor }) => {
@@ -365,7 +393,33 @@ export default function RichTextEditor({
   const openCellColorPanel = () => {
     if (!editor || !editor.isActive("table")) return;
     setBtnPanelOpen(false);
+    setBubbleColorOpen(false);
+    setTextColorOpen(false);
     setCellColorOpen((v) => !v);
+  };
+
+  const openTextColorPanel = () => {
+    setCellColorOpen(false);
+    setBubbleColorOpen(false);
+    setBtnPanelOpen(false);
+    setTextColorOpen((v) => !v);
+  };
+
+  const currentTextColor = (() => {
+    const a = editor?.getAttributes("textColor") as { color?: string } | undefined;
+    return a?.color || null;
+  })();
+
+  const applyTextColor = (color: string | null) => {
+    if (!editor) return;
+    if (color === null) {
+      editor.chain().focus().unsetMark("textColor").run();
+    } else if (editor.isActive("textColor", { color })) {
+      editor.chain().focus().unsetMark("textColor").run();
+    } else {
+      editor.chain().focus().setMark("textColor", { color }).run();
+    }
+    setTextColorOpen(false);
   };
 
   const currentCellBg = (() => {
@@ -544,6 +598,41 @@ export default function RichTextEditor({
         <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive("italic")} title="Italic (Ctrl+I)"><Italic size={14} /></ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive("underline")} title="Underline (Ctrl+U)"><UnderlineIcon size={14} /></ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} active={editor.isActive("strike")} title="Strikethrough (Ctrl+Shift+X)"><Strikethrough size={14} /></ToolbarButton>
+        <ToolbarButton onClick={openTextColorPanel} active={textColorOpen || !!currentTextColor} title="Text Color"><Palette size={14} /></ToolbarButton>
+        {textColorOpen && (
+          <>
+            <div className="fixed inset-0 z-40" onMouseDown={() => setTextColorOpen(false)} />
+            <div className="absolute right-[140px] top-full mt-1 z-50 w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-xl">
+              <p className="text-[11px] font-bold text-slate-600 mb-2 uppercase tracking-wide">Text Color</p>
+              <div className="grid grid-cols-4 gap-1.5">
+                {RTE_BG_COLORS.map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => applyTextColor(c)}
+                    aria-label={`Text color ${c}`}
+                    title={c}
+                    className={`h-7 w-full rounded-lg border transition-transform hover:scale-105 ${
+                      currentTextColor?.toLowerCase() === c.toLowerCase()
+                        ? "border-slate-900 ring-2 ring-slate-900/20"
+                        : "border-slate-200"
+                    }`}
+                    style={{ background: c, color: isDarkBackground(c) ? "#fff" : "#000" }}
+                  >
+                    <span className="text-[10px] font-black">A</span>
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => applyTextColor(null)}
+                className="mt-2 w-full rounded-lg border border-slate-200 py-1.5 text-[11px] font-semibold text-slate-500 hover:bg-slate-50 transition-colors"
+              >
+                Default Color
+              </button>
+            </div>
+          </>
+        )}
         <ToolbarButton onClick={openLinkModal} active={editor.isActive("link")} title="Link (Ctrl+K)"><Link2 size={14} /></ToolbarButton>
         <div className="w-px h-5 bg-slate-200 mx-1" />
         <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} active={editor.isActive("heading", { level: 1 })} title="Heading 1 (Ctrl+Alt+1)"><Heading1 size={14} /></ToolbarButton>
@@ -732,6 +821,37 @@ export default function RichTextEditor({
             <div className="w-px h-5 bg-slate-200 mx-1" />
           </>
         )}
+        <BubbleButton onClick={() => { setBubbleColorOpen(false); setBubbleTextColorOpen((v) => !v); }} active={bubbleTextColorOpen || !!currentTextColor} title="Text Color"><Palette size={14} /></BubbleButton>
+        {bubbleTextColorOpen && (
+          <>
+            <div className="fixed inset-0 z-[68]" onMouseDown={() => setBubbleTextColorOpen(false)} />
+            <div className="absolute right-0 top-full mt-2 z-[70] w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-2xl">
+              <p className="text-[11px] font-bold text-slate-600 mb-2 uppercase tracking-wide">Text Color</p>
+              <div className="grid grid-cols-4 gap-1.5">
+                {RTE_BG_COLORS.map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => { applyTextColor(c); setBubbleTextColorOpen(false); }}
+                    aria-label={`Text color ${c}`}
+                    className={`h-7 w-full rounded-lg border transition-transform hover:scale-105 ${currentTextColor?.toLowerCase() === c.toLowerCase() ? "border-slate-900 ring-2 ring-slate-900/20" : "border-slate-200"}`}
+                    style={{ background: c, color: isDarkBackground(c) ? "#fff" : "#000" }}
+                  >
+                    <span className="text-[10px] font-black">A</span>
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => { applyTextColor(null); setBubbleTextColorOpen(false); }}
+                className="mt-2 w-full rounded-lg border border-slate-200 py-1.5 text-[11px] font-semibold text-slate-500 hover:bg-slate-50 transition-colors"
+              >
+                Default Color
+              </button>
+            </div>
+          </>
+        )}
+        <div className="w-px h-5 bg-slate-200 mx-1" />
         <BubbleButton onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive("bold")} title="Bold (Ctrl+B)"><Bold size={14} /></BubbleButton>
         <BubbleButton onClick={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive("italic")} title="Italic (Ctrl+I)"><Italic size={14} /></BubbleButton>
         <BubbleButton onClick={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive("underline")} title="Underline (Ctrl+U)"><UnderlineIcon size={14} /></BubbleButton>
