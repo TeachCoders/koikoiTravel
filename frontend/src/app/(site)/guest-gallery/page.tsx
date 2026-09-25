@@ -4,7 +4,6 @@ import { ChevronRight } from "lucide-react";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
-import RichContent from "@/components/shared/RichContent";
 import GuestGalleryClient from "@/feature/guestGallery/components/GuestGalleryClient";
 import type { PaginatedGuestGallery } from "@/feature/guestGallery/type";
 import type { CmsPage } from "@/feature/cms/type";
@@ -15,7 +14,9 @@ export const revalidate = 60;
 export async function generateMetadata(): Promise<Metadata> {
   const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "guest-gallery");
 
-  const title = cmsPage?.seoTitle || cmsPage?.title || "Guest Photo Gallery | KoiKoi Travel";
+  const title = (cmsPage?.seoTitle || "").toLowerCase().includes("koikoi")
+    ? cmsPage!.seoTitle!
+    : "Guest Photo Gallery | KoiKoi Travel";
   const description =
     stripHtml(cmsPage?.seoDescription || cmsPage?.moreDescription || "").slice(0, 160) ||
     "Explore real moments captured by our travelers during their journeys across India. Authentic travel memories with KoiKoi Travel.";
@@ -46,8 +47,9 @@ export default async function GuestGalleryPage() {
 
   const galleryItems = galleryResponse?.data || [];
 
-  const displayTitle = cmsPage?.h1Title || cmsPage?.title || "Guest Gallery";
-  const cmsDescription = cmsPage?.moreDescription || cmsPage?.seoDescription;
+  const rawDisplay = (cmsPage?.h1Title || cmsPage?.title || "").trim();
+  const displayTitle =
+    rawDisplay.toLowerCase() === "guest-gallery" ? "Guest Gallery" : rawDisplay || "Guest Gallery";
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 pb-16">
@@ -82,12 +84,16 @@ export default async function GuestGalleryPage() {
 
       {/* Main Content Area */}
       <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-10 md:py-14 space-y-8">
-        {/* CMS Page Description / Overview Content (from /dashboard/cms-page) */}
-        {cmsDescription && (
-          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-xs">
-            <RichContent html={cmsDescription} />
-          </div>
-        )}
+        {/* Guest Gallery Intro */}
+        <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-xs">
+          <p className="text-[15.5px] leading-relaxed text-slate-600">
+            These are real photos from our happy guests. Every picture is a real
+            holiday moment — a family trip, a honeymoon, a short drive, or a big
+            adventure. Nothing is stock. Nothing is staged. If you love a place you
+            see here, just tell us — we can plan the same trip for you with KoiKoi
+            Travel.
+          </p>
+        </div>
 
         {/* Uploaded Guest Gallery Photo Grid & Lightbox */}
         <GuestGalleryClient initialItems={galleryItems} />
