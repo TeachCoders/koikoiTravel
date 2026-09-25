@@ -104,12 +104,16 @@ export default async function BlogSidebar({
       {categories.length > 0 && (
         <div className="bg-white rounded-3xl border border-slate-200/60 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
           <h3 className="font-heading text-lg font-extrabold text-[#1C1C1C] mb-5">Categories</h3>
-          <div className="grid grid-cols-2 gap-2.5">
-            {categories.map((c) => (
+          <div className="grid grid-cols-3 gap-2.5">
+            {categories.map((c, i) => (
               <Link
                 key={c.slug}
                 href={`/blog?search=${encodeURIComponent(c.name)}`}
-                className="flex items-center justify-center px-3 py-2.5 rounded-xl text-[13px] font-bold text-slate-700 bg-slate-50 border border-slate-100 text-center hover:text-white hover:bg-[#2E8B8B] hover:border-[#2E8B8B] transition-all"
+                className={`flex items-center justify-center px-2 py-2.5 rounded-xl text-[12px] font-bold text-center border transition-all ${
+                  i === 0
+                    ? "bg-[#2E8B8B] border-[#2E8B8B] text-white shadow-md hover:bg-[#1f6d6d] hover:border-[#1f6d6d]"
+                    : "bg-slate-50 border-slate-100 text-slate-700 hover:text-white hover:bg-[#2E8B8B] hover:border-[#2E8B8B]"
+                }`}
               >
                 {c.name}
               </Link>
