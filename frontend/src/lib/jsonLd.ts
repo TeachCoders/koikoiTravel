@@ -71,19 +71,20 @@ interface ArticleInput {
   dateModified?: string;
   author?: string;
   url: string;
+  keywords?: string;
 }
 
 export function articleSchema(post: ArticleInput): Record<string, unknown> {
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: post.title,
     description: post.description ? stripHtml(post.description).slice(0, 160) : undefined,
     image: absoluteImage(post.image),
     datePublished: post.datePublished || undefined,
     dateModified: post.dateModified || undefined,
     author: post.author
-      ? { "@type": "Organization", name: post.author }
+      ? { "@type": "Person", name: post.author }
       : { "@type": "Organization", name: "KoiKoi Travel" },
     publisher: {
       "@type": "Organization",
@@ -94,6 +95,8 @@ export function articleSchema(post: ArticleInput): Record<string, unknown> {
       "@type": "WebPage",
       "@id": `${SITE_URL}${post.url}`,
     },
+    ...(post.keywords ? { keywords: post.keywords } : {}),
+    inLanguage: "en",
   };
 }
 

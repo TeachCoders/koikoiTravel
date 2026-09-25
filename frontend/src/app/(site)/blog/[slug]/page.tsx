@@ -97,6 +97,7 @@ export default async function BlogPostPage({ params }: Props) {
     datePublished: post.publishedAt || undefined,
     author: post.author || undefined,
     url: `/blog/${post.slug}`,
+    keywords: post.seoKeyword || undefined,
   });
   const breadcrumbData = breadcrumbSchema([
     { name: "Home", path: "/" },
