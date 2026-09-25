@@ -8,8 +8,6 @@ import {
   ChevronRight,
   Globe2,
   Route,
-  CheckCircle2,
-  CalendarRange,
 } from "lucide-react";
 import { fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
 import { stripHtml } from "@/lib/utils";
@@ -17,6 +15,8 @@ import { SectionLabel } from "@/components/shared/SectionLabel";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import { FaqSection } from "@/feature/home/components/FaqSection";
 import { QuoteModal } from "@/components/shared/QuoteModal";
+import TourPackageCard from "@/components/shared/TourPackageCard";
+import type { Journey } from "@/feature/journey/type";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 
@@ -73,26 +73,6 @@ type CCity = {
   displayOrder?: number | null;
 };
 
-type CJourney = {
-  id: number;
-  title: string;
-  slug: string;
-  h1Title?: string | null;
-  overView?: string | null;
-  seoDescription?: string | null;
-  thumbImg?: string | null;
-  destination?: string | null;
-  duration?: string | null;
-  noDays?: number | null;
-  pricePerPerson?: number | null;
-  discountPrice?: number | null;
-  highlights?: string[] | null;
-  displayOrder?: number | null;
-  purchaseCount?: number | null;
-  banner?: CBanner;
-  cities?: { title: string; slug: string }[] | null;
-};
-
 const orderByDisplay = <T extends { displayOrder?: number | null; title: string }>(
   items: T[]
 ): T[] =>
@@ -117,7 +97,7 @@ async function fetchDestinations() {
     fetchPublicJsonCached<{ success: boolean; data: CState[] }>(
       "/state?limit=200"
     ),
-    fetchPublicJsonCached<{ success: boolean; data: CJourney[] }>(
+    fetchPublicJsonCached<{ success: boolean; data: Journey[] }>(
       "/journey?limit=100&isActive=true"
     ),
   ]);
@@ -147,9 +127,6 @@ async function fetchDestinations() {
   });
 
   const orderedStates = orderByDisplay(states);
-  const statesWithImages = orderedStates.filter(
-    (s) => img(s.banner?.images?.[0], s.thumbImg)
-  );
   const allCities = orderedStates.flatMap((s) =>
     orderByDisplay(s.cities || []).map((c) => ({ ...c, state: s }))
   );
@@ -187,9 +164,8 @@ async function fetchDestinations() {
     countries: sortedCountries,
     stateMap,
     states: orderedStates,
-    statesWithImages,
     cities: uniqueCities.slice(0, 12),
-    journeys: sortedJourneys.slice(0, 12),
+    journeys: sortedJourneys.slice(0, 8),
     totals: {
       countryCount: sortedCountries.length,
       stateCount: states.length,
@@ -244,7 +220,7 @@ export default async function DestinationsPage() {
   const {
     countries,
     stateMap,
-    statesWithImages,
+    states,
     cities,
     journeys,
     totals,
@@ -339,15 +315,15 @@ export default async function DestinationsPage() {
         <div className="relative max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-20 md:py-28">
           <div className="max-w-3xl">
             <span className="accent-label inline-flex items-center gap-1.5 !text-[#FFD9A8]">
-              <Globe2 size={12} /> India&apos;s Most Loved Destinations
+              <Globe2 size={12} /> Hand-Crafted Holiday Destinations
             </span>
             <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight mt-4 leading-tight drop-shadow-lg">
               Explore Destinations
             </h1>
             <p className="mt-5 text-white/90 text-base md:text-lg leading-relaxed max-w-2xl">
-              From royal Rajasthan forts to Kerala&apos;s backwaters, Himalayan
-              trails and golden Goa beaches — discover curated holiday
-              destinations, then browse hand-crafted tour packages for each one.
+              From royal forts and misty Himalayan trails to golden beaches and
+              serene backwaters — discover hand-picked holiday destinations,
+              then browse crafted tour packages for each one.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -390,6 +366,57 @@ export default async function DestinationsPage() {
                 </span>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SEO CONTENT (after hero banner) ===== */}
+      <section className="bg-white border-b border-slate-100">
+        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-14">
+          <div className="max-w-4xl mx-auto text-center">
+            <SectionLabel icon={<Compass size={12} />}>
+              Why Travellers Trust KoiKoi Travel
+            </SectionLabel>
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-2">
+              Curated Holiday Destinations, Beautifully Planned
+            </h2>
+          </div>
+          <div className="mt-8 max-w-4xl mx-auto space-y-5 text-[15.5px] leading-relaxed text-slate-600">
+            <p>
+              Planning your next getaway? From the pink city of Jaipur to the
+              backwaters of Kerala, KoiKoi Travel brings you a hand-curated
+              collection of holiday destinations — each one researched and
+              road-tested by our travel experts. Whether you dream of watching
+              the sunrise over the Taj Mahal, gliding through the silent
+              backwaters of Alleppey on a traditional houseboat, chasing the
+              misty trails of Manali, or soaking in the royal heritage of
+              Udaipur&apos;s lakes, our destinations are chosen to match every
+              travel style, budget and season.
+            </p>
+            <p>
+              Every destination here opens into carefully structured tour
+              packages. Expect transparent pricing, handpicked 3★ and 4★
+              hotels, private cabs, daily sightseeing and friendly support from
+              our travel desk. Prefer a custom plan? Simply tell us your cities,
+              dates and preferences and our team will craft a day-by-day
+              itinerary with inclusions, exclusions and journey highlights
+              clearly laid out for you.
+            </p>
+            <p>
+              From heritage weeks in Rajasthan and Himalayan sojourns in
+              Himachal and Uttarakhand, to spiritual circuits in Varanasi and
+              Ayodhya, coastal escapes in Goa, golden temple trails in Amritsar
+              and weekend breaks in the hills of Haridwar and Rishikesh — there
+              is a perfect journey for every traveller. Families, couples,
+              corporate groups and solo explorers all find itineraries that are
+              flexible, honest and beautifully planned.
+            </p>
+            <p>
+              Browse our popular states, jump straight to your favourite city,
+              or scroll down to explore top-selling holiday packages. Book
+              directly online or connect on WhatsApp for instant help from our
+              holiday experts — your perfect trip starts here.
+            </p>
           </div>
         </div>
       </section>
@@ -473,7 +500,7 @@ export default async function DestinationsPage() {
         </section>
 
         {/* ===== STATES & REGIONS ===== */}
-        {statesWithImages.length > 0 && (
+        {states.length > 0 && (
           <section id="states" className="scroll-mt-24 mt-20">
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
               <div>
@@ -489,8 +516,8 @@ export default async function DestinationsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {statesWithImages.slice(0, 16).map((state) => {
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+              {states.slice(0, 5).map((state) => {
                 const image = img(
                   state.banner?.images?.[0],
                   state.thumbImg
@@ -501,12 +528,16 @@ export default async function DestinationsPage() {
                     href={`/tour-packages/${state.country?.slug}/${state.slug}`}
                     className="group relative block overflow-hidden rounded-3xl aspect-[4/5] shadow-[0_2px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_24px_60px_rgba(46,139,139,0.2)] hover:-translate-y-1.5 transition-all duration-500"
                   >
-                    <FallbackImage
-                      src={image}
-                      alt={state.h1Title || state.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
+                    {image ? (
+                      <FallbackImage
+                        src={image}
+                        alt={state.h1Title || state.title}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-[#2E8B8B]/85 to-[#1c4e4e]" />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     {state.tourCount ? (
                       <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-[#F8904D] px-2.5 py-1 text-[10px] font-bold text-white shadow">
@@ -616,100 +647,10 @@ export default async function DestinationsPage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {journeys.map((j) => {
-                const tours = j.noDays || 0;
-                const highlights = (j.highlights || []).slice(0, 2);
-                const image = img(j.banner?.images?.[0], j.thumbImg);
-                const priceShow =
-                  j.discountPrice && j.discountPrice > 0
-                    ? j.discountPrice
-                    : j.pricePerPerson && j.pricePerPerson > 0
-                      ? j.pricePerPerson
-                      : null;
-                return (
-                  <Link
-                    key={j.id}
-                    href={`/tour-packages/${j.slug}`}
-                    className="group flex flex-col overflow-hidden rounded-3xl bg-white border border-slate-100 shadow-[0_2px_16px_rgba(0,0,0,0.05)] hover:shadow-[0_24px_60px_rgba(46,139,139,0.18)] hover:-translate-y-1.5 transition-all duration-500"
-                  >
-                    <div className="relative h-56 w-full overflow-hidden">
-                      {image ? (
-                        <FallbackImage
-                          src={image}
-                          alt={j.h1Title || j.title}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-110"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-[#2E8B8B] to-[#1c4e4e]" />
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                      <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                        {tours > 0 && (
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 px-3 py-1.5 text-[11px] font-bold text-white">
-                            <CalendarRange size={12} /> {tours} Days
-                          </span>
-                        )}
-                        {j.destination && (
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 px-3 py-1.5 text-[11px] font-bold text-white">
-                            <MapPin size={12} /> {j.destination}
-                          </span>
-                        )}
-                      </div>
-                      <div className="absolute bottom-4 left-4 right-4">
-                        {priceShow ? (
-                          <span className="text-[12px] font-bold text-white/90">
-                            Starting{" "}
-                            <span className="text-[18px] text-white drop-shadow">
-                              ₹{priceShow.toLocaleString("en-IN")}
-                            </span>
-                            <span className="font-medium text-white/70">
-                              {" "}
-                              /person
-                            </span>
-                          </span>
-                        ) : (
-                          <span className="inline-flex rounded-full bg-[#F8904D] px-3 py-1.5 text-[11px] font-bold text-white">
-                            Price on Request
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-1 flex-col p-5">
-                      <h3 className="font-heading text-xl font-extrabold text-[#1C1C1C] tracking-tight leading-snug line-clamp-2">
-                        {j.h1Title || j.title}
-                      </h3>
-                      {highlights.length > 0 && (
-                        <ul className="mt-3 space-y-1.5">
-                          {highlights.map((h, i) => (
-                            <li
-                              key={i}
-                              className="flex items-start gap-2 text-[13px] text-slate-600 line-clamp-1"
-                            >
-                              <CheckCircle2
-                                size={14}
-                                className="mt-0.5 shrink-0 text-[#2E8B8B]"
-                              />
-                              {h}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                      <div className="mt-auto pt-4">
-                        <span className="inline-flex items-center gap-2 text-sm font-bold text-[#2E8B8B] group-hover:text-[#1c4e4e] transition-colors">
-                          View Itinerary
-                          <ArrowRight
-                            size={15}
-                            className="text-[#F8904D] transition-transform duration-300 group-hover:translate-x-1"
-                          />
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+              {journeys.map((j) => (
+                <TourPackageCard key={j.id} journey={j} />
+              ))}
             </div>
           </section>
         )}
