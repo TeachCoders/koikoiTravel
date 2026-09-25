@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { ChevronRight, Sparkles } from "lucide-react";
+import { ChevronRight, Compass, Sparkles } from "lucide-react";
 import Link from "next/link";
+import { SectionLabel } from "@/components/shared/SectionLabel";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema, itemListSchema } from "@/lib/jsonLd";
 import PackagesExplorer from "@/feature/journey/components/PackagesExplorer";
@@ -105,6 +106,50 @@ export default async function TourPackagesPage({
           <span className="text-[#1C1C1C] font-semibold">Tour Packages</span>
         </div>
       </nav>
+
+      {/* ===== SEO CONTENT ===== */}
+      <section className="bg-white border-b border-slate-100">
+        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-14 md:py-16">
+          <div className="text-center">
+            <SectionLabel icon={<Compass size={12} />}>
+              Why Travellers Trust KoiKoi Travel
+            </SectionLabel>
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-2 leading-tight">
+              Simple, Honest Tour Packages for Every Traveller
+            </h2>
+          </div>
+          <div className="mt-8 w-full space-y-5 text-[15.5px] leading-relaxed text-slate-600">
+            <p>
+              A tour package is a ready-made holiday. Your hotel, your cab, your
+              sightseeing and your food — everything is planned for you. At KoiKoi
+              Travel, we build every package with care. You just pack your bag and
+              go.
+            </p>
+            <p>
+              Our tour packages cover all of India. Love forts and palaces? Pick a
+              Rajasthan tour. Love snow and mountains? Choose Himachal Pradesh or
+              Uttarakhand. Love beaches? Goa is ready for you. Love calm backwaters?
+              Kerala will feel like heaven. You will also find packages in popular
+              countries around the world.
+            </p>
+            <p>
+              Every package shows the full plan before you book. You will see the
+              number of days, the places you will visit each day, the hotels, the
+              meals and the cab details. The price is clear and honest. There are no
+              hidden charges. If you want a change, just tell us — every KoiKoi
+              Travel package is easy to customise.
+            </p>
+            <p>
+              Not sure which package to pick? You can filter tours by state, city,
+              season or travel experience. Or simply ask us on WhatsApp. Tell us
+              your dates, your budget and who is travelling with you. Our team will
+              find you a ready package, or build a brand new one just for your
+              family. Honeymoon plans, family trips, group tours — KoiKoi Travel
+              plans them all.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* ===== PACKAGES EXPLORER ===== */}
       <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-12">

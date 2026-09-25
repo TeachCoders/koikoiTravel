@@ -17,6 +17,7 @@ import {
 import { stripHtml } from "@/lib/utils";
 import { SERVER_API_BASE, fetchBySlugCached } from "@/feature/destinations/api/public-server";
 import { QuoteModal } from "@/components/shared/QuoteModal";
+import { SectionLabel } from "@/components/shared/SectionLabel";
 import FaqSection from "@/feature/home/components/FaqSection";
 import type { CmsPage } from "@/feature/cms/type";
 
@@ -240,6 +241,49 @@ export default async function TravelExperiencesPage() {
                 <span>Plan My Custom Trip</span>
               </button>
             </QuoteModal>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SEO CONTENT ===== */}
+      <section className="bg-white border-b border-slate-100">
+        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-14 md:py-16">
+          <div className="text-center">
+            <SectionLabel icon={<Compass size={12} />}>
+              Why Travellers Trust KoiKoi Travel
+            </SectionLabel>
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-2 leading-tight">
+              Travel Experiences Made Simple & Personal
+            </h2>
+          </div>
+          <div className="mt-8 w-full space-y-5 text-[15.5px] leading-relaxed text-slate-600">
+            <p>
+              A travel experience is a special way of travelling. Some people love
+              slow trips. Some people love adventure. Some people just want peace.
+              At KoiKoi Travel, we have made travel experiences for every kind of
+              traveller.
+            </p>
+            <p>
+              On this page you will find our hand-made themes. Honeymoon trips for
+              couples who want romance. Heritage trips for history lovers. Wellness
+              trips for people who need rest and calm. Adventure trips for those who
+              want more thrill. Food trips for people who travel to taste new
+              dishes. Each theme is built by our team to feel special and easy at
+              the same time.
+            </p>
+            <p>
+              When you pick a travel experience, we plan the whole trip around that
+              feeling. The hotels, the cabs, the places and the food — everything
+              matches the theme. The price is always clear, and every day of your
+              plan is shown to you before you book. If you want changes, we are
+              happy to make them.
+            </p>
+            <p>
+              Not sure which experience fits you? Ask us on WhatsApp. Tell us how
+              you like to travel and how many days you have free. Our team will
+              suggest a theme, or build a new one just for you. Whatever your dream
+              holiday looks like — KoiKoi Travel makes it real.
+            </p>
           </div>
         </div>
       </section>

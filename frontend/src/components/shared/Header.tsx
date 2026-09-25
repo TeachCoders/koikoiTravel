@@ -259,7 +259,6 @@ export const Header: React.FC = () => {
 
   const navLinks: NavLink[] = useMemo(
     () => [
-      { href: "/", label: "Home" },
       {
         href: "/destinations",
         label: "Destinations",
@@ -273,7 +272,7 @@ export const Header: React.FC = () => {
       },
       {
         href: "/tour-packages",
-        label: "Tour Packages",
+        label: "Tours",
         children: tourLinks,
         dropdownStyle: "mega",
         dropdownColumns: 2,
