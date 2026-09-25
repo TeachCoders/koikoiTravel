@@ -46,6 +46,14 @@ export const websiteSchema: Record<string, unknown> = {
     "@type": "TravelAgency",
     name: "KoiKoi Travel India",
   },
+  potentialAction: {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      urlTemplate: `${SITE_URL}/blog?search={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
 };
 
 export function breadcrumbSchema(
