@@ -47,8 +47,18 @@ title: "Travel Guides & News — Destination Guides and India Tour Tips | KoiKoi
   },
 };
 
-function isNewsPost(p: BlogPost): boolean {
-  return (p.category || "").toLowerCase().includes("news");
+type NewsPredicate = (p: BlogPost) => boolean;
+
+function makeNewsPredicate(categories: { name: string; slug: string }[]): NewsPredicate {
+  const newsNames = new Set(
+    categories
+      .filter((c) => c.slug.toLowerCase().includes("news") || c.name.toLowerCase().includes("news"))
+      .map((c) => c.name.toLowerCase())
+  );
+  return (p: BlogPost): boolean => {
+    const cat = (p.category || "").toLowerCase();
+    return newsNames.has(cat) || cat.includes("news");
+  };
 }
 
 async function fetchPosts(
@@ -71,13 +81,25 @@ async function fetchPosts(
   }
 }
 
-async function fetchNewsPosts(): Promise<BlogPost[]> {
+async function fetchCategories(): Promise<{ name: string; slug: string }[]> {
   try {
-    const url = `${SERVER_API_BASE}/blog?limit=4&isActive=true&search=${encodeURIComponent("news")}`;
+    const url = `${SERVER_API_BASE}/blog-category?limit=100&isActive=true`;
     const res = await fetch(url, { next: { revalidate: 60 } });
     if (!res.ok) return [];
     const json = await res.json();
-    return (json?.data || []).filter(isNewsPost);
+    return (json?.data || []).map((c: { name: string; slug: string }) => ({ name: c.name, slug: c.slug }));
+  } catch {
+    return [];
+  }
+}
+
+async function fetchNewsPosts(isNews: NewsPredicate): Promise<BlogPost[]> {
+  try {
+    const url = `${SERVER_API_BASE}/blog?limit=100&isActive=true`;
+    const res = await fetch(url, { next: { revalidate: 60 } });
+    if (!res.ok) return [];
+    const json = await res.json();
+    return (json?.data || []).filter(isNews).slice(0, 4);
   } catch {
     return [];
   }
@@ -94,11 +116,13 @@ export default async function BlogPage({
     1,
     parseInt(Array.isArray(pageParam) ? pageParam[0] : pageParam || "1", 10) || 1
   );
-  const [{ posts, total: totalPosts, totalPages }, newsPosts] = await Promise.all([
+  const [{ posts, total: totalPosts, totalPages }, categories] = await Promise.all([
     fetchPosts(searchTerm || undefined, currentPage),
-    fetchNewsPosts(),
+    fetchCategories(),
   ]);
-  const mainPosts = newsPosts.length > 0 ? posts.filter((p) => !isNewsPost(p)) : posts;
+  const isNews = makeNewsPredicate(categories);
+  const newsPosts = await fetchNewsPosts(isNews);
+  const mainPosts = newsPosts.length > 0 ? posts.filter((p) => !isNews(p)) : posts;
   
   const listSchemaData = itemListSchema(
     posts.map((p) => ({ name: p.title, url: `/blog/${p.slug}` }))
@@ -220,7 +244,14 @@ export default async function BlogPage({
           ) : (
             mainPosts.length > 0 && (
             <>
-              <div className="flex items-center justify-between mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                {mainPosts.map((post) => (
+                  <BlogCard key={post.id} post={post} />
+                ))}
+              </div>
+
+              {/* ===== COUNT + PAGINATION AT BOTTOM ===== */}
+              <div className="mt-16 flex flex-col items-center gap-4">
                 <p className="text-sm font-semibold text-slate-500">
                   Showing{" "}
                   <span className="text-[#1C1C1C] font-bold">{(currentPage - 1) * POSTS_PER_PAGE + 1}</span>
@@ -232,16 +263,8 @@ export default async function BlogPage({
                   <span className="text-[#1C1C1C] font-bold">{totalPosts}</span>
                   {" articles"}
                 </p>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                {mainPosts.map((post) => (
-                  <BlogCard key={post.id} post={post} />
-                ))}
-              </div>
-
-              {/* ===== PAGINATION ===== */}
-              {totalPages > 1 && (
+                {totalPages > 1 && (
                 <nav
                   className="mt-16 flex items-center justify-center gap-2"
                   aria-label="Blog pagination"
@@ -291,6 +314,7 @@ export default async function BlogPage({
                   </Link>
                 </nav>
               )}
+              </div>
             </>
             )
           )}
