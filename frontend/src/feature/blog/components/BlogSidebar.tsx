@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CalendarDays, Tag, Sparkles } from "lucide-react";
+import { CalendarDays, Tag, Sparkles, UserRound } from "lucide-react";
 import type { BlogPost } from "@/feature/blog/type";
 import { formatBlogDate } from "@/lib/dateUtils";
 import { SERVER_API_BASE } from "@/feature/destinations/api/public-server";
@@ -169,10 +169,19 @@ export default async function BlogSidebar({ tags }: { tags?: string[] }) {
                   </div>
                   
                   <div className="flex flex-col justify-center">
-                    {p.publishedAt && (
-                      <p className="mb-1.5 inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#a0a0a0] whitespace-nowrap truncate">
-                        <CalendarDays size={12} /> {formatBlogDate(p.publishedAt)}
-                      </p>
+                    {(p.author || p.publishedAt) && (
+                      <div className="mb-1.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] font-semibold text-[#a0a0a0]">
+                        {p.publishedAt && (
+                          <span className="inline-flex items-center gap-1.5 whitespace-nowrap truncate">
+                            <CalendarDays size={12} /> {formatBlogDate(p.publishedAt)}
+                          </span>
+                        )}
+                        {p.author && (
+                          <span className="inline-flex items-center gap-1.5 whitespace-nowrap truncate">
+                            <UserRound size={12} /> {p.author}
+                          </span>
+                        )}
+                      </div>
                     )}
                     <p className="text-[14px] font-bold text-[#1C1C1C] leading-snug transition-colors group-hover:text-[#2E8B8B] line-clamp-2">
                       {p.title}
