@@ -289,23 +289,6 @@ export default async function DestinationsPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* ===== BREADCRUMB (TOP) ===== */}
-      <nav
-        aria-label="Breadcrumb"
-        className="border-b border-slate-200 bg-white shadow-sm"
-      >
-        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-3 flex items-center gap-1.5 text-[14px] text-slate-500">
-          <Link
-            href="/"
-            className="hover:text-[#2E8B8B] transition-colors shrink-0 font-medium"
-          >
-            Home
-          </Link>
-          <ChevronRight size={14} className="text-slate-300 shrink-0" />
-          <span className="text-[#1C1C1C] font-semibold">Destinations</span>
-        </div>
-      </nav>
-
       {/* ===== HERO ===== */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
@@ -386,6 +369,30 @@ export default async function DestinationsPage() {
           </div>
         </div>
       </section>
+
+      {/* ===== BREADCRUMB (BELOW HERO) ===== */}
+      <nav
+        aria-label="Breadcrumb"
+        className="border-b border-slate-200 bg-slate-50 shadow-sm"
+      >
+        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-3 flex flex-wrap items-center gap-1.5 text-[14px] text-slate-500">
+          <Link
+            href="/"
+            className="hover:text-[#2E8B8B] transition-colors shrink-0 font-medium"
+          >
+            Home
+          </Link>
+          <ChevronRight size={14} className="text-slate-300 shrink-0" />
+          <Link
+            href="/tour-packages"
+            className="hover:text-[#2E8B8B] transition-colors shrink-0 font-medium"
+          >
+            Tour Packages
+          </Link>
+          <ChevronRight size={14} className="text-slate-300 shrink-0" />
+          <span className="text-[#1C1C1C] font-semibold">Destinations</span>
+        </div>
+      </nav>
 
       {/* ===== SEO CONTENT (after hero banner) ===== */}
       <section className="bg-white border-b border-slate-100">
