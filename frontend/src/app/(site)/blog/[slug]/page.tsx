@@ -52,14 +52,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function fetchRelated(category?: string, excludeId?: number): Promise<BlogPost[]> {
   try {
-    const url = `${SERVER_API_BASE}/blog?limit=3&isActive=true${category ? `&category=${encodeURIComponent(category)}` : ""}`;
+    const url = `${SERVER_API_BASE}/blog?limit=100&isActive=true`;
     const res = await fetch(url, { next: { revalidate: 60 } });
     if (!res.ok) return [];
     const json = await res.json();
-    return (json?.data || []).filter((p: BlogPost) => p.id !== excludeId).slice(0, 3);
+    const all: BlogPost[] = json?.data || [];
+    const catLower = category?.toLowerCase();
+    const matched =
+      catLower && catLower.length > 0
+        ? all.filter(
+            (p) =>
+              p.id !== excludeId &&
+              postCategoryNames(p).some((c) => c === catLower)
+          )
+        : [];
+    if (matched.length > 0) return matched.slice(0, 3);
+    return all.filter((p) => p.id !== excludeId).slice(0, 3);
   } catch {
     return [];
   }
+}
+
+function postCategoryNames(p: BlogPost): string[] {
+  return (p.categories?.length ? p.categories : p.category ? [p.category] : []).map((c) =>
+    c.toLowerCase()
+  );
 }
 
 export default async function BlogPostPage({ params }: Props) {
