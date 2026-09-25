@@ -215,7 +215,7 @@ export default async function BlogPostPage({ params }: Props) {
 
           <div className="mt-16 lg:mt-0">
             <div className="lg:sticky lg:top-24">
-              <BlogSidebar excludeId={post.id} tags={tags} />
+              <BlogSidebar tags={tags} />
             </div>
           </div>
         </div>

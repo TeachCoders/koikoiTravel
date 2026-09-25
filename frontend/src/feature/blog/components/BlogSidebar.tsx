@@ -19,13 +19,13 @@ async function fetchCategories(): Promise<{ name: string; slug: string }[]> {
   }
 }
 
-async function fetchRecent(excludeId?: number): Promise<BlogPost[]> {
+async function fetchRecent(): Promise<BlogPost[]> {
   try {
     const url = `${SERVER_API_BASE}/blog?limit=6&isActive=true`;
     const res = await fetch(url, { next: { revalidate: 60 } });
     if (!res.ok) return [];
     const json = await res.json();
-    return (json?.data || []).filter((p: BlogPost) => p.id !== excludeId).slice(0, 5);
+    return (json?.data || []).slice(0, 5);
   } catch {
     return [];
   }
@@ -46,14 +46,8 @@ async function fetchTopJourneys(): Promise<any[]> {
   }
 }
 
-export default async function BlogSidebar({
-  excludeId,
-  tags,
-}: {
-  excludeId?: number;
-  tags?: string[];
-}) {
-  const recent = await fetchRecent(excludeId);
+export default async function BlogSidebar({ tags }: { tags?: string[] }) {
+  const recent = await fetchRecent();
   const topJourneys = await fetchTopJourneys();
   const categories = await fetchCategories();
 
