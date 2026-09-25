@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Search, CalendarDays, Tag, ArrowRight, Sparkles } from "lucide-react";
 import type { BlogPost } from "@/feature/blog/type";
+import { formatBlogDate } from "@/lib/dateUtils";
 import { SERVER_API_BASE } from "@/feature/destinations/api/public-server";
 import { journeyPackageHref } from "@/feature/journey/filterOptions";
 import { FallbackImage } from "@/components/shared/FallbackImage";
@@ -161,7 +162,7 @@ export default async function BlogSidebar({
                   <div className="flex flex-col justify-center">
                     {p.publishedAt && (
                       <p className="mb-1.5 inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                        <CalendarDays size={12} /> {p.publishedAt}
+                        <CalendarDays size={12} /> {formatBlogDate(p.publishedAt)}
                       </p>
                     )}
                     <p className="text-[14px] font-bold text-[#1C1C1C] leading-snug transition-colors group-hover:text-[#2E8B8B] line-clamp-2">

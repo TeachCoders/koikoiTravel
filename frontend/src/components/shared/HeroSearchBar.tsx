@@ -117,7 +117,7 @@ export default function HeroSearchBar() {
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <div className="relative bg-gradient-to-r from-[#F8904D]/50 via-[#2E8B8B]/50 to-[#F8904D]/50 p-[1.5px] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.55)]">
+      <div className="relative bg-gradient-to-r from-[#2E8B8B]/60 via-[#2E8B8B]/40 to-[#2E8B8B]/60 p-[1.5px] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.55)]">
         <div className="bg-white rounded-[14px] p-2 sm:p-3">
           <div className="flex flex-col sm:flex-row items-stretch gap-0">
             <div className="relative flex-1">

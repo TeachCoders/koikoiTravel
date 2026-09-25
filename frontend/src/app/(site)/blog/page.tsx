@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Newspaper, Search, ArrowRight, Sparkles, ChevronRight, Compass, MapPin } from "lucide-react";
+import { Search, Sparkles, ChevronRight, ChevronLeft, Compass, MapPin } from "lucide-react";
 import BlogCard from "@/feature/blog/components/BlogCard";
 import JsonLd from "@/components/shared/JsonLd";
 import { itemListSchema, breadcrumbSchema } from "@/lib/jsonLd";
@@ -9,29 +9,65 @@ import { SERVER_API_BASE } from "@/feature/destinations/api/public-server";
 
 export const revalidate = 60;
 
+const POSTS_PER_PAGE = 12;
+
+function buildPageHref(page: number, search: string): string {
+  const params = new URLSearchParams();
+  if (search) params.set("search", search);
+  if (page > 1) params.set("page", String(page));
+  const qs = params.toString();
+  return qs ? `/blog?${qs}` : "/blog";
+}
+
+function getPageNumbers(current: number, total: number): (number | "…")[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  const wanted = new Set<number>([1, total, current - 1, current, current + 1]);
+  const sorted = [...wanted].filter((p) => p >= 1 && p <= total).sort((a, b) => a - b);
+  const result: (number | "…")[] = [];
+  let prev = 0;
+  for (const p of sorted) {
+    if (p - prev > 1) result.push("…");
+    result.push(p);
+    prev = p;
+  }
+  return result;
+}
+
 export const metadata: Metadata = {
-  title: "Travel Blog — Guides, Itineraries and India Tour Tips | KoiKoi Travel",
+  title: "Travel Guides & News — Destination Guides and India Tour Tips | KoiKoi Travel",
   description:
-    "Explore expert travel guides, holiday itineraries, budgeting tips, and hidden destination insights for India tours — curated by KoiKoi Travel.",
+    "Explore expert destination guides, the latest travel news, budgeting tips, and hidden insights for India tours — curated by KoiKoi Travel.",
   alternates: { canonical: "/blog" },
   openGraph: {
-title: "Travel Blog — Guides, Itineraries and India Tour Tips | KoiKoi Travel",
+title: "Travel Guides & News — Destination Guides and India Tour Tips | KoiKoi Travel",
     description:
-      "Explore expert travel guides, holiday itineraries, budgeting tips, and hidden destination insights for India tours — curated by KoiKoi Travel.",
+      "Explore expert destination guides, the latest travel news, budgeting tips, and hidden insights for India tours — curated by KoiKoi Travel.",
     url: "/blog",
     type: "website",
   },
 };
 
-async function fetchPosts(search?: string): Promise<BlogPost[]> {
+function isNewsPost(p: BlogPost): boolean {
+  return (p.category || "").toLowerCase().includes("news");
+}
+
+async function fetchPosts(
+  search?: string,
+  page = 1,
+  limit = POSTS_PER_PAGE
+): Promise<{ posts: BlogPost[]; total: number; totalPages: number }> {
   try {
-    const url = `${SERVER_API_BASE}/blog?limit=100&isActive=true${search ? `&search=${encodeURIComponent(search)}` : ""}`;
+    const url = `${SERVER_API_BASE}/blog?limit=${limit}&page=${page}&isActive=true${search ? `&search=${encodeURIComponent(search)}` : ""}`;
     const res = await fetch(url, { next: { revalidate: 60 } });
-    if (!res.ok) return [];
+    if (!res.ok) return { posts: [], total: 0, totalPages: 0 };
     const json = await res.json();
-    return json?.data || [];
+    return {
+      posts: json?.data || [],
+      total: json?.pagination?.total || 0,
+      totalPages: json?.pagination?.totalPages || 0,
+    };
   } catch {
-    return [];
+    return { posts: [], total: 0, totalPages: 0 };
   }
 }
 
@@ -47,17 +83,35 @@ async function fetchCategories(): Promise<string[]> {
   }
 }
 
+async function fetchNewsPosts(): Promise<BlogPost[]> {
+  try {
+    const url = `${SERVER_API_BASE}/blog?limit=4&isActive=true&search=${encodeURIComponent("news")}`;
+    const res = await fetch(url, { next: { revalidate: 60 } });
+    if (!res.ok) return [];
+    const json = await res.json();
+    return (json?.data || []).filter(isNewsPost);
+  } catch {
+    return [];
+  }
+}
+
 export default async function BlogPage({
   searchParams,
 }: {
-  searchParams: Promise<{ search?: string | string[] }>;
+  searchParams: Promise<{ search?: string | string[]; page?: string | string[] }>;
 }) {
-  const { search } = await searchParams;
+  const { search, page: pageParam } = await searchParams;
   const searchTerm = Array.isArray(search) ? search[0] : search || "";
-  const [posts, managedCategories] = await Promise.all([
-    fetchPosts(searchTerm || undefined),
+  const currentPage = Math.max(
+    1,
+    parseInt(Array.isArray(pageParam) ? pageParam[0] : pageParam || "1", 10) || 1
+  );
+  const [{ posts, total: totalPosts, totalPages }, newsPosts, managedCategories] = await Promise.all([
+    fetchPosts(searchTerm || undefined, currentPage),
+    fetchNewsPosts(),
     fetchCategories(),
   ]);
+  const mainPosts = newsPosts.length > 0 ? posts.filter((p) => !isNewsPost(p)) : posts;
   const postCategories = [...new Set(posts.map((p) => p.category).filter(Boolean))] as string[];
   const categories = managedCategories.length > 0 ? managedCategories : postCategories;
   
@@ -76,41 +130,43 @@ export default async function BlogPage({
       <JsonLd data={breadcrumbData} />
 
       <main className="flex-1">
-        {/* ===== HERO SECTION ===== */}
-        <section className="relative h-[480px] md:h-[560px] overflow-hidden bg-[#F8904D] flex items-center justify-center">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#F8904D]/60 to-[#d87e43]" />
+        {/* ===== COMPACT PAGE HEADER (NO HERO BANNER) ===== */}
+        <section className="relative bg-white border-b border-slate-200/70 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#2E8B8B]/5 via-transparent to-[#F8904D]/10 pointer-events-none" />
+          <div className="relative w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-10 md:py-14">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-8">
+              <div className="flex-1">
+                <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#F8904D] mb-3">
+                  <Sparkles size={14} /> Travel Guides, News & Inspiration
+                </span>
+                <h1 className="font-heading text-3xl sm:text-4xl md:text-[44px] font-extrabold text-[#1C1C1C] tracking-tight">
+                  India Travel Guides & News
+                </h1>
+                <p className="mt-2 text-slate-500 font-medium max-w-xl text-[15px] leading-relaxed">
+                  Expert destination guides and the latest travel news from India, curated by our team.
+                </p>
+              </div>
 
-          <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 text-center py-8">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#F8904D] bg-white rounded-full mb-5 shadow-lg">
-              <Sparkles size={14} className="text-[#F8904D]" /> Travel Guides & Inspiration
-            </span>
-            <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight drop-shadow-2xl max-w-4xl mx-auto">
-              India Travel Guides, Itineraries & Expert Tips
-            </h1>
-            <p className="mt-4 text-white/90 font-medium max-w-2xl mx-auto text-base sm:text-lg leading-relaxed drop-shadow-md">
-              Explore breathtaking destinations, handpicked itineraries, and insider tips curated by our travel experts.
-            </p>
-
-            {/* ===== HERO SEARCH ===== */}
-            <div className="mt-8 max-w-xl mx-auto relative">
-              <form action="/blog" method="GET" className="relative flex items-center bg-white rounded-2xl overflow-hidden shadow-2xl">
-                <Search size={20} className="absolute left-5 text-slate-400" />
-                <input
-                  type="text"
-                  name="search"
-                  defaultValue={searchTerm}
-                  placeholder="Search destination guides, travel tips..."
-                  className="w-full bg-transparent py-4 pl-14 pr-32 text-[15px] font-medium text-slate-900 placeholder:text-slate-400 outline-none"
-                />
-                <button type="submit" className="absolute right-2 top-2 bottom-2 bg-white text-[#F8904D] px-5 rounded-xl text-sm font-bold shadow-md hover:bg-orange-50 transition-colors flex items-center gap-2">
-                  Search
-                </button>
-              </form>
+              <div className="lg:w-[400px] shrink-0">
+                <form action="/blog" method="GET" className="relative">
+                  <input
+                    type="text"
+                    name="search"
+                    defaultValue={searchTerm}
+                    placeholder="Search destination guides, travel tips..."
+                    className="w-full bg-white rounded-full border border-slate-200 py-3.5 pl-12 pr-32 text-[15px] font-medium text-slate-900 placeholder:text-slate-400 outline-none shadow-sm transition-all focus:border-[#2E8B8B] focus:ring-4 focus:ring-[#2E8B8B]/10"
+                  />
+                  <Search size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#F8904D] text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-[#e07f3a] transition-colors">
+                    Search
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ===== BREADCRUMB (BELOW HERO) ===== */}
+        {/* ===== BREADCRUMB ===== */}
         <nav aria-label="Breadcrumb" className="border-b border-slate-200 bg-white shadow-sm">
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-3.5 flex items-center gap-2 text-sm text-slate-500 font-medium">
             <Link href="/" className="hover:text-[#2E8B8B] transition-colors shrink-0">
@@ -123,9 +179,8 @@ export default async function BlogPage({
 
         {/* ===== CATEGORY PILLS ===== */}
         {categories.length > 0 && (
-          <div className="relative -mt-6 z-20 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
+          <section className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 pt-8">
             <div className="bg-white rounded-3xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.06)] flex flex-wrap items-center justify-center gap-2.5 max-w-5xl mx-auto">
-              <span className="text-xs font-black uppercase tracking-widest text-slate-400 mr-2 hidden sm:block">Filter by:</span>
               {categories.map((c) => (
                 <a
                   key={c}
@@ -136,7 +191,35 @@ export default async function BlogPage({
                 </a>
               ))}
             </div>
-          </div>
+          </section>
+        )}
+
+        {/* ===== NEWS SECTION ===== */}
+        {newsPosts.length > 0 && (
+          <section className="relative overflow-hidden bg-[#141414] text-white mt-10">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#F8904D]/15 via-transparent to-[#2E8B8B]/10 pointer-events-none" />
+            <div className="relative max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-14 md:py-16">
+              <div className="flex items-center justify-between gap-4 mb-8">
+                <div>
+                  <span className="text-[#F5B041] text-xs font-black uppercase tracking-widest">Stay Updated</span>
+                  <h2 className="font-heading text-2xl sm:text-3xl font-extrabold mt-1 tracking-tight">
+                    Latest Travel News
+                  </h2>
+                </div>
+                <Link
+                  href="/blog?search=news"
+                  className="inline-flex items-center gap-2 text-sm font-bold text-[#F8904D] hover:text-white transition-colors shrink-0"
+                >
+                  View All News <ChevronRight size={16} />
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {newsPosts.map((p) => (
+                  <BlogCard key={p.id} post={p} />
+                ))}
+              </div>
+            </div>
+          </section>
         )}
 
         {/* ===== POSTS GRID ===== */}
@@ -154,7 +237,7 @@ export default async function BlogPage({
               </Link>
             </div>
           )}
-          {posts.length === 0 ? (
+          {mainPosts.length === 0 && newsPosts.length === 0 ? (
             <div className="text-center py-28 bg-white border border-slate-200 rounded-3xl shadow-sm">
               <Search size={48} className="mx-auto text-slate-300 mb-5" />
               {searchTerm ? (
@@ -164,11 +247,81 @@ export default async function BlogPage({
               )}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {posts.map((post) => (
-                <BlogCard key={post.id} post={post} />
-              ))}
-            </div>
+            mainPosts.length > 0 && (
+            <>
+              <div className="flex items-center justify-between mb-8">
+                <p className="text-sm font-semibold text-slate-500">
+                  Showing{" "}
+                  <span className="text-[#1C1C1C] font-bold">{(currentPage - 1) * POSTS_PER_PAGE + 1}</span>
+                  {" – "}
+                  <span className="text-[#1C1C1C] font-bold">
+                    {Math.min(currentPage * POSTS_PER_PAGE, totalPosts)}
+                  </span>
+                  {" of "}
+                  <span className="text-[#1C1C1C] font-bold">{totalPosts}</span>
+                  {" articles"}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                {mainPosts.map((post) => (
+                  <BlogCard key={post.id} post={post} />
+                ))}
+              </div>
+
+              {/* ===== PAGINATION ===== */}
+              {totalPages > 1 && (
+                <nav
+                  className="mt-16 flex items-center justify-center gap-2"
+                  aria-label="Blog pagination"
+                >
+                  <Link
+                    href={buildPageHref(currentPage - 1, searchTerm)}
+                    aria-disabled={currentPage <= 1}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center bg-white border border-slate-200 text-[#1C1C1C] hover:bg-[#2E8B8B] hover:text-white hover:border-[#2E8B8B] transition-all ${
+                      currentPage <= 1 ? "pointer-events-none opacity-40" : ""
+                    }`}
+                  >
+                    <ChevronLeft size={18} />
+                  </Link>
+
+                  {getPageNumbers(currentPage, totalPages).map((p, i) =>
+                    p === "…" ? (
+                      <span
+                        key={`gap-${i}`}
+                        className="w-10 h-10 flex items-center justify-center text-sm font-bold text-slate-400"
+                      >
+                        …
+                      </span>
+                    ) : (
+                      <Link
+                        key={p}
+                        href={buildPageHref(p, searchTerm)}
+                        aria-current={p === currentPage ? "page" : undefined}
+                        className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
+                          p === currentPage
+                            ? "bg-[#F8904D] text-white shadow-lg shadow-[#F8904D]/30"
+                            : "bg-white text-[#1C1C1C] border border-slate-200 hover:bg-[#2E8B8B] hover:text-white hover:border-[#2E8B8B]"
+                        }`}
+                      >
+                        {p}
+                      </Link>
+                    )
+                  )}
+
+                  <Link
+                    href={buildPageHref(currentPage + 1, searchTerm)}
+                    aria-disabled={currentPage >= totalPages}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center bg-white border border-slate-200 text-[#1C1C1C] hover:bg-[#2E8B8B] hover:text-white hover:border-[#2E8B8B] transition-all ${
+                      currentPage >= totalPages ? "pointer-events-none opacity-40" : ""
+                    }`}
+                  >
+                    <ChevronRight size={18} />
+                  </Link>
+                </nav>
+              )}
+            </>
+            )
           )}
         </section>
 

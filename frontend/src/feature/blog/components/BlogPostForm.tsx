@@ -57,7 +57,7 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
   });
 
   const [entityValues, setEntityValues] = useState<Record<string, string>>({
-    author: initialData?.author || "",
+    author: initialData?.author || "KoiKoi Travel Team",
     category: initialData?.category || "",
     tags: initialData?.tags || "",
     publishedAt: initialData?.publishedAt || "",

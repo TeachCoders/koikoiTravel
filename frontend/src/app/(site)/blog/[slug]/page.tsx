@@ -9,6 +9,7 @@ import JsonLd from "@/components/shared/JsonLd";
 import { articleSchema, breadcrumbSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached, SERVER_API_BASE } from "@/feature/destinations/api/public-server";
 import { stripHtml, absoluteUrl } from "@/lib/utils";
+import { formatBlogDate } from "@/lib/dateUtils";
 import type { BlogPost } from "@/feature/blog/type";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import { QuoteModal } from "@/components/shared/QuoteModal";
@@ -101,7 +102,9 @@ export default async function BlogPostPage({ params }: Props) {
           className="object-cover object-center"
           theme="dark"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/50 to-slate-950/30" />
+        {/* Strong dark shade over image so text stays readable on any image */}
+        <div className="absolute inset-0 bg-slate-950/65" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-slate-950/10" />
 
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 text-center py-8">
           {post.category && (
@@ -126,7 +129,7 @@ export default async function BlogPostPage({ params }: Props) {
             )}
             {post.publishedAt && (
               <span className="inline-flex items-center gap-2">
-                <CalendarDays size={16} className="text-white/70" /> {post.publishedAt}
+                <CalendarDays size={16} className="text-white/70" /> {formatBlogDate(post.publishedAt)}
               </span>
             )}
           </div>
