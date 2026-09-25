@@ -31,12 +31,7 @@ const nextConfig: NextConfig = {
         destination: "https://koikoitravel.com/:path*",
         permanent: true,
       },
-      {
-        source: "/destinations",
-        destination: "/tour-packages",
-        permanent: true,
-      },
-    ];
+      ];
   },
   async headers() {
     const apiOrigin = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/^https?:\/\//, "") || "api.koikoitravel.com";

@@ -254,18 +254,20 @@ export const Header: React.FC = () => {
     seeAllHref?: string;
     dropdownTitle?: string;
     dropdownSubtext?: string;
+    directHref?: string;
   };
 
   const navLinks: NavLink[] = useMemo(
     () => [
       { href: "/", label: "Home" },
       {
-        href: "/tour-packages/india",
+        href: "/destinations",
         label: "Destinations",
-        children: destinationLinks,
+        directHref: "/destinations",
+        children: [{ href: "/destinations", label: "All Destinations" }, ...destinationLinks],
         dropdownStyle: "mega",
         dropdownColumns: 2,
-        seeAllHref: "/tour-packages",
+        seeAllHref: "/destinations",
         dropdownTitle: "Top Destinations",
         dropdownSubtext: "Explore all destinations worldwide",
       },
@@ -486,7 +488,38 @@ export const Header: React.FC = () => {
                   onMouseEnter={() => (link.children || link.isDestinationMega) ? (clearMegaMenuCloseTimer(), setOpenDesktopDropdown(link.href)) : null}
                   onMouseLeave={() => (link.children || link.isDestinationMega) ? scheduleMegaMenuClose() : setOpenDesktopDropdown(null)}
                 >
-                  {link.children || link.isDestinationMega ? (
+                  {link.directHref ? (
+                    <div className="flex items-center h-full">
+                      <Link
+                        href={link.directHref}
+                        onClick={() => setOpenDesktopDropdown(null)}
+                        className={`relative px-3 py-2.5 text-sm font-medium tracking-wide rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                          ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
+                          : "text-[#666]"
+                          }`}
+                      >
+                        <span className="relative z-10">{link.label}</span>
+                      </Link>
+                      <button
+                        type="button"
+                        aria-label={`Open ${link.label} menu`}
+                        onClick={() =>
+                          setOpenDesktopDropdown(
+                            openDesktopDropdown === link.href ? null : link.href
+                          )
+                        }
+                        className={`pr-3 pl-0.5 py-2.5 cursor-pointer transition-colors duration-300 ${openDesktopDropdown === link.href
+                          ? "text-[#2E8B8B]"
+                          : "text-[#999] hover:text-[#2E8B8B]"
+                          }`}
+                      >
+                        <ChevronDown
+                          className={`w-3.5 h-3.5 transition-transform duration-300 ${openDesktopDropdown === link.href ? "rotate-180" : ""
+                            }`}
+                        />
+                      </button>
+                    </div>
+                  ) : link.children || link.isDestinationMega ? (
                     <button
                       type="button"
                       onClick={() =>

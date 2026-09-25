@@ -54,10 +54,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "booking",
     "profile",
     "dashboard",
+    "destinations",
   ]);
 
   const entries: MetadataRoute.Sitemap = [
     url("/", new Date().toISOString()),
+    url("/destinations"),
     url("/travel-experiences"),
     url("/blog"),
     url("/tour-packages"),
