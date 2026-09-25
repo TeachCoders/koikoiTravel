@@ -1,13 +1,10 @@
 import Link from "next/link";
-import { Search, CalendarDays, Tag, ArrowRight, Sparkles } from "lucide-react";
+import { CalendarDays, Tag, ArrowRight } from "lucide-react";
 import type { BlogPost } from "@/feature/blog/type";
 import { formatBlogDate } from "@/lib/dateUtils";
 import { SERVER_API_BASE } from "@/feature/destinations/api/public-server";
 import { journeyPackageHref } from "@/feature/journey/filterOptions";
 import { FallbackImage } from "@/components/shared/FallbackImage";
-import { QuoteModal } from "@/components/shared/QuoteModal";
-
-const FALLBACK_IMAGE = "/destinationImage/image/agra-6.webp";
 
 async function fetchCategories(): Promise<{ name: string; slug: string }[]> {
   try {
@@ -61,47 +58,6 @@ export default async function BlogSidebar({
 
   return (
     <aside className="space-y-8">
-      {/* ===== SEARCH ===== */}
-      <div className="bg-white rounded-3xl border border-slate-200/60 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
-        <h3 className="font-heading text-lg font-extrabold text-[#1C1C1C] mb-5 flex items-center gap-2">
-          Search
-        </h3>
-        <form action="/blog" method="GET" className="relative">
-          <input
-            type="text"
-            name="search"
-            placeholder="Search articles..."
-            className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 py-3.5 pl-11 pr-4 text-sm font-medium outline-none transition-all placeholder:text-slate-400 focus:border-[#2E8B8B] focus:ring-4 focus:ring-[#2E8B8B]/10 focus:bg-white"
-          />
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-        </form>
-      </div>
-
-      {/* ===== PLAN MY TRIP CTA CARD ===== */}
-      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-7 text-white shadow-xl relative overflow-hidden">
-        <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-[#F8904D]/30 blur-2xl pointer-events-none" />
-        <span className="text-[11px] font-black uppercase tracking-widest text-[#F5B041] mb-2 block">
-          Customized Holiday Tour
-        </span>
-        <h4 className="font-heading text-xl font-extrabold text-white leading-snug">
-          Planning a Trip to India?
-        </h4>
-        <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-          Get 100% customized tour itineraries with private cabs, handpicked hotels & 24/7 on-trip assistance.
-        </p>
-        <div className="mt-6">
-          <QuoteModal>
-            <button
-              type="button"
-              className="w-full btn-primary py-3 px-5 text-sm font-bold flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[#F8904D]/30 active:scale-95 transition-all"
-            >
-              <Sparkles size={16} />
-              <span>Get Free Itinerary Quote</span>
-            </button>
-          </QuoteModal>
-        </div>
-      </div>
-
       {/* ===== TAGS ===== */}
       {tags && tags.length > 0 && (
         <div className="bg-white rounded-3xl border border-slate-200/60 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
