@@ -911,6 +911,7 @@ export default function RichTextEditor({
         .rte-editor .tiptap h3 { font-size: 1.1rem; font-weight: 700; margin: 0.75rem 0 0.5rem 0; color: #1e293b; }
         .rte-editor .tiptap h4 { font-size: 1rem; font-weight: 700; margin: 0.75rem 0 0.5rem 0; color: #1e293b; }
         .rte-editor .tiptap p { margin: 0.25rem 0; line-height: 1.6; color: #334155; }
+        .rte-editor .tiptap td p, .rte-editor .tiptap th p { color: inherit; }
         .rte-editor .tiptap ul { list-style-type: disc; padding-left: 1.5rem; margin: 0.5rem 0; }
         .rte-editor .tiptap ol { list-style-type: decimal; padding-left: 1.5rem; margin: 0.5rem 0; }
         .rte-editor .tiptap li { margin: 0.15rem 0; line-height: 1.5; color: #334155; }

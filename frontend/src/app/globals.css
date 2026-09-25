@@ -740,6 +740,11 @@
     text-align: left;
   }
 
+  .rich-text td p,
+  .rich-text th p {
+    color: inherit;
+  }
+
   .rich-text th {
     background: #f8f8f8;
     font-weight: 700;
