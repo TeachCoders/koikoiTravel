@@ -151,19 +151,6 @@ export default async function BlogPage({
 
         {/* ===== POSTS GRID ===== */}
         <section className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-16 md:py-24">
-          {searchTerm && (
-            <div className="flex items-center gap-4 mb-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <h2 className="font-heading text-lg font-bold text-[#1C1C1C]">
-                Search results for <span className="text-[#2E8B8B]">&ldquo;{searchTerm}&rdquo;</span>
-              </h2>
-              <Link
-                href="/blog"
-                className="text-sm font-bold text-[#F8904D] hover:underline flex items-center gap-1 ml-auto bg-orange-50 px-3 py-1.5 rounded-full"
-              >
-                Clear Search
-              </Link>
-            </div>
-          )}
           {mainPosts.length === 0 ? (
             <div className="text-center py-28 bg-white border border-slate-200 rounded-3xl shadow-sm">
               <Search size={48} className="mx-auto text-slate-300 mb-5" />
