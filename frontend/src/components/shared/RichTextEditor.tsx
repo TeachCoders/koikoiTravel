@@ -100,6 +100,8 @@ const RTE_BG_COLORS = [
   "#7c3aed",
 ];
 
+const RTE_TEXT_COLORS = [...RTE_BG_COLORS, "#ffffff"];
+
 // A CTA-style button (anchor) that can be inserted inside table cells, paragraphs, etc.
 const RteButton = Node.create({
   name: "rteButton",
@@ -605,13 +607,13 @@ export default function RichTextEditor({
             <div className="absolute right-[140px] top-full mt-1 z-50 w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-xl">
               <p className="text-[11px] font-bold text-slate-600 mb-2 uppercase tracking-wide">Text Color</p>
               <div className="grid grid-cols-4 gap-1.5">
-                {RTE_BG_COLORS.map((c) => (
+                {RTE_TEXT_COLORS.map((c) => (
                   <button
                     key={c}
                     type="button"
                     onClick={() => applyTextColor(c)}
                     aria-label={`Text color ${c}`}
-                    title={c}
+                    title={c + (c === "#ffffff" ? " (white)" : "")}
                     className={`h-7 w-full rounded-lg border transition-transform hover:scale-105 ${
                       currentTextColor?.toLowerCase() === c.toLowerCase()
                         ? "border-slate-900 ring-2 ring-slate-900/20"
@@ -828,7 +830,7 @@ export default function RichTextEditor({
             <div className="absolute right-0 top-full mt-2 z-[70] w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-2xl">
               <p className="text-[11px] font-bold text-slate-600 mb-2 uppercase tracking-wide">Text Color</p>
               <div className="grid grid-cols-4 gap-1.5">
-                {RTE_BG_COLORS.map((c) => (
+                {RTE_TEXT_COLORS.map((c) => (
                   <button
                     key={c}
                     type="button"
