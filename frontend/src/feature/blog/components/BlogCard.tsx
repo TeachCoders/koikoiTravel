@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CalendarDays, UserRound } from "lucide-react";
 import { stripHtml } from "@/lib/utils";
 import { formatBlogDate } from "@/lib/dateUtils";
 import type { BlogPost } from "@/feature/blog/type";
@@ -12,7 +12,6 @@ export default function BlogCard({ post }: { post: BlogPost }) {
     : "Explore complete itinerary details, top attractions, travel tips and expert recommendations in this guide.";
 
   const formattedDate = formatBlogDate(post.publishedAt);
-  const byline = [post.author?.trim() || "KoiKoi Travel Team", formattedDate].filter(Boolean).join(" • ");
 
   return (
     <Link
@@ -45,10 +44,19 @@ export default function BlogCard({ post }: { post: BlogPost }) {
           {post.title}
         </h3>
 
-        {byline && (
-          <p className="mt-2 text-[11px] font-semibold text-[#a0a0a0] whitespace-nowrap truncate">
-            {byline}
-          </p>
+        {(post.author?.trim() || formattedDate) && (
+          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] font-semibold text-[#a0a0a0]">
+            {post.author?.trim() && (
+              <span className="inline-flex items-center gap-1.5 whitespace-nowrap truncate">
+                <UserRound size={12} /> {post.author.trim()}
+              </span>
+            )}
+            {formattedDate && (
+              <span className="inline-flex items-center gap-1.5 whitespace-nowrap truncate">
+                <CalendarDays size={12} /> {formattedDate}
+              </span>
+            )}
+          </div>
         )}
 
         <p className="mt-3 text-[14px] text-[#666] leading-relaxed line-clamp-2 flex-1">
