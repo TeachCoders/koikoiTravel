@@ -127,7 +127,7 @@ const RteButton = Node.create({
         href: node.attrs.href,
         target: "_blank",
         rel: "noopener",
-        style: `display:inline-block;background:${node.attrs.background};color:#fff;padding:0.55rem 1.4rem;border-radius:9999px;text-decoration:none;font-weight:700;font-size:14px;line-height:1;cursor:pointer;`,
+        style: `display:inline-block;background:${node.attrs.background};color:${isDarkBackground(node.attrs.background) ? "#fff" : "#1C1C1C"};padding:0.55rem 1.4rem;border-radius:9999px;text-decoration:none;font-weight:700;font-size:14px;line-height:1;cursor:pointer;`,
       }),
       node.attrs.text,
     ];
