@@ -23,14 +23,19 @@ function isDarkCssColor(cssColor: string): boolean {
 function fixTableCellTextContrast(html: string): string {
   return html.replace(/<(td|th)\b([^>]*)>/gi, (tag, _cell, attrs) => {
     const styleMatch = /\bstyle\s*=\s*(['"])(.*?)\1/i.exec(attrs);
-    if (!styleMatch || /(^|[; ])color\s*:/i.test(styleMatch[2])) return tag;
-    const bg = /\bbackground-color\s*:\s*([^;]+)/i.exec(styleMatch[2]);
+    const style = styleMatch?.[2] || "";
+    const bg = /\bbackground-color\s*:\s*([^;]+)/i.exec(style);
     if (!bg || !isDarkCssColor(bg[1])) return tag;
-    const incoming = styleMatch[1];
-    const style = styleMatch[2];
-    const needsTerminator = !/;\s*$/.test(style);
-    const newStyle = `${style}${needsTerminator ? ";" : ""}color: rgb(255,255,255)`;
-    return tag.replace(styleMatch[0], `style=${incoming}${newStyle}${incoming}`);
+    const cleaned = style
+      .replace(/\bcolor\s*:[^;]+;?/gi, "")
+      .replace(/^\s+|\s+$/g, "")
+      .replace(/;+$/, "");
+    const newStyle = [cleaned, "color: rgb(255,255,255)"].filter(Boolean).join(";");
+    const incoming = styleMatch?.[1] || '"';
+    return tag.replace(
+      styleMatch?.[0] || /\bstyle\s*=\s*(["'])[^"']*\1/i,
+      `style=${incoming}${newStyle}${incoming}`
+    );
   });
 }
 

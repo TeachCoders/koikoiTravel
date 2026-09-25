@@ -132,12 +132,20 @@ const RteButton = Node.create({
 });
 
 function isDarkBackground(bg: string): boolean {
-  const m = /^#?([0-9a-f]{6})$/i.exec(bg.trim());
-  if (!m) return false;
-  const n = parseInt(m[1], 16);
-  const r = (n >> 16) & 255;
-  const g = (n >> 8) & 255;
-  const b = n & 255;
+  let r = 0, g = 0, b = 0;
+  const hex = /^#?([0-9a-f]{6})$/i.exec(bg.trim());
+  if (hex) {
+    const n = parseInt(hex[1], 16);
+    r = (n >> 16) & 255;
+    g = (n >> 8) & 255;
+    b = n & 255;
+  } else {
+    const rgb = /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i.exec(bg.trim());
+    if (!rgb) return false;
+    r = Number(rgb[1]);
+    g = Number(rgb[2]);
+    b = Number(rgb[3]);
+  }
   return 0.2126 * r + 0.7152 * g + 0.0722 * b < 128;
 }
 
