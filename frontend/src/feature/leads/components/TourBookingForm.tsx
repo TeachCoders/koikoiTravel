@@ -102,14 +102,14 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
 
   return embedded ? (
     <div className="w-full">
-      <div className={cn("p-3 sm:p-4", !hideHeader && "bg-[#FFF4EE] border border-[#F8904D]/15 rounded-2xl shadow-sm")}>
+      <div className={cn("p-2.5 sm:p-4", !hideHeader && "bg-[#FFF4EE] border border-[#F8904D]/15 rounded-2xl shadow-sm")}>
         {!hideHeader && embeddedHeader}
         <form onSubmit={handleSubmit} className="space-y-2.5">
           <Field hideLabel label="Full Name" name="name" type="text" value={data.name} onChange={handleChange} placeholder="Full Name *" required />
           <Field hideLabel label="Email Address" name="email" type="email" value={data.email} onChange={handleChange} placeholder="Email Address *" required />
 
           <Select value={data.countryId} onValueChange={onCountryCodeChange}>
-              <SelectTrigger aria-label="Select country" className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 h-10 text-slate-800 text-sm focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
+              <SelectTrigger aria-label="Select country" className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 h-10 text-slate-800 text-sm max-sm:text-[13px] truncate focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
               <SelectValue placeholder="Select Country" />
             </SelectTrigger>
             <SelectContent className="bg-white rounded-xl shadow-xl border border-slate-200 max-h-60 z-50">
@@ -126,7 +126,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
 
           <div className="flex gap-2">
             <Select value={data.countryId} onValueChange={onCountryCodeChange}>
-              <SelectTrigger aria-label="Country dial code" className="w-[96px] sm:w-[118px] shrink-0 min-w-0 bg-white border border-slate-200 rounded-xl px-2.5 py-2 h-10 text-slate-800 text-sm focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
+              <SelectTrigger aria-label="Country dial code" className="w-[84px] sm:w-[110px] shrink-0 min-w-0 bg-white border border-slate-200 rounded-xl px-2 py-2 h-10 text-slate-800 text-sm max-sm:text-[13px] truncate focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
                 <SelectValue>
                   {getCountryFlagEmoji(data.countryId || "IN")} {selectedDialCode}
                 </SelectValue>
@@ -146,7 +146,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
               value={stripDialCode(data.phone, selectedDialCode)}
               onChange={(e) => setData((prev) => ({ ...prev, phone: selectedDialCode + " " + e.target.value }))}
               placeholder="Mobile Number *" required
-              className="flex-1 min-w-0 bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 text-sm placeholder-slate-400 focus:outline-none focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 transition-all duration-150 font-medium" />
+              className="flex-1 min-w-0 bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm max-sm:text-[13px] placeholder-slate-400 focus:outline-none focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 transition-all duration-150 font-medium" />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -154,8 +154,8 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
               value={data.noOfPersons}
               onValueChange={(val) => setData((prev) => ({ ...prev, noOfPersons: val }))}
             >
-              <SelectTrigger aria-label="Number of persons" className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 h-10 text-slate-800 text-sm focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
-                <SelectValue placeholder="No. of Persons" />
+              <SelectTrigger aria-label="Number of persons" className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 h-10 text-slate-800 text-sm max-sm:text-[13px] truncate focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
+                <SelectValue placeholder="Persons" />
               </SelectTrigger>
               <SelectContent className="bg-white rounded-xl shadow-xl border border-slate-200 z-50">
                 <SelectItem value="1">1 Person</SelectItem>
@@ -175,8 +175,8 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
               value={data.noOfChildren}
               onValueChange={(val) => setData((prev) => ({ ...prev, noOfChildren: val }))}
             >
-              <SelectTrigger aria-label="Number of children" className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 h-10 text-slate-800 text-sm focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
-                <SelectValue placeholder="No. of Children" />
+              <SelectTrigger aria-label="Number of children" className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 h-10 text-slate-800 text-sm max-sm:text-[13px] truncate focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
+                <SelectValue placeholder="Children" />
               </SelectTrigger>
               <SelectContent className="bg-white rounded-xl shadow-xl border border-slate-200 z-50">
                 <SelectItem value="0">0 Children</SelectItem>
@@ -193,7 +193,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
             value={data.hotelCategory}
             onValueChange={(val) => setData((prev) => ({ ...prev, hotelCategory: val }))}
           >
-            <SelectTrigger aria-label="Hotel category" className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 h-10 text-slate-800 text-sm focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
+            <SelectTrigger aria-label="Hotel category" className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 h-10 text-slate-800 text-sm max-sm:text-[13px] truncate focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
               <SelectValue placeholder="Select Hotel Category" />
             </SelectTrigger>
             <SelectContent className="bg-white rounded-xl shadow-xl border border-slate-200 z-50">
@@ -210,7 +210,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
 
           <textarea name="travellerMessage" value={data.travellerMessage} onChange={handleChange} aria-label="Message"
             placeholder="Any special requests or details..." rows={2}
-            className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 text-sm placeholder-slate-400 focus:outline-none focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 transition-all duration-150 resize-none font-medium" />
+            className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm max-sm:text-[13px] placeholder-slate-400 focus:outline-none focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 transition-all duration-150 resize-none font-medium" />
 
           <button type="submit" disabled={isLoading}
             className="w-full bg-[#F8904D] hover:bg-[#d57c42] text-white active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed font-bold text-sm uppercase tracking-wider py-3 rounded-xl transition-all duration-150 shadow-md shadow-[#F8904D]/20 flex items-center justify-center gap-2 mt-2">
@@ -402,7 +402,7 @@ function Field({ label, hideLabel = false, name, type, value, onChange, placehol
         </label>
       )}
       <input id={name} type={type} name={name} value={value} onChange={onChange} placeholder={placeholder} required={required}
-        className="w-full bg-white border border-brand-neutral-border rounded-lg px-4 py-2 text-brand-neutral-dark text-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-brand-primary/30 transition-all duration-150" />
+        className="w-full bg-white border border-brand-neutral-border rounded-lg px-3.5 py-2 text-brand-neutral-dark text-sm max-sm:text-[13px] placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-brand-primary/30 transition-all duration-150" />
     </div>
   );
 }
