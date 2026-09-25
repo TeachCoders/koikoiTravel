@@ -170,7 +170,7 @@ export default async function BlogSidebar({ tags }: { tags?: string[] }) {
                   
                   <div className="flex flex-col justify-center">
                     {p.publishedAt && (
-                      <p className="mb-1.5 inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                      <p className="mb-1.5 inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#a0a0a0] whitespace-nowrap truncate">
                         <CalendarDays size={12} /> {formatBlogDate(p.publishedAt)}
                       </p>
                     )}
