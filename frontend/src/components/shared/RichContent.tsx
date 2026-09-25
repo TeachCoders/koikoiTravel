@@ -26,10 +26,12 @@ function fixTableCellTextContrast(html: string): string {
     const style = styleMatch?.[2] || "";
     const bg = /\bbackground-color\s*:\s*([^;]+)/i.exec(style);
     if (!bg || !isDarkCssColor(bg[1])) return tag;
-    const cleaned = style
-      .replace(/\bcolor\s*:[^;]+;?/gi, "")
-      .replace(/^\s+|\s+$/g, "")
-      .replace(/;+$/, "");
+    const kept = style
+      .split(";")
+      .map((decl) => decl.trim())
+      .filter((decl) => decl && !/^color\s*:/i.test(decl))
+      .join(";");
+    const cleaned = kept.replace(/;+$/, "");
     const newStyle = [cleaned, "color: rgb(255,255,255)"].filter(Boolean).join(";");
     const incoming = styleMatch?.[1] || '"';
     return tag.replace(
