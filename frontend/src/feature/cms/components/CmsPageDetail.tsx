@@ -14,16 +14,27 @@ export default function CmsPageDetail({ page }: { page: CmsPage }) {
   const displayTitle = cleanTitle(page.h1Title || page.title || "Page");
   const hasThumb = Boolean(page.thumbImg);
   const isGuestGalleryPage = page.slug === "guest-gallery" || page.title?.toLowerCase().includes("guest gallery");
+  const isTealHeroPage = page.slug === "about-us" || page.slug === "about";
 
   return (
     <div>
       {/* ===== HERO / HEADER ===== */}
       <section
         className={`relative ${
-          hasThumb ? "h-[360px] md:h-[440px]" : "bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900"
+          isTealHeroPage
+            ? "bg-[#2E8B8B]"
+            : hasThumb
+              ? "h-[360px] md:h-[440px]"
+              : "bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900"
         } overflow-hidden`}
       >
-        {hasThumb ? (
+        {isTealHeroPage ? (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute -top-16 right-0 w-72 h-72 rounded-full bg-[#F8904D]/20 blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-24 -left-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+          </>
+        ) : hasThumb ? (
           <div className="absolute inset-0">
             <img
               src={page.thumbImg}

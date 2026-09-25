@@ -109,13 +109,10 @@ export default async function ContactUsPage() {
       <JsonLd data={contactOrganizationSchema} />
 
       {/* Hero Header Section */}
-      <div className="bg-[#1C1C1C] relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.06]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='white' stroke-width='0.5'%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3Ccircle cx='40' cy='40' r='18'/%3E%3Cpath d='M40 12 L40 4 M40 68 L40 76 M12 40 L4 40 M68 40 L76 40'/%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
+      <div className="bg-[#2E8B8B] relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute -top-16 right-0 w-72 h-72 rounded-full bg-[#F8904D]/20 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none" />
         <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-12 md:py-16">
           <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight drop-shadow-md mb-3">
             {displayTitle}

@@ -64,22 +64,24 @@ export default async function TourPackagesPage({
       {journeyItems.length > 0 && <JsonLd data={itemListSchema(journeyItems)} />}
 
       {/* ===== HERO BANNER ===== */}
-      <section className="relative bg-slate-900 border-b border-slate-800 py-16 md:py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#2E8B8B]/25 via-slate-950/80 to-slate-950" />
+      <section className="relative bg-[#2E8B8B] py-16 md:py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute -top-16 right-0 w-72 h-72 rounded-full bg-[#F8904D]/20 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none" />
         <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 text-center flex flex-col items-center">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#F8904D]/10 border border-[#F8904D]/30 text-[#F8904D] text-xs font-extrabold uppercase tracking-widest mb-4">
-            <Sparkles size={13} /> Tailor-Made Holiday Packages
+          <span className="hidden sm:inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#F5B041] mb-4">
+            <Sparkles size={14} /> Tailor-Made Holiday Packages
           </span>
           <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white tracking-wide drop-shadow-md">
             Tour Packages
           </h1>
-          <p className="mt-4 text-slate-300 text-base md:text-lg max-w-2xl leading-relaxed">
+          <p className="hidden sm:block mt-4 text-white/85 text-base md:text-lg max-w-2xl leading-relaxed">
             {cities.length > 0 || experiences.length > 0
               ? "Results filtered by your search — refine using the filters below."
               : "Discover curated travel itineraries across India and top global destinations. Custom packages designed for memories."}
           </p>
 
-          <div className="mt-8">
+          <div className="hidden sm:block mt-8">
             <QuoteModal>
               <button
                 type="button"
