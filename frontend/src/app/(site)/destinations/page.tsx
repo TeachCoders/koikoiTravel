@@ -164,7 +164,7 @@ async function fetchDestinations() {
     countries: sortedCountries,
     stateMap,
     states: orderedStates,
-    cities: uniqueCities.slice(0, 12),
+    cities: uniqueCities,
     journeys: sortedJourneys.slice(0, 8),
     totals: {
       countryCount: sortedCountries.length,
@@ -226,6 +226,16 @@ export default async function DestinationsPage() {
     totals,
     heroImage,
   } = await fetchDestinations();
+
+  const cityGroups = Array.from(
+    cities.reduce((map, city) => {
+      const stateName = city.state?.title || "Other Destinations";
+      const list = map.get(stateName) || [];
+      list.push(city);
+      map.set(stateName, list);
+      return map;
+    }, new Map<string, typeof cities>())
+  );
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -383,48 +393,46 @@ export default async function DestinationsPage() {
           </div>
           <div className="mt-8 max-w-4xl mx-auto space-y-5 text-[15.5px] leading-relaxed text-slate-600">
             <p>
-              Planning your next getaway? From the pink city of Jaipur to the
-              backwaters of Kerala, KoiKoi Travel brings you a hand-curated
-              collection of holiday destinations — each one researched and
-              road-tested by our travel experts. Whether you dream of watching
-              the sunrise over the Taj Mahal, gliding through the silent
-              backwaters of Alleppey on a traditional houseboat, chasing the
-              misty trails of Manali, or soaking in the royal heritage of
-              Udaipur&apos;s lakes, our destinations are chosen to match every
-              travel style, budget and season.
+              Every great holiday starts with a destination — and this page is
+              where yours begins. At KoiKoi Travel, we have gathered the
+              countries, states and cities travellers love most, so you can
+              plan your perfect trip in one easy place. Scroll down, find a
+              place that speaks to you, and you are already halfway there.
             </p>
             <p>
-              Every destination here opens into carefully structured tour
-              packages. Expect transparent pricing, handpicked 3★ and 4★
-              hotels, private cabs, daily sightseeing and friendly support from
-              our travel desk. Prefer a custom plan? Simply tell us your cities,
-              dates and preferences and our team will craft a day-by-day
-              itinerary with inclusions, exclusions and journey highlights
-              clearly laid out for you.
+              Prefer a fort-and-palace holiday? Rajasthan is waiting. Dream of
+              snow and pine forests? Himachal Pradesh and Uttarakhand. Chasing
+              sun, sand and sunshine? Goa. Love backwaters, spice gardens and
+              slow Ayurveda? Kerala has your name on it. Already sure about a
+              city — Jaipur, Udaipur, Manali, Munnar, Varanasi or Goa? Jump
+              straight to its tours in our Top Cities section.
             </p>
             <p>
-              From heritage weeks in Rajasthan and Himalayan sojourns in
-              Himachal and Uttarakhand, to spiritual circuits in Varanasi and
-              Ayodhya, coastal escapes in Goa, golden temple trails in Amritsar
-              and weekend breaks in the hills of Haridwar and Rishikesh — there
-              is a perfect journey for every traveller. Families, couples,
-              corporate groups and solo explorers all find itineraries that are
-              flexible, honest and beautifully planned.
+              Every destination opens into a tour package built the KoiKoi
+              way: comfortable 3★ and 4★ hotels, a private cab, breakfast,
+              sightseeing and friendly local support — all in one clear price.
+              Each package shows a day-by-day itinerary, inclusions, exclusions
+              and journey highlights, so you always know exactly what to expect
+              on your holiday.
             </p>
             <p>
-              Browse our popular states, jump straight to your favourite city,
-              or scroll down to explore top-selling holiday packages. Book
-              directly online or connect on WhatsApp for instant help from our
-              holiday experts — your perfect trip starts here.
+              Not sure where to go? Tell us your dates, budget and the kind of
+              holiday you dream of, and our experts will plan a custom trip
+              around you — fast, honest and personal. Weekend break, family
+              holiday, honeymoon or a long India tour, start right here. Browse
+              our Popular States, pick a favourite city and scroll down to the
+              tour packages below. And when you are ready, say hello to KoiKoi
+              Travel on WhatsApp — your dream trip is just one click away.
             </p>
           </div>
         </div>
       </section>
 
-      <main className="flex-1 px-6 sm:px-8 lg:px-10 py-16 max-w-[1600px] mx-auto w-full">
+      <main className="flex-1">
         {/* ===== COUNTRIES ===== */}
-        <section id="countries" className="scroll-mt-24">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
+        <section id="countries" className="scroll-mt-24 bg-slate-50">
+          <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-16 md:py-20">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
             <div>
               <SectionLabel icon={<Globe2 size={12} />}>By Country</SectionLabel>
               <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-1">
@@ -497,27 +505,29 @@ export default async function DestinationsPage() {
               );
             })}
           </div>
+          </div>
         </section>
 
         {/* ===== STATES & REGIONS ===== */}
         {states.length > 0 && (
-          <section id="states" className="scroll-mt-24 mt-20">
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
-              <div>
-                <SectionLabel icon={<Route size={12} />}>
-                  By Region
-                </SectionLabel>
-                <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-1">
-                  Popular States &amp; Regions
-                </h2>
-                <p className="mt-2 text-slate-500 text-sm md:text-base">
-                  Explore hill stations, heritage cities and coastal getaways.
-                </p>
+          <section id="states" className="scroll-mt-24 bg-white">
+            <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-16 md:py-20">
+              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
+                <div>
+                  <SectionLabel icon={<Route size={12} />}>
+                    By Region
+                  </SectionLabel>
+                  <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-1">
+                    Popular States &amp; Regions
+                  </h2>
+                  <p className="mt-2 text-slate-500 text-sm md:text-base">
+                    Explore hill stations, heritage cities and coastal getaways.
+                  </p>
+                </div>
               </div>
-            </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-              {states.slice(0, 5).map((state) => {
+              {states.map((state) => {
                 const image = img(
                   state.banner?.images?.[0],
                   state.thumbImg
@@ -539,6 +549,9 @@ export default async function DestinationsPage() {
                       <div className="w-full h-full bg-gradient-to-br from-[#2E8B8B]/85 to-[#1c4e4e]" />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    <span className="absolute top-3 left-3 flex h-9 w-9 items-center justify-center rounded-full bg-[#F8904D] text-white shadow-lg opacity-0 -translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none">
+                      <ArrowRight size={15} />
+                    </span>
                     {state.tourCount ? (
                       <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-[#F8904D] px-2.5 py-1 text-[10px] font-bold text-white shadow">
                         <Crown size={10} /> {state.tourCount}
@@ -558,75 +571,106 @@ export default async function DestinationsPage() {
                 );
               })}
             </div>
+            </div>
           </section>
         )}
 
         {/* ===== CITIES ===== */}
         {cities.length > 0 && (
-          <section id="cities" className="scroll-mt-24 mt-20">
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
-              <div>
-                <SectionLabel icon={<MapPin size={12} />}>By City</SectionLabel>
-                <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-1">
-                  Top Cities to Explore
-                </h2>
-                <p className="mt-2 text-slate-500 text-sm md:text-base">
-                  Skip straight to your favourite city&apos;s tours.
+          <section id="cities" className="scroll-mt-24 bg-slate-50">
+            <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-16 md:py-20">
+              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
+                <div>
+                  <SectionLabel icon={<MapPin size={12} />}>By City</SectionLabel>
+                  <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-1">
+                    Top Cities to Explore
+                  </h2>
+<p className="mt-2 text-slate-500 text-sm md:text-base">
+                  Every destination city, neatly grouped by state.
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {cities.map((city) => {
-                const state = city.state;
-                const image = img(
-                  city.thumbImg,
-                  state?.banner?.images?.[0],
-                  state?.thumbImg
-                );
+            <div className="space-y-10">
+              {cityGroups.map(([stateName, cityList]) => {
+                const country = cityList[0]?.state?.country;
                 return (
-                  <Link
-                    key={city.id}
-                    href={`/tour-packages/${state?.country?.slug}/${state?.slug}/${city.slug}`}
-                    className="group relative flex items-center gap-3 rounded-2xl bg-white border border-slate-100 p-3 pr-4 shadow-[0_2px_16px_rgba(0,0,0,0.05)] hover:shadow-[0_18px_44px_rgba(46,139,139,0.16)] hover:-translate-y-1 transition-all duration-300"
+                  <div
+                    key={stateName}
+                    className="border-t border-slate-200 pt-8 first:border-t-0 first:pt-0"
                   >
-                    <span className="relative block h-14 w-14 shrink-0 overflow-hidden rounded-xl">
-                      {image ? (
-                        <FallbackImage
-                          src={image}
-                          alt={city.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-110"
-                        />
-                      ) : (
-                        <span className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#2E8B8B] to-[#1c4e4e] text-white">
-                          <MapPin size={18} />
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-5">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#2E8B8B]/10 text-[#2E8B8B]">
+                        <MapPin size={15} />
+                      </span>
+                      <h3 className="font-heading text-xl font-extrabold text-[#1C1C1C]">
+                        {stateName}
+                      </h3>
+                      {country?.title && (
+                        <span className="text-[11px] font-bold uppercase tracking-wide text-[#F8904D]">
+                          {country.title}
                         </span>
                       )}
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-[15px] font-bold text-[#1C1C1C]">
-                        {city.title}
+                      <span className="text-xs font-semibold text-slate-400">
+                        {cityList.length}{" "}
+                        {cityList.length === 1 ? "city" : "cities"}
                       </span>
-                      <span className="block truncate text-[12px] text-slate-500 font-medium">
-                        {state?.title}
-                      </span>
-                    </span>
-                    <ArrowRight
-                      size={15}
-                      className="shrink-0 text-[#F8904D] transition-transform duration-300 group-hover:translate-x-1"
-                    />
-                  </Link>
+                      <span className="h-px min-w-[48px] flex-1 bg-gradient-to-r from-slate-300 to-transparent" />
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+                      {cityList.map((city) => {
+                        const image = img(
+                          city.thumbImg,
+                          city.state?.banner?.images?.[0],
+                          city.state?.thumbImg
+                        );
+                        return (
+                          <Link
+                            key={city.id}
+                            href={`/tour-packages/${city.state?.country?.slug}/${city.state?.slug}/${city.slug}`}
+                            className="group relative flex items-center gap-3 rounded-2xl bg-white border border-slate-100 p-3 pr-4 shadow-[0_2px_16px_rgba(0,0,0,0.05)] hover:shadow-[0_18px_44px_rgba(46,139,139,0.16)] hover:-translate-y-1 transition-all duration-300"
+                          >
+                            <span className="relative block h-14 w-14 shrink-0 overflow-hidden rounded-xl">
+                              {image ? (
+                                <FallbackImage
+                                  src={image}
+                                  alt={city.title}
+                                  fill
+                                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                />
+                              ) : (
+                                <span className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#2E8B8B] to-[#1c4e4e] text-white">
+                                  <MapPin size={18} />
+                                </span>
+                              )}
+                            </span>
+                            <span className="min-w-0 flex-1">
+                              <span className="block truncate text-[15px] font-bold text-[#1C1C1C]">
+                                {city.title}
+                              </span>
+                            </span>
+                            <ArrowRight
+                              size={15}
+                              className="shrink-0 text-[#F8904D] transition-transform duration-300 group-hover:translate-x-1"
+                            />
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
                 );
               })}
+            </div>
             </div>
           </section>
         )}
 
         {/* ===== TOUR PACKAGES (BOTTOM) ===== */}
         {journeys.length > 0 && (
-          <section id="tour-packages" className="scroll-mt-24 mt-20">
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
+          <section id="tour-packages" className="scroll-mt-24 bg-[#f8f8f8]">
+            <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-16 md:py-20">
+              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
               <div>
                 <SectionLabel icon={<Compass size={12} />}>
                   Hand-Crafted Itineraries
@@ -652,13 +696,14 @@ export default async function DestinationsPage() {
                 <TourPackageCard key={j.id} journey={j} />
               ))}
             </div>
+            </div>
           </section>
         )}
       </main>
 
       {/* ===== FAQ SECTION ===== */}
       <section className="bg-white">
-        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 pb-20">
+        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-16 md:py-20">
           <FaqSection faqs={defaultFaqs} />
         </div>
       </section>
