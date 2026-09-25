@@ -745,6 +745,11 @@
     color: inherit;
   }
 
+  .rich-text td strong,
+  .rich-text th strong {
+    color: inherit;
+  }
+
   .rich-text th {
     background: #f8f8f8;
     font-weight: 700;
