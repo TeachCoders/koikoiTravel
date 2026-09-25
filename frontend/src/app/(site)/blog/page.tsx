@@ -115,9 +115,9 @@ export default async function BlogPage({
       <JsonLd data={breadcrumbData} />
 
       <main className="flex-1">
-        {/* ===== PAGE HERO WITH TEAL BACKGROUND ===== */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-[#2E8B8B] via-[#246f6f] to-[#1C1C1C]">
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent pointer-events-none" />
+        {/* ===== PAGE HERO WITH SOLID TEAL BACKGROUND ===== */}
+        <section className="relative overflow-hidden bg-[#2E8B8B]">
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent pointer-events-none" />
           <div className="absolute -top-16 right-0 w-72 h-72 rounded-full bg-[#F8904D]/20 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-24 -left-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none" />
 
