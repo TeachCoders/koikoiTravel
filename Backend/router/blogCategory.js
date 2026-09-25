@@ -14,6 +14,28 @@ const schema = z.object({
   displayOrder: z.number().int().optional(),
 });
 
+const syncBlogPosts = async (oldName, newName) => {
+  const posts = await prisma.blogPost.findMany({
+    where: {
+      OR: [{ category: oldName }, { categories: { has: oldName } }],
+    },
+    select: { id: true, category: true, categories: true },
+  });
+
+  for (const post of posts) {
+    const stored = Array.isArray(post.categories) ? post.categories : [];
+    const categories = stored.length > 0
+      ? stored.map((n) => (n === oldName ? newName : n))
+      : post.category === oldName
+        ? [newName]
+        : [newName];
+    await prisma.blogPost.update({
+      where: { id: post.id },
+      data: { categories, category: categories[0] || null },
+    });
+  }
+};
+
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -118,6 +140,11 @@ router.put("/:id", requireTeamOrAdmin(["it"]), async (req, res) => {
       where: { id },
       data: { ...rest, ...(slug && { slug }) },
     });
+
+    if (rest.name && existing.name !== rest.name) {
+      await syncBlogPosts(existing.name, rest.name);
+    }
+
     return res.status(200).json({ success: true, message: "blogCategory updated successfully", data: item });
   } catch (err) {
     if (err.code === "P2002") {
@@ -158,7 +185,7 @@ router.delete("/:id", requireTeamOrAdmin(["it"]), async (req, res) => {
     if (!existing) return res.status(404).json({ success: false, message: "blogCategory not found" });
 
     const usedCount = await prisma.blogPost.count({
-      where: { category: existing.name },
+      where: { OR: [{ category: existing.name }, { categories: { has: existing.name } }] },
     });
     if (usedCount > 0) {
       return res.status(400).json({
