@@ -1,13 +1,13 @@
 // Format a blog publish date (supports both "YYYY-MM-DD" and full ISO) into
-// a clean, readable format like "September 24, 2026".
+// a clean, readable format like "25 September 2026".
 export function formatBlogDate(dateString: string | null | undefined): string {
   if (!dateString) return "";
   const value = dateString.length <= 10 ? `${dateString}T00:00:00Z` : dateString;
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
-  return date.toLocaleDateString("en-US", {
-    month: "long",
+  return date.toLocaleDateString("en-GB", {
     day: "numeric",
+    month: "long",
     year: "numeric",
     timeZone: "UTC",
   });
