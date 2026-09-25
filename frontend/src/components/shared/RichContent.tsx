@@ -39,14 +39,23 @@ function fixTableCellTextContrast(html: string): string {
   });
 }
 
+function wrapResponsiveTables(html: string): string {
+  const wrapped = html
+    .replace(/<table\b/gi, '<div class="rich-text-table"><table')
+    .replace(/<\/table>/gi, "</table></div>");
+  return wrapped;
+}
+
 export function sanitizeHtml(html: string): string {
   const clean = DOMPurify.sanitize(html, {
     USE_PROFILES: { html: true },
     FORBID_TAGS: ["style", "script", "iframe", "form", "input", "button"],
     ADD_ATTR: ["target", "rel"],
   });
-  const fixed = fixTableCellTextContrast(clean).replace(/<h1\b[^>]*>/gi, (match) => match.replace(/<h1/i, "<h2")).replace(/<\/h1>/gi, "</h2>");
-  return fixed;
+  const fixed = wrapResponsiveTables(clean)
+    .replace(/<h1\b[^>]*>/gi, (match) => match.replace(/<h1/i, "<h2"))
+    .replace(/<\/h1>/gi, "</h2>");
+  return fixTableCellTextContrast(fixed);
 }
 
 export default function RichContent({

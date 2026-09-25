@@ -733,6 +733,17 @@
     margin: 1.5em 0;
   }
 
+  .rich-text .rich-text-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5em 0;
+  }
+
+  .rich-text .rich-text-table table {
+    width: 100%;
+    margin: 0;
+  }
+
   .rich-text th,
   .rich-text td {
     border: 1px solid #e2e8f0;
