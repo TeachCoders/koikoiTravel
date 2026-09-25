@@ -192,6 +192,7 @@ export default function RichTextEditor({
   const [btnHref, setBtnHref] = useState("");
   const [btnBg, setBtnBg] = useState("#2E8B8B");
   const [cellColorOpen, setCellColorOpen] = useState(false);
+  const [rowMode, setRowMode] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -302,6 +303,33 @@ export default function RichTextEditor({
     if (!editor) return;
     editor.chain().focus().setCellAttribute("background", color).run();
     setCellColorOpen(false);
+  };
+
+  const setRowBg = (color: string | null) => {
+    if (!editor) return;
+    const { state } = editor;
+    const { tr, selection } = state;
+    const { $from } = selection;
+    let rowStart = 0;
+    let rowNode: any = null;
+    for (let d = $from.depth; d > 0; d--) {
+      if ($from.node(d).type.name === "tableRow") {
+        rowStart = $from.before(d);
+        rowNode = $from.node(d);
+        break;
+      }
+    }
+    if (!rowNode) return;
+    rowNode.forEach((cell: any, offset: number) => {
+      tr.setNodeMarkup(rowStart + 1 + offset, undefined, { ...cell.attrs, background: color });
+    });
+    editor.view.dispatch(tr);
+    setCellColorOpen(false);
+  };
+
+  const applyCellColor = (color: string | null) => {
+    if (rowMode) setRowBg(color);
+    else setCellBg(color);
   };
 
   const drawCanvas = useCallback((img: HTMLImageElement, crop: { x: number; y: number; w: number; h: number }) => {
@@ -472,16 +500,32 @@ export default function RichTextEditor({
         {cellColorOpen && (
           <>
             <div className="fixed inset-0 z-40" onMouseDown={() => setCellColorOpen(false)} />
-            <div className="absolute right-2 top-full mt-1 z-50 w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-xl">
-              <p className="text-[11px] font-bold text-slate-600 mb-2 uppercase tracking-wide">
-                Header / Cell Background
+            <div className="absolute right-2 top-full mt-1 z-50 w-60 rounded-xl border border-slate-200 bg-white p-3 shadow-xl">
+              <p className="text-[11px] font-bold text-slate-600 mb-1 uppercase tracking-wide">
+                Table Row / Cell Background
+              </p>
+              <label className="flex items-center justify-between rounded-lg bg-brand-neutral-light px-2 py-1.5 mb-2 cursor-pointer">
+                <span className="text-[11px] font-semibold text-slate-600">
+                  Whole Row
+                </span>
+                <input
+                  type="checkbox"
+                  checked={rowMode}
+                  onChange={(e) => setRowMode(e.target.checked)}
+                  className="accent-brand-primary"
+                />
+              </label>
+              <p className="text-[10px] text-slate-400 mb-2 leading-snug">
+                {rowMode
+                  ? "Cursor ko is row ke kisi bhi cell me rakhein — color poore row (th + td) ke sabhi cells pe lag jayega."
+                  : "Cursor wale cell (th/td) pe color lagta hai. Whole Row check karke poore row ko color karein."}
               </p>
               <div className="grid grid-cols-4 gap-1.5">
                 {RTE_BG_COLORS.map((c) => (
                   <button
                     key={c}
                     type="button"
-                    onClick={() => setCellBg(c)}
+                    onClick={() => applyCellColor(c)}
                     aria-label={`Background ${c}`}
                     className={`h-7 w-full rounded-lg border transition-transform hover:scale-105 ${
                       currentCellBg?.toLowerCase() === c.toLowerCase()
@@ -494,7 +538,7 @@ export default function RichTextEditor({
               </div>
               <button
                 type="button"
-                onClick={() => setCellBg(null)}
+                onClick={() => applyCellColor(null)}
                 className="mt-2 w-full rounded-lg border border-slate-200 py-1.5 text-[11px] font-semibold text-slate-500 hover:bg-slate-50 transition-colors"
               >
                 No Background
