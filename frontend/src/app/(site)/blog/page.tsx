@@ -33,20 +33,6 @@ function getPageNumbers(current: number, total: number): (number | "…")[] {
   return result;
 }
 
-export const metadata: Metadata = {
-  title: "Travel Guides & News — Destination Guides and India Tour Tips | KoiKoi Travel",
-  description:
-    "Explore expert destination guides, the latest travel news, budgeting tips, and hidden insights for India tours — curated by KoiKoi Travel.",
-  alternates: { canonical: "/blog" },
-  openGraph: {
-title: "Travel Guides & News — Destination Guides and India Tour Tips | KoiKoi Travel",
-    description:
-      "Explore expert destination guides, the latest travel news, budgeting tips, and hidden insights for India tours — curated by KoiKoi Travel.",
-    url: "/blog",
-    type: "website",
-  },
-};
-
 async function fetchPosts(
   search?: string,
   page = 1,
@@ -65,6 +51,38 @@ async function fetchPosts(
   } catch {
     return { posts: [], total: 0, totalPages: 0 };
   }
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ search?: string | string[]; page?: string | string[] }>;
+}): Promise<Metadata> {
+  const { search, page: pageParam } = await searchParams;
+  const searchTerm = Array.isArray(search) ? search[0] : search || "";
+  const currentPage =
+    Math.max(1, parseInt(Array.isArray(pageParam) ? pageParam[0] : pageParam || "1", 10) || 1);
+  const canonical = buildPageHref(currentPage, searchTerm);
+  const baseDesc =
+    "Explore expert destination guides, the latest travel news, budgeting tips, and hidden insights for India tours — curated by KoiKoi Travel.";
+  const title =
+    currentPage <= 1
+      ? "Travel Guides & News — Destination Guides and India Tour Tips | KoiKoi Travel"
+      : `Travel Guides & News (Page ${currentPage}) — Destination Guides and India Tour Tips | KoiKoi Travel`;
+  return {
+    title,
+    description: baseDesc,
+    alternates: { canonical },
+    robots: currentPage > 1 ? { index: false, follow: true } : undefined,
+    openGraph: {
+      title,
+      description: baseDesc,
+      url: canonical,
+      type: "website",
+      siteName: "KoiKoi Travel",
+      locale: "en_US",
+    },
+  };
 }
 
 export default async function BlogPage({

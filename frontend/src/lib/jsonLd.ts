@@ -72,6 +72,9 @@ interface ArticleInput {
   author?: string;
   url: string;
   keywords?: string;
+  category?: string;
+  wordCount?: number;
+  timeRequired?: string;
 }
 
 export function articleSchema(post: ArticleInput): Record<string, unknown> {
@@ -95,8 +98,13 @@ export function articleSchema(post: ArticleInput): Record<string, unknown> {
       "@type": "WebPage",
       "@id": `${SITE_URL}${post.url}`,
     },
+    ...(post.category ? { articleSection: post.category } : {}),
     ...(post.keywords ? { keywords: post.keywords } : {}),
+    ...(post.wordCount ? { wordCount: post.wordCount } : {}),
+    ...(post.timeRequired ? { timeRequired: post.timeRequired } : {}),
     inLanguage: "en",
+    isAccessibleForFree: true,
+    copyrightYear: post.datePublished ? new Date(post.datePublished).getFullYear() : undefined,
   };
 }
 

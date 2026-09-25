@@ -23,8 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await fetchBySlugCached<BlogPost>("/blog/by-slug", slug);
   if (!post) return { title: "Blog Post Not Found | KoiKoi Travel" };
   const seoDescription = stripHtml(post.seoDescription || post.moreDescription || "").slice(0, 160);
-  const title = post.seoTitle || post.title;
+  const title = (post.seoTitle || post.title).replace(/\s{2,}/g, " ").trim();
   const canonical = post.canonical || `/blog/${post.slug}`;
+  const section = (post.categories?.length ? post.categories : post.category ? [post.category] : [])[0];
   return {
     title,
     description: seoDescription || undefined,
@@ -32,17 +33,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: { canonical },
     openGraph: {
       type: "article",
+      siteName: "KoiKoi Travel",
+      locale: "en_US",
       title,
       description: seoDescription || undefined,
       url: canonical,
       publishedTime: post.publishedAt || undefined,
       authors: post.author ? [post.author] : undefined,
+      ...(section ? { section } : {}),
+      tags: [
+        ...(post.seoKeyword ? post.seoKeyword.split(",").map((k) => k.trim()).filter(Boolean) : []),
+        ...(post.categories?.length ? post.categories : []),
+      ],
       images: absoluteUrl(post.thumbImg)
         ? [{ url: absoluteUrl(post.thumbImg)!, alt: post.title }]
         : undefined,
     },
     twitter: {
       card: "summary_large_image",
+      site: "@koikoitravel",
       title,
       description: seoDescription || undefined,
       images: absoluteUrl(post.thumbImg) ? [absoluteUrl(post.thumbImg)!] : undefined,
@@ -90,6 +99,12 @@ export default async function BlogPostPage({ params }: Props) {
     .map((t) => t.trim())
     .filter(Boolean);
 
+  const category =
+    (post.categories?.length ? post.categories : post.category ? [post.category] : [])[0] || undefined;
+  const articleText = stripHtml(post.moreDescription || "").replace(/\s+/g, " ").trim();
+  const wordCount = articleText.split(" ").filter(Boolean).length;
+  const readMinutes = Math.max(1, Math.round(wordCount / 180));
+
   const articleSchemaData = articleSchema({
     title: post.h1Title || post.title,
     description: post.seoDescription || post.moreDescription || undefined,
@@ -98,6 +113,9 @@ export default async function BlogPostPage({ params }: Props) {
     author: post.author || undefined,
     url: `/blog/${post.slug}`,
     keywords: post.seoKeyword || undefined,
+    category,
+    wordCount: wordCount || undefined,
+    timeRequired: wordCount ? `PT${readMinutes}M` : undefined,
   });
   const breadcrumbData = breadcrumbSchema([
     { name: "Home", path: "/" },
