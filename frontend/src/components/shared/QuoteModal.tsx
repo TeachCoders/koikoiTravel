@@ -44,10 +44,10 @@ export function QuoteModal({ children }: { children: ReactNode }) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-5xl w-[95vw] p-0 bg-white rounded-[24px] md:rounded-[32px] border-none shadow-2xl">
         <DialogTitle className="sr-only">Request a Quote</DialogTitle>
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.4fr] md:max-h-[85vh]">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] lg:max-h-[85vh]">
 
           {/* Left Panel - Information */}
-          <div className="p-8 md:p-12 flex flex-col bg-[#F3F4F6] border-b md:border-b-0 md:border-r border-slate-200">
+          <div className="hidden lg:flex p-12 flex-col bg-[#F3F4F6] lg:border-r border-slate-200">
             <h2 className="text-[32px] md:text-[40px] font-bold text-[#3B4254] mb-8 leading-tight tracking-tight">
               How It Works
             </h2>
@@ -98,7 +98,7 @@ export function QuoteModal({ children }: { children: ReactNode }) {
           </div>
 
           {/* Right Panel - Form */}
-          <div className="p-8 md:p-12 bg-white flex flex-col overflow-y-auto custom-scrollbar relative">
+          <div className="p-6 sm:p-8 lg:p-12 bg-white flex flex-col overflow-y-auto custom-scrollbar relative">
             <div className="mb-8 flex items-end gap-2">
               <h2 className="text-[32px] md:text-[40px] font-normal text-[#3B4254] leading-none">
                 Request a <span className="font-bold text-[#E96A1E] relative inline-block">
