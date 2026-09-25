@@ -131,6 +131,16 @@ const RteButton = Node.create({
   },
 });
 
+function isDarkBackground(bg: string): boolean {
+  const m = /^#?([0-9a-f]{6})$/i.exec(bg.trim());
+  if (!m) return false;
+  const n = parseInt(m[1], 16);
+  const r = (n >> 16) & 255;
+  const g = (n >> 8) & 255;
+  const b = n & 255;
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b < 128;
+}
+
 function withCellBackground(ext: typeof TableCell) {
   return ext.extend({
     addAttributes() {
@@ -139,8 +149,12 @@ function withCellBackground(ext: typeof TableCell) {
         background: {
           default: null,
           parseHTML: (element: HTMLElement) => element.style.backgroundColor || null,
-          renderHTML: (attributes: { background?: string }) =>
-            attributes.background ? { style: `background-color: ${attributes.background}` } : {},
+          renderHTML: (attributes: { background?: string }) => {
+            if (!attributes.background) return {};
+            const bg = attributes.background;
+            const color = isDarkBackground(bg) ? "#fff" : "#334155";
+            return { style: `background-color: ${bg}; color: ${color};` };
+          },
         },
       };
     },
