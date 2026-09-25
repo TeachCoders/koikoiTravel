@@ -46,7 +46,7 @@ const CASCADE = {
   },
 };
 
-function createCmsRouter({ modelName, entityType, schema, searchFields, parentField, childInclude, parentInclude, extraFilters, tourCountWhere, listSelect, relations = [] }) {
+function createCmsRouter({ modelName, entityType, schema, searchFields, parentField, childInclude, parentInclude, extraFilters, tourCountWhere, listSelect, relations = [], createDefaults }) {
   const router = express.Router();
 
   // PATCH /:id/toggle-active
@@ -70,6 +70,17 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
             message: `Cannot activate ${modelName}. Please add at least one tour package first.`,
           });
         }
+      }
+
+      // Only parent models with children need snapshot/cascade logic. Simple models
+      // (e.g. BlogPost has no activeSnapshot column) just get a plain isActive flip.
+      if (!CASCADE[modelName]) {
+        await prisma[modelName].update({ where: { id }, data: { isActive: next } });
+        return res.status(200).json({
+          success: true,
+          message: next ? `${modelName} activated successfully` : `${modelName} deactivated successfully`,
+          data: { id, isActive: next, affected: { states: 0, cities: 0, journeys: 0 } },
+        });
       }
 
       const cascade = CASCADE[modelName] ? await CASCADE[modelName](id) : { states: [], cities: [], journeys: [] };
@@ -420,7 +431,16 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       const cleanRest = { ...rest };
       for (const rel of relations) delete cleanRest[rel.inputKey];
 
-      const item = await prisma[modelName].create({ data: { ...cleanRest, slug, ...relationOps } });
+      // Apply create defaults only for fields the client left empty/missing.
+      const withDefaults = createDefaults
+        ? Object.fromEntries(
+            Object.entries(createDefaults(cleanRest)).filter(
+              ([k, v]) => cleanRest[k] === undefined || cleanRest[k] === null || cleanRest[k] === ""
+            )
+          )
+        : {};
+
+      const item = await prisma[modelName].create({ data: { ...cleanRest, ...withDefaults, slug, ...relationOps } });
       const banner = await upsertBanner(entityType, item.id, bannerData);
       
       const faqsInput = Array.isArray(req.body.faqs) ? req.body.faqs : [];

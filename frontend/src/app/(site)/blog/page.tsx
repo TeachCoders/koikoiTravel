@@ -71,18 +71,6 @@ async function fetchPosts(
   }
 }
 
-async function fetchCategories(): Promise<string[]> {
-  try {
-    const url = `${SERVER_API_BASE}/blog-category?limit=100&isActive=true`;
-    const res = await fetch(url, { next: { revalidate: 60 } });
-    if (!res.ok) return [];
-    const json = await res.json();
-    return (json?.data || []).map((c: { name: string }) => c.name);
-  } catch {
-    return [];
-  }
-}
-
 async function fetchNewsPosts(): Promise<BlogPost[]> {
   try {
     const url = `${SERVER_API_BASE}/blog?limit=4&isActive=true&search=${encodeURIComponent("news")}`;
@@ -106,14 +94,11 @@ export default async function BlogPage({
     1,
     parseInt(Array.isArray(pageParam) ? pageParam[0] : pageParam || "1", 10) || 1
   );
-  const [{ posts, total: totalPosts, totalPages }, newsPosts, managedCategories] = await Promise.all([
+  const [{ posts, total: totalPosts, totalPages }, newsPosts] = await Promise.all([
     fetchPosts(searchTerm || undefined, currentPage),
     fetchNewsPosts(),
-    fetchCategories(),
   ]);
   const mainPosts = newsPosts.length > 0 ? posts.filter((p) => !isNewsPost(p)) : posts;
-  const postCategories = [...new Set(posts.map((p) => p.category).filter(Boolean))] as string[];
-  const categories = managedCategories.length > 0 ? managedCategories : postCategories;
   
   const listSchemaData = itemListSchema(
     posts.map((p) => ({ name: p.title, url: `/blog/${p.slug}` }))
@@ -130,34 +115,37 @@ export default async function BlogPage({
       <JsonLd data={breadcrumbData} />
 
       <main className="flex-1">
-        {/* ===== COMPACT PAGE HEADER (NO HERO BANNER) ===== */}
-        <section className="relative bg-white border-b border-slate-200/70 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#2E8B8B]/5 via-transparent to-[#F8904D]/10 pointer-events-none" />
-          <div className="relative w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-10 md:py-14">
-            <div className="flex flex-col lg:flex-row lg:items-center gap-8">
+        {/* ===== PAGE HERO WITH TEAL BACKGROUND ===== */}
+        <section className="relative overflow-hidden bg-gradient-to-br from-[#2E8B8B] via-[#246f6f] to-[#1C1C1C]">
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute -top-16 right-0 w-72 h-72 rounded-full bg-[#F8904D]/20 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+
+          <div className="relative w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-14 md:py-20">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-10">
               <div className="flex-1">
-                <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#F8904D] mb-3">
+                <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#F5B041] mb-3">
                   <Sparkles size={14} /> Travel Guides, News & Inspiration
                 </span>
-                <h1 className="font-heading text-3xl sm:text-4xl md:text-[44px] font-extrabold text-[#1C1C1C] tracking-tight">
+                <h1 className="font-heading text-3xl sm:text-4xl md:text-[46px] font-extrabold text-white tracking-tight leading-tight">
                   India Travel Guides & News
                 </h1>
-                <p className="mt-2 text-slate-500 font-medium max-w-xl text-[15px] leading-relaxed">
+                <p className="mt-3 text-white/85 font-medium max-w-xl text-[15px] leading-relaxed">
                   Expert destination guides and the latest travel news from India, curated by our team.
                 </p>
               </div>
 
-              <div className="lg:w-[400px] shrink-0">
+              <div className="lg:w-[420px] shrink-0">
                 <form action="/blog" method="GET" className="relative">
                   <input
                     type="text"
                     name="search"
                     defaultValue={searchTerm}
                     placeholder="Search destination guides, travel tips..."
-                    className="w-full bg-white rounded-full border border-slate-200 py-3.5 pl-12 pr-32 text-[15px] font-medium text-slate-900 placeholder:text-slate-400 outline-none shadow-sm transition-all focus:border-[#2E8B8B] focus:ring-4 focus:ring-[#2E8B8B]/10"
+                    className="w-full bg-white rounded-full border-0 py-4 pl-12 pr-32 text-[15px] font-medium text-slate-900 placeholder:text-slate-400 outline-none shadow-xl transition-all focus:ring-4 focus:ring-[#F8904D]/30"
                   />
                   <Search size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#F8904D] text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-[#e07f3a] transition-colors">
+                  <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#F8904D] text-white px-5 py-2.5 rounded-full text-sm font-bold hover:bg-[#e07f3a] transition-colors">
                     Search
                   </button>
                 </form>
@@ -176,23 +164,6 @@ export default async function BlogPage({
             <span className="text-[#1C1C1C] font-semibold">Blog</span>
           </div>
         </nav>
-
-        {/* ===== CATEGORY PILLS ===== */}
-        {categories.length > 0 && (
-          <section className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 pt-8">
-            <div className="bg-white rounded-3xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.06)] flex flex-wrap items-center justify-center gap-2.5 max-w-5xl mx-auto">
-              {categories.map((c) => (
-                <a
-                  key={c}
-                  href={`#${c.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="px-4 py-2 text-[13px] font-bold text-[#1C1C1C] bg-slate-100/80 hover:bg-[#2E8B8B] hover:text-white rounded-full transition-all duration-300 hover:shadow-md"
-                >
-                  {c}
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* ===== NEWS SECTION ===== */}
         {newsPosts.length > 0 && (

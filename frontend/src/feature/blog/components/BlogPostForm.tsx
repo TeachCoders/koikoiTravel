@@ -60,7 +60,9 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
     author: initialData?.author || "KoiKoi Travel Team",
     category: initialData?.category || "",
     tags: initialData?.tags || "",
-    publishedAt: initialData?.publishedAt || "",
+    publishedAt:
+      initialData?.publishedAt ||
+      new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }),
   });
 
   const [moreDescription, setMoreDescription] = useState(initialData?.moreDescription || "");

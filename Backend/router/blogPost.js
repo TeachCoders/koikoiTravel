@@ -24,6 +24,7 @@ export default createCmsRouter({
   entityType: "BlogPost",
   schema,
   searchFields: ["title", "slug", "seoKeyword", "category"],
+  createDefaults: () => ({ publishedAt: new Date().toISOString().slice(0, 10) }),
   listSelect: {
     id: true,
     title: true,
