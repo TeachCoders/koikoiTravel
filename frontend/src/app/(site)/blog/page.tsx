@@ -47,26 +47,6 @@ title: "Travel Guides & News — Destination Guides and India Tour Tips | KoiKoi
   },
 };
 
-type NewsPredicate = (p: BlogPost) => boolean;
-
-function makeNewsPredicate(categories: { name: string; slug: string }[]): NewsPredicate {
-  const newsNames = new Set(
-    categories
-      .filter((c) => c.slug.toLowerCase().includes("news") || c.name.toLowerCase().includes("news"))
-      .map((c) => c.name.toLowerCase())
-  );
-  return (p: BlogPost): boolean => {
-    const cats = postCategoryNames(p);
-    return cats.some((cat) => newsNames.has(cat) || cat.includes("news"));
-  };
-}
-
-function postCategoryNames(p: BlogPost): string[] {
-  return (p.categories?.length ? p.categories : p.category ? [p.category] : []).map((c) =>
-    c.toLowerCase()
-  );
-}
-
 async function fetchPosts(
   search?: string,
   page = 1,
@@ -87,30 +67,6 @@ async function fetchPosts(
   }
 }
 
-async function fetchCategories(): Promise<{ name: string; slug: string }[]> {
-  try {
-    const url = `${SERVER_API_BASE}/blog-category?limit=100&isActive=true`;
-    const res = await fetch(url, { next: { revalidate: 60 } });
-    if (!res.ok) return [];
-    const json = await res.json();
-    return (json?.data || []).map((c: { name: string; slug: string }) => ({ name: c.name, slug: c.slug }));
-  } catch {
-    return [];
-  }
-}
-
-async function fetchNewsPosts(isNews: NewsPredicate): Promise<BlogPost[]> {
-  try {
-    const url = `${SERVER_API_BASE}/blog?limit=100&isActive=true`;
-    const res = await fetch(url, { next: { revalidate: 60 } });
-    if (!res.ok) return [];
-    const json = await res.json();
-    return (json?.data || []).filter(isNews).slice(0, 4);
-  } catch {
-    return [];
-  }
-}
-
 export default async function BlogPage({
   searchParams,
 }: {
@@ -122,13 +78,11 @@ export default async function BlogPage({
     1,
     parseInt(Array.isArray(pageParam) ? pageParam[0] : pageParam || "1", 10) || 1
   );
-  const [{ posts, total: totalPosts, totalPages }, categories] = await Promise.all([
-    fetchPosts(searchTerm || undefined, currentPage),
-    fetchCategories(),
-  ]);
-  const isNews = makeNewsPredicate(categories);
-  const newsPosts = await fetchNewsPosts(isNews);
-  const mainPosts = newsPosts.length > 0 ? posts.filter((p) => !isNews(p)) : posts;
+  const { posts, total: totalPosts, totalPages } = await fetchPosts(
+    searchTerm || undefined,
+    currentPage
+  );
+  const mainPosts = posts;
   
   const listSchemaData = itemListSchema(
     posts.map((p) => ({ name: p.title, url: `/blog/${p.slug}` }))
@@ -195,34 +149,6 @@ export default async function BlogPage({
           </div>
         </nav>
 
-        {/* ===== NEWS SECTION ===== */}
-        {newsPosts.length > 0 && (
-          <section className="relative overflow-hidden bg-[#141414] text-white mt-10">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#F8904D]/15 via-transparent to-[#2E8B8B]/10 pointer-events-none" />
-            <div className="relative max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-14 md:py-16">
-              <div className="flex items-center justify-between gap-4 mb-8">
-                <div>
-                  <span className="text-[#F5B041] text-xs font-black uppercase tracking-widest">Stay Updated</span>
-                  <h2 className="font-heading text-2xl sm:text-3xl font-extrabold mt-1 tracking-tight">
-                    Latest Travel News
-                  </h2>
-                </div>
-                <Link
-                  href="/blog?search=news"
-                  className="inline-flex items-center gap-2 text-sm font-bold text-[#F8904D] hover:text-white transition-colors shrink-0"
-                >
-                  View All News <ChevronRight size={16} />
-                </Link>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {newsPosts.map((p) => (
-                  <BlogCard key={p.id} post={p} />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
         {/* ===== POSTS GRID ===== */}
         <section className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-16 md:py-24">
           {searchTerm && (
@@ -238,7 +164,7 @@ export default async function BlogPage({
               </Link>
             </div>
           )}
-          {mainPosts.length === 0 && newsPosts.length === 0 ? (
+          {mainPosts.length === 0 ? (
             <div className="text-center py-28 bg-white border border-slate-200 rounded-3xl shadow-sm">
               <Search size={48} className="mx-auto text-slate-300 mb-5" />
               {searchTerm ? (
