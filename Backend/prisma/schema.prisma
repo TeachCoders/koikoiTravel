@@ -805,6 +805,7 @@ model BlogPost {
   moreDescription String?
   author          String?
   category        String?
+  categories      String[] @default([])
   tags            String?
   publishedAt     String?
   thumbImg        String?

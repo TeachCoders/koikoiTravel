@@ -198,7 +198,7 @@ export default function BlogPostClient() {
                         )}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-600">{post.slug}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{post.category || "-"}</td>
+                      <td className="px-4 py-3 text-sm text-gray-600">{(post.categories?.length ? post.categories.join(", ") : post.category) || "-"}</td>
                       <td className="px-4 py-3 text-sm text-gray-600">{post.author || "-"}</td>
                       <td className="px-4 py-3 text-center">
                         {canEdit ? (

@@ -6,6 +6,7 @@ export interface BlogPost {
   moreDescription?: string;
   author?: string;
   category?: string;
+  categories?: string[];
   tags?: string;
   publishedAt?: string;
   thumbImg?: string;
@@ -26,6 +27,7 @@ export interface BlogPostPayload {
   moreDescription?: string;
   author?: string;
   category?: string;
+  categories?: string[];
   tags?: string;
   publishedAt?: string;
   thumbImg?: string;

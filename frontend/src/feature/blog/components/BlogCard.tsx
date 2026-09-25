@@ -30,10 +30,15 @@ export default function BlogCard({ post }: { post: BlogPost }) {
       </div>
 
       <div className="flex flex-col flex-1 p-6 bg-white relative z-10">
-        {post.category && (
-          <span className="inline-flex self-start items-center px-3 py-1 text-[11px] font-black uppercase tracking-wider text-[#2E8B8B] bg-teal-50 rounded-full mb-3">
-            {post.category}
-          </span>
+        {(post.categories?.length ? post.categories : post.category ? [post.category] : []).map(
+          (cat) => (
+            <span
+              key={cat}
+              className="inline-flex self-start items-center px-3 py-1 text-[11px] font-black uppercase tracking-wider text-[#2E8B8B] bg-teal-50 rounded-full mb-2 last:mb-3"
+            >
+              {cat}
+            </span>
+          )
         )}
 
         <h3 className="text-[18px] font-bold text-[#1C1C1C] leading-snug group-hover:text-[#2E8B8B] transition-colors line-clamp-2">

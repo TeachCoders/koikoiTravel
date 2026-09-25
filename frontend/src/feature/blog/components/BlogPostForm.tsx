@@ -10,6 +10,7 @@ import SeoFields from "@/components/shared/SeoFields";
 import EntityFields from "@/components/shared/EntityFields";
 import type { EntityField } from "@/components/shared/EntityFields";
 import RichTextEditor from "@/components/shared/RichTextEditor";
+import SearchableMultiSelect from "@/components/shared/SearchableMultiSelect";
 import {
   useCreateBlogPost,
   useUpdateBlogPost,
@@ -58,26 +59,33 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
 
   const [entityValues, setEntityValues] = useState<Record<string, string>>({
     author: initialData?.author || "KoiKoi Travel Team",
-    category: initialData?.category || "",
     tags: initialData?.tags || "",
     publishedAt:
       initialData?.publishedAt ||
       new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }),
   });
 
+  const initialCategoryNames =
+    initialData?.categories?.length
+      ? initialData.categories
+      : initialData?.category
+        ? [initialData.category]
+        : [];
+  const categoryIdByName = new Map(blogCategories.map((c) => [c.name, c.id]));
+  const categoryNameById = new Map(blogCategories.map((c) => [c.id, c.name]));
+  const [categoryIds, setCategoryIds] = useState<number[]>(
+    initialCategoryNames
+      .map((name) => categoryIdByName.get(name))
+      .filter((id): id is number => typeof id === "number")
+  );
+
   const [moreDescription, setMoreDescription] = useState(initialData?.moreDescription || "");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const isLoading = isCreating || isUpdating;
 
-  const categoryOptions = blogCategories.map((c) => ({ value: c.name, label: c.name }));
-  if (entityValues.category && !categoryOptions.some((o) => o.value === entityValues.category)) {
-    categoryOptions.push({ value: entityValues.category, label: entityValues.category });
-  }
-  const blogFields: EntityField[] = [
-    ...baseBlogFields,
-    { name: "category", label: "Category", type: "select", placeholder: "Select category...", options: categoryOptions },
-  ];
+  const categoryOptions = blogCategories.map((c) => ({ id: c.id, title: c.name }));
+  const blogFields: EntityField[] = baseBlogFields;
 
   const handleFieldChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -86,6 +94,17 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
 
   const handleEntityChange = (name: string, value: string) => {
     setEntityValues((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCategoryReorder = (fromId: number, toId: number) => {
+    const arr = [...categoryIds];
+    const fromIdx = arr.indexOf(fromId);
+    const toIdx = arr.indexOf(toId);
+    if (fromIdx !== -1 && toIdx !== -1) {
+      const [item] = arr.splice(fromIdx, 1);
+      arr.splice(toIdx, 0, item);
+      setCategoryIds(arr);
+    }
   };
 
   const handleThumbImgUpload = (url: string) => {
@@ -104,6 +123,14 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
     e.preventDefault();
     if (!validate()) return;
 
+    const selectedCategoryNames = categoryIds
+      .map((id) => categoryNameById.get(id))
+      .filter((name): name is string => typeof name === "string");
+    if (categoryIds.length > 0 && selectedCategoryNames.length === 0) {
+      errorToast("Selected categories not found, please refresh and try again");
+      return;
+    }
+
     const payload: any = {
       title: formData.title.trim(),
       seoDescription: formData.seoDescription.trim(),
@@ -113,7 +140,8 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
       seoTitle: formData.seoTitle.trim() || undefined,
       h1Title: formData.h1Title.trim() || undefined,
       author: entityValues.author.trim() || undefined,
-      category: entityValues.category.trim() || undefined,
+      category: selectedCategoryNames[0] || undefined,
+      categories: selectedCategoryNames,
       tags: entityValues.tags.trim() || undefined,
       publishedAt: entityValues.publishedAt.trim() || undefined,
       moreDescription: moreDescription.trim() || undefined,
@@ -176,6 +204,23 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
           values={entityValues}
           onFieldChange={handleEntityChange}
         />
+
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+          <label className="text-sm font-bold text-slate-700 uppercase tracking-wider block mb-1">
+            Categories
+          </label>
+          <div className="text-xs text-slate-500 mb-2">
+            Select one or more categories. Drag the grip icon to set their order (first selected shows first).
+          </div>
+          <SearchableMultiSelect
+            options={categoryOptions}
+            selectedIds={categoryIds}
+            onChange={setCategoryIds}
+            onReorder={handleCategoryReorder}
+            placeholder="Select categories..."
+            searchPlaceholder="Search categories..."
+          />
+        </div>
 
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
           <label className="text-sm font-bold text-slate-700 uppercase tracking-wider block mb-2">

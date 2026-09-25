@@ -67,7 +67,7 @@ export default async function BlogPostPage({ params }: Props) {
   const post = await fetchBySlugCached<BlogPost>("/blog/by-slug", slug);
   if (!post) return notFound();
 
-  const related = await fetchRelated(post.category, post.id);
+  const related = await fetchRelated(post.categories?.[0] || post.category, post.id);
   const tags = (post.tags || "")
     .split(",")
     .map((t) => t.trim())
@@ -107,11 +107,14 @@ export default async function BlogPostPage({ params }: Props) {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-slate-950/10" />
 
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 text-center py-8">
-          {post.category && (
-            <span className="inline-block px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white bg-[#F8904D] rounded-full mb-5 shadow-lg">
-              {post.category}
+          {(post.categories?.length ? post.categories : post.category ? [post.category] : []).map((cat) => (
+            <span
+              key={cat}
+              className="inline-block px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white bg-[#F8904D] rounded-full mb-4 mr-2 shadow-lg"
+            >
+              {cat}
             </span>
-          )}
+          ))}
           
           {/* Always Guarantee H1 for Search Bots */}
           <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight drop-shadow-2xl max-w-5xl mx-auto">

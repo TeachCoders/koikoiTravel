@@ -56,9 +56,15 @@ function makeNewsPredicate(categories: { name: string; slug: string }[]): NewsPr
       .map((c) => c.name.toLowerCase())
   );
   return (p: BlogPost): boolean => {
-    const cat = (p.category || "").toLowerCase();
-    return newsNames.has(cat) || cat.includes("news");
+    const cats = postCategoryNames(p);
+    return cats.some((cat) => newsNames.has(cat) || cat.includes("news"));
   };
+}
+
+function postCategoryNames(p: BlogPost): string[] {
+  return (p.categories?.length ? p.categories : p.category ? [p.category] : []).map((c) =>
+    c.toLowerCase()
+  );
 }
 
 async function fetchPosts(
