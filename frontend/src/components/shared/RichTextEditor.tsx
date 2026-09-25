@@ -209,6 +209,7 @@ export default function RichTextEditor({
   const [cellColorOpen, setCellColorOpen] = useState(false);
   const [rowMode, setRowMode] = useState(false);
   const [bubbleColorOpen, setBubbleColorOpen] = useState(false);
+  const [bubbleBtnOpen, setBubbleBtnOpen] = useState(false);
   const [rowBar, setRowBar] = useState<{ left: number; top: number } | null>(null);
 
   const editor = useEditor({
@@ -341,13 +342,26 @@ export default function RichTextEditor({
 
   const openButtonPanel = () => {
     if (!editor) return;
-    const editing = editor.isActive("rteButton");
     const attrs = editor.getAttributes("rteButton") as { text?: string; href?: string; background?: string };
     setBtnText(attrs.text || "Book Now");
     setBtnHref(attrs.href && attrs.href !== "#" ? attrs.href : "");
     setBtnBg(attrs.background || "#2E8B8B");
     setCellColorOpen(false);
+    setBubbleColorOpen(false);
+    setBubbleBtnOpen(false);
     setBtnPanelOpen((v) => !v);
+  };
+
+  const openBubbleButton = () => {
+    if (!editor) return;
+    const attrs = editor.getAttributes("rteButton") as { text?: string; href?: string; background?: string };
+    setBtnText(attrs.text || "Book Now");
+    setBtnHref(attrs.href && attrs.href !== "#" ? attrs.href : "");
+    setBtnBg(attrs.background || "#2E8B8B");
+    setCellColorOpen(false);
+    setBtnPanelOpen(false);
+    setBubbleColorOpen(false);
+    setBubbleBtnOpen((v) => !v);
   };
 
   const applyButton = () => {
@@ -360,6 +374,7 @@ export default function RichTextEditor({
       editor.chain().focus().insertContent({ type: "rteButton", attrs }).run();
     }
     setBtnPanelOpen(false);
+    setBubbleBtnOpen(false);
   };
 
   const openCellColorPanel = () => {
@@ -730,7 +745,72 @@ export default function RichTextEditor({
                 </div>
               </>
             )}
+            <BubbleButton onClick={() => editor.chain().focus().addRowAfter().run()} title="Add Row Below"><ArrowDown size={14} /></BubbleButton>
+            <BubbleButton onClick={() => editor.chain().focus().addColumnAfter().run()} title="Add Column Right"><Columns3 size={14} /></BubbleButton>
             <div className="w-px h-5 bg-slate-200 mx-1" />
+          </>
+        )}
+        <BubbleButton onClick={openBubbleButton} active={bubbleBtnOpen || editor.isActive("rteButton")} title="Add / Edit Button (link ke saath)"><SquarePlus size={14} /></BubbleButton>
+        {bubbleBtnOpen && (
+          <>
+            <div className="fixed inset-0 z-[68]" onMouseDown={() => setBubbleBtnOpen(false)} />
+            <div className="absolute right-0 top-full mt-2 z-[70] w-72 rounded-xl border border-slate-200 bg-white p-3.5 shadow-2xl">
+              <p className="text-[11px] font-bold text-slate-600 mb-2 uppercase tracking-wide">
+                {editor.isActive("rteButton") ? "Edit Button" : "Insert Button"}
+              </p>
+              <div className="space-y-2.5">
+                <div>
+                  <label className="block text-[10px] font-semibold text-slate-400 mb-0.5">Button Text</label>
+                  <input
+                    type="text"
+                    value={btnText}
+                    onChange={(e) => setBtnText(e.target.value)}
+                    className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-[12px] text-slate-700 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-semibold text-slate-400 mb-0.5">Button Link</label>
+                  <input
+                    type="text"
+                    value={btnHref}
+                    onChange={(e) => setBtnHref(e.target.value)}
+                    placeholder="https://example.com ya /tour-packages"
+                    className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-[12px] text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-semibold text-slate-400 mb-1">Background</label>
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {RTE_BG_COLORS.map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => setBtnBg(c)}
+                        aria-label={`Button background ${c}`}
+                        className={`h-7 w-full rounded-lg border transition-transform hover:scale-105 ${btnBg === c ? "border-slate-900 ring-2 ring-slate-900/20" : "border-slate-200"}`}
+                        style={{ background: c }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="mt-3 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setBubbleBtnOpen(false)}
+                  className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-slate-500 hover:bg-slate-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={applyButton}
+                  className="px-3.5 py-1.5 rounded-lg text-[11px] font-bold text-white bg-brand-primary hover:opacity-90 transition-opacity shadow-sm"
+                >
+                  {editor.isActive("rteButton") ? "Update" : "Insert"}
+                </button>
+              </div>
+            </div>
           </>
         )}
         <div className="w-px h-5 bg-slate-200 mx-1" />
