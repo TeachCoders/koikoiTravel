@@ -655,6 +655,18 @@
     text-decoration: underline;
   }
 
+  .rich-text a[data-rte-button] {
+    color: #fff;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  }
+
+  .rich-text a[data-rte-button]:hover {
+    opacity: 0.9;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+  }
+
   .rich-text-plain-links a {
     color: inherit;
     text-decoration: none;

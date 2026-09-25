@@ -2,7 +2,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useEditor, EditorContent } from "@tiptap/react";
-import { Extension } from "@tiptap/core";
+import { Extension, Node, mergeAttributes } from "@tiptap/core";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import TiptapImage from "@tiptap/extension-image";
@@ -17,6 +17,7 @@ import {
   Heading1, Heading2, Heading3, Heading4,
   List, ListOrdered, ImagePlus, Undo2, Redo2, Upload,
   Pilcrow, Minus, X, Check, Crop, Table2, Rows3, Columns3, Trash2,
+  SquarePlus, PaintBucket, ArrowUp, ArrowDown, XCircle,
 } from "lucide-react";
 
 interface RichTextEditorProps {
@@ -87,6 +88,68 @@ const EditorShortcuts = Extension.create({
 
 const OPEN_LINK_DIALOG_EVENT = "rte:open-link-dialog";
 
+const RTE_BG_COLORS = [
+  "#2E8B8B",
+  "#F8904D",
+  "#1C1C1C",
+  "#2563eb",
+  "#16a34a",
+  "#dc2626",
+  "#64748b",
+  "#7c3aed",
+];
+
+// A CTA-style button (anchor) that can be inserted inside table cells, paragraphs, etc.
+const RteButton = Node.create({
+  name: "rteButton",
+  group: "inline",
+  inline: true,
+  atom: true,
+  selectable: true,
+  addAttributes() {
+    return {
+      text: { default: "Book Now" },
+      href: { default: "#" },
+      background: { default: "#2E8B8B" },
+    };
+  },
+  parseHTML() {
+    return [{ tag: "a[data-rte-button]" }];
+  },
+  renderHTML({ node, HTMLAttributes }) {
+    return [
+      "a",
+      mergeAttributes(HTMLAttributes, {
+        "data-rte-button": "",
+        href: node.attrs.href,
+        target: "_blank",
+        rel: "noopener",
+        style: `display:inline-block;background:${node.attrs.background};color:#fff;padding:0.55rem 1.4rem;border-radius:9999px;text-decoration:none;font-weight:700;font-size:14px;line-height:1;cursor:pointer;`,
+      }),
+      node.attrs.text,
+    ];
+  },
+});
+
+function withCellBackground(ext: typeof TableCell) {
+  return ext.extend({
+    addAttributes() {
+      return {
+        ...this.parent?.(),
+        background: {
+          default: null,
+          parseHTML: (element: HTMLElement) => element.style.backgroundColor || null,
+          renderHTML: (attributes: { background?: string }) =>
+            attributes.background ? { style: `background-color: ${attributes.background}` } : {},
+        },
+      };
+    },
+  });
+}
+
+const ColorableTableCell = withCellBackground(TableCell);
+const ColorableTableHeader = withCellBackground(TableHeader);
+
 function BubbleButton({ onClick, active, title, children }: {
   onClick: () => void;
   active?: boolean;
@@ -124,6 +187,11 @@ export default function RichTextEditor({
   const [linkModalUrl, setLinkModalUrl] = useState("");
   const [linkModalNewTab, setLinkModalNewTab] = useState(false);
   const [linkModalRel, setLinkModalRel] = useState(false);
+  const [btnPanelOpen, setBtnPanelOpen] = useState(false);
+  const [btnText, setBtnText] = useState("Book Now");
+  const [btnHref, setBtnHref] = useState("");
+  const [btnBg, setBtnBg] = useState("#2E8B8B");
+  const [cellColorOpen, setCellColorOpen] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -142,8 +210,9 @@ export default function RichTextEditor({
       Placeholder.configure({ placeholder }),
       Table.configure({ resizable: true }),
       TableRow,
-      TableCell,
-      TableHeader,
+      ColorableTableCell,
+      ColorableTableHeader,
+      RteButton,
     ],
     content,
     onUpdate: ({ editor }) => {
@@ -191,6 +260,48 @@ export default function RichTextEditor({
     if (!editor) return;
     setLinkModalOpen(false);
     editor.chain().focus().extendMarkRange("link").unsetLink().run();
+  };
+
+  const openButtonPanel = () => {
+    if (!editor) return;
+    const editing = editor.isActive("rteButton");
+    const attrs = editor.getAttributes("rteButton") as { text?: string; href?: string; background?: string };
+    setBtnText(attrs.text || "Book Now");
+    setBtnHref(attrs.href && attrs.href !== "#" ? attrs.href : "");
+    setBtnBg(attrs.background || "#2E8B8B");
+    setCellColorOpen(false);
+    setBtnPanelOpen((v) => !v);
+  };
+
+  const applyButton = () => {
+    if (!editor) return;
+    const href = btnHref.trim() || "#";
+    const attrs = { text: btnText.trim() || "Book Now", href, background: btnBg };
+    if (editor.isActive("rteButton")) {
+      editor.chain().focus().updateAttributes("rteButton", attrs).run();
+    } else {
+      editor.chain().focus().insertContent({ type: "rteButton", attrs }).run();
+    }
+    setBtnPanelOpen(false);
+  };
+
+  const openCellColorPanel = () => {
+    if (!editor || !editor.isActive("table")) return;
+    setBtnPanelOpen(false);
+    setCellColorOpen((v) => !v);
+  };
+
+  const currentCellBg = (() => {
+    if (!editor?.isActive("table")) return null;
+    const c = editor.getAttributes("tableCell") as { background?: string };
+    const h = editor.getAttributes("tableHeader") as { background?: string };
+    return c.background || h.background || null;
+  })();
+
+  const setCellBg = (color: string | null) => {
+    if (!editor) return;
+    editor.chain().focus().setCellAttribute("background", color).run();
+    setCellColorOpen(false);
   };
 
   const drawCanvas = useCallback((img: HTMLImageElement, crop: { x: number; y: number; w: number; h: number }) => {
@@ -324,7 +435,7 @@ export default function RichTextEditor({
 
   return (
     <div className={`border border-brand-neutral-border rounded-lg overflow-hidden bg-white ${className}`}>
-      <div className="flex items-center gap-0.5 px-2 py-1.5 border-b border-brand-neutral-border bg-brand-neutral-light flex-wrap">
+      <div className="relative flex items-center gap-0.5 px-2 py-1.5 border-b border-brand-neutral-border bg-brand-neutral-light flex-wrap">
         <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive("bold")} title="Bold (Ctrl+B)"><Bold size={14} /></ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive("italic")} title="Italic (Ctrl+I)"><Italic size={14} /></ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive("underline")} title="Underline (Ctrl+U)"><UnderlineIcon size={14} /></ToolbarButton>
@@ -346,12 +457,116 @@ export default function RichTextEditor({
         <ToolbarButton onClick={() => editor.chain().focus().setHorizontalRule().run()} title="Horizontal Line (Ctrl+Alt+H)"><Minus size={14} /></ToolbarButton>
         <div className="w-px h-5 bg-slate-200 mx-1" />
         <ToolbarButton onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()} active={editor.isActive("table")} title="Insert Table"><Table2 size={14} /></ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().addRowAfter().run()} title="Add Row Below"><Rows3 size={14} /></ToolbarButton>
+        <ToolbarButton onClick={() => editor.chain().focus().addRowAfter().run()} title="Add Row Below (last row ke niche)"><ArrowDown size={14} /></ToolbarButton>
+        <ToolbarButton onClick={() => editor.chain().focus().addRowBefore().run()} title="Add Row Above"><ArrowUp size={14} /></ToolbarButton>
+        <ToolbarButton onClick={() => editor.chain().focus().deleteRow().run()} title="Delete Row"><Rows3 size={14} /></ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().addColumnAfter().run()} title="Add Column Right"><Columns3 size={14} /></ToolbarButton>
+        <ToolbarButton onClick={() => editor.chain().focus().deleteColumn().run()} title="Delete Column"><XCircle size={14} /></ToolbarButton>
+        <ToolbarButton onClick={openCellColorPanel} active={cellColorOpen || !!currentCellBg} title="Header / Cell Background Color"><PaintBucket size={14} /></ToolbarButton>
+        <ToolbarButton onClick={openButtonPanel} active={btnPanelOpen || editor.isActive("rteButton")} title="Add / Edit Button (td ke andar bhi)"><SquarePlus size={14} /></ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().deleteTable().run()} title="Delete Table"><Trash2 size={14} /></ToolbarButton>
         <div className="w-px h-5 bg-slate-200 mx-1" />
         <ToolbarButton onClick={() => editor.chain().focus().undo().run()} title="Undo (Ctrl+Z)"><Undo2 size={14} /></ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().redo().run()} title="Redo (Ctrl+Shift+Z)"><Redo2 size={14} /></ToolbarButton>
+
+        {cellColorOpen && (
+          <>
+            <div className="fixed inset-0 z-40" onMouseDown={() => setCellColorOpen(false)} />
+            <div className="absolute right-2 top-full mt-1 z-50 w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-xl">
+              <p className="text-[11px] font-bold text-slate-600 mb-2 uppercase tracking-wide">
+                Header / Cell Background
+              </p>
+              <div className="grid grid-cols-4 gap-1.5">
+                {RTE_BG_COLORS.map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => setCellBg(c)}
+                    aria-label={`Background ${c}`}
+                    className={`h-7 w-full rounded-lg border transition-transform hover:scale-105 ${
+                      currentCellBg?.toLowerCase() === c.toLowerCase()
+                        ? "border-slate-900 ring-2 ring-slate-900/20"
+                        : "border-slate-200"
+                    }`}
+                    style={{ background: c }}
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => setCellBg(null)}
+                className="mt-2 w-full rounded-lg border border-slate-200 py-1.5 text-[11px] font-semibold text-slate-500 hover:bg-slate-50 transition-colors"
+              >
+                No Background
+              </button>
+            </div>
+          </>
+        )}
+
+        {btnPanelOpen && (
+          <>
+            <div className="fixed inset-0 z-40" onMouseDown={() => setBtnPanelOpen(false)} />
+            <div className="absolute right-2 top-full mt-1 z-50 w-72 rounded-xl border border-slate-200 bg-white p-3.5 shadow-xl">
+              <p className="text-[11px] font-bold text-slate-600 mb-2 uppercase tracking-wide">
+                {editor.isActive("rteButton") ? "Edit Button" : "Insert Button"}
+              </p>
+              <div className="space-y-2.5">
+                <div>
+                  <label className="block text-[10px] font-semibold text-slate-400 mb-0.5">Button Text</label>
+                  <input
+                    type="text"
+                    value={btnText}
+                    onChange={(e) => setBtnText(e.target.value)}
+                    className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-[12px] text-slate-700 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-semibold text-slate-400 mb-0.5">Button Link</label>
+                  <input
+                    type="text"
+                    value={btnHref}
+                    onChange={(e) => setBtnHref(e.target.value)}
+                    placeholder="https://example.com ya /tour-packages"
+                    className="w-full rounded-lg border border-slate-200 px-2.5 py-1.5 text-[12px] text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-semibold text-slate-400 mb-1">Background</label>
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {RTE_BG_COLORS.map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => setBtnBg(c)}
+                        aria-label={`Button background ${c}`}
+                        className={`h-7 w-full rounded-lg border transition-transform hover:scale-105 ${
+                          btnBg === c ? "border-slate-900 ring-2 ring-slate-900/20" : "border-slate-200"
+                        }`}
+                        style={{ background: c }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="mt-3 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setBtnPanelOpen(false)}
+                  className="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-slate-500 hover:bg-slate-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={applyButton}
+                  className="px-3.5 py-1.5 rounded-lg text-[11px] font-bold text-white bg-brand-primary hover:opacity-90 transition-opacity shadow-sm"
+                >
+                  {editor.isActive("rteButton") ? "Update" : "Insert"}
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
@@ -534,6 +749,9 @@ export default function RichTextEditor({
         .rte-editor .tiptap u { text-decoration: underline; }
         .rte-editor .tiptap s { text-decoration: line-through; }
         .rte-editor .tiptap a { color: #2563eb; text-decoration: underline; }
+        .rte-editor .tiptap a[data-rte-button] { color: #fff; text-decoration: none; transition: opacity 0.2s; }
+        .rte-editor .tiptap a[data-rte-button]:hover { opacity: 0.9; }
+        .rte-editor .tiptap a[data-rte-button].ProseMirror-selectednode { outline: 2px dashed #6366f1; outline-offset: 2px; }
         .rte-editor .tiptap blockquote { border-left: 3px solid #6366f1; padding-left: 1rem; margin: 0.5rem 0; color: #64748b; font-style: italic; }
         .rte-editor .tiptap hr { border: none; border-top: 2px solid #e2e8f0; margin: 1rem 0; }
         .rte-editor .tiptap .tableWrapper { overflow-x: auto; margin: 0.75rem 0; }
