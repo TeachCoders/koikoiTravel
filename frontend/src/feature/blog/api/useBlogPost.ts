@@ -69,7 +69,7 @@ export const useCreateBlogPost = () => {
     },
   });
   return {
-    createBlogPost: mutation.mutate,
+    createBlogPost: mutation.mutateAsync,
     isPending: mutation.isPending,
   };
 };
@@ -88,7 +88,7 @@ export const useUpdateBlogPost = () => {
     },
   });
   return {
-    updateBlogPost: mutation.mutate,
+    updateBlogPost: mutation.mutateAsync,
     isPending: mutation.isPending,
   };
 };

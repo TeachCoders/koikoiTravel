@@ -148,15 +148,15 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
       isActive: formData.isActive,
     };
 
-    if (mode === "edit" && initialData?.id) {
-      updateBlogPost(
-        { id: initialData.id, payload },
-        { onSuccess: () => router.push("/dashboard/blog") }
-      );
-    } else {
-      createBlogPost(payload, {
-        onSuccess: () => router.push("/dashboard/blog"),
-      });
+    try {
+      if (mode === "edit" && initialData?.id) {
+        await updateBlogPost({ id: initialData.id, payload });
+      } else {
+        await createBlogPost(payload);
+      }
+      router.push("/dashboard/blog");
+    } catch {
+      // error toast is handled inside the hooks
     }
   };
 
