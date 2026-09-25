@@ -747,6 +747,8 @@ export default function RichTextEditor({
             )}
             <BubbleButton onClick={() => editor.chain().focus().addRowAfter().run()} title="Add Row Below"><ArrowDown size={14} /></BubbleButton>
             <BubbleButton onClick={() => editor.chain().focus().addColumnAfter().run()} title="Add Column Right"><Columns3 size={14} /></BubbleButton>
+            <BubbleButton onClick={() => editor.chain().focus().deleteRow().run()} active={false} title="Delete Row"><Rows3 size={14} /></BubbleButton>
+            <BubbleButton onClick={() => editor.chain().focus().deleteColumn().run()} title="Delete Column"><XCircle size={14} /></BubbleButton>
             <div className="w-px h-5 bg-slate-200 mx-1" />
           </>
         )}
