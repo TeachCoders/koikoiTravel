@@ -287,7 +287,7 @@ export const ChatWidget: React.FC = () => {
   return (
     <div className="fixed bottom-20 md:bottom-6 right-6 z-[60] flex flex-col items-end">
       {open && (
-        <div className="w-[calc(100vw-3rem)] max-w-[400px] mb-3 rounded-[2rem] overflow-hidden bg-[#f5f5f5] shadow-2xl shadow-black/20 border border-white/50 animate-in fade-in zoom-in-95 duration-200 flex flex-col h-[75vh] max-h-[700px]">
+        <div className="w-[calc(100vw-3rem)] max-w-[400px] mb-3 rounded-[2rem] overflow-hidden bg-[#f5f5f5] shadow-2xl shadow-black/20 border border-white/50 animate-in fade-in zoom-in-95 duration-200 flex flex-col h-[55vh] max-h-[460px] md:h-[75vh] md:max-h-[700px]">
           {/* Header */}
           <div className="bg-[#f5f5f5] px-4 py-3 flex items-center justify-between shrink-0">
             <button onClick={reset} className="w-8 h-8 flex items-center justify-center rounded-full bg-zinc-200/60 hover:bg-zinc-300 text-zinc-700 transition-colors" title="Reset chat">
