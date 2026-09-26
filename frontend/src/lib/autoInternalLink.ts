@@ -32,16 +32,37 @@ function linkFirstOccurrence(html: string, rawKeyword: string, href: string): st
   );
 }
 
-function protectAnchors(html: string): { html: string; restore: (s: string) => string } {
+const ANCHOR_PATTERN = /<a\b[^>]*>[\s\S]*?<\/a>/gi;
+const HEADING_PATTERN = /<h([1-6])\b[^>]*>[\s\S]*?<\/h\1>/gi;
+
+function protectSegments(
+  html: string,
+  pattern: RegExp,
+  prefix: string
+): { html: string; restore: (s: string) => string } {
   const tokens: string[] = [];
-  const protectedHtml = html.replace(/<a\b[^>]*>[\s\S]*?<\/a>/gi, (m) => {
+  const protectedHtml = html.replace(pattern, (m) => {
     tokens.push(m);
-    return `\u0000A${tokens.length - 1}\u0000`;
+    return `\u0000${prefix}${tokens.length - 1}\u0000`;
   });
   return {
     html: protectedHtml,
-    restore: (s: string) => s.replace(/\u0000A(\d+)\u0000/g, (_, i) => tokens[Number(i)]),
+    restore: (s: string) =>
+      s.replace(new RegExp(`\u0000${prefix}(\\d+)\u0000`, "g"), (_, i) => tokens[Number(i)]),
   };
+}
+
+/**
+ * Existing anchors and headings (h1-h6) are held back from keyword linking so
+ * auto-links are only ever injected into plain body text.
+ */
+function protectExistingLinksAndHeadings(html: string): {
+  html: string;
+  restore: (s: string) => string;
+} {
+  const headings = protectSegments(html, HEADING_PATTERN, "H");
+  const anchors = protectSegments(headings.html, ANCHOR_PATTERN, "A");
+  return { html: anchors.html, restore: (s) => headings.restore(anchors.restore(s)) };
 }
 
 export interface AutoLinkRule {
@@ -55,7 +76,7 @@ export function linkKeywords(html: string, rules: AutoLinkRule[]): string {
   const sorted = [...rules].sort((a, b) => b.term.length - a.term.length);
   let working = html;
   for (const rule of sorted) {
-    let guarded = protectAnchors(working);
+    const guarded = protectExistingLinksAndHeadings(working);
     working = guarded.restore(linkFirstOccurrence(guarded.html, rule.term, rule.href));
   }
   return working;

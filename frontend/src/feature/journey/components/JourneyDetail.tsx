@@ -499,13 +499,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               <div className="relative bg-white rounded-3xl p-2 md:p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
                 <div className="day-accordion">
                   {journey.days.map((day, i) => (
-                    <DayItem
-                      key={day.id}
-                      index={i + 1}
-                      day={day}
-                      cityLinkRules={cityLinkRules}
-                      defaultOpen={i === 0}
-                    />
+                    <DayItem key={day.id} index={i + 1} day={day} defaultOpen={i === 0} />
                   ))}
                 </div>
               </div>
@@ -707,28 +701,37 @@ function FaqItem({ q, a, linkRules }: { q: string; a: string; linkRules: AutoLin
 function DayItem({
   index,
   day,
-  cityLinkRules,
   defaultOpen,
 }: {
   index: number;
   day: { id: number; day: string; description?: string; image?: string };
-  cityLinkRules: AutoLinkRule[];
   defaultOpen?: boolean;
 }) {
-  const dayTitle = sanitizeHtml(
-    linkKeywords(day.day.replace(/^Day\s*\d+\s*:\s*/i, "").trim(), cityLinkRules)
-  );
+  const dayTitle = sanitizeHtml(day.day.replace(/^Day\s*\d+\s*:\s*/i, "").trim());
 
   const handleToggle = (e: React.SyntheticEvent<HTMLDetailsElement>) => {
     const details = e.currentTarget;
     if (!details.open) return;
     const container = details.closest(".day-accordion");
     if (!container) return;
+
+    // Only one day stays open. Closing the previously open day removes height from
+    // the content ABOVE the tapped row, which would drag the page upwards and move
+    // the row the user just tapped. Anchor the row and undo that shift so the top
+    // of the page never jumps — this is very visible on mobile.
+    const anchor = details.querySelector("summary") ?? details;
+    const beforeTop = anchor.getBoundingClientRect().top;
+
     container
       .querySelectorAll<HTMLDetailsElement>("details[open]")
       .forEach((other) => {
         if (other !== details) other.open = false;
       });
+
+    const shift = anchor.getBoundingClientRect().top - beforeTop;
+    if (shift !== 0) {
+      window.scrollBy({ top: shift, left: 0, behavior: "instant" });
+    }
   };
 
   return (
@@ -757,24 +760,29 @@ function DayItem({
         />
       </summary>
 
-      <div className="day-accordion-content pt-1 md:pt-2 pb-5 md:pl-[44px]">
-        {day.description && (
-          <div className="text-[15px] text-slate-600 leading-[1.8]">
-            <RichContent html={linkKeywords(day.description, cityLinkRules)} className="rich-text-plain-links" />
-          </div>
-        )}
-        {day.image && (
-          <div className="relative mt-4 w-full h-[200px] md:h-[280px] rounded-2xl overflow-hidden shadow-sm">
-            <FallbackImage
-              src={day.image}
-              alt={day.day.replace(/^Day\s*\d+\s*:\s*/i, "")}
-              fill
-              loading="lazy"
-              sizes="100vw"
-              className="object-cover"
-            />
-          </div>
-        )}
+      <div className="day-accordion-content">
+        {/* Single child so grid-template-rows 0fr -> 1fr can collapse/expand the
+            whole block smoothly. Padding lives here, not on the outer wrapper, so
+            nothing shows through while the row is at 0fr. */}
+        <div className="day-accordion-inner pt-1 md:pt-2 pb-5 md:pl-[44px]">
+          {day.description && (
+            <div className="text-[15px] text-slate-600 leading-[1.8]">
+              <RichContent html={day.description} className="rich-text-plain-links" />
+            </div>
+          )}
+          {day.image && (
+            <div className="relative mt-4 w-full h-[200px] md:h-[280px] rounded-2xl overflow-hidden shadow-sm">
+              <FallbackImage
+                src={day.image}
+                alt={day.day.replace(/^Day\s*\d+\s*:\s*/i, "")}
+                fill
+                loading="lazy"
+                sizes="100vw"
+                className="object-cover"
+              />
+            </div>
+          )}
+        </div>
       </div>
     </details>
   );

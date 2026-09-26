@@ -705,26 +705,28 @@
 
   /* ===== Day By Day Itinerary (native <details> accordion) ===== */
 
+  /* Smooth, slow expand driven purely by a CSS transition on the [open] attribute
+     — no opacity, no keyframes, no React state. grid-template-rows 0fr -> 1fr
+     animates to the content's real height, so there is no magic max-height cap
+     and long day descriptions are no longer clipped. */
   .day-accordion-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .day-accordion-content > .day-accordion-inner {
+    min-height: 0;
     overflow: hidden;
   }
 
   .day-accordion-item[open] > .day-accordion-content {
-    animation: dayAccordionOpen 0.4s ease backwards;
+    grid-template-rows: 1fr;
   }
 
-  @keyframes dayAccordionOpen {
-    from {
-      opacity: 0;
-      max-height: 0;
-      transform: translateY(-6px);
-    }
-
-    to {
-      opacity: 1;
-      max-height: 2000px;
-      transform: translateY(0);
-    }
+  .day-accordion-item > summary {
+    /* Tapping a day must never move the page under the user's finger. */
+    scroll-margin-top: 96px;
   }
 
   .rich-text table {

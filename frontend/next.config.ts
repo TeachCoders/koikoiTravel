@@ -1,5 +1,15 @@
 import type { NextConfig } from "next";
 
+/**
+ * Tour package slugs that were renamed. Old URLs must 301 to the current slug so
+ * search rankings / inbound links are not lost. Add a new entry whenever a
+ * journey slug is changed in the admin panel.
+ */
+const SLUG_REDIRECTS: Record<string, string> = {
+  "/tour-packages/9-days-rajasthan-tour-from-delhi":
+    "/tour-packages/9-days-rajasthan-tour-from-delhi-to-mumbai",
+};
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   turbopack: {
@@ -25,13 +35,18 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      ...Object.entries(SLUG_REDIRECTS).map(([source, destination]) => ({
+        source,
+        destination,
+        permanent: true,
+      })),
       {
         source: "/:path*",
         has: [{ type: "host", value: "www.koikoitravel.com" }],
         destination: "https://koikoitravel.com/:path*",
         permanent: true,
       },
-      ];
+    ];
   },
   async headers() {
     const apiOrigin = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/^https?:\/\//, "") || "api.koikoitravel.com";
