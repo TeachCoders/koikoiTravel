@@ -8,7 +8,6 @@ import {
   ChevronRight,
   ChevronLeft,
   Sparkles,
-  ArrowRight,
   CalendarDays,
   Sun,
   Building2,
@@ -39,7 +38,6 @@ import {
 import type { Country } from "@/feature/country/type";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
-import { QuoteModal } from "@/components/shared/QuoteModal";
 import StateCard from "./StateCard";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
@@ -271,27 +269,6 @@ function CountryContent({
           <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wider drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
             {heroTitle}
           </h1>
-
-          <div className="hidden lg:flex mt-4 sm:mt-7 flex-wrap items-center justify-center gap-3">
-            <QuoteModal>
-              <button
-                type="button"
-                className="btn-primary px-4 py-2.5 sm:px-7 sm:py-3.5 text-xs sm:text-sm font-bold tracking-wide flex items-center gap-2 cursor-pointer shadow-lg shadow-[#F8904D]/30 active:scale-95 transition-all"
-              >
-                <Sparkles size={16} />
-                <span>Plan My {displayTitle} Trip</span>
-              </button>
-            </QuoteModal>
-
-            <a href="#tours" className="px-3 py-2.5 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-bold tracking-wide rounded-xl border border-white/40 text-white bg-white/10 backdrop-blur-md hover:bg-white/20 transition-all duration-200 flex items-center gap-2">
-              <span>Explore Packages</span>
-              <ArrowRight size={16} />
-            </a>
-
-            <a href="#more" className="px-3 py-2.5 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-medium tracking-wide rounded-xl border border-white/20 text-white/80 bg-black/20 backdrop-blur-md hover:bg-white/10 transition-all duration-200">
-              About {displayTitle}
-            </a>
-          </div>
         </div>
       </section>
 

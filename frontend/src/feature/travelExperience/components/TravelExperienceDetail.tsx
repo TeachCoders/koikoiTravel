@@ -19,7 +19,6 @@ import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
 import FilterBar from "@/components/shared/FilterBar";
-import { QuoteModal } from "@/components/shared/QuoteModal";
 import {
   travelExperienceOptions,
   durationOptions,
@@ -182,27 +181,6 @@ function ExperienceContent({ experience }: { experience: any }) {
           <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wider drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
             {heroTitle}
           </h1>
-
-          <div className="hidden sm:flex mt-7 flex-wrap items-center justify-center gap-3">
-            <QuoteModal>
-              <button
-                type="button"
-                className="btn-primary px-7 py-3.5 text-sm font-bold tracking-wide flex items-center gap-2 cursor-pointer shadow-lg shadow-[#F8904D]/30 active:scale-95 transition-all"
-              >
-                <Sparkles size={16} />
-                <span>Plan My {h1Title} Trip</span>
-              </button>
-            </QuoteModal>
-
-            <a href="#tours" className="px-6 py-3.5 text-sm font-bold tracking-wide rounded-xl border border-white/40 text-white bg-white/10 backdrop-blur-md hover:bg-white/20 transition-all duration-200 flex items-center gap-2">
-              <span>Explore Packages</span>
-              <ArrowRight size={16} />
-            </a>
-
-            <a href="#more" className="px-6 py-3.5 text-sm font-medium tracking-wide rounded-xl border border-white/20 text-white/80 bg-black/20 backdrop-blur-md hover:bg-white/10 transition-all duration-200">
-              About {h1Title}
-            </a>
-          </div>
         </div>
       </section>
 
