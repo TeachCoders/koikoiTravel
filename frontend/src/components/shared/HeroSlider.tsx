@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { ImageWatermark } from "@/components/shared/ImageWatermark";
+import FallbackImage from "@/components/shared/FallbackImage";
 
 interface HeroSliderProps {
   images: string[];
@@ -48,7 +47,7 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
       >
         {validImages.map((img, i) => (
           <div key={i} className="relative w-full h-full shrink-0 bg-slate-200">
-            <SlideImage src={img} alt={alt} priority={i === 0} />
+            <SlideImage src={img} alt={alt} priority={i === 0} preload={i === 1} />
           </div>
         ))}
       </div>
@@ -75,28 +74,29 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
   );
 }
 
-function SlideImage({ src, alt, priority }: { src: string; alt: string; priority?: boolean }) {
-  const [loaded, setLoaded] = useState(false);
+function SlideImage({
+  src,
+  alt,
+  priority,
+  preload,
+}: {
+  src: string;
+  alt: string;
+  priority?: boolean;
+  preload?: boolean;
+}) {
   return (
-    <>
-      {!loaded && <ImageWatermark theme="dark" />}
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        priority={priority}
-        loading={priority ? undefined : "eager"}
-        sizes="100vw"
-        onLoad={() => setLoaded(true)}
-        unoptimized={
-          typeof src === "string" &&
-          src.startsWith("/") &&
-          /\.(webp|avif)$/i.test(src)
-        }
-        className={`object-cover object-center transition-opacity duration-700 ease-out ${
-          loaded ? "opacity-100" : "opacity-0"
-        }`}
-      />
-    </>
+    <FallbackImage
+      src={src}
+      alt={alt}
+      fill
+      priority={priority}
+      loading={preload ? "eager" : undefined}
+      quality={90}
+      sizes="100vw"
+      theme="dark"
+      unoptimized={false}
+      className="object-cover object-center"
+    />
   );
 }
