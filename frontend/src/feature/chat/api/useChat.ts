@@ -16,6 +16,8 @@ import {
   deleteUnanswered,
   fetchLinkCandidates,
   closeConversation,
+  deleteConversation,
+  deleteConversationMessages,
   FaqLinkType,
   LinkCandidate,
   ChatConversationSummary,
@@ -288,5 +290,37 @@ export const useCloseConversation = () => {
   return {
     updateStatus: mutation.mutateAsync,
     isUpdating: mutation.isPending,
+  };
+};
+
+// ── Conversation delete (permanent — removes messages & tourist name) ──
+export const useDeleteConversation = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (id: number) => deleteConversation(id),
+    onSuccess: (_, id) => {
+      queryClient.removeQueries({ queryKey: ["chatConversation", id] });
+      queryClient.invalidateQueries({ queryKey: ["chatConversations"] });
+    },
+  });
+  return {
+    deleteConversationById: mutation.mutateAsync,
+    isDeleting: mutation.isPending,
+  };
+};
+
+// ── Delete messages only (keeps conversation, tourist name & lead) ──
+export const useDeleteConversationMessages = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (id: number) => deleteConversationMessages(id),
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: ["chatConversation", id] });
+      queryClient.invalidateQueries({ queryKey: ["chatConversations"] });
+    },
+  });
+  return {
+    clearMessages: mutation.mutateAsync,
+    isClearing: mutation.isPending,
   };
 };

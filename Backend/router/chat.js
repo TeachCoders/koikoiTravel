@@ -577,6 +577,55 @@ router.patch("/conversations/:id/status", requireTeamOrAdmin(["support"]), async
 });
 
 // ─────────────────────────────────────────────────────────────
+// ADMIN — delete only the messages of a conversation.
+// Keeps the conversation, the tourist name/phone and the linked
+// traveller lead intact. Messages can never be recovered.
+// ─────────────────────────────────────────────────────────────
+router.delete("/conversations/:id/messages", requireTeamOrAdmin(["support"]), async (req, res) => {
+  const convId = Number(req.params.id);
+  if (!convId) return res.status(400).json({ success: false, message: "Invalid conversation id" });
+
+  try {
+    const conversation = await prisma.chatConversation.findUnique({ where: { id: convId } });
+    if (!conversation) return res.status(404).json({ success: false, message: "Conversation not found" });
+    if (!canAccess(req.session?.user, conversation)) {
+      return res.status(403).json({ success: false, message: "Forbidden" });
+    }
+
+    const result = await prisma.chatMessage.deleteMany({ where: { conversationId: convId } });
+    return res.status(200).json({ success: true, data: { id: convId, deleted: result.count } });
+  } catch (error) {
+    logger.error("delete conversation messages error:", { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────
+// ADMIN — permanently delete a conversation.
+// Removes all messages (cascade) AND the tourist name/phone, so no
+// personal data stays in the chat dashboard afterwards.
+// The linked traveller lead is NOT deleted — it stays in the system.
+// ─────────────────────────────────────────────────────────────
+router.delete("/conversations/:id", requireTeamOrAdmin(["support"]), async (req, res) => {
+  const convId = Number(req.params.id);
+  if (!convId) return res.status(400).json({ success: false, message: "Invalid conversation id" });
+
+  try {
+    const conversation = await prisma.chatConversation.findUnique({ where: { id: convId } });
+    if (!conversation) return res.status(404).json({ success: false, message: "Conversation not found" });
+    if (!canAccess(req.session?.user, conversation)) {
+      return res.status(403).json({ success: false, message: "Forbidden" });
+    }
+
+    await prisma.chatConversation.delete({ where: { id: convId } });
+    return res.status(200).json({ success: true, data: { id: convId } });
+  } catch (error) {
+    logger.error("delete conversation error:", { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────
 // SUPERADMIN — entity list for the FAQ "link to a page" picker
 // ─────────────────────────────────────────────────────────────
 router.get("/link-candidates", requireSuperAdminOnly, async (req, res) => {

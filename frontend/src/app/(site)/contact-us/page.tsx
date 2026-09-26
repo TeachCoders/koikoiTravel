@@ -294,14 +294,10 @@ export default async function ContactUsPage() {
                 </span>
                 <h3 className="text-lg font-bold text-slate-900 mt-0.5">Send an Email</h3>
                 <div className="text-sm text-slate-600 leading-relaxed mt-2 space-y-1">
-                  <p>
-                    <a href="mailto:support@koikoitravel.com" className="hover:text-indigo-600 transition-colors font-medium">
-                      support@koikoitravel.com
-                    </a>
-                  </p>
+
                   <p>
                     <a href="mailto:info@koikoitravel.com" className="hover:text-indigo-600 transition-colors font-medium">
-                      info@koikoitravel.com
+                      contact@koikoitravel.com
                     </a>
                   </p>
                 </div>

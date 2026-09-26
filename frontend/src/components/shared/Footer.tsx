@@ -42,7 +42,7 @@ const TRAVEL_THEMES = [
 export const Footer: React.FC = () => {
   const pathname = usePathname();
   const isOfferPage = pathname?.startsWith("/offers/");
-  
+
   const { states } = useGetStates({ limit: 100, isActive: "true" });
   const { travelExperiences } = useGetTravelExperiences({
     limit: 100,
@@ -84,7 +84,7 @@ export const Footer: React.FC = () => {
   const salesPhoneDisplay = `+${salesPhoneDigits.slice(0, 2)} ${salesPhoneDigits.slice(2, 7)} ${salesPhoneDigits.slice(7)}`;
 
   if (isOfferPage) {
-  return (
+    return (
       <footer className="relative bg-[#1C1C1C] text-[#999] pt-12 pb-8 overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#2E8B8B]/40 to-transparent" />
         <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 flex flex-col items-center justify-center text-center">
@@ -197,10 +197,10 @@ export const Footer: React.FC = () => {
                   <Mail className="w-4 h-4 text-[#2E8B8B]" />
                 </div>
                 <a
-                  href="mailto:support@koikoitravel.com"
+                  href="mailto:contact@koikoitravel.com"
                   className="text-[#a8a8a8] hover:text-white transition-colors"
                 >
-                  support@koikoitravel.com
+                  contact@koikoitravel.com
                 </a>
               </div>
               <div className="flex items-center gap-3">

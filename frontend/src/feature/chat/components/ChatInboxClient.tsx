@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { MessageSquare, Send, Phone, ArrowLeft, XCircle, RotateCcw, AlertTriangle } from "lucide-react";
+import { MessageSquare, Send, Phone, ArrowLeft, XCircle, RotateCcw, AlertTriangle, Trash2, Eraser } from "lucide-react";
 import {
   useConversations,
   useConversation,
@@ -9,6 +9,8 @@ import {
   useAvailability,
   useUpdateAvailability,
   useCloseConversation,
+  useDeleteConversation,
+  useDeleteConversationMessages,
 } from "@/feature/chat/api/useChat";
 import PageLoader from "@/components/shared/PageLoader";
 import PrivatePageHeading from "@/components/shared/PrivatePageHeading";
@@ -51,6 +53,8 @@ export const ChatInboxClient: React.FC = () => {
   const { availability } = useAvailability();
   const { setAvailable, isUpdating } = useUpdateAvailability();
   const { updateStatus, isUpdating: isClosing } = useCloseConversation();
+  const { deleteConversationById, isDeleting } = useDeleteConversation();
+  const { clearMessages, isClearing } = useDeleteConversationMessages();
   const [draft, setDraft] = useState("");
 
   const selectedConv = (conversations || []).find((c) => c.id === selectedId);
@@ -87,6 +91,34 @@ export const ChatInboxClient: React.FC = () => {
     const newStatus = currentStatus === "CLOSED" ? "ACTIVE" : "CLOSED";
     try {
       await updateStatus({ id: selectedId, status: newStatus });
+    } catch {
+      // ignore
+    }
+  };
+
+  const handleDelete = async () => {
+    if (selectedId === null) return;
+    const name = selectedConv?.touristName || "this user";
+    const confirmed = window.confirm(
+      `Delete this conversation permanently?\n\nAll messages of "${name}" and their name/phone will be removed from the chat dashboard.\n\nThe traveller lead stays safe in your system.\n\nThis cannot be undone.`
+    );
+    if (!confirmed) return;
+    try {
+      await deleteConversationById(selectedId);
+      setSelectedId(null);
+    } catch {
+      // ignore
+    }
+  };
+
+  const handleClearMessages = async () => {
+    if (selectedId === null) return;
+    const confirmed = window.confirm(
+      `Delete all messages of this conversation?\n\nThe conversation and tourist name stay, only the messages are removed. The lead is not affected.\n\nThis cannot be undone.`
+    );
+    if (!confirmed) return;
+    try {
+      await clearMessages(selectedId);
     } catch {
       // ignore
     }
@@ -233,6 +265,24 @@ export const ChatInboxClient: React.FC = () => {
                   } disabled:opacity-50`}
                 >
                   {selectedConv?.status === "CLOSED" ? <RotateCcw className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
+                </button>
+                {/* Delete messages only — keeps tourist name & lead */}
+                <button
+                  onClick={handleClearMessages}
+                  disabled={isClearing}
+                  title="Delete messages only (lead is safe)"
+                  className="p-2 rounded-lg text-zinc-400 hover:bg-amber-50 hover:text-amber-600 transition-colors disabled:opacity-50 cursor-pointer"
+                >
+                  <Eraser className="w-4 h-4" />
+                </button>
+                {/* Delete conversation — permanent, removes messages & tourist name */}
+                <button
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  title="Delete chat permanently (lead stays safe)"
+                  className="p-2 rounded-lg text-zinc-400 hover:bg-red-50 hover:text-red-600 transition-colors disabled:opacity-50 cursor-pointer"
+                >
+                  <Trash2 className="w-4 h-4" />
                 </button>
               </div>
 

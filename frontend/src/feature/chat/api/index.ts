@@ -256,3 +256,13 @@ export const closeConversationByToken = async (token: string, status: "ACTIVE" |
   const res = await apiClient.patch(`/chat/conversations/by-token/${token}/status`, { status });
   return res.data;
 };
+
+export const deleteConversation = async (id: number) => {
+  const res = await apiClient.delete(`/chat/conversations/${id}`);
+  return res.data;
+};
+
+export const deleteConversationMessages = async (id: number) => {
+  const res = await apiClient.delete(`/chat/conversations/${id}/messages`);
+  return res.data;
+};
