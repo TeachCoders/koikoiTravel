@@ -122,6 +122,54 @@ Backend/scripts/restore-db.sh backups/<file>.sql   # restore
 4. `BASE_URL` real domain set karein, phir `node scripts/fix_image_urls.mjs --apply` chala ke DB ke localhost image URLs fix karein.
 5. Gmail app password (`.env` wala) deploy se pehle **rotate** karein.
 
+### Deploy ke baad: `.next/cache` zaroor hatao
+
+Deploy me poora `.next/` folder copy hota hai — uske saath `.next/cache` bhi, jisme
+purane fetch responses (200) pade hote hain. Wo entries page ke `revalidate = 60`
+ko maan nahi pati, isliye **admin se journey delete/rename karne ke baad bhi purana
+URL 200 deta rehta hai** aur purana content dikhata rehta hai.
+
+Isliye har deploy ke baad ye chalao:
+
+```bash
+cd /var/www/koikoitravel-app/frontend
+npm run clean                 # rm -rf .next
+npm run build
+pm2 restart koikoi-frontend
+```
+
+Ya agar cache saaf karna hai bina rebuild kiye:
+
+```bash
+cd /var/www/koikoitravel-app/frontend
+rm -rf .next/cache && pm2 restart koikoi-frontend
+```
+
+**Check:** deleted slug pe 404 aana chahiye, live page pe 200.
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" \
+  https://koikoitravel.com/tour-packages/<deleted-slug>          # 404
+curl -s -o /dev/null -w "%{http_code}\n" \
+  https://koikoitravel.com/tour-packages/<current-slug>          # 200
+```
+
+Cache saaf karne ke baad bhi koi deleted slug `200` de to problem cache ki nahi hai —
+us case me backend DB mismatch check karein (`README.md` → Deployment notes).
+
+### Slug rename kiya to 301/308 zaroor lagao
+
+Journey ka slug badalne par purana URL redirect karein, warna ranking aur backlinks
+doob jayenge. `frontend/next.config.ts` me `SLUG_REDIRECTS` map me entry daalein:
+
+```ts
+const SLUG_REDIRECTS: Record<string, string> = {
+  "/tour-packages/purana-slug": "/tour-packages/naya-slug",
+};
+```
+
+Ye build ke baad active hota hai (`npm run clean && npm run build` zaruri).
+
 ---
 
 ## Monitoring
