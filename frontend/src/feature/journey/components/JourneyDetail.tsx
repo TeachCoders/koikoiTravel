@@ -563,20 +563,17 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
       </div>
 
       {/* ===== KNOW MORE (RAJASTHAN-STYLE FULL SECTION) ===== */}
-      {(journey.seoDescription || journey.moreDescription) && (
+      {/* seoDescription is deliberately not rendered here. It is the meta and
+          JSON-LD copy, and repeating it on the page duplicates text that is
+          already in overView and moreDescription. */}
+      {journey.moreDescription && (
         <section id="know-more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-12 md:py-20">
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
             <div className="max-w-5xl">
               <span className="accent-label">Know More</span>
               <h2 className="h3 text-[22px] leading-[1.25] text-[#1C1C1C] mt-2 mb-5 md:mb-8">Everything About {pageH1}</h2>
 
-              {journey.seoDescription && (
-                <RichContent html={linkKeywords(journey.seoDescription, paragraphLinkRules)} />
-              )}
-
-              {journey.moreDescription && (
-                <RichContent html={linkKeywords(journey.moreDescription, paragraphLinkRules)} className="mt-8" />
-              )}
+              <RichContent html={linkKeywords(journey.moreDescription, paragraphLinkRules)} />
             </div>
           </div>
         </section>
