@@ -150,8 +150,7 @@ function CityContent({
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={city.title} />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/40 to-slate-950/20" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_65%_60%_at_50%_50%,rgba(2,6,23,0.42)_0%,rgba(2,6,23,0.26)_50%,rgba(2,6,23,0.08)_80%,transparent_100%)]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-slate-950/20 to-slate-950/10" />
           </>
         ) : (
           <div className="absolute inset-0">
@@ -169,12 +168,12 @@ function CityContent({
 
         <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 h-full flex flex-col justify-center items-center py-6 sm:py-8 text-center">
           {heroTag && (
-            <p className="hidden sm:block max-w-2xl mx-auto mb-2 text-sm sm:text-lg font-bold tracking-wider uppercase text-white/90 leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
+            <p className="hidden sm:block max-w-2xl mx-auto mb-2 text-sm sm:text-lg font-bold tracking-wider uppercase text-white/90 leading-relaxed drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)] drop-shadow-[0_4px_14px_rgba(0,0,0,0.8)]">
               {heroTag}
             </p>
           )}
 
-          <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wider drop-shadow-[0_2px_3px_rgba(0,0,0,0.95)] drop-shadow-[0_10px_28px_rgba(0,0,0,0.75)]">
+          <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wider drop-shadow-[0_1px_1px_rgba(0,0,0,1)] drop-shadow-[0_3px_8px_rgba(0,0,0,0.95)] drop-shadow-[0_14px_36px_rgba(0,0,0,0.85)]">
             {heroTitle}
           </h1>
         </div>
