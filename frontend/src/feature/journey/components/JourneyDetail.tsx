@@ -25,6 +25,7 @@ import {
   Moon,
   SunMoon,
   Timer,
+  Clock,
 } from "lucide-react";
 import { useEffect, useState, Fragment, useMemo } from "react";
 import dynamic from "next/dynamic";
@@ -35,6 +36,8 @@ import PageLoader from "@/components/shared/PageLoader";
 import TourBookingForm from "@/feature/leads/components/TourBookingForm";
 import { travelExperienceIcon } from "@/components/shared/TravelExperiencePills";
 import RichContent, { sanitizeHtml } from "@/components/shared/RichContent";
+import { QuoteModal } from "@/components/shared/QuoteModal";
+import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
 import { linkKeywords, buildExperienceLinkRules, type AutoLinkRule } from "@/lib/autoInternalLink";
 import { cn, stripHtml } from "@/lib/utils";
 
@@ -44,7 +47,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
   const { journey, isLoading } = useJourneyBySlug(slug, initialJourney);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [, setPageUrl] = useState("");
+  const [pageUrl, setPageUrl] = useState("");
 
   const cityLinkRules = useMemo<AutoLinkRule[]>(
     () =>
@@ -70,6 +73,9 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
     setLightboxIndex(index);
     setLightboxOpen(true);
   };
+
+  const WHATSAPP_NUMBER =
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919136739178";
 
   const SALES_PHONE = process.env.NEXT_PUBLIC_SALES_PHONE || "+919136739178";
 
@@ -395,6 +401,52 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     </div>
                   )}
                 </div>
+                {/* Interested in this tour */}
+                <div className="p-6 lg:p-8 bg-slate-50 border-t border-slate-100 flex flex-col gap-4 relative z-10">
+                  <div>
+                    <h3 className="text-[18px] font-extrabold text-[#1C1C1C] mb-1 leading-[1.3]">Interested in this tour?</h3>
+                    <p className="text-[14px] text-slate-500 leading-relaxed font-medium">
+                      Get in touch with our travel experts for a customized itinerary and instant best quote.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 w-full">
+                    <a
+                      href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                        `Hi! I'm interested in "${journey.title}". Please share the best price and availability.\n\nTour Page: ${pageUrl}`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-1.5 px-3 py-2.5 sm:px-4 sm:py-3.5 rounded-xl bg-[#2E8B8B] hover:bg-[#247070] active:scale-95 text-white text-[12.5px] sm:text-[14.5px] font-bold shadow-md shadow-[#2E8B8B]/20 transition-all text-center"
+                    >
+                      <WhatsAppIcon className="w-4 h-4 fill-white shrink-0" />
+                      <span>Get Best Price</span>
+                    </a>
+
+                    <QuoteModal>
+                      <button
+                        type="button"
+                        className="w-full flex items-center justify-center gap-1.5 px-3 py-2.5 sm:px-4 sm:py-3.5 rounded-xl bg-[#F8904D] hover:bg-[#b84513] active:scale-95 text-white text-[12.5px] sm:text-[14.5px] font-bold shadow-md shadow-[#F8904D]/20 transition-all text-center cursor-pointer"
+                      >
+                        <CalendarDays size={16} className="shrink-0" />
+                        <span>Book Now</span>
+                      </button>
+                    </QuoteModal>
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-around text-center text-[11px] font-bold text-slate-500 border-t border-slate-200/60 mt-1">
+                    <span className="flex items-center gap-1 text-slate-600">
+                      <ShieldCheck size={13} className="text-[#2E8B8B]" />
+                      100% Customized
+                    </span>
+                    <span className="text-slate-300">&bull;</span>
+                    <span className="flex items-center gap-1 text-slate-600">
+                      <Clock size={12} className="text-slate-400" />
+                      &lt;15m Response
+                    </span>
+                  </div>
+                </div>
+
 
               </div>
             </aside>
