@@ -1,10 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { MessageCircle, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
-import { openChatWidget } from "@/feature/chat/constants";
 
 export default function MobileStickyActionBar() {
   const pathname = usePathname();
@@ -25,7 +24,7 @@ export default function MobileStickyActionBar() {
 
   return (
     <aside aria-label="Quick Actions" className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200 p-2.5 shadow-[0_-10px_20px_rgb(0,0,0,0.06)]">
-      <div className="grid grid-cols-3 gap-2 max-w-md mx-auto">
+      <div className="grid grid-cols-2 gap-2 max-w-md mx-auto">
         {/* WhatsApp Button */}
         <a
           href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi KoiKoi Travel, I want to inquire about a custom holiday tour package.")}`}
@@ -47,17 +46,6 @@ export default function MobileStickyActionBar() {
             <span className="text-[11px] font-bold">Get Quote</span>
           </button>
         </QuoteModal>
-
-        {/* Live Chat Button — opens the chat widget mounted in the root layout */}
-        <button
-          type="button"
-          onClick={openChatWidget}
-          aria-label="Open live chat"
-          className="flex flex-col items-center justify-center py-2 px-1 rounded-xl bg-[#1C1C1C] text-white hover:bg-black transition-all active:scale-95 shadow-md shadow-black/20"
-        >
-          <MessageCircle size={18} className="mb-0.5" />
-          <span className="text-[11px] font-bold">Chat</span>
-        </button>
       </div>
     </aside>
   );

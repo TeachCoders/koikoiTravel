@@ -6,7 +6,6 @@ import { MessageCircle, Send, X, Phone, User, Smile, ArrowUp, MoreHorizontal, Mi
 import { startChat, sendChatMessage, pollChatMessages, fetchGeo, closeConversationByToken, ChatMessage } from "@/feature/chat/api";
 import { COUNTRIES, getCountryByCode } from "@/feature/leads/data/countries";
 import { LinkedText } from "@/feature/chat/components/LinkedText";
-import { OPEN_CHAT_EVENT } from "@/feature/chat/constants";
 
 const BRAND = process.env.NEXT_PUBLIC_BRAND_NAME || "KoiKoi Travel";
 const WHATSAPP_NUMBER =
@@ -70,14 +69,6 @@ export const ChatWidget: React.FC = () => {
   useEffect(() => {
     messagesRef.current = messages;
   }, [messages]);
-
-  // Other surfaces (e.g. the mobile sticky action bar) can open this widget
-  // by dispatching OPEN_CHAT_EVENT instead of mounting their own chat UI.
-  useEffect(() => {
-    const onOpen = () => setOpen(true);
-    window.addEventListener(OPEN_CHAT_EVENT, onOpen);
-    return () => window.removeEventListener(OPEN_CHAT_EVENT, onOpen);
-  }, []);
 
   useEffect(() => {
     const tip = setTimeout(() => setShowTooltip(true), 4000);
