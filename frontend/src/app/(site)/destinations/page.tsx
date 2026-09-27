@@ -233,9 +233,10 @@ export default async function DestinationsPage() {
   // underneath, so the state drives the grouping.
   //
   // Order: states with no itineraries sink to the bottom, then by city count so
-  // that the two column grid pairs tall blocks with tall blocks and the rows
-  // end up close to the same height. Pairing on itineraries instead left two
-  // city blocks sitting next to thirteen.
+  // Order: states with no itineraries last, then most itineraries first, then
+  // city count as the tiebreak. The section lays these out as two CSS columns
+  // and the browser balances them by height, so putting the biggest blocks
+  // first is what keeps the two columns close to the same length.
   const stateGroups = orderByDisplay(states)
     .map((s) => ({ state: s, cities: orderByDisplay(s.cities || []) }))
     .filter((g) => g.cities.length > 0)
@@ -243,15 +244,11 @@ export default async function DestinationsPage() {
       const az = (a.state.tourCount || 0) === 0;
       const bz = (b.state.tourCount || 0) === 0;
       if (az !== bz) return az ? 1 : -1;
+      const at = a.state.tourCount || 0;
+      const bt = b.state.tourCount || 0;
+      if (at !== bt) return bt - at;
       return b.cities.length - a.cities.length;
     });
-
-  // First index of the trailing "coming soon" run, or the length when every
-  // state has itineraries. Used below to keep that run starting on its own row.
-  const zeroTourStart = stateGroups.findIndex(
-    (g) => (g.state.tourCount || 0) === 0
-  );
-  const zeroTourAt = zeroTourStart === -1 ? stateGroups.length : zeroTourStart;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -617,29 +614,28 @@ export default async function DestinationsPage() {
                 </p>
               </div>
 
-              {/* Two per row. Each cell owns a banner plus that state's city
-                  list, so a state reads as one block. The banner is a fixed
-                  16/6 box with object cover: the source banners range from
-                  1.5:1 to 2.56:1, so a natural ratio would leave the shorter
-                  one floating inside an uneven row. */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 items-start">
-                {stateGroups.map(({ state, cities: cityList }, gi) => {
+              {/* Two CSS columns, not a grid. A grid row is always as tall as its
+                  tallest item, so a short state left dead space underneath that
+                  nothing could fill, and with an odd number of states the last
+                  one either sat alone or needed a full width span. Multicol
+                  with break inside avoid packs each state as one unbreakable
+                  block and lets the browser balance the two columns, so the
+                  next state flows up beside a short one instead. The order
+                  above matters for that balance: biggest blocks first.
+
+                  Reading order therefore runs down the left column before
+                  crossing to the right. Each block still keeps its banner and
+                  its own cities together, so nothing gets mismatched. */}
+              <div className="columns-1 md:columns-2 gap-5 md:gap-6">
+                {stateGroups.map(({ state, cities: cityList }) => {
                   const banner = img(state.banner?.images?.[0], state.thumbImg);
                   const stateTours = state.tourCount || 0;
                   const hasTours = stateTours > 0;
                   const stateHref = `/tour-packages/${state.country?.slug}/${state.slug}`;
-                  // Two situations leave a half width hole. An odd total
-                  // leaves the very last cell short, and a non clickable state
-                  // landing in the second column would sit beside a one city
-                  // block and look broken. Either case spans both columns.
-                  // The trailing "coming soon" states must not be split across
-                  // a row boundary, since a half width zero tour block next to
-                  // a full itinerary block reads as broken. If they would start
-                  // on an odd row, pull them onto the next one instead.
-                  const loneTail =
-                    (gi === stateGroups.length - 1 && stateGroups.length % 2 === 1) ||
-                    (gi === zeroTourAt - 1 && zeroTourAt % 2 === 1);
 
+                  // 150px tall with 24px of padding top and bottom, so roughly
+                  // 100px is left for the name and the count. They sit on one
+                  // flex row, so the height holds even for a long state name.
                   const bannerOverlay = (
                     <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-6">
                       <div className="flex items-end justify-between gap-4">
@@ -667,16 +663,13 @@ export default async function DestinationsPage() {
                   );
 
                   return (
-                    <div
-                      key={state.id}
-                      className={loneTail ? "md:col-span-2" : undefined}
-                    >
+                    <div key={state.id} className="mb-5 md:mb-6 break-inside-avoid">
                       {hasTours ? (
                         <Link
                           href={stateHref}
                           className="group relative block overflow-hidden rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.06)] transition-shadow duration-500 hover:shadow-[0_10px_40px_rgba(0,0,0,0.10)]"
                         >
-                          <div className="relative aspect-[16/6] w-full">
+                          <div className="relative h-[150px] w-full">
                             {banner ? (
                               <FallbackImage
                                 src={banner}
@@ -695,7 +688,7 @@ export default async function DestinationsPage() {
                         // No itineraries yet, so no href: clicking a banner
                         // that leads to an empty page is worse than a dead one.
                         <div className="relative overflow-hidden rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.05)]">
-                          <div className="relative aspect-[16/6] w-full">
+                          <div className="relative h-[150px] w-full">
                             {banner ? (
                               <FallbackImage
                                 src={banner}
