@@ -96,9 +96,13 @@ export default function MediaLibrary({
       const alt = (item.altText ?? "").toLowerCase();
       if (!label.includes(q) && !file.includes(q) && !alt.includes(q)) return false;
     }
-    const isBanner = item.category === "banner" || (!item.category && item.filename.toLowerCase().includes("banner"));
-    const isThumb = item.category === "thumb" || item.filename.toLowerCase().includes("thumb");
-    if (activeMode === "banner" ? !isBanner : !isThumb) return false;
+    const file = item.filename.toLowerCase();
+    const isThumb = item.category === "thumb" || file.includes("thumb");
+    // Banner mode used to require category "banner", which hid anything whose
+    // category was never set that way, so older uploads could not be reached at
+    // all. It now shows everything that is not a thumb. Thumb mode stays
+    // strict, because a full width banner is the wrong size for a thumbnail.
+    if (activeMode === "thumb" ? !isThumb : isThumb) return false;
     return true;
   });
 
