@@ -4,9 +4,7 @@ import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import Counter from "yet-another-react-lightbox/plugins/counter";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
-import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import "yet-another-react-lightbox/plugins/counter.css";
-import "yet-another-react-lightbox/plugins/thumbnails.css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface JourneyLightboxProps {
@@ -23,10 +21,10 @@ export default function JourneyLightbox({ open, index, slides, close }: JourneyL
       index={index}
       close={close}
       slides={slides}
-      plugins={[Counter, Zoom, Thumbnails]}
+      plugins={[Counter, Zoom]}
       render={{
-        iconPrev: () => <ChevronRight size={40} strokeWidth={3} />,
-        iconNext: () => <ChevronLeft size={40} strokeWidth={3} />,
+        iconPrev: () => <ChevronLeft size={40} strokeWidth={3} />,
+        iconNext: () => <ChevronRight size={40} strokeWidth={3} />,
       }}
     />
   );
