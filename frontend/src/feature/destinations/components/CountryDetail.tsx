@@ -83,6 +83,12 @@ function CountryContent({
   initialJourneys?: JourneyPage<Journey> | null;
 }) {
   const displayTitle = country.title.replace(/\s*Tour$/i, "") || country.title;
+  // The left column renders seoDescription and moreDescription, both
+  // optional. Without either, the "Everything About" heading had nothing
+  // to sit above, so the column is dropped and the sidebar takes the full
+  // width.
+  const hasKnowMoreText = Boolean(country.seoDescription || country.moreDescription);
+
 
   const { states, isLoading: statesLoading } = useGetStates(
     {
@@ -378,19 +384,21 @@ function CountryContent({
       {/* ===== KNOW MORE (ALL INFO) ===== */}
       <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-12 md:py-20">
         <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            <div className="lg:col-span-2">
-              <span className="accent-label">Know More</span>
-              <h2 className="h3 text-[#1C1C1C] mt-2 mb-5 md:mb-8">Everything About {displayTitle}</h2>
+          <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText ? "lg:grid-cols-3" : ""}`}>
+          {hasKnowMoreText && (
+              <div className="lg:col-span-2">
+                <span className="accent-label">Know More</span>
+                <h2 className="h3 text-[#1C1C1C] mt-2 mb-5 md:mb-8">Everything About {displayTitle}</h2>
 
-              {country.seoDescription && (
-                <RichContent html={country.seoDescription} />
-              )}
+                {country.seoDescription && (
+                  <RichContent html={country.seoDescription} />
+                )}
 
-              {country.moreDescription && (
-                <RichContent html={country.moreDescription} className="mt-8" />
-              )}
-            </div>
+                {country.moreDescription && (
+                  <RichContent html={country.moreDescription} className="mt-8" />
+                )}
+              </div>
+          )}
 
             <aside className="space-y-6 lg:sticky lg:top-28 z-10 self-start">
               {facts.length > 0 && (
