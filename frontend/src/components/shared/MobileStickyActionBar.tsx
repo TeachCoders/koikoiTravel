@@ -7,12 +7,7 @@ import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
 
 export default function MobileStickyActionBar() {
   const pathname = usePathname();
-  // Journey detail renders its own WhatsApp + Book Now bar pinned to the bottom
-  // of the viewport, so showing the global bar there stacks the two on top of
-  // each other on mobile. The bare /tour-packages listing still gets this bar.
-  const onJourneyDetail = pathname.startsWith("/tour-packages/");
   const hidden =
-    onJourneyDetail ||
     pathname.startsWith("/offers") ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/auth") ||
