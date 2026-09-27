@@ -8,8 +8,8 @@ import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/plugins/counter.css";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
-/** Arrows only earn their space once there is room for them; on phones the
- *  carousel is driven by swipe, so the buttons would just crowd the photo. */
+/** The one breakpoint that matters here: below it the photo runs full width and
+ *  the arrows get a smaller hit target, from md up we use the framed layout. */
 function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -34,6 +34,28 @@ interface JourneyLightboxProps {
 export default function JourneyLightbox({ open, index, slides, close }: JourneyLightboxProps) {
   const isDesktop = useIsDesktop();
 
+  // On a phone the photo should span the full viewport width, so the carousel
+  // gives up its breathing room. From md up we can afford the inset that frames
+  // the image and keeps it clear of the arrows.
+  const padding = isDesktop ? 76 : 0;
+  const spacing = isDesktop ? 48 : 0;
+
+  // The close button stays a comfortable 44px, but the arrows sit on top of
+  // the photo on a phone and crowd it, so they step down there.
+  const arrowSize = isDesktop ? 44 : 34;
+  const arrowIcon = isDesktop ? 22 : 17;
+  const arrowSurface = {
+    display: "grid",
+    placeItems: "center",
+    borderRadius: 9999,
+    color: "#ffffff",
+    backgroundColor: "rgba(255, 255, 255, 0.10)",
+    border: "1px solid rgba(255, 255, 255, 0.16)",
+    backdropFilter: "blur(10px)",
+    WebkitBackdropFilter: "blur(10px)",
+    cursor: "pointer",
+  } as const;
+
   return (
     <Lightbox
       open={open}
@@ -42,8 +64,8 @@ export default function JourneyLightbox({ open, index, slides, close }: JourneyL
       slides={slides}
       plugins={[Counter, Zoom]}
       carousel={{
-        padding: isDesktop ? 76 : 58,
-        spacing: isDesktop ? 48 : 12,
+        padding,
+        spacing,
         finite: true,
         preload: 6,
       }}
@@ -85,16 +107,20 @@ export default function JourneyLightbox({ open, index, slides, close }: JourneyL
           padding: 14,
         },
         navigationPrev: {
-          display: isDesktop ? "grid" : "none",
+          ...arrowSurface,
+          width: arrowSize,
+          height: arrowSize,
         },
         navigationNext: {
-          display: isDesktop ? "grid" : "none",
+          ...arrowSurface,
+          width: arrowSize,
+          height: arrowSize,
         },
       }}
       render={{
         iconClose: () => <X size={18} strokeWidth={2.5} />,
-        iconPrev: () => <ChevronLeft size={22} strokeWidth={2.5} />,
-        iconNext: () => <ChevronRight size={22} strokeWidth={2.5} />,
+        iconPrev: () => <ChevronLeft size={arrowIcon} strokeWidth={2.5} />,
+        iconNext: () => <ChevronRight size={arrowIcon} strokeWidth={2.5} />,
         slideHeader: () => (
           <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#06090f]/80 to-transparent" />
         ),
