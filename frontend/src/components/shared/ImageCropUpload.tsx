@@ -22,7 +22,7 @@ type ResizeEdge = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw" | "move" | n
 
 export default function ImageCropUpload({
   onFileSelect, onClear,
-  maxWidth = 1200, maxHeight = 400,
+  maxWidth = 1920, maxHeight = 750,
   outputFormat = "image/webp", quality = 0.80,
   borderRadius = 12, shadow = true,
   className = "", label = "Upload Image", initialImage
