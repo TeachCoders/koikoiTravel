@@ -557,22 +557,22 @@
   }
 
   .rich-text h3 {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     line-height: 1.3;
   }
 
   .rich-text h4 {
-    font-size: 1.0625rem;
+    font-size: 1.1875rem;
     line-height: 1.35;
   }
 
   .rich-text h5 {
-    font-size: 1rem;
+    font-size: 1.125rem;
     line-height: 1.4;
   }
 
   .rich-text h6 {
-    font-size: 0.9375rem;
+    font-size: 1.0625rem;
     line-height: 1.5;
   }
 
@@ -586,6 +586,15 @@
 
   .rich-text p+p {
     margin-top: 1.25rem;
+  }
+
+  /* Lists had no rule at all and inherited the browser default 16px, which
+     read smaller than the 18px paragraphs around them. Match the list size
+     used by the static overview blocks. */
+  .rich-text ul li,
+  .rich-text ol li {
+    font-size: 1.0625rem;
+    line-height: 1.625;
   }
 
   /* Blog keeps its original, larger reading size. Same specificity as the rules
