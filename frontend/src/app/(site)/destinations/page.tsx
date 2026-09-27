@@ -599,74 +599,100 @@ export default async function DestinationsPage() {
                 </p>
               </div>
 
-              <div className="space-y-11 md:space-y-14">
+              {/* Two per row. Stacking all nine made the section several
+                  thousand pixels tall, and the city counts are lopsided
+                  enough that a three up grid left very short cards next to
+                  very long ones. */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
                 {stateGroups.map(({ state, cities: cityList }) => {
                   const banner = img(state.banner?.images?.[0], state.thumbImg);
-                  const stateHref = `/tour-packages/${state.country?.slug}/${state.slug}`;
                   return (
-                    <div key={state.id}>
-                      {/* Wide promotion banner */}
-                      <Link
-                        href={stateHref}
-                        className="group relative block overflow-hidden rounded-3xl shadow-[0_2px_16px_rgba(0,0,0,0.06)] transition-shadow duration-500 hover:shadow-[0_10px_40px_rgba(0,0,0,0.10)]"
-                      >
-                        <div className="relative aspect-[4/3] sm:aspect-[5/2] w-full">
-                          {banner ? (
-                            <FallbackImage
-                              src={banner}
-                              alt={state.h1Title || state.title}
-                              fill
-                              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                            />
-                          ) : (
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#1C1C1C] to-[#2b2b2b]" />
+                    <Link
+                      key={state.id}
+                      href={`/tour-packages/${state.country?.slug}/${state.slug}`}
+                      className="group relative block overflow-hidden rounded-3xl shadow-[0_2px_16px_rgba(0,0,0,0.06)] transition-shadow duration-500 hover:shadow-[0_10px_40px_rgba(0,0,0,0.10)]"
+                    >
+                      <div className="relative aspect-[4/3] md:aspect-[3/2] w-full">
+                        {banner ? (
+                          <FallbackImage
+                            src={banner}
+                            alt={state.h1Title || state.title}
+                            fill
+                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 bg-gradient-to-br from-[#1C1C1C] to-[#2b2b2b]" />
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-slate-950/20" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/25 to-transparent" />
+
+                        <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-7">
+                          <span className="mb-2 w-fit rounded-full bg-[#F8904D] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                            {state.country?.title || "India"}
+                          </span>
+                          <h3 className="font-heading text-xl sm:text-2xl font-extrabold tracking-tight text-white drop-shadow-lg">
+                            {state.h1Title || state.title}
+                          </h3>
+                          {state.famousFor && (
+                            <p className="mt-1.5 text-[13px] sm:text-sm font-medium text-white/85 line-clamp-2 drop-shadow">
+                              {state.famousFor}
+                            </p>
                           )}
-                          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-slate-950/20" />
-                          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/25 to-transparent" />
-
-                          <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-8 lg:p-10">
-                            <span className="mb-2 w-fit rounded-full bg-[#F8904D] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-                              {state.country?.title || "India"}
-                            </span>
-                            <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white drop-shadow-lg">
-                              {state.h1Title || state.title}
-                            </h3>
-                            {state.famousFor && (
-                              <p className="mt-2 max-w-xl text-sm sm:text-[15px] font-medium text-white/85 line-clamp-2 drop-shadow">
-                                {state.famousFor}
-                              </p>
-                            )}
-                            <span className="mt-4 inline-flex w-fit items-center gap-1.5 rounded-full bg-white px-4 py-2 text-[13px] font-bold text-[#1C1C1C] transition-transform duration-300 group-hover:translate-x-1">
-                              Explore {state.title}
-                              <ArrowRight size={14} />
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
-
-                      {/* Cities in this state */}
-                      <div className="mt-5 flex flex-wrap gap-2.5">
-                        {cityList.map((city) => (
-                          <Link
-                            key={city.id}
-                            href={`/tour-packages/${state.country?.slug}/${state.slug}/${city.slug}`}
-                            className="group inline-flex items-center gap-2 rounded-full bg-white border border-slate-200 shadow-sm px-4 py-2 text-[13px] font-semibold text-[#1C1C1C] hover:border-[#2E8B8B] hover:bg-[#2E8B8B]/5 hover:text-[#2E8B8B] transition-all duration-300"
-                          >
-                            <MapPin
-                              size={13}
-                              className="shrink-0 text-[#F8904D]"
-                            />
-                            {city.title}
+                          <span className="mt-3.5 inline-flex w-fit items-center gap-1.5 text-[13px] font-bold text-white">
+                            {cityList.length}{" "}
+                            {cityList.length === 1 ? "city" : "cities"}
                             <ArrowRight
-                              size={13}
-                              className="shrink-0 -ml-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                              size={14}
+                              className="transition-transform duration-300 group-hover:translate-x-1"
                             />
-                          </Link>
-                        ))}
+                          </span>
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   );
                 })}
+              </div>
+
+              {/* Every city, listed. Kept as a plain two column ul so all
+                  eighty nine links stay reachable without opening anything. */}
+              <div className="mt-12 md:mt-16">
+                {stateGroups.map(({ state, cities: cityList }) => (
+                  <div key={state.id} className="mb-8 last:mb-0">
+                    <div className="flex items-center gap-2.5 mb-3">
+                      <h3 className="font-heading text-base font-extrabold text-[#1C1C1C]">
+                        {state.title}
+                      </h3>
+                      <span className="text-[11px] font-semibold text-slate-400">
+                        {cityList.length}{" "}
+                        {cityList.length === 1 ? "city" : "cities"}
+                      </span>
+                      <span className="h-px min-w-[24px] flex-1 bg-slate-200" />
+                    </div>
+
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-0.5">
+                      {cityList.map((city) => (
+                        <li key={city.id}>
+                          <Link
+                            href={`/tour-packages/${state.country?.slug}/${state.slug}/${city.slug}`}
+                            className="group flex items-center gap-2 py-1.5 text-[13px] font-semibold text-slate-600 hover:text-[#2E8B8B] transition-colors duration-200"
+                          >
+                            <MapPin
+                              size={12}
+                              className="shrink-0 text-[#F8904D]"
+                            />
+                            <span className="truncate group-hover:underline">
+                              {city.title}
+                            </span>
+                            <ArrowRight
+                              size={12}
+                              className="shrink-0 opacity-0 -ml-0.5 group-hover:opacity-100 transition-opacity duration-200"
+                            />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
             </div>
           </section>
