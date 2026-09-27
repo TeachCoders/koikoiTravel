@@ -129,7 +129,8 @@ export default function SeasonDetail({
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={initialSeason.title} />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-slate-950/20 to-slate-950/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0a1122]/95 via-[#0e1830]/55 to-[#0a1122]/25" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_50%,rgba(201,168,106,0.12)_0%,rgba(201,168,106,0.05)_50%,transparent_100%)]" />
           </>
         ) : (
           <div className="absolute inset-0">
