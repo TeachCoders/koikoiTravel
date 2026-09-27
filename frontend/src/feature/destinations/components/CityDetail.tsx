@@ -151,6 +151,7 @@ function CityContent({
           <>
             <HeroSlider images={heroImages} alt={city.title} />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/40 to-slate-950/20" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_65%_60%_at_50%_50%,rgba(2,6,23,0.42)_0%,rgba(2,6,23,0.26)_50%,rgba(2,6,23,0.08)_80%,transparent_100%)]" />
           </>
         ) : (
           <div className="absolute inset-0">
@@ -173,7 +174,7 @@ function CityContent({
             </p>
           )}
 
-          <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wider drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
+          <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wider drop-shadow-[0_2px_3px_rgba(0,0,0,0.95)] drop-shadow-[0_10px_28px_rgba(0,0,0,0.75)]">
             {heroTitle}
           </h1>
         </div>

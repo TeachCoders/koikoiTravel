@@ -94,8 +94,7 @@ function SlideImage({
       loading={preload ? "eager" : undefined}
       quality={90}
       sizes="100vw"
-      theme="dark"
-      unoptimized={false}
+      theme="light"
       className="object-cover object-center"
     />
   );
