@@ -262,7 +262,7 @@ function CountryContent({
 
         <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 h-full flex flex-col justify-center items-center py-6 sm:py-8 text-center">
           {heroTag && (
-            <p className="hidden sm:block w-fit max-w-2xl mx-auto mb-3 text-[11px] sm:text-[13px] font-medium uppercase tracking-[0.28em] leading-relaxed pr-[0.28em] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)] drop-shadow-[0_4px_14px_rgba(0,0,0,0.8)]">
+            <p className="hidden sm:block w-fit max-w-2xl mx-auto mb-3 text-[17px] font-bold uppercase tracking-[0.28em] leading-relaxed pr-[0.28em] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)] drop-shadow-[0_4px_14px_rgba(0,0,0,0.8)]">
               {heroTag}
             </p>
           )}
