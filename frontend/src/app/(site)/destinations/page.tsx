@@ -393,12 +393,10 @@ export default async function DestinationsPage() {
       {/* ===== SEO CONTENT (after hero banner) ===== */}
       <section className="bg-white border-b border-slate-100">
         <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-14">
-          <div className="max-w-4xl mx-auto text-center">
-            <SectionLabel icon={<Compass size={12} />}>
-              Why Travellers Trust KoiKoi Travel
-            </SectionLabel>
+          <div className="max-w-4xl ">
+
             <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-2">
-              Curated Holiday Destinations, Beautifully Planned
+              Explore with KoiKoi
             </h2>
           </div>
           <div className="mt-8 w-full space-y-5 text-[18px] leading-relaxed text-slate-600">
@@ -419,7 +417,7 @@ export default async function DestinationsPage() {
             </p>
             <p>
               Every destination opens into a tour package built the KoiKoi
-              way: comfortable 3★ and 4★ hotels, a private cab, breakfast,
+              way: comfortable 3★ and 4★ hotels, 5★ hotels, luxury hotels, a private cab, breakfast,
               sightseeing and friendly local support — all in one clear price.
               Each package shows a day-by-day itinerary, inclusions, exclusions
               and journey highlights, so you always know exactly what to expect
@@ -443,78 +441,78 @@ export default async function DestinationsPage() {
         <section id="countries" className="scroll-mt-24 bg-slate-50">
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-16 md:py-20">
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
-            <div>
-              <SectionLabel icon={<Globe2 size={12} />}>By Country</SectionLabel>
-              <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-1">
-                Explore Countries
-              </h2>
-              <p className="mt-2 text-slate-500 text-sm md:text-base">
-                Pick a country and dive into its favourite holiday regions.
-              </p>
+              <div>
+                <SectionLabel icon={<Globe2 size={12} />}>By Country</SectionLabel>
+                <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-1">
+                  Explore Countries
+                </h2>
+                <p className="mt-2 text-slate-500 text-sm md:text-base">
+                  Pick a country and dive into its favourite holiday regions.
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {countries.map((country) => {
-              const countryStates = orderByDisplay(
-                stateMap.get(country.id) || []
-              );
-              const countryTours =
-                country.tourCount ||
-                countryStates.reduce((sum, s) => sum + (s.tourCount || 0), 0);
-              const image = img(
-                country.banner?.images?.[0],
-                country.thumbImg
-              );
-              return (
-                <Link
-                  key={country.id}
-                  href={`/tour-packages/${country.slug}`}
-                  className="group relative block overflow-hidden rounded-3xl bg-white border border-slate-100 shadow-[0_2px_16px_rgba(0,0,0,0.05)] hover:shadow-[0_24px_60px_rgba(46,139,139,0.18)] hover:-translate-y-1.5 transition-all duration-500"
-                >
-                  <div className="relative h-72 w-full overflow-hidden">
-                    {image ? (
-                      <FallbackImage
-                        src={image}
-                        alt={country.h1Title || country.title}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-[#2E8B8B] to-[#1c4e4e]" />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/5" />
-                    <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 px-3 py-1.5 text-[11px] font-bold text-white">
-                      {countryStates.length} Regions
-                      {countryTours > 0 && ` · ${countryTours} Tours`}
-                    </span>
-                    <div className="absolute bottom-5 left-5 right-5">
-                      <h3 className="font-heading text-2xl font-extrabold text-white tracking-tight drop-shadow-lg">
-                        {country.h1Title || country.title}
-                      </h3>
-                      {stripHtml(country.overView || country.seoDescription || "")
-                        .slice(0, 80) && (
-                        <p className="mt-1.5 text-[13px] text-white/80 line-clamp-2">
-                          {stripHtml(
-                            country.overView || country.seoDescription || ""
-                          )}
-                        </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {countries.map((country) => {
+                const countryStates = orderByDisplay(
+                  stateMap.get(country.id) || []
+                );
+                const countryTours =
+                  country.tourCount ||
+                  countryStates.reduce((sum, s) => sum + (s.tourCount || 0), 0);
+                const image = img(
+                  country.banner?.images?.[0],
+                  country.thumbImg
+                );
+                return (
+                  <Link
+                    key={country.id}
+                    href={`/tour-packages/${country.slug}`}
+                    className="group relative block overflow-hidden rounded-3xl bg-white border border-slate-100 shadow-[0_2px_16px_rgba(0,0,0,0.05)] hover:shadow-[0_24px_60px_rgba(46,139,139,0.18)] hover:-translate-y-1.5 transition-all duration-500"
+                  >
+                    <div className="relative h-72 w-full overflow-hidden">
+                      {image ? (
+                        <FallbackImage
+                          src={image}
+                          alt={country.h1Title || country.title}
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-[#2E8B8B] to-[#1c4e4e]" />
                       )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/5" />
+                      <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 px-3 py-1.5 text-[11px] font-bold text-white">
+                        {countryStates.length} Regions
+                        {countryTours > 0 && ` · ${countryTours} Tours`}
+                      </span>
+                      <div className="absolute bottom-5 left-5 right-5">
+                        <h3 className="font-heading text-2xl font-extrabold text-white tracking-tight drop-shadow-lg">
+                          {country.h1Title || country.title}
+                        </h3>
+                        {stripHtml(country.overView || country.seoDescription || "")
+                          .slice(0, 80) && (
+                            <p className="mt-1.5 text-[13px] text-white/80 line-clamp-2">
+                              {stripHtml(
+                                country.overView || country.seoDescription || ""
+                              )}
+                            </p>
+                          )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="p-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-                    <span className="inline-flex items-center gap-2 text-sm font-bold text-[#1C1C1C] group-hover:text-[#2E8B8B] transition-colors">
-                      Explore {country.h1Title || country.title}
-                      <ArrowRight
-                        size={15}
-                        className="text-[#F8904D] transition-transform duration-300 group-hover:translate-x-1"
-                      />
-                    </span>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+                    <div className="p-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                      <span className="inline-flex items-center gap-2 text-sm font-bold text-[#1C1C1C] group-hover:text-[#2E8B8B] transition-colors">
+                        Explore {country.h1Title || country.title}
+                        <ArrowRight
+                          size={15}
+                          className="text-[#F8904D] transition-transform duration-300 group-hover:translate-x-1"
+                        />
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </section>
 
@@ -703,31 +701,31 @@ export default async function DestinationsPage() {
           <section id="tour-packages" className="scroll-mt-24 bg-[#f8f8f8]">
             <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-16 md:py-20">
               <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
-              <div>
-                <SectionLabel icon={<Compass size={12} />}>
-                  Hand-Crafted Itineraries
-                </SectionLabel>
-                <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-1">
-                  Top Tour Packages
-                </h2>
-                <p className="mt-2 text-slate-500 text-sm md:text-base">
-                  Fully customisable day-by-day itineraries across India.
-                </p>
+                <div>
+                  <SectionLabel icon={<Compass size={12} />}>
+                    Hand-Crafted Itineraries
+                  </SectionLabel>
+                  <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-1">
+                    Top Tour Packages
+                  </h2>
+                  <p className="mt-2 text-slate-500 text-sm md:text-base">
+                    Fully customisable day-by-day itineraries across India.
+                  </p>
+                </div>
+                <Link
+                  href="/tour-packages"
+                  className="inline-flex shrink-0 items-center gap-2 rounded-full border-2 border-[#2E8B8B]/20 bg-[#2E8B8B]/5 px-6 py-2.5 text-sm font-bold text-[#2E8B8B] hover:bg-[#2E8B8B] hover:text-white transition-all duration-300"
+                >
+                  See All Tour Packages
+                  <ArrowRight size={15} />
+                </Link>
               </div>
-              <Link
-                href="/tour-packages"
-                className="inline-flex shrink-0 items-center gap-2 rounded-full border-2 border-[#2E8B8B]/20 bg-[#2E8B8B]/5 px-6 py-2.5 text-sm font-bold text-[#2E8B8B] hover:bg-[#2E8B8B] hover:text-white transition-all duration-300"
-              >
-                See All Tour Packages
-                <ArrowRight size={15} />
-              </Link>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-              {journeys.map((j) => (
-                <TourPackageCard key={j.id} journey={j} />
-              ))}
-            </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                {journeys.map((j) => (
+                  <TourPackageCard key={j.id} journey={j} />
+                ))}
+              </div>
             </div>
           </section>
         )}

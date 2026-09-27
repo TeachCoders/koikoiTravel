@@ -67,47 +67,47 @@ const THEMES: {
   icon: React.ReactNode;
   image: string;
 }[] = [
-  {
-    match: ["honeymoon", "couple", "romance"],
-    icon: <Heart size={20} />,
-    image: "",
-  },
-  {
-    match: ["heritage", "culture", "historical", "monument"],
-    icon: <Landmark size={20} />,
-    image: "",
-  },
-  {
-    match: ["culinary", "food", "dishes"],
-    icon: <UtensilsCrossed size={20} />,
-    image: "",
-  },
-  {
-    match: ["ayurveda", "yoga", "wellness"],
-    icon: <Flower2 size={20} />,
-    image: "",
-  },
-  {
-    match: ["taj", "golden triangle"],
-    icon: <Landmark size={20} />,
-    image: "",
-  },
-  {
-    match: ["spiritual", "temple", "pilgrim"],
-    icon: <Sparkles size={20} />,
-    image: "",
-  },
-  {
-    match: ["nature", "wildlife"],
-    icon: <Mountain size={20} />,
-    image: "",
-  },
-  {
-    match: ["beach", "lake"],
-    icon: <Waves size={20} />,
-    image: "",
-  },
-];
+    {
+      match: ["honeymoon", "couple", "romance"],
+      icon: <Heart size={20} />,
+      image: "",
+    },
+    {
+      match: ["heritage", "culture", "historical", "monument"],
+      icon: <Landmark size={20} />,
+      image: "",
+    },
+    {
+      match: ["culinary", "food", "dishes"],
+      icon: <UtensilsCrossed size={20} />,
+      image: "",
+    },
+    {
+      match: ["ayurveda", "yoga", "wellness"],
+      icon: <Flower2 size={20} />,
+      image: "",
+    },
+    {
+      match: ["taj", "golden triangle"],
+      icon: <Landmark size={20} />,
+      image: "",
+    },
+    {
+      match: ["spiritual", "temple", "pilgrim"],
+      icon: <Sparkles size={20} />,
+      image: "",
+    },
+    {
+      match: ["nature", "wildlife"],
+      icon: <Mountain size={20} />,
+      image: "",
+    },
+    {
+      match: ["beach", "lake"],
+      icon: <Waves size={20} />,
+      image: "",
+    },
+  ];
 
 function resolveTheme(title: string) {
   const t = title.toLowerCase();
@@ -256,14 +256,14 @@ export default async function TravelExperiencesPage() {
               Travel Experiences Made Simple & Personal
             </h2>
           </div>
-          <div className="mt-8 w-full space-y-5 text-[15.5px] leading-relaxed text-slate-600">
-            <p>
+          <div className="mt-8 w-full space-y-5 text-[18px] leading-relaxed text-slate-600">
+            <p className="text-[15px] text-slate-600 leading-relaxed line-clamp-3">
               A travel experience is a special way of travelling. Some people love
               slow trips. Some people love adventure. Some people just want peace.
               At KoiKoi Travel, we have made travel experiences for every kind of
               traveller.
             </p>
-            <p>
+            <p className="text-[15px] text-slate-600 leading-relaxed line-clamp-3">
               On this page you will find our hand-made themes. Honeymoon trips for
               couples who want romance. Heritage trips for history lovers. Wellness
               trips for people who need rest and calm. Adventure trips for those who
@@ -271,14 +271,14 @@ export default async function TravelExperiencesPage() {
               dishes. Each theme is built by our team to feel special and easy at
               the same time.
             </p>
-            <p>
+            <p className="text-[15px] text-slate-600 leading-relaxed line-clamp-3">
               When you pick a travel experience, we plan the whole trip around that
               feeling. The hotels, the cabs, the places and the food — everything
               matches the theme. The price is always clear, and every day of your
               plan is shown to you before you book. If you want changes, we are
               happy to make them.
             </p>
-            <p>
+            <p className="text-[15px] text-slate-600 leading-relaxed line-clamp-3">
               Not sure which experience fits you? Ask us on WhatsApp. Tell us how
               you like to travel and how many days you have free. Our team will
               suggest a theme, or build a new one just for you. Whatever your dream
@@ -332,7 +332,7 @@ export default async function TravelExperiencesPage() {
                   </div>
 
                   <div className="p-6">
-                    <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">
+                    <p className="text-[15px] text-slate-600 leading-relaxed line-clamp-3">
                       {stripHtml(e.overView || e.seoDescription)}
                     </p>
                     <div className="mt-5 pt-5 border-t border-slate-100 flex items-center justify-between">
