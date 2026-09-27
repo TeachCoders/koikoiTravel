@@ -401,8 +401,10 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     </div>
                   )}
                 </div>
-                {/* Interested in this tour */}
-                <div className="p-6 lg:p-8 bg-slate-50 border-t border-slate-100 flex flex-col gap-4 relative z-10">
+                {/* Interested in this tour - desktop only. On a phone the card
+                    stacks and this pushes the itinerary down, and the sticky
+                    action bar already carries both actions. */}
+                <div className="p-6 lg:p-8 bg-slate-50 border-t border-slate-100 hidden lg:flex flex-col gap-4 relative z-10">
                   <div>
                     <h3 className="text-[18px] font-extrabold text-[#1C1C1C] mb-1 leading-[1.3]">Interested in this tour?</h3>
                     <p className="text-[14px] text-slate-500 leading-relaxed font-medium">
