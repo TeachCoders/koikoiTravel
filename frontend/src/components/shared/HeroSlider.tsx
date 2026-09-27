@@ -46,7 +46,7 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
         style={{ transform: `translateX(-${current * 100}%)` }}
       >
         {validImages.map((img, i) => (
-          <div key={i} className="relative w-full h-full shrink-0 bg-slate-200">
+          <div key={i} className="relative w-full h-full shrink-0 bg-[#0a1122]">
             <SlideImage src={img} alt={alt} priority={i === 0} preload={i === 1} />
           </div>
         ))}
