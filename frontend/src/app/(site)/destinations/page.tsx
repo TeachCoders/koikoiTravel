@@ -405,7 +405,7 @@ export default async function DestinationsPage() {
               Curated Holiday Destinations, Beautifully Planned
             </h2>
           </div>
-          <div className="mt-8 w-full space-y-5 text-[15.5px] leading-relaxed text-slate-600">
+          <div className="mt-8 w-full space-y-5 text-[18px] leading-relaxed text-slate-600">
             <p>
               Every great holiday starts with a destination — and this page is
               where yours begins. At KoiKoi Travel, we have gathered the

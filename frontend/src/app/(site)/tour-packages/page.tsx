@@ -118,7 +118,7 @@ export default async function TourPackagesPage({
               Simple, Honest Tour Packages for Every Traveller
             </h2>
           </div>
-          <div className="mt-8 w-full space-y-5 text-[15.5px] leading-relaxed text-slate-600">
+          <div className="mt-8 w-full space-y-5 text-[18px] leading-relaxed text-slate-600">
             <p>
               A tour package is a ready-made holiday. Your hotel, your cab, your
               sightseeing and your food — everything is planned for you. At KoiKoi
