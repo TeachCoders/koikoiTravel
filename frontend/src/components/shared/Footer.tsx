@@ -178,7 +178,7 @@ export const Footer: React.FC = () => {
                   <MapPin className="w-4 h-4 text-[#2E8B8B]" />
                 </div>
                 <span className="text-[#a8a8a8] leading-relaxed pt-1.5">
-                  102, Destination Hub, MG Road, New Delhi, India
+                  FIEE Complex, Okhla Phase 2, New Delhi - 110020, India
                 </span>
               </div>
               <div className="flex items-center gap-3">

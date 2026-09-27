@@ -75,10 +75,10 @@ export default async function ContactUsPage() {
     email: "support@koikoitravel.com",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "102, Destination Hub, MG Road",
+      streetAddress: "FIEE Complex, Okhla Phase 2",
       addressLocality: "New Delhi",
       addressRegion: "Delhi",
-      postalCode: "110001",
+      postalCode: "110020",
       addressCountry: "IN",
     },
     openingHoursSpecification: [
@@ -229,8 +229,8 @@ export default async function ContactUsPage() {
                 </span>
                 <h3 className="text-lg font-bold text-slate-900 mt-0.5">Visit Our Office</h3>
                 <address className="not-italic text-sm text-slate-600 leading-relaxed mt-2">
-                  102, Destination Hub, MG Road,<br />
-                  New Delhi, Delhi - 110001, India
+                  FIEE Complex, Okhla Phase 2,<br />
+                  New Delhi, Delhi - 110020, India
                 </address>
               </div>
             </div>
