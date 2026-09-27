@@ -196,7 +196,7 @@ export default async function BlogPostPage({ params }: Props) {
       <section className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-12 md:py-20 relative z-20">
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_420px] xl:grid-cols-[minmax(0,1fr)_480px] lg:gap-16">
           <article className="min-w-0 bg-white rounded-3xl px-8 pt-0 pb-8 md:px-14 md:pt-0 md:pb-14 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200/60 prose prose-lg prose-slate max-w-none">
-            {post.moreDescription && <RichContent html={post.moreDescription} />}
+            {post.moreDescription && <RichContent html={post.moreDescription} className="rich-text--legacy" />}
 
             {/* ===== END OF ARTICLE CONVERSION WIDGET ===== */}
             <div className="not-prose mt-14 pt-10 border-t border-slate-200/80">

@@ -524,9 +524,9 @@
   /* ===== Rich Text (description content from editor) ===== */
 
   .rich-text {
-    color: #333;
-    letter-spacing: 0.02em;
-    line-height: 1.8;
+    color: #475569;
+    letter-spacing: normal;
+    line-height: 1.625;
   }
 
   .rich-text h1,
@@ -597,6 +597,26 @@
   }
 
   .rich-text p {
+    font-size: 0.96875rem;
+    line-height: 1.625;
+    letter-spacing: normal;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .rich-text p+p {
+    margin-top: 1.25rem;
+  }
+
+  /* Blog keeps its original, larger reading size. Same specificity as the rules
+     above, declared later, so it wins for anything tagged with it. */
+  .rich-text--legacy {
+    color: #333;
+    letter-spacing: 0.02em;
+    line-height: 1.8;
+  }
+
+  .rich-text--legacy p {
     font-size: 1.125rem;
     line-height: 1.8;
     letter-spacing: 0.02em;
@@ -604,7 +624,7 @@
     margin-bottom: 0.75em;
   }
 
-  .rich-text p+p {
+  .rich-text--legacy p+p {
     margin-top: 1.25em;
   }
 
