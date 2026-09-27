@@ -174,7 +174,7 @@ function ExperienceContent({ experience }: { experience: any }) {
 
         <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-center items-center py-8 text-center">
           {heroTag && (
-            <p className="hidden sm:block max-w-2xl mx-auto mb-2 text-base sm:text-lg font-bold tracking-wider uppercase text-white/90 leading-relaxed drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)] drop-shadow-[0_4px_14px_rgba(0,0,0,0.8)]">
+            <p className="hidden sm:block w-fit max-w-2xl mx-auto mb-3 text-[11px] sm:text-[13px] font-medium uppercase tracking-[0.28em] leading-relaxed pr-[0.28em] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)] drop-shadow-[0_4px_14px_rgba(0,0,0,0.8)]">
               {heroTag}
             </p>
           )}
