@@ -26,21 +26,6 @@ interface Suggestion {
   item: ExpOption | CityOption;
 }
 
-interface PopularChip {
-  label: string;
-  kind: "exp" | "state";
-  value: string;
-}
-
-const POPULAR_CHIPS: PopularChip[] = [
-  { label: "Golden Triangle Tours", kind: "exp", value: "Golden Triangle" },
-  { label: "Agra Jaipur Tours", kind: "exp", value: "Taj Mahal" },
-  { label: "Rajasthan Tours", kind: "state", value: "Rajasthan" },
-  { label: "Kerala Tours", kind: "state", value: "Kerala" },
-  { label: "Wildlife India Tours", kind: "exp", value: "Wildlife" },
-  { label: "Weekend Tours", kind: "exp", value: "Weekend Tours in India" },
-];
-
 export default function HeroSearchBar() {
   const router = useRouter();
   const { cities, experiences } = useJourneyFilters();
@@ -89,18 +74,6 @@ export default function HeroSearchBar() {
 
   const toggleExp = (e: ExpOption) => {
     setSelectedExperiences((prev) => (prev.includes(e.title) ? prev : [...prev, e.title]));
-  };
-
-  const toggleState = (s: string) => {
-    setSelectedStates((prev) => (prev.includes(s) ? prev : [...prev, s]));
-  };
-
-  const selectChip = (chip: PopularChip) => {
-    if (chip.kind === "exp") {
-      toggleExp({ id: -1, slug: chip.value, title: chip.value });
-    } else {
-      toggleState(chip.value);
-    }
   };
 
   const go = () => {
@@ -188,34 +161,6 @@ export default function HeroSearchBar() {
               Search
             </button>
           </div>
-
-          {selectedCities.length === 0 &&
-            selectedExperiences.length === 0 &&
-            selectedStates.length === 0 &&
-            !open && (
-              <div className="flex flex-wrap items-center gap-2 mt-2 px-1 pb-1">
-                <span className="text-[11px] font-bold uppercase tracking-wide text-[#999]">
-                  Popular
-                </span>
-                {POPULAR_CHIPS.map((chip) => (
-                  <button
-                    key={chip.label}
-                    type="button"
-                    onClick={() => {
-                      selectChip(chip);
-                    }}
-                    className="inline-flex items-center gap-1 text-[13px] font-medium text-[#1C1C1C]/75 bg-white border border-[#1C1C1C]/10 hover:border-[#2E8B8B] hover:text-[#2E8B8B] rounded-full px-3 py-1 transition-colors"
-                  >
-                    {chip.kind === "exp" ? (
-                      <Sparkles className="w-3.5 h-3.5" />
-                    ) : (
-                      <MapPin className="w-3.5 h-3.5" />
-                    )}
-                    {chip.label}
-                  </button>
-                ))}
-              </div>
-            )}
 
           {(selectedCities.length > 0 ||
             selectedExperiences.length > 0 ||
