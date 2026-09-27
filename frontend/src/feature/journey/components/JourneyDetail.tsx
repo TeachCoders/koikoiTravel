@@ -148,7 +148,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           <div className="mb-5">
 
             {pageH1 && (
-              <h1 className="font-heading text-2xl lg:text-3xl xl:text-4xl font-extrabold tracking-tight text-[#1C1C1C] mb-3 leading-[1.3]">
+              <h1 className="font-heading text-[25px] font-extrabold tracking-tight text-[#1C1C1C] mb-3 leading-[1.2]">
                 {durationText && (
                   <span className="text-[#2E8B8B]">{durationText}</span>
                 )}
@@ -323,7 +323,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
                   {/* 2. Quick Facts / Trip Overview */}
                   <div className="mb-6 relative z-10 space-y-5">
-                    <h3 className="text-[17px] font-extrabold text-[#1C1C1C] flex items-center gap-2">
+                    <h3 className="text-[18px] leading-[1.3] font-extrabold text-[#1C1C1C] flex items-center gap-2">
                       <Sparkles size={18} className="text-[#F8904D]" />
                       Trip Overview
                     </h3>
@@ -411,7 +411,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           {journey.highlights && journey.highlights.length > 0 && (
             <section>
               <span className="accent-label">Highlights</span>
-              <h2 className="h3 text-[#1C1C1C] mt-2 mb-3">Key Experiences</h2>
+              <h2 className="h3 text-[22px] leading-[1.25] text-[#1C1C1C] mt-2 mb-3">Key Experiences</h2>
               <div className="bg-[#2E8B8B]/5 rounded-3xl p-5 md:p-6 border border-[#2E8B8B]/10">
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   {journey.highlights.map((h, i) => (
@@ -428,7 +428,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           {journey.overView && (
             <section>
               <span className="accent-label">Overview</span>
-              <h2 className="h3 text-[#1C1C1C] mt-3 mb-6">About This Tour</h2>
+              <h2 className="h3 text-[22px] leading-[1.25] text-[#1C1C1C] mt-3 mb-6">About This Tour</h2>
               <div className="bg-white rounded-3xl p-5 md:p-9 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-base text-slate-600 leading-[1.8]">
                 <RichContent html={linkKeywords(journey.overView, paragraphLinkRules)} className="rich-text-plain-links" />
               </div>
@@ -440,7 +440,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               <div className="flex flex-wrap items-end justify-between gap-4 mb-5 md:mb-8">
                 <div>
                   <span className="accent-label">Itinerary</span>
-                  <h2 className="h3 text-[#1C1C1C] mt-2">Day By Day Itinerary</h2>
+                  <h2 className="h3 text-[22px] leading-[1.25] text-[#1C1C1C] mt-2">Day By Day Itinerary</h2>
                 </div>
               </div>
               <div className="relative bg-white rounded-3xl p-2 md:p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
@@ -457,7 +457,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
             <div className="grid grid-cols-1 gap-6 lg:gap-8">
               {(journey.inclusions?.length ?? 0) > 0 && (
                 <div className="bg-emerald-50/40 border border-emerald-100 rounded-3xl p-5 md:p-9 shadow-[0_8px_30px_rgb(16,185,129,0.04)]">
-                  <h3 className="font-heading text-lg md:text-xl font-bold text-emerald-800 mb-5 flex items-center gap-2.5">
+                  <h3 className="font-heading text-[18px] leading-[1.3] font-bold text-emerald-800 mb-5 flex items-center gap-2.5">
                     <CheckCircle2 size={22} className="text-emerald-500" /> What's Included
                   </h3>
                   <ul className="space-y-4">
@@ -471,7 +471,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               )}
               {(journey.exclusions?.length ?? 0) > 0 && (
                 <div className="bg-red-50/40 border border-red-100 rounded-3xl p-5 md:p-9 shadow-[0_8px_30px_rgb(239,68,68,0.04)]">
-                  <h3 className="font-heading text-lg md:text-xl font-bold text-red-800 mb-5 flex items-center gap-2.5">
+                  <h3 className="font-heading text-[18px] leading-[1.3] font-bold text-red-800 mb-5 flex items-center gap-2.5">
                     <XCircle size={22} className="text-red-500" /> What's Excluded
                   </h3>
                   <ul className="space-y-4">
@@ -489,7 +489,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           {(journey.whyChooseUs?.length ?? 0) > 0 && (
             <section>
               <span className="accent-label">Why Choose Us</span>
-              <h2 className="h3 text-[#1C1C1C] mt-2 mb-4 md:mb-6">Why Book With Us</h2>
+              <h2 className="h3 text-[22px] leading-[1.25] text-[#1C1C1C] mt-2 mb-4 md:mb-6">Why Book With Us</h2>
               <div className="relative rounded-3xl bg-gradient-to-br from-white via-[#F8FAFA] to-[#EBF3F3] p-6 md:p-10 overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#2E8B8B]/10">
                 {/* Background Watermark Icon */}
                 <div className="absolute -top-8 -right-4 opacity-[0.05] pointer-events-none rotate-12">
@@ -515,7 +515,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           {(journey.faqs?.length ?? 0) > 0 && (
             <section>
               <span className="accent-label">FAQs</span>
-              <h2 className="h3 text-[#1C1C1C] mt-2 mb-4 md:mb-6">Frequently Asked Questions</h2>
+              <h2 className="h3 text-[22px] leading-[1.25] text-[#1C1C1C] mt-2 mb-4 md:mb-6">Frequently Asked Questions</h2>
               <div className="space-y-3">
                 {(journey.faqs ?? []).map((f) => (
                   <FaqItem key={f.id} q={f.ques} a={f.ans} linkRules={paragraphLinkRules} />
@@ -571,7 +571,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
             <div className="max-w-5xl">
               <span className="accent-label">Know More</span>
-              <h2 className="h3 text-[#1C1C1C] mt-2 mb-5 md:mb-8">Everything About {pageH1}</h2>
+              <h2 className="h3 text-[22px] leading-[1.25] text-[#1C1C1C] mt-2 mb-5 md:mb-8">Everything About {pageH1}</h2>
 
               {journey.seoDescription && (
                 <RichContent html={linkKeywords(journey.seoDescription, paragraphLinkRules)} />

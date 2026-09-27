@@ -543,57 +543,37 @@
     margin-bottom: 0.6em;
   }
 
+  /* Flat heading scale, shared with the tour packages overview: 25 / 22 / 18
+     at every breakpoint, with leading tightened to suit the smaller type.
+     h4 to h6 step down from there so the hierarchy stays intact. */
   .rich-text h1 {
-    font-size: 2.25rem;
-    line-height: 1.15;
+    font-size: 1.5625rem;
+    line-height: 1.2;
   }
 
   .rich-text h2 {
-    font-size: 1.875rem;
+    font-size: 1.375rem;
     line-height: 1.25;
   }
 
   .rich-text h3 {
-    font-size: 1.5rem;
+    font-size: 1.125rem;
     line-height: 1.3;
   }
 
   .rich-text h4 {
-    font-size: 1.25rem;
+    font-size: 1.0625rem;
     line-height: 1.35;
   }
 
   .rich-text h5 {
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1.4;
   }
 
-.rich-text h6 {
-    font-size: 1rem;
+  .rich-text h6 {
+    font-size: 0.9375rem;
     line-height: 1.5;
-  }
-
-  /* Mobile-friendly scaling for editor/content headings (app-like) */
-  @media (max-width: 640px) {
-    .rich-text h1 {
-      font-size: 1.6rem;
-      line-height: 1.2;
-    }
-
-    .rich-text h2 {
-      font-size: 1.375rem;
-      line-height: 1.25;
-    }
-
-    .rich-text h3 {
-      font-size: 1.1875rem;
-      line-height: 1.3;
-    }
-
-    .rich-text h4 {
-      font-size: 1.0625rem;
-      line-height: 1.35;
-    }
   }
 
   .rich-text p {
@@ -626,6 +606,58 @@
 
   .rich-text--legacy p+p {
     margin-top: 1.25em;
+  }
+
+  .rich-text--legacy h1 {
+    font-size: 2.25rem;
+    line-height: 1.15;
+  }
+
+  .rich-text--legacy h2 {
+    font-size: 1.875rem;
+    line-height: 1.25;
+  }
+
+  .rich-text--legacy h3 {
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+
+  .rich-text--legacy h4 {
+    font-size: 1.25rem;
+    line-height: 1.35;
+  }
+
+  .rich-text--legacy h5 {
+    font-size: 1.125rem;
+    line-height: 1.4;
+  }
+
+  .rich-text--legacy h6 {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 640px) {
+    .rich-text--legacy h1 {
+      font-size: 1.6rem;
+      line-height: 1.2;
+    }
+
+    .rich-text--legacy h2 {
+      font-size: 1.375rem;
+      line-height: 1.25;
+    }
+
+    .rich-text--legacy h3 {
+      font-size: 1.1875rem;
+      line-height: 1.3;
+    }
+
+    .rich-text--legacy h4 {
+      font-size: 1.0625rem;
+      line-height: 1.35;
+    }
   }
 
   .rich-text ul,
