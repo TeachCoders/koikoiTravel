@@ -466,7 +466,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               <div className="bg-[#2E8B8B]/5 rounded-3xl p-5 md:p-6 border border-[#2E8B8B]/10">
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   {journey.highlights.map((h, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-[17px] font-medium text-[#1C1C1C] leading-[1.5]">
+                    <li key={i} className="flex items-start gap-2.5 text-[15px] font-medium text-[#1C1C1C] leading-[1.5]">
                       <BadgeCheck size={18} className="shrink-0 mt-0.5 text-[#2E8B8B]" />
                       <span>{h}</span>
                     </li>
@@ -513,7 +513,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   </h3>
                   <ul className="space-y-4">
                     {(journey.inclusions ?? []).map((item, i) => (
-                      <li key={i} className="flex items-start gap-3 text-[17px] font-bold text-emerald-950 leading-relaxed">
+                      <li key={i} className="flex items-start gap-3 text-[15px] font-bold text-emerald-950 leading-relaxed">
                         <CheckCircle2 size={20} className="text-emerald-500 mt-[2px] shrink-0" /> {item}
                       </li>
                     ))}
@@ -527,7 +527,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   </h3>
                   <ul className="space-y-4">
                     {(journey.exclusions ?? []).map((item, i) => (
-                      <li key={i} className="flex items-start gap-3 text-[17px] font-medium text-red-950 leading-relaxed">
+                      <li key={i} className="flex items-start gap-3 text-[15px] font-medium text-red-950 leading-relaxed">
                         <XCircle size={20} className="text-red-500 mt-[2px] shrink-0" /> {item}
                       </li>
                     ))}
@@ -551,7 +551,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
                 <ul className="relative z-10 space-y-5 md:space-y-6">
                   {(journey.whyChooseUs ?? []).map((item, i) => (
-                    <li key={i} className="flex items-start gap-4 text-[17px] font-semibold text-slate-700 leading-[1.7]">
+                    <li key={i} className="flex items-start gap-4 text-[15px] font-semibold text-slate-700 leading-[1.7]">
                       <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0 mt-0.5 border border-slate-100 shadow-sm">
                         <ShieldCheck size={18} className="text-[#2E8B8B]" />
                       </div>
@@ -655,12 +655,12 @@ function FaqItem({ q, a, linkRules }: { q: string; a: string; linkRules: AutoLin
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left cursor-pointer"
       >
-        <span className={cn("text-[17px] font-bold transition-colors", open ? "text-[#2E8B8B]" : "text-[#1C1C1C]")}>{stripHtml(q)}</span>
+        <span className={cn("text-[15px] font-bold transition-colors", open ? "text-[#2E8B8B]" : "text-[#1C1C1C]")}>{stripHtml(q)}</span>
         <span className={cn("w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300", open ? "bg-[#2E8B8B] text-white rotate-180" : "bg-slate-100 text-slate-500")}>
           <ChevronDown size={16} />
         </span>
       </button>
-      <div className={cn("px-6 pb-6 text-[17px] text-slate-600 leading-relaxed", !open && "hidden")}>
+      <div className={cn("px-6 pb-6 text-[15px] text-slate-600 leading-relaxed", !open && "hidden")}>
         <RichContent html={linkKeywords(a, linkRules)} />
       </div>
     </div>
