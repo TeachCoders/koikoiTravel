@@ -180,14 +180,17 @@ export default function TourPackageCard({ journey, contextName }: { journey: Jou
             iconClassName="w-3.5 h-3.5 fill-white shrink-0"
           />
 
-          {/* Column 2: Details Navigation with Animated Arrow */}
-          <Link href={href} className="flex items-center gap-1.5 group/btn shrink-0" title="View Details">
-            <span className="text-[14.5px] sm:text-[15.5px] font-bold text-[#F8904D] group-hover/btn:underline whitespace-nowrap">
-              View Details
-            </span>
-            <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center border border-orange-100 group-hover/btn:bg-[#F8904D] group-hover/btn:border-[#F8904D] group-hover/btn:shadow-sm transition-all duration-300 shrink-0">
-              <ArrowRight size={14} className="text-[#F8904D] group-hover/btn:text-white transition-all duration-300 group-hover/btn:-rotate-45" />
-            </div>
+          {/* Column 2: Details Button - Outlined Orange */}
+          <Link
+            href={href}
+            title="View Details"
+            className="group/btn flex items-center gap-1.5 px-3 py-2 rounded-xl bg-orange-50/70 border border-orange-200 text-[#F8904D] hover:bg-[#F8904D] hover:border-[#F8904D] hover:text-white hover:shadow-md hover:shadow-[#F8904D]/25 active:scale-95 font-bold tracking-tight text-[12px] sm:text-[12.5px] transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0"
+          >
+            <span>View Details</span>
+            <ArrowRight
+              size={14}
+              className="shrink-0 transition-transform duration-300 group-hover/btn:translate-x-0.5"
+            />
           </Link>
         </div>
       </div>
