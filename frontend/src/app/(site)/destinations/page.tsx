@@ -71,6 +71,8 @@ type CCity = {
   slug: string;
   thumbImg?: string | null;
   displayOrder?: number | null;
+  isActive?: boolean;
+  _count?: { journeys: number };
 };
 
 const orderByDisplay = <T extends { displayOrder?: number | null; title: string }>(
@@ -227,11 +229,29 @@ export default async function DestinationsPage() {
   } = await fetchDestinations();
 
   // One entry per state that actually has cities, each keeping its own city
-  // list. The section renders a wide promotion banner per state and then that
-  // state's cities underneath, so the state needs to drive the grouping.
+  // list. The section renders a banner per state and then that state's cities
+  // underneath, so the state drives the grouping.
+  //
+  // Order: states with no itineraries sink to the bottom, then by city count so
+  // that the two column grid pairs tall blocks with tall blocks and the rows
+  // end up close to the same height. Pairing on itineraries instead left two
+  // city blocks sitting next to thirteen.
   const stateGroups = orderByDisplay(states)
     .map((s) => ({ state: s, cities: orderByDisplay(s.cities || []) }))
-    .filter((g) => g.cities.length > 0);
+    .filter((g) => g.cities.length > 0)
+    .sort((a, b) => {
+      const az = (a.state.tourCount || 0) === 0;
+      const bz = (b.state.tourCount || 0) === 0;
+      if (az !== bz) return az ? 1 : -1;
+      return b.cities.length - a.cities.length;
+    });
+
+  // First index of the trailing "coming soon" run, or the length when every
+  // state has itineraries. Used below to keep that run starting on its own row.
+  const zeroTourStart = stateGroups.findIndex(
+    (g) => (g.state.tourCount || 0) === 0
+  );
+  const zeroTourAt = zeroTourStart === -1 ? stateGroups.length : zeroTourStart;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -412,8 +432,8 @@ export default async function DestinationsPage() {
               snow and pine forests? Himachal Pradesh and Uttarakhand. Chasing
               sun, sand and sunshine? Goa. Love backwaters, spice gardens and
               slow Ayurveda? Kerala has your name on it. Already sure about a
-              city — Jaipur, Udaipur, Manali, Munnar, Varanasi or Goa? Jump
-              straight to its tours in our Top Cities section.
+              city — Jaipur, Udaipur, Manali, Munnar, Varanasi or Goa? Find it
+              in the state wise list below.
             </p>
             <p>
               Every destination opens into a tour package built the KoiKoi
@@ -588,109 +608,170 @@ export default async function DestinationsPage() {
           <section id="cities" className="scroll-mt-24 bg-slate-50">
             <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-16 md:py-20">
               <div className="mb-9">
-                <SectionLabel icon={<MapPin size={12} />}>By City</SectionLabel>
+                <SectionLabel icon={<MapPin size={12} />}>By State</SectionLabel>
                 <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-1">
-                  Top Cities to Explore
+                  Explore India, State by State
                 </h2>
                 <p className="mt-2 text-slate-500 text-sm md:text-base">
-                  Every destination city, neatly grouped by state.
+                  Pick a state, then browse the cities we run itineraries in.
                 </p>
               </div>
 
-              {/* Two per row. Stacking all nine made the section several
-                  thousand pixels tall, and the city counts are lopsided
-                  enough that a three up grid left very short cards next to
-                  very long ones. */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
-                {stateGroups.map(({ state, cities: cityList }) => {
+              {/* Two per row. Each cell owns a banner plus that state's city
+                  list, so a state reads as one block. The banner is a fixed
+                  16/6 box with object cover: the source banners range from
+                  1.5:1 to 2.56:1, so a natural ratio would leave the shorter
+                  one floating inside an uneven row. */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 items-start">
+                {stateGroups.map(({ state, cities: cityList }, gi) => {
                   const banner = img(state.banner?.images?.[0], state.thumbImg);
-                  return (
-                    <Link
-                      key={state.id}
-                      href={`/tour-packages/${state.country?.slug}/${state.slug}`}
-                      className="group relative block overflow-hidden rounded-3xl shadow-[0_2px_16px_rgba(0,0,0,0.06)] transition-shadow duration-500 hover:shadow-[0_10px_40px_rgba(0,0,0,0.10)]"
-                    >
-                      <div className="relative aspect-[4/3] md:aspect-[3/2] w-full">
-                        {banner ? (
-                          <FallbackImage
-                            src={banner}
-                            alt={state.h1Title || state.title}
-                            fill
-                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 bg-gradient-to-br from-[#1C1C1C] to-[#2b2b2b]" />
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-slate-950/20" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/25 to-transparent" />
+                  const stateTours = state.tourCount || 0;
+                  const hasTours = stateTours > 0;
+                  const stateHref = `/tour-packages/${state.country?.slug}/${state.slug}`;
+                  // Two situations leave a half width hole. An odd total
+                  // leaves the very last cell short, and a non clickable state
+                  // landing in the second column would sit beside a one city
+                  // block and look broken. Either case spans both columns.
+                  // The trailing "coming soon" states must not be split across
+                  // a row boundary, since a half width zero tour block next to
+                  // a full itinerary block reads as broken. If they would start
+                  // on an odd row, pull them onto the next one instead.
+                  const loneTail =
+                    (gi === stateGroups.length - 1 && stateGroups.length % 2 === 1) ||
+                    (gi === zeroTourAt - 1 && zeroTourAt % 2 === 1);
 
-                        <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-7">
-                          <span className="mb-2 w-fit rounded-full bg-[#F8904D] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-                            {state.country?.title || "India"}
-                          </span>
-                          <h3 className="font-heading text-xl sm:text-2xl font-extrabold tracking-tight text-white drop-shadow-lg">
-                            {state.h1Title || state.title}
-                          </h3>
-                          {state.famousFor && (
-                            <p className="mt-1.5 text-[13px] sm:text-sm font-medium text-white/85 line-clamp-2 drop-shadow">
-                              {state.famousFor}
-                            </p>
-                          )}
-                          <span className="mt-3.5 inline-flex w-fit items-center gap-1.5 text-[13px] font-bold text-white">
-                            {cityList.length}{" "}
-                            {cityList.length === 1 ? "city" : "cities"}
+                  const bannerOverlay = (
+                    <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-6">
+                      <div className="flex items-end justify-between gap-4">
+                        <h3 className="font-heading text-xl sm:text-2xl font-extrabold tracking-tight text-white drop-shadow-lg">
+                          {state.h1Title || state.title}
+                        </h3>
+                        {hasTours && (
+                          <span className="shrink-0 inline-flex items-center gap-1.5 text-[13px] font-bold text-white">
+                            Explore All
                             <ArrowRight
                               size={14}
                               className="transition-transform duration-300 group-hover:translate-x-1"
                             />
                           </span>
-                        </div>
+                        )}
                       </div>
-                    </Link>
+                      <p className="mt-1.5 text-[13px] font-medium text-white/80 drop-shadow">
+                        {hasTours
+                          ? `${stateTours} ${
+                              stateTours === 1 ? "itinerary" : "itineraries"
+                            }`
+                          : "New tours coming soon"}
+                      </p>
+                    </div>
+                  );
+
+                  return (
+                    <div
+                      key={state.id}
+                      className={loneTail ? "md:col-span-2" : undefined}
+                    >
+                      {hasTours ? (
+                        <Link
+                          href={stateHref}
+                          className="group relative block overflow-hidden rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.06)] transition-shadow duration-500 hover:shadow-[0_10px_40px_rgba(0,0,0,0.10)]"
+                        >
+                          <div className="relative aspect-[16/6] w-full">
+                            {banner ? (
+                              <FallbackImage
+                                src={banner}
+                                alt={state.h1Title || state.title}
+                                fill
+                                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                              />
+                            ) : (
+                              <div className="absolute inset-0 bg-gradient-to-br from-[#1C1C1C] to-[#2b2b2b]" />
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/30 to-slate-950/10" />
+                            {bannerOverlay}
+                          </div>
+                        </Link>
+                      ) : (
+                        // No itineraries yet, so no href: clicking a banner
+                        // that leads to an empty page is worse than a dead one.
+                        <div className="relative overflow-hidden rounded-2xl shadow-[0_2px_16px_rgba(0,0,0,0.05)]">
+                          <div className="relative aspect-[16/6] w-full">
+                            {banner ? (
+                              <FallbackImage
+                                src={banner}
+                                alt={state.h1Title || state.title}
+                                fill
+                                className="object-cover"
+                              />
+                            ) : (
+                              <div className="absolute inset-0 bg-gradient-to-br from-[#1C1C1C] to-[#2b2b2b]" />
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/35 to-slate-950/20" />
+                            {bannerOverlay}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="mt-4">
+                        <div className="flex items-center gap-2.5 mb-3">
+                          <h4 className="font-heading text-base font-extrabold text-[#1C1C1C]">
+                            {state.title}
+                          </h4>
+                          <span className="text-[11px] font-semibold text-slate-400">
+                            {cityList.length}{" "}
+                            {cityList.length === 1 ? "city" : "cities"}
+                          </span>
+                          {hasTours && (
+                            <span className="text-[11px] font-semibold text-slate-400">
+                              {stateTours}{" "}
+                              {stateTours === 1 ? "itinerary" : "itineraries"}
+                            </span>
+                          )}
+                          <span className="h-px min-w-[24px] flex-1 bg-slate-200" />
+                        </div>
+
+                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-0.5">
+                          {cityList.map((city) => {
+                            const cityTours = city._count?.journeys ?? 0;
+                            const cityHref = `/tour-packages/${state.country?.slug}/${state.slug}/${city.slug}`;
+                            return (
+                              <li key={city.id}>
+                                {cityTours > 0 ? (
+                                  <Link
+                                    href={cityHref}
+                                    className="group flex items-center gap-2 py-1.5 text-[13px] font-semibold text-slate-600 hover:text-[#2E8B8B] transition-colors duration-200"
+                                  >
+                                    <MapPin
+                                      size={12}
+                                      className="shrink-0 text-[#F8904D]"
+                                    />
+                                    <span className="truncate group-hover:underline">
+                                      {city.title}
+                                    </span>
+                                    <span className="ml-auto shrink-0 text-[11px] font-semibold text-slate-400 tabular-nums">
+                                      {cityTours}
+                                    </span>
+                                    <ArrowRight
+                                      size={12}
+                                      className="shrink-0 opacity-0 -ml-0.5 group-hover:opacity-100 transition-opacity duration-200"
+                                    />
+                                  </Link>
+                                ) : (
+                                  // Listed but not linked. Still worth showing:
+                                  // the destination exists, the tours do not yet.
+                                  <span className="flex items-center gap-2 py-1.5 text-[13px] font-semibold text-slate-400">
+                                    <MapPin size={12} className="shrink-0 text-slate-300" />
+                                    <span className="truncate">{city.title}</span>
+                                  </span>
+                                )}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    </div>
                   );
                 })}
-              </div>
-
-              {/* Every city, listed. Kept as a plain two column ul so all
-                  eighty nine links stay reachable without opening anything. */}
-              <div className="mt-12 md:mt-16">
-                {stateGroups.map(({ state, cities: cityList }) => (
-                  <div key={state.id} className="mb-8 last:mb-0">
-                    <div className="flex items-center gap-2.5 mb-3">
-                      <h3 className="font-heading text-base font-extrabold text-[#1C1C1C]">
-                        {state.title}
-                      </h3>
-                      <span className="text-[11px] font-semibold text-slate-400">
-                        {cityList.length}{" "}
-                        {cityList.length === 1 ? "city" : "cities"}
-                      </span>
-                      <span className="h-px min-w-[24px] flex-1 bg-slate-200" />
-                    </div>
-
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-0.5">
-                      {cityList.map((city) => (
-                        <li key={city.id}>
-                          <Link
-                            href={`/tour-packages/${state.country?.slug}/${state.slug}/${city.slug}`}
-                            className="group flex items-center gap-2 py-1.5 text-[13px] font-semibold text-slate-600 hover:text-[#2E8B8B] transition-colors duration-200"
-                          >
-                            <MapPin
-                              size={12}
-                              className="shrink-0 text-[#F8904D]"
-                            />
-                            <span className="truncate group-hover:underline">
-                              {city.title}
-                            </span>
-                            <ArrowRight
-                              size={12}
-                              className="shrink-0 opacity-0 -ml-0.5 group-hover:opacity-100 transition-opacity duration-200"
-                            />
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
               </div>
             </div>
           </section>

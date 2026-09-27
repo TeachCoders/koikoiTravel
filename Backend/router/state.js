@@ -44,6 +44,20 @@ export default createCmsRouter({
     countryId: true,
   },
   parentInclude: { model: "country", select: { id: true, title: true, slug: true } },
-  childInclude: { model: "cities", select: { id: true, title: true, slug: true, thumbImg: true, displayOrder: true } },
+  childInclude: {
+    model: "cities",
+    // _count.journeys lets the destinations page label each city with its
+    // itinerary count without a second round trip. City.journeys is a real
+    // relation and Journey.isActive gates which tours actually count.
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      thumbImg: true,
+      displayOrder: true,
+      isActive: true,
+      _count: { select: { journeys: { where: { isActive: true } } } },
+    },
+  },
   tourCountWhere: (id) => ({ cities: { some: { stateId: id } } }),
 });
