@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 async function fetchRelated(category?: string, excludeId?: number): Promise<BlogPost[]> {
   try {
     const url = `${SERVER_API_BASE}/blog?limit=100&isActive=true`;
-    const res = await fetch(url, { next: { revalidate: 60 } });
+    const res = await fetch(url, { next: { revalidate: 300 } });
     if (!res.ok) return [];
     const json = await res.json();
     const all: BlogPost[] = json?.data || [];

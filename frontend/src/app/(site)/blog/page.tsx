@@ -40,7 +40,7 @@ async function fetchPosts(
 ): Promise<{ posts: BlogPost[]; total: number; totalPages: number }> {
   try {
     const url = `${SERVER_API_BASE}/blog?limit=${limit}&page=${page}&isActive=true${search ? `&search=${encodeURIComponent(search)}` : ""}`;
-    const res = await fetch(url, { next: { revalidate: 60 } });
+    const res = await fetch(url, { next: { revalidate: 300 } });
     if (!res.ok) return { posts: [], total: 0, totalPages: 0 };
     const json = await res.json();
     return {

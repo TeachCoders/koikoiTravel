@@ -252,6 +252,11 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
       {/* ===== SHORT DESCRIPTION + TOURS ===== */}
       <ToursSection
+        basePath={
+          state.country?.slug
+            ? `/tour-packages/${state.country.slug}/${state.slug}`
+            : `/tour-packages/${state.slug}`
+        }
         journeys={filteredJourneys}
         isLoading={journeysLoading}
         h1Title={pageH1}

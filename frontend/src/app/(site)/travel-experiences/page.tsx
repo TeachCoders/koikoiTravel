@@ -37,7 +37,7 @@ export async function generateMetadata(): Promise<Metadata> {
 async function fetchExperiences() {
   try {
     const url = `${SERVER_API_BASE}/holidays?isActive=true`;
-    const res = await fetch(url, { method: "GET", next: { revalidate: 60 } });
+    const res = await fetch(url, { method: "GET", next: { revalidate: 300 } });
     if (!res.ok) return [];
     const json = await res.json();
     return json?.data || [];
@@ -49,7 +49,7 @@ async function fetchExperiences() {
 async function fetchAllJourneys() {
   try {
     const url = `${SERVER_API_BASE}/journey?limit=200&isActive=true`;
-    const res = await fetch(url, { method: "GET", next: { revalidate: 60 } });
+    const res = await fetch(url, { method: "GET", next: { revalidate: 300 } });
     if (!res.ok) return [];
     const json = await res.json();
     return json?.data || [];

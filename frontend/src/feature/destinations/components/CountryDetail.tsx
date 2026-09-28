@@ -295,6 +295,7 @@ function CountryContent({
 
       {/* ===== SHORT DESCRIPTION + TOURS ===== */}
       <ToursSection
+        basePath={`/tour-packages/${country.slug}`}
         journeys={filteredJourneys}
         isLoading={journeysLoading}
         h1Title={country.h1Title}

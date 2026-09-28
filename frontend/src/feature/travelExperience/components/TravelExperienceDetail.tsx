@@ -210,6 +210,7 @@ function ExperienceContent({ experience }: { experience: any }) {
         filterBar={experienceJourneys.length > 0 ? filterBar : undefined}
         onClearFilters={clearFilters}
         contextName={h1Title}
+        basePath={`/travel-experiences/${experience.slug}`}
       />
 
       {/* ===== EXPLORE MORE DESTINATIONS (linked cities) ===== */}

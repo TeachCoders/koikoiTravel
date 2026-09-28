@@ -10,7 +10,7 @@ import { QuoteModal } from "@/components/shared/QuoteModal";
 async function fetchCategories(): Promise<{ name: string; slug: string }[]> {
   try {
     const url = `${SERVER_API_BASE}/blog-category?limit=100&isActive=true`;
-    const res = await fetch(url, { next: { revalidate: 60 } });
+    const res = await fetch(url, { next: { revalidate: 300 } });
     if (!res.ok) return [];
     const json = await res.json();
     return (json?.data || []).map((c: { name: string; slug: string }) => ({ name: c.name, slug: c.slug }));
@@ -22,7 +22,7 @@ async function fetchCategories(): Promise<{ name: string; slug: string }[]> {
 async function fetchRecent(): Promise<BlogPost[]> {
   try {
     const url = `${SERVER_API_BASE}/blog?limit=6&isActive=true`;
-    const res = await fetch(url, { next: { revalidate: 60 } });
+    const res = await fetch(url, { next: { revalidate: 300 } });
     if (!res.ok) return [];
     const json = await res.json();
     return (json?.data || []).slice(0, 5);
@@ -34,7 +34,7 @@ async function fetchRecent(): Promise<BlogPost[]> {
 async function fetchTopJourneys(): Promise<any[]> {
   try {
     const url = `${SERVER_API_BASE}/journey?limit=100&isActive=true`;
-    const res = await fetch(url, { next: { revalidate: 60 } });
+    const res = await fetch(url, { next: { revalidate: 300 } });
     if (!res.ok) return [];
     const json = await res.json();
     let journeys = json?.data || [];

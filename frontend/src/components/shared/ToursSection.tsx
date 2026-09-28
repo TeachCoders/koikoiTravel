@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams, usePathname } from "next/navigation";
+import { Suspense } from "react";
 import { MapPin } from "lucide-react";
 import RichContent from "@/components/shared/RichContent";
 import TourPackageCard from "@/components/shared/TourPackageCard";
@@ -8,7 +9,7 @@ import Pagination from "@/components/shared/Pagination";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
 import type { Journey } from "@/feature/journey/type";
 
-interface ToursSectionProps {
+export interface ToursSectionProps {
   journeys: Journey[];
   isLoading?: boolean;
   accentLabel?: string;
@@ -19,9 +20,19 @@ interface ToursSectionProps {
   filterBar?: React.ReactNode;
   onClearFilters?: () => void;
   contextName?: string;
+  /**
+   * The page's own path. Read it here rather than from `usePathname()` so the
+   * prerendered HTML already has working pagination links, since a statically
+   * generated page cannot read the pathname during the build.
+   */
+  basePath?: string;
 }
 
-export default function ToursSection({
+/**
+ * Pure layout, no hooks, so it can be shared by the prerendered fallback and
+ * the live tree. `currentPage` and `query` are passed in rather than read here.
+ */
+function ToursSectionView({
   journeys,
   isLoading = false,
   accentLabel = "Popular Tours",
@@ -32,24 +43,22 @@ export default function ToursSection({
   onClearFilters,
   contextName,
   showCount,
-}: ToursSectionProps) {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-
-  const page = parseInt(searchParams.get("page") || "1", 10);
+  currentPage,
+  basePath,
+  query,
+}: ToursSectionProps & { currentPage: number; query: string }) {
   const pageSize = showCount ?? 16;
 
   const totalPages = Math.ceil(journeys.length / pageSize);
-  const currentPage = Math.min(Math.max(page, 1), totalPages || 1);
-
-  const paginatedJourneys = journeys.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const safePage = Math.min(Math.max(currentPage, 1), totalPages || 1);
+  const paginatedJourneys = journeys.slice((safePage - 1) * pageSize, safePage * pageSize);
 
   const hasFilters = Boolean(filterBar && onClearFilters);
 
   const createPageUrl = (pageNumber: number) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(query);
     params.set("page", pageNumber.toString());
-    return `${pathname}?${params.toString()}#tours`;
+    return `${basePath}?${params.toString()}#tours`;
   };
 
   return (
@@ -90,12 +99,43 @@ export default function ToursSection({
           </div>
 
           <Pagination
-            currentPage={currentPage}
+            currentPage={safePage}
             totalPages={totalPages}
             createPageUrl={createPageUrl}
           />
         </div>
       )}
     </section>
+  );
+}
+
+/** Reads the page number from the URL. Must stay inside the Suspense boundary. */
+function ToursSectionFromQuery(props: ToursSectionProps) {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const page = parseInt(searchParams.get("page") || "1", 10);
+
+  return (
+    <ToursSectionView
+      {...props}
+      basePath={props.basePath || pathname}
+      query={searchParams.toString()}
+      currentPage={Number.isNaN(page) ? 1 : page}
+    />
+  );
+}
+
+/**
+ * The detail pages that mount this are statically generated, and reading the
+ * query string during a build is not possible, so the hook has to sit behind a
+ * boundary. The fallback renders page one, which is what the component shows
+ * for anyone arriving without `?page=`, so the prerendered HTML and the live
+ * tree agree and there is no visible swap on the common path.
+ */
+export default function ToursSection(props: ToursSectionProps) {
+  return (
+    <Suspense fallback={<ToursSectionView {...props} basePath={props.basePath || ""} query="" currentPage={1} />}>
+      <ToursSectionFromQuery {...props} />
+    </Suspense>
   );
 }

@@ -182,6 +182,7 @@ export default function SeasonDetail({
         h1Title={pageH1}
         overView={initialSeason.overView ?? undefined}
         emptyLabel={`No tours found for ${initialSeason.title} yet`}
+        basePath={`/season/${initialSeason.slug}`}
         filterBar={seasonJourneys.length > 0 ? filterBar : undefined}
         onClearFilters={clearFilters}
       />

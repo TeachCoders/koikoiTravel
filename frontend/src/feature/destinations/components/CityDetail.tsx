@@ -224,6 +224,11 @@ function CityContent({
 
       {/* ===== SHORT DESCRIPTION + TOURS ===== */}
       <ToursSection
+        basePath={
+          countrySlug && state?.slug
+            ? `/tour-packages/${countrySlug}/${state.slug}/${city.slug}`
+            : `/tour-packages/${city.slug}`
+        }
         journeys={filteredJourneys}
         isLoading={journeysLoading}
         h1Title={pageH1}
