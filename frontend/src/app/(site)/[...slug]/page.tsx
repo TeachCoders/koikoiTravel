@@ -9,15 +9,16 @@ import type { CmsPage } from "@/feature/cms/type";
 
 export const revalidate = 60;
 
-type Props = { params: Promise<{ slug: string }> };
+// [...slug] ek catch-all folder hai — Next.js param hamesha array deta hai, string nahi
+type Props = { params: Promise<{ slug: string[] }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const page = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug);
+  const page = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug.join("/"));
   if (!page) return { title: "Page Not Found | KoiKoi Travel" };
   const seoDescription = truncateMeta(page.seoDescription || page.moreDescription || "");
   const title = page.seoTitle || page.title;
-  const canonical = page.canonical || `/${page.slug}`;
+  const canonical = page.canonical || `/${page.slug || slug.join("/")}`;
   const ogImage = absoluteUrl(page.thumbImg);
   return {
     title,
@@ -42,11 +43,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CmsPageRoute({ params }: Props) {
   const { slug } = await params;
-  const page = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug);
+  const pagePath = slug.join("/");
+  const page = await fetchBySlugCached<CmsPage>("/cms/by-slug", pagePath);
   if (!page) return notFound();
 
+  // Canonical slug DB se aata hai, URL path se nahi — DB value authoritative hai
+  const pageSlug = page.slug || pagePath;
+  const pageUrl = `/${pageSlug}`;
+
   // about-us par AboutPage, baaki CMS pages par WebPage
-  const pageType = page.slug === "about-us" ? "AboutPage" : "WebPage";
+  const pageType = pageSlug === "about-us" ? "AboutPage" : "WebPage";
 
   return (
     <>
@@ -55,14 +61,14 @@ export default async function CmsPageRoute({ params }: Props) {
           webPageSchema(
             {
               name: page.h1Title || page.title,
-              url: `/${page.slug}`,
+              url: pageUrl,
               description: page.seoDescription || page.moreDescription || undefined,
             },
             pageType
           ),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: page.title, path: `/${page.slug}` },
+            { name: page.title, path: pageUrl },
           ]),
         ])}
       />
