@@ -13,8 +13,13 @@ import { formatBlogDate } from "@/lib/dateUtils";
 import type { BlogPost } from "@/feature/blog/type";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import { QuoteModal } from "@/components/shared/QuoteModal";
+import { blogPostParams } from "@/lib/prerender";
 
-export const revalidate = 60;
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  return blogPostParams();
+}
 
 type Props = { params: Promise<{ slug: string }> };
 

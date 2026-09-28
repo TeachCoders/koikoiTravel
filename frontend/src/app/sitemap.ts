@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 const API_BASE = process.env.API_BASE_URL || "http://localhost:5000";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 type SitemapItem = {
   slug: string;

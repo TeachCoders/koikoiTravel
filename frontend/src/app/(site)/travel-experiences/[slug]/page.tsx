@@ -7,8 +7,13 @@ import { stripHtml, absoluteUrl,  truncateMeta } from "@/lib/utils";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { TravelExperience } from "@/feature/travelExperience/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
+import { travelExperienceParams } from "@/lib/prerender";
 
-export const revalidate = 60;
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  return travelExperienceParams();
+}
 
 type Props = { params: Promise<{ slug: string }> };
 

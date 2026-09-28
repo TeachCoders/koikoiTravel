@@ -20,7 +20,7 @@ import type { Journey } from "@/feature/journey/type";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 type CBanner = {
   entityId: number;

@@ -9,8 +9,13 @@ import type { Country } from "@/feature/country/type";
 import type { Journey } from "@/feature/journey/type";
 import type { CmsPage } from "@/feature/cms/type";
 import type { Season } from "@/feature/season/type";
+import { countryParams } from "@/lib/prerender";
 
-export const revalidate = 60;
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  return countryParams();
+}
 
 type Props = { params: Promise<{ country: string }> };
 

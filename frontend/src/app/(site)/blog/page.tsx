@@ -7,7 +7,7 @@ import { itemListSchema, breadcrumbSchema } from "@/lib/jsonLd";
 import type { BlogPost } from "@/feature/blog/type";
 import { SERVER_API_BASE } from "@/feature/destinations/api/public-server";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 const POSTS_PER_PAGE = 12;
 

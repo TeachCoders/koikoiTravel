@@ -15,6 +15,8 @@ function absoluteUrl(src?: string): string | undefined {
   return `${SITE_URL}${src.startsWith("/") ? src : `/${src}`}`;
 }
 
+export const revalidate = 300;
+
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

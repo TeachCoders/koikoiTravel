@@ -9,7 +9,7 @@ import { fetchPublicJson } from "@/feature/destinations/api/public-server";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Tour Packages in India and Worldwide | KoiKoi Travel",

@@ -9,7 +9,7 @@ import type { PaginatedGuestGallery } from "@/feature/guestGallery/type";
 import type { CmsPage } from "@/feature/cms/type";
 import { stripHtml,  truncateMeta } from "@/lib/utils";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
   const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "guest-gallery");

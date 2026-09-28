@@ -7,8 +7,13 @@ import { fetchBySlugCached } from "@/feature/destinations/api/public-server";
 import { stripHtml,  truncateMeta } from "@/lib/utils";
 import type { City } from "@/feature/city/type";
 import type { CmsPage } from "@/feature/cms/type";
+import { cityParams } from "@/lib/prerender";
 
-export const revalidate = 60;
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  return cityParams();
+}
 
 type Props = { params: Promise<{ country: string; stateSlug: string; citySlug: string }> };
 

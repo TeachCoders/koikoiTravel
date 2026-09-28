@@ -56,7 +56,7 @@ export async function fetchBySlug<T>(path: string, slug: string | string[]): Pro
 export async function fetchPublicCached<T>(
   path: string,
   init?: RequestInit,
-  revalidate = 60
+  revalidate = 300
 ): Promise<T | null> {
   try {
     const url = `${API_BASE}${path.startsWith("/") ? path : `/${path}`}`;
@@ -73,7 +73,7 @@ export async function fetchPublicCached<T>(
 export async function fetchPublicJsonCached<T>(
   path: string,
   init?: RequestInit,
-  revalidate = 60
+  revalidate = 300
 ): Promise<T | null> {
   try {
     const url = `${API_BASE}${path.startsWith("/") ? path : `/${path}`}`;
@@ -89,7 +89,7 @@ export async function fetchPublicJsonCached<T>(
 export async function fetchBySlugCached<T>(
   path: string,
   slug: string | string[],
-  revalidate = 60
+  revalidate = 300
 ): Promise<T | null> {
   const slugStr = Array.isArray(slug) ? slug.join("/") : slug;
   return fetchPublicCached<T>(`${path}/${slugStr}`, undefined, revalidate);

@@ -21,7 +21,7 @@ import type { CmsPage } from "@/feature/cms/type";
 import { truncateMeta } from "@/lib/utils";
 import ContactFormClient from "@/feature/contact/components/ContactFormClient";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 const SALES_PHONE = process.env.NEXT_PUBLIC_SALES_PHONE || "+91 91367 39178";

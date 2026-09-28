@@ -4,6 +4,7 @@ import { prisma } from "../utils/prismaConnection.js";
 import { requireSalesOrAdmin, requireTeamOrAdmin } from "../middleware/requireSalesOrAdmin.js";
 import { generateSlug, upsertBanner, getBanner, deleteBanner, upsertFaqs, getFaqs, deleteFaqs } from "../utils/cmsHelpers.js";
 import { sendWebhook } from "../services/webhookService.js";
+import { notifyRevalidate } from "../services/revalidateService.js";
 import { isPublicRequest } from "../utils/authHelpers.js";
 import { logger } from "./logger.js";
 
@@ -76,6 +77,7 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       // (e.g. BlogPost has no activeSnapshot column) just get a plain isActive flip.
       if (!CASCADE[modelName]) {
         await prisma[modelName].update({ where: { id }, data: { isActive: next } });
+        notifyRevalidate(modelName, existing);
         return res.status(200).json({
           success: true,
           message: next ? `${modelName} activated successfully` : `${modelName} deactivated successfully`,
@@ -120,6 +122,8 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
         }
         await prisma.$transaction(ops);
       }
+
+      notifyRevalidate(modelName, existing);
 
       return res.status(200).json({
         success: true,
@@ -448,6 +452,7 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
 
       // Trigger Webhook Notification
       sendWebhook(`${modelName.toUpperCase()}_CREATED`, { ...item, banner, faqs });
+      notifyRevalidate(modelName, item);
 
       return res.status(201).json({
         success: true,
@@ -516,6 +521,8 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
         faqs = await getFaqs(entityType, id);
       }
 
+      notifyRevalidate(modelName, { ...item, ...existing });
+
       return res.status(200).json({
         success: true,
         message: `${modelName} updated successfully`,
@@ -552,6 +559,7 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       await deleteBanner(entityType, id);
       await deleteFaqs(entityType, id);
       await prisma[modelName].delete({ where: { id } });
+      notifyRevalidate(modelName, existing);
 
       return res.status(200).json({ success: true, message: `${modelName} deleted successfully` });
     } catch (err) {

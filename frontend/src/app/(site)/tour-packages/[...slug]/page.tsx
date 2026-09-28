@@ -15,6 +15,7 @@ import type { State, PaginatedResponse as StatePage } from "@/feature/state/type
 import type { City } from "@/feature/city/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import type { CmsPage } from "@/feature/cms/type";
+import { journeyParams } from "@/lib/prerender";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
@@ -43,9 +44,13 @@ function resolveFaqItems(faqs?: { ques: string; ans: string }[]): { question: st
   return HOME_FAQS.map((f) => ({ question: f.question, answer: f.answer }));
 }
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 type Props = { params: Promise<{ slug: string[] }> };
+
+export async function generateStaticParams() {
+  return journeyParams();
+}
 
 type Resolved =
   | { type: "country"; country: Country }

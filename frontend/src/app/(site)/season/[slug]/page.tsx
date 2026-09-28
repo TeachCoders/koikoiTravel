@@ -8,6 +8,7 @@ import { stripHtml,  truncateMeta } from "@/lib/utils";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { Season } from "@/feature/season/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
+import { seasonParams } from "@/lib/prerender";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 
@@ -17,7 +18,11 @@ function absoluteUrl(src?: string | null): string | undefined {
   return `${SITE_URL}${src.startsWith("/") ? src : `/${src}`}`;
 }
 
-export const revalidate = 60;
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  return seasonParams();
+}
 
 type Props = { params: Promise<{ slug: string }> };
 
