@@ -14,11 +14,11 @@ import {
   Users,
 } from "lucide-react";
 import JsonLd from "@/components/shared/JsonLd";
-import { breadcrumbSchema } from "@/lib/jsonLd";
+import { breadcrumbSchema, webPageSchema, graphSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached } from "@/feature/destinations/api/public-server";
 import RichContent from "@/components/shared/RichContent";
 import type { CmsPage } from "@/feature/cms/type";
-import { stripHtml } from "@/lib/utils";
+import { truncateMeta } from "@/lib/utils";
 import ContactFormClient from "@/feature/contact/components/ContactFormClient";
 
 export const revalidate = 60;
@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const title =
     cmsPage?.seoTitle || cmsPage?.title || "Contact Us | KoiKoi Travel - Get in Touch for Custom Tours";
   const description =
-    stripHtml(cmsPage?.seoDescription || cmsPage?.moreDescription || "").slice(0, 160) ||
+    truncateMeta(cmsPage?.seoDescription || cmsPage?.moreDescription || "") ||
     "Contact KoiKoi Travel for custom India tour packages, cab rentals, and 24/7 travel assistance. Reach us via phone, email, or visit our head office in New Delhi.";
   const canonical = cmsPage?.canonical || "/contact-us";
 
@@ -95,15 +95,26 @@ export default async function ContactUsPage() {
       contactType: "customer service",
       availableLanguage: ["English"],
     },
+    sameAs: ["https://www.facebook.com/koikoiTravel/"],
   };
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] font-sans text-slate-800 pb-16">
       {/* SEO Structured Data */}
       <JsonLd
-        data={breadcrumbSchema([
-          { name: "Home", path: "/" },
-          { name: displayTitle, path: "/contact-us" },
+        data={graphSchema([
+          webPageSchema(
+            {
+              name: displayTitle,
+              url: "/contact-us",
+              description: cmsDescription || undefined,
+            },
+            "ContactPage"
+          ),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: displayTitle, path: "/contact-us" },
+          ]),
         ])}
       />
       <JsonLd data={contactOrganizationSchema} />

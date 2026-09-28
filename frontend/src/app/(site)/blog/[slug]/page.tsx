@@ -8,7 +8,7 @@ import RichContent from "@/components/shared/RichContent";
 import JsonLd from "@/components/shared/JsonLd";
 import { articleSchema, breadcrumbSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached, SERVER_API_BASE } from "@/feature/destinations/api/public-server";
-import { stripHtml, absoluteUrl } from "@/lib/utils";
+import { stripHtml, absoluteUrl,  truncateMeta } from "@/lib/utils";
 import { formatBlogDate } from "@/lib/dateUtils";
 import type { BlogPost } from "@/feature/blog/type";
 import { FallbackImage } from "@/components/shared/FallbackImage";
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await fetchBySlugCached<BlogPost>("/blog/by-slug", slug);
   if (!post) return { title: "Blog Post Not Found | KoiKoi Travel" };
-  const seoDescription = stripHtml(post.seoDescription || post.moreDescription || "").slice(0, 160);
+  const seoDescription = truncateMeta(post.seoDescription || post.moreDescription || "");
   const title = (post.seoTitle || post.title).replace(/\s{2,}/g, " ").trim();
   const canonical = post.canonical || `/blog/${post.slug}`;
   const section = (post.categories?.length ? post.categories : post.category ? [post.category] : [])[0];

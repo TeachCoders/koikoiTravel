@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import TravelExperienceDetail from "@/feature/travelExperience/components/TravelExperienceDetail";
 import JsonLd from "@/components/shared/JsonLd";
-import { breadcrumbSchema, touristDestinationSchema, itemListSchema, faqSchema, graphSchema } from "@/lib/jsonLd";
+import { breadcrumbSchema, touristAttractionSchema, itemListSchema, faqSchema, graphSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
-import { stripHtml, absoluteUrl } from "@/lib/utils";
+import { stripHtml, absoluteUrl,  truncateMeta } from "@/lib/utils";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { TravelExperience } from "@/feature/travelExperience/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await fetchBySlugCached<TravelExperience>("/holidays/by-slug", slug);
   if (!data) return { title: "Travel Experience Not Found | KoiKoi Travel" };
   const title = data.seoTitle || data.title;
-  const seoDescription = stripHtml(data.seoDescription || data.moreDescription || "").slice(0, 160);
+  const seoDescription = truncateMeta(data.seoDescription || data.moreDescription || "");
   const canonical = canonicalFor(data, slug);
   const ogImage = absoluteUrl(data.thumbImg);
   return {
@@ -70,10 +70,10 @@ export default async function TravelExperiencePage({ params }: Props) {
             .map((f) => ({ question: stripHtml(f.ques), answer: stripHtml(f.ans) }))
         : HOME_FAQS;
     schema = graphSchema([
-      touristDestinationSchema({
+      touristAttractionSchema({
         name: data.h1Title || data.title,
         description: data.seoDescription || data.overView || undefined,
-        image: data.banner?.images?.[0] || data.thumbImg || undefined,
+        image: data.thumbImg || data.banner?.images?.[0] || undefined,
         url: `/travel-experiences/${data.slug}`,
       }),
       itemListSchema(

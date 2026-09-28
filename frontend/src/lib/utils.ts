@@ -30,6 +30,17 @@ export function stripHtml(html?: string) {
     .trim();
 }
 
+export function truncateMeta(text?: string, max = 160): string {
+  if (!text) return "";
+  const clean = stripHtml(text);
+  if (clean.length <= max) return clean;
+  const hardCut = clean.slice(0, max);
+  const lastSpace = hardCut.lastIndexOf(" ");
+  // Word-boundary pe kaate hain taaki beech se shabd na toote
+  const body = lastSpace > max * 0.5 ? hardCut.slice(0, lastSpace) : hardCut;
+  return body.replace(/[\s,;:.!?\-–—]+$/, "");
+}
+
 export function stripTourSuffix(label: string): string {
   const t = label.trim();
   const lower = t.toLowerCase();

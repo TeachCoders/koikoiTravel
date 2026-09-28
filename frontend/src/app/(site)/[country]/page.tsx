@@ -4,7 +4,7 @@ import CmsPageDetail from "@/feature/cms/components/CmsPageDetail";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached } from "@/feature/destinations/api/public-server";
-import { stripHtml, absoluteUrl } from "@/lib/utils";
+import { stripHtml, absoluteUrl,  truncateMeta } from "@/lib/utils";
 import type { Country } from "@/feature/country/type";
 import type { Journey } from "@/feature/journey/type";
 import type { CmsPage } from "@/feature/cms/type";
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const journey = await fetchBySlugCached<Journey>("/journey/by-slug", slug);
   if (journey) {
     const title = journey.seoTitle || journey.title;
-    const description = stripHtml(journey.seoDescription || journey.overView || "").slice(0, 160);
+    const description = truncateMeta(journey.seoDescription || journey.overView || "");
     return {
       title,
       description,
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const season = await fetchBySlugCached<Season>("/season/by-slug", slug);
   if (season) {
     const title = season.seoTitle || season.title;
-    const description = stripHtml(season.seoDescription || season.overView || "").slice(0, 160);
+    const description = truncateMeta(season.seoDescription || season.overView || "");
     return {
       title,
       description,
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const page = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug);
   if (!page) return { title: "Page Not Found | KoiKoi Travel" };
-  const seoDescription = stripHtml(page.seoDescription || page.moreDescription || "").slice(0, 160);
+  const seoDescription = truncateMeta(page.seoDescription || page.moreDescription || "");
   const title = page.seoTitle || page.title;
   const canonical = page.canonical || `/${page.slug}`;
   return {

@@ -7,7 +7,7 @@ import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations
 import GuestGalleryClient from "@/feature/guestGallery/components/GuestGalleryClient";
 import type { PaginatedGuestGallery } from "@/feature/guestGallery/type";
 import type { CmsPage } from "@/feature/cms/type";
-import { stripHtml } from "@/lib/utils";
+import { stripHtml,  truncateMeta } from "@/lib/utils";
 
 export const revalidate = 60;
 
@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ? cmsPage!.seoTitle!
     : "Guest Photo Gallery | KoiKoi Travel";
   const description =
-    stripHtml(cmsPage?.seoDescription || cmsPage?.moreDescription || "").slice(0, 160) ||
+    truncateMeta(cmsPage?.seoDescription || cmsPage?.moreDescription || "") ||
     "Explore real moments captured by our travelers during their journeys across India. Authentic travel memories with KoiKoi Travel.";
   const canonical = cmsPage?.canonical || "/guest-gallery";
 

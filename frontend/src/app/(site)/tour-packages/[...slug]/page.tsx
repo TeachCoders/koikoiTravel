@@ -6,9 +6,9 @@ import CityDetail from "@/feature/destinations/components/CityDetail";
 import JourneyDetail from "@/feature/journey/components/JourneyDetail";
 import CmsFallbackPage from "@/feature/cms/components/CmsFallbackPage";
 import JsonLd from "@/components/shared/JsonLd";
-import { breadcrumbSchema, faqSchema, touristDestinationSchema, touristTripSchema, itemListSchema, graphSchema } from "@/lib/jsonLd";
+import { breadcrumbSchema, faqSchema, touristDestinationSchema, touristTripSchema, itemListSchema, graphSchema, buildTouristType } from "@/lib/jsonLd";
 import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
-import { stripHtml } from "@/lib/utils";
+import { stripHtml,  truncateMeta } from "@/lib/utils";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { Country } from "@/feature/country/type";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
@@ -138,7 +138,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     case "state": {
       const { state } = resolved;
       const title = state.seoTitle || state.title;
-      const seoDescription = stripHtml(state.seoDescription || state.overView).slice(0, 160);
+      const seoDescription = truncateMeta(state.seoDescription || state.overView);
       const canonical = `/tour-packages/${state.country?.slug}/${state.slug}`;
       const ogImage = absoluteUrl(state.thumbImg);
       return {
@@ -164,7 +164,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     case "city": {
       const { city } = resolved;
       const title = city.seoTitle || city.title;
-      const seoDescription = stripHtml(city.seoDescription || city.overView).slice(0, 160);
+      const seoDescription = truncateMeta(city.seoDescription || city.overView);
       const canonical =
         `/tour-packages/${city.state?.country?.slug}/${city.state?.slug}/${city.slug}`;
       const ogImage = absoluteUrl(city.thumbImg);
@@ -191,7 +191,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     case "journey": {
       const { journey } = resolved;
       const title = journey.seoTitle || journey.h1Title || journey.title;
-      const seoDescription = stripHtml(journey.seoDescription || journey.overView).slice(0, 160);
+      const seoDescription = truncateMeta(journey.seoDescription || journey.overView);
       const canonical = journeySlugCanonical(journey.slug, journey.canonical);
       const ogImage = absoluteUrl(journey.thumbImg);
       return {
@@ -216,7 +216,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
     case "cms": {
       const { cms } = resolved;
-      const seoDescription = stripHtml(cms.seoDescription || cms.moreDescription || "").slice(0, 160);
+      const seoDescription = truncateMeta(cms.seoDescription || cms.moreDescription || "");
       return {
         title: cms.seoTitle || cms.title,
         description: seoDescription || undefined,
@@ -387,14 +387,24 @@ itemListSchema(
       }
       breadcrumbItems.push({ name: journey.h1Title || journey.title, path: canonical });
 
+      const journeyText = journey.days
+        ?.map((d) => `${d.day ?? ""} ${stripHtml(d.seoDescription || "")}`)
+        .join(" ");
+      const { touristType, keywords } = buildTouristType(
+        journey.travelExperiences,
+        journeyText
+      );
+
       const tourProductNode = touristTripSchema({
         name: journey.h1Title || journey.title,
         description: journey.seoDescription || journey.overView || undefined,
-        image: journey.banner?.images?.[0] || journey.thumbImg || undefined,
+        // Package ka apna thumbnail — destination banner nahi
+        image: journey.thumbImg || journey.banner?.images?.[0] || undefined,
         url: canonical,
-        touristType: journey.travelExperiences?.map((e) => e.title) || [],
-        itinerary: journey.days?.map((d, i) => ({
-          day: `Day ${i + 1}`,
+        touristType,
+        keywords: keywords.join(", ") || undefined,
+        itinerary: journey.days?.map((d) => ({
+          day: d.day || "",
           description: d.seoDescription || undefined,
         })),
       });

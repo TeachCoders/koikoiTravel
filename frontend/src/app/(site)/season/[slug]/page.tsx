@@ -4,7 +4,7 @@ import SeasonDetail from "@/feature/season/components/SeasonDetail";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema, touristDestinationSchema, itemListSchema, faqSchema, graphSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
-import { stripHtml } from "@/lib/utils";
+import { stripHtml,  truncateMeta } from "@/lib/utils";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { Season } from "@/feature/season/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!season) return { title: "Page Not Found | KoiKoi Travel" };
 
   const title = season.seoTitle || season.title;
-  const seoDescription = stripHtml(season.seoDescription || season.overView || "").slice(0, 160) || undefined;
+  const seoDescription = truncateMeta(season.seoDescription || season.overView || "") || undefined;
   const canonical = season.canonical || `/season/${season.slug}`;
   const ogImage = absoluteUrl(season.thumbImg || season.banner?.images?.[0]);
 

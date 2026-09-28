@@ -4,7 +4,7 @@ import CmsPageDetail from "@/feature/cms/components/CmsPageDetail";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached } from "@/feature/destinations/api/public-server";
-import { stripHtml } from "@/lib/utils";
+import { stripHtml,  truncateMeta } from "@/lib/utils";
 import type { City } from "@/feature/city/type";
 import type { CmsPage } from "@/feature/cms/type";
 
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     city.state?.country?.slug === countrySlug
   ) {
     const title = city.seoTitle || city.title;
-    const description = stripHtml(city.seoDescription || city.overView || "").slice(0, 160);
+    const description = truncateMeta(city.seoDescription || city.overView || "");
     return {
       title,
       description,
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function cmsMetadata(page: CmsPage | null): Promise<Metadata> {
   if (!page) return { title: "Page Not Found | KoiKoi Travel" };
-  const seoDescription = stripHtml(page.seoDescription || page.moreDescription || "").slice(0, 160);
+  const seoDescription = truncateMeta(page.seoDescription || page.moreDescription || "");
   const title = page.seoTitle || page.title;
   const canonical = page.canonical || `/${page.slug}`;
   return {

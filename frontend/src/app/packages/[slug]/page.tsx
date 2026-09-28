@@ -5,7 +5,7 @@ import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema, graphSchema, touristTripSchema } from "@/lib/jsonLd";
 import RichContent from "@/components/shared/RichContent";
 import { fetchPackageBySlug } from "@/feature/tourPackages/public-server";
-import { stripHtml } from "@/lib/utils";
+import { stripHtml,  truncateMeta } from "@/lib/utils";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pkg = await fetchPackageBySlug(slug);
   if (!pkg) return { title: "Package Not Found | KoiKoi Travel" };
   const title = pkg.name;
-  const description = stripHtml(pkg.shortDescription || pkg.description || "").slice(0, 160);
+  const description = truncateMeta(pkg.shortDescription || pkg.description || "");
   const canonical = `/packages/${pkg.slug}`;
   const image = Array.isArray(pkg.bannerImageUrl) ? pkg.bannerImageUrl[0] : pkg.bannerImageUrl;
   const ogImage = image ? absoluteUrl(image) : undefined;
