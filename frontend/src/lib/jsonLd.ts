@@ -221,6 +221,7 @@ export function touristDestinationSchema(dest: TouristDestinationInput): Record<
 const TOURIST_TYPE_MAP: Record<string, string[]> = {
   honeymoon: ["Honeymoon"],
   "heritage and culture": ["Cultural Tourism", "Heritage Tourism"],
+  "heritage & culture": ["Cultural Tourism", "Heritage Tourism"],
   "cultural tourism": ["Cultural Tourism"],
   "heritage tourism": ["Heritage Tourism"],
   luxury: ["Luxury Tourism"],
@@ -258,7 +259,9 @@ export function buildTouristType(
     if (!keywords.some((k) => k.toLowerCase() === title.toLowerCase())) {
       keywords.push(title);
     }
-    const mapped = TOURIST_TYPE_MAP[title.toLowerCase()];
+    // Titles me "&" ya "&amp;" aa sakta hai — dono ek jaisa key banayein
+    const key = title.toLowerCase().replace(/&/g, "and").replace(/\s+/g, " ").trim();
+    const mapped = TOURIST_TYPE_MAP[key];
     if (mapped) {
       for (const t of mapped) if (!types.includes(t)) types.push(t);
     }

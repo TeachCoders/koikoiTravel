@@ -387,9 +387,12 @@ itemListSchema(
       }
       breadcrumbItems.push({ name: journey.h1Title || journey.title, path: canonical });
 
-      const journeyText = journey.days
-        ?.map((d) => `${d.day ?? ""} ${stripHtml(d.seoDescription || "")}`)
-        .join(" ");
+      // Journey text: day titles + day content + page overview — signals yahin se aate hain
+      const journeyText = [
+        journey.overView || "",
+        journey.moreDescription || "",
+        ...(journey.days ?? []).map((d) => `${d.day ?? ""} ${stripHtml(d.seoDescription || "")}`),
+      ].join(" ");
       const { touristType, keywords } = buildTouristType(
         journey.travelExperiences,
         journeyText
