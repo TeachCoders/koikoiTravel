@@ -16,6 +16,7 @@ import { stripTourSuffix, pickPriorityLinks, type NavChild } from "@/lib/utils";
 import { QuoteModal } from "./QuoteModal";
 import { RequestCallbackModal } from "./RequestCallbackModal";
 import { DestinationTreeCountry, DestinationTreeState } from "./DestinationMegaMenu";
+import TopBar from "./TopBar";
 
 const DEFAULT_DESTINATION_LINKS: NavChild[] = [
   { href: "/tour-packages/india", label: "India" },
@@ -463,12 +464,17 @@ export const Header: React.FC = () => {
 
   return (
     <header
-      className={`relative sticky top-0 z-50 transition-[background-color,border-color,box-shadow,padding] duration-300 ${isScrolled
-        ? "bg-white/90 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.08)] border-b border-[#ececec] py-2"
-        : "bg-white border-b border-[#f2f2f2] py-2.5"
+      className={`relative sticky top-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ${isScrolled
+        ? "bg-white/95 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.08)] border-b border-[#ececec]"
+        : "bg-white border-b border-[#f2f2f2]"
         }`}
     >
-      <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
+      <TopBar isScrolled={isScrolled} />
+      <div
+        className={`max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 transition-[padding] duration-300 ${
+          isScrolled ? "py-1.5 sm:py-2" : "py-2 sm:py-2.5"
+        }`}
+      >
         <div className="flex items-stretch justify-between gap-4">
           <Link href="/" className="flex items-center gap-2 group shrink-0">
             <img
