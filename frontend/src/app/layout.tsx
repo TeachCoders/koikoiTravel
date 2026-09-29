@@ -75,20 +75,28 @@ export default function RootLayout({
       className={cn("h-full antialiased", nunito.variable, "font-sans")}
     >
       <head>
-        <script
-          async
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+      </head>
+      <body className="min-h-full flex flex-col font-sans text-[#1C1C1C] pb-16 md:pb-0">
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
         />
-        <script
+        <Script
+          id="google-analytics-init"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-
 gtag('config', '${GA_ID}');`,
           }}
         />
-        <script
+        <Script
+          id="google-tag-manager"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -98,7 +106,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
         {CLARITY_ID && (
-          <script
+          <Script
+            id="microsoft-clarity"
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: `(function(c,l,a,r,i,t,y){
 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -108,8 +118,6 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
             }}
           />
         )}
-      </head>
-      <body className="min-h-full flex flex-col font-sans text-[#1C1C1C] pb-16 md:pb-0">
         <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}

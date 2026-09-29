@@ -267,82 +267,84 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       />
 
       {/* ===== CITIES ===== */}
-      <section id="cities" className="w-full bg-white py-12 md:py-20 border-t border-slate-200/60">
-        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
-        <div className="flex items-end justify-between mb-6 md:mb-10 flex-wrap gap-4">
-          <div>
-            <span className="accent-label">Discover</span>
-            <h2 className="h3 text-[#1C1C1C] mt-2">
-              Cities in {state.title}
-              <span className="ml-3 align-middle text-sm font-semibold text-[#F8904D] bg-[#F8904D]/10 px-3 py-1 rounded-full">
-                {cityCount} Cities
-              </span>
-            </h2>
-          </div>
-          {!journeysLoading && displayedCities.length > 4 && canScroll && (
-            <div className="flex items-center gap-2">
-              <button
-                onClick={slidePrev}
-                aria-label="Previous cities"
-                className="w-10 h-10 rounded-full bg-white border border-slate-200 text-[#1C1C1C] flex items-center justify-center shadow-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
-              >
-                <ChevronLeft size={18} />
-              </button>
-              <button
-                onClick={slideNext}
-                aria-label="Next cities"
-                className="w-10 h-10 rounded-full bg-white border border-slate-200 text-[#1C1C1C] flex items-center justify-center shadow-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
-              >
-                <ChevronRight size={18} />
-              </button>
+      {(journeysLoading || displayedCities.length > 0) && (
+        <section id="cities" className="w-full bg-white py-12 md:py-20 border-t border-slate-200/60">
+          <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
+          <div className="flex items-end justify-between mb-6 md:mb-10 flex-wrap gap-4">
+            <div>
+              <span className="accent-label">Discover</span>
+              <h2 className="h3 text-[#1C1C1C] mt-2">
+                Cities in {state.title}
+                <span className="ml-3 align-middle text-sm font-semibold text-[#F8904D] bg-[#F8904D]/10 px-3 py-1 rounded-full">
+                  {cityCount} Cities
+                </span>
+              </h2>
             </div>
-          )}
-        </div>
+            {!journeysLoading && displayedCities.length > 4 && canScroll && (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={slidePrev}
+                  aria-label="Previous cities"
+                  className="w-10 h-10 rounded-full bg-white border border-slate-200 text-[#1C1C1C] flex items-center justify-center shadow-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <button
+                  onClick={slideNext}
+                  aria-label="Next cities"
+                  className="w-10 h-10 rounded-full bg-white border border-slate-200 text-[#1C1C1C] flex items-center justify-center shadow-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            )}
+          </div>
 
-        {journeysLoading ? (
-          <DestinationsSkeleton count={6} />
-        ) : displayedCities.length === 0 ? (
-          <div className="text-center py-14">
-            <MapPin size={40} className="mx-auto text-slate-300 mb-3" />
-            <p className="text-slate-500">No cities found in {state.title}</p>
+          {journeysLoading ? (
+            <DestinationsSkeleton count={6} />
+          ) : displayedCities.length === 0 ? (
+            <div className="text-center py-14">
+              <MapPin size={40} className="mx-auto text-slate-300 mb-3" />
+              <p className="text-slate-500">No cities found in {state.title}</p>
+            </div>
+          ) : displayedCities.length <= 4 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              {displayedCities.map((c) => {
+                const cityId = c.id;
+                if (cityId == null) return null;
+                return (
+                  <CityCard
+                    key={cityId}
+                    city={c}
+                    stateSlug={state.slug}
+                    countrySlug={state.country?.slug}
+                    journeyCount={journeyCountFor(cityId)}
+                    fallbackImage={cityImageFor(cityId)}
+                  />
+                );
+              })}
+            </div>
+          ) : (
+            <DestinationSlider swiperRef={citiesSwiperRef}>
+              {displayedCities.map((c) => {
+                const cityId = c.id;
+                if (cityId == null) return null;
+                return (
+                  <CityCard
+                    key={cityId}
+                    city={c}
+                    stateSlug={state.slug}
+                    countrySlug={state.country?.slug}
+                    journeyCount={journeyCountFor(cityId)}
+                    fallbackImage={cityImageFor(cityId)}
+                  />
+                );
+              })}
+            </DestinationSlider>
+          )}
           </div>
-        ) : displayedCities.length <= 4 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {displayedCities.map((c) => {
-              const cityId = c.id;
-              if (cityId == null) return null;
-              return (
-                <CityCard
-                  key={cityId}
-                  city={c}
-                  stateSlug={state.slug}
-                  countrySlug={state.country?.slug}
-                  journeyCount={journeyCountFor(cityId)}
-                  fallbackImage={cityImageFor(cityId)}
-                />
-              );
-            })}
-          </div>
-        ) : (
-          <DestinationSlider swiperRef={citiesSwiperRef}>
-            {displayedCities.map((c) => {
-              const cityId = c.id;
-              if (cityId == null) return null;
-              return (
-                <CityCard
-                  key={cityId}
-                  city={c}
-                  stateSlug={state.slug}
-                  countrySlug={state.country?.slug}
-                  journeyCount={journeyCountFor(cityId)}
-                  fallbackImage={cityImageFor(cityId)}
-                />
-              );
-            })}
-          </DestinationSlider>
-        )}
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ===== MORE DESCRIPTION (ALL INFO) ===== */}
       <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-12 md:py-20">

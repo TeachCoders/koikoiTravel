@@ -40,7 +40,7 @@ export const HeroSection: React.FC = () => {
                 alt={s.alt}
                 fill
                 priority={i === 0}
-                unoptimized
+                sizes="100vw"
                 {...(!i ? {} : { loading: "eager" as const, decoding: "async" as const })}
                 className="object-cover object-center"
                 theme="dark"
