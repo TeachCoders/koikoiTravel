@@ -91,10 +91,10 @@ export default function HeroSearchBar() {
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="relative bg-gradient-to-r from-[#2E8B8B]/60 via-[#2E8B8B]/40 to-[#2E8B8B]/60 p-[1.5px] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.55)]">
-        <div className="bg-white rounded-[14px] p-2 sm:p-3">
-          <div className="flex flex-col sm:flex-row items-stretch gap-0">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2E8B8B]" />
+        <div className="bg-white rounded-[14px] p-1.5 sm:p-2.5">
+          <div className="flex flex-row items-center gap-0">
+            <div className="relative flex-1 min-w-0">
+              <Search className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#2E8B8B]" />
               <input
                 type="text"
                 value={query}
@@ -105,8 +105,8 @@ export default function HeroSearchBar() {
                 onFocus={() => setOpen(true)}
                 onBlur={() => setTimeout(() => setOpen(false), 150)}
                 onKeyDown={(e) => e.key === "Enter" && go()}
-                placeholder="Where do you want to go? Try 'Jaipur', 'Honeymoon'..."
-                className="w-full rounded-xl sm:rounded-r-none sm:rounded-l-xl border border-[#1C1C1C]/10 bg-[#f8f8f8] pl-12 pr-4 py-3.5 sm:py-4 text-base sm:text-lg font-medium text-[#1C1C1C] placeholder-[#aaa] outline-none focus:border-[#F8904D] focus:ring-2 focus:ring-[#F8904D]/20 transition-all"
+                placeholder="Where do you want to go? Try 'Jaipur'..."
+                className="w-full h-11 sm:h-14 rounded-l-xl rounded-r-none border border-r-0 border-[#1C1C1C]/10 bg-[#f8f8f8] pl-10 sm:pl-12 pr-2 sm:pr-4 text-sm sm:text-lg font-medium text-[#1C1C1C] placeholder-[#aaa] outline-none focus:border-[#F8904D] focus:ring-2 focus:ring-[#F8904D]/20 transition-all"
               />
 
               {open && merged.length > 0 && (
@@ -155,10 +155,10 @@ export default function HeroSearchBar() {
 
             <button
               onClick={go}
-              className="btn-gold px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-l-none sm:rounded-r-xl font-extrabold text-base flex items-center justify-center gap-2 shrink-0 mt-2 sm:mt-0"
+              className="h-11 sm:h-14 btn-gold px-4 sm:px-8 rounded-r-xl rounded-l-none font-extrabold text-sm sm:text-base flex items-center justify-center gap-1.5 sm:gap-2 shrink-0 transition-transform active:scale-95"
             >
               <Search className="w-4 h-4" />
-              Search
+              <span>Search</span>
             </button>
           </div>
 
