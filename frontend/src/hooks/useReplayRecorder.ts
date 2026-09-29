@@ -10,11 +10,12 @@ import {
   refreshIdentity,
 } from "@/lib/analyticsIdentity";
 
-// Replay is ON by default and disabled only when the deployment explicitly
-// opts out at build time (NEXT_PUBLIC_REPLAY_ENABLED=false).
-const REPLAY_ENABLED = process.env.NEXT_PUBLIC_REPLAY_ENABLED !== "false";
-const FLUSH_INTERVAL_MS = 20_000; // Flushes every 20s instead of 3s to reduce DB traffic by 85%
-const SAMPLE_RATE = 0.15; // Records 15% of sessions: ample replay data without server overload
+// With Microsoft Clarity active, internal rrweb capture is turned OFF by default
+// to eliminate all Postgres DB replay writes and keep the server 100% free.
+// It can still be enabled if desired by setting NEXT_PUBLIC_REPLAY_ENABLED=true.
+const REPLAY_ENABLED = process.env.NEXT_PUBLIC_REPLAY_ENABLED === "true";
+const FLUSH_INTERVAL_MS = 20_000;
+const SAMPLE_RATE = 0.15;
 const MAX_BATCH_BYTES = 400_000;
 const MAX_RECORDING_MS = 30 * 60 * 1000; // cap a single recording at 30 minutes
 const REPLAY_API_PATH = "/api/analytics/replay";
