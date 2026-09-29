@@ -37,6 +37,13 @@ export const metadata: Metadata = {
 export default async function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-zinc-950 font-sans">
+      <link
+        rel="preload"
+        as="image"
+        href="/content/rajasthan-tours-holiday-1.webp"
+        type="image/webp"
+        fetchPriority="high"
+      />
       <JsonLd data={faqSchema(HOME_FAQS)} />
       <Header />
       <main className="flex-1">

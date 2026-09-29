@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
   images: {
     deviceSizes: [640, 750, 1080, 1200, 1920],
     imageSizes: [32, 64, 96, 128, 256, 384],
-    formats: ["image/webp"],
+    formats: ["image/avif", "image/webp"],
     qualities: [75, 80],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
@@ -63,6 +63,12 @@ const nextConfig: NextConfig = {
           ...(process.env.NODE_ENV === "production"
             ? [{ key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" }]
             : []),
+        ],
+      },
+      {
+        source: "/:path*\\.(webp|avif|jpg|jpeg|png|gif|svg|ico)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
       {

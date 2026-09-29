@@ -66,11 +66,11 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
   }
 
   // Next.js Image for fast, optimized loading
-  // While the image is still loading, show the premium watermark underneath so
-  // the user never sees a raw black/dark block behind the fading image.
+  // For priority images (above-the-fold / hero), render instantly with no opacity lag.
+  // For other images, use a subtle 150ms transition instead of an artificial 700ms delay.
   return (
     <>
-      {!loaded && (
+      {!loaded && !priority && (
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none" aria-hidden="true">
           <ImageWatermark theme={theme} logo={fallbackSrc} alt={alt} />
         </div>
@@ -78,8 +78,10 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
       <Image
         src={src}
         alt={alt}
-        className={`${className} transition-opacity duration-700 ease-out ${
-          loaded ? "opacity-100" : "opacity-0"
+        className={`${className} ${
+          priority
+            ? "opacity-100"
+            : `transition-opacity duration-150 ease-out ${loaded ? "opacity-100" : "opacity-0"}`
         }`}
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
@@ -88,7 +90,7 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
           (typeof src === "string" &&
             (src.startsWith("//") ||
               src.startsWith("http") ||
-              (src.startsWith("/") && /\.(webp|avif|gif|svg)$/i.test(src))))
+              (src.startsWith("/") && /\.(svg|gif)$/i.test(src))))
         }
         fill={fill}
         priority={priority}
