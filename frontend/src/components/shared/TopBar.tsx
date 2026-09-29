@@ -167,7 +167,7 @@ export default function TopBar({ isScrolled }: { isScrolled?: boolean }) {
 
   return (
     <div
-      className={`bg-[#1C1F23] text-[#D8DEE4] border-b border-[#2D333B] transition-all duration-300 text-xs ${
+      className={`bg-[#3c4041] text-[#E5E9EC] border-b border-[#4d5254] transition-all duration-300 text-xs ${
         isScrolled ? "py-1" : "py-1.5"
       }`}
     >
@@ -175,7 +175,7 @@ export default function TopBar({ isScrolled }: { isScrolled?: boolean }) {
         {/* Left: Clean Tagline */}
         <div className="flex items-center gap-2 truncate">
           <Sparkles className="w-3.5 h-3.5 text-[#F8904D] shrink-0" />
-          <span className="text-[#E0E6ED] text-[11px] sm:text-xs font-semibold tracking-wide truncate">
+          <span className="text-[#F0F3F5] text-[11px] sm:text-xs font-semibold tracking-wide truncate">
             Plan Your Dream Holiday with KoiKoi Travel
           </span>
         </div>
@@ -187,7 +187,7 @@ export default function TopBar({ isScrolled }: { isScrolled?: boolean }) {
             onClick={() => setIsOpen((prev) => !prev)}
             aria-expanded={isOpen}
             aria-haspopup="listbox"
-            className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#252B33] hover:bg-[#2F3742] border-2 border-[#2E8B8B] text-white text-[11px] sm:text-xs font-bold tracking-wide transition-all shadow-[0_2px_12px_rgba(46,139,139,0.35)] hover:shadow-[0_2px_16px_rgba(46,139,139,0.5)] cursor-pointer"
+            className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#2f3233] hover:bg-[#353839] border-2 border-[#2E8B8B] text-white text-[11px] sm:text-xs font-bold tracking-wide transition-all shadow-[0_2px_12px_rgba(46,139,139,0.35)] hover:shadow-[0_2px_16px_rgba(46,139,139,0.5)] cursor-pointer"
           >
             <span className="text-sm leading-none">{currentLangObj.flag}</span>
             <span className="text-white font-bold">{currentLangObj.nativeName}</span>
@@ -201,9 +201,9 @@ export default function TopBar({ isScrolled }: { isScrolled?: boolean }) {
           {mounted && isOpen && (
             <div
               role="listbox"
-              className="absolute right-0 mt-2 w-48 rounded-xl bg-[#1C1F23] border border-[#3E4652] shadow-[0_20px_40px_rgba(0,0,0,0.65)] py-1.5 z-[100] animate-in fade-in zoom-in-95 duration-150"
+              className="absolute right-0 mt-2 w-48 rounded-xl bg-[#3c4041] border border-[#525759] shadow-[0_20px_40px_rgba(0,0,0,0.5)] py-1.5 z-[100] animate-in fade-in zoom-in-95 duration-150"
             >
-              <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#8B949E] border-b border-[#2D333B]">
+              <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#A6B0B8] border-b border-[#4d5254]">
                 Select Language
               </div>
               <div className="py-1">
@@ -218,14 +218,14 @@ export default function TopBar({ isScrolled }: { isScrolled?: boolean }) {
                       onClick={() => handleSelectLang(lang)}
                       className={`w-full text-left px-3.5 py-2 flex items-center justify-between text-xs transition-colors cursor-pointer ${
                         isSelected
-                          ? "bg-[#252B33] text-[#F8904D] font-bold"
-                          : "text-[#C9D1D9] hover:bg-[#252B33] hover:text-white"
+                          ? "bg-[#2f3233] text-[#F8904D] font-bold"
+                          : "text-[#E5E9EC] hover:bg-[#2f3233] hover:text-white"
                       }`}
                     >
                       <span className="flex items-center gap-2">
                         <span className="text-sm">{lang.flag}</span>
                         <span className="font-semibold">{lang.nativeName}</span>
-                        <span className="text-[10px] text-[#8B949E] font-normal">
+                        <span className="text-[10px] text-[#A6B0B8] font-normal">
                           ({lang.name})
                         </span>
                       </span>
