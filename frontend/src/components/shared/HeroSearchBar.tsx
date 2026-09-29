@@ -106,12 +106,12 @@ export default function HeroSearchBar() {
                 onBlur={() => setTimeout(() => setOpen(false), 150)}
                 onKeyDown={(e) => e.key === "Enter" && go()}
                 placeholder="Where do you want to go? Try 'Jaipur'..."
-                className="w-full h-11 sm:h-14 rounded-l-xl rounded-r-none border border-r-0 border-[#1C1C1C]/10 bg-[#f8f8f8] pl-10 sm:pl-12 pr-2 sm:pr-4 text-sm sm:text-lg font-medium text-[#1C1C1C] placeholder-[#aaa] outline-none focus:border-[#F8904D] focus:ring-2 focus:ring-[#F8904D]/20 transition-all"
+                className="w-full h-11 sm:h-14 rounded-l-xl rounded-r-none border border-r-0 border-[#1C1C1C]/10 bg-[#f8f8f8] pl-10 sm:pl-12 pr-2 sm:pr-4 text-base sm:text-lg font-medium text-[#1C1C1C] placeholder-[#aaa] outline-none focus:border-[#F8904D] focus:ring-2 focus:ring-[#F8904D]/20 transition-all"
               />
 
               {open && merged.length > 0 && (
-                <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-xl border border-[#1C1C1C]/10 shadow-xl z-30 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200">
-                  <div className="py-1.5 max-h-80 overflow-y-auto">
+                <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl border border-slate-200/80 shadow-[0_16px_40px_rgba(0,0,0,0.18)] z-50 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200">
+                  <div className="py-2 max-h-72 overflow-y-auto">
                     {merged.map((r) => {
                       if (r.kind === "exp") {
                         return (

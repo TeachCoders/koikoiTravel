@@ -29,7 +29,7 @@ export const HeroSection: React.FC = () => {
   }, [next]);
 
   return (
-    <section className="relative w-full h-[300px] sm:h-[380px] md:h-[520px] flex items-center justify-center overflow-hidden bg-slate-200">
+    <section className="relative w-full h-[320px] sm:h-[400px] md:h-[520px] flex items-center justify-center overflow-hidden bg-slate-900">
       <div className="absolute inset-0 flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${current * 100}%)` }}>
         {SLIDES.map((s, i) => (
           <div key={i} className="relative w-full h-full shrink-0">
@@ -47,13 +47,15 @@ export const HeroSection: React.FC = () => {
         ))}
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/25" />
 
       <button onClick={prev}
+        aria-label="Previous slide"
         className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full items-center justify-center text-white hover:bg-white/20 transition-all">
         <ChevronLeft className="w-5 h-5" />
       </button>
       <button onClick={next}
+        aria-label="Next slide"
         className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full items-center justify-center text-white hover:bg-white/20 transition-all">
         <ChevronRight className="w-5 h-5" />
       </button>
@@ -61,20 +63,20 @@ export const HeroSection: React.FC = () => {
       <div className="absolute bottom-2.5 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
         {SLIDES.map((_, i) => (
           <button key={i} onClick={() => setCurrent(i)}
+            aria-label={`Go to slide ${i + 1}`}
             className={`rounded-full transition-all duration-300 ${
-              i === current ? "w-6 sm:w-8 h-1.5 sm:h-2 bg-white" : "w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/40 hover:bg-white/60"
+              i === current ? "w-6 sm:w-8 h-1.5 sm:h-2 bg-[#F8904D]" : "w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/50 hover:bg-white/70"
             }`}
           />
         ))}
       </div>
 
       <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-center">
-
-        <h1 className="text-white !text-white text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-4xl mx-auto drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)] transition-all duration-700 block">
+        <h1 className="text-white !text-white text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-4xl mx-auto drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] transition-all duration-700 block">
           Find Your Perfect <span className="text-[#F8904D]">Holiday</span>
         </h1>
 
-        <div className="mt-3 sm:mt-6 md:mt-8">
+        <div className="mt-3.5 sm:mt-6 md:mt-8">
           <HeroSearchBar />
         </div>
       </div>

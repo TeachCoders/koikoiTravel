@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -57,6 +57,13 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -102,7 +109,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
           />
         )}
       </head>
-      <body className="min-h-full flex flex-col font-sans text-[#1C1C1C]">
+      <body className="min-h-full flex flex-col font-sans text-[#1C1C1C] pb-16 md:pb-0">
         <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
