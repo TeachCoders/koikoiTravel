@@ -6,6 +6,7 @@ import { isPublicRequest } from "../utils/authHelpers.js";
 import { generateSlug, upsertBanner, getBanner, deleteBanner } from "../utils/cmsHelpers.js";
 import { handlePrismaError } from "../utils/handlePrismaError.js";
 import { logger } from "../utils/logger.js";
+import { notifyRevalidate } from "../services/revalidateService.js";
 
 const router = express.Router();
 
@@ -219,21 +220,46 @@ router.get("/", async (req, res) => {
       const byId = new Map(full.map((f) => [f.id, f]));
       items = pageIds.map((id) => byId.get(id)).filter(Boolean);
     } else {
-      const [pinned, regular, count] = await Promise.all([
-        prisma.journey.findMany({
+      const [pinnedCount, totalCount] = await Promise.all([
+        prisma.journey.count({ where: { ...where, displayOrder: { gt: 0 } } }),
+        prisma.journey.count({ where }),
+      ]);
+      total = totalCount;
+
+      items = [];
+      if (skip < pinnedCount) {
+        const pinnedTake = Math.min(limit, pinnedCount - skip);
+        const pinnedItems = await prisma.journey.findMany({
           where: { ...where, displayOrder: { gt: 0 } },
           select: listSelect,
           orderBy: [{ isActive: "desc" }, { displayOrder: "asc" }, { id: "desc" }],
-        }),
-        prisma.journey.findMany({
+          skip,
+          take: pinnedTake,
+        });
+        items.push(...pinnedItems);
+
+        const remainingTake = limit - items.length;
+        if (remainingTake > 0) {
+          const regularItems = await prisma.journey.findMany({
+            where: { ...where, displayOrder: 0 },
+            select: listSelect,
+            orderBy: [{ isActive: "desc" }, { id: "desc" }],
+            skip: 0,
+            take: remainingTake,
+          });
+          items.push(...regularItems);
+        }
+      } else {
+        const regularSkip = skip - pinnedCount;
+        const regularItems = await prisma.journey.findMany({
           where: { ...where, displayOrder: 0 },
           select: listSelect,
           orderBy: [{ isActive: "desc" }, { id: "desc" }],
-        }),
-        prisma.journey.count({ where }),
-      ]);
-      total = count;
-      items = [...pinned, ...regular].slice(skip, skip + limit);
+          skip: regularSkip,
+          take: limit,
+        });
+        items.push(...regularItems);
+      }
     }
 
     const ids = items.map((i) => i.id);
@@ -525,6 +551,7 @@ router.post("/", requireTeamOrAdmin(["it"]), async (req, res) => {
     }).safeParse(req.body);
     const bannerData = bannerParsed.success ? bannerParsed.data : null;
     const banner = await upsertBanner("Journey", item.id, bannerData);
+    notifyRevalidate("journey", item);
 
     return res.status(201).json({ success: true, message: "Journey created successfully", data: { ...item, banner } });
   } catch (err) {
@@ -617,6 +644,7 @@ router.put("/:id", requireTeamOrAdmin(["it"]), async (req, res) => {
     }).safeParse(req.body);
     const bannerData = bannerParsed.success ? bannerParsed.data : null;
     const banner = await upsertBanner("Journey", id, bannerData);
+    notifyRevalidate("journey", item);
 
     return res.status(200).json({ success: true, message: "Journey updated successfully", data: { ...item, banner } });
   } catch (err) {
@@ -644,6 +672,7 @@ router.post("/order", requireTeamOrAdmin(["it"]), async (req, res) => {
       ...ids.map((id, i) => prisma.journey.updateMany({ where: { id }, data: { displayOrder: i + 1 } })),
     ];
     await prisma.$transaction(ops);
+    notifyRevalidate("journey", {});
 
     return res.status(200).json({ success: true, message: "Journey order updated", data: { ids, count: ids.length } });
   } catch (err) {
@@ -665,6 +694,7 @@ router.patch("/:id/toggle-active", requireTeamOrAdmin(["it"]), async (req, res) 
       where: { id },
       data: { isActive: !existing.isActive },
     });
+    notifyRevalidate("journey", item);
 
     return res.status(200).json({
       success: true,
@@ -694,6 +724,7 @@ router.delete("/:id", requireTeamOrAdmin(["it"]), async (req, res) => {
     await prisma.faq.deleteMany({ where: { entityType: "Journey", entityId: id } });
     await deleteBanner("Journey", id);
     await prisma.journey.delete({ where: { id } });
+    notifyRevalidate("journey", existing);
 
     return res.status(200).json({ success: true, message: "Journey deleted successfully" });
   } catch (err) {

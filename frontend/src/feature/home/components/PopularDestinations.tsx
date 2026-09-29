@@ -28,7 +28,7 @@ export const PopularDestinations: React.FC<{
   );
   const { cities, isLoading: citiesLoading } = useGetCities(
     {
-      limit: 1000,
+      limit: 100,
       isActive: "true",
     },
     initialCities

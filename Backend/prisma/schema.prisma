@@ -593,6 +593,8 @@ model Country {
   activeSnapshot  Json?
   displayOrder    Int       @default(0)
   states          State[]
+
+  @@index([isActive, displayOrder])
   @@map("country")
 }
 
@@ -619,6 +621,9 @@ model State {
   activeSnapshot Json?
   displayOrder Int     @default(0)
   cities      City[]
+
+  @@index([countryId, isActive])
+  @@index([isActive, displayOrder])
 }
 
 model City {
@@ -644,6 +649,9 @@ model City {
   displayOrder Int      @default(0)
   journeys    Journey[]
   travelExperiences TravelExperience[]
+
+  @@index([stateId, isActive])
+  @@index([isActive, displayOrder])
 }
 
 model Month {
@@ -741,6 +749,9 @@ model Journey {
   exclusion     Exclusion[]
   whyChooseUs   WhyChoose[]
   bookingPolicy BookingPolicy[]
+
+  @@index([isActive, displayOrder])
+  @@index([isActive, isBestSelling])
 }
 
 model JourneyDay {

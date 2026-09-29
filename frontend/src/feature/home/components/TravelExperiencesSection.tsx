@@ -16,7 +16,7 @@ export const TravelExperiencesSection: React.FC = () => {
     isActive: "true",
   });
   const { journeys } = useGetJourneys({
-    limit: 200,
+    limit: 100,
     isActive: "true",
   });
 

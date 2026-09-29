@@ -232,20 +232,45 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
         findManyArgs.include = include;
       }
 
-      const [pinned, regular, total] = await Promise.all([
-        prisma[modelName].findMany({
+      const [pinnedCount, total] = await Promise.all([
+        prisma[modelName].count({ where: { ...where, displayOrder: { gt: 0 } } }),
+        prisma[modelName].count({ where }),
+      ]);
+
+      let items = [];
+      if (skip < pinnedCount) {
+        const pinnedTake = Math.min(limit, pinnedCount - skip);
+        const pinnedItems = await prisma[modelName].findMany({
           where: { ...where, displayOrder: { gt: 0 } },
           ...findManyArgs,
           orderBy: [{ isActive: "desc" }, { displayOrder: "asc" }, { id: "desc" }],
-        }),
-        prisma[modelName].findMany({
+          skip,
+          take: pinnedTake,
+        });
+        items.push(...pinnedItems);
+
+        const remainingTake = limit - items.length;
+        if (remainingTake > 0) {
+          const regularItems = await prisma[modelName].findMany({
+            where: { ...where, displayOrder: 0 },
+            ...findManyArgs,
+            orderBy: [{ id: "desc" }],
+            skip: 0,
+            take: remainingTake,
+          });
+          items.push(...regularItems);
+        }
+      } else {
+        const regularSkip = skip - pinnedCount;
+        const regularItems = await prisma[modelName].findMany({
           where: { ...where, displayOrder: 0 },
           ...findManyArgs,
           orderBy: [{ id: "desc" }],
-        }),
-        prisma[modelName].count({ where }),
-      ]);
-      const items = [...pinned, ...regular].slice(skip, skip + limit);
+          skip: regularSkip,
+          take: limit,
+        });
+        items.push(...regularItems);
+      }
 
       const ids = items.map((i) => i.id);
       const banners = await prisma.banner.findMany({
@@ -256,8 +281,20 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
 
       let tourCounts = new Map();
       if (tourCountWhere && ids.length) {
-        const counts = await Promise.all(ids.map((id) => prisma.journey.count({ where: tourCountWhere(id) })));
-        tourCounts = new Map(ids.map((id, idx) => [id, counts[idx]]));
+        if (modelName === "city") {
+          const cityJourneys = await prisma.city.findMany({
+            where: { id: { in: ids } },
+            select: { id: true, _count: { select: { journeys: { where: { isActive: true } } } } },
+          });
+          tourCounts = new Map(cityJourneys.map((c) => [c.id, c._count.journeys]));
+        } else {
+          const BATCH = 15;
+          for (let i = 0; i < ids.length; i += BATCH) {
+            const chunk = ids.slice(i, i + BATCH);
+            const counts = await Promise.all(chunk.map((id) => prisma.journey.count({ where: tourCountWhere(id) })));
+            chunk.forEach((id, idx) => tourCounts.set(id, counts[idx]));
+          }
+        }
       }
 
       const data = items.map((item) => {

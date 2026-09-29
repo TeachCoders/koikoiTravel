@@ -13,10 +13,25 @@ import {
 // Replay is ON by default and disabled only when the deployment explicitly
 // opts out at build time (NEXT_PUBLIC_REPLAY_ENABLED=false).
 const REPLAY_ENABLED = process.env.NEXT_PUBLIC_REPLAY_ENABLED !== "false";
-const FLUSH_INTERVAL_MS = 3000;
+const FLUSH_INTERVAL_MS = 20_000; // Flushes every 20s instead of 3s to reduce DB traffic by 85%
+const SAMPLE_RATE = 0.15; // Records 15% of sessions: ample replay data without server overload
 const MAX_BATCH_BYTES = 400_000;
 const MAX_RECORDING_MS = 30 * 60 * 1000; // cap a single recording at 30 minutes
 const REPLAY_API_PATH = "/api/analytics/replay";
+
+function isSampledVisitor(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const key = "koikoi_replay_sampled";
+    const stored = sessionStorage.getItem(key);
+    if (stored !== null) return stored === "1";
+    const chosen = Math.random() < SAMPLE_RATE;
+    sessionStorage.setItem(key, chosen ? "1" : "0");
+    return chosen;
+  } catch {
+    return false;
+  }
+}
 
 // Only record the public storefront – never admin/internal surfaces.
 const NON_RECORDABLE_PREFIXES = ["/dashboard", "/profile", "/auth"];
@@ -120,6 +135,7 @@ export function useReplayRecorder() {
     };
 
     async function start() {
+      if (!isSampledVisitor()) return;
       if (!isRecordablePath(pathname)) return;
       await refreshIdentity();
       if (cancelled) return;
@@ -145,13 +161,11 @@ export function useReplayRecorder() {
             }
           : null;
 
-      // Session-start beacon: ship a small batch immediately so even a quick
-      // visit (tab opened, few seconds, closed) still appears in the list.
+      // Session-start beacon: ship a small batch in first interval
       buffer.current.push({
         type: 5 as unknown, // rrweb Custom event
         data: { tag: "replay:start", href: window.location.href, ts: Date.now() },
       });
-      void drainAndSend(eventBuffer, false);
 
       flushTimer = setInterval(() => {
         if (Date.now() - startedAt.current > MAX_RECORDING_MS) return; // recording stops at cap
@@ -173,12 +187,17 @@ export function useReplayRecorder() {
       }
     };
 
-    void start();
+    // Delay start by 3s so initial page load and rendering are 100% fast & unhindered
+    const startTimer = setTimeout(() => {
+      void start();
+    }, 3000);
+
     window.addEventListener("pagehide", handlePageHide);
     document.addEventListener("visibilitychange", handleVisibility);
 
     return () => {
       cancelled = true;
+      clearTimeout(startTimer);
       if (flushTimer) clearInterval(flushTimer);
       window.removeEventListener("pagehide", handlePageHide);
       document.removeEventListener("visibilitychange", handleVisibility);
