@@ -29,25 +29,27 @@ export const HeroSection: React.FC = () => {
   }, [next]);
 
   return (
-    <section className="relative w-full h-[320px] sm:h-[400px] md:h-[520px] flex items-center justify-center overflow-hidden bg-slate-900">
-      <div className="absolute inset-0 flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${current * 100}%)` }}>
-        {SLIDES.map((s, i) => (
-          <div key={i} className="relative w-full h-full shrink-0">
-            <FallbackImage
-              src={s.image}
-              alt={s.alt}
-              fill
-              priority={i === 0}
-              unoptimized
-              {...(!i ? {} : { loading: "eager" as const, decoding: "async" as const })}
-              className="object-cover object-center"
-              theme="dark"
-            />
-          </div>
-        ))}
+    <section className="relative w-full h-[320px] sm:h-[400px] md:h-[520px] flex items-center justify-center bg-slate-900 z-20">
+      {/* Background slider - clipped with overflow-hidden */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${current * 100}%)` }}>
+          {SLIDES.map((s, i) => (
+            <div key={i} className="relative w-full h-full shrink-0">
+              <FallbackImage
+                src={s.image}
+                alt={s.alt}
+                fill
+                priority={i === 0}
+                unoptimized
+                {...(!i ? {} : { loading: "eager" as const, decoding: "async" as const })}
+                className="object-cover object-center"
+                theme="dark"
+              />
+            </div>
+          ))}
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/25" />
       </div>
-
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/25" />
 
       <button onClick={prev}
         aria-label="Previous slide"
@@ -71,7 +73,7 @@ export const HeroSection: React.FC = () => {
         ))}
       </div>
 
-      <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-center">
+      <div className="relative z-30 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-center">
         <h1 className="text-white !text-white text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-4xl mx-auto drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] transition-all duration-700 block">
           Find Your Perfect <span className="text-[#F8904D]">Holiday</span>
         </h1>
