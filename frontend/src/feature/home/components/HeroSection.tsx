@@ -29,7 +29,7 @@ export const HeroSection: React.FC = () => {
   }, [next]);
 
   return (
-    <section className="relative min-h-[440px] sm:min-h-[600px] lg:min-h-[680px] flex items-center justify-center overflow-hidden py-8 sm:py-14 lg:py-20 bg-slate-200">
+    <section className="relative w-full h-[300px] sm:h-[380px] md:h-[520px] flex items-center justify-center overflow-hidden bg-slate-200">
       <div className="absolute inset-0 flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${current * 100}%)` }}>
         {SLIDES.map((s, i) => (
           <div key={i} className="relative w-full h-full shrink-0">
@@ -58,7 +58,7 @@ export const HeroSection: React.FC = () => {
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+      <div className="absolute bottom-2.5 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
         {SLIDES.map((_, i) => (
           <button key={i} onClick={() => setCurrent(i)}
             className={`rounded-full transition-all duration-300 ${
@@ -70,11 +70,11 @@ export const HeroSection: React.FC = () => {
 
       <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-center">
 
-        <h1 className="text-white !text-white text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-4xl mx-auto drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)] transition-all duration-700 block">
+        <h1 className="text-white !text-white text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-4xl mx-auto drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)] transition-all duration-700 block">
           Find Your Perfect <span className="text-[#F8904D]">Holiday</span>
         </h1>
 
-        <div className="mt-5 sm:mt-8 md:mt-10">
+        <div className="mt-3 sm:mt-6 md:mt-8">
           <HeroSearchBar />
         </div>
       </div>
