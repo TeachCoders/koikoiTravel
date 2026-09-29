@@ -176,7 +176,7 @@ export default function TopBar({ isScrolled }: { isScrolled?: boolean }) {
         <div className="flex items-center gap-2 truncate">
           <Sparkles className="w-3.5 h-3.5 text-[#F8904D] shrink-0" />
           <span className="text-[#F0F3F5] text-[11px] sm:text-xs font-semibold tracking-wide truncate">
-            Plan Your Dream Holiday with KoiKoi Travel
+            Need another language? Select your preferred language →
           </span>
         </div>
 
