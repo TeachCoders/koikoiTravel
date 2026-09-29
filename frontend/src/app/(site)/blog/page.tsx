@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Search, Sparkles, ChevronRight, ChevronLeft, Compass, MapPin } from "lucide-react";
 import BlogCard from "@/feature/blog/components/BlogCard";
 import JsonLd from "@/components/shared/JsonLd";
-import { itemListSchema, breadcrumbSchema } from "@/lib/jsonLd";
+import { itemListSchema, breadcrumbSchema, graphSchema } from "@/lib/jsonLd";
 import type { BlogPost } from "@/feature/blog/type";
 import { SERVER_API_BASE } from "@/feature/destinations/api/public-server";
 
@@ -102,19 +102,21 @@ export default async function BlogPage({
   );
   const mainPosts = posts;
   
-  const listSchemaData = itemListSchema(
-    posts.map((p) => ({ name: p.title, url: `/blog/${p.slug}` }))
-  );
-  
   const breadcrumbData = breadcrumbSchema([
     { name: "Home", path: "/" },
     { name: "Travel Blog", path: "/blog" },
   ]);
 
+  const schemaNodes: Record<string, unknown>[] = [breadcrumbData];
+  if (posts.length > 0) {
+    schemaNodes.push(
+      itemListSchema(posts.map((p) => ({ name: p.title, url: `/blog/${p.slug}` })))
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-[#f8f8f8] font-sans">
-      {posts.length > 0 && <JsonLd data={listSchemaData} />}
-      <JsonLd data={breadcrumbData} />
+      <JsonLd data={graphSchema(schemaNodes)} />
 
       <main className="flex-1">
         {/* ===== PAGE HERO WITH SOLID TEAL BACKGROUND ===== */}

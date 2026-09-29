@@ -26,8 +26,7 @@ export const organizationSchema: Record<string, unknown> = {
     postalCode: "110020",
     addressCountry: "IN",
   },
-  priceRange: "$$", // Foreigners ke liye USD symbol reference better rehta hai
-  areaServed: "Worldwide", // Batata hai ki aap pure globe se clients accept karte hain
+  areaServed: "Worldwide",
   knowsAbout: [
     "India Inbound Tourism",
     "Customized India Tour Packages",
@@ -63,6 +62,7 @@ export function breadcrumbSchema(
   items: { name: string; path: string }[]
 ): Record<string, unknown> {
   return {
+    "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: items.map((item, i) => ({
       "@type": "ListItem",

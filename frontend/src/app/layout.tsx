@@ -9,7 +9,7 @@ const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "GTM-MHMD6R9X";
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-BJQ7L9MPX3";
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID || "ypzjlfc358";
 import JsonLd from "@/components/shared/JsonLd";
-import { organizationSchema, websiteSchema } from "@/lib/jsonLd";
+import { organizationSchema, websiteSchema, graphSchema } from "@/lib/jsonLd";
 import { ChatWidgetWrapper } from "@/components/shared/ChatWidgetWrapper";
 import WhatsAppWidget from "@/components/shared/WhatsAppWidget";
 import MobileStickyActionBar from "@/components/shared/MobileStickyActionBar";
@@ -111,8 +111,7 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        <JsonLd data={organizationSchema} />
-        <JsonLd data={websiteSchema} />
+        <JsonLd data={graphSchema([organizationSchema, websiteSchema])} />
         <AppProviders>
           <SentryErrorBoundary>
             {children}

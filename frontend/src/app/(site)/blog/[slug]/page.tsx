@@ -6,7 +6,7 @@ import BlogCard from "@/feature/blog/components/BlogCard";
 import BlogSidebar from "@/feature/blog/components/BlogSidebar";
 import RichContent from "@/components/shared/RichContent";
 import JsonLd from "@/components/shared/JsonLd";
-import { articleSchema, breadcrumbSchema } from "@/lib/jsonLd";
+import { articleSchema, breadcrumbSchema, graphSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached, SERVER_API_BASE } from "@/feature/destinations/api/public-server";
 import { stripHtml, absoluteUrl,  truncateMeta } from "@/lib/utils";
 import { formatBlogDate } from "@/lib/dateUtils";
@@ -130,8 +130,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div className="bg-[#f8f8f8] min-h-screen pb-20 font-sans">
-      <JsonLd data={articleSchemaData} />
-      <JsonLd data={breadcrumbData} />
+      <JsonLd data={graphSchema([articleSchemaData, breadcrumbData])} />
 
       {/* ===== HERO SECTION ===== */}
       <section className="relative h-[480px] md:h-[560px] overflow-hidden bg-slate-900 flex items-center justify-center">

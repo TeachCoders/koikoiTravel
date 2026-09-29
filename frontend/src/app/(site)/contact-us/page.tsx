@@ -62,42 +62,6 @@ export default async function ContactUsPage() {
   const displayTitle = cmsPage?.h1Title || cmsPage?.title || "Contact Us";
   const cmsDescription = cmsPage?.moreDescription || cmsPage?.seoDescription;
 
-  // JSON-LD Organization & ContactPoint Schema for Google Search Rich Results
-  const contactOrganizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "TravelAgency",
-    name: "KoiKoi Travel",
-    url: SITE_URL,
-    logo: `${SITE_URL}/logo-with-name.png`,
-    image: `${SITE_URL}/logo-with-name.png`,
-    priceRange: "₹₹",
-    telephone: CLEAN_PHONE,
-    email: "support@koikoitravel.com",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "FIEE Complex, Okhla Phase 2",
-      addressLocality: "New Delhi",
-      addressRegion: "Delhi",
-      postalCode: "110020",
-      addressCountry: "IN",
-    },
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-        opens: "09:30",
-        closes: "19:00",
-      },
-    ],
-    contactPoint: {
-      "@type": "ContactPoint",
-      telephone: CLEAN_PHONE,
-      contactType: "customer service",
-      availableLanguage: ["English"],
-    },
-    sameAs: ["https://www.facebook.com/koikoiTravel/"],
-  };
-
   return (
     <div className="min-h-screen bg-[#f8f9fa] font-sans text-slate-800 pb-16">
       {/* SEO Structured Data */}
@@ -117,7 +81,6 @@ export default async function ContactUsPage() {
           ]),
         ])}
       />
-      <JsonLd data={contactOrganizationSchema} />
 
       {/* Hero Header Section */}
       <div className="bg-[#2E8B8B] relative overflow-hidden">

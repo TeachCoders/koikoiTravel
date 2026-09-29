@@ -88,18 +88,18 @@ export default async function PackageDetailPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-slate-50">
       <JsonLd
-        data={graphSchema([touristTripSchema({
-          name: pkg.name,
-          description: pkg.shortDescription || pkg.description || undefined,
-          image: bannerUrl || undefined,
-          url: `/packages/${pkg.slug}`,
-        })])}
-      />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: "Home", path: "/" },
-          { name: "Tour Packages", path: "/packages" },
-          { name: pkg.name, path: `/packages/${pkg.slug}` },
+        data={graphSchema([
+          touristTripSchema({
+            name: pkg.name,
+            description: pkg.shortDescription || pkg.description || undefined,
+            image: bannerUrl || undefined,
+            url: `/packages/${pkg.slug}`,
+          }),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Tour Packages", path: "/packages" },
+            { name: pkg.name, path: `/packages/${pkg.slug}` },
+          ]),
         ])}
       />
       {/* Banner */}
