@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Globe, ChevronDown, Check, Phone, Sparkles } from "lucide-react";
+import { ChevronDown, Check, Sparkles } from "lucide-react";
 
 export const LANGUAGES = [
   { code: "en", name: "English", nativeName: "English", flag: "🇬🇧" },
@@ -167,42 +167,32 @@ export default function TopBar({ isScrolled }: { isScrolled?: boolean }) {
 
   return (
     <div
-      className={`bg-[#0F242F] text-[#E0E8EC] border-b border-[#1E3A4B] transition-all duration-300 text-xs ${
+      className={`bg-[#1C1F23] text-[#D8DEE4] border-b border-[#2D333B] transition-all duration-300 text-xs ${
         isScrolled ? "py-1" : "py-1.5"
       }`}
     >
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 flex items-center justify-between gap-3">
-        {/* Left / Center: Connecting tagline & 24/7 Support line */}
-        <div className="flex items-center gap-2 sm:gap-3 truncate">
-          <span className="inline-flex items-center gap-1 text-[#F8904D] font-bold shrink-0">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Plan Your Dream Holiday</span>
+        {/* Left: Clean Tagline */}
+        <div className="flex items-center gap-2 truncate">
+          <Sparkles className="w-3.5 h-3.5 text-[#F8904D] shrink-0" />
+          <span className="text-[#E0E6ED] text-[11px] sm:text-xs font-semibold tracking-wide truncate">
+            Plan Your Dream Holiday with KoiKoi Travel
           </span>
-          <span className="text-[#6C8D9E] hidden sm:inline">•</span>
-          <a
-            href="tel:+919136739178"
-            className="inline-flex items-center gap-1.5 text-white/90 hover:text-[#F8904D] transition-colors truncate font-medium"
-          >
-            <Phone className="w-3 h-3 text-[#2E8B8B] shrink-0" />
-            <span className="hidden md:inline text-white/70">24/7 Expert Support:</span>
-            <span className="font-semibold text-white tracking-wide">+91 91367 39178</span>
-          </a>
         </div>
 
-        {/* Right: Language Dropdown (Radix-like lightweight custom menu) */}
+        {/* Right: Highlighted Language Dropdown (no globe icon) */}
         <div className="relative shrink-0" ref={dropdownRef}>
           <button
             type="button"
             onClick={() => setIsOpen((prev) => !prev)}
             aria-expanded={isOpen}
             aria-haspopup="listbox"
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#183545] hover:bg-[#204457] border border-[#2B4E63] text-white text-[11px] sm:text-xs font-semibold tracking-wide transition-all shadow-sm cursor-pointer"
+            className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#252B33] hover:bg-[#2F3742] border-2 border-[#2E8B8B] text-white text-[11px] sm:text-xs font-bold tracking-wide transition-all shadow-[0_2px_12px_rgba(46,139,139,0.35)] hover:shadow-[0_2px_16px_rgba(46,139,139,0.5)] cursor-pointer"
           >
-            <Globe className="w-3.5 h-3.5 text-[#2E8B8B]" />
-            <span className="mr-0.5">{currentLangObj.flag}</span>
-            <span>{currentLangObj.nativeName}</span>
+            <span className="text-sm leading-none">{currentLangObj.flag}</span>
+            <span className="text-white font-bold">{currentLangObj.nativeName}</span>
             <ChevronDown
-              className={`w-3 h-3 text-[#8CA5B4] transition-transform duration-200 ${
+              className={`w-3.5 h-3.5 text-[#2E8B8B] transition-transform duration-200 ${
                 isOpen ? "rotate-180" : ""
               }`}
             />
@@ -211,37 +201,39 @@ export default function TopBar({ isScrolled }: { isScrolled?: boolean }) {
           {mounted && isOpen && (
             <div
               role="listbox"
-              className="absolute right-0 mt-1.5 w-44 rounded-lg bg-[#0F242F] border border-[#2B4E63] shadow-[0_12px_28px_rgba(0,0,0,0.4)] py-1 z-[100] animate-in fade-in zoom-in-95 duration-150"
+              className="absolute right-0 mt-2 w-48 rounded-xl bg-[#1C1F23] border border-[#3E4652] shadow-[0_20px_40px_rgba(0,0,0,0.65)] py-1.5 z-[100] animate-in fade-in zoom-in-95 duration-150"
             >
-              <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#6C8D9E] border-b border-[#1E3A4B]">
+              <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#8B949E] border-b border-[#2D333B]">
                 Select Language
               </div>
-              {LANGUAGES.map((lang) => {
-                const isSelected = lang.code === currentLang;
-                return (
-                  <button
-                    key={lang.code}
-                    type="button"
-                    role="option"
-                    aria-selected={isSelected}
-                    onClick={() => handleSelectLang(lang)}
-                    className={`w-full text-left px-3 py-2 flex items-center justify-between text-xs transition-colors cursor-pointer ${
-                      isSelected
-                        ? "bg-[#1E3A4B] text-[#F8904D] font-bold"
-                        : "text-[#D0DFE6] hover:bg-[#183545] hover:text-white"
-                    }`}
-                  >
-                    <span className="flex items-center gap-2">
-                      <span className="text-sm">{lang.flag}</span>
-                      <span>{lang.nativeName}</span>
-                      <span className="text-[10px] text-[#8CA5B4] font-normal">
-                        ({lang.name})
+              <div className="py-1">
+                {LANGUAGES.map((lang) => {
+                  const isSelected = lang.code === currentLang;
+                  return (
+                    <button
+                      key={lang.code}
+                      type="button"
+                      role="option"
+                      aria-selected={isSelected}
+                      onClick={() => handleSelectLang(lang)}
+                      className={`w-full text-left px-3.5 py-2 flex items-center justify-between text-xs transition-colors cursor-pointer ${
+                        isSelected
+                          ? "bg-[#252B33] text-[#F8904D] font-bold"
+                          : "text-[#C9D1D9] hover:bg-[#252B33] hover:text-white"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span className="text-sm">{lang.flag}</span>
+                        <span className="font-semibold">{lang.nativeName}</span>
+                        <span className="text-[10px] text-[#8B949E] font-normal">
+                          ({lang.name})
+                        </span>
                       </span>
-                    </span>
-                    {isSelected && <Check className="w-3.5 h-3.5 text-[#F8904D]" />}
-                  </button>
-                );
-              })}
+                      {isSelected && <Check className="w-3.5 h-3.5 text-[#F8904D]" />}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>
