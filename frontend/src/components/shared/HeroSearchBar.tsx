@@ -106,7 +106,7 @@ export default function HeroSearchBar() {
                 onBlur={() => setTimeout(() => setOpen(false), 150)}
                 onKeyDown={(e) => e.key === "Enter" && go()}
                 placeholder="Where do you want to go? Try 'Jaipur', 'Honeymoon'..."
-                className="w-full rounded-l-xl rounded-r-none border border-[#1C1C1C]/10 bg-[#f8f8f8] pl-12 pr-4 py-4 text-lg font-medium text-[#1C1C1C] placeholder-[#aaa] outline-none focus:border-[#F8904D] focus:ring-2 focus:ring-[#F8904D]/20 transition-all"
+                className="w-full rounded-xl sm:rounded-r-none sm:rounded-l-xl border border-[#1C1C1C]/10 bg-[#f8f8f8] pl-12 pr-4 py-3.5 sm:py-4 text-base sm:text-lg font-medium text-[#1C1C1C] placeholder-[#aaa] outline-none focus:border-[#F8904D] focus:ring-2 focus:ring-[#F8904D]/20 transition-all"
               />
 
               {open && merged.length > 0 && (
@@ -155,7 +155,7 @@ export default function HeroSearchBar() {
 
             <button
               onClick={go}
-              className="btn-gold px-8 py-4 rounded-r-xl rounded-l-none font-extrabold text-base flex items-center justify-center gap-2 shrink-0"
+              className="btn-gold px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-l-none sm:rounded-r-xl font-extrabold text-base flex items-center justify-center gap-2 shrink-0 mt-2 sm:mt-0"
             >
               <Search className="w-4 h-4" />
               Search
