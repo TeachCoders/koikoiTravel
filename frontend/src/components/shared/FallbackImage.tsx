@@ -24,6 +24,27 @@ export interface FallbackImageProps extends Omit<React.ImgHTMLAttributes<HTMLIma
  * Automatically falls back to a clean, subtle light-gray brand logo watermark
  * when an image URL is missing, invalid, or fails to load.
  */
+const OPTIMIZABLE_HOSTS = new Set([
+  "koikoitravel.com",
+  "api.koikoitravel.com",
+  "www.koikoitravel.com",
+  "res.cloudinary.com",
+  "images.unsplash.com",
+  "localhost",
+]);
+
+function shouldBeUnoptimized(src?: string | null): boolean {
+  if (!src || typeof src !== "string") return true;
+  if (/\.(svg|gif)$/i.test(src)) return true;
+  if (src.startsWith("/")) return false; // Local relative path -> optimize!
+  try {
+    const parsed = new URL(src.startsWith("//") ? `https:${src}` : src);
+    return !OPTIMIZABLE_HOSTS.has(parsed.hostname);
+  } catch {
+    return true;
+  }
+}
+
 export const FallbackImage: React.FC<FallbackImageProps> = ({
   src,
   alt = "KoiKoi Travel",
@@ -85,13 +106,7 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
         }`}
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
-        unoptimized={
-          unoptimized ??
-          (typeof src === "string" &&
-            (src.startsWith("//") ||
-              src.startsWith("http") ||
-              (src.startsWith("/") && /\.(svg|gif)$/i.test(src))))
-        }
+        unoptimized={unoptimized ?? shouldBeUnoptimized(src)}
         fill={fill}
         priority={priority}
         quality={quality}

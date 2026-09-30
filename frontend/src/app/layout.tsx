@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import dynamic from "next/dynamic";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -11,16 +12,27 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-BJQ7L9MPX3";
 const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID || "ypzjlfc358";
 import JsonLd from "@/components/shared/JsonLd";
 import { organizationSchema, websiteSchema, graphSchema } from "@/lib/jsonLd";
-import { ChatWidgetWrapper } from "@/components/shared/ChatWidgetWrapper";
-import WhatsAppWidget from "@/components/shared/WhatsAppWidget";
 import MobileStickyActionBar from "@/components/shared/MobileStickyActionBar";
-import UserActivityTracker from "@/components/shared/UserActivityTracker";
-import ReplayRecorder from "@/components/shared/ReplayRecorder";
+
+const ChatWidgetWrapper = dynamic(
+  () => import("@/components/shared/ChatWidgetWrapper").then((m) => m.ChatWidgetWrapper),
+  { ssr: false }
+);
+const WhatsAppWidget = dynamic(() => import("@/components/shared/WhatsAppWidget"), {
+  ssr: false,
+});
+const UserActivityTracker = dynamic(() => import("@/components/shared/UserActivityTracker"), {
+  ssr: false,
+});
+const ReplayRecorder = dynamic(() => import("@/components/shared/ReplayRecorder"), {
+  ssr: false,
+});
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
   weight: ["400", "600", "700", "800", "900"],
   variable: "--font-nunito",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -82,12 +94,12 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans text-[#1C1C1C] pb-16 md:pb-0">
         <Script
           id="google-analytics"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
         />
         <Script
           id="google-analytics-init"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
@@ -97,7 +109,7 @@ gtag('config', '${GA_ID}');`,
         />
         <Script
           id="google-tag-manager"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -109,7 +121,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         {CLARITY_ID && (
           <Script
             id="microsoft-clarity"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `(function(c,l,a,r,i,t,y){
 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};

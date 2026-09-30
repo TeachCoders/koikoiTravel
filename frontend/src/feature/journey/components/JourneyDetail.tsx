@@ -36,15 +36,16 @@ import PageLoader from "@/components/shared/PageLoader";
 import TourBookingForm from "@/feature/leads/components/TourBookingForm";
 import { travelExperienceIcon } from "@/components/shared/TravelExperiencePills";
 import RichContent, { sanitizeHtml } from "@/components/shared/RichContent";
-import { QuoteModal } from "@/components/shared/QuoteModal";
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
 import { linkKeywords, buildExperienceLinkRules, type AutoLinkRule } from "@/lib/autoInternalLink";
 import { cn, stripHtml } from "@/lib/utils";
 
 const JourneyLightbox = dynamic(() => import("./JourneyLightbox"), { ssr: false });
+const QuoteModal = dynamic(() => import("@/components/shared/QuoteModal").then((m) => m.QuoteModal), { ssr: false });
 
 export default function JourneyDetail({ slug, initialJourney }: { slug: string; initialJourney?: Journey | null }) {
-  const { journey, isLoading } = useJourneyBySlug(slug, initialJourney);
+  const { journey: queriedJourney, isLoading } = useJourneyBySlug(slug, initialJourney);
+  const journey = queriedJourney || initialJourney;
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [pageUrl, setPageUrl] = useState("");
@@ -79,7 +80,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
   const SALES_PHONE = process.env.NEXT_PUBLIC_SALES_PHONE || "+919136739178";
 
-  if (isLoading) return <PageLoader size="page" />;
+  if (!journey && isLoading) return <PageLoader size="page" />;
   if (!journey) return notFound();
 
   const countrySlug = journey.cities?.[0]?.state?.country?.slug;
