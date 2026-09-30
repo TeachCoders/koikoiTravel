@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import dynamic from "next/dynamic";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -13,20 +12,7 @@ const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID || "ypzjlfc358";
 import JsonLd from "@/components/shared/JsonLd";
 import { organizationSchema, websiteSchema, graphSchema } from "@/lib/jsonLd";
 import MobileStickyActionBar from "@/components/shared/MobileStickyActionBar";
-
-const ChatWidgetWrapper = dynamic(
-  () => import("@/components/shared/ChatWidgetWrapper").then((m) => m.ChatWidgetWrapper),
-  { ssr: false }
-);
-const WhatsAppWidget = dynamic(() => import("@/components/shared/WhatsAppWidget"), {
-  ssr: false,
-});
-const UserActivityTracker = dynamic(() => import("@/components/shared/UserActivityTracker"), {
-  ssr: false,
-});
-const ReplayRecorder = dynamic(() => import("@/components/shared/ReplayRecorder"), {
-  ssr: false,
-});
+import ClientSideWidgets from "@/components/shared/ClientSideWidgets";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
@@ -144,11 +130,8 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
           <SentryErrorBoundary>
             {children}
           </SentryErrorBoundary>
-          <ChatWidgetWrapper />
-          <WhatsAppWidget />
           <MobileStickyActionBar />
-          <UserActivityTracker />
-          <ReplayRecorder />
+          <ClientSideWidgets />
         </AppProviders>
       </body>
     </html>
