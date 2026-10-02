@@ -15,7 +15,7 @@ import {
 // It can still be enabled if desired by setting NEXT_PUBLIC_REPLAY_ENABLED=true.
 const REPLAY_ENABLED = process.env.NEXT_PUBLIC_REPLAY_ENABLED === "true";
 const FLUSH_INTERVAL_MS = 20_000;
-const SAMPLE_RATE = 0.15;
+const SAMPLE_RATE = 1.0;
 const MAX_BATCH_BYTES = 400_000;
 const MAX_RECORDING_MS = 30 * 60 * 1000; // cap a single recording at 30 minutes
 const REPLAY_API_PATH = "/api/analytics/replay";
@@ -76,6 +76,7 @@ async function postEvents(
       },
       body: JSON.stringify(payload),
       keepalive: true,
+      credentials: "include",
     });
     if (!res.ok) throw new Error(`replay upload failed: HTTP ${res.status}`);
   } else {
@@ -124,15 +125,9 @@ export function useReplayRecorder() {
     let flushTimer: ReturnType<typeof setInterval> | null = null;
     const eventBuffer = buffer.current;
 
-    /** Guest-only: stops recording once the visitor logs in. */
+    /** Guest-only check: public storefront pages are recorded safely; dashboard/profile/auth are never recorded. */
     const haltIfLoggedIn = () => {
-      if (cancelled || getUserId() === null) return false;
-      stopFn?.();
-      stopFn = null;
-      if (flushTimer) clearInterval(flushTimer);
-      flushTimer = null;
-      void drainAndSend(eventBuffer, false); // flush what was captured while a guest
-      return true;
+      return false;
     };
 
     async function start() {
@@ -140,7 +135,6 @@ export function useReplayRecorder() {
       if (!isRecordablePath(pathname)) return;
       await refreshIdentity();
       if (cancelled) return;
-      if (haltIfLoggedIn()) return; // logged-in users are never recorded
 
       const rrweb = await import("rrweb");
       if (cancelled || typeof rrweb.record !== "function") return;

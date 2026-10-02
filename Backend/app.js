@@ -175,6 +175,8 @@ const CSRF_EXEMPT_PATHS = [
   "/auth/csrf-token",
   "/traveller-lead/public/portal-login",
   "/traveller-lead/public/portal-receipt",
+  "/analytics/replay",
+  "/analytics/events",
 ];
 
 app.use((req, res, next) => {

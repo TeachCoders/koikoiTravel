@@ -459,10 +459,8 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
       </div>
 
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 py-10 md:py-16 grid grid-cols-1 lg:grid-cols-[9fr_5fr] gap-6 lg:gap-8">
-        {/* ===== MAIN ===== */}
-        <div className="space-y-8 md:space-y-12">
-          {journey.highlights && journey.highlights.length > 0 && (
-            <section>
+       {journey.highlights && journey.highlights.length > 0 && (
+            <section className="lg:col-span-2">
               <span className="accent-label">Highlights</span>
               <h2 className="h3 text-[22px] leading-[1.25] text-[#1C1C1C] mt-2 mb-3">Key Experiences</h2>
               <div className="bg-[#2E8B8B]/5 rounded-3xl p-5 md:p-6 border border-[#2E8B8B]/10">
@@ -477,6 +475,10 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               </div>
             </section>
           )}
+       
+        {/* ===== MAIN ===== */}
+        <div className="space-y-8 md:space-y-12">
+          
 
           {journey.overView && (
             <section>

@@ -134,16 +134,6 @@ router.post('/replay', replayLimiter, async (req, res) => {
   try {
     const { sessionId, visitorId, events } = req.body;
 
-    // Guests only: silently ignore recordings from authenticated sessions.
-    if (req.session?.user?.id != null) {
-      const sid = String(sessionId || 'anonymous');
-      if (!loggedAuthDiscards.has(sid)) {
-        loggedAuthDiscards.add(sid);
-        console.warn(`[ANALYTICS] replay discarded: authenticated session ${sid}`);
-      }
-      return res.status(202).json({ success: true, discarded: 'authenticated-session' });
-    }
-
     if (!sessionId || !Array.isArray(events) || events.length === 0) {
       return res.status(400).json({ error: 'sessionId and non-empty events array required' });
     }
