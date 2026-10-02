@@ -39,6 +39,7 @@ import RichContent, { sanitizeHtml } from "@/components/shared/RichContent";
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
 import { linkKeywords, buildExperienceLinkRules, type AutoLinkRule } from "@/lib/autoInternalLink";
 import { cn, stripHtml } from "@/lib/utils";
+import FaqSection from "@/feature/home/components/FaqSection";
 
 const JourneyLightbox = dynamic(() => import("./JourneyLightbox"), { ssr: false });
 const QuoteModal = dynamic(() => import("@/components/shared/QuoteModal").then((m) => m.QuoteModal), { ssr: false });
@@ -563,18 +564,6 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               </div>
             </section>
           )}
-
-          {(journey.faqs?.length ?? 0) > 0 && (
-            <section>
-              <span className="accent-label">FAQs</span>
-              <h2 className="h3 text-[22px] leading-[1.25] text-[#1C1C1C] mt-2 mb-4 md:mb-6">Frequently Asked Questions</h2>
-              <div className="space-y-3">
-                {(journey.faqs ?? []).map((f) => (
-                  <FaqItem key={f.id} q={f.ques} a={f.ans} linkRules={paragraphLinkRules} />
-                ))}
-              </div>
-            </section>
-          )}
         </div>
 
         {/* ===== SIDEBAR ===== */}
@@ -617,6 +606,24 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
         </aside>
       </div>
 
+      {/* ===== TRIP GUIDE (MORE DESCRIPTION) ===== */}
+      {journey.moreDescription && (
+        <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-12 md:py-20">
+          <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
+            <div className="max-w-4xl">
+              <span className="accent-label">Trip Guide</span>
+              <RichContent
+                html={linkKeywords(journey.moreDescription, paragraphLinkRules)}
+                className="rich-text-plain-links mt-4"
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===== FAQ SECTION ===== */}
+      <FaqSection faqs={journey.faqs} />
+
       {lightboxOpen && (
         <JourneyLightbox
           open={lightboxOpen}
@@ -626,27 +633,6 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
         />
       )}
 
-    </div>
-  );
-}
-
-function FaqItem({ q, a, linkRules }: { q: string; a: string; linkRules: AutoLinkRule[] }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className={cn("rounded-2xl border transition-all duration-300 overflow-hidden", open ? "border-[#2E8B8B]/20 shadow-md bg-white" : "border-slate-100 bg-white hover:border-slate-200")}>
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left cursor-pointer"
-      >
-        <span className={cn("text-[15px] font-bold transition-colors", open ? "text-[#2E8B8B]" : "text-[#1C1C1C]")}>{stripHtml(q)}</span>
-        <span className={cn("w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300", open ? "bg-[#2E8B8B] text-white rotate-180" : "bg-slate-100 text-slate-500")}>
-          <ChevronDown size={16} />
-        </span>
-      </button>
-      <div className={cn("px-6 pb-6 text-[15px] text-slate-600 leading-relaxed", !open && "hidden")}>
-        <RichContent html={linkKeywords(a, linkRules)} />
-      </div>
     </div>
   );
 }
