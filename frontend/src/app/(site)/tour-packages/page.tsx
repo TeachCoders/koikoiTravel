@@ -7,6 +7,7 @@ import { breadcrumbSchema, itemListSchema } from "@/lib/jsonLd";
 import PackagesExplorer from "@/feature/journey/components/PackagesExplorer";
 import { fetchPublicJson } from "@/feature/destinations/api/public-server";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
+import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 
 export const revalidate = 300;
@@ -47,11 +48,13 @@ export default async function TourPackagesPage({
     "/journey?limit=100&isActive=true"
   );
 
-  const journeyItems =
-    initialJourneys?.data?.map((j) => ({
-      name: j.title,
-      url: `/tour-packages/${j.slug}`,
-    })) || [];
+  const journeyItems = [...(initialJourneys?.data || [])]
+    .sort((a, b) => (b.purchaseCount || 0) - (a.purchaseCount || 0))
+    .slice(0, 16)
+    .map((j) => ({
+      name: journeyCardTitle(j),
+      url: journeyPackageHref(j),
+    }));
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans">

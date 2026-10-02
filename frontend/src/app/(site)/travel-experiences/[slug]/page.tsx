@@ -7,6 +7,7 @@ import { stripHtml, absoluteUrl,  truncateMeta } from "@/lib/utils";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { TravelExperience } from "@/feature/travelExperience/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
+import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
 import { travelExperienceParams } from "@/lib/prerender";
 
 export const revalidate = 300;
@@ -63,11 +64,21 @@ export default async function TravelExperiencePage({ params }: Props) {
   const data = await fetchBySlugCached<TravelExperience>("/holidays/by-slug", slug);
 
   let schema = null;
+  let journeys: JourneyPage<Journey> | null = null;
   if (data) {
-    const journeys = await fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true");
-    const relatedJourneys = (journeys?.data || []).filter((j) =>
-      (j.travelExperiences || []).some((e) => e.slug === data.slug)
-    );
+    journeys = await fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true");
+    const order = (data.featuredJourneyOrder || []) as number[];
+    const relatedJourneys = (journeys?.data || [])
+      .filter((j) =>
+        (j.travelExperiences || []).some((e) => e.slug === data.slug)
+      )
+      .sort((a, b) => {
+        const ai = order.indexOf(a.id);
+        const bi = order.indexOf(b.id);
+        const aRank = ai === -1 ? Number.MAX_SAFE_INTEGER : ai;
+        const bRank = bi === -1 ? Number.MAX_SAFE_INTEGER : bi;
+        return aRank - bRank;
+      });
     const faqItems =
       data.faqs && data.faqs.length > 0
         ? data.faqs
@@ -83,8 +94,8 @@ export default async function TravelExperiencePage({ params }: Props) {
       }),
       itemListSchema(
         relatedJourneys.slice(0, 10).map((j) => ({
-          name: j.title.split("|")[0].trim(),
-          url: `/tour-packages/${j.slug}`,
+          name: journeyCardTitle(j),
+          url: journeyPackageHref(j),
         }))
       ),
       breadcrumbSchema([
@@ -100,7 +111,7 @@ export default async function TravelExperiencePage({ params }: Props) {
     <div className="flex flex-col min-h-screen bg-slate-50 font-sans">
       {schema && <JsonLd data={schema} />}
       <main className="flex-1">
-        <TravelExperienceDetail slug={slug} initialExperience={data} />
+        <TravelExperienceDetail slug={slug} initialExperience={data} initialJourneys={journeys} />
       </main>
     </div>
   );

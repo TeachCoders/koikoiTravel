@@ -14,6 +14,7 @@ import type { Country } from "@/feature/country/type";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
 import type { City } from "@/feature/city/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
+import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
 import type { CmsPage } from "@/feature/cms/type";
 import { journeyParams } from "@/lib/prerender";
 
@@ -248,6 +249,10 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
         fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true"),
       ]);
 
+      const countryJourneys = (initialJourneys?.data || []).filter((j) =>
+        j.cities?.some((c) => c.state?.country?.id === country.id)
+      );
+
       const schema = graphSchema([
         touristDestinationSchema({
           name: country.title,
@@ -256,9 +261,9 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
           url: `/tour-packages/${country.slug}`,
         }),
         itemListSchema(
-          (initialJourneys?.data || []).slice(0, 10).map((j) => ({
-            name: j.title.split("|")[0].trim(),
-            url: `/tour-packages/${j.slug}`,
+          countryJourneys.slice(0, 10).map((j) => ({
+            name: journeyCardTitle(j),
+            url: journeyPackageHref(j),
           }))
         ),
         breadcrumbSchema([
@@ -294,7 +299,9 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
             );
       const stateJourneys = state?.journeys?.length
         ? state.journeys
-        : (initialJourneys?.data || []);
+        : (initialJourneys?.data || []).filter((j) =>
+            j.cities?.some((c) => c.state?.id === state.id)
+          );
       const schema = graphSchema([
         touristDestinationSchema({
           name: state.title,
@@ -302,10 +309,10 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
           image: state.thumbImg || undefined,
           url: `/tour-packages/${state.country?.slug}/${state.slug}`,
         }),
-itemListSchema(
+        itemListSchema(
           stateJourneys.slice(0, 10).map((j) => ({
-            name: (j.h1Title || j.title).split("|")[0].trim(),
-            url: `/tour-packages/${j.slug}`,
+            name: journeyCardTitle(j),
+            url: journeyPackageHref(j),
           }))
         ),
         breadcrumbSchema([
@@ -333,6 +340,9 @@ itemListSchema(
       const initialJourneys = await fetchPublicJsonCached<JourneyPage<Journey>>(
         "/journey?limit=100&isActive=true"
       );
+      const cityJourneys = (initialJourneys?.data || []).filter((j) =>
+        j.cities?.some((c) => c.id === city.id)
+      );
       const schema = graphSchema([
         touristDestinationSchema({
           name: city.title,
@@ -341,9 +351,9 @@ itemListSchema(
           url: `/tour-packages/${city.state?.country?.slug}/${city.state?.slug}/${city.slug}`,
         }),
         itemListSchema(
-          (initialJourneys?.data || []).slice(0, 10).map((j) => ({
-            name: (j.h1Title || j.title).split("|")[0].trim(),
-            url: `/tour-packages/${j.slug}`,
+          cityJourneys.slice(0, 10).map((j) => ({
+            name: journeyCardTitle(j),
+            url: journeyPackageHref(j),
           }))
         ),
         breadcrumbSchema([

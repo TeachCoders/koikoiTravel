@@ -1,7 +1,19 @@
 import type { Journey } from "@/feature/journey/type";
 
-export function journeyPackageHref(journey: Journey): string {
+export function journeyPackageHref(journey: { slug: string }): string {
   return `/tour-packages/${journey.slug}`;
+}
+
+export function journeyCardTitle(journey: {
+  title?: string | null;
+  h1Title?: string | null;
+  noDays?: number | null;
+}): string {
+  const baseTitle = (journey.h1Title || journey.title || "").split("|")[0].trim();
+  if (journey.noDays && journey.noDays > 0 && !/^\d+\s*(day|days|night|nights)/i.test(baseTitle)) {
+    return `${journey.noDays} ${journey.noDays === 1 ? "Day" : "Days"} - ${baseTitle}`;
+  }
+  return baseTitle;
 }
 
 export const DURATION_BUCKETS = [

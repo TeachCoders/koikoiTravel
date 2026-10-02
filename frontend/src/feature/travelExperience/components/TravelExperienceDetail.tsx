@@ -34,13 +34,16 @@ import { cn } from "@/lib/utils";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 import type { TravelExperience, TravelExperienceCity } from "@/feature/travelExperience/type";
+import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 
 export default function TravelExperienceDetail({
   slug,
   initialExperience,
+  initialJourneys,
 }: {
   slug: string;
   initialExperience?: any;
+  initialJourneys?: JourneyPage<Journey> | null;
 }) {
   const { travelExperience, isLoading } = useTravelExperienceBySlug(slug, initialExperience);
 
@@ -53,16 +56,25 @@ export default function TravelExperienceDetail({
   }
   if (!travelExperience) return notFound();
 
-  return <ExperienceContent experience={travelExperience} />;
+  return <ExperienceContent experience={travelExperience} initialJourneys={initialJourneys} />;
 }
 
-function ExperienceContent({ experience }: { experience: any }) {
+function ExperienceContent({
+  experience,
+  initialJourneys,
+}: {
+  experience: any;
+  initialJourneys?: JourneyPage<Journey> | null;
+}) {
   const h1Title = experience.h1Title || experience.title;
 
-  const { journeys, isLoading: journeysLoading } = useGetJourneys({
-    limit: 100,
-    isActive: "true",
-  });
+  const { journeys, isLoading: journeysLoading } = useGetJourneys(
+    {
+      limit: 100,
+      isActive: "true",
+    },
+    initialJourneys ?? undefined
+  );
   const experienceJourneys = (journeys || [])
     .filter((j) =>
       (j.travelExperiences || []).some((e: any) => e.slug === experience.slug)

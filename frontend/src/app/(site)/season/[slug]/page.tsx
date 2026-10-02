@@ -8,6 +8,7 @@ import { stripHtml,  truncateMeta } from "@/lib/utils";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { Season } from "@/feature/season/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
+import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
 import { seasonParams } from "@/lib/prerender";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
@@ -65,6 +66,9 @@ export default async function SeasonPage({ params }: Props) {
   if (!season) return notFound();
 
   const initialJourneys = await fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true");
+  const seasonJourneys = (initialJourneys?.data || []).filter((j) =>
+    j.months?.some((m) => m.id === season.id)
+  );
 
   const seasonFaqs =
     season.faqs && season.faqs.length > 0
@@ -81,9 +85,9 @@ export default async function SeasonPage({ params }: Props) {
       url: `/season/${season.slug}`,
     }),
     itemListSchema(
-      (initialJourneys?.data || []).slice(0, 10).map((j) => ({
-        name: j.title.split("|")[0].trim(),
-        url: `/tour-packages/${j.slug}`,
+      seasonJourneys.slice(0, 10).map((j) => ({
+        name: journeyCardTitle(j),
+        url: journeyPackageHref(j),
       }))
     ),
     breadcrumbSchema([

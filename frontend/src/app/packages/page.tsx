@@ -34,7 +34,9 @@ export default async function PackagesPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50">
       {packages.length > 0 && (
         <JsonLd
-          data={itemListSchema(packages.map((p) => ({ name: p.name, url: `/packages/${p.slug}` })))}
+          data={itemListSchema(
+            [...bestSelling, ...others].map((p) => ({ name: p.name, url: `/packages/${p.slug}` }))
+          )}
         />
       )}
       {/* Hero */}

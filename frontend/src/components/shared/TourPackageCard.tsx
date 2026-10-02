@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Clock, Star, ArrowRight, CheckCircle2, Compass, Hotel, Car, Utensils, Ticket } from "lucide-react";
 import type { Journey } from "@/feature/journey/type";
-import { journeyPackageHref } from "@/feature/journey/filterOptions";
+import { journeyPackageHref, journeyCardTitle } from "@/feature/journey/filterOptions";
 import { travelExperienceIcon } from "@/components/shared/TravelExperiencePills";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import { WhatsAppPriceButton } from "@/components/shared/WhatsAppPriceButton";
@@ -110,9 +110,7 @@ export default function TourPackageCard({ journey, contextName }: { journey: Jou
       <div className="p-6 flex flex-col flex-1 bg-white relative z-10">
         <Link href={href} className="inline-block mb-3">
           <h3 className="text-[17px] font-bold text-[#1C1C1C] line-clamp-2 leading-snug group-hover:text-[#2E8B8B] transition-colors">
-            {journey.noDays > 0 && !/^\d+\s*(day|days|night|nights)/i.test(journey.h1Title || journey.title || "")
-              ? `${journey.noDays} ${journey.noDays === 1 ? "Day" : "Days"} - ${journey.h1Title || journey.title}`
-              : (journey.h1Title || journey.title)}
+            {journeyCardTitle(journey)}
           </h3>
         </Link>
 
