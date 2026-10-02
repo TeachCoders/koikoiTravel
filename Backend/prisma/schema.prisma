@@ -570,6 +570,25 @@ model Banner {
   @@index([entityType, entityId])
 }
 
+model HeroFullBanner {
+  id           Int      @id @default(autoincrement())
+  entityType   String   // 'Home', 'Country', 'State', 'City', 'TravelExperience', 'Destinations'
+  entityId     Int      @default(0) // entity ID or 0 for generic pages (Home, Destinations)
+  pageSlug     String?  // slug for fast lookup (e.g. 'rajasthan', 'jaipur', 'luxury-train-tours')
+  image        String   // High-resolution panoramic full banner URL
+  mobileImage  String?  // Optional mobile-specific banner URL
+  title        String?  // Optional custom title to overlay on banner
+  subtitle     String?  // Optional tag/subtitle
+  altText      String?  // SEO alt text
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([entityType, entityId])
+  @@index([entityType, pageSlug])
+  @@map("hero_full_banners")
+}
+
 model Country {
   id              Int     @id @default(autoincrement())
   title           String

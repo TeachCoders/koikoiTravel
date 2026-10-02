@@ -10,6 +10,7 @@ import {
   Route,
 } from "lucide-react";
 import { fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
+import { fetchHeroBannersServer } from "@/feature/heroBanner/api/server";
 import { stripHtml } from "@/lib/utils";
 import { SectionLabel } from "@/components/shared/SectionLabel";
 import { FallbackImage } from "@/components/shared/FallbackImage";
@@ -92,7 +93,7 @@ const img = (
 ): string | undefined => primary || secondary || tertiary || undefined;
 
 async function fetchDestinations() {
-  const [countriesRes, statesRes, journeysRes] = await Promise.all([
+  const [countriesRes, statesRes, journeysRes, heroBanners] = await Promise.all([
     fetchPublicJsonCached<{ success: boolean; data: CCountry[] }>(
       "/country?limit=200"
     ),
@@ -102,6 +103,7 @@ async function fetchDestinations() {
     fetchPublicJsonCached<{ success: boolean; data: Journey[] }>(
       "/journey?limit=100&isActive=true"
     ),
+    fetchHeroBannersServer("Destinations"),
   ]);
 
   const countries = (countriesRes?.data || []).filter(
@@ -151,6 +153,7 @@ async function fetchDestinations() {
     states.reduce((sum, s) => sum + (s.tourCount || 0), 0) || journeys.length;
 
   const heroImage =
+    heroBanners?.[0]?.image ||
     sortedCountries
       .map((c) => img(c.banner?.images?.[0], c.thumbImg))
       .find(Boolean) || undefined;

@@ -17,6 +17,7 @@ import { useStateBySlug } from "@/feature/state/api/useState";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import DestinationSlider, { useSliderControl } from "@/components/shared/DestinationSlider";
 import HeroSlider from "@/components/shared/HeroSlider";
+import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
@@ -98,15 +99,30 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     setSeasonSelected([]);
   };
 
-  const heroImages =
-    state.banner?.images?.length
-      ? state.banner.images
-      : state.thumbImg
-        ? [state.thumbImg]
-        : [];
+  const { data: heroBannersData } = useHeroBanners("State", {
+    slug: state.slug,
+    entityId: state.id,
+  });
+  const customHeroBanners = heroBannersData?.data || [];
 
-  const heroTitle = state.banner?.bannerTitle || state.title;
-  const heroTag = state.banner?.bannerTag || "";
+  const heroImages =
+    customHeroBanners.length > 0
+      ? customHeroBanners.map((b) => b.image)
+      : state.banner?.images?.length
+        ? state.banner.images
+        : state.thumbImg
+          ? [state.thumbImg]
+          : [];
+
+  const heroTitle =
+    customHeroBanners[0]?.title ||
+    state.banner?.bannerTitle ||
+    state.title;
+
+  const heroTag =
+    customHeroBanners[0]?.subtitle ||
+    state.banner?.bannerTag ||
+    "";
   const pageH1 = state.h1Title;
 
   const facts = [

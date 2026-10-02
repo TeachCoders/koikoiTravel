@@ -4,8 +4,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import HeroSearchBar from "@/components/shared/HeroSearchBar";
 import { FallbackImage } from "@/components/shared/FallbackImage";
+import { useHeroBanners } from "@/feature/heroBanner/api";
 
-const SLIDES = [
+const DEFAULT_SLIDES = [
   { image: "/content/rajasthan-tours-holiday-1.webp", alt: "Rajasthan heritage tour" },
   { image: "/content/srinagar-holiday-1.webp", alt: "Srinagar Kashmir holiday" },
   { image: "/content/jaipur-holiday-1.webp", alt: "Jaipur royal heritage" },
@@ -13,15 +14,23 @@ const SLIDES = [
 ];
 
 export const HeroSection: React.FC = () => {
+  const { data: heroData } = useHeroBanners("Home");
+  const slides = heroData?.data?.length
+    ? heroData.data.map((b) => ({
+        image: b.image,
+        alt: b.altText || b.title || "Holiday tour banner",
+      }))
+    : DEFAULT_SLIDES;
+
   const [current, setCurrent] = useState(0);
 
   const next = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % SLIDES.length);
-  }, []);
+    setCurrent((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
 
   const prev = useCallback(() => {
-    setCurrent((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
-  }, []);
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
 
   useEffect(() => {
     const timer = setInterval(next, 5000);
@@ -33,7 +42,7 @@ export const HeroSection: React.FC = () => {
       {/* Background slider - clipped with overflow-hidden */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${current * 100}%)` }}>
-          {SLIDES.map((s, i) => (
+          {slides.map((s, i) => (
             <div key={i} className="relative w-full h-full shrink-0">
               <FallbackImage
                 src={s.image}
@@ -63,7 +72,7 @@ export const HeroSection: React.FC = () => {
       </button>
 
       <div className="absolute bottom-2.5 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-        {SLIDES.map((_, i) => (
+        {slides.map((_, i) => (
           <button key={i} onClick={() => setCurrent(i)}
             aria-label={`Go to slide ${i + 1}`}
             className={`rounded-full transition-all duration-300 ${

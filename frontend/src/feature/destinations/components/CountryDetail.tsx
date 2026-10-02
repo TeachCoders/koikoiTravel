@@ -22,6 +22,7 @@ import { useGetStates } from "@/feature/state/api/useState";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import DestinationSlider, { useSliderControl } from "@/components/shared/DestinationSlider";
 import HeroSlider from "@/components/shared/HeroSlider";
+import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
@@ -172,14 +173,30 @@ function CountryContent({
     setDurSelected([]);
   };
 
-  const heroImages = country.banner?.images?.length
-    ? country.banner.images
-    : country.thumbImg
-      ? [country.thumbImg]
-      : [];
+  const { data: heroBannersData } = useHeroBanners("Country", {
+    slug: country.slug,
+    entityId: country.id,
+  });
+  const customHeroBanners = heroBannersData?.data || [];
 
-  const heroTitle = country.banner?.bannerTitle || country.h1Title || displayTitle;
-  const heroTag = country.banner?.bannerTag || "";
+  const heroImages = customHeroBanners.length > 0
+    ? customHeroBanners.map((b) => b.image)
+    : country.banner?.images?.length
+      ? country.banner.images
+      : country.thumbImg
+        ? [country.thumbImg]
+        : [];
+
+  const heroTitle =
+    customHeroBanners[0]?.title ||
+    country.banner?.bannerTitle ||
+    country.h1Title ||
+    displayTitle;
+
+  const heroTag =
+    customHeroBanners[0]?.subtitle ||
+    country.banner?.bannerTag ||
+    "";
 
   const facts = [
     { icon: Building2, label: "Capital", value: country.capital },

@@ -15,6 +15,7 @@ import {
 import { useTravelExperienceBySlug, useGetTravelExperiences } from "@/feature/travelExperience/api/useTravelExperience";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import HeroSlider from "@/components/shared/HeroSlider";
+import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
@@ -107,8 +108,21 @@ function ExperienceContent({
     setSeasonSelected([]);
   };
 
-  const heroTitle = experience.banner?.bannerTitle || h1Title;
-  const heroTag = experience.banner?.bannerTag || "";
+  const { data: heroBannersData } = useHeroBanners("TravelExperience", {
+    slug: experience.slug,
+    entityId: experience.id,
+  });
+  const customHeroBanners = heroBannersData?.data || [];
+
+  const heroTitle =
+    customHeroBanners[0]?.title ||
+    experience.banner?.bannerTitle ||
+    h1Title;
+
+  const heroTag =
+    customHeroBanners[0]?.subtitle ||
+    experience.banner?.bannerTag ||
+    "";
 
   const facts = [
     { label: "Duration", value: experience.duration },
@@ -158,7 +172,12 @@ function ExperienceContent({
     />
   );
 
-  const heroImages = experience.banner?.images?.length ? experience.banner.images : [];
+  const heroImages =
+    customHeroBanners.length > 0
+      ? customHeroBanners.map((b) => b.image)
+      : experience.banner?.images?.length
+        ? experience.banner.images
+        : [];
 
   return (
     <div>

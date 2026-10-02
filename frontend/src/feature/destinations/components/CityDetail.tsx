@@ -18,6 +18,7 @@ import type { City } from "@/feature/city/type";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import HeroSlider from "@/components/shared/HeroSlider";
+import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
@@ -93,14 +94,30 @@ function CityContent({
     setSeasonSelected([]);
   };
 
-  const heroImages = city.banner?.images?.length
-    ? city.banner.images
-    : city.thumbImg
-      ? [city.thumbImg]
-      : [];
+  const { data: heroBannersData } = useHeroBanners("City", {
+    slug: city.slug,
+    entityId: city.id,
+  });
+  const customHeroBanners = heroBannersData?.data || [];
 
-  const heroTitle = city.banner?.bannerTitle || city.title;
-  const heroTag = city.banner?.bannerTag || "";
+  const heroImages =
+    customHeroBanners.length > 0
+      ? customHeroBanners.map((b) => b.image)
+      : city.banner?.images?.length
+        ? city.banner.images
+        : city.thumbImg
+          ? [city.thumbImg]
+          : [];
+
+  const heroTitle =
+    customHeroBanners[0]?.title ||
+    city.banner?.bannerTitle ||
+    city.title;
+
+  const heroTag =
+    customHeroBanners[0]?.subtitle ||
+    city.banner?.bannerTag ||
+    "";
   const pageH1 = city.h1Title;
 
   const facts = [

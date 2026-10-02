@@ -138,6 +138,7 @@ const sidebarSections: SidebarSection[] = [{
     { name: "Content Pages", href: "/dashboard/cms-page", icon: FileText, teams: ["it"] },
     { name: "Ad Landing Pages", href: "/dashboard/ad-landing-pages", icon: FileText, teams: ["it"] },
     { name: "Guest Gallery", href: "/dashboard/guest-gallery", icon: Images, teams: ["it"] },
+    { name: "Hero Full Banners", href: "/dashboard/hero-banners", icon: Images, teams: ["it"] },
     { name: "Blog", href: "/dashboard/blog", icon: Newspaper, teams: ["it"] },
     { name: "Blog Categories", href: "/dashboard/blog-category", icon: Tags, teams: ["it"] },
     
