@@ -211,7 +211,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={state.title} />
-            <div className="absolute inset-0 bg-slate-950/65" />
+            <div className="absolute inset-0 bg-slate-950/20" />
           </>
         ) : (
           <div className="absolute inset-0">

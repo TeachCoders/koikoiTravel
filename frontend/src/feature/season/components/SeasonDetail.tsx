@@ -135,7 +135,7 @@ export default function SeasonDetail({
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={initialSeason.title} />
-            <div className="absolute inset-0 bg-slate-950/65" />
+            <div className="absolute inset-0 bg-slate-950/20" />
           </>
         ) : (
           <div className="absolute inset-0">

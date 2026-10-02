@@ -143,7 +143,7 @@ export default async function BlogPostPage({ params }: Props) {
           theme="dark"
         />
         {/* Strong dark shade over image so text stays readable on any image */}
-        <div className="absolute inset-0 bg-slate-950/65" />
+        <div className="absolute inset-0 bg-slate-950/20" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-slate-950/10" />
 
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 text-center py-8">
