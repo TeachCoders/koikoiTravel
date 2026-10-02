@@ -306,40 +306,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                 </div>
 
                 <div className="p-7 lg:p-8 flex-1">
-                  {/* 1. Price */}
-                  {(journey.pricePerPerson ?? 0) > 0 ? (
-                    <>
-                      <div className="relative z-10">
-                        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-2">Starting Price</p>
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-4xl font-black text-[#F8904D]">
-                            ₹{(journey.pricePerPerson ?? 0).toLocaleString()}
-                          </span>
-                          {(journey.discountPrice ?? 0) > 0 && (
-                            <span className="text-lg font-medium text-slate-400 line-through">
-                              ₹{(journey.discountPrice ?? 0).toLocaleString()}
-                            </span>
-                          )}
-                          <span className="text-sm font-medium text-slate-500 ml-1">/ person</span>
-                        </div>
-                      </div>
-                      <hr className="my-7 border-slate-100" />
-                    </>
-                  ) : (
-                    <>
-                      <div className="relative z-10 rounded-2xl bg-gradient-to-br from-orange-50/80 via-white to-teal-50/50 p-4 border border-orange-200/70 mb-6">
-                        <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#F8904D] mb-1">
-                          <Sparkles size={14} />
-                          Tailor-Made Private Tour
-                        </div>
-                        <div className="text-xl font-black text-[#1C1C1C]">Custom Pricing on Request</div>
-                        <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                          Priced flexibly according to your preferred travel dates, hotel category, and party size.
-                        </p>
-                      </div>
-                      <hr className="my-5 border-slate-100" />
-                    </>
-                  )}
+                
 
                   {/* 2. Quick Facts / Trip Overview */}
                   <div className="mb-6 relative z-10 space-y-5">
