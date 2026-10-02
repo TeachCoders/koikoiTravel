@@ -41,12 +41,20 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
 
   return (
     <div className="absolute inset-0 overflow-hidden">
+      {/* Track width = 100% × number of slides so each slide div gets correct dimensions */}
       <div
         className="absolute inset-0 flex transition-transform duration-700 ease-in-out"
-        style={{ transform: `translateX(-${current * 100}%)` }}
+        style={{
+          width: `${validImages.length * 100}%`,
+          transform: `translateX(-${(current * 100) / validImages.length}%)`,
+        }}
       >
         {validImages.map((img, i) => (
-          <div key={i} className="relative w-full h-full shrink-0 bg-slate-200">
+          <div
+            key={i}
+            className="relative h-full shrink-0 bg-slate-200"
+            style={{ width: `${100 / validImages.length}%` }}
+          >
             <SlideImage src={img} alt={alt} priority={i === 0} preload={i === 1} />
           </div>
         ))}
