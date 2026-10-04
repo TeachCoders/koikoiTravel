@@ -26,6 +26,9 @@ export default async function TourPackagesPage({
     city?: string | string[];
     exp?: string | string[];
     state?: string | string[];
+    country?: string | string[];
+    search?: string | string[];
+    q?: string | string[];
   }>;
 }) {
   const params = await searchParams;
@@ -43,6 +46,11 @@ export default async function TourPackagesPage({
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
+  const countries = first(params.country)
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const search = first(params.search || params.q);
 
   const initialJourneys = await fetchPublicJson<JourneyPage<Journey>>(
     "/journey?limit=100&isActive=true"
@@ -160,6 +168,8 @@ export default async function TourPackagesPage({
           initialCities={cities}
           initialExperiences={experiences}
           initialStates={states}
+          initialCountries={countries}
+          initialSearch={search}
           initialJourneys={initialJourneys}
         />
       </div>
