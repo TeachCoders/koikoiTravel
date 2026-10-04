@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import FallbackImage from "@/components/shared/FallbackImage";
 
 interface HeroSliderProps {
@@ -26,11 +25,6 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
     setCurrent((prev) => (prev + 1) % validImages.length);
   }, [validImages.length]);
 
-  const prev = useCallback(() => {
-    if (validImages.length === 0) return;
-    setCurrent((prev) => (prev - 1 + validImages.length) % validImages.length);
-  }, [validImages.length]);
-
   useEffect(() => {
     if (validImages.length <= 1) return;
     const timer = setInterval(next, interval);
@@ -41,7 +35,7 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {/* Track width = 100% × number of slides so each slide div gets correct dimensions */}
+      {/* Slide track */}
       <div
         className="absolute inset-0 flex transition-transform duration-700 ease-in-out"
         style={{
@@ -60,23 +54,22 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
         ))}
       </div>
 
+      {/* Dot pagination — same style as HeroSection */}
       {validImages.length > 1 && (
-        <>
-          <button
-            onClick={prev}
-            aria-label="Previous slide"
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={next}
-            aria-label="Next slide"
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </>
+        <div className="absolute bottom-2.5 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+          {validImages.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              className={`rounded-full transition-all duration-300 ${
+                i === current
+                  ? "w-6 sm:w-8 h-1.5 sm:h-2 bg-[#F8904D]"
+                  : "w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/50 hover:bg-white/70"
+              }`}
+            />
+          ))}
+        </div>
       )}
     </div>
   );
