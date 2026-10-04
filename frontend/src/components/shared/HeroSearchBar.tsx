@@ -122,6 +122,8 @@ export default function HeroSearchBar() {
                               ev.preventDefault();
                               toggleExp(r.item as ExpOption);
                               setQuery("");
+                             go();
+                              go();
                             }}
                             className="w-full flex items-center gap-2.5 px-4 py-2 text-left text-sm text-[#1C1C1C] hover:bg-[#f5f5f5] transition-colors"
                           >
