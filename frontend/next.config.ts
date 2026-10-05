@@ -21,13 +21,14 @@ const nextConfig: NextConfig = {
   images: {
     deviceSizes: [640, 750, 1080, 1200, 1920],
     imageSizes: [32, 64, 96, 128, 256, 384],
-    formats: ["image/avif", "image/webp"],
-    qualities: [75, 80],
+    formats: ["image/webp"],
+    minimumCacheTTL: 31536000,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       { protocol: "https", hostname: "res.cloudinary.com" },
       { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "upload.wikimedia.org" },
       { protocol: "https", hostname: "koikoitravel.com" },
       { protocol: "https", hostname: "api.koikoitravel.com" },
       { protocol: "https", hostname: "www.koikoitravel.com" },
@@ -43,6 +44,21 @@ const nextConfig: NextConfig = {
         destination,
         permanent: true,
       })),
+      {
+        source: "/india-tours/tour-packages/golden-triangle",
+        destination: "/travel-experiences/golden-triangle",
+        permanent: true,
+      },
+      {
+        source: "/india-tours/:path*",
+        destination: "/tour-packages/india",
+        permanent: true,
+      },
+      {
+        source: "/india-tour/:path*",
+        destination: "/tour-packages/india",
+        permanent: true,
+      },
       {
         source: "/:path*",
         has: [{ type: "host", value: "www.koikoitravel.com" }],

@@ -1,5 +1,6 @@
 import DOMPurify from "isomorphic-dompurify";
 import { cn } from "@/lib/utils";
+import { autoLinkKeywords } from "@/lib/autoInternalLink";
 
 function isDarkCssColor(cssColor: string): boolean {
   let r = 0, g = 0, b = 0;
@@ -57,7 +58,8 @@ export function sanitizeHtml(html: string): string {
   const fixed = wrapResponsiveTables(clean)
     .replace(/<h1\b[^>]*>/gi, (match) => match.replace(/<h1/i, "<h2"))
     .replace(/<\/h1>/gi, "</h2>");
-  return fixTableCellTextContrast(fixed);
+  const linked = autoLinkKeywords(fixed);
+  return fixTableCellTextContrast(linked);
 }
 
 export default function RichContent({

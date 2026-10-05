@@ -20,11 +20,15 @@ export default function PackagesExplorer({
   initialCities = [],
   initialExperiences = [],
   initialStates = [],
+  initialCountries = [],
+  initialSearch = "",
   initialJourneys = null,
 }: {
   initialCities?: string[];
   initialExperiences?: string[];
   initialStates?: string[];
+  initialCountries?: string[];
+  initialSearch?: string;
   initialJourneys?: PaginatedResponse<Journey> | null;
 }) {
   const { journeys, isLoading } = useGetJourneys(
@@ -32,18 +36,25 @@ export default function PackagesExplorer({
     initialJourneys
   );
 
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+  const [selectedCountries, setSelectedCountries] = useState<string[]>(initialCountries);
   const [selectedStates, setSelectedStates] = useState<string[]>(initialStates);
   const [selectedCities, setSelectedCities] = useState<string[]>(initialCities);
   const [selectedExperiences, setSelectedExperiences] = useState<string[]>(initialExperiences);
   const [selectedSeasons, setSelectedSeasons] = useState<string[]>([]);
   const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>(initialSearch);
 
   const countries = useMemo(() => {
     const set = new Set<string>();
     for (const j of journeys) {
-      const country = j.cities?.[0]?.state?.country?.title;
-      if (country) set.add(country.replace(/\s*Tour$/i, ""));
+      for (const c of j.cities ?? []) {
+        const country = c.state?.country?.title;
+        if (country) set.add(country.replace(/\s*Tour$/i, ""));
+      }
+      for (const r of j.route ?? []) {
+        const country = r.state?.country?.title;
+        if (country) set.add(country.replace(/\s*Tour$/i, ""));
+      }
     }
     return [...set].sort();
   }, [journeys]);
@@ -54,8 +65,11 @@ export default function PackagesExplorer({
         value: c,
         label: c,
         count: journeys.filter((j) => {
-          const title = j.cities?.[0]?.state?.country?.title;
-          return title && title.replace(/\s*Tour$/i, "") === c;
+          const cLower = c.toLowerCase();
+          return (
+            (j.cities ?? []).some((city) => city.state?.country?.title?.replace(/\s*Tour$/i, "").toLowerCase() === cLower) ||
+            (j.route ?? []).some((r) => r.state?.country?.title?.replace(/\s*Tour$/i, "").toLowerCase() === cLower)
+          );
         }).length,
       })),
     [countries, journeys]
@@ -64,8 +78,14 @@ export default function PackagesExplorer({
   const states = useMemo(() => {
     const set = new Set<string>();
     for (const j of journeys) {
-      const state = j.cities?.[0]?.state?.title;
-      if (state) set.add(state);
+      for (const c of j.cities ?? []) {
+        const state = c.state?.title;
+        if (state) set.add(state);
+      }
+      for (const r of j.route ?? []) {
+        const state = r.state?.title;
+        if (state) set.add(state);
+      }
     }
     return [...set].sort();
   }, [journeys]);
@@ -75,7 +95,13 @@ export default function PackagesExplorer({
       states.map((s) => ({
         value: s,
         label: s,
-        count: journeys.filter((j) => j.cities?.[0]?.state?.title === s).length,
+        count: journeys.filter((j) => {
+          const sLower = s.toLowerCase();
+          return (
+            (j.cities ?? []).some((c) => c.state?.title?.toLowerCase() === sLower) ||
+            (j.route ?? []).some((r) => r.state?.title?.toLowerCase() === sLower)
+          );
+        }).length,
       })),
     [states, journeys]
   );
@@ -95,26 +121,90 @@ export default function PackagesExplorer({
   const filtered = useMemo(() => {
     let list = journeys.filter((j) => {
       if (selectedCountries.length > 0) {
-        const cTitle = j.cities?.[0]?.state?.country?.title?.replace(/\s*Tour$/i, "");
-        if (!cTitle || !selectedCountries.includes(cTitle)) return false;
+        const hasCountry =
+          (j.cities ?? []).some((c) => {
+            const title = c.state?.country?.title?.replace(/\s*Tour$/i, "").toLowerCase();
+            const slug = c.state?.country?.slug?.toLowerCase();
+            return selectedCountries.some((co) => {
+              const col = co.toLowerCase();
+              return col === title || col === slug;
+            });
+          }) ||
+          (j.route ?? []).some((r) => {
+            const title = r.state?.country?.title?.replace(/\s*Tour$/i, "").toLowerCase();
+            const slug = r.state?.country?.slug?.toLowerCase();
+            return selectedCountries.some((co) => {
+              const col = co.toLowerCase();
+              return col === title || col === slug;
+            });
+          });
+        if (!hasCountry) return false;
       }
+
       if (selectedStates.length > 0) {
-        const state = j.cities?.[0]?.state?.title;
-        if (!state || !selectedStates.includes(state)) return false;
+        const hasState =
+          (j.cities ?? []).some((c) => {
+            const title = c.state?.title?.toLowerCase();
+            const slug = c.state?.slug?.toLowerCase();
+            return selectedStates.some((s) => {
+              const sl = s.toLowerCase();
+              return sl === title || sl === slug;
+            });
+          }) ||
+          (j.route ?? []).some((r) => {
+            const title = r.state?.title?.toLowerCase();
+            const slug = r.state?.slug?.toLowerCase();
+            return selectedStates.some((s) => {
+              const sl = s.toLowerCase();
+              return sl === title || sl === slug;
+            });
+          });
+        if (!hasState) return false;
       }
+
       if (selectedCities.length > 0) {
-        const slugs = new Set(selectedCities);
-        if (!(j.cities ?? []).some((c) => slugs.has(c.slug))) return false;
+        const hasCity =
+          (j.cities ?? []).some((c) => {
+            const slug = c.slug?.toLowerCase();
+            const title = c.title?.toLowerCase();
+            return selectedCities.some((ci) => {
+              const cil = ci.toLowerCase();
+              return cil === slug || cil === title || cil === String(c.id);
+            });
+          }) ||
+          (j.route ?? []).some((r) => {
+            const slug = r.slug?.toLowerCase();
+            const title = r.title?.toLowerCase();
+            return selectedCities.some((ci) => {
+              const cil = ci.toLowerCase();
+              return cil === slug || cil === title || cil === String(r.id);
+            });
+          });
+        if (!hasCity) return false;
       }
+
       if (!journeyMatchesExperiences(j, selectedExperiences)) return false;
       if (!journeyMatchesSeasons(j, selectedSeasons)) return false;
       if (!journeyMatchesDuration(j, selectedDurations)) return false;
+
+      if (searchQuery && searchQuery.trim()) {
+        const sq = searchQuery.trim().toLowerCase();
+        const inTitle = j.title?.toLowerCase().includes(sq);
+        const inDest = j.destination?.toLowerCase().includes(sq);
+        const inDesc = j.seoDescription?.toLowerCase().includes(sq) || j.overView?.toLowerCase().includes(sq);
+        const inState = (j.cities ?? []).some((c) => c.state?.title?.toLowerCase().includes(sq)) || (j.route ?? []).some((r) => r.state?.title?.toLowerCase().includes(sq));
+        const inCity = (j.cities ?? []).some((c) => c.title?.toLowerCase().includes(sq)) || (j.route ?? []).some((r) => r.title?.toLowerCase().includes(sq));
+        const inCountry = (j.cities ?? []).some((c) => c.state?.country?.title?.toLowerCase().includes(sq)) || (j.route ?? []).some((r) => r.state?.country?.title?.toLowerCase().includes(sq));
+        const inExp = (j.travelExperiences ?? []).some((e) => e.title?.toLowerCase().includes(sq));
+        if (!inTitle && !inDest && !inDesc && !inState && !inCity && !inCountry && !inExp) return false;
+      }
+
       return true;
     });
 
     list = [...list].sort((a, b) => (b.purchaseCount || 0) - (a.purchaseCount || 0));
     return list;
-  }, [journeys, selectedCountries, selectedStates, selectedCities, selectedExperiences, selectedSeasons, selectedDurations]);
+  }, [journeys, selectedCountries, selectedStates, selectedCities, selectedExperiences, selectedSeasons, selectedDurations, searchQuery]);
 
   const clearAll = () => {
     setSelectedCountries([]);
@@ -123,6 +213,7 @@ export default function PackagesExplorer({
     setSelectedExperiences([]);
     setSelectedSeasons([]);
     setSelectedDurations([]);
+    setSearchQuery("");
   };
 
   const activeFilterCount =
@@ -131,7 +222,8 @@ export default function PackagesExplorer({
     selectedCities.length +
     selectedExperiences.length +
     selectedSeasons.length +
-    selectedDurations.length;
+    selectedDurations.length +
+    (searchQuery.trim() ? 1 : 0);
 
   const PAGE_SIZE = 16;
   const [currentPage, setCurrentPage] = useState(1);
@@ -253,3 +345,4 @@ export default function PackagesExplorer({
 export function JourneyCard({ journey }: { journey: Journey }) {
   return <TourPackageCard journey={journey} />;
 }
+

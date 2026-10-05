@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { X, Search, Upload, Grid3X3, Check, Loader2, ImageIcon, Pencil, Star, Trash2, Save, Plus } from "lucide-react";
 import apiClient from "@/lib/apiClient";
 import { successToast, errorToast } from "@/components/shared/tost";

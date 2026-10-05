@@ -33,23 +33,25 @@ const DEFAULT_DESTINATION_LINKS: NavChild[] = [
 const DEFAULT_TOUR_LINKS: NavChild[] = [
   { href: "/tour-packages/india/rajasthan", label: "Rajasthan" },
   { href: "/tour-packages/india/jammu-and-kashmir", label: "Kashmir" },
-  { href: "/tour-packages/india/kerala", label: "Kerala" },
   { href: "/tour-packages/india/himachal-pradesh", label: "Himachal Pradesh" },
   { href: "/tour-packages/india/uttarakhand", label: "Uttarakhand" },
-  { href: "/tour-packages/india/goa", label: "Goa" },
+  { href: "/tour-packages/india/madhya-pradesh", label: "Madhya Pradesh" },
+  { href: "/tour-packages/india/maharashtra", label: "Maharashtra" },
   { href: "/tour-packages/india/uttar-pradesh", label: "Uttar Pradesh" },
   { href: "/tour-packages/india/ladakh", label: "Ladakh" },
 ];
 
 const DEFAULT_EXPERIENCE_LINKS: NavChild[] = [
+  { href: "/travel-experiences/golden-triangle", label: "Golden Triangle" },
+  { href: "/travel-experiences/taj-mahal", label: "Taj Mahal" },
   { href: "/travel-experiences/honeymoon", label: "Honeymoon" },
-  { href: "/travel-experiences/adventure", label: "Adventure" },
   { href: "/travel-experiences/heritage-and-culture", label: "Heritage & Culture" },
   { href: "/travel-experiences/wildlife", label: "Wildlife" },
   { href: "/travel-experiences/hill-station", label: "Hill Stations" },
   { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & Wellness" },
-  { href: "/travel-experiences/desert-safari", label: "Desert Safari" },
-  { href: "/travel-experiences/golden-triangle", label: "Golden Triangle" },
+  { href: "/travel-experiences/spiritual", label: "Spiritual" },
+  { href: "/travel-experiences/family", label: "Family" },
+  { href: "/travel-experiences/weekend-tours-in-india", label: "Weekend Tours" },
 ];
 
 function buildDefaultDestinationTree(): DestinationTreeCountry[] {
