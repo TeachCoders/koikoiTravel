@@ -1,8 +1,7 @@
-// Country helpers for the analytics dashboard.
-// Handles both ISO 3166-1 alpha-2 codes (e.g. "IN" from Cloudflare's
-// `CF-IPCountry` header) and full names (e.g. "India" from ipwho.is/ip-api).
+// Country & Location helpers for the analytics dashboard.
+// Handles ISO 3166-1 alpha-2 codes ("IN"), country names ("India"),
+// and full city/state locations ("Faridabad, Haryana, India").
 
-// ISO alpha-2 code → { name, flag } (best-effort; unknown → 🌍).
 const ISO_COUNTRIES: Record<string, { name: string; flag: string }> = {
   AE: { name: "United Arab Emirates", flag: "🇦🇪" },
   AR: { name: "Argentina", flag: "🇦🇷" },
@@ -70,26 +69,34 @@ const ISO_COUNTRIES: Record<string, { name: string; flag: string }> = {
 
 export function countryInfo(name?: string | null): { name: string; flag: string } {
   if (!name) return { name: "Unknown", flag: "🌍" };
-  const value = name.trim();
-  const key = value.toLowerCase();
-  // ISO alpha-2 code (Cloudflare CF-IPCountry).
-  if (/^[a-z]{2}$/i.test(value)) {
-    const iso = ISO_COUNTRIES[value.toUpperCase()];
-    if (iso) return iso;
-    return { name: value.toUpperCase(), flag: "🌍" };
+  const raw = name.trim();
+  
+  // If string contains multiple parts like "Faridabad, Haryana, India"
+  const parts = raw.split(",").map((s) => s.trim());
+  const countrySegment = parts[parts.length - 1] || raw;
+  const key = countrySegment.toLowerCase();
+
+  // ISO alpha-2 code (e.g. "IN")
+  if (/^[a-z]{2}$/i.test(countrySegment)) {
+    const iso = ISO_COUNTRIES[countrySegment.toUpperCase()];
+    if (iso) return { name: raw, flag: iso.flag };
   }
-  // Full name match (case-insensitive).
-  const found = Object.entries(ISO_COUNTRIES).find(([, c]) => c.name.toLowerCase() === key);
-  if (found) return found[1];
-  // Legacy map aliases.
+
+  // Full country match
+  const found = Object.entries(ISO_COUNTRIES).find(
+    ([, c]) => c.name.toLowerCase() === key || key.includes(c.name.toLowerCase())
+  );
+  if (found) return { name: raw, flag: found[1].flag };
+
   const ALIASES: Record<string, { name: string; flag: string }> = {
     "united states of america": { name: "United States", flag: "🇺🇸" },
     usa: { name: "United States", flag: "🇺🇸" },
     uae: { name: "United Arab Emirates", flag: "🇦🇪" },
   };
   const alias = ALIASES[key];
-  if (alias) return alias;
-  return { name: value, flag: "🌍" };
+  if (alias) return { name: raw, flag: alias.flag };
+
+  return { name: raw, flag: "🌍" };
 }
 
 export function countryFlag(name?: string | null): string {

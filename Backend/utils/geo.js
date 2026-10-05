@@ -1,11 +1,11 @@
-// IP → country resolution.
+// IP → city, state, country resolution.
 // Strategy (in order):
 //   1. `CF-IPCountry` header when the site sits behind Cloudflare (free, instant).
-//   2. HTTPS lookup via ipwho.is (free, no key, ~10k requests/month).
-//   3. Fallback: ip-api.com over HTTP (free, no key, 45 req/min).
+//   2. HTTPS lookup via ipwho.is (free, no key, gives City, State/Region, Country).
+//   3. Fallback: ip-api.com over HTTP (gives City, Region, Country).
 // Results are cached per-IP and never throw. Localhost/private IPs → null.
 
-const ipCountryCache = new Map();
+const ipLocationCache = new Map();
 
 const PRIVATE_IP = (ip) =>
   !ip ||
@@ -36,6 +36,8 @@ async function fetchJson(url, ms = 2500) {
       headers: { Accept: 'application/json', 'Cache-Control': 'no-cache' },
     });
     return await res.json();
+  } catch {
+    return null;
   } finally {
     clearTimeout(timer);
   }
@@ -44,29 +46,38 @@ async function fetchJson(url, ms = 2500) {
 async function lookupWithIpwhoIs(ip) {
   const d = await fetchJson(`https://ipwho.is/${encodeURIComponent(ip)}`);
   if (!d || d.success !== true) return null;
-  return d.country || null;
+  const parts = [];
+  if (d.city) parts.push(d.city);
+  if (d.region && d.region !== d.city) parts.push(d.region);
+  if (d.country) parts.push(d.country);
+  return parts.length > 0 ? parts.join(', ') : d.country || null;
 }
 
 async function lookupWithIpApi(ip) {
-  const d = await fetchJson(`http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,country,message`);
-  return d?.status === 'success' ? d.country : null;
+  const d = await fetchJson(`http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,city,regionName,country,message`);
+  if (d?.status !== 'success') return null;
+  const parts = [];
+  if (d.city) parts.push(d.city);
+  if (d.regionName && d.regionName !== d.city) parts.push(d.regionName);
+  if (d.country) parts.push(d.country);
+  return parts.length > 0 ? parts.join(', ') : d.country || null;
 }
 
 export async function resolveCountry(ip) {
   if (PRIVATE_IP(ip)) return null;
-  if (ipCountryCache.has(ip)) return ipCountryCache.get(ip);
+  if (ipLocationCache.has(ip)) return ipLocationCache.get(ip);
   try {
-    const country = (await lookupWithIpwhoIs(ip)) || (await lookupWithIpApi(ip)) || null;
-    ipCountryCache.set(ip, country);
-    return country;
+    const loc = (await lookupWithIpwhoIs(ip)) || (await lookupWithIpApi(ip)) || null;
+    ipLocationCache.set(ip, loc);
+    return loc;
   } catch {
-    ipCountryCache.set(ip, null);
+    ipLocationCache.set(ip, null);
     return null;
   }
 }
 
 export function clearCountryCache() {
-  ipCountryCache.clear();
+  ipLocationCache.clear();
 }
 
 export { isPrivateIp };
