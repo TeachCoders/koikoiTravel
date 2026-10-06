@@ -194,6 +194,11 @@
     text-decoration: none;
   }
 
+  strong,
+  b {
+    font-weight: 600;
+  }
+
   p {
     color: #374151;
     font-weight: 300;
@@ -615,6 +620,12 @@
 
   .rich-text p+p {
     margin-top: 1.25rem;
+  }
+
+  .rich-text strong,
+  .rich-text b {
+    font-weight: 600;
+    color: #111827;
   }
 
   .rich-text ul li,
