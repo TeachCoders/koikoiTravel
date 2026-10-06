@@ -118,9 +118,30 @@ export default function TourPackageCard({
 
       {/* Content Container */}
       <div className={`flex flex-col flex-1 bg-white relative z-10 ${isCompact ? "p-4 sm:p-5" : "p-4.5 sm:p-5"}`}>
-        {/* Title with uniform height */}
-        <Link href={href} className="inline-block mb-1.5">
-          <h3 className="text-[15.5px] sm:text-[16.5px] font-semibold text-slate-900 line-clamp-2 leading-[1.38] tracking-[-0.015em] group-hover:text-[#2E8B8B] transition-colors min-h-[44px]">
+        {!isCompact && (
+          /* Inclusions Feature Badges (Borderless, Above Journey Title) */
+          <div className="flex items-center justify-between gap-1 mb-2 text-[11px] font-normal text-slate-500">
+            <span title="3★/4★ Handpicked Hotels" className="flex items-center gap-1">
+              <Hotel size={13} className="text-slate-500" /> Hotel
+            </span>
+            <span className="text-slate-300">•</span>
+            <span title="Private Cab Transfers" className="flex items-center gap-1">
+              <Car size={13} className="text-slate-500" /> Cab
+            </span>
+            <span className="text-slate-300">•</span>
+            <span title="Daily Breakfast Included" className="flex items-center gap-1">
+              <Utensils size={13} className="text-slate-500" /> Meals
+            </span>
+            <span className="text-slate-300">•</span>
+            <span title="Guided Sightseeing" className="flex items-center gap-1">
+              <Ticket size={13} className="text-slate-500" /> Tours
+            </span>
+          </div>
+        )}
+
+        {/* Title with font-weight 500 & relaxed line-height */}
+        <Link href={href} className="inline-block mb-2">
+          <h3 className="text-[15.5px] sm:text-[16.5px] font-medium text-slate-900 line-clamp-2 leading-[1.42] tracking-[-0.01em] group-hover:text-[#2E8B8B] transition-colors min-h-[46px]">
             {journeyCardTitle(journey)}
           </h3>
         </Link>
@@ -129,30 +150,11 @@ export default function TourPackageCard({
           <>
             {/* Route / Destination */}
             {(journey.destination || state) && (
-              <div className="flex items-center gap-1.5 mb-3 text-[12.5px] text-slate-500 font-medium">
+              <div className="flex items-center gap-1.5 mb-3 text-[12.5px] text-slate-500 font-normal">
                 <MapPin size={14} className="shrink-0 text-[#2E8B8B]" />
                 <span className="truncate">{journey.destination || state}</span>
               </div>
             )}
-
-            {/* Inclusions Feature Badges (White BG with Gray Border) */}
-            <div className="flex items-center justify-between gap-1 py-1.5 px-2.5 mb-3 rounded-xl bg-white border border-slate-200/90 text-[11px] font-medium text-slate-700 shadow-2xs">
-              <span title="3★/4★ Handpicked Hotels" className="flex items-center gap-1">
-                <Hotel size={13} className="text-slate-600" /> Hotel
-              </span>
-              <span className="text-slate-300">•</span>
-              <span title="Private Cab Transfers" className="flex items-center gap-1">
-                <Car size={13} className="text-slate-600" /> Cab
-              </span>
-              <span className="text-slate-300">•</span>
-              <span title="Daily Breakfast Included" className="flex items-center gap-1">
-                <Utensils size={13} className="text-slate-600" /> Meals
-              </span>
-              <span className="text-slate-300">•</span>
-              <span title="Guided Sightseeing" className="flex items-center gap-1">
-                <Ticket size={13} className="text-slate-600" /> Tours
-              </span>
-            </div>
 
             {/* Highlights List */}
             {(journey.highlights?.length ?? 0) > 0 ? (
@@ -172,40 +174,36 @@ export default function TourPackageCard({
 
         {/* Pricing & CTA Section */}
         <div className="mt-auto pt-3 border-t border-slate-100/90 flex flex-col gap-2.5">
-          {/* Price Header */}
-          <div className="flex items-baseline justify-between min-h-[24px]">
-            {price > 0 ? (
+          {/* Price Header (Only when price > 0) */}
+          {price > 0 && (
+            <div className="flex items-baseline justify-between">
               <div className="flex items-baseline gap-1.5">
-                <span className="text-[11px] text-slate-400 font-medium">Starts from</span>
-                <span className="text-[16.5px] font-semibold text-slate-900 tracking-tight">
+                <span className="text-[11px] text-slate-400 font-normal">Starts from</span>
+                <span className="text-[16.5px] font-medium text-slate-900 tracking-tight">
                   ₹{price.toLocaleString("en-IN")}
                 </span>
                 <span className="text-[11px] text-slate-400 font-normal">/ person</span>
               </div>
-            ) : (
-              <span className="text-[14px] font-semibold text-slate-800 tracking-tight">
-                Price on WhatsApp
-              </span>
-            )}
-            {hasDiscount && offPercent > 0 && (
-              <span className="text-[11.5px] text-slate-400 line-through">
-                ₹{journey.discountPrice!.toLocaleString("en-IN")}
-              </span>
-            )}
-          </div>
+              {hasDiscount && offPercent > 0 && (
+                <span className="text-[11.5px] text-slate-400 line-through">
+                  ₹{journey.discountPrice!.toLocaleString("en-IN")}
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Action Buttons Row */}
           <div className="grid grid-cols-2 gap-2">
             <WhatsAppPriceButton
               packageName={journey.h1Title || journey.title}
               label="Price on WhatsApp"
-              className="w-full py-2 px-2 bg-[#2E8B8B] hover:bg-[#247070] active:scale-95 text-white font-semibold text-[11.5px] tracking-tight rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer shadow-xs whitespace-nowrap"
+              className="w-full py-2 px-2 bg-[#2E8B8B] hover:bg-[#247070] active:scale-95 text-white font-medium text-[11.5px] tracking-tight rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer shadow-xs whitespace-nowrap"
               iconClassName="w-3.5 h-3.5 fill-white shrink-0"
             />
             <Link
               href={href}
               title="View Details"
-              className="w-full py-2 px-2 rounded-xl bg-orange-50/80 border border-orange-200/90 text-[#F8904D] hover:bg-[#F8904D] hover:border-[#F8904D] hover:text-white active:scale-95 font-semibold text-[11.5px] tracking-tight flex items-center justify-center gap-1 transition-all duration-200 cursor-pointer whitespace-nowrap"
+              className="w-full py-2 px-2 rounded-xl bg-orange-50/80 border border-orange-200/90 text-[#F8904D] hover:bg-[#F8904D] hover:border-[#F8904D] hover:text-white active:scale-95 font-medium text-[11.5px] tracking-tight flex items-center justify-center gap-1 transition-all duration-200 cursor-pointer whitespace-nowrap"
             >
               <span>View Details</span>
               <ArrowRight size={13} className="shrink-0" />
