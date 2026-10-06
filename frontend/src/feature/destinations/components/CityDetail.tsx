@@ -32,7 +32,7 @@ import {
   journeyMatchesSeasons,
   journeyPackageHref,
 } from "@/feature/journey/filterOptions";
-import { cn, stripHtml } from "@/lib/utils";
+import { cn, stripHtml, formatToursH1 } from "@/lib/utils";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 
@@ -259,7 +259,7 @@ function CityContent({
         }
         journeys={filteredJourneys}
         isLoading={journeysLoading}
-        h1Title={pageH1}
+        h1Title={formatToursH1(city.title)}
         overView={city.overView ?? undefined}
         emptyLabel={`No tours found in ${city.title} yet`}
         filterBar={cityJourneys.length > 0 ? filterBar : undefined}

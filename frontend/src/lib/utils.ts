@@ -41,12 +41,19 @@ export function truncateMeta(text?: string, max = 160): string {
   return body.replace(/[\s,;:.!?\-–—]+$/, "");
 }
 
-export function stripTourSuffix(label: string): string {
+export function stripTourSuffix(label?: string | null): string {
+  if (!label) return "";
   const t = label.trim();
   const lower = t.toLowerCase();
   const suffixes = [" tour packages", " tours", " tour"];
   const matched = suffixes.find((s) => lower.endsWith(s));
   return matched ? t.slice(0, t.length - matched.length).trim() : t;
+}
+
+export function formatToursH1(title?: string | null): string {
+  if (!title) return "Tour Packages";
+  const clean = stripTourSuffix(title);
+  return `${clean} Tours`;
 }
 
 export const MAX_NAV_ITEMS = 12;

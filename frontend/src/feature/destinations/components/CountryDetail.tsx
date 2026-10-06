@@ -27,6 +27,7 @@ import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
 import FilterBar from "@/components/shared/FilterBar";
+import { formatToursH1 } from "@/lib/utils";
 import {
   travelExperienceOptions,
   durationOptions,
@@ -321,7 +322,7 @@ function CountryContent({
         basePath={`/tour-packages/${country.slug}`}
         journeys={filteredJourneys}
         isLoading={journeysLoading}
-        h1Title={country.h1Title}
+        h1Title={formatToursH1(country.title || displayTitle)}
         overView={country.overView ?? undefined}
         emptyLabel={`No tours found in ${displayTitle} yet`}
         filterBar={countryJourneys.length > 0 ? filterBar : undefined}

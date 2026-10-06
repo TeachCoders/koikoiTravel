@@ -31,7 +31,7 @@ import {
   journeyMatchesCities,
   journeyPackageHref,
 } from "@/feature/journey/filterOptions";
-import { cn } from "@/lib/utils";
+import { cn, formatToursH1 } from "@/lib/utils";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 import type { TravelExperience, TravelExperienceCity } from "@/feature/travelExperience/type";
@@ -234,7 +234,7 @@ function ExperienceContent({
       <ToursSection
         journeys={filteredJourneys}
         isLoading={journeysLoading}
-        h1Title={experience.h1Title}
+        h1Title={formatToursH1(experience.title)}
         overView={experience.overView ?? undefined}
         emptyLabel={`No tours found for ${h1Title} yet`}
         showCount={16}

@@ -34,7 +34,7 @@ import {
   journeyMatchesCities,
   journeyPackageHref,
 } from "@/feature/journey/filterOptions";
-import { cn, stripHtml } from "@/lib/utils";
+import { cn, stripHtml, formatToursH1 } from "@/lib/utils";
 import type { State } from "@/feature/state/type";
 import type { Journey, PaginatedResponse } from "@/feature/journey/type";
 import CityCard from "./CityCard";
@@ -321,7 +321,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           journeys={filteredTopJourneys}
           isLoading={journeysLoading && topJourneys.length === 0}
           accentLabel="Handpicked Top Tours"
-          h1Title={pageH1 || `Top Tour Packages in ${state.title}`}
+          h1Title={formatToursH1(state.title)}
           overView={state.overView ?? undefined}
           emptyLabel={`No tour packages found matching your criteria in ${state.title}`}
           filterBar={stateJourneys.length > 0 ? filterBar : undefined}
