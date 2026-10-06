@@ -168,8 +168,8 @@
   body {
     @apply bg-white;
     color: #222222;
-    line-height: 1.5;
-    font-size: 14px;
+    line-height: 1.65;
+    font-size: 16px;
     letter-spacing: -0.01em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -183,14 +183,27 @@
   }
 
   p {
-    color: #222222;
-    font-size: 14px;
-    line-height: 1.5;
+    color: #333333;
+    font-size: 16px;
+    line-height: 1.7;
     letter-spacing: -0.005em;
   }
 
   p+p {
-    margin-top: 0.85em;
+    margin-top: 1.15rem;
+  }
+
+  /* Minimum 16px font size across the entire site */
+  .text-xs,
+  .text-sm {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  td,
+  th,
+  label {
+    font-size: 16px;
   }
 
   .text-muted {
@@ -516,7 +529,7 @@
     color: #374151;
     letter-spacing: -0.01em;
     line-height: 1.75;
-    font-size: 0.975rem;
+    font-size: 16px;
   }
 
   .rich-text h1,
@@ -534,37 +547,37 @@
   }
 
   .rich-text h1 {
-    font-size: 1.5rem;
+    font-size: 1.625rem;
     line-height: 1.25;
   }
 
   .rich-text h2 {
-    font-size: 1.35rem;
+    font-size: 1.375rem;
     line-height: 1.35;
   }
 
   .rich-text h3 {
-    font-size: 1.1875rem;
+    font-size: 1.25rem;
     line-height: 1.4;
   }
 
   .rich-text h4 {
-    font-size: 1.0625rem;
+    font-size: 1.125rem;
     line-height: 1.45;
   }
 
   .rich-text h5 {
-    font-size: 1rem;
+    font-size: 1.0625rem;
     line-height: 1.45;
   }
 
   .rich-text h6 {
-    font-size: 0.9375rem;
+    font-size: 1rem;
     line-height: 1.5;
   }
 
   .rich-text p {
-    font-size: 0.975rem;
+    font-size: 16px;
     line-height: 1.75;
     letter-spacing: -0.005em;
     color: #374151;
@@ -573,13 +586,13 @@
   }
 
   .rich-text p+p {
-    margin-top: 1.15rem;
+    margin-top: 1.25rem;
   }
 
   .rich-text ul li,
   .rich-text ol li {
-    font-size: 0.95rem;
-    line-height: 1.65;
+    font-size: 16px;
+    line-height: 1.7;
     color: #374151;
   }
 
@@ -665,10 +678,10 @@
 
   .rich-text li {
     position: relative;
-    margin-top: 0.45em;
+    margin-top: 0.5em;
     padding-left: 1.75em;
-    font-size: 0.95rem;
-    line-height: 1.65;
+    font-size: 16px;
+    line-height: 1.7;
     letter-spacing: -0.005em;
     color: #374151;
   }
