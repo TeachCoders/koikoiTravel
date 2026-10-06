@@ -136,22 +136,22 @@ export default function TourPackageCard({
               </div>
             )}
 
-            {/* Inclusions Feature Badges (Golden Orange Banner) */}
-            <div className="flex items-center justify-between gap-1 py-1.5 px-2.5 mb-3 rounded-xl bg-gradient-to-r from-orange-50 via-amber-50/70 to-orange-50 border border-orange-200/70 text-[11px] font-semibold text-slate-700 shadow-xs">
+            {/* Inclusions Feature Badges (White BG with Gray Border) */}
+            <div className="flex items-center justify-between gap-1 py-1.5 px-2.5 mb-3 rounded-xl bg-white border border-slate-200/90 text-[11px] font-medium text-slate-700 shadow-2xs">
               <span title="3★/4★ Handpicked Hotels" className="flex items-center gap-1">
-                <Hotel size={13} className="text-[#F8904D]" /> Hotel
+                <Hotel size={13} className="text-slate-600" /> Hotel
               </span>
-              <span className="text-orange-300">•</span>
+              <span className="text-slate-300">•</span>
               <span title="Private Cab Transfers" className="flex items-center gap-1">
-                <Car size={13} className="text-[#F8904D]" /> Cab
+                <Car size={13} className="text-slate-600" /> Cab
               </span>
-              <span className="text-orange-300">•</span>
+              <span className="text-slate-300">•</span>
               <span title="Daily Breakfast Included" className="flex items-center gap-1">
-                <Utensils size={13} className="text-[#F8904D]" /> Meals
+                <Utensils size={13} className="text-slate-600" /> Meals
               </span>
-              <span className="text-orange-300">•</span>
+              <span className="text-slate-300">•</span>
               <span title="Guided Sightseeing" className="flex items-center gap-1">
-                <Ticket size={13} className="text-[#F8904D]" /> Tours
+                <Ticket size={13} className="text-slate-600" /> Tours
               </span>
             </div>
 
@@ -160,7 +160,7 @@ export default function TourPackageCard({
               <div className="space-y-1.5 mb-4">
                 {journey.highlights!.slice(0, 3).map((hl, i) => (
                   <div key={i} className="flex items-start gap-2 text-[12.5px] text-slate-600 leading-snug">
-                    <CheckCircle2 size={14} className="shrink-0 text-[#2E8B8B] mt-[2px]" />
+                    <CheckCircle2 size={14} className="shrink-0 text-slate-600 mt-[2px]" />
                     <span className="line-clamp-1">{hl}</span>
                   </div>
                 ))}
@@ -170,7 +170,7 @@ export default function TourPackageCard({
                 {journey.travelExperiences!.slice(0, 3).map((t) => (
                   <span
                     key={t.id}
-                    className="inline-flex items-center gap-1 text-[11.5px] font-medium text-[#2E8B8B] bg-teal-50/80 border border-teal-200/50 px-2.5 py-0.5 rounded-full"
+                    className="inline-flex items-center gap-1 text-[11.5px] font-medium text-slate-700 bg-slate-100/80 border border-slate-200/60 px-2.5 py-0.5 rounded-full"
                   >
                     {travelExperienceIcon(t.title, "w-3 h-3")}
                     {t.title}
@@ -186,14 +186,20 @@ export default function TourPackageCard({
         {/* Pricing & CTA Section */}
         <div className="mt-auto pt-3 border-t border-slate-100/90 flex flex-col gap-2.5">
           {/* Price Header */}
-          <div className="flex items-baseline justify-between">
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-[11px] text-slate-400 font-medium">Starts from</span>
-              <span className="text-[16.5px] font-semibold text-slate-900 tracking-tight">
-                {price > 0 ? `₹${price.toLocaleString("en-IN")}` : "Price on Request"}
+          <div className="flex items-baseline justify-between min-h-[24px]">
+            {price > 0 ? (
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-[11px] text-slate-400 font-medium">Starts from</span>
+                <span className="text-[16.5px] font-semibold text-slate-900 tracking-tight">
+                  ₹{price.toLocaleString("en-IN")}
+                </span>
+                <span className="text-[11px] text-slate-400 font-normal">/ person</span>
+              </div>
+            ) : (
+              <span className="text-[14px] font-semibold text-slate-800 tracking-tight">
+                Price on WhatsApp
               </span>
-              {price > 0 && <span className="text-[11px] text-slate-400 font-normal">/ person</span>}
-            </div>
+            )}
             {hasDiscount && offPercent > 0 && (
               <span className="text-[11.5px] text-slate-400 line-through">
                 ₹{journey.discountPrice!.toLocaleString("en-IN")}
@@ -205,14 +211,14 @@ export default function TourPackageCard({
           <div className="grid grid-cols-2 gap-2">
             <WhatsAppPriceButton
               packageName={journey.h1Title || journey.title}
-              label="WhatsApp"
-              className="w-full py-2 px-2 bg-[#2E8B8B] hover:bg-[#247070] active:scale-95 text-white font-semibold text-[12px] tracking-tight rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer shadow-xs whitespace-nowrap"
+              label="Price on WhatsApp"
+              className="w-full py-2 px-2 bg-[#2E8B8B] hover:bg-[#247070] active:scale-95 text-white font-semibold text-[11.5px] tracking-tight rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer shadow-xs whitespace-nowrap"
               iconClassName="w-3.5 h-3.5 fill-white shrink-0"
             />
             <Link
               href={href}
               title="View Details"
-              className="w-full py-2 px-2 rounded-xl bg-orange-50/80 border border-orange-200/90 text-[#F8904D] hover:bg-[#F8904D] hover:border-[#F8904D] hover:text-white active:scale-95 font-semibold text-[12px] tracking-tight flex items-center justify-center gap-1 transition-all duration-200 cursor-pointer whitespace-nowrap"
+              className="w-full py-2 px-2 rounded-xl bg-orange-50/80 border border-orange-200/90 text-[#F8904D] hover:bg-[#F8904D] hover:border-[#F8904D] hover:text-white active:scale-95 font-semibold text-[11.5px] tracking-tight flex items-center justify-center gap-1 transition-all duration-200 cursor-pointer whitespace-nowrap"
             >
               <span>View Details</span>
               <ArrowRight size={13} className="shrink-0" />
