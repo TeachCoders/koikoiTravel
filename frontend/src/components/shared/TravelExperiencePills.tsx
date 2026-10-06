@@ -251,7 +251,7 @@ export default function TravelExperiencePills({
               setDragIdx(null);
             }
           }}
-          className={`inline-flex items-center gap-1 rounded-full bg-[#2E8B8B] text-white text-xs font-semibold px-2.5 py-1 ${
+          className={`inline-flex items-center gap-1 rounded-full bg-[#F8904D] text-white text-xs font-semibold px-2.5 py-1 ${
             dragIdx === idx ? "opacity-50" : ""
           }`}
         >
@@ -286,7 +286,7 @@ export default function TravelExperiencePills({
         </span>
       ))}
       {extra > 0 && (
-        <span className="inline-flex items-center rounded-full bg-[#2E8B8B]/80 text-white text-xs font-semibold px-2.5 py-1">
+        <span className="inline-flex items-center rounded-full bg-[#F8904D]/80 text-white text-xs font-semibold px-2.5 py-1">
           +{extra}
         </span>
       )}
