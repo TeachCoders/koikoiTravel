@@ -511,6 +511,11 @@
     line-height: 1.4;
   }
 
+  .font-heading {
+    font-family: var(--font-heading), var(--font-sans), sans-serif !important;
+    letter-spacing: -0.02em;
+  }
+
   /* Reusable heading and text color utilities */
   .heading-primary {
     @apply text-3xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight;
