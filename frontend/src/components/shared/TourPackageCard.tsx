@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Clock, Star, ArrowRight, CheckCircle2, Compass, Hotel, Car, Utensils, Ticket } from "lucide-react";
+import { MapPin, Clock, Star, ArrowRight, Check, Compass, Hotel, Car, Utensils, Ticket } from "lucide-react";
 import type { Journey } from "@/feature/journey/type";
 import { journeyPackageHref, journeyCardTitle } from "@/feature/journey/filterOptions";
 import { travelExperienceIcon } from "@/components/shared/TravelExperiencePills";
@@ -157,16 +157,16 @@ export default function TourPackageCard({
 
             {/* Highlights List / Experience Pills */}
             {(journey.highlights?.length ?? 0) > 0 ? (
-              <div className="space-y-1.5 mb-4">
+              <div className="space-y-2.5 mb-4">
                 {journey.highlights!.slice(0, 3).map((hl, i) => (
-                  <div key={i} className="flex items-start gap-2 text-[12.5px] text-slate-600 leading-snug">
-                    <CheckCircle2 size={14} className="shrink-0 text-slate-600 mt-[2px]" />
+                  <div key={i} className="flex items-start gap-2 text-[12.5px] sm:text-[13px] text-slate-600 leading-[1.4]">
+                    <Check size={14} className="shrink-0 text-slate-500 stroke-[2.2] mt-0.5" />
                     <span className="line-clamp-1">{hl}</span>
                   </div>
                 ))}
               </div>
             ) : (journey.travelExperiences?.length ?? 0) > 0 ? (
-              <div className="flex flex-wrap gap-1.5 mb-4">
+              <div className="flex flex-wrap gap-2 mb-4">
                 {journey.travelExperiences!.slice(0, 3).map((t) => (
                   <span
                     key={t.id}
