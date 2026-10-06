@@ -21,6 +21,7 @@ import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
+import TourPackageCard from "@/components/shared/TourPackageCard";
 import FilterBar from "@/components/shared/FilterBar";
 import {
   travelExperienceOptions,
