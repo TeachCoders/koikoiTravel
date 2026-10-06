@@ -48,7 +48,7 @@ function InclusionHotelIcon({ className = "w-5.5 h-5.5" }: { className?: string 
       <rect x="14" y="10" width="2" height="2" rx="0.5" fill="currentColor" className="text-white/90" />
       <rect x="8" y="14" width="2" height="2" rx="0.5" fill="currentColor" className="text-white/90" />
       <rect x="14" y="14" width="2" height="2" rx="0.5" fill="currentColor" className="text-white/90" />
-      <path d="M10 21V17.5C10 17.22 10.22 17 10.5 17H13.5C13.78 17 14 17.22 14 17.5V21" fill="#F8904D" stroke="#F8904D" strokeWidth="0.8" />
+      <path d="M10 21V17.5C10 17.22 10.22 17 10.5 17H13.5C13.78 17 14 17.22 14 17.5V21" fill="#2E8B8B" stroke="#2E8B8B" strokeWidth="0.8" />
     </svg>
   );
 }
@@ -58,7 +58,7 @@ function InclusionMealsIcon({ className = "w-5.5 h-5.5" }: { className?: string 
     <svg viewBox="0 0 24 24" fill="none" className={className}>
       <path d="M3 19H21" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" className="text-white" />
       <path d="M4.5 17C4.5 11.5 7.8 7.5 12 7.5C16.2 7.5 19.5 11.5 19.5 17H4.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" className="text-white" />
-      <circle cx="12" cy="5.2" r="1.8" fill="#F8904D" stroke="#F8904D" strokeWidth="0.6" />
+      <circle cx="12" cy="5.2" r="1.8" fill="#2E8B8B" stroke="#2E8B8B" strokeWidth="0.6" />
     </svg>
   );
 }
@@ -68,11 +68,11 @@ function InclusionSightseeingIcon({ className = "w-5.5 h-5.5" }: { className?: s
     <svg viewBox="0 0 24 24" fill="none" className={className}>
       <path d="M6 8.5L7.5 18H10.5L9.5 8.5H6Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" className="text-white" />
       <path d="M18 8.5L16.5 18H13.5L14.5 8.5H18Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" className="text-white" />
-      <rect x="9" y="10.5" width="6" height="3" rx="1" fill="#F8904D" stroke="#F8904D" strokeWidth="0.5" />
+      <rect x="9" y="10.5" width="6" height="3" rx="1" fill="#2E8B8B" stroke="#2E8B8B" strokeWidth="0.5" />
       <rect x="5.5" y="6" width="4" height="2.5" rx="0.8" stroke="currentColor" strokeWidth="1.5" className="text-white" />
       <rect x="14.5" y="6" width="4" height="2.5" rx="0.8" stroke="currentColor" strokeWidth="1.5" className="text-white" />
-      <line x1="7" y1="18" x2="11" y2="18" stroke="#F8904D" strokeWidth="2" strokeLinecap="round" />
-      <line x1="13" y1="18" x2="17" y2="18" stroke="#F8904D" strokeWidth="2" strokeLinecap="round" />
+      <line x1="7" y1="18" x2="11" y2="18" stroke="#2E8B8B" strokeWidth="2" strokeLinecap="round" />
+      <line x1="13" y1="18" x2="17" y2="18" stroke="#2E8B8B" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
@@ -82,8 +82,8 @@ function InclusionTransfersIcon({ className = "w-5.5 h-5.5" }: { className?: str
     <svg viewBox="0 0 24 24" fill="none" className={className}>
       <path d="M6 13L8 7.5H16L18 13" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" className="text-white" />
       <rect x="4" y="12" width="16" height="5.5" rx="1.5" stroke="currentColor" strokeWidth="1.6" className="text-white" />
-      <circle cx="7.5" cy="18" r="2" fill="#F8904D" stroke="#F8904D" strokeWidth="1.3" className="text-white" />
-      <circle cx="16.5" cy="18" r="2" fill="#F8904D" stroke="#F8904D" strokeWidth="1.3" className="text-white" />
+      <circle cx="7.5" cy="18" r="2" fill="#2E8B8B" stroke="#2E8B8B" strokeWidth="1.3" className="text-white" />
+      <circle cx="16.5" cy="18" r="2" fill="#2E8B8B" stroke="#2E8B8B" strokeWidth="1.3" className="text-white" />
     </svg>
   );
 }
@@ -178,7 +178,7 @@ export default function TourPackageCard({
 
         {/* Title with font-weight 500 & relaxed line-height */}
         <Link href={href} className="inline-block mb-1.5">
-          <h3 className="text-[15.5px] sm:text-[16.5px] font-medium text-slate-900 line-clamp-2 leading-[1.42] tracking-[-0.01em] group-hover:text-[#F8904D] transition-colors min-h-[46px]">
+          <h3 className="text-[15.5px] sm:text-[16.5px] font-medium text-slate-900 line-clamp-2 leading-[1.42] tracking-[-0.01em] group-hover:text-[#2E8B8B] transition-colors min-h-[46px]">
             {journeyCardTitle(journey)}
           </h3>
         </Link>
@@ -188,7 +188,7 @@ export default function TourPackageCard({
             {/* Route / Destination */}
             {(journey.destination || state) && (
               <div className="flex items-center gap-1.5 mb-2.5 text-[12.5px] text-slate-500 font-normal">
-                <MapPin size={14} className="shrink-0 text-[#F8904D]" />
+                <MapPin size={14} className="shrink-0 text-[#2E8B8B]" />
                 <span className="truncate">{journey.destination || state}</span>
               </div>
             )}
@@ -201,12 +201,12 @@ export default function TourPackageCard({
                     key={t.id}
                     className="inline-flex items-center gap-1 text-[11px] font-normal text-slate-700 bg-slate-50 border border-slate-200/90 px-2.5 py-0.5 rounded-full shadow-2xs"
                   >
-                    {travelExperienceIcon(t.title, "w-3 h-3 text-[#F8904D]")}
+                    {travelExperienceIcon(t.title, "w-3 h-3 text-[#2E8B8B]")}
                     <span>{t.title}</span>
                   </span>
                 ))}
                 {travelExperiences.length > 2 && (
-                  <span className="inline-flex items-center text-[10.5px] font-medium text-[#F8904D] bg-orange-50/90 border border-orange-200/80 px-2 py-0.5 rounded-full">
+                  <span className="inline-flex items-center text-[10.5px] font-medium text-[#2E8B8B] bg-teal-50/90 border border-teal-200/80 px-2 py-0.5 rounded-full">
                     +{travelExperiences.length - 2} more
                   </span>
                 )}
