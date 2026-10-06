@@ -513,10 +513,10 @@
   /* ===== Rich Text (description content from editor) ===== */
 
   .rich-text {
-    color: #4A4A4A;
-    letter-spacing: -0.005em;
-    line-height: 1.5;
-    font-size: 0.875rem;
+    color: #374151;
+    letter-spacing: -0.01em;
+    line-height: 1.75;
+    font-size: 0.975rem;
   }
 
   .rich-text h1,
@@ -526,60 +526,61 @@
   .rich-text h5,
   .rich-text h6 {
     font-family: var(--font-heading), var(--font-sans), sans-serif;
-    color: #1C1C1C;
+    color: #111827;
     font-weight: 700;
     letter-spacing: -0.015em;
-    margin-top: 1.25em;
-    margin-bottom: 0.4em;
+    margin-top: 1.75rem;
+    margin-bottom: 0.6rem;
   }
 
-  /* Flat heading scale matching Klook hierarchy */
   .rich-text h1 {
     font-size: 1.5rem;
     line-height: 1.25;
   }
 
   .rich-text h2 {
-    font-size: 1.25rem;
-    line-height: 1.3;
-  }
-
-  .rich-text h3 {
-    font-size: 1.125rem;
+    font-size: 1.35rem;
     line-height: 1.35;
   }
 
+  .rich-text h3 {
+    font-size: 1.1875rem;
+    line-height: 1.4;
+  }
+
   .rich-text h4 {
-    font-size: 1rem;
-    line-height: 1.4;
-  }
-
-  .rich-text h5 {
-    font-size: 0.9375rem;
-    line-height: 1.4;
-  }
-
-  .rich-text h6 {
-    font-size: 0.875rem;
+    font-size: 1.0625rem;
     line-height: 1.45;
   }
 
-  .rich-text p {
-    font-size: 0.875rem;
+  .rich-text h5 {
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  .rich-text h6 {
+    font-size: 0.9375rem;
     line-height: 1.5;
+  }
+
+  .rich-text p {
+    font-size: 0.975rem;
+    line-height: 1.75;
     letter-spacing: -0.005em;
+    color: #374151;
     margin-top: 0;
     margin-bottom: 0;
   }
 
   .rich-text p+p {
-    margin-top: 0.85rem;
+    margin-top: 1.15rem;
   }
 
   .rich-text ul li,
   .rich-text ol li {
-    font-size: 0.875rem;
-    line-height: 1.5;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: #374151;
   }
 
   /* Blog keeps its original, larger reading size. Same specificity as the rules
@@ -664,21 +665,21 @@
 
   .rich-text li {
     position: relative;
-    margin-top: 0.3em;
-    padding-left: 1.6em;
-    font-size: 0.875rem;
-    line-height: 1.5;
+    margin-top: 0.45em;
+    padding-left: 1.75em;
+    font-size: 0.95rem;
+    line-height: 1.65;
     letter-spacing: -0.005em;
-    color: #4A4A4A;
+    color: #374151;
   }
 
   .rich-text li::before {
     content: "";
     position: absolute;
     left: 0;
-    top: 0.4em;
-    width: 1.05em;
-    height: 1.05em;
+    top: 0.35em;
+    width: 1.1em;
+    height: 1.1em;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232E8B8B' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
     background-size: contain;
     background-repeat: no-repeat;
@@ -696,19 +697,15 @@
     margin-bottom: 1.5em;
   }
 
-  /* Internal links sit inside running copy, so they read as part of the
-     sentence rather than as a call to action. No underline, no colour of
-     its own, and the emphasis comes from the words. */
   .rich-text a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  /* The blog keeps the teal underlined treatment it has always had. This has
-     to come after the rule above because both selectors weigh the same. */
-  .rich-text--legacy a {
     color: #2E8B8B;
     text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.15s ease;
+  }
+
+  .rich-text a:hover {
+    color: #1a5c5c;
   }
 
   .rich-text a[data-rte-button] {
