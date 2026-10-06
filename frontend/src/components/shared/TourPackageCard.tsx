@@ -74,36 +74,35 @@ export default function TourPackageCard({
 
         {/* Top Badges */}
         {!isCompact && (
-          <div className="absolute top-3.5 left-3.5 right-3.5 flex justify-between items-start pointer-events-none">
-            <div className="flex flex-col gap-2 items-start pointer-events-auto">
+          <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2 pointer-events-none">
+            <div className="flex flex-wrap gap-1.5 items-center pointer-events-auto max-w-[80%]">
               {journey.isBestSelling && (
-                <span className="inline-flex items-center gap-1.5 bg-amber-400 text-slate-900 text-[11px] font-semibold uppercase tracking-wider px-3 py-1 rounded-full shadow-md">
-                  <Star size={11} fill="currentColor" className="text-slate-900" /> Best Seller
+                <span className="inline-flex items-center gap-1 bg-amber-400 text-slate-900 text-[10.5px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-md">
+                  <Star size={10} fill="currentColor" className="text-slate-900" /> Best Seller
                 </span>
               )}
+              {journey.travelExperiences?.slice(0, 2).map((t) => (
+                <span
+                  key={t.id}
+                  className="inline-flex items-center gap-1 text-[11px] font-medium text-white bg-black/60 backdrop-blur-md border border-white/20 px-2.5 py-0.5 rounded-full shadow-sm"
+                >
+                  {travelExperienceIcon(t.title, "w-3 h-3 text-white/90")}
+                  {t.title}
+                </span>
+              ))}
             </div>
             {hasDiscount && offPercent > 0 && (
-              <span className="bg-[#F8904D] text-white text-[11px] font-semibold px-2.5 py-1 rounded-full shadow-md pointer-events-auto">
+              <span className="bg-[#F8904D] text-white text-[11px] font-semibold px-2 py-0.5 rounded-full shadow-md pointer-events-auto shrink-0">
                 {offPercent}% OFF
               </span>
             )}
           </div>
         )}
 
-        {/* Dynamic Context Icon (Top Right) */}
-        {!isCompact && contextName && (
-          <div
-            className="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white shadow-md pointer-events-none"
-            title={contextName}
-          >
-            {travelExperienceIcon(contextName, "w-4 h-4")}
-          </div>
-        )}
-
         {/* Bottom Image Info */}
         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
           {journey.noDays > 0 && (
-            <span className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-white bg-black/55 backdrop-blur-md border border-white/25 px-3 py-1 rounded-full shadow-sm">
+            <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-white bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full shadow-sm">
               <Clock size={13} className="opacity-90" />
               {journey.noDays === 1 ? "1 Day" : `${journey.noDays - 1}N / ${journey.noDays}D`}
             </span>
@@ -155,26 +154,14 @@ export default function TourPackageCard({
               </span>
             </div>
 
-            {/* Highlights List / Experience Pills */}
+            {/* Highlights List */}
             {(journey.highlights?.length ?? 0) > 0 ? (
-              <div className="space-y-2.5 mb-4">
+              <div className="space-y-2 mb-4">
                 {journey.highlights!.slice(0, 3).map((hl, i) => (
                   <div key={i} className="flex items-start gap-2 text-[12.5px] sm:text-[13px] text-slate-600 leading-[1.4]">
                     <Check size={14} className="shrink-0 text-slate-500 stroke-[2.2] mt-0.5" />
                     <span className="line-clamp-1">{hl}</span>
                   </div>
-                ))}
-              </div>
-            ) : (journey.travelExperiences?.length ?? 0) > 0 ? (
-              <div className="flex flex-wrap gap-2 mb-4">
-                {journey.travelExperiences!.slice(0, 3).map((t) => (
-                  <span
-                    key={t.id}
-                    className="inline-flex items-center gap-1 text-[11.5px] font-medium text-slate-700 bg-slate-100/80 border border-slate-200/60 px-2.5 py-0.5 rounded-full"
-                  >
-                    {travelExperienceIcon(t.title, "w-3 h-3")}
-                    {t.title}
-                  </span>
                 ))}
               </div>
             ) : (
