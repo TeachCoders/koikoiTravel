@@ -249,18 +249,18 @@ export default function TourPackageCard({
             </div>
           )}
 
-          {/* Action Buttons Row (Minimalist Luxury Outline & Text Styling) */}
+          {/* Action Buttons Row (Default Minimalist Outline -> Card Hover Active Background) */}
           <div className="grid grid-cols-2 gap-2 pt-0.5">
             <WhatsAppPriceButton
               packageName={journey.h1Title || journey.title}
               label="WhatsApp"
-              className="w-full py-2.5 px-2 bg-transparent hover:bg-slate-50 active:scale-95 border border-slate-200/90 hover:border-slate-300 text-slate-700 font-medium text-[12px] tracking-tight rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer whitespace-nowrap"
+              className="w-full py-2.5 px-2 bg-transparent group-hover:bg-emerald-50/80 active:scale-95 border border-slate-200/90 group-hover:border-emerald-200/90 text-slate-700 group-hover:text-emerald-800 font-medium text-[12px] tracking-tight rounded-xl flex items-center justify-center gap-1.5 transition-all duration-300 cursor-pointer whitespace-nowrap"
               iconClassName="w-3.5 h-3.5 fill-[#25D366] shrink-0"
             />
             <Link
               href={href}
               title="View Details"
-              className="w-full py-2.5 px-2 rounded-xl bg-transparent hover:bg-slate-900 border border-slate-800 text-slate-900 hover:text-white active:scale-95 font-medium text-[12px] tracking-tight flex items-center justify-center gap-1 transition-all duration-200 cursor-pointer whitespace-nowrap"
+              className="w-full py-2.5 px-2 rounded-xl bg-transparent group-hover:bg-[#F8904D] border border-slate-300 group-hover:border-[#F8904D] text-slate-800 group-hover:text-white active:scale-95 font-medium text-[12px] tracking-tight flex items-center justify-center gap-1 transition-all duration-300 cursor-pointer whitespace-nowrap shadow-2xs group-hover:shadow-sm"
             >
               <span>View Details</span>
               <ArrowRight size={13} className="shrink-0 stroke-[2.2]" />
