@@ -44,12 +44,12 @@ export default function ToursSection({
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         <div className="mb-8 md:mb-12">
           {accentLabel && (
-            <span className="text-[12px] font-bold uppercase tracking-[0.08em] text-[#2E8B8B]">
+            <span className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#2E8B8B]">
               {accentLabel}
             </span>
           )}
           {h1Title && (
-            <h1 className="font-heading text-2xl sm:text-3xl md:text-[34px] font-extrabold tracking-[-0.02em] text-slate-900 mt-2 leading-[1.2]">
+            <h1 className="font-heading text-2xl sm:text-3xl md:text-[34px] font-semibold tracking-[-0.02em] text-slate-900 mt-2 leading-[1.2]">
               {h1Title}
             </h1>
           )}

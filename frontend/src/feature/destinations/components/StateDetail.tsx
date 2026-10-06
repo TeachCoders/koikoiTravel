@@ -321,12 +321,12 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
           <div className="flex items-end justify-between mb-6 md:mb-10 flex-wrap gap-4">
             <div>
-              <span className="text-[12px] font-bold uppercase tracking-[0.08em] text-[#2E8B8B]">
+              <span className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#2E8B8B]">
                 Top Destinations
               </span>
-              <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-[-0.02em] text-slate-900 mt-2">
+              <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-slate-900 mt-2">
                 Cities in {state.title}
-                <span className="ml-3 align-middle text-xs font-semibold text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-1 rounded-full">
+                <span className="ml-3 align-middle text-xs font-medium text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-1 rounded-full">
                   {cityCount} Cities
                 </span>
               </h2>
@@ -403,12 +403,12 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
             <div className="flex items-end justify-between mb-6 md:mb-10 flex-wrap gap-4">
               <div>
-                <span className="text-[12px] font-bold uppercase tracking-[0.08em] text-[#2E8B8B]">
+                <span className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#2E8B8B]">
                   Circuits & Extended Tours
                 </span>
-                <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-[-0.02em] text-slate-900 mt-2">
+                <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-slate-900 mt-2">
                   Multi City Tours with {state.title}
-                  <span className="ml-3 align-middle text-xs font-semibold text-[#2E8B8B] bg-[#2E8B8B]/10 px-2.5 py-1 rounded-full">
+                  <span className="ml-3 align-middle text-xs font-medium text-[#2E8B8B] bg-[#2E8B8B]/10 px-2.5 py-1 rounded-full">
                     {multiCityJourneys.length} Tours
                   </span>
                 </h2>
@@ -487,10 +487,10 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText ? "lg:grid-cols-3" : ""}`}>
           {hasKnowMoreText && (
               <div className="lg:col-span-2">
-                <span className="text-[12px] font-bold uppercase tracking-[0.08em] text-[#2E8B8B]">
+                <span className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#2E8B8B]">
                   Know More
                 </span>
-                <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-[-0.02em] text-slate-900 mt-2 mb-6 md:mb-8">
+                <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-slate-900 mt-2 mb-6 md:mb-8">
                   Everything About {state.title}
                 </h2>
 
@@ -507,7 +507,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
             <aside className="space-y-6 lg:sticky lg:top-28 z-10 self-start">
               {facts.length > 0 && (
                 <div className="rounded-2xl border border-slate-200/70 bg-slate-50/70 p-6 shadow-sm relative overflow-hidden">
-                  <h4 className="text-[12px] font-bold uppercase tracking-[0.08em] text-[#2E8B8B] mb-4">
+                  <h4 className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#2E8B8B] mb-4">
                     Quick Facts
                   </h4>
                   <dl className="flex flex-col divide-y divide-slate-200/70">
@@ -516,7 +516,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                         <dt className="text-[14px] text-slate-600 font-medium flex items-center gap-2">
                           {f.label}
                         </dt>
-                        <dd className="text-[14.5px] font-bold text-slate-900 text-right capitalize">{f.value}</dd>
+                        <dd className="text-[14.5px] font-semibold text-slate-900 text-right capitalize">{f.value}</dd>
                       </div>
                     ))}
                   </dl>
@@ -527,7 +527,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                 <div className="rounded-2xl bg-gradient-to-br from-[#2E8B8B]/10 via-transparent to-[#2E8B8B]/5 border border-[#2E8B8B]/20 p-6 shadow-sm relative overflow-hidden">
                   <Sparkles className="absolute -top-4 -right-4 w-24 h-24 text-[#2E8B8B]/10 rotate-12" />
                   <div className="w-full flex items-center justify-between gap-3 text-left relative z-10">
-                    <h3 className="flex items-center gap-2 text-base font-bold text-slate-900">
+                    <h3 className="flex items-center gap-2 text-base font-semibold text-slate-900">
                       <Sparkles size={16} className="text-[#F8904D]" />
                       Famous For
                     </h3>
@@ -547,9 +547,9 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
               {stateJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0 && (
                 <div className="rounded-2xl border border-slate-200/70 bg-slate-50/70 p-6 shadow-sm">
-                  <h4 className="text-[12px] font-bold uppercase tracking-[0.08em] text-[#2E8B8B] mb-4 flex items-center justify-between">
+                  <h4 className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#2E8B8B] mb-4 flex items-center justify-between">
                     Top 10 Tour Packages
-                    <span className="text-[11px] font-bold text-[#F8904D] bg-[#F8904D]/10 px-2 py-0.5 rounded-full">
+                    <span className="text-[11px] font-semibold text-[#F8904D] bg-[#F8904D]/10 px-2 py-0.5 rounded-full">
                       {Math.min(
                         10,
                         stateJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length
@@ -571,19 +571,19 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                             href={journeyPackageHref(j)}
                             className="flex items-start gap-3 p-2.5 -mx-2.5 rounded-xl hover:bg-white transition-colors group"
                           >
-                            <span className="mt-[2px] w-[26px] h-[26px] shrink-0 rounded-full bg-slate-200 text-[#1C1C1C] text-[12px] font-black flex items-center justify-center group-hover:bg-[#2E8B8B] group-hover:text-white transition-colors shadow-sm">
+                            <span className="mt-[2px] w-[26px] h-[26px] shrink-0 rounded-full bg-slate-200 text-[#1C1C1C] text-[12px] font-semibold flex items-center justify-center group-hover:bg-[#2E8B8B] group-hover:text-white transition-colors shadow-sm">
                               {i + 1}
                             </span>
                             <div className="flex-1 min-w-0">
-                              <span className="text-[14.5px] font-bold text-[#333] leading-snug group-hover:text-[#2E8B8B] transition-colors block truncate">
+                              <span className="text-[14.5px] font-semibold text-[#333] leading-snug group-hover:text-[#2E8B8B] transition-colors block truncate">
                                 {j.title.split("|")[0].trim()}
                               </span>
-                              <div className="flex items-center gap-2 mt-0.5 text-[12px] font-semibold text-slate-500">
+                              <div className="flex items-center gap-2 mt-0.5 text-[12px] font-medium text-slate-500">
                                 <span>{j.duration || (j.noDays > 0 ? `${j.noDays} Days` : "")}</span>
                                 {((j.discountPrice ?? 0) > 0 || (j.pricePerPerson ?? 0) > 0) ? (
                                   <>
                                     <span>•</span>
-                                    <span className="text-[#F8904D] font-extrabold">
+                                    <span className="text-[#F8904D] font-semibold">
                                       ₹{((j.discountPrice || j.pricePerPerson) as number).toLocaleString("en-IN")}
                                     </span>
                                   </>

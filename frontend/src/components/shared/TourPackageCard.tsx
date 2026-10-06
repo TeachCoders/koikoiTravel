@@ -77,13 +77,13 @@ export default function TourPackageCard({
           <div className="absolute top-3.5 left-3.5 right-3.5 flex justify-between items-start pointer-events-none">
             <div className="flex flex-col gap-2 items-start pointer-events-auto">
               {journey.isBestSelling && (
-                <span className="inline-flex items-center gap-1.5 bg-amber-400 text-slate-900 text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md">
+                <span className="inline-flex items-center gap-1.5 bg-amber-400 text-slate-900 text-[11px] font-semibold uppercase tracking-wider px-3 py-1 rounded-full shadow-md">
                   <Star size={11} fill="currentColor" className="text-slate-900" /> Best Seller
                 </span>
               )}
             </div>
             {hasDiscount && offPercent > 0 && (
-              <span className="bg-[#F8904D] text-white text-[11px] font-black px-2.5 py-1 rounded-full shadow-md pointer-events-auto">
+              <span className="bg-[#F8904D] text-white text-[11px] font-semibold px-2.5 py-1 rounded-full shadow-md pointer-events-auto">
                 {offPercent}% OFF
               </span>
             )}
@@ -109,7 +109,7 @@ export default function TourPackageCard({
             </span>
           )}
           {!isCompact && contextName && rating && (
-            <span className="inline-flex items-center gap-1 text-[11.5px] font-bold text-amber-300 bg-black/50 backdrop-blur-md border border-white/20 px-2.5 py-1 rounded-full shadow-sm">
+            <span className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-amber-300 bg-black/50 backdrop-blur-md border border-white/20 px-2.5 py-1 rounded-full shadow-sm">
               <Star size={11} fill="currentColor" className="text-amber-400 shrink-0" />
               <span>{rating} <span className="text-white/80 font-normal">({reviewsCount})</span></span>
             </span>
@@ -120,7 +120,7 @@ export default function TourPackageCard({
       {/* Content Container */}
       <div className={`flex flex-col flex-1 bg-white relative z-10 ${isCompact ? "p-4 sm:p-5" : "p-5 sm:p-6"}`}>
         <Link href={href} className={`inline-block ${isCompact ? "mb-auto" : "mb-2.5"}`}>
-          <h3 className="text-[16.5px] sm:text-[17px] font-bold text-slate-900 line-clamp-2 leading-[1.35] group-hover:text-[#2E8B8B] transition-colors">
+          <h3 className="text-[16.5px] sm:text-[17px] font-semibold text-slate-900 line-clamp-2 leading-[1.38] group-hover:text-[#2E8B8B] transition-colors">
             {journeyCardTitle(journey)}
           </h3>
         </Link>
@@ -189,7 +189,7 @@ export default function TourPackageCard({
           <WhatsAppPriceButton
             packageName={journey.h1Title || journey.title}
             label={price > 0 ? `₹${price.toLocaleString()} • WhatsApp` : "Price on Request"}
-            className="px-3 py-2 bg-[#2E8B8B] hover:bg-[#247070] active:scale-95 text-white font-bold tracking-tight rounded-xl text-[12.5px] flex items-center gap-1.5 transition-all duration-200 cursor-pointer shadow-sm shadow-[#2E8B8B]/20 whitespace-nowrap shrink-0"
+            className="px-3 py-2 bg-[#2E8B8B] hover:bg-[#247070] active:scale-95 text-white font-semibold tracking-tight rounded-xl text-[12.5px] flex items-center gap-1.5 transition-all duration-200 cursor-pointer shadow-sm shadow-[#2E8B8B]/20 whitespace-nowrap shrink-0"
             iconClassName="w-3.5 h-3.5 fill-white shrink-0"
           />
 
@@ -197,7 +197,7 @@ export default function TourPackageCard({
           <Link
             href={href}
             title="View Details"
-            className="group/btn flex items-center gap-1.5 px-3 py-2 rounded-xl bg-orange-50/70 border border-orange-200 text-[#F8904D] hover:bg-[#F8904D] hover:border-[#F8904D] hover:text-white hover:shadow-md hover:shadow-[#F8904D]/25 active:scale-95 font-bold tracking-tight text-[12.5px] transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0"
+            className="group/btn flex items-center gap-1.5 px-3 py-2 rounded-xl bg-orange-50/70 border border-orange-200 text-[#F8904D] hover:bg-[#F8904D] hover:border-[#F8904D] hover:text-white hover:shadow-md hover:shadow-[#F8904D]/25 active:scale-95 font-semibold tracking-tight text-[12.5px] transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0"
           >
             <span>View Details</span>
             <ArrowRight

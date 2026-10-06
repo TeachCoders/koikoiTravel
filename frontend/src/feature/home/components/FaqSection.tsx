@@ -34,7 +34,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
         {/* Section Header */}
         <div>
           <SectionLabel icon={<HelpCircle className="w-4 h-4" />}>Got Questions?</SectionLabel>
-          <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-[-0.02em] text-slate-900 mt-2">{heading}</h2>
+          <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-slate-900 mt-2">{heading}</h2>
           <p className="mt-2 text-[15px] text-slate-500 max-w-2xl leading-relaxed">{subtitle}</p>
         </div>
 
@@ -54,7 +54,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
                   className="w-full flex items-center justify-between gap-4 px-4 py-4 md:px-6 md:py-5 text-left cursor-pointer focus:outline-none"
                 >
                   <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <span className={`text-[16px] sm:text-[17px] font-bold transition-colors leading-snug ${
+                    <span className={`text-[16px] sm:text-[17px] font-semibold transition-colors leading-snug ${
                       isOpen ? "text-[#2E8B8B]" : "text-slate-900"
                     }`}>
                       {faq.question}
@@ -83,7 +83,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
               <MessageSquare size={22} className="text-[#2E8B8B]" />
             </div>
             <div>
-              <h4 className="text-lg font-bold text-white">Still have questions about your trip?</h4>
+              <h4 className="text-lg font-semibold text-white">Still have questions about your trip?</h4>
               <p className="text-sm text-slate-300 mt-0.5">Talk to our destination specialist for personalized itinerary guidance & custom quotes.</p>
             </div>
           </div>
@@ -91,7 +91,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             <QuoteModal>
               <button
                 type="button"
-                className="btn-primary px-5 py-3 text-xs sm:text-sm font-bold tracking-wide flex items-center gap-2 cursor-pointer shadow-md shadow-[#F8904D]/30 active:scale-95 transition-all"
+                className="btn-primary px-5 py-3 text-xs sm:text-sm font-semibold tracking-wide flex items-center gap-2 cursor-pointer shadow-md shadow-[#F8904D]/30 active:scale-95 transition-all"
               >
                 <Sparkles size={15} />
                 <span>Ask Travel Specialist</span>

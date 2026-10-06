@@ -46,13 +46,13 @@ export default function DestinationCard({
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
       {tag && (
         <div className="absolute top-3 left-3 z-10">
-          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center bg-[#F8904D] text-white shadow-md">
+          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full inline-flex items-center bg-[#F8904D] text-white shadow-md">
             {tag}
           </span>
         </div>
       )}
       <div className="relative z-10 p-4 text-center text-white">
-        <h3 className="text-lg sm:text-xl font-bold tracking-tight text-white capitalize drop-shadow-sm">
+        <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-white capitalize drop-shadow-sm">
           {title}
         </h3>
         {subtitle && (
