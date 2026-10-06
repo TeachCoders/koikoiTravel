@@ -33,10 +33,22 @@ const OPTIMIZABLE_HOSTS = new Set([
   "localhost",
 ]);
 
+const FRONTEND_STATIC_FILES = new Set([
+  "/logo-with-name.png",
+  "/icon.png",
+  "/og-image.png",
+  "/favicon.ico",
+  "/apple-icon.png",
+]);
+
 function shouldBeUnoptimized(src?: string | null): boolean {
   if (!src || typeof src !== "string") return true;
   if (/\.(svg|gif)$/i.test(src)) return true;
-  if (src.startsWith("/")) return false; // Local relative path -> optimize!
+  if (src.startsWith("/")) {
+    // Backend static paths (e.g. /india-tour/..., /destinationImage/...) must be loaded directly by browser
+    if (!FRONTEND_STATIC_FILES.has(src)) return true;
+    return false;
+  }
   try {
     const parsed = new URL(src.startsWith("//") ? `https:${src}` : src);
     return !OPTIMIZABLE_HOSTS.has(parsed.hostname);
