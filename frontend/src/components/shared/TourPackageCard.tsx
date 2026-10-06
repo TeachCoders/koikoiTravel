@@ -38,6 +38,56 @@ function getUniquePackageRating(journey: Journey) {
   return { rating, reviewsCount };
 }
 
+function InclusionHotelIcon({ className = "w-4.5 h-4.5" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} strokeWidth="1.5">
+      <rect x="5" y="3" width="14" height="18" rx="1.5" stroke="currentColor" className="text-white" />
+      <rect x="8" y="6" width="2" height="2" rx="0.5" fill="currentColor" className="text-white/85" />
+      <rect x="14" y="6" width="2" height="2" rx="0.5" fill="currentColor" className="text-white/85" />
+      <rect x="8" y="10" width="2" height="2" rx="0.5" fill="currentColor" className="text-white/85" />
+      <rect x="14" y="10" width="2" height="2" rx="0.5" fill="currentColor" className="text-white/85" />
+      <rect x="8" y="14" width="2" height="2" rx="0.5" fill="currentColor" className="text-white/85" />
+      <rect x="14" y="14" width="2" height="2" rx="0.5" fill="currentColor" className="text-white/85" />
+      <path d="M10 21V17.5C10 17.22 10.22 17 10.5 17H13.5C13.78 17 14 17.22 14 17.5V21" fill="#2E8B8B" stroke="#2E8B8B" strokeWidth="0.8" />
+    </svg>
+  );
+}
+
+function InclusionMealsIcon({ className = "w-4.5 h-4.5" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <path d="M3 19H21" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" className="text-white" />
+      <path d="M4.5 17C4.5 11.8 7.8 7.5 12 7.5C16.2 7.5 19.5 11.8 19.5 17H4.5Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" className="text-white" />
+      <circle cx="12" cy="5.5" r="1.8" fill="#2E8B8B" stroke="#2E8B8B" strokeWidth="0.6" />
+    </svg>
+  );
+}
+
+function InclusionSightseeingIcon({ className = "w-4.5 h-4.5" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <path d="M6 8.5L7.5 18H10.5L9.5 8.5H6Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" className="text-white" />
+      <path d="M18 8.5L16.5 18H13.5L14.5 8.5H18Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" className="text-white" />
+      <rect x="9" y="10.5" width="6" height="3" rx="1" fill="#2E8B8B" stroke="#2E8B8B" strokeWidth="0.5" />
+      <rect x="5.5" y="6" width="4" height="2.5" rx="0.8" stroke="currentColor" strokeWidth="1.4" className="text-white" />
+      <rect x="14.5" y="6" width="4" height="2.5" rx="0.8" stroke="currentColor" strokeWidth="1.4" className="text-white" />
+      <line x1="7" y1="18" x2="11" y2="18" stroke="#2E8B8B" strokeWidth="1.8" strokeLinecap="round" />
+      <line x1="13" y1="18" x2="17" y2="18" stroke="#2E8B8B" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function InclusionTransfersIcon({ className = "w-4.5 h-4.5" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <path d="M6 13L8 7.5H16L18 13" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" className="text-white" />
+      <rect x="4" y="12" width="16" height="5.5" rx="1.5" stroke="currentColor" strokeWidth="1.5" className="text-white" />
+      <circle cx="7.5" cy="18" r="1.8" fill="#2E8B8B" stroke="currentColor" strokeWidth="1.2" className="text-white" />
+      <circle cx="16.5" cy="18" r="1.8" fill="#2E8B8B" stroke="currentColor" strokeWidth="1.2" className="text-white" />
+    </svg>
+  );
+}
+
 export default function TourPackageCard({
   journey,
   contextName,
@@ -62,82 +112,84 @@ export default function TourPackageCard({
       className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.09)] hover:-translate-y-1.5 transition-all duration-350 ease-out h-full"
     >
       {/* Image Container */}
-      <Link href={href} className="relative h-[230px] w-full overflow-hidden shrink-0 block">
+      <Link href={href} className="relative h-[235px] w-full overflow-hidden shrink-0 block">
         <PackageImageWithFallback
           src={journey.thumbImg || journey.banner?.images?.[0] || ""}
           alt={`${journey.h1Title || journey.title}${journey.destination ? ` - ${journey.destination}` : ""} Tour Package | KoiKoi Travel`}
         />
 
         {/* Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent opacity-70" />
 
         {/* Top Badges */}
-        {!isCompact && (
-          <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2 pointer-events-none">
-            <div className="flex flex-wrap gap-1.5 items-center pointer-events-auto max-w-[80%]">
-              {journey.isBestSelling && (
-                <span className="inline-flex items-center gap-1 bg-amber-400 text-slate-900 text-[10.5px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-md">
-                  <Star size={10} fill="currentColor" className="text-slate-900" /> Best Seller
-                </span>
-              )}
-              {journey.travelExperiences?.slice(0, 2).map((t) => (
-                <span
-                  key={t.id}
-                  className="inline-flex items-center gap-1 text-[11px] font-medium text-white bg-black/60 backdrop-blur-md border border-white/20 px-2.5 py-0.5 rounded-full shadow-sm"
-                >
-                  {travelExperienceIcon(t.title, "w-3 h-3 text-white/90")}
-                  {t.title}
-                </span>
-              ))}
-            </div>
+        <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2 pointer-events-none">
+          <div className="flex flex-wrap gap-1.5 items-center pointer-events-auto max-w-[75%]">
+            {journey.isBestSelling && (
+              <span className="inline-flex items-center gap-1 bg-amber-400 text-slate-900 text-[10px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-md">
+                <Star size={10} fill="currentColor" className="text-slate-900" /> Best Seller
+              </span>
+            )}
+            {!isCompact && journey.travelExperiences?.slice(0, 2).map((t) => (
+              <span
+                key={t.id}
+                className="inline-flex items-center gap-1 text-[11px] font-medium text-white bg-black/60 backdrop-blur-md border border-white/20 px-2.5 py-0.5 rounded-full shadow-sm"
+              >
+                {travelExperienceIcon(t.title, "w-3 h-3 text-white/90")}
+                {t.title}
+              </span>
+            ))}
+          </div>
+
+          <div className="flex flex-col items-end gap-1.5 pointer-events-auto shrink-0">
+            {journey.noDays > 0 && (
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-white bg-black/60 backdrop-blur-md border border-white/20 px-2.5 py-0.5 rounded-full shadow-sm">
+                <Clock size={11} className="opacity-90" />
+                {journey.noDays === 1 ? "1 Day" : `${journey.noDays - 1}N / ${journey.noDays}D`}
+              </span>
+            )}
             {hasDiscount && offPercent > 0 && (
-              <span className="bg-[#F8904D] text-white text-[11px] font-semibold px-2 py-0.5 rounded-full shadow-md pointer-events-auto shrink-0">
+              <span className="bg-[#F8904D] text-white text-[10.5px] font-semibold px-2 py-0.5 rounded-full shadow-md">
                 {offPercent}% OFF
               </span>
             )}
           </div>
-        )}
-
-        {/* Bottom Image Info */}
-        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-          {journey.noDays > 0 && (
-            <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-white bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full shadow-sm">
-              <Clock size={13} className="opacity-90" />
-              {journey.noDays === 1 ? "1 Day" : `${journey.noDays - 1}N / ${journey.noDays}D`}
-            </span>
-          )}
-          {!isCompact && contextName && rating && (
-            <span className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-amber-300 bg-black/50 backdrop-blur-md border border-white/20 px-2.5 py-1 rounded-full shadow-sm">
-              <Star size={11} fill="currentColor" className="text-amber-400 shrink-0" />
-              <span>{rating} <span className="text-white/80 font-normal">({reviewsCount})</span></span>
-            </span>
-          )}
         </div>
+
+        {/* Bottom Inclusions Bar (MakeMyTrip / OTA Style) */}
+        {!isCompact && (
+          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent pt-6 pb-2.5 px-3.5 flex items-end justify-between pointer-events-none">
+            <div className="grid grid-cols-4 gap-2 sm:gap-3 w-full max-w-[280px]">
+              <div className="flex flex-col items-center text-center">
+                <InclusionHotelIcon className="w-4.5 h-4.5 drop-shadow" />
+                <span className="text-[10px] font-normal text-white/90 mt-0.5 tracking-tight drop-shadow-sm">Hotels</span>
+              </div>
+              <div className="flex flex-col items-center text-center">
+                <InclusionMealsIcon className="w-4.5 h-4.5 drop-shadow" />
+                <span className="text-[10px] font-normal text-white/90 mt-0.5 tracking-tight drop-shadow-sm">Meals</span>
+              </div>
+              <div className="flex flex-col items-center text-center">
+                <InclusionSightseeingIcon className="w-4.5 h-4.5 drop-shadow" />
+                <span className="text-[10px] font-normal text-white/90 mt-0.5 tracking-tight drop-shadow-sm">Sightseeing</span>
+              </div>
+              <div className="flex flex-col items-center text-center">
+                <InclusionTransfersIcon className="w-4.5 h-4.5 drop-shadow" />
+                <span className="text-[10px] font-normal text-white/90 mt-0.5 tracking-tight drop-shadow-sm">Transfers</span>
+              </div>
+            </div>
+
+            {contextName && rating && (
+              <div className="hidden sm:flex items-center gap-1 text-[11px] font-semibold text-amber-300 bg-black/50 backdrop-blur-md border border-white/20 px-2 py-0.5 rounded-full shadow-sm mb-0.5">
+                <Star size={10} fill="currentColor" className="text-amber-400 shrink-0" />
+                <span>{rating} <span className="text-white/70 font-normal text-[10px]">({reviewsCount})</span></span>
+              </div>
+            )}
+          </div>
+        )}
       </Link>
 
       {/* Content Container */}
       <div className={`flex flex-col flex-1 bg-white relative z-10 ${isCompact ? "p-4 sm:p-5" : "p-4.5 sm:p-5"}`}>
-        {!isCompact && (
-          /* Inclusions Feature Badges (Borderless, Above Journey Title) */
-          <div className="flex items-center justify-between gap-1 mb-2 text-[11px] font-normal text-slate-500">
-            <span title="3★/4★ Handpicked Hotels" className="flex items-center gap-1">
-              <Hotel size={13} className="text-slate-500" /> Hotel
-            </span>
-            <span className="text-slate-300">•</span>
-            <span title="Private Cab Transfers" className="flex items-center gap-1">
-              <Car size={13} className="text-slate-500" /> Cab
-            </span>
-            <span className="text-slate-300">•</span>
-            <span title="Daily Breakfast Included" className="flex items-center gap-1">
-              <Utensils size={13} className="text-slate-500" /> Meals
-            </span>
-            <span className="text-slate-300">•</span>
-            <span title="Guided Sightseeing" className="flex items-center gap-1">
-              <Ticket size={13} className="text-slate-500" /> Tours
-            </span>
-          </div>
-        )}
 
         {/* Title with font-weight 500 & relaxed line-height */}
         <Link href={href} className="inline-block mb-2">
