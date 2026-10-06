@@ -296,28 +296,13 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         />
       )}
 
-      {/* ===== SECTION 3: MULTI-CITY TOURS WITH STATE ===== */}
-      <ToursSection
-        id="multi-city-tours"
-        basePath={basePath}
-        journeys={filteredMultiCityJourneys}
-        isLoading={journeysLoading}
-        accentLabel="Circuits & Extended Tours"
-        h1Title={topJourneys.length > 0 ? `Multi City Tours with ${state.title}` : (pageH1 || `${state.title} Tour Packages`)}
-        emptyLabel={`No multi-city tours found with ${state.title} yet`}
-        filterBar={multiCityPool.length > 0 ? filterBar : undefined}
-        onClearFilters={clearFilters}
-        sectionClassName="py-14 md:py-20 bg-white border-b border-slate-200/60"
-        showCount={12}
-      />
-
-      {/* ===== CITIES ===== */}
+      {/* ===== SECTION 3: CITIES / TOP DESTINATIONS IN STATE ===== */}
       {(journeysLoading || displayedCities.length > 0) && (
-        <section id="cities" className="w-full bg-white py-12 md:py-20 border-t border-slate-200/60">
+        <section id="cities" className="w-full bg-white py-12 md:py-20 border-b border-slate-200/60">
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
           <div className="flex items-end justify-between mb-6 md:mb-10 flex-wrap gap-4">
             <div>
-              <span className="accent-label">Discover</span>
+              <span className="accent-label">Top Destinations</span>
               <h2 className="h3 text-[#1C1C1C] mt-2">
                 Cities in {state.title}
                 <span className="ml-3 align-middle text-sm font-semibold text-[#F8904D] bg-[#F8904D]/10 px-3 py-1 rounded-full">
@@ -390,6 +375,21 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           </div>
         </section>
       )}
+
+      {/* ===== SECTION 4: MULTI-CITY TOURS WITH STATE ===== */}
+      <ToursSection
+        id="multi-city-tours"
+        basePath={basePath}
+        journeys={filteredMultiCityJourneys}
+        isLoading={journeysLoading}
+        accentLabel="Circuits & Extended Tours"
+        h1Title={topJourneys.length > 0 ? `Multi City Tours with ${state.title}` : (pageH1 || `${state.title} Tour Packages`)}
+        emptyLabel={`No multi-city tours found with ${state.title} yet`}
+        filterBar={multiCityPool.length > 0 ? filterBar : undefined}
+        onClearFilters={clearFilters}
+        sectionClassName="py-14 md:py-20 bg-[#f8f8f8] border-b border-slate-200/60"
+        showCount={12}
+      />
 
       {/* ===== MORE DESCRIPTION (ALL INFO) ===== */}
       <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-12 md:py-20">
