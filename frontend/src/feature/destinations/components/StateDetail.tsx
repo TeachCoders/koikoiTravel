@@ -472,8 +472,11 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         </section>
       )}
 
-      {/* ===== MORE DESCRIPTION (ALL INFO) ===== */}
-      <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-12 md:py-20">
+      {/* ===== FAQ SECTION ===== */}
+      <FaqSection faqs={state.faqs} />
+
+      {/* ===== ARTICLE / MORE DESCRIPTION (ALL INFO) AT BOTTOM WITH WHITE BACKGROUND ===== */}
+      <section id="more" className="bg-white border-t border-slate-200/60 py-12 md:py-20">
         <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
           <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText ? "lg:grid-cols-3" : ""}`}>
           {hasKnowMoreText && (
@@ -493,11 +496,11 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
             <aside className="space-y-6 lg:sticky lg:top-28 z-10 self-start">
               {facts.length > 0 && (
-                <div className="rounded-2xl border border-slate-100 bg-white p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
-                  <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5">
+                <div className="rounded-2xl border border-slate-100 bg-[#f8f8f8] p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
+                  <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5">
                     Quick Facts
                   </h4>
-                  <dl className="flex flex-col divide-y divide-slate-100">
+                  <dl className="flex flex-col divide-y divide-slate-200/60">
                     {facts.map((f) => (
                       <div key={f.label} className="flex items-center justify-between gap-4 py-3.5 first:pt-0 last:pb-0">
                         <dt className="text-[15px] text-slate-700 font-semibold flex items-center gap-2">
@@ -533,10 +536,10 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               )}
 
               {stateJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0 && (
-                <div className="rounded-2xl border border-slate-100 bg-white p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                  <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5 flex items-center justify-between">
+                <div className="rounded-2xl border border-slate-100 bg-[#f8f8f8] p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                  <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5 flex items-center justify-between">
                     Top 10 Tour Packages
-                    <span className="text-[10px] font-black text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[11px] font-black text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-0.5 rounded-full">
                       {Math.min(
                         10,
                         stateJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length
@@ -554,18 +557,18 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                       .slice(0, 10)
                       .map((j, i) => (
                         <li key={j.id}>
-                            <Link
-                              href={journeyPackageHref(j)}
-                            className="flex items-start gap-3 p-2.5 -mx-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
+                          <Link
+                            href={journeyPackageHref(j)}
+                            className="flex items-start gap-3 p-2.5 -mx-2.5 rounded-xl hover:bg-white transition-colors group"
                           >
-                            <span className="mt-[2px] w-[26px] h-[26px] shrink-0 rounded-full bg-slate-100 text-[#1C1C1C] text-[11px] font-black flex items-center justify-center group-hover:bg-[#2E8B8B] group-hover:text-white transition-colors shadow-sm">
+                            <span className="mt-[2px] w-[26px] h-[26px] shrink-0 rounded-full bg-slate-200 text-[#1C1C1C] text-[12px] font-black flex items-center justify-center group-hover:bg-[#2E8B8B] group-hover:text-white transition-colors shadow-sm">
                               {i + 1}
                             </span>
                             <div className="flex-1 min-w-0">
                               <span className="text-[14.5px] font-bold text-[#333] leading-snug group-hover:text-[#2E8B8B] transition-colors block truncate">
                                 {j.title.split("|")[0].trim()}
                               </span>
-                              <div className="flex items-center gap-2 mt-0.5 text-[11.5px] font-semibold text-slate-500">
+                              <div className="flex items-center gap-2 mt-0.5 text-[12px] font-semibold text-slate-500">
                                 <span>{j.duration || (j.noDays > 0 ? `${j.noDays} Days` : "")}</span>
                                 {((j.discountPrice ?? 0) > 0 || (j.pricePerPerson ?? 0) > 0) ? (
                                   <>
@@ -587,9 +590,6 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           </div>
         </div>
       </section>
-
-      {/* ===== FAQ SECTION ===== */}
-      <FaqSection faqs={state.faqs} />
     </div>
   );
 }
