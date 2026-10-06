@@ -756,13 +756,13 @@
 
   .rich-text a {
     color: #2E8B8B;
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    text-decoration: none !important;
     transition: color 0.15s ease;
   }
 
   .rich-text a:hover {
     color: #1a5c5c;
+    text-decoration: none !important;
   }
 
   .rich-text a[data-rte-button] {
@@ -782,9 +782,10 @@
     text-decoration: none;
   }
 
-  .rich-text strong {
+  .rich-text strong,
+  .rich-text b {
     color: #1C1C1C;
-    font-weight: 700;
+    font-weight: 500 !important;
   }
 
   .rich-text em {

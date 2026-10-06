@@ -293,12 +293,12 @@ function CountryContent({
             </p>
           )}
 
-          <h2
+          <div
             className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wider"
-            style={{ textShadow: "0 2px 4px rgba(0,0,0,1), 0 4px_16px rgba(0,0,0,0.9), 0 16px 48px rgba(0,0,0,0.7)" }}
+            style={{ textShadow: "0 2px 4px rgba(0,0,0,1), 0 4px 16px rgba(0,0,0,0.9), 0 16px 48px rgba(0,0,0,0.7)" }}
           >
             {heroTitle}
-          </h2>
+          </div>
         </div>
       </section>
 
