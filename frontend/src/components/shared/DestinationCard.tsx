@@ -25,8 +25,8 @@ export default function DestinationCard({
     <Link
       href={href}
       className={cn(
-        "group relative rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-end",
-        "h-[190px] sm:h-[220px]",
+        "group relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-350 flex flex-col justify-end",
+        "h-[200px] sm:h-[230px]",
         className
       )}
     >
@@ -36,23 +36,27 @@ export default function DestinationCard({
           alt={`${title} Tour Packages & Sightseeing | KoiKoi Travel`}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
         />
       ) : (
         <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#1C1C1C] via-[#243b3b] to-[#1C1C1C] flex items-center justify-center">
           <Image src="/logo-with-name.png" alt="KoiKoi Travel" width={240} height={78} className="opacity-35 object-contain filter drop-shadow-md brightness-200" />
         </div>
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
       {tag && (
-        <div className="tag-badge absolute top-3 left-3">
-          <span>{tag}</span>
+        <div className="absolute top-3 left-3 z-10">
+          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center bg-[#F8904D] text-white shadow-md">
+            {tag}
+          </span>
         </div>
       )}
       <div className="relative z-10 p-4 text-center text-white">
-        <h3 className="h6 text-white capitalize">{title}</h3>
+        <h3 className="text-lg sm:text-xl font-bold tracking-tight text-white capitalize drop-shadow-sm">
+          {title}
+        </h3>
         {subtitle && (
-          <p className="mt-1.5 inline-flex items-center justify-center gap-1.5 rounded-full bg-black/45 backdrop-blur-sm px-2.5 py-1 text-xs font-semibold text-white">
+          <p className="mt-1.5 inline-flex items-center justify-center gap-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/15 px-3 py-0.5 text-xs font-medium text-white/90">
             {subtitle}
           </p>
         )}

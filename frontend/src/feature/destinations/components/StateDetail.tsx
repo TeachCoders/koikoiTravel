@@ -258,40 +258,42 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
         <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 h-full flex flex-col justify-center items-center py-6 sm:py-8 text-center">
           {heroTag && (
-            <p className="sm:block w-fit max-w-2xl mx-auto mb-3 text-[17px] font-bold uppercase tracking-[0.28em] leading-relaxed pr-[0.28em] text-white/85 drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)] drop-shadow-[0_4px_14px_rgba(0,0,0,0.8)]">
-              {heroTag}
-            </p>
+            <div className="mb-3.5">
+              <span className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-black/35 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-semibold tracking-wide uppercase shadow-sm">
+                {heroTag}
+              </span>
+            </div>
           )}
 
-          <h2 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wider drop-shadow-[0_1px_1px_rgba(0,0,0,1)] drop-shadow-[0_3px_8px_rgba(0,0,0,0.95)] drop-shadow-[0_14px_36px_rgba(0,0,0,0.85)]">
+          <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.15] drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]">
             {heroTitle}
-          </h2>
+          </h1>
         </div>
       </section>
 
       {/* ===== BREADCRUMB (BELOW HERO) ===== */}
-      <nav aria-label="Breadcrumb" className="border-b border-slate-200 bg-slate-50 shadow-sm">
-        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-3 flex flex-wrap items-center gap-1.5 text-[14px] text-slate-500">
-          <Link href="/" className="hover:text-[#2E8B8B] transition-colors shrink-0 font-medium">
+      <nav aria-label="Breadcrumb" className="border-b border-slate-200/80 bg-slate-50/80 backdrop-blur-xs">
+        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-3 flex flex-wrap items-center gap-1.5 text-[13px] text-slate-500 font-medium">
+          <Link href="/" className="hover:text-[#2E8B8B] transition-colors shrink-0">
             Home
           </Link>
-          <ChevronRight size={14} className="text-slate-300 shrink-0" />
-          <Link href="/tour-packages" className="hover:text-[#2E8B8B] transition-colors shrink-0 font-medium">
+          <ChevronRight size={13} className="text-slate-400 shrink-0" />
+          <Link href="/tour-packages" className="hover:text-[#2E8B8B] transition-colors shrink-0">
             Tour Packages
           </Link>
           {state.country && (
             <>
-              <ChevronRight size={14} className="text-slate-300 shrink-0" />
+              <ChevronRight size={13} className="text-slate-400 shrink-0" />
               <Link
                 href={`/tour-packages/${state.country.slug}`}
-                className="hover:text-[#2E8B8B] transition-colors shrink-0 font-medium"
+                className="hover:text-[#2E8B8B] transition-colors shrink-0"
               >
                 {state.country.title.replace(/\s*Tour$/i, "")}
               </Link>
             </>
           )}
-          <ChevronRight size={14} className="text-slate-300 shrink-0" />
-          <span className="text-[#1C1C1C] font-semibold">{state.title}</span>
+          <ChevronRight size={13} className="text-slate-400 shrink-0" />
+          <span className="text-slate-900 font-semibold">{state.title}</span>
         </div>
       </nav>
 
@@ -319,10 +321,12 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
           <div className="flex items-end justify-between mb-6 md:mb-10 flex-wrap gap-4">
             <div>
-              <span className="accent-label">Top Destinations</span>
-              <h2 className="h3 text-[#1C1C1C] mt-2">
+              <span className="text-[12px] font-bold uppercase tracking-[0.08em] text-[#2E8B8B]">
+                Top Destinations
+              </span>
+              <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-[-0.02em] text-slate-900 mt-2">
                 Cities in {state.title}
-                <span className="ml-3 align-middle text-sm font-semibold text-[#F8904D] bg-[#F8904D]/10 px-3 py-1 rounded-full">
+                <span className="ml-3 align-middle text-xs font-semibold text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-1 rounded-full">
                   {cityCount} Cities
                 </span>
               </h2>
@@ -399,10 +403,12 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
             <div className="flex items-end justify-between mb-6 md:mb-10 flex-wrap gap-4">
               <div>
-                <span className="accent-label">Circuits & Extended Tours</span>
-                <h2 className="font-heading h2 text-[#1C1C1C] mt-2">
+                <span className="text-[12px] font-bold uppercase tracking-[0.08em] text-[#2E8B8B]">
+                  Circuits & Extended Tours
+                </span>
+                <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-[-0.02em] text-slate-900 mt-2">
                   Multi City Tours with {state.title}
-                  <span className="ml-3 align-middle text-sm font-semibold text-[#2E8B8B] bg-[#2E8B8B]/10 px-3 py-1 rounded-full">
+                  <span className="ml-3 align-middle text-xs font-semibold text-[#2E8B8B] bg-[#2E8B8B]/10 px-2.5 py-1 rounded-full">
                     {multiCityJourneys.length} Tours
                   </span>
                 </h2>
@@ -481,8 +487,12 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText ? "lg:grid-cols-3" : ""}`}>
           {hasKnowMoreText && (
               <div className="lg:col-span-2">
-                <span className="accent-label">Know More</span>
-                <h2 className="h3 text-[#1C1C1C] mt-2 mb-5 md:mb-8">Everything About {state.title}</h2>
+                <span className="text-[12px] font-bold uppercase tracking-[0.08em] text-[#2E8B8B]">
+                  Know More
+                </span>
+                <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-[-0.02em] text-slate-900 mt-2 mb-6 md:mb-8">
+                  Everything About {state.title}
+                </h2>
 
                 {state.seoDescription && (
                   <RichContent html={state.seoDescription} />
@@ -496,17 +506,17 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
             <aside className="space-y-6 lg:sticky lg:top-28 z-10 self-start">
               {facts.length > 0 && (
-                <div className="rounded-2xl border border-slate-100 bg-[#f8f8f8] p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
-                  <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5">
+                <div className="rounded-2xl border border-slate-200/70 bg-slate-50/70 p-6 shadow-sm relative overflow-hidden">
+                  <h4 className="text-[12px] font-bold uppercase tracking-[0.08em] text-[#2E8B8B] mb-4">
                     Quick Facts
                   </h4>
-                  <dl className="flex flex-col divide-y divide-slate-200/60">
+                  <dl className="flex flex-col divide-y divide-slate-200/70">
                     {facts.map((f) => (
-                      <div key={f.label} className="flex items-center justify-between gap-4 py-3.5 first:pt-0 last:pb-0">
-                        <dt className="text-[15px] text-slate-700 font-semibold flex items-center gap-2">
+                      <div key={f.label} className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+                        <dt className="text-[14px] text-slate-600 font-medium flex items-center gap-2">
                           {f.label}
                         </dt>
-                        <dd className="text-[15px] font-bold text-[#1C1C1C] text-right capitalize">{f.value}</dd>
+                        <dd className="text-[14.5px] font-bold text-slate-900 text-right capitalize">{f.value}</dd>
                       </div>
                     ))}
                   </dl>
@@ -514,20 +524,20 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               )}
 
               {state.famousFor && (
-                <div className="rounded-2xl bg-gradient-to-br from-[#2E8B8B]/10 via-transparent to-[#2E8B8B]/5 border border-[#2E8B8B]/20 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
+                <div className="rounded-2xl bg-gradient-to-br from-[#2E8B8B]/10 via-transparent to-[#2E8B8B]/5 border border-[#2E8B8B]/20 p-6 shadow-sm relative overflow-hidden">
                   <Sparkles className="absolute -top-4 -right-4 w-24 h-24 text-[#2E8B8B]/10 rotate-12" />
                   <div className="w-full flex items-center justify-between gap-3 text-left relative z-10">
-                    <h3 className="flex items-center gap-2.5 text-lg font-black text-[#1C1C1C]">
-                      <Sparkles size={18} className="text-[#F8904D]" />
+                    <h3 className="flex items-center gap-2 text-base font-bold text-slate-900">
+                      <Sparkles size={16} className="text-[#F8904D]" />
                       Famous For
                     </h3>
                   </div>
-                  <ul className="mt-5 space-y-3 relative z-10">
+                  <ul className="mt-4 space-y-2.5 relative z-10">
                     {stripHtml(state.famousFor)
                       .split(",")
                       .map((item, i) => (
-                        <li key={i} className="flex items-start gap-2.5 text-[15px] text-slate-700 font-semibold leading-relaxed">
-                          <BadgeCheck size={18} className="shrink-0 mt-[3px] text-[#2E8B8B]" />
+                        <li key={i} className="flex items-start gap-2.5 text-[14px] text-slate-700 font-medium leading-relaxed">
+                          <BadgeCheck size={16} className="shrink-0 mt-[3px] text-[#2E8B8B]" />
                           {item.trim()}
                         </li>
                       ))}
@@ -536,10 +546,10 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               )}
 
               {stateJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0 && (
-                <div className="rounded-2xl border border-slate-100 bg-[#f8f8f8] p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                  <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5 flex items-center justify-between">
+                <div className="rounded-2xl border border-slate-200/70 bg-slate-50/70 p-6 shadow-sm">
+                  <h4 className="text-[12px] font-bold uppercase tracking-[0.08em] text-[#2E8B8B] mb-4 flex items-center justify-between">
                     Top 10 Tour Packages
-                    <span className="text-[11px] font-black text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[11px] font-bold text-[#F8904D] bg-[#F8904D]/10 px-2 py-0.5 rounded-full">
                       {Math.min(
                         10,
                         stateJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length

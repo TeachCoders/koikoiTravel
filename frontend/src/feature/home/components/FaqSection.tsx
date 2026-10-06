@@ -34,8 +34,8 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
         {/* Section Header */}
         <div>
           <SectionLabel icon={<HelpCircle className="w-4 h-4" />}>Got Questions?</SectionLabel>
-          <h2 className="h2 text-[#1C1C1C] mt-2">{heading}</h2>
-          <p className="mt-2 text-sm sm:text-base text-[#555] max-w-2xl">{subtitle}</p>
+          <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-[-0.02em] text-slate-900 mt-2">{heading}</h2>
+          <p className="mt-2 text-[15px] text-slate-500 max-w-2xl leading-relaxed">{subtitle}</p>
         </div>
 
         {/* FAQ Accordion List - Full Container Width */}
