@@ -168,7 +168,7 @@
   body {
     @apply bg-white;
     color: #222222;
-    line-height: 1.65;
+    line-height: 27px;
     font-size: 16px;
     letter-spacing: -0.01em;
     -webkit-font-smoothing: antialiased;
@@ -185,7 +185,7 @@
   p {
     color: #333333;
     font-size: 16px;
-    line-height: 1.7;
+    line-height: 27px;
     letter-spacing: -0.005em;
   }
 
@@ -193,17 +193,18 @@
     margin-top: 1.15rem;
   }
 
-  /* Minimum 16px font size across the entire site */
+  /* Minimum 16px font size and 27px line-height across the entire site */
   .text-xs,
   .text-sm {
     font-size: 16px;
-    line-height: 1.5;
+    line-height: 27px;
   }
 
   td,
   th,
   label {
     font-size: 16px;
+    line-height: 27px;
   }
 
   .text-muted {
@@ -528,7 +529,7 @@
   .rich-text {
     color: #374151;
     letter-spacing: -0.01em;
-    line-height: 1.75;
+    line-height: 27px;
     font-size: 16px;
   }
 
@@ -578,7 +579,7 @@
 
   .rich-text p {
     font-size: 16px;
-    line-height: 1.75;
+    line-height: 27px;
     letter-spacing: -0.005em;
     color: #374151;
     margin-top: 0;
@@ -592,7 +593,7 @@
   .rich-text ul li,
   .rich-text ol li {
     font-size: 16px;
-    line-height: 1.7;
+    line-height: 27px;
     color: #374151;
   }
 
@@ -681,7 +682,7 @@
     margin-top: 0.5em;
     padding-left: 1.75em;
     font-size: 16px;
-    line-height: 1.7;
+    line-height: 27px;
     letter-spacing: -0.005em;
     color: #374151;
   }
