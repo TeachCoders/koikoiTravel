@@ -69,9 +69,8 @@ export default function TourPackageCard({
           alt={`${journey.h1Title || journey.title}${journey.destination ? ` - ${journey.destination}` : ""} Tour Package | KoiKoi Travel`}
         />
 
-        {/* Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-100" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent opacity-70" />
+        {/* Subtle Edge Vignettes (Preserves 100% image clarity & colors) */}
+        <div className="absolute top-0 inset-x-0 h-14 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
 
         {/* Top Badges */}
         <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2 pointer-events-none">
@@ -84,7 +83,7 @@ export default function TourPackageCard({
             {!isCompact && journey.travelExperiences?.slice(0, 2).map((t) => (
               <span
                 key={t.id}
-                className="inline-flex items-center gap-1 text-[11px] font-medium text-white bg-black/60 backdrop-blur-md border border-white/20 px-2.5 py-0.5 rounded-full shadow-sm"
+                className="inline-flex items-center gap-1 text-[11px] font-medium text-white bg-black/50 backdrop-blur-md border border-white/20 px-2.5 py-0.5 rounded-full shadow-sm"
               >
                 {travelExperienceIcon(t.title, "w-3 h-3 text-white/90")}
                 {t.title}
