@@ -136,21 +136,21 @@ export default function TourPackageCard({
             )}
 
             {/* Inclusions Feature Badges */}
-            <div className="flex items-center justify-between gap-1 py-2 px-2.5 mb-3.5 rounded-xl bg-slate-50 border border-slate-100 text-[11px] font-semibold text-slate-600">
+            <div className="flex items-center justify-between gap-1 py-2 px-2.5 mb-3.5 rounded-xl bg-gradient-to-r from-orange-50 via-amber-50/80 to-orange-50 border border-orange-200/70 text-[11px] font-semibold text-slate-800 shadow-xs">
               <span title="3★/4★ Handpicked Hotels" className="flex items-center gap-1">
-                <Hotel size={13} className="text-slate-800" /> Hotel
+                <Hotel size={13} className="text-[#F8904D]" /> Hotel
               </span>
-              <span className="text-slate-300">•</span>
+              <span className="text-orange-300">•</span>
               <span title="Private Cab Transfers" className="flex items-center gap-1">
-                <Car size={13} className="text-slate-800" /> Cab
+                <Car size={13} className="text-[#F8904D]" /> Cab
               </span>
-              <span className="text-slate-300">•</span>
+              <span className="text-orange-300">•</span>
               <span title="Daily Breakfast Included" className="flex items-center gap-1">
-                <Utensils size={13} className="text-slate-800" /> Meals
+                <Utensils size={13} className="text-[#F8904D]" /> Meals
               </span>
-              <span className="text-slate-300">•</span>
+              <span className="text-orange-300">•</span>
               <span title="Guided Sightseeing" className="flex items-center gap-1">
-                <Ticket size={13} className="text-slate-800" /> Tours
+                <Ticket size={13} className="text-[#F8904D]" /> Tours
               </span>
             </div>
 
