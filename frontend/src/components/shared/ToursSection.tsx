@@ -18,6 +18,8 @@ export interface ToursSectionProps {
   contextName?: string;
   basePath?: string;
   showCount?: number;
+  sectionClassName?: string;
+  id?: string;
 }
 
 export default function ToursSection({
@@ -30,16 +32,19 @@ export default function ToursSection({
   filterBar,
   onClearFilters,
   contextName,
+  sectionClassName = "py-12 md:py-20 bg-white",
+  id = "tours",
 }: ToursSectionProps) {
   const hasFilters = Boolean(filterBar && onClearFilters);
 
   return (
-    <section id="tours" className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 py-10 md:py-20">
-      <div className="mb-8 md:mb-14">
-        {accentLabel && <span className="accent-label">{accentLabel}</span>}
-        {h1Title && <h1 className="font-heading h2 text-[#1C1C1C] mt-3">{h1Title}</h1>}
-        {overView && <RichContent html={overView} className="mt-4" />}
-      </div>
+    <section id={id} className={`w-full relative ${sectionClassName}`}>
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+        <div className="mb-8 md:mb-14">
+          {accentLabel && <span className="accent-label">{accentLabel}</span>}
+          {h1Title && <h1 className="font-heading h2 text-[#1C1C1C] mt-3">{h1Title}</h1>}
+          {overView && <RichContent html={overView} className="mt-4" />}
+        </div>
 
       {isLoading ? (
         <DestinationsSkeleton count={8} />
@@ -71,6 +76,7 @@ export default function ToursSection({
           </div>
         </div>
       )}
+      </div>
     </section>
   );
 }

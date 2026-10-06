@@ -280,22 +280,25 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         </div>
       </nav>
 
-      {/* ===== SECTION 2: TOP TOUR PACKAGES IN STATE ===== */}
+      {/* ===== SECTION 2: TOP TOUR PACKAGES IN STATE (HOMEPAGE BEST-SELLER STYLE) ===== */}
       {topJourneys.length > 0 && (
         <ToursSection
+          id="top-tours"
           basePath={basePath}
           journeys={topJourneys}
           isLoading={journeysLoading && topJourneys.length === 0}
-          accentLabel="Best-Selling Packages"
+          accentLabel="Handpicked Top Tours"
           h1Title={pageH1 || `Top Tour Packages in ${state.title}`}
           overView={state.overView ?? undefined}
           emptyLabel={`No top tour packages selected for ${state.title} yet`}
+          sectionClassName="py-14 md:py-20 bg-[#f8f8f8] border-b border-slate-200/80 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]"
           showCount={8}
         />
       )}
 
       {/* ===== SECTION 3: MULTI-CITY TOURS WITH STATE ===== */}
       <ToursSection
+        id="multi-city-tours"
         basePath={basePath}
         journeys={filteredMultiCityJourneys}
         isLoading={journeysLoading}
@@ -304,6 +307,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         emptyLabel={`No multi-city tours found with ${state.title} yet`}
         filterBar={multiCityPool.length > 0 ? filterBar : undefined}
         onClearFilters={clearFilters}
+        sectionClassName="py-14 md:py-20 bg-white border-b border-slate-200/60"
         showCount={12}
       />
 
