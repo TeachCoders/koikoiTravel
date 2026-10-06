@@ -20,6 +20,7 @@ export interface ToursSectionProps {
   showCount?: number;
   sectionClassName?: string;
   id?: string;
+  cardVariant?: "default" | "compact";
 }
 
 export default function ToursSection({
@@ -34,6 +35,7 @@ export default function ToursSection({
   contextName,
   sectionClassName = "py-12 md:py-20 bg-white",
   id = "tours",
+  cardVariant = "default",
 }: ToursSectionProps) {
   const hasFilters = Boolean(filterBar && onClearFilters);
 
@@ -71,7 +73,7 @@ export default function ToursSection({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
             {journeys.map((j) => (
-              <TourPackageCard key={j.id} journey={j} contextName={contextName} />
+              <TourPackageCard key={j.id} journey={j} contextName={contextName} variant={cardVariant} />
             ))}
           </div>
         </div>

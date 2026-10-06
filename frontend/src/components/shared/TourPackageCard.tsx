@@ -38,7 +38,15 @@ function getUniquePackageRating(journey: Journey) {
   return { rating, reviewsCount };
 }
 
-export default function TourPackageCard({ journey, contextName }: { journey: Journey, contextName?: string }) {
+export default function TourPackageCard({
+  journey,
+  contextName,
+  variant = "default",
+}: {
+  journey: Journey;
+  contextName?: string;
+  variant?: "default" | "compact";
+}) {
   const price = journey.discountPrice ?? journey.pricePerPerson ?? 0;
   const hasDiscount = journey.discountPrice && journey.discountPrice > price;
   const offPercent = hasDiscount
@@ -47,6 +55,7 @@ export default function TourPackageCard({ journey, contextName }: { journey: Jou
   const state = journey.cities?.[0]?.state?.title;
   const href = journeyPackageHref(journey);
   const { rating, reviewsCount } = contextName ? getUniquePackageRating(journey) : { rating: null, reviewsCount: 0 };
+  const isCompact = variant === "compact";
 
   return (
     <div
@@ -64,23 +73,25 @@ export default function TourPackageCard({ journey, contextName }: { journey: Jou
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent opacity-60" />
 
         {/* Top Badges */}
-        <div className="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
-          <div className="flex flex-col gap-2 items-start pointer-events-auto">
-            {journey.isBestSelling && (
-              <span className="inline-flex items-center gap-1.5 bg-amber-400 text-[#1C1C1C] text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full shadow-lg">
-                <Star size={11} fill="currentColor" className="text-[#1C1C1C]" /> Best Seller
+        {!isCompact && (
+          <div className="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
+            <div className="flex flex-col gap-2 items-start pointer-events-auto">
+              {journey.isBestSelling && (
+                <span className="inline-flex items-center gap-1.5 bg-amber-400 text-[#1C1C1C] text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full shadow-lg">
+                  <Star size={11} fill="currentColor" className="text-[#1C1C1C]" /> Best Seller
+                </span>
+              )}
+            </div>
+            {hasDiscount && offPercent > 0 && (
+              <span className="bg-[#F8904D] text-white text-[11px] font-black px-3 py-1.5 rounded-full shadow-lg pointer-events-auto">
+                {offPercent}% OFF
               </span>
             )}
           </div>
-          {hasDiscount && offPercent > 0 && (
-            <span className="bg-[#F8904D] text-white text-[11px] font-black px-3 py-1.5 rounded-full shadow-lg pointer-events-auto">
-              {offPercent}% OFF
-            </span>
-          )}
-        </div>
+        )}
 
         {/* Dynamic Context Icon (Top Right) */}
-        {contextName && (
+        {!isCompact && contextName && (
           <div
             className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white shadow-lg pointer-events-none"
             title={contextName}
@@ -92,80 +103,84 @@ export default function TourPackageCard({ journey, contextName }: { journey: Jou
         {/* Bottom Image Info */}
         <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none">
           {journey.noDays > 0 && (
-            <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-white bg-black/40 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-full shadow-sm">
+            <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-white bg-black/50 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-full shadow-sm">
               <Clock size={14} className="opacity-90" />
               {journey.noDays === 1 ? "1 Day" : `${journey.noDays - 1}N / ${journey.noDays}D`}
             </span>
           )}
-          {contextName && rating && (
+          {!isCompact && contextName && rating && (
             <span className="inline-flex items-center gap-1 text-[11.5px] font-bold text-amber-300 bg-black/45 backdrop-blur-md border border-white/20 px-2.5 py-1 rounded-full shadow-sm">
               <Star size={11} fill="currentColor" className="text-amber-400 shrink-0" />
               <span>{rating} <span className="text-white/80 font-normal">({reviewsCount})</span></span>
             </span>
           )}
-          </div>
+        </div>
       </Link>
 
       {/* Content Container */}
-      <div className="p-6 flex flex-col flex-1 bg-white relative z-10">
-        <Link href={href} className="inline-block mb-3">
-          <h3 className="text-[17px] font-bold text-[#1C1C1C] line-clamp-2 leading-snug group-hover:text-[#2E8B8B] transition-colors">
+      <div className={`flex flex-col flex-1 bg-white relative z-10 ${isCompact ? "p-4 sm:p-5" : "p-6"}`}>
+        <Link href={href} className={`inline-block ${isCompact ? "mb-auto" : "mb-3"}`}>
+          <h3 className="text-[16px] sm:text-[17px] font-bold text-[#1C1C1C] line-clamp-2 leading-snug group-hover:text-[#2E8B8B] transition-colors">
             {journeyCardTitle(journey)}
           </h3>
         </Link>
 
-        {/* Route / Destination */}
-        {(journey.destination || state) && (
-          <div className="flex items-start gap-1.5 mb-3.5 text-[13.5px] text-[#555] font-medium">
-            <MapPin size={16} className="shrink-0 text-[#2E8B8B] mt-[1px]" />
-            <span className="line-clamp-2 leading-snug">{journey.destination || state}</span>
-          </div>
-        )}
-
-        {/* Inclusions Feature Badges */}
-        <div className="flex items-center justify-between gap-1.5 py-2 px-3 mb-4 rounded-xl bg-[#F8904D]/10 border border-[#F8904D]/20 text-[11px] font-bold text-slate-600">
-          <span title="3★/4★ Handpicked Hotels" className="flex items-center gap-1">
-            <Hotel size={13} className="text-black" /> Hotel
-          </span>
-          <span className="text-slate-300">•</span>
-          <span title="Private Cab Transfers" className="flex items-center gap-1">
-            <Car size={13} className="text-black" /> Cab
-          </span>
-          <span className="text-slate-300">•</span>
-          <span title="Daily Breakfast Included" className="flex items-center gap-1">
-            <Utensils size={13} className="text-black" /> Meals
-          </span>
-          <span className="text-slate-300">•</span>
-          <span title="Guided Sightseeing" className="flex items-center gap-1">
-            <Ticket size={13} className="text-black" /> Tours
-          </span>
-        </div>
-
-        {/* Experience Pills */}
-        {(journey.travelExperiences?.length ?? 0) > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-5">
-            {journey.travelExperiences!.slice(0, 3).map((t) => (
-              <span
-                key={t.id}
-                className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#2E8B8B] bg-[#2E8B8B]/10 border border-[#2E8B8B]/20 px-2.5 py-1 rounded-full"
-              >
-                {travelExperienceIcon(t.title)}
-                {t.title}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* Highlights List */}
-        {(journey.highlights?.length ?? 0) > 0 && (
-          <div className="space-y-2.5 mb-6">
-            {journey.highlights!.slice(0, 3).map((hl, i) => (
-              <div key={i} className="flex items-start gap-2.5 text-[13.5px] text-slate-600 font-medium">
-                <CheckCircle2 size={16} className="shrink-0 text-[#2E8B8B]/80 mt-[2px]" />
-                <span className="line-clamp-1">{hl}</span>
+        {!isCompact && (
+          <>
+            {/* Route / Destination */}
+            {(journey.destination || state) && (
+              <div className="flex items-start gap-1.5 mb-3.5 text-[13.5px] text-[#555] font-medium">
+                <MapPin size={16} className="shrink-0 text-[#2E8B8B] mt-[1px]" />
+                <span className="line-clamp-2 leading-snug">{journey.destination || state}</span>
               </div>
-            ))}
-          </div>
+            )}
+
+            {/* Inclusions Feature Badges */}
+            <div className="flex items-center justify-between gap-1.5 py-2 px-3 mb-4 rounded-xl bg-[#F8904D]/10 border border-[#F8904D]/20 text-[11px] font-bold text-slate-600">
+              <span title="3★/4★ Handpicked Hotels" className="flex items-center gap-1">
+                <Hotel size={13} className="text-black" /> Hotel
+              </span>
+              <span className="text-slate-300">•</span>
+              <span title="Private Cab Transfers" className="flex items-center gap-1">
+                <Car size={13} className="text-black" /> Cab
+              </span>
+              <span className="text-slate-300">•</span>
+              <span title="Daily Breakfast Included" className="flex items-center gap-1">
+                <Utensils size={13} className="text-black" /> Meals
+              </span>
+              <span className="text-slate-300">•</span>
+              <span title="Guided Sightseeing" className="flex items-center gap-1">
+                <Ticket size={13} className="text-black" /> Tours
+              </span>
+            </div>
+
+            {/* Experience Pills */}
+            {(journey.travelExperiences?.length ?? 0) > 0 && (
+              <div className="flex flex-wrap gap-1.5 mb-5">
+                {journey.travelExperiences!.slice(0, 3).map((t) => (
+                  <span
+                    key={t.id}
+                    className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#2E8B8B] bg-[#2E8B8B]/10 border border-[#2E8B8B]/20 px-2.5 py-1 rounded-full"
+                  >
+                    {travelExperienceIcon(t.title)}
+                    {t.title}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Highlights List */}
+            {(journey.highlights?.length ?? 0) > 0 && (
+              <div className="space-y-2.5 mb-6">
+                {journey.highlights!.slice(0, 3).map((hl, i) => (
+                  <div key={i} className="flex items-start gap-2.5 text-[13.5px] text-slate-600 font-medium">
+                    <CheckCircle2 size={16} className="shrink-0 text-[#2E8B8B]/80 mt-[2px]" />
+                    <span className="line-clamp-1">{hl}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         )}
 
         {/* Pricing & CTA - Balanced 2-Column Action Bar */}

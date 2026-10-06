@@ -84,25 +84,22 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       ? dashboardTopJourneys
       : stateJourneys
           .filter((j) => (j.displayOrder ?? 0) > 0 || j.isBestSelling)
-          .slice(0, 6);
+          .slice(0, 8);
 
   const topJourneyIdSet = new Set(topJourneys.map((j) => j.id));
 
-  // 2. Multi-City & Extended Journeys (State tours excluding the top featured ones)
+  // 2. Multi-City & Extended Journeys (State tours excluding the top featured ones, or tours with multiple destinations)
   const multiCityPool = stateJourneys.filter((j) => !topJourneyIdSet.has(j.id));
+  const multiCityJourneys =
+    multiCityPool.length > 0
+      ? multiCityPool
+      : stateJourneys.filter((j) => (j.cities?.length ?? 0) > 1);
 
+  // Filters for Top Tour Packages
   const [expSelected, setExpSelected] = useState<string[]>([]);
   const [durSelected, setDurSelected] = useState<string[]>([]);
   const [citySelected, setCitySelected] = useState<string[]>([]);
   const [seasonSelected, setSeasonSelected] = useState<string[]>([]);
-
-  const filteredMultiCityJourneys = multiCityPool.filter(
-    (j) =>
-      journeyMatchesExperiences(j, expSelected) &&
-      journeyMatchesDuration(j, durSelected) &&
-      journeyMatchesCities(j, citySelected) &&
-      journeyMatchesSeasons(j, seasonSelected)
-  );
 
   const activeFilterCount =
     expSelected.length + durSelected.length + citySelected.length + seasonSelected.length;
@@ -113,6 +110,17 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     setCitySelected([]);
     setSeasonSelected([]);
   };
+
+  const filteredTopJourneys =
+    activeFilterCount > 0
+      ? stateJourneys.filter(
+          (j) =>
+            journeyMatchesExperiences(j, expSelected) &&
+            journeyMatchesDuration(j, durSelected) &&
+            journeyMatchesCities(j, citySelected) &&
+            journeyMatchesSeasons(j, seasonSelected)
+        )
+      : topJourneys;
 
   const { data: heroBannersData } = useHeroBanners("State", {
     slug: state.slug,
@@ -169,6 +177,12 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   const cityCount = displayedCities.length ?? 0;
 
   const { swiperRef: citiesSwiperRef, slidePrev, slideNext, canScroll } = useSliderControl();
+  const {
+    swiperRef: multiCitySwiperRef,
+    slidePrev: multiCityPrev,
+    slideNext: multiCityNext,
+    canScroll: multiCityCanScroll,
+  } = useSliderControl();
 
   const filterBar = (
     <FilterBar
@@ -177,7 +191,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           id: "city",
           title: "Destination",
           icon: <MapPin size={14} />,
-          options: cityOptions(multiCityPool, (c) => c.state?.id === state.id),
+          options: cityOptions(stateJourneys, (c) => c.state?.id === state.id),
           selected: citySelected,
           onChange: setCitySelected,
         },
@@ -185,7 +199,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           id: "experience",
           title: "Travel Experience",
           icon: <Sparkles size={14} />,
-          options: travelExperienceOptions(multiCityPool),
+          options: travelExperienceOptions(stateJourneys),
           selected: expSelected,
           onChange: setExpSelected,
         },
@@ -193,7 +207,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           id: "season",
           title: "Best Season / Month",
           icon: <Sun size={14} />,
-          options: seasonOptions(multiCityPool),
+          options: seasonOptions(stateJourneys),
           selected: seasonSelected,
           onChange: setSeasonSelected,
         },
@@ -201,15 +215,15 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           id: "duration",
           title: "Duration",
           icon: <CalendarDays size={14} />,
-          options: durationOptions(multiCityPool),
+          options: durationOptions(stateJourneys),
           selected: durSelected,
           onChange: setDurSelected,
         },
       ]}
       activeCount={activeFilterCount}
       onClearAll={clearFilters}
-      resultCount={filteredMultiCityJourneys.length}
-      totalCount={multiCityPool.length}
+      resultCount={filteredTopJourneys.length}
+      totalCount={stateJourneys.length}
     />
   );
 
@@ -280,19 +294,21 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         </div>
       </nav>
 
-      {/* ===== SECTION 2: TOP TOUR PACKAGES IN STATE (HOMEPAGE BEST-SELLER STYLE) ===== */}
-      {topJourneys.length > 0 && (
+      {/* ===== SECTION 2: TOP TOUR PACKAGES IN STATE ===== */}
+      {(topJourneys.length > 0 || stateJourneys.length > 0) && (
         <ToursSection
           id="top-tours"
           basePath={basePath}
-          journeys={topJourneys}
+          journeys={filteredTopJourneys}
           isLoading={journeysLoading && topJourneys.length === 0}
           accentLabel="Handpicked Top Tours"
           h1Title={pageH1 || `Top Tour Packages in ${state.title}`}
           overView={state.overView ?? undefined}
-          emptyLabel={`No top tour packages selected for ${state.title} yet`}
+          emptyLabel={`No tour packages found matching your criteria in ${state.title}`}
+          filterBar={stateJourneys.length > 0 ? filterBar : undefined}
+          onClearFilters={clearFilters}
           sectionClassName="py-14 md:py-20 bg-[#f8f8f8] border-b border-slate-200/80 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]"
-          showCount={8}
+          cardVariant="default"
         />
       )}
 
@@ -376,20 +392,84 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         </section>
       )}
 
-      {/* ===== SECTION 4: MULTI-CITY TOURS WITH STATE ===== */}
-      <ToursSection
-        id="multi-city-tours"
-        basePath={basePath}
-        journeys={filteredMultiCityJourneys}
-        isLoading={journeysLoading}
-        accentLabel="Circuits & Extended Tours"
-        h1Title={topJourneys.length > 0 ? `Multi City Tours with ${state.title}` : (pageH1 || `${state.title} Tour Packages`)}
-        emptyLabel={`No multi-city tours found with ${state.title} yet`}
-        filterBar={multiCityPool.length > 0 ? filterBar : undefined}
-        onClearFilters={clearFilters}
-        sectionClassName="py-14 md:py-20 bg-[#f8f8f8] border-b border-slate-200/60"
-        showCount={12}
-      />
+      {/* ===== SECTION 4: MULTI-CITY TOURS WITH STATE (SLIDER FORMAT) ===== */}
+      {(journeysLoading || multiCityJourneys.length > 0) && (
+        <section id="multi-city-tours" className="w-full bg-[#f8f8f8] py-12 md:py-20 border-b border-slate-200/60">
+          <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
+            <div className="flex items-end justify-between mb-6 md:mb-10 flex-wrap gap-4">
+              <div>
+                <span className="accent-label">Circuits & Extended Tours</span>
+                <h2 className="font-heading h2 text-[#1C1C1C] mt-2">
+                  Multi City Tours with {state.title}
+                  <span className="ml-3 align-middle text-sm font-semibold text-[#2E8B8B] bg-[#2E8B8B]/10 px-3 py-1 rounded-full">
+                    {multiCityJourneys.length} Tours
+                  </span>
+                </h2>
+              </div>
+              {!journeysLoading && multiCityJourneys.length > 4 && multiCityCanScroll && (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={multiCityPrev}
+                    aria-label="Previous multi-city tours"
+                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-[#1C1C1C] flex items-center justify-center shadow-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
+                  >
+                    <ChevronLeft size={18} />
+                  </button>
+                  <button
+                    onClick={multiCityNext}
+                    aria-label="Next multi-city tours"
+                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-[#1C1C1C] flex items-center justify-center shadow-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
+                  >
+                    <ChevronRight size={18} />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {journeysLoading ? (
+              <DestinationsSkeleton count={4} />
+            ) : multiCityJourneys.length === 0 ? (
+              <div className="text-center py-14">
+                <MapPin size={40} className="mx-auto text-slate-300 mb-3" />
+                <p className="text-slate-500">No multi-city tours found for {state.title}</p>
+              </div>
+            ) : multiCityJourneys.length <= 4 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {multiCityJourneys.map((j) => (
+                  <TourPackageCard
+                    key={j.id}
+                    journey={j}
+                    variant="compact"
+                  />
+                ))}
+              </div>
+            ) : (
+              <DestinationSlider
+                swiperRef={multiCitySwiperRef}
+                options={{
+                  loop: multiCityJourneys.length > 5,
+                  autoplay: false,
+                  spaceBetween: 24,
+                  breakpoints: {
+                    0: { slidesPerView: 1.15, spaceBetween: 14 },
+                    640: { slidesPerView: 2, spaceBetween: 18 },
+                    1024: { slidesPerView: 3, spaceBetween: 20 },
+                    1280: { slidesPerView: 4, spaceBetween: 24 },
+                  },
+                }}
+              >
+                {multiCityJourneys.map((j) => (
+                  <TourPackageCard
+                    key={j.id}
+                    journey={j}
+                    variant="compact"
+                  />
+                ))}
+              </DestinationSlider>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* ===== MORE DESCRIPTION (ALL INFO) ===== */}
       <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-12 md:py-20">
