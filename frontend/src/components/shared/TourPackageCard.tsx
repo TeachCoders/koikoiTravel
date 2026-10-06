@@ -230,7 +230,7 @@ export default function TourPackageCard({
         )}
 
         {/* Pricing & CTA Section */}
-        <div className="mt-auto pt-3 border-t border-slate-100 flex flex-col gap-2.5">
+        <div className="mt-auto pt-2 flex flex-col gap-2.5">
           {/* Price Header (Only when price > 0) */}
           {price > 0 && (
             <div className="flex items-baseline justify-between">
