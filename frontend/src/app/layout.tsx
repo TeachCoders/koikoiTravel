@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Nunito_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AppProviders } from "@/components/providers/app-provider";
@@ -14,10 +14,11 @@ import { organizationSchema, websiteSchema, graphSchema } from "@/lib/jsonLd";
 import MobileStickyActionBar from "@/components/shared/MobileStickyActionBar";
 import ClientSideWidgets from "@/components/shared/ClientSideWidgets";
 
-const nunito = Nunito_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-nunito",
+  variable: "--font-inter",
   display: "swap",
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -70,7 +71,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full antialiased", nunito.variable, "font-sans")}
+      className={cn("h-full antialiased", inter.variable, "font-sans")}
     >
       <head>
         <link rel="preconnect" href="https://www.googletagmanager.com" />
