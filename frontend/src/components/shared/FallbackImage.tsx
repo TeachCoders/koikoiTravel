@@ -59,21 +59,20 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
   unoptimized,
   ...props
 }) => {
-  const isThirdParty =
+  const isInvalidPlaceholder =
     typeof src === "string" &&
-    (src.includes("unsplash.com") ||
-      src.includes("via.placeholder.com") ||
+    (src.includes("via.placeholder.com") ||
       src.includes("placeholder.com"));
 
-  const [error, setError] = useState(!src || isThirdParty);
+  const [error, setError] = useState(!src || isInvalidPlaceholder);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setError(!src || isThirdParty);
+    setError(!src || isInvalidPlaceholder);
     setLoaded(false);
-  }, [src, isThirdParty]);
+  }, [src, isInvalidPlaceholder]);
 
-  if (error || !src || isThirdParty) {
+  if (error || !src || isInvalidPlaceholder) {
     return (
       <div
         className={`${

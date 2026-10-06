@@ -50,28 +50,32 @@ export const Footer: React.FC = () => {
   });
 
   const destinationLinks = useMemo(
-    () =>
-      pickPriorityLinks<State>(
+    () => {
+      const links = pickPriorityLinks<State>(
         states,
         (s) => s.displayOrder ?? 0,
         (s) => ({
           href: `/tour-packages/${s.country?.slug ?? "india"}/${s.slug}`,
-          label: stripTourSuffix(s.h1Title || ""),
+          label: stripTourSuffix(s.title || s.h1Title || ""),
         })
-      ),
+      );
+      return links.slice(0, 8);
+    },
     [states]
   );
 
   const experienceLinks = useMemo(
-    () =>
-      pickPriorityLinks<TravelExperience>(
+    () => {
+      const links = pickPriorityLinks<TravelExperience>(
         travelExperiences,
         (e) => e.displayOrder ?? 0,
         (e) => ({
           href: `/travel-experiences/${e.slug}`,
-          label: stripTourSuffix(e.h1Title || e.title),
+          label: stripTourSuffix(e.title || e.h1Title || ""),
         })
-      ),
+      );
+      return links.slice(0, 8);
+    },
     [travelExperiences]
   );
 
@@ -115,15 +119,15 @@ export const Footer: React.FC = () => {
       <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
-            <h4 className="text-xs font-bold text-white tracking-[0.08em] uppercase mb-5">
+            <h4 className="text-[15px] font-bold text-white tracking-[0.06em] uppercase mb-5">
               Quick Links
             </h4>
-            <ul className="space-y-3.5 text-sm">
+            <ul className="space-y-3 text-[15px]">
               {QUICK_LINKS.map((item) => (
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="text-[#a8a8a8] hover:text-white transition-colors duration-200"
+                    className="text-[#b0b0b0] hover:text-white transition-colors duration-200"
                   >
                     {item.label}
                   </Link>
@@ -133,15 +137,15 @@ export const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold text-white tracking-[0.08em] uppercase mb-5">
+            <h4 className="text-[15px] font-bold text-white tracking-[0.06em] uppercase mb-5">
               Top Destinations
             </h4>
-            <ul className="space-y-3.5 text-sm">
+            <ul className="space-y-3 text-[15px]">
               {footerDestinations.map((item) => (
                 <li key={`${item.label}-${item.href}`}>
                   <Link
                     href={item.href}
-                    className="text-[#a8a8a8] hover:text-white transition-colors duration-200"
+                    className="text-[#b0b0b0] hover:text-white transition-colors duration-200"
                   >
                     {item.label}
                   </Link>
@@ -151,15 +155,15 @@ export const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold text-white tracking-[0.08em] uppercase mb-5">
+            <h4 className="text-[15px] font-bold text-white tracking-[0.06em] uppercase mb-5">
               Travel Themes
             </h4>
-            <ul className="space-y-3.5 text-sm">
+            <ul className="space-y-3 text-[15px]">
               {footerThemes.map((item) => (
                 <li key={`${item.label}-${item.href}`}>
                   <Link
                     href={item.href}
-                    className="text-[#a8a8a8] hover:text-white transition-colors duration-200"
+                    className="text-[#b0b0b0] hover:text-white transition-colors duration-200"
                   >
                     {item.label}
                   </Link>
@@ -169,15 +173,15 @@ export const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold text-white tracking-[0.08em] uppercase mb-5">
+            <h4 className="text-[15px] font-bold text-white tracking-[0.06em] uppercase mb-5">
               Contact Info
             </h4>
-            <div className="space-y-4 text-sm">
+            <div className="space-y-3.5 text-[15px]">
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-white/[0.05] flex items-center justify-center shrink-0 mt-0.5">
                   <MapPin className="w-4 h-4 text-[#2E8B8B]" />
                 </div>
-                <span className="text-[#a8a8a8] leading-relaxed pt-1.5">
+                <span className="text-[#b0b0b0] leading-relaxed pt-0.5">
                   FIEE Complex, Okhla Phase 2, New Delhi - 110020, India
                 </span>
               </div>
@@ -187,7 +191,7 @@ export const Footer: React.FC = () => {
                 </div>
                 <a
                   href={`tel:${salesPhone}`}
-                  className="text-[#a8a8a8] hover:text-white transition-colors font-medium"
+                  className="text-[#b0b0b0] hover:text-white transition-colors font-medium"
                 >
                   {salesPhoneDisplay}
                 </a>
@@ -198,7 +202,7 @@ export const Footer: React.FC = () => {
                 </div>
                 <a
                   href="mailto:contact@koikoitravel.com"
-                  className="text-[#a8a8a8] hover:text-white transition-colors"
+                  className="text-[#b0b0b0] hover:text-white transition-colors"
                 >
                   contact@koikoitravel.com
                 </a>
@@ -211,7 +215,7 @@ export const Footer: React.FC = () => {
                   href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919136739178"}?text=${encodeURIComponent("Hi KoiKoi Travel, I want to inquire about a holiday tour package.")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#a8a8a8] hover:text-white transition-colors"
+                  className="text-[#b0b0b0] hover:text-white transition-colors"
                 >
                   Chat on WhatsApp
                 </a>
@@ -226,7 +230,7 @@ export const Footer: React.FC = () => {
                   href="https://www.facebook.com/koikoiTravel/"
                   target="_blank"
                   rel="nofollow noopener noreferrer"
-                  className="text-[#a8a8a8] hover:text-white transition-colors"
+                  className="text-[#b0b0b0] hover:text-white transition-colors"
                 >
                   Follow us on Facebook
                 </a>
@@ -235,7 +239,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#999]">
+        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-[13.5px] text-[#999]">
           <p className="relative text-[#999] hover:text-white transition-colors duration-200">
             &copy; {new Date().getFullYear()} KoiKoi Travel. All rights reserved.
           </p>

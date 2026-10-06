@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { FallbackImage } from "@/components/shared/FallbackImage";
 
 interface DestinationCardProps {
   title: string;
@@ -30,19 +30,15 @@ export default function DestinationCard({
         className
       )}
     >
-      {image ? (
-        <Image
-          src={image}
-          alt={`${title} Tour Packages & Sightseeing | KoiKoi Travel`}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-        />
-      ) : (
-        <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#1C1C1C] via-[#243b3b] to-[#1C1C1C] flex items-center justify-center">
-          <Image src="/logo-with-name.png" alt="KoiKoi Travel" width={240} height={78} className="opacity-35 object-contain filter drop-shadow-md brightness-200" />
-        </div>
-      )}
+      <FallbackImage
+        src={image}
+        alt={`${title} Tour Packages & Sightseeing | KoiKoi Travel`}
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+        fallbackSrc="/logo-with-name.png"
+        theme="dark"
+      />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
       {tag && (
         <div className="absolute top-3 left-3 z-10">

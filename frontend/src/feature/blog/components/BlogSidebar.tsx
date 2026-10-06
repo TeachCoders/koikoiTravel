@@ -72,7 +72,7 @@ export default async function BlogSidebar({ tags }: { tags?: string[] }) {
                   <span className="mt-[2px] w-[26px] h-[26px] shrink-0 rounded-full bg-slate-100 text-[#1C1C1C] text-[11px] font-black flex items-center justify-center group-hover:bg-[#2E8B8B] group-hover:text-white transition-colors shadow-sm">
                     {i + 1}
                   </span>
-                  <span className="text-[14px] font-bold text-slate-700 group-hover:text-[#2E8B8B] transition-colors leading-relaxed line-clamp-2">
+                  <span className="text-[14px] font-medium text-slate-700 group-hover:text-[#2E8B8B] transition-colors leading-relaxed line-clamp-2">
                     {j.title}
                   </span>
                 </Link>

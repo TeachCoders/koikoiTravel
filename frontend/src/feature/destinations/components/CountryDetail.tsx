@@ -473,7 +473,7 @@ function CountryContent({
                               {i + 1}
                             </span>
                             <div className="flex-1 min-w-0">
-                              <span className="text-[14.5px] font-bold text-[#333] leading-snug group-hover:text-[#2E8B8B] transition-colors block truncate">
+                              <span className="text-[14.5px] font-medium text-[#333] leading-snug group-hover:text-[#2E8B8B] transition-colors block truncate">
                                 {j.title.split("|")[0].trim()}
                               </span>
                               <div className="flex items-center gap-2 mt-0.5 text-[11.5px] font-semibold text-slate-500">

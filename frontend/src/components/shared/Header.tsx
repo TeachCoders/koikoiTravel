@@ -212,7 +212,7 @@ export const Header: React.FC = () => {
       (j) => {
         return {
           href: `/tour-packages/${j.slug}`,
-          label: stripTourSuffix(j.h1Title || j.title),
+          label: stripTourSuffix(j.title || j.h1Title),
         };
       }
     );
@@ -224,7 +224,7 @@ export const Header: React.FC = () => {
       const links = pickPriorityLinks<TravelExperience>(
         travelExperiences,
         (e) => e.displayOrder ?? 0,
-        (e) => ({ href: `/travel-experiences/${e.slug}`, label: stripTourSuffix(e.h1Title || e.title) })
+        (e) => ({ href: `/travel-experiences/${e.slug}`, label: stripTourSuffix(e.title || e.h1Title) })
       );
       return links.length > 0 ? links : DEFAULT_EXPERIENCE_LINKS;
     },
@@ -325,7 +325,7 @@ export const Header: React.FC = () => {
           <Link
             href={link.href}
             onClick={handleMobileClose}
-            className="flex w-full items-center justify-between px-2 py-3.5 text-[15px] font-semibold text-[#1C1C1C] transition-colors hover:bg-[#f6f7f8]"
+            className="flex w-full items-center justify-between px-2 py-3.5 text-[16px] font-semibold text-[#1C1C1C] transition-colors hover:bg-[#f6f7f8]"
           >
             {link.label}
           </Link>
@@ -334,7 +334,7 @@ export const Header: React.FC = () => {
             type="button"
             onClick={() => toggleMenu(link.href)}
             aria-expanded={isOpen}
-            className="flex w-full items-center justify-between px-2 py-3.5 text-[15px] font-semibold text-[#1C1C1C] transition-colors hover:bg-[#f6f7f8]"
+            className="flex w-full items-center justify-between px-2 py-3.5 text-[16px] font-semibold text-[#1C1C1C] transition-colors hover:bg-[#f6f7f8]"
           >
             <span>{link.label}</span>
             <ChevronDown
@@ -360,7 +360,7 @@ export const Header: React.FC = () => {
                       type="button"
                       onClick={() => toggleCountryExpanded(country.id)}
                       aria-expanded={isCountryOpen}
-                      className="flex w-full items-center justify-between px-4 py-2.5 text-[14px] font-semibold text-[#1C1C1C] transition-colors hover:bg-[#f6f7f8]"
+                      className="flex w-full items-center justify-between px-4 py-2.5 text-[15px] font-semibold text-[#1C1C1C] transition-colors hover:bg-[#f6f7f8]"
                     >
                       <span>{country.title}</span>
                       <ChevronDown
@@ -378,7 +378,7 @@ export const Header: React.FC = () => {
                         <Link
                           href={country.href}
                           onClick={handleMobileClose}
-                          className="flex items-center gap-1 px-4 py-2 text-[13px] font-bold text-[#F8904D]"
+                          className="flex items-center gap-1 px-4 py-2 text-[14px] font-bold text-[#F8904D]"
                         >
                           View all {country.title} tours <span aria-hidden>→</span>
                         </Link>
@@ -390,7 +390,7 @@ export const Header: React.FC = () => {
                                 type="button"
                                 onClick={() => toggleStateExpanded(state.id)}
                                 aria-expanded={isStateOpen}
-                                className="flex w-full items-center justify-between px-6 py-2.5 text-[14px] font-semibold text-[#2E8B8B] transition-colors hover:bg-[#f6f7f8]"
+                                className="flex w-full items-center justify-between px-6 py-2.5 text-[15px] font-semibold text-[#2E8B8B] transition-colors hover:bg-[#f6f7f8]"
                               >
                                 <span>{state.title}</span>
                                 <ChevronDown
@@ -410,7 +410,7 @@ export const Header: React.FC = () => {
                                       key={city.id}
                                       href={city.href}
                                       onClick={handleMobileClose}
-                                      className="px-8 py-2 text-[13px] text-[#444] transition-colors hover:bg-[#f6f7f8] hover:text-[#2E8B8B]"
+                                      className="px-8 py-2 text-[14px] text-[#444] transition-colors hover:bg-[#f6f7f8] hover:text-[#2E8B8B]"
                                     >
                                       {city.title}
                                     </Link>
@@ -418,7 +418,7 @@ export const Header: React.FC = () => {
                                   <Link
                                     href={state.href}
                                     onClick={handleMobileClose}
-                                    className="flex items-center gap-1 px-6 py-2 text-[13px] font-bold text-[#F8904D]"
+                                    className="flex items-center gap-1 px-6 py-2 text-[14px] font-bold text-[#F8904D]"
                                   >
                                     View all {state.title} tours <span aria-hidden>→</span>
                                   </Link>
@@ -441,7 +441,7 @@ export const Header: React.FC = () => {
                     key={child.href}
                     href={child.href}
                     onClick={handleMobileClose}
-                    className="block px-4 py-2.5 text-[14px] font-medium text-[#444] transition-colors hover:bg-[#f6f7f8] hover:text-[#1C1C1C]"
+                    className="block px-4 py-2.5 text-[15px] font-medium text-[#444] transition-colors hover:bg-[#f6f7f8] hover:text-[#1C1C1C]"
                   >
                     {child.label}
                   </Link>
@@ -450,7 +450,7 @@ export const Header: React.FC = () => {
                   <Link
                     href={link.seeAllHref}
                     onClick={handleMobileClose}
-                    className="flex items-center gap-1 px-4 py-2.5 text-[13px] font-bold text-[#F8904D]"
+                    className="flex items-center gap-1 px-4 py-2.5 text-[14px] font-bold text-[#F8904D]"
                   >
                     See All <span aria-hidden>→</span>
                   </Link>
@@ -500,9 +500,9 @@ export const Header: React.FC = () => {
                       <Link
                         href={link.directHref}
                         onClick={() => setOpenDesktopDropdown(null)}
-                        className={`relative px-3 py-2.5 text-sm font-medium tracking-wide rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                        className={`relative px-3.5 py-2.5 text-[15px] lg:text-[15.5px] font-medium tracking-normal rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
                           ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
-                          : "text-[#666]"
+                          : "text-[#444]"
                           }`}
                       >
                         <span className="relative z-10">{link.label}</span>
@@ -517,11 +517,11 @@ export const Header: React.FC = () => {
                         }
                         className={`pr-3 pl-0.5 py-2.5 cursor-pointer transition-colors duration-300 ${openDesktopDropdown === link.href
                           ? "text-[#2E8B8B]"
-                          : "text-[#999] hover:text-[#2E8B8B]"
+                          : "text-[#888] hover:text-[#2E8B8B]"
                           }`}
                       >
                         <ChevronDown
-                          className={`w-3.5 h-3.5 transition-transform duration-300 ${openDesktopDropdown === link.href ? "rotate-180" : ""
+                          className={`w-4 h-4 transition-transform duration-300 ${openDesktopDropdown === link.href ? "rotate-180" : ""
                             }`}
                         />
                       </button>
@@ -534,23 +534,23 @@ export const Header: React.FC = () => {
                           openDesktopDropdown === link.href ? null : link.href
                         )
                       }
-                      className={`relative px-3 py-2.5 text-sm font-medium tracking-wide rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
+                      className={`relative px-3.5 py-2.5 text-[15px] lg:text-[15.5px] font-medium tracking-normal rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
                         ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
-                        : "text-[#666]"
+                        : "text-[#444]"
                         }`}
                     >
                       <span className="relative z-10">{link.label}</span>
                       <ChevronDown
-                        className={`w-3.5 h-3.5 relative z-10 transition-transform duration-300 ${openDesktopDropdown === link.href ? "rotate-180" : ""
+                        className={`w-4 h-4 relative z-10 transition-transform duration-300 ${openDesktopDropdown === link.href ? "rotate-180" : ""
                           }`}
                       />
                     </button>
                   ) : (
                     <Link
                       href={link.href}
-                      className={`relative px-3 py-2.5 text-sm font-medium tracking-wide rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                      className={`relative px-3.5 py-2.5 text-[15px] lg:text-[15.5px] font-medium tracking-normal rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
                         ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
-                        : "text-[#666]"
+                        : "text-[#444]"
                         }`}
                     >
                       <span className="relative z-10">{link.label}</span>
@@ -568,7 +568,7 @@ export const Header: React.FC = () => {
                         }`}
                     >
                       <div
-                        className={`bg-white rounded-2xl border border-slate-200/90 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] p-6 ${link.dropdownColumns === 1 ? "w-[320px]" : "w-[640px]"
+                        className={`bg-white rounded-2xl border border-slate-200/90 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] p-6 ${link.dropdownColumns === 1 ? "w-[320px]" : "w-[840px] max-w-[90vw]"
                           }`}
                       >
                         <div className="flex items-center justify-between mb-3">
@@ -577,7 +577,7 @@ export const Header: React.FC = () => {
                           </span>
                         </div>
                         <div
-                          className={`grid gap-x-8 gap-y-2 ${link.dropdownColumns === 1
+                          className={`grid gap-x-8 gap-y-1 ${link.dropdownColumns === 1
                             ? "grid-cols-1"
                             : link.dropdownColumns === 2
                               ? "grid-cols-2"
@@ -589,7 +589,7 @@ export const Header: React.FC = () => {
                               key={child.href}
                               href={child.href}
                               onClick={() => setOpenDesktopDropdown(null)}
-                              className="py-1 text-[16px] text-slate-700 hover:text-[#2E8B8B] font-medium transition-colors duration-150 truncate block"
+                              className="px-2.5 py-1.5 -mx-2.5 rounded-lg text-[15px] text-slate-700 hover:text-[#2E8B8B] hover:bg-slate-50 font-medium transition-colors duration-150 truncate block"
                             >
                               {child.label}
                             </Link>
@@ -597,13 +597,13 @@ export const Header: React.FC = () => {
                         </div>
                         {link.seeAllHref && (
                           <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between">
-                            <span className="text-[13px] text-slate-400 font-medium">
+                            <span className="text-[13.5px] text-slate-500 font-medium">
                               {link.dropdownSubtext ?? "Explore all destinations worldwide"}
                             </span>
                             <Link
                               href={link.seeAllHref}
                               onClick={() => setOpenDesktopDropdown(null)}
-                              className="text-[15px] font-bold text-[#F8904D] hover:opacity-80 transition-opacity flex items-center gap-1"
+                              className="text-[15px] font-bold text-[#F8904D] hover:text-[#e07a38] transition-colors flex items-center gap-1"
                             >
                               <span>See All</span>
                               <span aria-hidden>→</span>
@@ -623,7 +623,7 @@ export const Header: React.FC = () => {
             <QuoteModal>
               <button
                 type="button"
-                className="btn-primary px-5 py-2.5 text-xs font-bold tracking-wide flex items-center gap-1.5 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                className="btn-primary px-5 py-2.5 text-sm font-semibold tracking-wide flex items-center gap-1.5 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
               >
                 <span>Build My Trip</span>
               </button>

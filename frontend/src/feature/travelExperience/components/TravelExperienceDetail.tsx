@@ -323,7 +323,7 @@ function ExperienceContent({
                             <span className="mt-0.5 w-6 h-6 shrink-0 rounded-full bg-[#f5f5f5] text-[#1C1C1C] text-[11px] font-bold flex items-center justify-center group-hover:bg-[#2E8B8B] group-hover:text-white transition-colors">
                               {i + 1}
                             </span>
-                            <span className="text-sm text-[#555] leading-snug group-hover:text-[#2E8B8B] transition-colors">
+                            <span className="text-sm font-medium text-[#444] leading-snug group-hover:text-[#2E8B8B] transition-colors">
                               {j.title}
                             </span>
                           </Link>

@@ -54,7 +54,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
                   className="w-full flex items-center justify-between gap-4 px-4 py-4 md:px-6 md:py-5 text-left cursor-pointer focus:outline-none"
                 >
                   <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <span className={`text-[16px] sm:text-[17px] font-semibold transition-colors leading-snug ${
+                    <span className={`text-[16px] sm:text-[17px] font-normal transition-colors leading-snug ${
                       isOpen ? "text-[#2E8B8B]" : "text-slate-900"
                     }`}>
                       {faq.question}

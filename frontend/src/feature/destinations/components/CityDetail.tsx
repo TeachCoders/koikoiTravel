@@ -73,7 +73,18 @@ function CityContent({
     { limit: 100, isActive: "true" },
     initialJourneys
   );
-  const cityJourneys = journeys.filter((j) => j.cities?.some((c) => c.id === city.id));
+  const cityJourneys = journeys
+    .filter((j) => j.cities?.some((c) => c.id === city.id) || j.cityIds?.includes(city.id))
+    .sort((a, b) => {
+      const aOrder = a.displayOrder ?? 0;
+      const bOrder = b.displayOrder ?? 0;
+      if (aOrder > 0 && bOrder > 0) return aOrder - bOrder;
+      if (aOrder > 0) return -1;
+      if (bOrder > 0) return 1;
+      if (a.isBestSelling && !b.isBestSelling) return -1;
+      if (!a.isBestSelling && b.isBestSelling) return 1;
+      return 0;
+    });
 
   const [expSelected, setExpSelected] = useState<string[]>([]);
   const [durSelected, setDurSelected] = useState<string[]>([]);
@@ -363,7 +374,7 @@ function CityContent({
                               {i + 1}
                             </span>
                             <div className="flex-1 min-w-0">
-                              <span className="text-[14.5px] font-bold text-[#333] leading-snug group-hover:text-[#2E8B8B] transition-colors block truncate">
+                              <span className="text-[14.5px] font-medium text-[#333] leading-snug group-hover:text-[#2E8B8B] transition-colors block truncate">
                                 {j.title.split("|")[0].trim()}
                               </span>
                               <div className="flex items-center gap-2 mt-0.5 text-[11.5px] font-semibold text-slate-500">

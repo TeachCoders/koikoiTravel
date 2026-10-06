@@ -167,15 +167,15 @@ export default function TopBar({ isScrolled }: { isScrolled?: boolean }) {
 
   return (
     <div
-      className={`bg-[#3c4041] text-[#E5E9EC] border-b border-[#4d5254] transition-all duration-300 text-xs ${
-        isScrolled ? "py-1" : "py-1.5"
+      className={`bg-[#3c4041] text-[#E5E9EC] border-b border-[#4d5254] transition-all duration-300 ${
+        isScrolled ? "py-1.5" : "py-2"
       }`}
     >
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 flex items-center justify-between gap-3">
         {/* Left: Clean Tagline */}
         <div className="flex items-center gap-2 truncate">
-          <Sparkles className="w-3.5 h-3.5 text-[#F8904D] shrink-0" />
-          <span className="text-[#F0F3F5] text-[11px] sm:text-xs font-semibold tracking-wide truncate">
+          <Sparkles className="w-4 h-4 text-[#F8904D] shrink-0" />
+          <span className="text-[#F0F3F5] text-xs sm:text-[13px] font-medium tracking-normal truncate">
             Need another language? Select your preferred language →
           </span>
         </div>
@@ -187,12 +187,12 @@ export default function TopBar({ isScrolled }: { isScrolled?: boolean }) {
             onClick={() => setIsOpen((prev) => !prev)}
             aria-expanded={isOpen}
             aria-haspopup="listbox"
-            className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#2f3233] hover:bg-[#353839] border-2 border-[#2E8B8B] text-white text-[11px] sm:text-xs font-bold tracking-wide transition-all shadow-[0_2px_12px_rgba(46,139,139,0.35)] hover:shadow-[0_2px_16px_rgba(46,139,139,0.5)] cursor-pointer"
+            className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#2f3233] hover:bg-[#353839] border-2 border-[#2E8B8B] text-white text-xs sm:text-[13px] font-bold tracking-wide transition-all shadow-[0_2px_12px_rgba(46,139,139,0.35)] hover:shadow-[0_2px_16px_rgba(46,139,139,0.5)] cursor-pointer"
           >
-            <span className="text-sm leading-none">{currentLangObj.flag}</span>
+            <span className="text-base leading-none">{currentLangObj.flag}</span>
             <span className="text-white font-bold">{currentLangObj.nativeName}</span>
             <ChevronDown
-              className={`w-3.5 h-3.5 text-[#2E8B8B] transition-transform duration-200 ${
+              className={`w-4 h-4 text-[#2E8B8B] transition-transform duration-200 ${
                 isOpen ? "rotate-180" : ""
               }`}
             />
@@ -201,9 +201,9 @@ export default function TopBar({ isScrolled }: { isScrolled?: boolean }) {
           {mounted && isOpen && (
             <div
               role="listbox"
-              className="absolute right-0 mt-2 w-48 rounded-xl bg-[#3c4041] border border-[#525759] shadow-[0_20px_40px_rgba(0,0,0,0.5)] py-1.5 z-[100] animate-in fade-in zoom-in-95 duration-150"
+              className="absolute right-0 mt-2 w-52 rounded-xl bg-[#3c4041] border border-[#525759] shadow-[0_20px_40px_rgba(0,0,0,0.5)] py-1.5 z-[100] animate-in fade-in zoom-in-95 duration-150"
             >
-              <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#A6B0B8] border-b border-[#4d5254]">
+              <div className="px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-[#A6B0B8] border-b border-[#4d5254]">
                 Select Language
               </div>
               <div className="py-1">
@@ -216,20 +216,20 @@ export default function TopBar({ isScrolled }: { isScrolled?: boolean }) {
                       role="option"
                       aria-selected={isSelected}
                       onClick={() => handleSelectLang(lang)}
-                      className={`w-full text-left px-3.5 py-2 flex items-center justify-between text-xs transition-colors cursor-pointer ${
+                      className={`w-full text-left px-3.5 py-2 flex items-center justify-between text-[13px] transition-colors cursor-pointer ${
                         isSelected
                           ? "bg-[#2f3233] text-[#F8904D] font-bold"
                           : "text-[#E5E9EC] hover:bg-[#2f3233] hover:text-white"
                       }`}
                     >
-                      <span className="flex items-center gap-2">
-                        <span className="text-sm">{lang.flag}</span>
+                      <span className="flex items-center gap-2.5">
+                        <span className="text-base">{lang.flag}</span>
                         <span className="font-semibold">{lang.nativeName}</span>
-                        <span className="text-[10px] text-[#A6B0B8] font-normal">
+                        <span className="text-[11px] text-[#A6B0B8] font-normal">
                           ({lang.name})
                         </span>
                       </span>
-                      {isSelected && <Check className="w-3.5 h-3.5 text-[#F8904D]" />}
+                      {isSelected && <Check className="w-4 h-4 text-[#F8904D]" />}
                     </button>
                   );
                 })}

@@ -73,10 +73,23 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   );
 
   // All active journeys that visit cities in this state
-  const stateJourneys =
+  const stateJourneys = (
     journeys.length > 0
-      ? journeys.filter((j) => j.cities?.some((c) => c.state?.id === state.id))
-      : embeddedJourneys;
+      ? journeys.filter((j) =>
+          j.cities?.some((c) => c.state?.id === state.id || (state.cities && state.cities.some((sc) => sc.id === c.id))) ||
+          (state.cities && j.cityIds?.some((cid) => state.cities?.some((sc) => sc.id === cid)))
+        )
+      : embeddedJourneys
+  ).sort((a, b) => {
+    const aOrder = a.displayOrder ?? 0;
+    const bOrder = b.displayOrder ?? 0;
+    if (aOrder > 0 && bOrder > 0) return aOrder - bOrder;
+    if (aOrder > 0) return -1;
+    if (bOrder > 0) return 1;
+    if (a.isBestSelling && !b.isBestSelling) return -1;
+    if (!a.isBestSelling && b.isBestSelling) return 1;
+    return 0;
+  });
 
   // 1. Featured / Top Journeys selected from dashboard (or fallback to highest displayOrder / isBestSelling)
   const dashboardTopJourneys = embeddedJourneys.length > 0 ? embeddedJourneys : [];
@@ -156,24 +169,27 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   ].filter((f) => f.value);
 
   const stateCities = [...(state.cities ?? [])].sort((a, b) => {
-    const aPinned = (a.displayOrder ?? 0) > 0 ? 0 : 1;
-    const bPinned = (b.displayOrder ?? 0) > 0 ? 0 : 1;
-    if (aPinned !== bPinned) return aPinned - bPinned;
-    if ((a.displayOrder ?? 0) !== (b.displayOrder ?? 0)) {
-      return (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
-    }
+    const aOrder = a.displayOrder ?? 0;
+    const bOrder = b.displayOrder ?? 0;
+    if (aOrder > 0 && bOrder > 0) return aOrder - bOrder;
+    if (aOrder > 0) return -1;
+    if (bOrder > 0) return 1;
     return (a.title ?? "").localeCompare(b.title ?? "");
   });
 
   const journeyCountFor = (cityId: number) =>
-    stateJourneys.filter((j) => j.cities?.some((c) => c.id === cityId)).length;
+    stateJourneys.filter((j) => j.cities?.some((c) => c.id === cityId) || j.cityIds?.includes(cityId)).length;
 
   const cityImageFor = (cityId: number) =>
-    stateJourneys.find((j) => j.cities?.some((c) => c.id === cityId))?.thumbImg;
+    stateJourneys.find((j) => j.cities?.some((c) => c.id === cityId) || j.cityIds?.includes(cityId))?.thumbImg;
 
   const displayedCities = journeysLoading
     ? stateCities
-    : stateCities.filter((c) => c.id != null && journeyCountFor(c.id) > 0);
+    : stateCities.filter(
+        (c) =>
+          c.id != null &&
+          ((c.displayOrder ?? 0) > 0 || (c.tourCount ?? 0) > 0 || (c._count?.journeys ?? 0) > 0 || journeyCountFor(c.id) > 0)
+      );
 
   const cityCount = displayedCities.length ?? 0;
 
@@ -575,7 +591,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                               {i + 1}
                             </span>
                             <div className="flex-1 min-w-0">
-                              <span className="text-[14.5px] font-semibold text-[#333] leading-snug group-hover:text-[#2E8B8B] transition-colors block truncate">
+                              <span className="text-[14.5px] font-medium text-[#333] leading-snug group-hover:text-[#2E8B8B] transition-colors block truncate">
                                 {j.title.split("|")[0].trim()}
                               </span>
                               <div className="flex items-center gap-2 mt-0.5 text-[12px] font-medium text-slate-500">
