@@ -75,7 +75,7 @@ export default function TourPackageCard({
 
         {/* Top Badges */}
         <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2 pointer-events-none">
-          <div className="flex flex-wrap gap-1.5 items-center pointer-events-auto max-w-[75%]">
+          <div className="flex flex-wrap gap-1.5 items-center pointer-events-auto max-w-[80%]">
             {journey.isBestSelling && (
               <span className="inline-flex items-center gap-1 bg-amber-400 text-slate-900 text-[10px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-md">
                 <Star size={10} fill="currentColor" className="text-slate-900" /> Best Seller
@@ -92,21 +92,22 @@ export default function TourPackageCard({
             ))}
           </div>
 
-        {/* Bottom Image Info */}
-        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-          {journey.noDays > 0 && (
-            <span className="inline-flex items-center gap-1.5 text-[11.5px] font-medium text-white bg-black/60 backdrop-blur-md border border-white/20 px-2.5 py-1 rounded-full shadow-sm">
-              <Clock size={12} className="opacity-90" />
-              {journey.noDays === 1 ? "1 Day" : `${journey.noDays - 1}N / ${journey.noDays}D`}
+          {hasDiscount && offPercent > 0 && (
+            <span className="bg-[#F8904D] text-white text-[10.5px] font-semibold px-2 py-0.5 rounded-full shadow-md pointer-events-auto shrink-0">
+              {offPercent}% OFF
             </span>
           )}
-          {!isCompact && contextName && rating && (
+        </div>
+
+        {/* Bottom Image Info */}
+        {!isCompact && contextName && rating && (
+          <div className="absolute bottom-3 right-3 pointer-events-none">
             <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-300 bg-black/60 backdrop-blur-md border border-white/20 px-2.5 py-1 rounded-full shadow-sm">
               <Star size={11} fill="currentColor" className="text-amber-400 shrink-0" />
               <span>{rating} <span className="text-white/80 font-normal">({reviewsCount})</span></span>
             </span>
-          )}
-        </div>
+          </div>
+        )}
       </Link>
 
       {/* Content Container */}
