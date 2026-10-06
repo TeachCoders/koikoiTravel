@@ -64,7 +64,7 @@ export default function ToursSection({
             <p className="text-slate-500">No tours match your filters</p>
             <button
               onClick={onClearFilters}
-              className="mt-3 text-sm font-semibold text-slate-500 hover:underline cursor-pointer"
+              className="mt-3 text-sm font-semibold text-slate-500 hover:text-[#2E8B8B] transition-colors cursor-pointer"
             >
               Clear all filters
             </button>
