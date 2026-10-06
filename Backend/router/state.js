@@ -35,6 +35,8 @@ const journeySelect = {
   discountPrice: true,
   displayOrder: true,
   isBestSelling: true,
+  highlights: true,
+  travelExperiences: { select: { id: true, title: true, slug: true } },
   cities: { select: { id: true, title: true, slug: true } },
 };
 
