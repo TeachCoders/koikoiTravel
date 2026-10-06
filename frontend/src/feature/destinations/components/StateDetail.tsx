@@ -68,20 +68,35 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   const { journeys, isLoading: journeysLoading } = useGetJourneys(
     { limit: 100, isActive: "true" },
     initialJourneys ?? undefined,
-    { enabled: embeddedJourneys.length === 0 }
+    { enabled: true }
   );
+
+  // All active journeys that visit cities in this state
   const stateJourneys =
-    embeddedJourneys.length > 0
-      ? embeddedJourneys
-      : journeys.filter((j) => j.cities?.some((c) => c.state?.id === state.id));
+    journeys.length > 0
+      ? journeys.filter((j) => j.cities?.some((c) => c.state?.id === state.id))
+      : embeddedJourneys;
+
+  // 1. Featured / Top Journeys selected from dashboard (or fallback to highest displayOrder / isBestSelling)
+  const dashboardTopJourneys = embeddedJourneys.length > 0 ? embeddedJourneys : [];
+  const topJourneys: Journey[] =
+    dashboardTopJourneys.length > 0
+      ? dashboardTopJourneys
+      : stateJourneys
+          .filter((j) => (j.displayOrder ?? 0) > 0 || j.isBestSelling)
+          .slice(0, 6);
+
+  const topJourneyIdSet = new Set(topJourneys.map((j) => j.id));
+
+  // 2. Multi-City & Extended Journeys (State tours excluding the top featured ones)
+  const multiCityPool = stateJourneys.filter((j) => !topJourneyIdSet.has(j.id));
 
   const [expSelected, setExpSelected] = useState<string[]>([]);
   const [durSelected, setDurSelected] = useState<string[]>([]);
   const [citySelected, setCitySelected] = useState<string[]>([]);
-
   const [seasonSelected, setSeasonSelected] = useState<string[]>([]);
 
-  const filteredJourneys = stateJourneys.filter(
+  const filteredMultiCityJourneys = multiCityPool.filter(
     (j) =>
       journeyMatchesExperiences(j, expSelected) &&
       journeyMatchesDuration(j, durSelected) &&
@@ -162,7 +177,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           id: "city",
           title: "Destination",
           icon: <MapPin size={14} />,
-          options: cityOptions(stateJourneys, (c) => c.state?.id === state.id),
+          options: cityOptions(multiCityPool, (c) => c.state?.id === state.id),
           selected: citySelected,
           onChange: setCitySelected,
         },
@@ -170,7 +185,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           id: "experience",
           title: "Travel Experience",
           icon: <Sparkles size={14} />,
-          options: travelExperienceOptions(stateJourneys),
+          options: travelExperienceOptions(multiCityPool),
           selected: expSelected,
           onChange: setExpSelected,
         },
@@ -178,7 +193,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           id: "season",
           title: "Best Season / Month",
           icon: <Sun size={14} />,
-          options: seasonOptions(stateJourneys),
+          options: seasonOptions(multiCityPool),
           selected: seasonSelected,
           onChange: setSeasonSelected,
         },
@@ -186,23 +201,22 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           id: "duration",
           title: "Duration",
           icon: <CalendarDays size={14} />,
-          options: durationOptions(stateJourneys),
+          options: durationOptions(multiCityPool),
           selected: durSelected,
           onChange: setDurSelected,
         },
       ]}
       activeCount={activeFilterCount}
       onClearAll={clearFilters}
-      resultCount={filteredJourneys.length}
-      totalCount={stateJourneys.length}
+      resultCount={filteredMultiCityJourneys.length}
+      totalCount={multiCityPool.length}
     />
   );
 
-  // The left column renders seoDescription, attractions, weather and
-  // moreDescription, all of which are optional. Without any of them the
-  // "Everything About" heading had nothing to sit above, so the column
-  // is dropped and the sidebar is given the full width.
   const hasKnowMoreText = Boolean(state.seoDescription || state.moreDescription);
+  const basePath = state.country?.slug
+    ? `/tour-packages/${state.country.slug}/${state.slug}`
+    : `/tour-packages/${state.slug}`;
 
   return (
     <div>
@@ -266,20 +280,31 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         </div>
       </nav>
 
-      {/* ===== SHORT DESCRIPTION + TOURS ===== */}
+      {/* ===== SECTION 2: TOP TOUR PACKAGES IN STATE ===== */}
+      {topJourneys.length > 0 && (
+        <ToursSection
+          basePath={basePath}
+          journeys={topJourneys}
+          isLoading={journeysLoading && topJourneys.length === 0}
+          accentLabel="Best-Selling Packages"
+          h1Title={pageH1 || `Top Tour Packages in ${state.title}`}
+          overView={state.overView ?? undefined}
+          emptyLabel={`No top tour packages selected for ${state.title} yet`}
+          showCount={8}
+        />
+      )}
+
+      {/* ===== SECTION 3: MULTI-CITY TOURS WITH STATE ===== */}
       <ToursSection
-        basePath={
-          state.country?.slug
-            ? `/tour-packages/${state.country.slug}/${state.slug}`
-            : `/tour-packages/${state.slug}`
-        }
-        journeys={filteredJourneys}
+        basePath={basePath}
+        journeys={filteredMultiCityJourneys}
         isLoading={journeysLoading}
-        h1Title={pageH1}
-        overView={state.overView ?? undefined}
-        emptyLabel={`No tours found in ${state.title} yet`}
-        filterBar={stateJourneys.length > 0 ? filterBar : undefined}
+        accentLabel="Circuits & Extended Tours"
+        h1Title={topJourneys.length > 0 ? `Multi City Tours with ${state.title}` : (pageH1 || `${state.title} Tour Packages`)}
+        emptyLabel={`No multi-city tours found with ${state.title} yet`}
+        filterBar={multiCityPool.length > 0 ? filterBar : undefined}
         onClearFilters={clearFilters}
+        showCount={12}
       />
 
       {/* ===== CITIES ===== */}

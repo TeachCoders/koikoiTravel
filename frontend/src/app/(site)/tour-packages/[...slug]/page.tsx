@@ -291,17 +291,12 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
 
     case "state": {
       const { state } = resolved;
-      const initialJourneys =
-        state?.journeys && state.journeys.length > 0
-          ? null
-          : await fetchPublicJsonCached<JourneyPage<Journey>>(
-              "/journey?limit=100&isActive=true"
-            );
-      const stateJourneys = state?.journeys?.length
-        ? state.journeys
-        : (initialJourneys?.data || []).filter((j) =>
-            j.cities?.some((c) => c.state?.id === state.id)
-          );
+      const initialJourneys = await fetchPublicJsonCached<JourneyPage<Journey>>(
+        "/journey?limit=100&isActive=true"
+      );
+      const stateJourneys = (initialJourneys?.data || []).filter((j) =>
+        j.cities?.some((c) => c.state?.id === state.id)
+      );
       const schema = graphSchema([
         touristDestinationSchema({
           name: state.title,

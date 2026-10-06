@@ -31,6 +31,7 @@ export interface State {
   displayOrder?: number;
   cities?: Partial<City>[];
   journeys?: Journey[];
+  featuredJourneyOrder?: number[];
   banner?: Banner | null;
   faqs?: { id?: number; ques: string; ans: string }[];
   tourCount?: number;
@@ -56,6 +57,7 @@ export interface StatePayload {
   isActive?: boolean;
   showOnSite?: boolean;
   displayOrder?: number;
+  journeyIds?: number[];
   bannerTitle?: string;
   bannerTag?: string;
   bannerImages?: string[];

@@ -12,6 +12,8 @@ import SeoFields from "@/components/shared/SeoFields";
 import BannerSection from "@/components/shared/BannerSection";
 import RichTextEditor from "@/components/shared/RichTextEditor";
 import FaqEditor, { FaqData } from "@/components/shared/FaqEditor";
+import AsyncMultiSelect from "@/components/shared/AsyncMultiSelect";
+import { getJourneys } from "@/feature/journey/api";
 import {
   useCreateState,
   useUpdateState,
@@ -75,6 +77,9 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
   const [bannerFiles, setBannerFiles] = useState<{ file: File; index: number }[]>([]);
   const [moreDescription, setMoreDescription] = useState(initialData?.moreDescription || "");
   const [faqs, setFaqs] = useState<FaqData[]>(initialData?.faqs || []);
+  const [journeyIds, setJourneyIds] = useState<number[]>(
+    (initialData?.journeys ?? []).map((j) => j.id)
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const initializedRef = React.useRef(false);
@@ -104,6 +109,7 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
       setBannerImages(initialData.banner?.images || []);
       setMoreDescription(initialData.moreDescription || "");
       setFaqs(initialData.faqs || []);
+      setJourneyIds((initialData.journeys ?? []).map((j) => j.id));
     }
   }, [initialData]);
 
@@ -181,6 +187,7 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
       bannerImages: finalBannerImages,
       moreDescription: moreDescription.trim() || undefined,
       faqs,
+      journeyIds,
     };
 
     if (mode === "edit" && initialData?.id) {
@@ -304,6 +311,51 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Top / Featured Tour Packages in State */}
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+          <label className="text-sm font-bold text-slate-700 uppercase tracking-wider block mb-2">
+            ⭐ Top Tour Packages in {formData.title || "State"}
+            <span className="text-xs font-normal text-slate-500 ml-2">
+              — Ye packages state page par &quot;Top Tour Packages&quot; section mein sabse upar dikhenge.
+            </span>
+          </label>
+          <div className="text-xs text-slate-500 mb-3">
+            In packages ko select karein aur drag karke order (1, 2, 3...) set kar sakte hain. Baki sabhi tours niche &quot;Multi-City Tours&quot; section mein auto show honge.
+          </div>
+
+          <AsyncMultiSelect
+            selectedIds={journeyIds}
+            onChange={setJourneyIds}
+            fetchOptions={async (search) => {
+              const res = await getJourneys({ search, isActive: "true", limit: 100 });
+              return res.data;
+            }}
+            initialOptions={(initialData?.journeys ?? []).map((j) => ({ id: j.id, title: j.title }))}
+            placeholder="Select Top Tour Packages *"
+            searchPlaceholder="Search packages..."
+            onReorder={(fromId, toId) => {
+              const arr = [...journeyIds];
+              const fromIdx = arr.indexOf(fromId);
+              const toIdx = arr.indexOf(toId);
+              if (fromIdx !== -1 && toIdx !== -1) {
+                const [item] = arr.splice(fromIdx, 1);
+                arr.splice(toIdx, 0, item);
+                setJourneyIds(arr);
+              }
+            }}
+          />
+
+          {journeyIds.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setJourneyIds([])}
+              className="text-[10px] font-bold text-red-500 hover:text-red-700 uppercase tracking-wider cursor-pointer mt-3"
+            >
+              Clear All Selected Packages
+            </button>
+          )}
         </div>
 
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">

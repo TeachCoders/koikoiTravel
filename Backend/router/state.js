@@ -20,7 +20,23 @@ const schema = z.object({
   isActive: z.boolean().optional(),
   showOnSite: z.boolean().optional(),
   displayOrder: z.number().int().optional(),
+  journeyIds: z.array(z.number().int()).optional(),
 });
+
+const journeySelect = {
+  id: true,
+  title: true,
+  slug: true,
+  thumbImg: true,
+  destination: true,
+  duration: true,
+  noDays: true,
+  pricePerPerson: true,
+  discountPrice: true,
+  displayOrder: true,
+  isBestSelling: true,
+  cities: { select: { id: true, title: true, slug: true } },
+};
 
 export default createCmsRouter({
   modelName: "state",
@@ -59,5 +75,13 @@ export default createCmsRouter({
       _count: { select: { journeys: { where: { isActive: true } } } },
     },
   },
+  relations: [
+    {
+      field: "journeys",
+      inputKey: "journeyIds",
+      orderField: "featuredJourneyOrder",
+      select: journeySelect,
+    },
+  ],
   tourCountWhere: (id) => ({ cities: { some: { stateId: id } } }),
 });

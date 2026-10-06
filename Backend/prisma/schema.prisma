@@ -640,6 +640,8 @@ model State {
   activeSnapshot Json?
   displayOrder Int     @default(0)
   cities      City[]
+  journeys    Journey[]
+  featuredJourneyOrder Int[] @default([])
 
   @@index([countryId, isActive])
   @@index([isActive, displayOrder])
@@ -760,6 +762,7 @@ model Journey {
   updatedAt     DateTime      @updatedAt
   cities        City[]
   cityOrder     Int[]         @default([])
+  states        State[]
   travelExperienceOrder Int[] @default([])
   months        Month[]
   travelExperiences TravelExperience[]
