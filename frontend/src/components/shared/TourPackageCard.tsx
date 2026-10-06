@@ -249,18 +249,18 @@ export default function TourPackageCard({
             </div>
           )}
 
-          {/* Action Buttons Row (International OTA Klook Standard) */}
+          {/* Action Buttons Row (Minimalist Luxury Outline & Text Styling) */}
           <div className="grid grid-cols-2 gap-2 pt-0.5">
             <WhatsAppPriceButton
               packageName={journey.h1Title || journey.title}
               label="WhatsApp"
-              className="w-full py-2.5 px-2 bg-emerald-50 hover:bg-emerald-100/90 active:scale-95 border border-emerald-200/90 text-emerald-800 font-medium text-[12px] tracking-tight rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer shadow-2xs whitespace-nowrap"
-              iconClassName="w-3.5 h-3.5 fill-emerald-600 shrink-0"
+              className="w-full py-2.5 px-2 bg-transparent hover:bg-slate-50 active:scale-95 border border-slate-200/90 hover:border-slate-300 text-slate-700 font-medium text-[12px] tracking-tight rounded-xl flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer whitespace-nowrap"
+              iconClassName="w-3.5 h-3.5 fill-[#25D366] shrink-0"
             />
             <Link
               href={href}
               title="View Details"
-              className="w-full py-2.5 px-2 rounded-xl bg-[#F8904D] hover:bg-[#e77a35] active:scale-95 text-white font-medium text-[12px] tracking-tight flex items-center justify-center gap-1 transition-all duration-200 cursor-pointer shadow-xs whitespace-nowrap"
+              className="w-full py-2.5 px-2 rounded-xl bg-transparent hover:bg-slate-900 border border-slate-800 text-slate-900 hover:text-white active:scale-95 font-medium text-[12px] tracking-tight flex items-center justify-center gap-1 transition-all duration-200 cursor-pointer whitespace-nowrap"
             >
               <span>View Details</span>
               <ArrowRight size={13} className="shrink-0 stroke-[2.2]" />
