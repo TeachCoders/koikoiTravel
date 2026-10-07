@@ -504,7 +504,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   <h3 className="font-heading text-lg sm:text-xl font-bold text-emerald-900 mb-4 flex items-center gap-2">
                     <CheckCircle2 size={20} className="text-emerald-600" /> What's Included
                   </h3>
-                  <ul className="space-y-3">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     {(journey.inclusions ?? []).map((item, i) => (
                       <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-normal text-slate-700 leading-relaxed">
                         <CheckCircle2 size={18} className="text-emerald-600 mt-[2px] shrink-0" />
@@ -519,7 +519,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   <h3 className="font-heading text-lg sm:text-xl font-bold text-red-900 mb-4 flex items-center gap-2">
                     <XCircle size={20} className="text-red-500" /> What's Excluded
                   </h3>
-                  <ul className="space-y-3">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     {(journey.exclusions ?? []).map((item, i) => (
                       <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-normal text-slate-700 leading-relaxed">
                         <XCircle size={18} className="text-red-400 mt-[2px] shrink-0" />
@@ -548,7 +548,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                 {/* Subtle Glow */}
                 <div className="absolute -top-20 -right-20 w-64 h-64 bg-[#2E8B8B]/10 blur-[80px] rounded-full pointer-events-none" />
 
-                <ul className="relative z-10 space-y-4 md:space-y-5">
+                <ul className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                   {(journey.whyChooseUs ?? []).map((item, i) => (
                     <li key={i} className="flex items-start gap-3.5 text-sm sm:text-[14.5px] font-normal text-slate-700 leading-[1.6]">
                       <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center shrink-0 mt-0.5 border border-slate-200/80 shadow-xs">
