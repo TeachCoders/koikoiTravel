@@ -472,6 +472,14 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       const cleanRest = { ...rest };
       for (const rel of relations) delete cleanRest[rel.inputKey];
 
+      if (parentField && parentInclude?.model && cleanRest[parentField] !== undefined) {
+        const pId = cleanRest[parentField];
+        delete cleanRest[parentField];
+        if (pId) {
+          relationOps[parentInclude.model] = { connect: { id: Number(pId) } };
+        }
+      }
+
       // Apply create defaults only for fields the client left empty/missing.
       const withDefaults = createDefaults
         ? Object.fromEntries(
@@ -542,6 +550,14 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       }
       const cleanRest = { ...rest };
       for (const rel of relations) delete cleanRest[rel.inputKey];
+
+      if (parentField && parentInclude?.model && cleanRest[parentField] !== undefined) {
+        const pId = cleanRest[parentField];
+        delete cleanRest[parentField];
+        if (pId) {
+          relationOps[parentInclude.model] = { connect: { id: Number(pId) } };
+        }
+      }
 
       const item = await prisma[modelName].update({
         where: { id },
