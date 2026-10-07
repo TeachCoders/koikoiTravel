@@ -85,5 +85,5 @@ export default createCmsRouter({
       select: journeySelect,
     },
   ],
-  tourCountWhere: (id) => ({ cities: { some: { stateId: id } } }),
+  tourCountWhere: (id) => ({ isActive: true, OR: [{ cities: { some: { stateId: id } } }, { states: { some: { id } } }] }),
 });
