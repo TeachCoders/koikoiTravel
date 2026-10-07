@@ -108,10 +108,13 @@ export const PopularDestinations: React.FC<{
       .sort((a, b) => a.displayOrder - b.displayOrder);
   }, [states]);
 
-  // Right Column items (Domestic / Regional destinations)
+  // Right Column items (Domestic / Regional destinations) - exclude any state already in leftItems
   const rightItems = useMemo<DestinationItem[]>(() => {
+    const leftStateIds = new Set(
+      states.filter((s) => (s.displayOrder ?? 0) > 0).map((s) => s.id)
+    );
     return states
-      .filter((s) => (s.domesticDisplayOrder ?? 0) > 0)
+      .filter((s) => (s.domesticDisplayOrder ?? 0) > 0 && !leftStateIds.has(s.id))
       .map((s) => {
         const tours = s.tourCount ?? (s.journeys?.length || 0);
         const countrySlug = s.country?.slug || "india";
