@@ -60,61 +60,68 @@ export const TravelExperiencesSection: React.FC<{
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
               <div
                 key={i}
-                className="rounded-xl bg-slate-100 animate-pulse h-64 border border-[#f0f0f0]"
+                className="rounded-3xl bg-slate-50 animate-pulse h-[340px] border border-slate-100"
               />
             ))}
           </div>
         ) : experiences.length === 0 ? (
           <p className="text-center text-slate-400 py-16">No travel experiences yet.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {experiences.slice(0, 6).map((exp: any) => {
               const theme = resolveExperienceTheme(exp.title);
-              const image = exp.thumbImg || exp.banner?.images?.[0] || theme.image;
               const count = tourCount(exp.id);
               return (
                 <Link
                   key={exp.id}
                   href={`/travel-experiences/${exp.slug}`}
-                  className="group relative block overflow-hidden rounded-2xl bg-white border border-[#e5e5e5] shadow-sm hover:shadow-xl transition-all duration-500"
+                  className="group relative rounded-3xl bg-white border border-slate-200/90 p-6 sm:p-7 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between items-center text-center select-none"
                 >
-                  <div className="relative h-48 md:h-52 w-full overflow-hidden">
-                    <FallbackImage
-                      src={image}
-                      alt={exp.title}
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      theme="light"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                    <div className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center text-white">
-                      {theme.icon || <Compass size={18} />}
-                    </div>
-                    {count > 0 && (
-                      <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#F8904D] text-white text-[10px] font-bold shadow-lg">
-                        <Crown size={11} /> {count} Tours
+                  {/* Top Cartoon Illustration Container */}
+                  <div className={`w-full h-40 rounded-2xl bg-gradient-to-b ${theme.bgGradient} flex items-center justify-center relative overflow-hidden p-3 border border-slate-100`}>
+                    {/* Top Tag / Pill */}
+                    <div className="absolute top-2.5 left-2.5 z-10">
+                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold border shadow-xs ${theme.tagColor}`}>
+                        {theme.icon}
+                        <span>{theme.tag}</span>
                       </span>
+                    </div>
+
+                    {/* Tour Count Pill */}
+                    {count > 0 && (
+                      <div className="absolute top-2.5 right-2.5 z-10">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-white/90 backdrop-blur-xs border border-slate-200 text-slate-700 shadow-2xs">
+                          {count} Tours
+                        </span>
+                      </div>
                     )}
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="font-heading text-xl font-extrabold text-white tracking-tight drop-shadow leading-snug">
-                        {exp.title}
-                      </h3>
+
+                    {/* Animated / Hover Zoom Cartoon Illustration */}
+                    <div className="w-full h-full flex items-center justify-center group-hover:scale-108 transition-transform duration-500 ease-out">
+                      {theme.illustration}
                     </div>
                   </div>
 
-                  <div className="p-5">
-                    <p className="text-sm text-[#555] leading-relaxed line-clamp-2 min-h-[2.5rem]">
-                      {stripHtml(exp.overView || exp.description || "")}
+                  {/* Middle Text Info */}
+                  <div className="pt-4 flex-1 flex flex-col items-center">
+                    <h3 className="font-heading text-lg sm:text-[19px] font-bold text-slate-900 leading-snug group-hover:text-[#F8904D] transition-colors">
+                      {exp.title}
+                    </h3>
+                    <p className="text-xs sm:text-[13px] text-slate-500 mt-2 line-clamp-2 leading-relaxed max-w-xs">
+                      {stripHtml(exp.overView || exp.description || "Discover hand-crafted holiday itineraries designed for your unique travel style.")}
                     </p>
-                    <div className="mt-4 pt-4 border-t border-[#f0f0f0] flex items-center justify-between">
-                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#1C1C1C] group-hover:text-[#2E8B8B] transition-colors">
-                        Explore <ArrowRight size={15} className="text-[#F8904D] transition-transform duration-300 group-hover:translate-x-1" />
-                      </span>
-                      <Sparkles size={14} className="text-[#F8904D]" />
-                    </div>
+                  </div>
+
+                  {/* Bottom Action Button (Klook Style) */}
+                  <div className="mt-5 w-full">
+                    <span className="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold border border-slate-300 text-slate-800 bg-white group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-all shadow-xs inline-flex items-center justify-center gap-1.5">
+                      <span>{theme.ctaText || "Explore Tours"}</span>
+                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    </span>
                   </div>
                 </Link>
               );
