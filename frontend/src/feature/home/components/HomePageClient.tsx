@@ -35,7 +35,6 @@ export const HomePageClient: React.FC<{
   return (
     <div className="flex flex-col min-h-screen">
       <HeroSection />
-      <SeoTextBlock />
       <BestSellingPackages initialJourneys={initialJourneys} />
       <PopularDestinations
         initialStates={initialStates}
@@ -48,6 +47,7 @@ export const HomePageClient: React.FC<{
       />
       <SeasonalTripsSection initialSeasons={initialSeasons} initialJourneys={initialJourneys} />
       <WhyChooseUsSection />
+      <SeoTextBlock />
       <TrustedPartners />
     </div>
   );
