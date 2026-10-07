@@ -210,7 +210,7 @@ export default function StateClient() {
           <OrderAtTopCard
             title="Left Column (Inbound) Top Destinations"
             helperText="Selected states appear on the Left Column in this order."
-            options={allStates}
+            options={allStates.filter((s) => !domesticOrderedIds.includes(s.id))}
             activeOnly
             columns={2}
             selectedIds={orderedIds}
@@ -227,7 +227,7 @@ export default function StateClient() {
           <OrderAtTopCard
             title="Right Column (Domestic) Top Destinations"
             helperText="Selected states appear on the Right Column in this order."
-            options={allStates}
+            options={allStates.filter((s) => !orderedIds.includes(s.id))}
             activeOnly
             columns={2}
             selectedIds={domesticOrderedIds}

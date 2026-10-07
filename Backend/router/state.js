@@ -93,22 +93,6 @@ const router = createCmsRouter({
   tourCountWhere: (id) => ({ isActive: true, OR: [{ cities: { some: { stateId: id } } }, { states: { some: { id } } }] }),
 });
 
-// PUT /state/bulk-domestic-order
-router.put("/bulk-domestic-order", requireSalesOrAdmin, async (req, res) => {
-  try {
-    const ids = Array.isArray(req.body.ids) ? req.body.ids.map(Number).filter((x) => Number.isInteger(x) && x > 0) : [];
-    const ops = [
-      prisma.state.updateMany({ where: { domesticDisplayOrder: { gt: 0 }, id: { notIn: ids } }, data: { domesticDisplayOrder: 0 } }),
-      ...ids.map((id, i) => prisma.state.updateMany({ where: { id }, data: { domesticDisplayOrder: i + 1 } })),
-    ];
-    await prisma.$transaction(ops);
-
-    return res.status(200).json({ success: true, message: "State domestic order updated", data: { ids, count: ids.length } });
-  } catch (err) {
-    logger.error("Error setting state domestic order:", { error: err.message, stack: err.stack });
-    return res.status(500).json({ success: false, message: "Internal Server Error" });
-  }
-});
-
 export default router;
+
 

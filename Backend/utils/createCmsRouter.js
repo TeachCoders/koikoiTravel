@@ -159,6 +159,28 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
     }
   });
 
+  // Bulk-set top domestic ordering (for state model)
+  router.post("/domestic-order", requireSalesOrAdmin, async (req, res) => {
+    try {
+      const raw = req.body?.ids;
+      const ids = Array.isArray(raw) ? raw.map(Number).filter((x) => Number.isInteger(x) && x > 0) : [];
+      if (!ids.length && Array.isArray(raw) && raw.length > 0) {
+        return res.status(400).json({ success: false, message: "Invalid ids array" });
+      }
+
+      const ops = [
+        prisma[modelName].updateMany({ where: { domesticDisplayOrder: { gt: 0 }, id: { notIn: ids } }, data: { domesticDisplayOrder: 0 } }),
+        ...ids.map((id, i) => prisma[modelName].updateMany({ where: { id }, data: { domesticDisplayOrder: i + 1 } })),
+      ];
+      await prisma.$transaction(ops);
+
+      return res.status(200).json({ success: true, message: `${modelName} domestic order updated`, data: { ids, count: ids.length } });
+    } catch (err) {
+      logger.error(`Error setting ${modelName} domestic order:`, { error: err.message, stack: err.stack });
+      return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  });
+
   router.get("/", async (req, res) => {
     try {
       const isPublic = isPublicRequest(req);
