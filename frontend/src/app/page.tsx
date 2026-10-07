@@ -40,9 +40,7 @@ export default async function Home() {
       <JsonLd data={faqSchema(HOME_FAQS)} />
       <Header />
       <main className="flex-1">
-        <Suspense fallback={<HomeSectionsFallback />}>
-          <HomeSections />
-        </Suspense>
+        <HomeSections />
       </main>
       <Footer />
     </div>

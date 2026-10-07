@@ -9,16 +9,27 @@ import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import { resolveExperienceTheme, FALLBACK_IMAGE } from "@/feature/travelExperience/theme";
 import { stripHtml } from "@/lib/utils";
 import { FallbackImage } from "@/components/shared/FallbackImage";
+import type { TravelExperience, PaginatedResponse as ExperiencePage } from "@/feature/travelExperience/type";
+import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 
-export const TravelExperiencesSection: React.FC = () => {
-  const { travelExperiences, isLoading } = useGetTravelExperiences({
-    limit: 100,
-    isActive: "true",
-  });
-  const { journeys } = useGetJourneys({
-    limit: 100,
-    isActive: "true",
-  });
+export const TravelExperiencesSection: React.FC<{
+  initialExperiences?: ExperiencePage<TravelExperience> | null;
+  initialJourneys?: JourneyPage<Journey> | null;
+}> = ({ initialExperiences, initialJourneys }) => {
+  const { travelExperiences, isLoading } = useGetTravelExperiences(
+    {
+      limit: 100,
+      isActive: "true",
+    },
+    initialExperiences
+  );
+  const { journeys } = useGetJourneys(
+    {
+      limit: 100,
+      isActive: "true",
+    },
+    initialJourneys
+  );
 
   const experiences = travelExperiences.filter(
     (e: any) => !/^test\b/i.test(e.title || "")

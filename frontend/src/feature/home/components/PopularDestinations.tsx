@@ -39,7 +39,8 @@ export const PopularDestinations: React.FC<{
     {
       limit: 100,
       isActive: "true",
-    }
+    },
+    initialCountries
   );
 
   const { travelExperiences, isLoading: experiencesLoading } = useGetTravelExperiences(
@@ -69,6 +70,8 @@ export const PopularDestinations: React.FC<{
 
   const [selectedCountryId, setSelectedCountryId] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const activeCountryId = selectedCountryId ?? defaultCountryId;
 
   // Default to India when countries are loaded
   useEffect(() => {
@@ -135,18 +138,18 @@ export const PopularDestinations: React.FC<{
 
   // Filter items by selected country
   const filteredLeftItems = useMemo(() => {
-    if (!selectedCountryId || selectedCountryId === "all") return leftItems;
+    if (!activeCountryId || activeCountryId === "all") return leftItems;
     return leftItems.filter(
-      (i) => !i.countryId || String(i.countryId) === String(selectedCountryId)
+      (i) => !i.countryId || String(i.countryId) === String(activeCountryId)
     );
-  }, [leftItems, selectedCountryId]);
+  }, [leftItems, activeCountryId]);
 
   const filteredRightItems = useMemo(() => {
-    if (!selectedCountryId || selectedCountryId === "all") return rightItems;
+    if (!activeCountryId || activeCountryId === "all") return rightItems;
     return rightItems.filter(
-      (i) => !i.countryId || String(i.countryId) === String(selectedCountryId)
+      (i) => !i.countryId || String(i.countryId) === String(activeCountryId)
     );
-  }, [rightItems, selectedCountryId]);
+  }, [rightItems, activeCountryId]);
 
   const isLoading = statesLoading || countriesLoading || experiencesLoading;
 
@@ -166,11 +169,11 @@ export const PopularDestinations: React.FC<{
   }, [filteredLeftItems, filteredRightItems]);
 
   const activeCountryObj = availableCountries.find(
-    (c) => c.id === selectedCountryId
+    (c) => c.id === activeCountryId
   );
   const activeCountryName = activeCountryObj
     ? activeCountryObj.name
-    : selectedCountryId === "all"
+    : activeCountryId === "all"
     ? "All Destinations"
     : "India";
 

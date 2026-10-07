@@ -44,7 +44,10 @@ export const HomePageClient: React.FC<{
         initialCountries={initialCountries}
         initialExperiences={initialExperiences}
       />
-      <TravelExperiencesSection />
+      <TravelExperiencesSection
+        initialExperiences={initialExperiences}
+        initialJourneys={initialJourneys}
+      />
       <SeasonalTripsSection initialSeasons={initialSeasons} initialJourneys={initialJourneys} />
       <WhyChooseUsSection />
       <TestimonialsSection />

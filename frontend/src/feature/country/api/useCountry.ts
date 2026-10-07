@@ -10,19 +10,23 @@ import {
   updateCountryOrder,
 } from ".";
 import { successToast, errorToast } from "@/components/shared/tost";
-import type { Country } from "../type";
+import type { Country, PaginatedResponse } from "../type";
 
-export const useGetCountries = (params?: {
-  page?: number;
-  limit?: number;
-  search?: string;
-  isActive?: string;
-  id?: number;
-}) => {
+export const useGetCountries = (
+  params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    isActive?: string;
+    id?: number;
+  },
+  initialData?: PaginatedResponse<Country> | null
+) => {
   const query = useQuery({
     queryKey: ["countries", params],
     queryFn: () => getCountries(params),
     staleTime: 2 * 60 * 1000,
+    initialData: initialData ?? undefined,
   });
   return {
     countries: query.data?.data || [],
