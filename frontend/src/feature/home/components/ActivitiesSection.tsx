@@ -2,111 +2,98 @@
 
 import React from "react";
 import Link from "next/link";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { FallbackImage } from "@/components/shared/FallbackImage";
 
 const ACTIVITIES = [
   {
-    icon: "🐅",
     title: "Tiger Safari",
-    description: "Head into the wild and experience India's incredible wildlife.",
+    image: "/content/rajasthan-tours-holiday-2.webp",
     href: "/travel-experiences/wildlife",
   },
   {
-    icon: "🐘",
     title: "Elephant Experiences",
-    description: "Enjoy memorable wildlife and nature experiences in carefully selected destinations.",
+    image: "/content/delhi-holiday-1.webp",
     href: "/travel-experiences/wildlife",
   },
   {
-    icon: "🏜️",
     title: "Desert Adventures",
-    description: "Experience Rajasthan's desert landscapes, local culture, and exciting outdoor activities.",
+    image: "/content/rajasthan-tours-holiday-1.webp",
     href: "/tour-packages/india/rajasthan",
   },
   {
-    icon: "⛰️",
     title: "Mountain Adventures",
-    description: "Discover scenic valleys, mountain landscapes, and outdoor experiences.",
+    image: "/content/manali-holiday-1.webp",
     href: "/tour-packages/india/jammu-and-kashmir",
   },
   {
-    icon: "🚣",
     title: "Backwater Experiences",
-    description: "Slow down and enjoy Kerala's peaceful waterways and beautiful scenery.",
+    image: "/content/jaipur-holiday-1.webp",
     href: "/tour-packages/india",
   },
   {
-    icon: "🍛",
     title: "Local Food Experiences",
-    description: "Taste regional flavors and discover India's incredible food culture.",
+    image: "/content/srinagar-holiday-1.webp",
     href: "/travel-experiences",
   },
   {
-    icon: "🏰",
     title: "Forts & Palaces",
-    description: "Explore spectacular places while experiencing the vibrant cities around them.",
+    image: "/content/rajasthan-tours-holiday-1.webp",
     href: "/tour-packages/india/rajasthan",
   },
   {
-    icon: "🌅",
-    title: "Sunrise & Sunset Experiences",
-    description: "Add beautiful moments to your itinerary that you'll remember long after your trip.",
+    title: "Sunset & Sunrise",
+    image: "/content/taj-mahal-holiday-1.webp",
     href: "/tour-packages/india/golden-triangle",
   },
 ];
 
 export const ActivitiesSection: React.FC = () => {
   return (
-    <section className="py-10 sm:py-14 md:py-16 bg-white relative overflow-hidden border-b border-slate-100">
+    <section className="py-12 sm:py-16 bg-white border-b border-slate-100">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
-          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#F8904D] mb-2">
-            <Sparkles className="w-3.5 h-3.5" /> India Experiences
-          </span>
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
             Amazing Things You Can Experience in India
           </h2>
-          <p className="text-slate-600 text-sm sm:text-base mt-2.5 leading-relaxed">
+          <p className="text-slate-500 text-xs sm:text-sm mt-2 leading-relaxed">
             Your India holiday should be more than checking destinations off a list.
           </p>
         </div>
 
-        {/* 8 Activities Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {/* 8 Image Cards Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4">
           {ACTIVITIES.map((act, idx) => (
             <Link
               key={idx}
               href={act.href}
-              className="group bg-slate-50 hover:bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/70 hover:border-[#2E8B8B]/40 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+              className="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 block"
             >
-              <div>
-                <div className="text-3xl sm:text-4xl mb-3 group-hover:scale-110 transition-transform origin-left">
-                  {act.icon}
-                </div>
-                <h3 className="font-bold text-base sm:text-lg text-slate-900 group-hover:text-[#2E8B8B] transition-colors leading-snug">
+              <FallbackImage
+                src={act.image}
+                alt={act.title}
+                fill
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 12.5vw"
+                className="object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute bottom-3 left-2 right-2 text-center text-white">
+                <h3 className="font-bold text-[11px] sm:text-xs leading-tight drop-shadow">
                   {act.title}
                 </h3>
-                <p className="text-slate-600 text-xs sm:text-sm mt-2 leading-relaxed">
-                  {act.description}
-                </p>
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-slate-200/60 flex items-center gap-1.5 text-xs font-bold text-[#F8904D] group-hover:text-[#e07b3b]">
-                <span>Discover</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>
             </Link>
           ))}
         </div>
 
         {/* Action Button */}
-        <div className="mt-10 sm:mt-12 text-center">
+        <div className="mt-8 sm:mt-10 text-center">
           <Link
             href="/travel-experiences"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm sm:text-base tracking-wide shadow-md transition-all active:scale-95"
+            className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#00A66E] hover:bg-[#00915f] text-white font-bold text-xs sm:text-sm tracking-wide shadow-md transition-all active:scale-95"
           >
-            <span>EXPLORE INDIA EXPERIENCES</span>
+            <span>Explore India Experiences</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -116,4 +103,3 @@ export const ActivitiesSection: React.FC = () => {
 };
 
 export default ActivitiesSection;
-

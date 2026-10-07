@@ -2,7 +2,6 @@
 
 import React from "react";
 import HeroSection from "./HeroSection";
-import HomeLeadForm from "./HomeLeadForm";
 import TrustBar from "./TrustBar";
 import BestSellingPackages from "./BestSellingPackages";
 import WhichExperienceSection from "./WhichExperienceSection";
@@ -34,40 +33,37 @@ export const HomePageClient: React.FC<{
 }) => {
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      {/* 1. Hero Section + CTAs */}
+      {/* 1. Hero Section with Floating Lead Form (Split Layout) */}
       <HeroSection />
 
-      {/* 2. Short Lead Form */}
-      <HomeLeadForm />
-
-      {/* 3. Trust Bar */}
+      {/* 2. Trust Bar */}
       <TrustBar />
 
-      {/* 4. Best-Selling Tours */}
+      {/* 3. Best-Selling Tours */}
       <BestSellingPackages initialJourneys={initialJourneys} />
 
-      {/* 5. Which India Experience? */}
+      {/* 4. Which India Experience Are You Looking For? */}
       <WhichExperienceSection />
 
-      {/* 6. Why KoiKoi Travel */}
+      {/* 5. Why Book Your India Trip With KoiKoi Travel? */}
       <WhyBookWithUsSection />
 
-      {/* 7. How It Works (3 Steps) */}
+      {/* 6. How Does KoiKoi Travel Make Trip Planning Easy? */}
       <HowItWorksSection />
 
-      {/* 8. Amazing Experiences / Activities */}
+      {/* 7. Amazing Things You Can Experience in India */}
       <ActivitiesSection />
 
-      {/* 9. Real Traveler Reviews */}
+      {/* 8. What Our Travelers Say */}
       <ReviewsSection />
 
-      {/* 10. Popular Destinations */}
+      {/* 9. Where Will Your India Journey Take You? */}
       <PopularDestinationsHome />
 
-      {/* 11. Homepage FAQs */}
+      {/* 10. Frequently Asked Questions */}
       <HomepageFaqSection />
 
-      {/* 12. Final WhatsApp + Free Itinerary CTA */}
+      {/* 11. Ready to Experience India Your Way? (Final CTA) */}
       <FinalCtaSection />
     </div>
   );
