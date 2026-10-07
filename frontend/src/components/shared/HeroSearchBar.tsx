@@ -240,7 +240,7 @@ export default function HeroSearchBar() {
         <div className="bg-white rounded-[14px] p-1.5 sm:p-2.5">
           <div className="flex flex-row items-center gap-0">
             <div className="relative flex-1 min-w-0">
-              <Search className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#2E8B8B]" />
+              <Search className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
               <input
                 type="text"
                 value={query}
@@ -255,7 +255,7 @@ export default function HeroSearchBar() {
                 }}
                 onKeyDown={handleKeyDown}
                 placeholder="Where do you want to go? Try 'Rajasthan', 'Jaipur'..."
-                className="w-full h-11 sm:h-14 rounded-l-xl rounded-r-none border border-r-0 border-[#1C1C1C]/10 bg-[#f8f8f8] pl-10 sm:pl-12 pr-8 sm:pr-10 text-base sm:text-lg font-medium text-[#1C1C1C] placeholder-[#888] outline-none focus:border-[#F8904D] focus:ring-2 focus:ring-[#F8904D]/20 transition-all"
+                className="w-full h-11 sm:h-14 rounded-l-xl rounded-r-none border border-r-0 border-slate-200 bg-slate-50 pl-10 sm:pl-12 pr-8 sm:pr-10 text-sm sm:text-base font-normal text-slate-900 placeholder:text-slate-400 outline-none focus:bg-white focus:border-[#F8904D] focus:ring-2 focus:ring-[#F8904D]/20 transition-all"
               />
 
               {query && (
@@ -275,7 +275,7 @@ export default function HeroSearchBar() {
             <button
               type="button"
               onClick={handleSearch}
-              className="h-11 sm:h-14 btn-gold px-4 sm:px-8 rounded-r-xl rounded-l-none font-extrabold text-sm sm:text-base flex items-center justify-center gap-1.5 sm:gap-2 shrink-0 transition-transform active:scale-95 cursor-pointer shadow-md"
+              className="h-11 sm:h-14 btn-gold px-5 sm:px-8 rounded-r-xl rounded-l-none font-bold text-sm sm:text-base flex items-center justify-center gap-1.5 sm:gap-2 shrink-0 transition-transform active:scale-95 cursor-pointer shadow-md"
             >
               <Search className="w-4 h-4" />
               <span>Search</span>

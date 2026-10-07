@@ -45,7 +45,7 @@ export default function DestinationCard({
       </div>
 
       <div className="pt-2.5 pb-1">
-        <h3 className="font-heading text-sm sm:text-[15px] font-bold text-slate-900 capitalize group-hover:text-[#F8904D] transition-colors leading-tight line-clamp-1">
+        <h3 className="font-heading text-sm sm:text-[15px] font-semibold text-slate-900 capitalize group-hover:text-[#F8904D] transition-colors leading-tight line-clamp-1">
           {title}
         </h3>
         {subtitle && (

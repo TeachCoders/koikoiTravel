@@ -176,9 +176,9 @@ export default function TourPackageCard({
       {/* Content Container */}
       <div className={`flex flex-col flex-1 bg-white relative z-10 ${isCompact ? "p-4 sm:p-5" : "p-4.5 sm:p-5"}`}>
 
-        {/* Title with font-weight 500 & relaxed line-height */}
+        {/* Title with font-semibold & relaxed line-height */}
         <Link href={href} className="inline-block mb-1.5">
-          <h3 className="text-[15.5px] sm:text-[16.5px] font-medium text-slate-900 line-clamp-2 leading-[1.42] tracking-[-0.01em] group-hover:text-[#2E8B8B] transition-colors min-h-[46px]">
+          <h3 className="text-[15.5px] sm:text-[16.5px] font-semibold text-slate-900 line-clamp-2 leading-[1.42] tracking-tight group-hover:text-[#F8904D] transition-colors min-h-[46px]">
             {journeyCardTitle(journey)}
           </h3>
         </Link>
@@ -188,7 +188,7 @@ export default function TourPackageCard({
             {/* Route / Destination */}
             {(journey.destination || state) && (
               <div className="flex items-center gap-1.5 mb-2.5 text-[12.5px] text-slate-500 font-normal">
-                <MapPin size={14} className="shrink-0 text-[#2E8B8B]" />
+                <MapPin size={13} className="shrink-0 text-[#F8904D]" />
                 <span className="truncate">{journey.destination || state}</span>
               </div>
             )}
@@ -201,12 +201,12 @@ export default function TourPackageCard({
                     key={t.id}
                     className="inline-flex items-center gap-1 text-[11px] font-normal text-slate-700 bg-slate-50 border border-slate-200/90 px-2.5 py-0.5 rounded-full shadow-2xs"
                   >
-                    {travelExperienceIcon(t.title, "w-3 h-3 text-[#2E8B8B]")}
+                    {travelExperienceIcon(t.title, "w-3 h-3 text-[#F8904D]")}
                     <span>{t.title}</span>
                   </span>
                 ))}
                 {travelExperiences.length > 2 && (
-                  <span className="inline-flex items-center text-[10.5px] font-medium text-[#2E8B8B] bg-teal-50/90 border border-teal-200/80 px-2 py-0.5 rounded-full">
+                  <span className="inline-flex items-center text-[10.5px] font-medium text-[#F8904D] bg-orange-50/90 border border-orange-200/80 px-2 py-0.5 rounded-full">
                     +{travelExperiences.length - 2} more
                   </span>
                 )}
@@ -215,10 +215,10 @@ export default function TourPackageCard({
 
             {/* Highlights List */}
             {(journey.highlights?.length ?? 0) > 0 ? (
-              <div className="space-y-2 mb-4">
+              <div className="space-y-1.5 mb-4">
                 {journey.highlights!.slice(0, 3).map((hl, i) => (
-                  <div key={i} className="flex items-start gap-2 text-[12.5px] sm:text-[13px] text-slate-600 leading-[1.4]">
-                    <Check size={14} className="shrink-0 text-slate-500 stroke-[2.2] mt-0.5" />
+                  <div key={i} className="flex items-start gap-2 text-[12.5px] sm:text-[13px] text-slate-600 font-normal leading-[1.4]">
+                    <Check size={13} className="shrink-0 text-slate-400 stroke-[2] mt-0.5" />
                     <span className="line-clamp-1">{hl}</span>
                   </div>
                 ))}
@@ -236,7 +236,7 @@ export default function TourPackageCard({
             <div className="flex items-baseline justify-between">
               <div className="flex items-baseline gap-1.5">
                 <span className="text-[11.5px] text-slate-400 font-normal">Starts from</span>
-                <span className="text-[17px] font-medium text-slate-900 tracking-tight">
+                <span className="text-[18px] font-bold text-slate-900 tracking-tight">
                   ₹{price.toLocaleString("en-IN")}
                 </span>
                 <span className="text-[11.5px] text-slate-400 font-normal">/ person</span>
@@ -254,13 +254,13 @@ export default function TourPackageCard({
             <WhatsAppPriceButton
               packageName={journey.h1Title || journey.title}
               label="WhatsApp"
-              className="w-full py-2.5 px-2 bg-transparent group-hover:bg-emerald-50/80 active:scale-95 border border-slate-200/90 group-hover:border-emerald-200/90 text-slate-700 group-hover:text-emerald-800 font-medium text-[12px] tracking-tight rounded-xl flex items-center justify-center gap-1.5 transition-all duration-300 cursor-pointer whitespace-nowrap"
+              className="w-full py-2 px-2 bg-transparent group-hover:bg-emerald-50 active:scale-95 border border-slate-200 group-hover:border-emerald-200 text-slate-700 group-hover:text-emerald-800 font-medium text-[12px] tracking-tight rounded-full flex items-center justify-center gap-1.5 transition-all duration-300 cursor-pointer whitespace-nowrap"
               iconClassName="w-3.5 h-3.5 fill-[#25D366] shrink-0"
             />
             <Link
               href={href}
               title="View Details"
-              className="w-full py-2.5 px-2 rounded-xl bg-transparent group-hover:bg-[#F8904D] border border-slate-300 group-hover:border-[#F8904D] text-slate-800 group-hover:text-white active:scale-95 font-medium text-[12px] tracking-tight flex items-center justify-center gap-1 transition-all duration-300 cursor-pointer whitespace-nowrap shadow-2xs group-hover:shadow-sm"
+              className="w-full py-2 px-2 rounded-full bg-transparent group-hover:bg-[#F8904D] border border-slate-300 group-hover:border-[#F8904D] text-slate-800 group-hover:text-white active:scale-95 font-medium text-[12px] tracking-tight flex items-center justify-center gap-1 transition-all duration-300 cursor-pointer whitespace-nowrap shadow-2xs group-hover:shadow-sm"
             >
               <span>View Details</span>
               <ArrowRight size={13} className="shrink-0 stroke-[2.2]" />

@@ -161,17 +161,17 @@ export const TravelExperiencesSection: React.FC<{
 
                   {/* Middle Text Info (Klook font sizes & weights) */}
                   <div className="pt-4 flex-1 flex flex-col items-center">
-                    <h3 className="text-[16.5px] sm:text-[17.5px] font-bold text-[#1C1C1C] tracking-tight leading-snug group-hover:text-[#F8904D] transition-colors">
+                    <h3 className="text-base sm:text-[17px] font-bold text-slate-900 tracking-tight leading-snug group-hover:text-[#F8904D] transition-colors">
                       {exp.title}
                     </h3>
-                    <p className="text-xs sm:text-[13px] text-[#666] font-normal mt-1.5 line-clamp-2 leading-relaxed max-w-[260px]">
+                    <p className="text-xs sm:text-[13px] text-slate-600 font-normal mt-1.5 line-clamp-2 leading-relaxed max-w-[260px]">
                       {stripHtml(exp.overView || exp.description || "Discover hand-crafted holiday itineraries designed for your unique travel style.")}
                     </p>
                   </div>
 
                   {/* Bottom Action Button (Klook Outline Style) */}
                   <div className="mt-5 w-full flex justify-center">
-                    <span className="px-4 py-1.5 rounded-lg text-xs sm:text-[12.5px] font-semibold border border-slate-900 text-slate-900 bg-white/60 group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-all shadow-xs inline-flex items-center justify-center gap-1.5">
+                    <span className="px-4 py-1.5 rounded-full text-xs sm:text-[12.5px] font-medium border border-slate-900 text-slate-900 bg-white/80 group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-all shadow-xs inline-flex items-center justify-center gap-1.5">
                       <span>{theme.ctaText || "Explore Tours"}</span>
                       <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
                     </span>

@@ -190,18 +190,18 @@ export const PopularDestinations: React.FC<{
               <button
                 type="button"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className={`flex items-center justify-between gap-3 bg-white border px-6 py-3 rounded-full text-sm font-bold shadow-sm outline-none transition-all min-w-[200px] ${
+                className={`flex items-center justify-between gap-3 bg-white border px-5 py-2.5 rounded-full text-sm font-medium shadow-sm outline-none transition-all min-w-[190px] ${
                   isDropdownOpen
-                    ? "border-orange-500 ring-2 ring-orange-500/20"
+                    ? "border-[#F8904D] ring-2 ring-[#F8904D]/20"
                     : "border-slate-200 hover:bg-slate-50 hover:border-slate-300"
                 }`}
               >
-                <span className="truncate text-slate-800">
+                <span className="truncate text-slate-800 font-medium">
                   {activeCountryName}
                 </span>
                 <ChevronDown
                   className={`w-4 h-4 text-slate-500 transition-transform duration-300 ${
-                    isDropdownOpen ? "rotate-180 text-orange-500" : ""
+                    isDropdownOpen ? "rotate-180 text-[#F8904D]" : ""
                   }`}
                 />
               </button>
@@ -222,9 +222,9 @@ export const PopularDestinations: React.FC<{
                             setSelectedCountryId("all");
                             setIsDropdownOpen(false);
                           }}
-                          className={`w-full text-left px-5 py-3 text-sm font-bold transition-colors ${
+                          className={`w-full text-left px-5 py-2.5 text-sm font-medium transition-colors ${
                             selectedCountryId === "all"
-                              ? "bg-orange-50 text-orange-600"
+                              ? "bg-orange-50 text-[#F8904D]"
                               : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                           }`}
                         >
@@ -239,9 +239,9 @@ export const PopularDestinations: React.FC<{
                             setSelectedCountryId(c.id);
                             setIsDropdownOpen(false);
                           }}
-                          className={`w-full text-left px-5 py-3 text-sm font-bold transition-colors ${
+                          className={`w-full text-left px-5 py-2.5 text-sm font-medium transition-colors ${
                             selectedCountryId === c.id
-                              ? "bg-orange-50 text-orange-600"
+                              ? "bg-orange-50 text-[#F8904D]"
                               : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                           }`}
                         >
@@ -289,7 +289,7 @@ export const PopularDestinations: React.FC<{
               <div className="flex justify-center pt-2">
                 <Link
                   href="/tour-packages"
-                  className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-orange-50 text-orange-600 text-sm font-bold hover:bg-orange-500 hover:text-white transition-all shadow-sm"
+                  className="group inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-slate-900 text-white text-sm font-medium hover:bg-[#F8904D] transition-all shadow-sm"
                 >
                   <span>View All Destinations</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

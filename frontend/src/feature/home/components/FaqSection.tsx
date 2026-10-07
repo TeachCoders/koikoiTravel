@@ -29,8 +29,8 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
     : HOME_FAQS;
 
   return (
-    <section id="faq" className="py-12 md:py-20 bg-slate-50 relative shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8 md:space-y-10">
+    <section id="faq" className="py-8 sm:py-10 md:py-12 bg-slate-50 relative border-t border-slate-200/70">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 space-y-6 sm:space-y-8">
         {/* Section Header */}
         <div>
           <SectionLabel icon={<HelpCircle className="w-4 h-4" />}>Got Questions?</SectionLabel>

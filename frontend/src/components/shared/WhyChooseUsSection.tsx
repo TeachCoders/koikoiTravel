@@ -138,22 +138,22 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
               </div>
 
               {/* Review Comment Quote */}
-              <p className="text-slate-800 text-xs sm:text-sm leading-relaxed italic mb-3.5 min-h-[60px]">
+              <p className="text-slate-700 text-sm sm:text-[15px] leading-relaxed italic mb-3.5 min-h-[60px] font-normal">
                 "{currentReview.comment}"
               </p>
 
               {/* Reviewer Details & Normal Indicator Dots */}
               <div className="flex items-center justify-between gap-4 pt-1">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-orange-500 text-white font-bold flex items-center justify-center text-xs shadow-xs">
+                  <div className="w-9 h-9 rounded-full bg-[#F8904D] text-white font-bold flex items-center justify-center text-xs shadow-xs">
                     {currentReview.name.split(" ")[0]?.[0]}
                     {currentReview.name.split(" ")[1]?.[0] || ""}
                   </div>
                   <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900">
+                    <h4 className="text-sm font-semibold text-slate-900">
                       {currentReview.name}
                     </h4>
-                    <p className="text-[11px] text-slate-500 font-medium">{currentReview.location}</p>
+                    <p className="text-xs text-slate-500 font-normal">{currentReview.location}</p>
                   </div>
                 </div>
 
@@ -165,7 +165,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
                       type="button"
                       onClick={() => setReviewIndex(idx)}
                       className={`h-2 rounded-full transition-all cursor-pointer ${
-                        idx === reviewIndex ? "w-6 bg-orange-500" : "w-2 bg-slate-300 hover:bg-slate-400"
+                        idx === reviewIndex ? "w-6 bg-[#F8904D]" : "w-2 bg-slate-200 hover:bg-slate-300"
                       }`}
                       aria-label={`Go to review ${idx + 1}`}
                     />
@@ -176,19 +176,19 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
 
             {/* Quick Trust Highlights */}
             <div className="grid grid-cols-2 gap-2.5 pt-3.5 border-t border-slate-100">
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+              <div className="flex items-center gap-2 text-xs sm:text-[13px] font-normal text-slate-700">
                 <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
                 <span>100% Tailored Private Trips</span>
               </div>
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+              <div className="flex items-center gap-2 text-xs sm:text-[13px] font-normal text-slate-700">
                 <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
                 <span>24/7 Personal Trip Manager</span>
               </div>
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+              <div className="flex items-center gap-2 text-xs sm:text-[13px] font-normal text-slate-700">
                 <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
                 <span>Direct Transparent Pricing</span>
               </div>
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+              <div className="flex items-center gap-2 text-xs sm:text-[13px] font-normal text-slate-700">
                 <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
                 <span>Comfortable Vehicles & Top Drivers</span>
               </div>
@@ -299,8 +299,8 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
 
             {/* Premium Gallery Subtext */}
             <div className="mt-4 px-2 text-center lg:text-right self-center lg:self-end">
-              <h4 className="text-slate-700 font-bold text-sm sm:text-base tracking-tight flex items-center justify-center lg:justify-end gap-2">
-                <span className="w-8 h-px bg-orange-400 hidden sm:block"></span>
+              <h4 className="text-slate-600 font-medium text-xs sm:text-sm tracking-tight flex items-center justify-center lg:justify-end gap-2">
+                <span className="w-8 h-px bg-slate-300 hidden sm:block"></span>
                 Sightseeing & Moments shared by our guests
               </h4>
             </div>
