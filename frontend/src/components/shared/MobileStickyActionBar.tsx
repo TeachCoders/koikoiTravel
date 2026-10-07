@@ -25,20 +25,20 @@ export default function MobileStickyActionBar() {
           href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi KoiKoi Travel, I want to inquire about a custom holiday tour package.")}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-col items-center justify-center py-2 px-1 rounded-xl bg-[#2E8B8B] text-white border border-[#2E8B8B] hover:bg-[#266f6f] transition-all active:scale-95"
+          className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-full bg-[#2E8B8B] text-white hover:bg-[#247070] transition-all active:scale-95 shadow-sm"
         >
-          <WhatsAppIcon className="w-[18px] h-[18px] text-white mb-0.5" />
-          <span className="text-[11px] font-bold">WhatsApp</span>
+          <WhatsAppIcon className="w-4 h-4 fill-white shrink-0" />
+          <span className="text-xs font-bold">WhatsApp</span>
         </a>
 
         {/* Instant Quote Button */}
         <QuoteModal>
           <button
             type="button"
-            className="w-full flex flex-col items-center justify-center py-2 px-1 rounded-xl bg-[#F8904D] text-white hover:bg-[#d57c42] transition-all active:scale-95 shadow-md shadow-[#F8904D]/30"
+            className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-full bg-[#F8904D] text-white hover:bg-[#d57c42] transition-all active:scale-95 shadow-sm cursor-pointer"
           >
-            <Sparkles size={18} className="mb-0.5 animate-pulse" />
-            <span className="text-[11px] font-bold">Get Quote</span>
+            <Sparkles size={15} className="shrink-0" />
+            <span className="text-xs font-bold">Get Free Quote</span>
           </button>
         </QuoteModal>
       </div>

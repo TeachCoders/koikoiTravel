@@ -125,18 +125,18 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
   return (
     <div className="pb-20 lg:pb-0">
       {/* ===== BREADCRUMB ===== */}
-      <nav aria-label="Breadcrumb" className="border-b border-slate-200 bg-slate-50">
-        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-2.5 flex flex-wrap items-center gap-1.5 text-[14px] text-slate-500">
+      <nav aria-label="Breadcrumb" className="border-b border-slate-100 bg-slate-50/60">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 py-3 flex flex-wrap items-center gap-1.5 text-xs sm:text-[13px] text-slate-500 font-medium">
           {breadcrumbNavItems.map((item, idx) => (
             <Fragment key={idx}>
-              {idx > 0 && <ChevronRight size={14} className="text-slate-300 shrink-0" />}
-              <Link href={item.href} className="hover:text-[#2E8B8B] transition-colors shrink-0">
+              {idx > 0 && <ChevronRight size={13} className="text-slate-300 shrink-0" />}
+              <Link href={item.href} className="hover:text-[#F8904D] transition-colors shrink-0">
                 {item.label}
               </Link>
             </Fragment>
           ))}
-          <ChevronRight size={14} className="text-slate-300 shrink-0" />
-          <span className="text-[#1C1C1C] font-semibold truncate max-w-[320px] md:max-w-none">
+          <ChevronRight size={13} className="text-slate-300 shrink-0" />
+          <span className="text-slate-900 font-semibold truncate max-w-[300px] md:max-w-none">
             {cleanJourneyTitle}
           </span>
         </div>
@@ -145,29 +145,26 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
       {/* ===== HERO + HEADING ===== */}
       <div className="bg-white relative overflow-hidden border-b border-slate-100">
         {/* Taj Mahal + Dance + Mandala pattern */}
-        <div className="absolute inset-0 opacity-[0.07]" style={{
+        <div className="absolute inset-0 opacity-[0.05]" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23D4561A' stroke-width='0.8'%3E%3Crect x='0' y='0' width='200' height='200' fill='none'/%3E%3Cpath d='M90 60 L100 20 L110 60 M85 62 L80 75 L120 75 L115 62 M75 75 L75 90 L125 90 L125 75 M100 20 L100 14 M96 38 L100 25 L104 38 M80 90 L80 120 L120 120 L120 90 M85 120 L85 125 L115 125 L115 120 M100 90 L100 120'/%3E%3Ccircle cx='100' cy='72' r='4'/%3E%3Cpath d='M60 155 Q60 145 65 140 Q60 135 55 140 Q60 145 60 155 M52 160 L60 155 L68 160 M50 168 L52 160 L48 170 M68 160 L72 168 L64 170 M55 140 L48 135 M65 140 L72 135 M55 150 L52 155 M65 150 L68 155 M60 155 L60 168 M55 168 L65 168'/%3E%3Ccircle cx='60' cy='135' r='5'/%3E%3Ccircle cx='40' cy='40' r='15'/%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3Ccircle cx='40' cy='40' r='5'/%3E%3Cpath d='M40 25 L40 15 M40 55 L40 65 M25 40 L15 40 M55 40 L65 40'/%3E%3Ccircle cx='160' cy='160' r='12'/%3E%3Ccircle cx='160' cy='160' r='7'/%3E%3Ccircle cx='160' cy='160' r='3'/%3E%3Cpath d='M160 148 L160 140 M160 172 L160 180 M148 160 L140 160 M172 160 L180 160'/%3E%3C/g%3E%3C/svg%3E")`
         }} />
-        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-5 md:py-10 relative z-10">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 py-5 md:py-8 relative z-10">
 
           {/* Header Info Block */}
-          <div className="mb-5">
+          <div className="mb-6">
 
             {pageH1 && (
-              <h1 className="font-heading text-[25px] font-extrabold tracking-tight text-[#1C1C1C] mb-3 leading-[1.2]">
+              <h1 className="font-heading text-2xl sm:text-3xl md:text-[32px] font-extrabold tracking-tight text-slate-900 mb-3 leading-[1.2]">
                 {durationText && (
-                  <span className="text-[#2E8B8B]">{durationText}</span>
-                )}
-                {durationText && (
-                  <span className="mx-2 text-slate-300">-</span>
+                  <span className="text-[#2E8B8B] mr-2">{durationText} -</span>
                 )}
                 {pageH1}
               </h1>
             )}
             {journey.destination && (
-              <div className="flex flex-wrap items-center gap-2 mb-5">
-                <div className="flex items-center gap-1.5 text-[13.5px] font-bold text-[#2E8B8B] bg-teal-50/80 border border-teal-200/80 px-3 py-1 rounded-xl shrink-0">
-                  <Route size={15} className="text-[#2E8B8B]" />
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <div className="flex items-center gap-1.5 text-xs sm:text-[13px] font-bold text-teal-700 bg-teal-50 border border-teal-200/80 px-3 py-1 rounded-full shrink-0 shadow-2xs">
+                  <Route size={14} className="text-[#2E8B8B]" />
                   <span>Journey Route:</span>
                 </div>
                 <div className="flex flex-wrap items-center gap-1.5">
@@ -176,11 +173,11 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     : journey.destination.split("-").map((s) => s.trim())
                   ).map((city, idx, arr) => (
                     <Fragment key={idx}>
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-100/90 text-slate-800 text-[13px] font-bold border border-slate-200/70 shadow-2xs">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100/90 text-slate-800 text-xs sm:text-[13px] font-semibold border border-slate-200/70 shadow-2xs">
                         {city}
                       </span>
                       {idx < arr.length - 1 && (
-                        <ChevronRight size={14} className="text-slate-400 shrink-0" />
+                        <ChevronRight size={13} className="text-slate-400 shrink-0" />
                       )}
                     </Fragment>
                   ))}
@@ -300,29 +297,28 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
             {/* RIGHT: DETAILS */}
             <aside className="h-full">
-              <div className="rounded-3xl border border-slate-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative overflow-hidden flex flex-col h-full">
+              <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm relative overflow-hidden flex flex-col h-full">
                 <div className="absolute top-0 right-0 p-6 opacity-[0.03] pointer-events-none">
                   <Sparkles className="w-32 h-32 rotate-12" />
                 </div>
 
-                <div className="p-7 lg:p-8 flex-1">
-                
+                <div className="p-6 sm:p-7 lg:p-8 flex-1">
 
-                  {/* 2. Quick Facts / Trip Overview */}
-                  <div className="mb-6 relative z-10 space-y-5">
-                    <h3 className="text-[20px] leading-[1.3] font-extrabold text-[#1C1C1C] flex items-center gap-2">
+                  {/* Quick Facts / Trip Overview */}
+                  <div className="mb-6 relative z-10 space-y-4">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
                       <Sparkles size={18} className="text-[#F8904D]" />
                       Trip Overview
                     </h3>
 
-                    <div className="space-y-4">
+                    <div className="space-y-3.5">
                       {/* Duration */}
-                      <div className="flex items-center justify-between gap-4">
-                        <span className="flex items-center gap-2 text-[14.5px] text-slate-600 font-semibold">
+                      <div className="flex items-center justify-between gap-4 py-1">
+                        <span className="flex items-center gap-2 text-sm text-slate-600 font-semibold">
                           <SunMoon size={16} className="text-[#2E8B8B]" />
                           Duration
                         </span>
-                        <span className="text-[15.5px] font-extrabold text-[#1C1C1C]">
+                        <span className="text-sm sm:text-[15px] font-bold text-slate-900">
                           {journey.duration ||
                             (journey.noDays > 0
                               ? `${journey.noDays > 1 ? `${journey.noDays - 1} Nights / ` : ""}${journey.noDays} Days`
@@ -332,19 +328,19 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
                       {/* Best Season to Visit */}
                       {(journey.months?.length ?? 0) > 0 && (
-                        <div className="pt-4 border-t border-slate-100/80 flex flex-col gap-2.5">
-                          <h4 className="text-[14.5px] font-bold text-[#1C1C1C] flex items-center gap-2">
-                            <CalendarDays size={16} className="text-[#2E8B8B]" />
+                        <div className="pt-3.5 border-t border-slate-100 flex flex-col gap-2">
+                          <h4 className="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <CalendarDays size={15} className="text-[#2E8B8B]" />
                             Best Season to Visit
                           </h4>
-                          <div className="flex flex-wrap gap-2">
+                          <div className="flex flex-wrap gap-1.5">
                             {groupMonthsBySeason(journey.months!).map((g) => {
                               const rangeText = formatSeasonRange(g);
                               return (
                                 <div
                                   key={g.season}
                                   className={cn(
-                                    "inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[12.5px] font-bold border transition-all shadow-2xs",
+                                    "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all shadow-2xs",
                                     getSeasonStyles(g.season)
                                   )}
                                 >
@@ -364,18 +360,18 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     </div>
                   </div>
 
-                  {/* 3. Ideal For */}
+                  {/* Ideal For */}
                   {(journey.travelExperiences?.length ?? 0) > 0 && (
-                    <div className="relative z-10 pt-4 border-t border-slate-100/80">
-                      <h4 className="text-[14.5px] font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
-                        <Star size={16} className="text-[#F5B041] fill-[#F5B041]" />
+                    <div className="relative z-10 pt-3.5 border-t border-slate-100">
+                      <h4 className="text-xs sm:text-sm font-bold text-slate-800 mb-2.5 flex items-center gap-2">
+                        <Star size={15} className="text-[#F5B041] fill-[#F5B041]" />
                         Ideal For
                       </h4>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1.5">
                         {journey.travelExperiences!.map((e) => (
                           <span
                             key={e.id}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-50/80 hover:bg-orange-50/60 text-slate-700 hover:text-[#F8904D] text-[12.5px] font-bold border border-slate-200/80 hover:border-orange-200 transition-all shadow-2xs"
+                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-orange-50 text-slate-700 hover:text-[#F8904D] text-xs font-semibold border border-slate-200/80 hover:border-orange-200 transition-all shadow-2xs"
                           >
                             <span className="text-[#2E8B8B] shrink-0">{travelExperienceIcon(e.title)}</span>
                             <span>{e.title}</span>
@@ -385,25 +381,24 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     </div>
                   )}
                 </div>
-                {/* Interested in this tour - desktop only. On a phone the card
-                    stacks and this pushes the itinerary down, and the sticky
-                    action bar already carries both actions. */}
-                <div className="p-6 lg:p-8 bg-slate-50 border-t border-slate-100 hidden lg:flex flex-col gap-4 relative z-10">
+
+                {/* Interested in this tour */}
+                <div className="p-5 sm:p-6 lg:p-7 bg-slate-50/70 border-t border-slate-100 hidden lg:flex flex-col gap-3.5 relative z-10">
                   <div>
-                    <h3 className="text-[18px] font-extrabold text-[#1C1C1C] mb-1 leading-[1.3]">Ready to personalize this trip?</h3>
-                    <p className="text-[14px] text-slate-500 leading-relaxed font-medium">
+                    <h3 className="text-base sm:text-[17px] font-bold text-slate-900 mb-1 leading-snug">Ready to personalize this trip?</h3>
+                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-normal">
                       Connect directly with our destination specialist for a tailor-made plan &amp; instant quote.
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3 w-full">
+                  <div className="grid grid-cols-2 gap-2.5 w-full">
                     <a
                       href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
                         `Hi KoiKoi Travel! I'm interested in "${journey.title}". Please share the best tailor-made quote and options.\n\nTour Page: ${pageUrl}`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full flex items-center justify-center gap-2 px-3 py-3 rounded-xl bg-[#2E8B8B] hover:bg-[#247070] active:scale-95 text-white text-[13px] font-bold shadow-md shadow-[#2E8B8B]/20 transition-all text-center"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#2E8B8B] hover:bg-[#247070] active:scale-95 text-white text-xs sm:text-sm font-bold shadow-sm transition-all text-center"
                     >
                       <WhatsAppIcon className="w-4 h-4 fill-white shrink-0" />
                       <span>WhatsApp Us</span>
@@ -412,15 +407,15 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     <QuoteModal>
                       <button
                         type="button"
-                        className="w-full flex items-center justify-center gap-2 px-3 py-3 rounded-xl bg-[#F8904D] hover:bg-[#d97536] active:scale-95 text-white text-[13px] font-bold shadow-md shadow-[#F8904D]/20 transition-all text-center cursor-pointer"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#F8904D] hover:bg-[#d97536] active:scale-95 text-white text-xs sm:text-sm font-bold shadow-sm transition-all text-center cursor-pointer"
                       >
-                        <CalendarDays size={16} className="shrink-0" />
+                        <CalendarDays size={15} className="shrink-0" />
                         <span>Request Quote</span>
                       </button>
                     </QuoteModal>
                   </div>
 
-                  <div className="pt-2 flex items-center justify-around text-center text-[11px] font-bold text-slate-500 border-t border-slate-200/60 mt-1">
+                  <div className="pt-2 flex items-center justify-around text-center text-xs font-semibold text-slate-500 border-t border-slate-200/60 mt-0.5">
                     <span className="flex items-center gap-1 text-slate-600">
                       <Check size={13} className="text-[#2E8B8B]" />
                       Free Planning
@@ -438,24 +433,27 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   </div>
                 </div>
 
-
               </div>
             </aside>
           </div>
         </div>
       </div>
 
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 py-10 md:py-16 grid grid-cols-1 lg:grid-cols-[9fr_5fr] gap-6 lg:gap-8">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 py-8 md:py-12 grid grid-cols-1 lg:grid-cols-[9fr_5fr] gap-6 lg:gap-8">
         {/* ===== MAIN ===== */}
-        <div className="space-y-8 md:space-y-12">
+        <div className="space-y-8 md:space-y-10">
           {journey.highlights && journey.highlights.length > 0 && (
             <section>
-              <span className="accent-label">Highlights</span>
-              <h2 className="h3 text-[22px] leading-[1.25] text-[#1C1C1C] mt-2 mb-3">Key Experiences</h2>
-              <div className="bg-[#2E8B8B]/5 rounded-3xl p-5 md:p-6 border border-[#2E8B8B]/10">
+              <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+                Highlights
+              </span>
+              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-4">
+                Key <span className="text-[#F8904D]">Experiences</span>
+              </h2>
+              <div className="bg-teal-50/50 rounded-2xl md:rounded-3xl p-5 md:p-6 border border-teal-100/80">
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   {journey.highlights.map((h, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-[15px] font-medium text-[#1C1C1C] leading-[1.5]">
+                    <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[15px] font-medium text-slate-800 leading-[1.5]">
                       <BadgeCheck size={18} className="shrink-0 mt-0.5 text-[#2E8B8B]" />
                       <span>{h}</span>
                     </li>
@@ -467,9 +465,13 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
           {journey.overView && (
             <section>
-              <span className="accent-label">Overview</span>
-              <h2 className="h3 text-[22px] leading-[1.25] text-[#1C1C1C] mt-3 mb-6">About This Tour</h2>
-              <div className="bg-white rounded-3xl p-5 md:p-9 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] text-base text-slate-600 leading-[1.8]">
+              <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+                Overview
+              </span>
+              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-4">
+                About <span className="text-[#F8904D]">This Tour</span>
+              </h2>
+              <div className="bg-white rounded-2xl md:rounded-3xl p-5 md:p-8 border border-slate-200/80 shadow-sm text-[15px] sm:text-base text-slate-600 leading-[1.8]">
                 <RichContent html={linkKeywords(journey.overView, paragraphLinkRules)} className="rich-text-plain-links" />
               </div>
             </section>
@@ -477,13 +479,17 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
           {journey.days && journey.days.length > 0 && (
             <section>
-              <div className="flex flex-wrap items-end justify-between gap-4 mb-5 md:mb-8">
+              <div className="flex flex-wrap items-end justify-between gap-4 mb-4">
                 <div>
-                  <span className="accent-label">Itinerary</span>
-                  <h2 className="h3 text-[22px] leading-[1.25] text-[#1C1C1C] mt-2">Day By Day Itinerary</h2>
+                  <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+                    Itinerary
+                  </span>
+                  <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight">
+                    Day By Day <span className="text-[#F8904D]">Itinerary</span>
+                  </h2>
                 </div>
               </div>
-              <div className="relative bg-white rounded-3xl p-2 md:p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
+              <div className="relative bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 shadow-sm border border-slate-200/80">
                 <div className="day-accordion">
                   {journey.days.map((day, i) => (
                     <DayItem key={day.id} index={i + 1} day={day} defaultOpen={i === 0} />
@@ -494,30 +500,30 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           )}
 
           {(journey.inclusions?.length ?? 0) > 0 || (journey.exclusions?.length ?? 0) > 0 ? (
-            <div className="grid grid-cols-1 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 gap-6">
               {(journey.inclusions?.length ?? 0) > 0 && (
-                <div className="bg-emerald-50/40 border border-emerald-100 rounded-3xl p-5 md:p-9 shadow-[0_8px_30px_rgb(16,185,129,0.04)]">
-                  <h3 className="font-heading text-[20px] leading-[1.3] font-bold text-emerald-800 mb-5 flex items-center gap-2.5">
-                    <CheckCircle2 size={22} className="text-emerald-500" /> What's Included
+                <div className="bg-emerald-50/50 border border-emerald-200/70 rounded-2xl md:rounded-3xl p-5 md:p-7 shadow-xs">
+                  <h3 className="font-heading text-lg sm:text-xl font-bold text-emerald-900 mb-4 flex items-center gap-2">
+                    <CheckCircle2 size={20} className="text-emerald-600" /> What's Included
                   </h3>
-                  <ul className="space-y-4">
+                  <ul className="space-y-3">
                     {(journey.inclusions ?? []).map((item, i) => (
-                      <li key={i} className="flex items-start gap-3 text-[15px] font-bold text-emerald-950 leading-relaxed">
-                        <CheckCircle2 size={20} className="text-emerald-500 mt-[2px] shrink-0" /> {item}
+                      <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-semibold text-emerald-950 leading-relaxed">
+                        <CheckCircle2 size={18} className="text-emerald-500 mt-[2px] shrink-0" /> {item}
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
               {(journey.exclusions?.length ?? 0) > 0 && (
-                <div className="bg-red-50/40 border border-red-100 rounded-3xl p-5 md:p-9 shadow-[0_8px_30px_rgb(239,68,68,0.04)]">
-                  <h3 className="font-heading text-[20px] leading-[1.3] font-bold text-red-800 mb-5 flex items-center gap-2.5">
-                    <XCircle size={22} className="text-red-500" /> What's Excluded
+                <div className="bg-red-50/50 border border-red-200/70 rounded-2xl md:rounded-3xl p-5 md:p-7 shadow-xs">
+                  <h3 className="font-heading text-lg sm:text-xl font-bold text-red-900 mb-4 flex items-center gap-2">
+                    <XCircle size={20} className="text-red-500" /> What's Excluded
                   </h3>
-                  <ul className="space-y-4">
+                  <ul className="space-y-3">
                     {(journey.exclusions ?? []).map((item, i) => (
-                      <li key={i} className="flex items-start gap-3 text-[15px] font-medium text-red-950 leading-relaxed">
-                        <XCircle size={20} className="text-red-500 mt-[2px] shrink-0" /> {item}
+                      <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-medium text-red-950 leading-relaxed">
+                        <XCircle size={18} className="text-red-400 mt-[2px] shrink-0" /> {item}
                       </li>
                     ))}
                   </ul>
@@ -528,21 +534,25 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
           {(journey.whyChooseUs?.length ?? 0) > 0 && (
             <section>
-              <span className="accent-label">Why Choose Us</span>
-              <h2 className="h3 text-[22px] leading-[1.25] text-[#1C1C1C] mt-2 mb-4 md:mb-6">Why Book With Us</h2>
-              <div className="relative rounded-3xl bg-gradient-to-br from-white via-[#F8FAFA] to-[#EBF3F3] p-6 md:p-10 overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#2E8B8B]/10">
+              <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+                Why Choose Us
+              </span>
+              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-4">
+                Why Book With <span className="text-[#F8904D]">KoiKoi Travel</span>
+              </h2>
+              <div className="relative rounded-2xl md:rounded-3xl bg-gradient-to-br from-white via-[#F8FAFA] to-[#EBF3F3] p-6 md:p-8 overflow-hidden shadow-sm border border-[#2E8B8B]/15">
                 {/* Background Watermark Icon */}
-                <div className="absolute -top-8 -right-4 opacity-[0.05] pointer-events-none rotate-12">
+                <div className="absolute -top-8 -right-4 opacity-[0.04] pointer-events-none rotate-12">
                   <ShieldCheck className="w-56 h-56 md:w-64 md:h-64 text-[#2E8B8B]" />
                 </div>
                 {/* Subtle Glow */}
                 <div className="absolute -top-20 -right-20 w-64 h-64 bg-[#2E8B8B]/10 blur-[80px] rounded-full pointer-events-none" />
 
-                <ul className="relative z-10 space-y-5 md:space-y-6">
+                <ul className="relative z-10 space-y-4 md:space-y-5">
                   {(journey.whyChooseUs ?? []).map((item, i) => (
-                    <li key={i} className="flex items-start gap-4 text-[15px] font-semibold text-slate-700 leading-[1.7]">
-                      <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0 mt-0.5 border border-slate-100 shadow-sm">
-                        <ShieldCheck size={18} className="text-[#2E8B8B]" />
+                    <li key={i} className="flex items-start gap-3.5 text-sm sm:text-[15px] font-medium text-slate-700 leading-[1.6]">
+                      <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center shrink-0 mt-0.5 border border-slate-200/80 shadow-xs">
+                        <ShieldCheck size={16} className="text-[#2E8B8B]" />
                       </div>
                       {item}
                     </li>
@@ -554,47 +564,47 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
         </div>
 
         {/* ===== SIDEBAR ===== */}
-        <aside className="space-y-8 lg:sticky lg:top-24 self-start">
-          <div className="rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] bg-white border border-slate-100 overflow-hidden">
+        <aside className="space-y-6 lg:sticky lg:top-24 self-start">
+          <div className="rounded-3xl shadow-sm bg-white border border-slate-200/80 overflow-hidden">
             <TourBookingForm embedded />
           </div>
 
           {(journey.bookingPolicyList?.length ?? 0) > 0 ? (
-            <div className="rounded-3xl bg-slate-50 border border-slate-100 p-7">
-              <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5 flex items-center gap-2">
-                <Sparkles size={16} className="text-[#F8904D]" />
+            <div className="rounded-2xl md:rounded-3xl bg-slate-50/80 border border-slate-200/80 p-5 sm:p-6">
+              <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#2E8B8B] mb-4 flex items-center gap-2">
+                <Sparkles size={15} className="text-[#F8904D]" />
                 Booking Policy
               </h4>
-              <ul className="space-y-3.5">
+              <ul className="space-y-3">
                 {(journey.bookingPolicyList ?? []).map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-[14px] font-medium text-slate-600 leading-relaxed">
-                    <BadgeCheck size={18} className="shrink-0 mt-[2px] text-[#2E8B8B]" />
+                  <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm font-medium text-slate-600 leading-relaxed">
+                    <BadgeCheck size={16} className="shrink-0 mt-[2px] text-[#2E8B8B]" />
                     {item}
                   </li>
                 ))}
               </ul>
             </div>
           ) : (
-            <div className="rounded-3xl bg-gradient-to-br from-teal-50/50 to-slate-50 border border-teal-100/80 p-6">
-              <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-4 flex items-center gap-2">
-                <ShieldCheck size={16} className="text-[#2E8B8B]" />
+            <div className="rounded-2xl md:rounded-3xl bg-gradient-to-br from-teal-50/50 to-slate-50 border border-teal-200/60 p-5 sm:p-6">
+              <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#2E8B8B] mb-3.5 flex items-center gap-2">
+                <ShieldCheck size={15} className="text-[#2E8B8B]" />
                 Why Book With Confidence
               </h4>
-              <ul className="space-y-3 text-[13.5px] font-medium text-slate-700">
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
+              <ul className="space-y-2.5 text-xs sm:text-[13px] font-medium text-slate-700">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 size={15} className="text-[#2E8B8B] shrink-0 mt-0.5" />
                   <span>100% Tailor-made with free itinerary consultation</span>
                 </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 size={15} className="text-[#2E8B8B] shrink-0 mt-0.5" />
                   <span>Transparent quotes with no hidden fees</span>
                 </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 size={15} className="text-[#2E8B8B] shrink-0 mt-0.5" />
                   <span>Dedicated 24/7 on-ground travel manager</span>
                 </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 size={15} className="text-[#2E8B8B] shrink-0 mt-0.5" />
                   <span>Verified English-speaking guides &amp; licensed chauffeurs</span>
                 </li>
               </ul>
@@ -602,16 +612,16 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           )}
 
           {stateSlug && stateTitle && (
-            <div className="rounded-2xl bg-[#1C1C1C] text-white p-6 text-center">
-              <Star size={20} className="mx-auto text-[#F5B041] mb-2" />
-              <p className="text-sm text-white/85">
-                Discover more tours from <span className="font-bold">{stateTitle}</span>
+            <div className="rounded-2xl md:rounded-3xl bg-slate-900 text-white p-5 sm:p-6 text-center shadow-sm">
+              <Star size={18} className="mx-auto text-[#F5B041] mb-2" />
+              <p className="text-xs sm:text-sm text-slate-200">
+                Discover more tours from <span className="font-bold text-white">{stateTitle}</span>
               </p>
               <Link
                 href={`/tour-packages/${countrySlug}/${stateSlug}`}
-                className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-[#1C1C1C] text-sm font-semibold hover:bg-[#2E8B8B] hover:text-white transition-colors"
+                className="mt-3.5 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-slate-900 text-xs sm:text-sm font-bold hover:bg-[#F8904D] hover:text-white transition-all shadow-xs"
               >
-                View All Tours <ArrowRight size={15} />
+                View All Tours <ArrowRight size={14} />
               </Link>
             </div>
           )}
@@ -620,13 +630,18 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
       {/* ===== TRIP GUIDE (MORE DESCRIPTION) ===== */}
       {journey.moreDescription && (
-        <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-12 md:py-20">
-          <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
+        <section id="more" className="bg-slate-50/80 border-t border-slate-200/80 py-10 md:py-14">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
             <div className="max-w-4xl">
-              <span className="accent-label">Trip Guide</span>
+              <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+                Trip Guide
+              </span>
+              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-4">
+                Essential <span className="text-[#F8904D]">Trip Guide</span>
+              </h2>
               <RichContent
                 html={linkKeywords(journey.moreDescription, paragraphLinkRules)}
-                className="rich-text-plain-links mt-4"
+                className="rich-text-plain-links text-[15px] sm:text-base text-slate-600 leading-[1.8]"
               />
             </div>
           </div>

@@ -22,21 +22,22 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
 
   const embeddedHeader = embedded ? (
     <div className="mb-3">
-      <span className="inline-block text-[10px] font-bold tracking-[0.3em] uppercase text-[#2E8B8B] mb-2">
-        Book This Tour
+      <span className="inline-block text-[10px] font-bold tracking-[0.25em] uppercase text-[#F8904D] mb-1.5">
+        Plan Your Journey
       </span>
-      <h3 className="h3 text-[#1C1C1C]">Plan Your Adventure</h3>
+      <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+        Book This <span className="text-[#F8904D]">Tour</span>
+      </h3>
     </div>
   ) : (
-    <div className="mb-10 text-center">
-      <span className="inline-block text-[11px] font-bold tracking-[0.35em] uppercase text-indigo-500 mb-3">
-        ✦ Tour Booking
+    <div className="mb-8 text-center">
+      <span className="inline-block text-[11px] font-bold tracking-[0.25em] uppercase text-[#F8904D] mb-2">
+        Tour Booking
       </span>
-      <h1 className="h3 text-slate-900">
-        Plan Your<br />
-        <span className="text-brand-primary">Adventure</span>
+      <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        Plan Your <span className="text-[#F8904D]">Adventure</span>
       </h1>
-      <p className="text-brand-neutral-muted text-sm mt-3 leading-relaxed">
+      <p className="text-slate-500 text-sm mt-2 leading-relaxed font-medium">
         Please provide your details and tour preferences.
       </p>
     </div>
@@ -213,7 +214,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
             className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm max-sm:text-[13px] placeholder-slate-400 focus:outline-none focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 transition-all duration-150 resize-none font-medium" />
 
           <button type="submit" disabled={isLoading}
-            className="w-full bg-[#F8904D] hover:bg-[#d57c42] text-white active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed font-bold text-sm uppercase tracking-wider py-3 rounded-xl transition-all duration-150 shadow-md shadow-[#F8904D]/20 flex items-center justify-center gap-2 mt-2">
+            className="w-full bg-[#F8904D] hover:bg-[#d57c42] text-white active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed font-bold text-sm uppercase tracking-wider py-3 rounded-full transition-all duration-150 shadow-md shadow-[#F8904D]/20 flex items-center justify-center gap-2 mt-2 cursor-pointer">
             {isLoading ? (
               <>
                 <PageLoader size="inline" />
