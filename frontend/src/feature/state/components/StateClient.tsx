@@ -220,7 +220,7 @@ export default function StateClient() {
             helperText="Selected states appear on the Left Column in this order."
             options={leftOptions}
             activeOnly
-            columns={2}
+            columns={3}
             selectedIds={orderedIds}
             onChange={setOrderedIds}
             loading={orderLoading}
@@ -237,7 +237,7 @@ export default function StateClient() {
             helperText="Selected states appear on the Right Column in this order."
             options={rightOptions}
             activeOnly
-            columns={2}
+            columns={3}
             selectedIds={domesticOrderedIds}
             onChange={setDomesticOrderedIds}
             loading={orderLoading}
