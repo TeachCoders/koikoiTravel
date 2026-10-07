@@ -179,9 +179,9 @@ export const PopularDestinations: React.FC<{
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-6 sm:mb-8 gap-6 relative z-30">
           <div>
             <SectionLabel>Popular Destinations</SectionLabel>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1.5">Explore Top Places</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1.5">Explore Iconic Destinations</h2>
             <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
-              Find the best holiday packages for India&apos;s most loved states and iconic circuits.
+              Discover curated journeys across India&apos;s most sought-after states, heritage circuits, and scenic landscapes.
             </p>
           </div>
 

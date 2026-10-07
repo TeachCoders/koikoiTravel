@@ -34,13 +34,13 @@ export const BestSellingPackages: React.FC<{
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6 sm:mb-8">
           <div>
-            <SectionLabel>Handpicked Holiday Tours</SectionLabel>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1.5">Popular Tour Packages</h2>
-            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">Ready-made holiday packages with hotels, cabs and daily sightseeing — all planned for you.</p>
+            <SectionLabel>Featured Itineraries</SectionLabel>
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1.5">Top-Rated Holiday Packages</h2>
+            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">All-inclusive private tours featuring handpicked hotels, dedicated chauffeurs, and personalized sightseeing.</p>
           </div>
           <Link href="/tour-packages">
             <button className="btn-outline">
-              <span>View All Tours</span><ArrowRight className="w-4 h-4" />
+              <span>Explore All Tours</span><ArrowRight className="w-4 h-4" />
             </button>
           </Link>
         </div>

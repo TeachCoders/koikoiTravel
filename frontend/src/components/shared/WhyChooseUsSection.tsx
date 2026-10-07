@@ -240,25 +240,25 @@ const VALUE_PROPS = [
     id: "possibilities",
     icon: <DiscoverPossibilitiesIcon />,
     title: "Discover the possibilities",
-    description: "With hundreds and thousands of attractions, curated packages, hotels & more, you're sure to find joy.",
+    description: "Explore hundreds of handpicked private tour packages, scenic getaways & tailor-made itineraries.",
   },
   {
     id: "deals",
     icon: <EnjoyDealsIcon />,
     title: "Enjoy deals & delights",
-    description: "Quality activities. Great prices. Plus, direct transparent pricing to get the most value out of every trip.",
+    description: "Direct local operator rates with zero hidden charges. Honest pricing for maximum value on every journey.",
   },
   {
     id: "easy",
     icon: <ExploringEasyIcon />,
     title: "Exploring made easy",
-    description: "Book seamlessly, customize on demand & get dedicated 24/7 personal trip managers for easier exploring.",
+    description: "Hassle-free custom planning, instant support & dedicated 24/7 personal trip managers from start to finish.",
   },
   {
     id: "trust",
     icon: <TravelTrustIcon />,
     title: "Travel you can trust",
-    description: "Read honest reviews & get reliable customer support. We're with you at every step.",
+    description: "Handpicked verified accommodations, courteous chauffeurs & end-to-end traveler safety.",
   },
 ];
 

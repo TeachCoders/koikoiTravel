@@ -11,7 +11,7 @@ export default function SeoTextBlock() {
 
         <div>
           <SectionLabel icon={<BookOpen className="w-4 h-4" />}>Our Story</SectionLabel>
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1.5">About <span className="text-[#F8904D]">KoiKoi Travel</span></h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1.5">About KoiKoi Travel</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
