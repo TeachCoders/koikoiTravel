@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import { HelpCircle, ChevronDown, ChevronUp, MessageSquare, Sparkles } from "lucide-react";
+import React, { useState, useMemo } from "react";
+import { HelpCircle, ChevronDown, MessageSquare, Sparkles } from "lucide-react";
 import { SectionLabel } from "@/components/shared/SectionLabel";
 import { QuoteModal } from "@/components/shared/QuoteModal";
-import { HOME_FAQS, type FaqItem } from "@/lib/homeFaqs";
+import { HOME_FAQS } from "@/lib/homeFaqs";
 
 interface FaqSectionProps {
   faqs?: any[];
@@ -17,20 +17,68 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
   heading = "Frequently Asked Questions",
   subtitle = "Simple answers about booking, payments, trip plans and help during your holiday.",
 }) => {
-  const [openId, setOpenId] = useState<number | null>(1);
-  const toggleFaq = (id: number) => setOpenId(openId === id ? null : id);
-  const faqData = faqs && faqs.length > 0 
-    ? faqs.map((f: any, i) => ({
-        id: f.id || i + 1,
-        question: f.ques || f.question || "",
-        answer: f.ans || f.answer || "",
-        category: f.category || undefined,
-      }))
-    : HOME_FAQS;
+  const [openId, setOpenId] = useState<number | string | null>(1);
+  const toggleFaq = (id: number | string) => setOpenId(openId === id ? null : id);
+  
+  const faqData = useMemo(() => {
+    return faqs && faqs.length > 0 
+      ? faqs.map((f: any, i) => ({
+          id: f.id || i + 1,
+          question: f.ques || f.question || "",
+          answer: f.ans || f.answer || "",
+          category: f.category || undefined,
+        }))
+      : HOME_FAQS;
+  }, [faqs]);
+
+  // Split into 2 columns for desktop
+  const col1 = useMemo(() => faqData.filter((_, i) => i % 2 === 0), [faqData]);
+  const col2 = useMemo(() => faqData.filter((_, i) => i % 2 !== 0), [faqData]);
+
+  const renderFaqCard = (faq: { id: number | string; question: string; answer: string }) => {
+    const isOpen = openId === faq.id;
+    return (
+      <div
+        key={faq.id}
+        className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+          isOpen ? "border-[#2E8B8B]/30 shadow-md bg-white" : "border-slate-200/80 bg-white hover:border-slate-300"
+        }`}
+      >
+        <button
+          type="button"
+          onClick={() => toggleFaq(faq.id)}
+          className="w-full flex items-center justify-between gap-4 px-4 py-4 md:px-5 md:py-4 text-left cursor-pointer focus:outline-none"
+        >
+          <div className="flex items-center gap-2.5 min-w-0 flex-1">
+            <span className={`text-[15px] sm:text-[16px] font-semibold transition-colors leading-snug ${
+              isOpen ? "text-[#2E8B8B]" : "text-slate-900"
+            }`}>
+              {faq.question}
+            </span>
+          </div>
+          <span className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
+            isOpen ? "bg-[#2E8B8B] text-white rotate-180" : "bg-slate-100 text-slate-500"
+          }`}>
+            <ChevronDown size={15} />
+          </span>
+        </button>
+
+        {isOpen && (
+          <div className="px-4 pb-4 md:px-5 md:pb-5 text-slate-600 text-xs sm:text-sm leading-relaxed border-t border-slate-100 pt-3.5">
+            {faq.answer}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
-    <section id="faq" className="py-8 sm:py-10 md:py-12 bg-slate-50 relative border-t border-slate-200/70">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 space-y-6 sm:space-y-8">
+    <section id="faq" className="py-8 sm:py-10 md:py-12 bg-[#f8f8f8] relative overflow-hidden border-t border-slate-200/70">
+      {/* Subtle India Travel Doodle Background */}
+      <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23D4561A' stroke-width='0.8'%3E%3Crect x='0' y='0' width='200' height='200' fill='none'/%3E%3Cpath d='M90 60 L100 20 L110 60 M85 62 L80 75 L120 75 L115 62 M75 75 L75 90 L125 90 L125 75 M100 20 L100 14 M96 38 L100 25 L104 38 M80 90 L80 120 L120 120 L120 90 M85 120 L85 125 L115 125 L115 120 M100 90 L100 120'/%3E%3Ccircle cx='100' cy='72' r='4'/%3E%3Cpath d='M60 155 Q60 145 65 140 Q60 135 55 140 Q60 145 60 155 M52 160 L60 155 L68 160 M50 168 L52 160 L48 170 M68 160 L72 168 L64 170 M55 140 L48 135 M65 140 L72 135 M55 150 L52 155 M65 150 L68 155 M60 155 L60 168 M55 168 L65 168'/%3E%3Ccircle cx='60' cy='135' r='5'/%3E%3Ccircle cx='40' cy='40' r='15'/%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3Ccircle cx='40' cy='40' r='5'/%3E%3Cpath d='M40 25 L40 15 M40 55 L40 65 M25 40 L15 40 M55 40 L65 40'/%3E%3Ccircle cx='160' cy='160' r='12'/%3E%3Ccircle cx='160' cy='160' r='7'/%3E%3Ccircle cx='160' cy='160' r='3'/%3E%3Cpath d='M160 148 L160 140 M160 172 L160 180 M148 160 L140 160 M172 160 L180 160'/%3E%3C/g%3E%3C/svg%3E")`
+      }} />
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 space-y-6 sm:space-y-8 relative z-10">
         {/* Section Header */}
         <div>
           <SectionLabel icon={<HelpCircle className="w-4 h-4" />}>Got Questions?</SectionLabel>
@@ -38,44 +86,16 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
           <p className="mt-2 text-[15px] text-slate-500 max-w-2xl leading-relaxed">{subtitle}</p>
         </div>
 
-        {/* FAQ Accordion List - Full Container Width */}
-        <div className="w-full space-y-3">
-          {faqData.map((faq) => {
-            const isOpen = openId === faq.id;
-            return (
-              <div
-                key={faq.id}
-                className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
-                  isOpen ? "border-[#2E8B8B]/30 shadow-md bg-white" : "border-slate-200/80 bg-white hover:border-slate-300"
-                }`}
-              >
-                <button
-                  onClick={() => toggleFaq(faq.id)}
-                  className="w-full flex items-center justify-between gap-4 px-4 py-4 md:px-6 md:py-5 text-left cursor-pointer focus:outline-none"
-                >
-                  <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <span className={`text-[16px] sm:text-[17px] font-normal transition-colors leading-snug ${
-                      isOpen ? "text-[#2E8B8B]" : "text-slate-900"
-                    }`}>
-                      {faq.question}
-                    </span>
-                  </div>
-                  <span className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
-                    isOpen ? "bg-[#2E8B8B] text-white rotate-180" : "bg-slate-100 text-slate-500"
-                  }`}>
-                    <ChevronDown size={16} />
-                  </span>
-                </button>
-
-                {isOpen && (
-                  <div className="px-4 pb-4 md:px-6 md:pb-6 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-100 pt-4">
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+        {/* 2-Column FAQ Layout on Desktop */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 items-start">
+          <div className="space-y-3">
+            {col1.map(renderFaqCard)}
+          </div>
+          <div className="space-y-3">
+            {col2.map(renderFaqCard)}
+          </div>
         </div>
+
         {/* Still Have Questions CTA Banner */}
         <div className="mt-6 md:mt-8 rounded-2xl bg-gradient-to-r from-[#1C1C1C] via-[#243333] to-[#1C1C1C] text-white p-5 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-5 shadow-lg border border-slate-800">
           <div className="flex items-center gap-4 text-center sm:text-left">

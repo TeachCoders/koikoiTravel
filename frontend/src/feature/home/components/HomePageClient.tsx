@@ -7,6 +7,7 @@ import BestSellingPackages from "./BestSellingPackages";
 import PopularDestinations from "./PopularDestinations";
 import TravelExperiencesSection from "./TravelExperiencesSection";
 import WhyChooseUsSection from "@/components/shared/WhyChooseUsSection";
+import FaqSection from "./FaqSection";
 import TrustedPartners from "./TrustedPartners";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
 import type { Country, PaginatedResponse as CountryPage } from "@/feature/country/type";
@@ -43,6 +44,7 @@ export const HomePageClient: React.FC<{
         initialJourneys={initialJourneys}
       />
       <WhyChooseUsSection />
+      <FaqSection />
       <TrustedPartners />
     </div>
   );

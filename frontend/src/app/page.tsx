@@ -5,7 +5,8 @@ import Footer from "@/components/shared/Footer";
 import HomeSections from "@/feature/home/components/HomeSections";
 import HomeSectionsFallback from "@/feature/home/components/HomeSectionsFallback";
 import JsonLd from "@/components/shared/JsonLd";
-import { organizationSchema, websiteSchema } from "@/lib/jsonLd";
+import { organizationSchema, websiteSchema, faqSchema } from "@/lib/jsonLd";
+import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { Metadata } from "next";
 
 export const revalidate = 300;
@@ -34,9 +35,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
+  const homeFaqJsonLd = faqSchema(HOME_FAQS);
+
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-zinc-950 font-sans">
-      <JsonLd data={[organizationSchema, websiteSchema]} />
+      <JsonLd data={[organizationSchema, websiteSchema, homeFaqJsonLd]} />
       <Header />
       <main className="flex-1">
         <HomeSections />
