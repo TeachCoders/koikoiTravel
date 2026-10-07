@@ -409,13 +409,17 @@ function CountryContent({
       </section>
 
       {/* ===== KNOW MORE (ALL INFO) ===== */}
-      <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-12 md:py-20">
-        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
+      <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-8 sm:py-10 md:py-12">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText ? "lg:grid-cols-3" : ""}`}>
           {hasKnowMoreText && (
               <div className="lg:col-span-2">
-                <span className="accent-label">Know More</span>
-                <h2 className="h3 text-[#1C1C1C] mt-2 mb-5 md:mb-8">Everything About {displayTitle}</h2>
+                <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+                  Know More
+                </span>
+                <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 mb-6">
+                  Everything About {displayTitle}
+                </h2>
 
                 {country.seoDescription && (
                   <RichContent html={country.seoDescription} />

@@ -492,15 +492,15 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       <FaqSection faqs={state.faqs} />
 
       {/* ===== ARTICLE / MORE DESCRIPTION (ALL INFO) AT BOTTOM WITH WHITE BACKGROUND ===== */}
-      <section id="more" className="bg-white border-t border-slate-200/60 py-12 md:py-20">
-        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
+      <section id="more" className="bg-white border-t border-slate-200/60 py-8 sm:py-10 md:py-12">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText ? "lg:grid-cols-3" : ""}`}>
           {hasKnowMoreText && (
               <div className="lg:col-span-2">
-                <span className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#2E8B8B]">
+                <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
                   Know More
                 </span>
-                <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-slate-900 mt-2 mb-6 md:mb-8">
+                <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 mb-6">
                   Everything About {state.title}
                 </h2>
 
