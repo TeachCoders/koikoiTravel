@@ -102,12 +102,8 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
   const topJourneyIdSet = new Set(topJourneys.map((j) => j.id));
 
-  // 2. Multi-City & Extended Journeys (State tours excluding the top featured ones, or tours with multiple destinations)
-  const multiCityPool = stateJourneys.filter((j) => !topJourneyIdSet.has(j.id));
-  const multiCityJourneys =
-    multiCityPool.length > 0
-      ? multiCityPool
-      : stateJourneys.filter((j) => (j.cities?.length ?? 0) > 1);
+  // 2. Multi-City & Extended Journeys (State tours excluding the top featured ones)
+  const multiCityJourneys = stateJourneys.filter((j) => !topJourneyIdSet.has(j.id));
 
   // Filters for Top Tour Packages
   const [expSelected, setExpSelected] = useState<string[]>([]);
@@ -412,7 +408,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       )}
 
       {/* ===== SECTION 4: MULTI-CITY TOURS WITH STATE (SLIDER FORMAT) ===== */}
-      {(journeysLoading || multiCityJourneys.length > 0) && (
+      {!journeysLoading && multiCityJourneys.length > 0 && (
         <section id="multi-city-tours" className="w-full bg-[#f8f8f8] py-12 md:py-20 border-b border-slate-200/60">
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
             <div className="flex items-end justify-between mb-6 md:mb-10 flex-wrap gap-4">
