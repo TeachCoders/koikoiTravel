@@ -53,7 +53,7 @@ export function stripTourSuffix(label?: string | null): string {
 export function formatToursH1(title?: string | null): string {
   if (!title) return "Tour Packages";
   const clean = stripTourSuffix(title);
-  return `${clean} Tours`;
+  return `${clean} Tour Packages`;
 }
 
 export const MAX_NAV_ITEMS = 12;

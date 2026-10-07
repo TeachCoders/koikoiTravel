@@ -314,7 +314,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           basePath={basePath}
           journeys={filteredTopJourneys}
           isLoading={journeysLoading && topJourneys.length === 0}
-          accentLabel="Handpicked Top Tours"
+          accentLabel="Handpicked Top Tour Packages"
           h1Title={formatToursH1(state.title)}
           overView={state.overView ?? undefined}
           emptyLabel={`No tour packages found matching your criteria in ${state.title}`}

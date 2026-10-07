@@ -26,14 +26,14 @@ export interface ToursSectionProps {
 export default function ToursSection({
   journeys,
   isLoading = false,
-  accentLabel = "Popular Tours",
+  accentLabel = "Popular Tour Packages",
   h1Title,
   overView,
-  emptyLabel = "No tours found yet",
+  emptyLabel = "No tour packages found yet",
   filterBar,
   onClearFilters,
   contextName,
-  sectionClassName = "py-12 md:py-20 bg-white",
+  sectionClassName = "py-8 sm:py-10 md:py-12 bg-white",
   id = "tours",
   cardVariant = "default",
 }: ToursSectionProps) {
@@ -42,18 +42,18 @@ export default function ToursSection({
   return (
     <section id={id} className={`w-full relative ${sectionClassName}`}>
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-        <div className="mb-8 md:mb-12">
+        <div className="mb-6 sm:mb-8">
           {accentLabel && (
-            <span className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#2E8B8B]">
+            <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
               {accentLabel}
             </span>
           )}
           {h1Title && (
-            <h1 className="font-heading text-2xl sm:text-3xl md:text-[34px] font-semibold tracking-[-0.02em] text-slate-900 mt-2 leading-[1.2]">
+            <h1 className="font-heading text-xl sm:text-2xl md:text-[28px] font-bold tracking-tight text-slate-900 mt-1.5 mb-2 leading-[1.3]">
               {h1Title}
             </h1>
           )}
-          {overView && <RichContent html={overView} className="mt-4" />}
+          {overView && <RichContent html={overView} className="mt-2 text-slate-600 font-normal text-sm sm:text-base leading-relaxed" />}
         </div>
 
       {isLoading ? (
@@ -61,10 +61,10 @@ export default function ToursSection({
       ) : journeys.length === 0 ? (
         hasFilters ? (
           <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
-            <p className="text-slate-500">No tours match your filters</p>
+            <p className="text-slate-500">No tour packages match your filters</p>
             <button
               onClick={onClearFilters}
-              className="mt-3 text-sm font-semibold text-slate-500 hover:text-[#2E8B8B] transition-colors cursor-pointer"
+              className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
             >
               Clear all filters
             </button>
