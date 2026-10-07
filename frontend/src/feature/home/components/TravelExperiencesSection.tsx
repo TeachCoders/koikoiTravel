@@ -80,7 +80,7 @@ export const TravelExperiencesSection: React.FC<{
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6 sm:mb-8">
           <div>
             <SectionLabel>Travel Experiences & Activities</SectionLabel>
-            <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5">Explore by Travel Experience & Vibe</h2>
+            <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5">Which India Experience Are You Looking For?</h2>
             <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
               From cultural heritage tours & wildlife jungle safaris to spiritual yatras & romantic getaways — discover curated travel activities tailored to your passion.
             </p>

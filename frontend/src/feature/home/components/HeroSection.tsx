@@ -1,300 +1,105 @@
 "use client";
 
-import React, { useState } from "react";
-import { Check, Sparkles, MessageCircle, MapPin, Calendar, Users, Compass, ArrowRight } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import HeroSearchBar from "@/components/shared/HeroSearchBar";
 import { FallbackImage } from "@/components/shared/FallbackImage";
-import { QuoteModal } from "@/components/shared/QuoteModal";
+import { useHeroBanners } from "@/feature/heroBanner/api";
 
-const POPULAR_DESTINATIONS = [
-  "Golden Triangle (Delhi, Agra, Jaipur)",
-  "Rajasthan (Jaipur, Jodhpur, Udaipur)",
-  "Kashmir & Himalayas",
-  "Kerala & South India",
-  "Wildlife & Tiger Safari",
-  "Goa & Beaches",
-  "Custom / Multiple Places",
-];
-
-const MONTH_OPTIONS = [
-  "October 2026",
-  "November 2026",
-  "December 2026",
-  "January 2027",
-  "February 2027",
-  "March 2027",
-  "April - June 2027",
-  "Flexible / Not Decided",
-];
-
-const TRAVELLER_OPTIONS = [
-  "1 Solo Traveller",
-  "2 Couple / Pair",
-  "3 - 5 Family / Friends",
-  "6+ Large Group",
-];
-
-const TRIP_TYPES = [
-  "Family",
-  "Honeymoon",
-  "Adventure",
-  "Wildlife",
-  "Cultural",
-  "Luxury",
-  "Other",
+const DEFAULT_SLIDES = [
+  { image: "/content/rajasthan-tours-holiday-1.webp", alt: "Rajasthan heritage tour" },
+  { image: "/content/srinagar-holiday-1.webp", alt: "Srinagar Kashmir holiday" },
+  { image: "/content/jaipur-holiday-1.webp", alt: "Jaipur royal heritage" },
+  { image: "/content/manali-holiday-1.webp", alt: "Manali Himachal holiday" },
 ];
 
 export const HeroSection: React.FC = () => {
-  const [destination, setDestination] = useState("");
-  const [travelMonth, setTravelMonth] = useState("");
-  const [travellers, setTravellers] = useState("");
-  const [tripType, setTripType] = useState("");
-  const [whatsapp, setWhatsapp] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { data: heroData } = useHeroBanners("Home");
+  const slides = heroData?.data?.length
+    ? heroData.data.map((b) => ({
+        image: b.image,
+        alt: b.altText || b.title || "Holiday tour banner",
+      }))
+    : DEFAULT_SLIDES;
 
-  const whatsappMessage = encodeURIComponent(
-    "Hi KoiKoi Travel, I would like to plan my trip to India. Please help me with itinerary and quote."
-  );
-  const whatsappUrl = `https://wa.me/919873003099?text=${whatsappMessage}`;
+  const [current, setCurrent] = useState(0);
 
-  const handleHeroFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!whatsapp.trim()) return;
+  const next = useCallback(() => {
+    setCurrent((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
 
-    setLoading(true);
+  const prev = useCallback(() => {
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
 
-    const messageText = `*New Trip Inquiry from Website:*
-• *Destination:* ${destination || "Open to suggestions"}
-• *Travel Month:* ${travelMonth || "Flexible"}
-• *Travellers:* ${travellers || "2 Travellers"}
-• *Trip Type:* ${tripType || "Holiday"}
-• *WhatsApp Number:* ${whatsapp.trim()}`;
-
-    try {
-      await fetch("https://api.koikoitravel.com/api/v1/inquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          phone: whatsapp.trim(),
-          destination: destination || "India Tour",
-          travelDates: travelMonth || "Flexible",
-          guests: travellers || "2",
-          tourType: tripType || "Custom",
-          source: "Homepage Split Hero Form",
-        }),
-      }).catch(() => null);
-    } catch {
-      // ignore
-    }
-
-    setLoading(false);
-    const waUrl = `https://wa.me/919873003099?text=${encodeURIComponent(messageText)}`;
-    window.open(waUrl, "_blank");
-  };
+  useEffect(() => {
+    const timer = setInterval(next, 5000);
+    return () => clearInterval(timer);
+  }, [next]);
 
   return (
-    <section className="relative w-full min-h-[620px] lg:min-h-[680px] flex items-center bg-slate-950 overflow-hidden py-12 lg:py-16">
-      {/* Taj Mahal Panoramic Hero Background */}
+    <section className="relative w-full h-[320px] sm:h-[400px] md:h-[520px] flex items-center justify-center bg-slate-900 z-20">
+      {/* Background slider - clipped with overflow-hidden */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <FallbackImage
-          src="/content/taj-mahal-holiday-1.webp"
-          alt="Taj Mahal India - KoiKoi Travel"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[center_35%] scale-105"
-          theme="dark"
-        />
-        {/* Brand deep gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/80 to-slate-950/50" />
-        <div className="absolute inset-0 bg-black/25" />
+        <div
+          className="absolute inset-0 flex transition-transform duration-700 ease-in-out"
+          style={{ transform: `translateX(-${current * 100}%)` }}
+        >
+          {slides.map((s, i) => (
+            <div key={i} className="relative w-full h-full shrink-0">
+              <FallbackImage
+                src={s.image}
+                alt={s.alt}
+                fill
+                priority={i === 0}
+                sizes="100vw"
+                {...(!i ? {} : { loading: "eager" as const, decoding: "async" as const })}
+                className="object-cover object-center"
+                theme="dark"
+              />
+            </div>
+          ))}
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/25" />
       </div>
 
-      <div className="relative z-20 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          
-          {/* LEFT COLUMN: Main Value Prop & CTAs */}
-          <div className="lg:col-span-7 text-white flex flex-col items-start">
-            <span className="text-[#F8904D] text-xs sm:text-sm font-bold tracking-widest uppercase mb-3 flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4" /> Your India Journey, Your Way
-            </span>
+      <button
+        onClick={prev}
+        aria-label="Previous slide"
+        className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full items-center justify-center text-white hover:bg-white/20 transition-all"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+      <button
+        onClick={next}
+        aria-label="Next slide"
+        className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full items-center justify-center text-white hover:bg-white/20 transition-all"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
 
-            <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-extrabold tracking-tight leading-[1.12] text-white">
-              Plan Your Dream India Trip With{" "}
-              <span className="text-[#F8904D]">KoiKoi Travel</span>
-            </h1>
+      <div className="absolute bottom-2.5 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            className={`rounded-full transition-all duration-300 ${
+              i === current
+                ? "w-6 sm:w-8 h-1.5 sm:h-2 bg-[#F8904D]"
+                : "w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/50 hover:bg-white/70"
+            }`}
+          />
+        ))}
+      </div>
 
-            <p className="mt-4 sm:mt-5 text-white/90 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl font-normal">
-              Your India journey should feel exciting—not complicated. Tell us where you want to go, when you&apos;re travelling, and what you want to experience. Our local travel experts will create a personalized itinerary around your interests, budget and travel style.
-            </p>
+      <div className="relative z-30 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-center">
+        <h1 className="text-white text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight max-w-4xl mx-auto drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)] transition-all duration-700 block">
+          Plan Your Dream India Trip With KoiKoi Travel
+        </h1>
 
-            {/* Action Buttons */}
-            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3.5 sm:gap-4 w-full sm:w-auto">
-              <QuoteModal>
-                <button
-                  type="button"
-                  className="px-7 py-3.5 rounded-xl bg-[#F8904D] hover:bg-[#e07b3b] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-[#F8904D]/30 active:scale-95 transition-all cursor-pointer"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  <span>Get My Free Itinerary</span>
-                </button>
-              </QuoteModal>
-
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-7 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30 active:scale-95 transition-all border border-emerald-400/30"
-              >
-                <MessageCircle className="w-4 h-4 fill-current" />
-                <span>Talk to a Travel Expert</span>
-              </a>
-            </div>
-
-            {/* 4 Trust Checkmarks */}
-            <div className="mt-8 pt-6 border-t border-white/15 grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-x-6 gap-y-2.5 text-xs sm:text-sm text-white/90 font-medium">
-              <div className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-[#F8904D] shrink-0" />
-                <span>100% Custom Trips</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-[#F8904D] shrink-0" />
-                <span>Local India Experts</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-[#F8904D] shrink-0" />
-                <span>Transparent Pricing</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-[#F8904D] shrink-0" />
-                <span>24/7 Trip Support</span>
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT COLUMN: Floating Lead Card */}
-          <div className="lg:col-span-5 w-full">
-            <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-100 text-slate-900 relative">
-              <div className="mb-5">
-                <span className="text-[#F8904D] font-bold text-[11px] uppercase tracking-widest block mb-1">
-                  Custom Itinerary Request
-                </span>
-                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
-                  Tell Us About Your Trip
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                  Get a free custom itinerary on WhatsApp
-                </p>
-              </div>
-
-              <form onSubmit={handleHeroFormSubmit} className="space-y-3.5">
-                {/* 1. Destination */}
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5 text-[#F8904D]" />
-                    Where would you like to go?
-                  </label>
-                  <select
-                    value={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#F8904D] focus:bg-white transition-colors"
-                  >
-                    <option value="">Select destination</option>
-                    {POPULAR_DESTINATIONS.map((d) => (
-                      <option key={d} value={d}>
-                        {d}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* 2. When travelling */}
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5 text-[#F8904D]" />
-                    When are you travelling?
-                  </label>
-                  <select
-                    value={travelMonth}
-                    onChange={(e) => setTravelMonth(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#F8904D] focus:bg-white transition-colors"
-                  >
-                    <option value="">Select month</option>
-                    {MONTH_OPTIONS.map((m) => (
-                      <option key={m} value={m}>
-                        {m}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* 3. How many people */}
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 flex items-center gap-1">
-                    <Users className="w-3.5 h-3.5 text-[#F8904D]" />
-                    How many people?
-                  </label>
-                  <select
-                    value={travellers}
-                    onChange={(e) => setTravellers(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#F8904D] focus:bg-white transition-colors"
-                  >
-                    <option value="">Select travellers</option>
-                    {TRAVELLER_OPTIONS.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* 4. Type of trip */}
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 flex items-center gap-1">
-                    <Compass className="w-3.5 h-3.5 text-[#F8904D]" />
-                    Type of trip
-                  </label>
-                  <select
-                    value={tripType}
-                    onChange={(e) => setTripType(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#F8904D] focus:bg-white transition-colors"
-                  >
-                    <option value="">Select trip type</option>
-                    {TRIP_TYPES.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* 5. WhatsApp Number */}
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">
-                    Your WhatsApp number
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={whatsapp}
-                    onChange={(e) => setWhatsapp(e.target.value)}
-                    placeholder="+91 98765-43210"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#F8904D] focus:bg-white transition-colors"
-                  />
-                </div>
-
-                {/* Submit button */}
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full mt-2 py-3 px-4 rounded-xl bg-[#F8904D] hover:bg-[#e07b3b] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-[#F8904D]/30 active:scale-95 transition-all cursor-pointer"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  <span>{loading ? "Processing..." : "Get My Free Custom Itinerary"}</span>
-                </button>
-              </form>
-            </div>
-          </div>
-
+        <div className="mt-4 sm:mt-6 md:mt-8">
+          <HeroSearchBar />
         </div>
       </div>
     </section>
