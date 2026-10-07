@@ -320,21 +320,21 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           emptyLabel={`No tour packages found matching your criteria in ${state.title}`}
           filterBar={stateJourneys.length > 0 ? filterBar : undefined}
           onClearFilters={clearFilters}
-          sectionClassName="py-14 md:py-20 bg-[#f8f8f8] border-b border-slate-200/80 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]"
+          sectionClassName="py-8 sm:py-10 md:py-12 bg-[#f8f8f8] border-b border-slate-200/80 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]"
           cardVariant="default"
         />
       )}
 
       {/* ===== SECTION 3: CITIES / TOP DESTINATIONS IN STATE ===== */}
       {(journeysLoading || displayedCities.length > 0) && (
-        <section id="cities" className="w-full bg-white py-12 md:py-20 border-b border-slate-200/60">
-          <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
-          <div className="flex items-end justify-between mb-6 md:mb-10 flex-wrap gap-4">
+        <section id="cities" className="w-full bg-white py-8 sm:py-10 md:py-12 border-b border-slate-200/60">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+          <div className="flex items-end justify-between mb-6 sm:mb-8 flex-wrap gap-4">
             <div>
-              <span className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#2E8B8B]">
+              <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
                 Top Destinations
               </span>
-              <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-slate-900 mt-2">
+              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5">
                 Cities in {state.title}
                 <span className="ml-3 align-middle text-xs font-medium text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-1 rounded-full">
                   {cityCount} Cities
@@ -346,14 +346,14 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                 <button
                   onClick={slidePrev}
                   aria-label="Previous cities"
-                  className="w-10 h-10 rounded-full bg-white border border-slate-200 text-[#1C1C1C] flex items-center justify-center shadow-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
+                  className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-700 flex items-center justify-center shadow-sm hover:bg-slate-900 hover:text-white transition-colors cursor-pointer"
                 >
                   <ChevronLeft size={18} />
                 </button>
                 <button
                   onClick={slideNext}
                   aria-label="Next cities"
-                  className="w-10 h-10 rounded-full bg-white border border-slate-200 text-[#1C1C1C] flex items-center justify-center shadow-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
+                  className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-700 flex items-center justify-center shadow-sm hover:bg-slate-900 hover:text-white transition-colors cursor-pointer"
                 >
                   <ChevronRight size={18} />
                 </button>
@@ -409,16 +409,16 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
       {/* ===== SECTION 4: MULTI-CITY TOURS WITH STATE (SLIDER FORMAT) ===== */}
       {!journeysLoading && multiCityJourneys.length > 0 && (
-        <section id="multi-city-tours" className="w-full bg-[#f8f8f8] py-12 md:py-20 border-b border-slate-200/60">
-          <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
-            <div className="flex items-end justify-between mb-6 md:mb-10 flex-wrap gap-4">
+        <section id="multi-city-tours" className="w-full bg-[#f8f8f8] py-8 sm:py-10 md:py-12 border-b border-slate-200/60">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+            <div className="flex items-end justify-between mb-6 sm:mb-8 flex-wrap gap-4">
               <div>
-                <span className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#2E8B8B]">
+                <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
                   Circuits & Extended Tours
                 </span>
-                <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-slate-900 mt-2">
+                <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5">
                   Multi City Tours with {state.title}
-                  <span className="ml-3 align-middle text-xs font-medium text-[#2E8B8B] bg-[#2E8B8B]/10 px-2.5 py-1 rounded-full">
+                  <span className="ml-3 align-middle text-xs font-medium text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-1 rounded-full">
                     {multiCityJourneys.length} Tours
                   </span>
                 </h2>
@@ -428,14 +428,14 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                   <button
                     onClick={multiCityPrev}
                     aria-label="Previous multi-city tours"
-                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-[#1C1C1C] flex items-center justify-center shadow-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
+                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-700 flex items-center justify-center shadow-sm hover:bg-slate-900 hover:text-white transition-colors cursor-pointer"
                   >
                     <ChevronLeft size={18} />
                   </button>
                   <button
                     onClick={multiCityNext}
                     aria-label="Next multi-city tours"
-                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-[#1C1C1C] flex items-center justify-center shadow-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
+                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-700 flex items-center justify-center shadow-sm hover:bg-slate-900 hover:text-white transition-colors cursor-pointer"
                   >
                     <ChevronRight size={18} />
                   </button>

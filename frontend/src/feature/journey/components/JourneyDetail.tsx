@@ -703,21 +703,12 @@ function DayItem({
     <details
       open={defaultOpen}
       onToggle={handleToggle}
-      className="day-accordion-item group relative pl-0 py-0.5 md:py-1.5 first:pt-0 last:pb-0 border-b border-slate-100 last:border-b-0"
+      className="day-accordion-item group relative py-1 md:py-2 border-b border-slate-100 last:border-b-0"
     >
       <summary className="flex items-center justify-between gap-3 py-2.5 md:py-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden select-none">
-        {/* Vertical Timeline Line */}
-        <span
-          aria-hidden="true"
-          className="hidden md:block absolute left-[15px] top-0 -bottom-px w-[2px] bg-[#2E8B8B]/20 z-0 pointer-events-none"
-        />
-        <span className="flex items-center gap-2.5 font-heading text-[16px] sm:text-[17px] font-bold text-slate-900 relative z-10">
-          {/* Timeline Dot */}
-          <span className="hidden md:flex w-7 h-7 rounded-full bg-white border-2 border-orange-500 items-center justify-center shadow-xs z-10 transition-colors duration-300 shrink-0">
-            <span className="text-xs font-bold text-orange-600">{index}</span>
-          </span>
-          <span className="mr-1 text-orange-500 font-bold shrink-0">Day {index}:</span>
-          <span className="text-slate-900 font-bold">{dayTitle}</span>
+        <span className="flex items-center gap-2 text-[15.5px] sm:text-[16.5px] font-semibold text-slate-900">
+          <span className="text-[#F8904D] font-bold shrink-0">Day {index}:</span>
+          <span className="text-slate-900 font-semibold">{dayTitle}</span>
         </span>
         <ChevronDown
           size={18}
@@ -729,9 +720,9 @@ function DayItem({
         {/* Single child so grid-template-rows 0fr -> 1fr can collapse/expand the
             whole block smoothly. Padding lives here, not on the outer wrapper, so
             nothing shows through while the row is at 0fr. */}
-        <div className="day-accordion-inner pt-1 md:pt-2 pb-5 md:pl-[44px]">
+        <div className="day-accordion-inner pt-1 md:pt-2 pb-4">
           {day.description && (
-            <div className="text-[15px] text-slate-600 leading-[1.8]">
+            <div className="text-[14.5px] sm:text-[15px] text-slate-600 font-normal leading-[1.75]">
               <RichContent html={day.description} className="rich-text-plain-links" />
             </div>
           )}
