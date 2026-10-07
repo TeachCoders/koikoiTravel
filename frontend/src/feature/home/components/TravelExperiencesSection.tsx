@@ -1,14 +1,13 @@
 "use client";
 
-import React from "react";
-import { Sparkles, ArrowRight, Crown, Compass } from "lucide-react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { SectionLabel } from "@/components/shared/SectionLabel";
 import { useGetTravelExperiences } from "@/feature/travelExperience/api/useTravelExperience";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
-import { resolveExperienceTheme, FALLBACK_IMAGE } from "@/feature/travelExperience/theme";
+import { resolveExperienceTheme } from "@/feature/travelExperience/theme";
 import { stripHtml } from "@/lib/utils";
-import { FallbackImage } from "@/components/shared/FallbackImage";
 import type { TravelExperience, PaginatedResponse as ExperiencePage } from "@/feature/travelExperience/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 
@@ -40,48 +39,110 @@ export const TravelExperiencesSection: React.FC<{
       (j.travelExperiences || []).some((e: any) => e.id === id)
     ).length;
 
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = useCallback(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    setCanScrollLeft(scrollLeft > 10);
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
+  }, []);
+
+  useEffect(() => {
+    checkScroll();
+    const el = sliderRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", checkScroll, { passive: true });
+    window.addEventListener("resize", checkScroll);
+    return () => {
+      el.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("resize", checkScroll);
+    };
+  }, [checkScroll, experiences.length]);
+
+  const handleScroll = (direction: "left" | "right") => {
+    const el = sliderRef.current;
+    if (!el) return;
+    const cardWidth = el.clientWidth * 0.75; // Scroll approx 3/4th screen or 3-4 cards
+    el.scrollBy({
+      left: direction === "left" ? -cardWidth : cardWidth,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <section id="experiences" className="py-20 bg-white relative shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]">
       <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        {/* Header with Title & Arrow Slider Controls */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
             <SectionLabel>Curated Travel Styles</SectionLabel>
             <h2 className="h2 text-[#1C1C1C] mt-2">Travel Built Around Your Vibe</h2>
             <p className="mt-2 text-base text-[#555] max-w-xl">
-              From peaceful hill stations to mountain adventures, pick the trip style that fits you best.
+              From peaceful hill stations to wildlife safaris & spiritual retreats, pick the trip style that fits you best.
             </p>
           </div>
-          <Link href="/travel-experiences">
-            <button className="btn-outline px-5 py-2.5 text-sm font-medium flex items-center gap-2">
-              <span>View All Experiences</span>
-              <ArrowRight className="w-4 h-4" />
+
+          <div className="flex items-center gap-3">
+            {/* Prev / Next Slider Navigation Buttons */}
+            <button
+              onClick={() => handleScroll("left")}
+              disabled={!canScrollLeft}
+              className="w-10 h-10 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-700 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-xs cursor-pointer"
+              aria-label="Previous Experiences"
+            >
+              <ChevronLeft size={20} />
             </button>
-          </Link>
+            <button
+              onClick={() => handleScroll("right")}
+              disabled={!canScrollRight}
+              className="w-10 h-10 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-700 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-xs cursor-pointer"
+              aria-label="Next Experiences"
+            >
+              <ChevronRight size={20} />
+            </button>
+
+            {/* View All Button */}
+            <Link href="/travel-experiences" className="hidden sm:inline-block ml-2">
+              <button className="btn-outline px-4 py-2 text-xs sm:text-sm font-medium flex items-center gap-1.5">
+                <span>View All ({experiences.length})</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </Link>
+          </div>
         </div>
 
+        {/* Carousel / Slider Container */}
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {Array.from({ length: 8 }).map((_, i) => (
+            {Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
-                className="rounded-3xl bg-slate-50 animate-pulse h-[340px] border border-slate-100"
+                className="rounded-2xl bg-slate-50 animate-pulse h-[340px] border border-slate-100"
               />
             ))}
           </div>
         ) : experiences.length === 0 ? (
           <p className="text-center text-slate-400 py-16">No travel experiences yet.</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {experiences.slice(0, 8).map((exp: any) => {
+          <div
+            ref={sliderRef}
+            className="flex gap-6 overflow-x-auto scrollbar-none snap-x snap-mandatory scroll-smooth pb-4 -mx-2 px-2"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            {experiences.map((exp: any) => {
               const theme = resolveExperienceTheme(exp.title);
               const count = tourCount(exp.id);
               return (
                 <Link
                   key={exp.id}
                   href={`/travel-experiences/${exp.slug}`}
-                  className={`group relative rounded-2xl bg-gradient-to-b ${theme.bgGradient} border border-slate-200/90 p-6 shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between items-center text-center select-none`}
+                  className={`w-[85%] sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)] shrink-0 snap-start group relative rounded-2xl bg-gradient-to-b ${theme.bgGradient} border border-slate-200/90 p-6 shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between items-center text-center select-none`}
                 >
-                  {/* Top Cartoon Illustration (Direct on card gradient, no inner border) */}
+                  {/* Top Illustration (Direct on card gradient, no inner border) */}
                   <div className="w-full h-32 sm:h-36 flex items-center justify-center relative pt-1">
                     {/* Tour Count Pill */}
                     {count > 0 && (
@@ -98,7 +159,7 @@ export const TravelExperiencesSection: React.FC<{
                     </div>
                   </div>
 
-                  {/* Middle Text Info (Klook font size & weights) */}
+                  {/* Middle Text Info (Klook font sizes & weights) */}
                   <div className="pt-4 flex-1 flex flex-col items-center">
                     <h3 className="text-[16.5px] sm:text-[17.5px] font-bold text-[#1C1C1C] tracking-tight leading-snug group-hover:text-[#F8904D] transition-colors">
                       {exp.title}
