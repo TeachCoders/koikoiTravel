@@ -79,10 +79,10 @@ export const TravelExperiencesSection: React.FC<{
         {/* Header with Title & Arrow Slider Controls */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6 sm:mb-8">
           <div>
-            <SectionLabel>Curated Experiences</SectionLabel>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1.5">Travel Tailored to Your Passion</h2>
+            <SectionLabel>Travel Experiences & Activities</SectionLabel>
+            <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5">Explore by Travel Experience & Vibe</h2>
             <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
-              From majestic heritage forts to jungle tiger safaris, spiritual retreats, and romantic getaways — pick your vibe.
+              From cultural heritage tours & wildlife jungle safaris to spiritual yatras & romantic getaways — discover curated travel activities tailored to your passion.
             </p>
           </div>
 

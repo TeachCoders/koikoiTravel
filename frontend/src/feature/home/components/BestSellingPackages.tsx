@@ -35,7 +35,7 @@ export const BestSellingPackages: React.FC<{
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6 sm:mb-8">
           <div>
             <SectionLabel>Featured Itineraries</SectionLabel>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1.5">Top-Rated Holiday Packages</h2>
+            <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5">Top-Rated Holiday Packages</h2>
             <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">All-inclusive private tours featuring handpicked hotels, dedicated chauffeurs, and personalized sightseeing.</p>
           </div>
           <Link href="/tour-packages">

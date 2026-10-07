@@ -240,25 +240,25 @@ const VALUE_PROPS = [
     id: "possibilities",
     icon: <DiscoverPossibilitiesIcon />,
     title: "Discover the possibilities",
-    description: "Explore hundreds of handpicked private tour packages, scenic getaways & tailor-made itineraries.",
+    description: "Explore hundreds of handpicked private tour packages, scenic circuits & custom itineraries curated by KoiKoi Travel.",
   },
   {
     id: "deals",
     icon: <EnjoyDealsIcon />,
     title: "Enjoy deals & delights",
-    description: "Direct local operator rates with zero hidden charges. Honest pricing for maximum value on every journey.",
+    description: "Direct transparent pricing with zero hidden charges. Get maximum value and peace of mind on every KoiKoi Travel journey.",
   },
   {
     id: "easy",
     icon: <ExploringEasyIcon />,
     title: "Exploring made easy",
-    description: "Hassle-free custom planning, instant support & dedicated 24/7 personal trip managers from start to finish.",
+    description: "Hassle-free custom planning, flexible dates & a dedicated 24/7 personal trip manager assigned to your tour.",
   },
   {
     id: "trust",
     icon: <TravelTrustIcon />,
     title: "Travel you can trust",
-    description: "Handpicked verified accommodations, courteous chauffeurs & end-to-end traveler safety.",
+    description: "Loved by travelers worldwide — handpicked verified accommodations, courteous private chauffeurs & end-to-end safety.",
   },
 ];
 
@@ -273,7 +273,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = () => {
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         
         {/* Section Heading - Clean Klook Style */}
-        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mb-6 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-6 sm:mb-8">
           Why choose KoiKoi Travel
         </h2>
 
