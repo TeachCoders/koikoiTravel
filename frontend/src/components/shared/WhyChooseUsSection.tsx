@@ -113,90 +113,69 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
         
         <div className={`grid grid-cols-1 ${showGallery ? "lg:grid-cols-2 gap-12 lg:gap-16" : "gap-12"} items-center`}>
           
-          {/* Left Column: Reviews & Trusted Traveler Proof */}
+          {/* Left Column: Seamless Borderless Reviews & Trusted Traveler Proof */}
           <div className="flex flex-col justify-center">
-            <SectionLabel>Verified Reviews & Experiences</SectionLabel>
+            <SectionLabel>Traveler Stories & Experiences</SectionLabel>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mt-2 mb-3">
               Loved by Travelers Worldwide
             </h2>
             <p className="text-slate-600 text-sm sm:text-base mb-6 leading-relaxed max-w-xl">
-              Unlike generic travel booking engines, we provide dedicated private local tour managers, 100% custom itineraries, and verified reliable drivers.
+              Unlike generic travel booking engines, we provide dedicated private local tour managers, 100% custom itineraries, and courteous reliable drivers.
             </p>
 
-            {/* Overall Rating Badge */}
-            <div className="flex flex-wrap items-center gap-3 mb-6 p-3 rounded-2xl bg-amber-50/70 border border-amber-200/80 w-fit">
-              <div className="flex items-center gap-1 text-amber-500">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-base font-bold">★</span>
-                ))}
-              </div>
-              <span className="text-xs sm:text-sm font-bold text-slate-800">
-                4.9 / 5.0 Rating
-              </span>
-              <span className="text-xs text-slate-500 font-medium">
-                • 1,200+ Happy Guests Worldwide
-              </span>
-            </div>
-
-            {/* Active Review Card with Smooth Controls */}
-            <div className="relative rounded-3xl bg-gradient-to-br from-slate-50 to-orange-50/30 border border-slate-200/90 p-6 sm:p-7 shadow-sm mb-6">
-              {/* Top Star Rating & Tour Name */}
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                <div className="flex items-center gap-1 text-amber-400 text-sm">
+            {/* Seamless Borderless Review (No Card Box, No Border) */}
+            <div className="mb-6 pt-1">
+              {/* Star Rating & Trip Tag */}
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-1 text-amber-500">
                   {[...Array(currentReview.rating)].map((_, i) => (
-                    <span key={i} className="text-base">★</span>
+                    <span key={i} className="text-lg">★</span>
                   ))}
                 </div>
-                <span className="text-[11.5px] font-bold px-2.5 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700 shadow-2xs">
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
                   {currentReview.tripName}
                 </span>
               </div>
 
               {/* Review Comment Quote */}
-              <p className="text-slate-700 text-xs sm:text-sm leading-relaxed italic mb-5">
+              <p className="text-slate-800 text-sm sm:text-base leading-relaxed italic mb-4 min-h-[68px]">
                 "{currentReview.comment}"
               </p>
 
-              {/* Reviewer Info & Navigation Arrows */}
-              <div className="flex items-center justify-between pt-4 border-t border-slate-200/70">
+              {/* Reviewer Details & Normal Indicator Dots */}
+              <div className="flex items-center justify-between gap-4 pt-2">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-orange-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
+                  <div className="w-10 h-10 rounded-full bg-orange-500 text-white font-bold flex items-center justify-center text-sm shadow-xs">
                     {currentReview.name.split(" ")[0]?.[0]}
                     {currentReview.name.split(" ")[1]?.[0] || ""}
                   </div>
                   <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                      <span>{currentReview.name}</span>
-                      <span className="text-emerald-700 text-[11px] font-bold">✓ Verified</span>
+                    <h4 className="text-sm font-bold text-slate-900">
+                      {currentReview.name}
                     </h4>
-                    <p className="text-[11px] text-slate-500 font-medium">{currentReview.location}</p>
+                    <p className="text-xs text-slate-500 font-medium">{currentReview.location}</p>
                   </div>
                 </div>
 
-                {/* Review Navigation Prev / Next */}
+                {/* Normal Dots Navigation */}
                 <div className="flex items-center gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => setReviewIndex((prev) => (prev === 0 ? REVIEWS.length - 1 : prev - 1))}
-                    className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-900 hover:text-white hover:border-slate-900 flex items-center justify-center text-slate-700 transition-all cursor-pointer shadow-2xs"
-                    aria-label="Previous Review"
-                  >
-                    <ChevronLeft size={16} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setReviewIndex((prev) => (prev + 1) % REVIEWS.length)}
-                    className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-900 hover:text-white hover:border-slate-900 flex items-center justify-center text-slate-700 transition-all cursor-pointer shadow-2xs"
-                    aria-label="Next Review"
-                  >
-                    <ChevronRight size={16} />
-                  </button>
+                  {REVIEWS.map((_, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setReviewIndex(idx)}
+                      className={`h-2 rounded-full transition-all cursor-pointer ${
+                        idx === reviewIndex ? "w-6 bg-orange-500" : "w-2 bg-slate-300 hover:bg-slate-400"
+                      }`}
+                      aria-label={`Go to review ${idx + 1}`}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
 
             {/* Quick Trust Highlights */}
-            <div className="grid grid-cols-2 gap-3 pt-1">
+            <div className="grid grid-cols-2 gap-3 pt-4 border-t border-slate-100">
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
                 <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
                 <span>100% Tailored Private Trips</span>
@@ -211,7 +190,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
               </div>
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
                 <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
-                <span>Verified Clean Vehicles & Drivers</span>
+                <span>Comfortable Vehicles & Top Drivers</span>
               </div>
             </div>
           </div>
