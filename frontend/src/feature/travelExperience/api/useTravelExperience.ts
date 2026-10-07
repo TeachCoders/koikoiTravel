@@ -10,6 +10,7 @@ import {
   updateTravelExperienceOrder,
 } from ".";
 import { successToast, errorToast } from "@/components/shared/tost";
+import type { TravelExperience, PaginatedResponse } from "../type";
 
 export const useGetTravelExperiences = (
   params?: {

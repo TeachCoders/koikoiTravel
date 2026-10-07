@@ -51,6 +51,7 @@ export interface TravelExperience {
   cityOrder?: number[];
   journeys?: TravelExperienceJourney[];
   featuredJourneyOrder?: number[];
+  tourCount?: number;
 }
 
 export interface TravelExperiencePayload {
