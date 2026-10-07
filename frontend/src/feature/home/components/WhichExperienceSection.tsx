@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 
@@ -54,15 +54,18 @@ export const WhichExperienceSection: React.FC = () => {
           alt="Scenic India landscape"
           fill
           sizes="100vw"
-          className="object-cover object-center opacity-40 scale-105"
+          className="object-cover object-center opacity-30 scale-105"
           theme="dark"
         />
-        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-slate-950/75 backdrop-blur-[2px]" />
       </div>
 
       <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12 text-white">
+          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#F8904D] mb-2">
+            <Sparkles className="w-3.5 h-3.5" /> Curated Themes
+          </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
             Which India Experience Are You Looking For?
           </h2>
@@ -71,30 +74,30 @@ export const WhichExperienceSection: React.FC = () => {
           </p>
         </div>
 
-        {/* 8 Cards Grid (4 per row on desktop) */}
+        {/* 8 Cards Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {EXPERIENCES.map((exp, idx) => (
             <Link
               key={idx}
               href={exp.href}
-              className="group bg-white/95 backdrop-blur-md rounded-2xl p-6 sm:p-7 shadow-md hover:shadow-xl hover:bg-white transition-all duration-300 flex flex-col items-center justify-center text-center border border-white/40"
+              className="group bg-white/95 hover:bg-white rounded-2xl p-6 sm:p-7 shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex flex-col items-center justify-center text-center border border-white/20"
             >
               <div className="text-3xl sm:text-4xl mb-3 group-hover:scale-110 transition-transform">
                 {exp.icon}
               </div>
-              <h3 className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-[#00A66E] transition-colors">
+              <h3 className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-[#2E8B8B] transition-colors">
                 {exp.title}
               </h3>
             </Link>
           ))}
 
-          {/* 8th Card: Dark Green Ask KoiKoi Card */}
+          {/* 8th Card: Custom Quote Helper */}
           <QuoteModal>
-            <div className="bg-[#005c3d] hover:bg-[#004a31] text-white rounded-2xl p-6 sm:p-7 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col items-center justify-center text-center cursor-pointer group border border-emerald-500/30 h-full">
-              <p className="text-xs sm:text-sm font-bold leading-snug">
+            <div className="bg-gradient-to-br from-[#2E8B8B] to-slate-900 text-white rounded-2xl p-6 sm:p-7 shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex flex-col items-center justify-center text-center cursor-pointer group border border-white/20 h-full">
+              <p className="text-xs sm:text-sm font-bold leading-snug text-white">
                 Not sure which trip is best for you?
               </p>
-              <span className="mt-2 text-xs font-semibold text-emerald-300 inline-flex items-center gap-1 group-hover:underline">
+              <span className="mt-2 text-xs font-bold text-[#F8904D] inline-flex items-center gap-1 group-hover:underline">
                 Ask KoiKoi Travel <ArrowRight className="w-3.5 h-3.5" />
               </span>
             </div>

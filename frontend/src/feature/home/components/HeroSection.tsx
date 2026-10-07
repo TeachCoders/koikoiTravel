@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Check, Sparkles, MessageCircle, ArrowRight, ShieldCheck, Clock, Users, MapPin, Calendar, Compass } from "lucide-react";
+import { Check, Sparkles, MessageCircle, MapPin, Calendar, Users, Compass, ArrowRight } from "lucide-react";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 
@@ -104,8 +104,8 @@ export const HeroSection: React.FC = () => {
           className="object-cover object-[center_35%] scale-105"
           theme="dark"
         />
-        {/* Cinematic dark overlay to make white text & floating card pop */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/75 to-slate-950/50" />
+        {/* Brand deep gradient overlays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/80 to-slate-950/50" />
         <div className="absolute inset-0 bg-black/25" />
       </div>
 
@@ -114,8 +114,8 @@ export const HeroSection: React.FC = () => {
           
           {/* LEFT COLUMN: Main Value Prop & CTAs */}
           <div className="lg:col-span-7 text-white flex flex-col items-start">
-            <span className="text-white/85 text-xs sm:text-sm font-semibold tracking-wider uppercase mb-2 block">
-              Your India Journey, Your Way
+            <span className="text-[#F8904D] text-xs sm:text-sm font-bold tracking-widest uppercase mb-3 flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4" /> Your India Journey, Your Way
             </span>
 
             <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-extrabold tracking-tight leading-[1.12] text-white">
@@ -132,7 +132,7 @@ export const HeroSection: React.FC = () => {
               <QuoteModal>
                 <button
                   type="button"
-                  className="px-6 sm:px-7 py-3.5 rounded-xl bg-[#00A66E] hover:bg-[#00915f] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-[#00A66E]/30 active:scale-95 transition-all cursor-pointer"
+                  className="px-7 py-3.5 rounded-xl bg-[#F8904D] hover:bg-[#e07b3b] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-[#F8904D]/30 active:scale-95 transition-all cursor-pointer"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>Get My Free Itinerary</span>
@@ -143,8 +143,9 @@ export const HeroSection: React.FC = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 sm:px-7 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all"
+                className="px-7 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30 active:scale-95 transition-all border border-emerald-400/30"
               >
+                <MessageCircle className="w-4 h-4 fill-current" />
                 <span>Talk to a Travel Expert</span>
               </a>
             </div>
@@ -152,19 +153,19 @@ export const HeroSection: React.FC = () => {
             {/* 4 Trust Checkmarks */}
             <div className="mt-8 pt-6 border-t border-white/15 grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-x-6 gap-y-2.5 text-xs sm:text-sm text-white/90 font-medium">
               <div className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                <Check className="w-4 h-4 text-[#F8904D] shrink-0" />
                 <span>100% Custom Trips</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                <Check className="w-4 h-4 text-[#F8904D] shrink-0" />
                 <span>Local India Experts</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                <Check className="w-4 h-4 text-[#F8904D] shrink-0" />
                 <span>Transparent Pricing</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                <Check className="w-4 h-4 text-[#F8904D] shrink-0" />
                 <span>24/7 Trip Support</span>
               </div>
             </div>
@@ -174,10 +175,13 @@ export const HeroSection: React.FC = () => {
           <div className="lg:col-span-5 w-full">
             <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-100 text-slate-900 relative">
               <div className="mb-5">
+                <span className="text-[#F8904D] font-bold text-[11px] uppercase tracking-widest block mb-1">
+                  Custom Itinerary Request
+                </span>
                 <h3 className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
                   Tell Us About Your Trip
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
                   Get a free custom itinerary on WhatsApp
                 </p>
               </div>
@@ -186,13 +190,13 @@ export const HeroSection: React.FC = () => {
                 {/* 1. Destination */}
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-slate-700 flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5 text-[#00A66E]" />
+                    <MapPin className="w-3.5 h-3.5 text-[#F8904D]" />
                     Where would you like to go?
                   </label>
                   <select
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#00A66E] focus:bg-white transition-colors"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#F8904D] focus:bg-white transition-colors"
                   >
                     <option value="">Select destination</option>
                     {POPULAR_DESTINATIONS.map((d) => (
@@ -206,13 +210,13 @@ export const HeroSection: React.FC = () => {
                 {/* 2. When travelling */}
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-slate-700 flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5 text-[#00A66E]" />
+                    <Calendar className="w-3.5 h-3.5 text-[#F8904D]" />
                     When are you travelling?
                   </label>
                   <select
                     value={travelMonth}
                     onChange={(e) => setTravelMonth(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#00A66E] focus:bg-white transition-colors"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#F8904D] focus:bg-white transition-colors"
                   >
                     <option value="">Select month</option>
                     {MONTH_OPTIONS.map((m) => (
@@ -226,13 +230,13 @@ export const HeroSection: React.FC = () => {
                 {/* 3. How many people */}
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-slate-700 flex items-center gap-1">
-                    <Users className="w-3.5 h-3.5 text-[#00A66E]" />
+                    <Users className="w-3.5 h-3.5 text-[#F8904D]" />
                     How many people?
                   </label>
                   <select
                     value={travellers}
                     onChange={(e) => setTravellers(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#00A66E] focus:bg-white transition-colors"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#F8904D] focus:bg-white transition-colors"
                   >
                     <option value="">Select travellers</option>
                     {TRAVELLER_OPTIONS.map((t) => (
@@ -246,13 +250,13 @@ export const HeroSection: React.FC = () => {
                 {/* 4. Type of trip */}
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-slate-700 flex items-center gap-1">
-                    <Compass className="w-3.5 h-3.5 text-[#00A66E]" />
+                    <Compass className="w-3.5 h-3.5 text-[#F8904D]" />
                     Type of trip
                   </label>
                   <select
                     value={tripType}
                     onChange={(e) => setTripType(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#00A66E] focus:bg-white transition-colors"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#F8904D] focus:bg-white transition-colors"
                   >
                     <option value="">Select trip type</option>
                     {TRIP_TYPES.map((t) => (
@@ -274,7 +278,7 @@ export const HeroSection: React.FC = () => {
                     value={whatsapp}
                     onChange={(e) => setWhatsapp(e.target.value)}
                     placeholder="+91 98765-43210"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#00A66E] focus:bg-white transition-colors"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#F8904D] focus:bg-white transition-colors"
                   />
                 </div>
 
@@ -282,7 +286,7 @@ export const HeroSection: React.FC = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full mt-2 py-3 px-4 rounded-xl bg-[#00A66E] hover:bg-[#00915f] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-md shadow-[#00A66E]/20 active:scale-95 transition-all cursor-pointer"
+                  className="w-full mt-2 py-3 px-4 rounded-xl bg-[#F8904D] hover:bg-[#e07b3b] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-[#F8904D]/30 active:scale-95 transition-all cursor-pointer"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>{loading ? "Processing..." : "Get My Free Custom Itinerary"}</span>

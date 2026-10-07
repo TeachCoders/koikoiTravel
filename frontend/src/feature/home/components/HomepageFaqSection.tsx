@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, Sparkles } from "lucide-react";
 
 const FAQS_COL1 = [
   {
@@ -52,6 +52,9 @@ export const HomepageFaqSection: React.FC = () => {
     <section className="py-12 sm:py-16 bg-[#FAFBFB] border-b border-slate-100">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-8">
         <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
+          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#F8904D] mb-1.5">
+            <Sparkles className="w-3.5 h-3.5" /> Common Questions
+          </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
             Frequently Asked Questions
           </h2>
@@ -67,20 +70,20 @@ export const HomepageFaqSection: React.FC = () => {
               return (
                 <div
                   key={id}
-                  className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden"
+                  className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden"
                 >
                   <button
                     type="button"
                     onClick={() => toggle(id)}
-                    className="w-full text-left px-5 py-3.5 flex items-center justify-between gap-3 font-semibold text-slate-900 text-xs sm:text-sm hover:text-[#00A66E] transition-colors"
+                    className="w-full text-left px-5 sm:px-6 py-4 flex items-center justify-between gap-3 font-semibold text-slate-900 text-xs sm:text-sm hover:text-[#2E8B8B] transition-colors"
                   >
                     <span>{faq.q}</span>
-                    <span className="text-[#00A66E] shrink-0">
+                    <span className="text-[#F8904D] shrink-0">
                       {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                     </span>
                   </button>
                   {isOpen && (
-                    <div className="px-5 pb-4 pt-1 text-slate-600 text-xs sm:text-[13px] leading-relaxed border-t border-slate-100">
+                    <div className="px-5 sm:px-6 pb-5 pt-1 text-slate-600 text-xs sm:text-sm leading-relaxed border-t border-slate-100">
                       <p>{faq.a}</p>
                     </div>
                   )}
@@ -97,20 +100,20 @@ export const HomepageFaqSection: React.FC = () => {
               return (
                 <div
                   key={id}
-                  className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden"
+                  className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden"
                 >
                   <button
                     type="button"
                     onClick={() => toggle(id)}
-                    className="w-full text-left px-5 py-3.5 flex items-center justify-between gap-3 font-semibold text-slate-900 text-xs sm:text-sm hover:text-[#00A66E] transition-colors"
+                    className="w-full text-left px-5 sm:px-6 py-4 flex items-center justify-between gap-3 font-semibold text-slate-900 text-xs sm:text-sm hover:text-[#2E8B8B] transition-colors"
                   >
                     <span>{faq.q}</span>
-                    <span className="text-[#00A66E] shrink-0">
+                    <span className="text-[#F8904D] shrink-0">
                       {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                     </span>
                   </button>
                   {isOpen && (
-                    <div className="px-5 pb-4 pt-1 text-slate-600 text-xs sm:text-[13px] leading-relaxed border-t border-slate-100">
+                    <div className="px-5 sm:px-6 pb-5 pt-1 text-slate-600 text-xs sm:text-sm leading-relaxed border-t border-slate-100">
                       <p>{faq.a}</p>
                     </div>
                   )}

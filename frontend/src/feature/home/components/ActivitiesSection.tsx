@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 
 const ACTIVITIES = [
@@ -54,10 +54,13 @@ export const ActivitiesSection: React.FC = () => {
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
+          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#F8904D] mb-2">
+            <Sparkles className="w-3.5 h-3.5" /> India Highlights
+          </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
             Amazing Things You Can Experience in India
           </h2>
-          <p className="text-slate-500 text-xs sm:text-sm mt-2 leading-relaxed">
+          <p className="text-slate-600 text-xs sm:text-sm mt-2 leading-relaxed">
             Your India holiday should be more than checking destinations off a list.
           </p>
         </div>
@@ -68,7 +71,7 @@ export const ActivitiesSection: React.FC = () => {
             <Link
               key={idx}
               href={act.href}
-              className="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 block"
+              className="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:scale-105 transition-all duration-300 block border border-slate-100"
             >
               <FallbackImage
                 src={act.image}
@@ -77,7 +80,7 @@ export const ActivitiesSection: React.FC = () => {
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 12.5vw"
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
               <div className="absolute bottom-3 left-2 right-2 text-center text-white">
                 <h3 className="font-bold text-[11px] sm:text-xs leading-tight drop-shadow">
                   {act.title}
@@ -91,10 +94,10 @@ export const ActivitiesSection: React.FC = () => {
         <div className="mt-8 sm:mt-10 text-center">
           <Link
             href="/travel-experiences"
-            className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#00A66E] hover:bg-[#00915f] text-white font-bold text-xs sm:text-sm tracking-wide shadow-md transition-all active:scale-95"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm tracking-wide shadow-md transition-all active:scale-95"
           >
             <span>Explore India Experiences</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 text-[#F8904D]" />
           </Link>
         </div>
       </div>

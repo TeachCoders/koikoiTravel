@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 
@@ -44,6 +44,9 @@ export const HowItWorksSection: React.FC = () => {
 
           {/* Right Column: 3 Steps */}
           <div className="lg:col-span-7">
+            <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#F8904D] mb-2">
+              <Sparkles className="w-3.5 h-3.5" /> How It Works
+            </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-8">
               How Does KoiKoi Travel Make Trip Planning Easy?
             </h2>
@@ -52,7 +55,7 @@ export const HowItWorksSection: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
               {STEPS.map((step, idx) => (
                 <div key={idx} className="flex flex-col items-start relative">
-                  <span className="w-8 h-8 rounded-full bg-[#00A66E] text-white font-bold text-xs flex items-center justify-center mb-3 shrink-0 shadow-sm">
+                  <span className="w-8 h-8 rounded-full bg-[#F8904D] text-white font-bold text-xs flex items-center justify-center mb-3 shrink-0 shadow-sm shadow-[#F8904D]/30">
                     {step.num}
                   </span>
                   <h3 className="font-bold text-slate-900 text-sm sm:text-base leading-snug">
@@ -70,14 +73,14 @@ export const HowItWorksSection: React.FC = () => {
               <QuoteModal>
                 <button
                   type="button"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full bg-[#00A66E] hover:bg-[#00915f] text-white font-bold text-xs sm:text-sm tracking-wide shadow-md transition-all active:scale-95 cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-xl bg-[#F8904D] hover:bg-[#e07b3b] text-white font-bold text-xs sm:text-sm tracking-wide shadow-md shadow-[#F8904D]/30 transition-all active:scale-95 cursor-pointer"
                 >
                   <span>Start Planning My Trip</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </QuoteModal>
 
-              <p className="text-[#00A66E] font-medium text-sm sm:text-base italic">
+              <p className="text-[#2E8B8B] font-bold text-sm sm:text-base italic">
                 That&apos;s it. You dream about India. We help make it happen.
               </p>
             </div>
