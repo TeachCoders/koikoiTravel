@@ -27,6 +27,7 @@ import {
   Timer,
   Clock,
   Check,
+  MapPin,
 } from "lucide-react";
 import { useEffect, useState, Fragment, useMemo } from "react";
 import dynamic from "next/dynamic";
@@ -154,35 +155,30 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           <div className="mb-6">
 
             {pageH1 && (
-              <h1 className="font-heading text-2xl sm:text-3xl md:text-[34px] font-extrabold tracking-tight text-slate-900 mb-3 leading-[1.25]">
-                {durationText && (
-                  <span className="text-[#2E8B8B] mr-2">{durationText} -</span>
-                )}
-                {pageH1}
+              <h1 className="font-heading text-xl sm:text-2xl md:text-[28px] font-bold tracking-tight text-slate-900 mb-3 leading-[1.3]">
+                {durationText ? `${durationText} - ${pageH1}` : pageH1}
               </h1>
             )}
 
             {journey.destination && (
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="flex items-center gap-1.5 text-xs sm:text-[13px] font-bold text-teal-800 bg-teal-50 border border-teal-200/80 px-3 py-1 rounded-full shrink-0 shadow-2xs">
-                  <Route size={14} className="text-[#2E8B8B]" />
-                  <span>Journey Route:</span>
-                </div>
-                <div className="flex flex-wrap items-center gap-1.5">
-                  {(journey.route && journey.route.length > 0
-                    ? journey.route.map((c) => c.title)
-                    : journey.destination.split("-").map((s) => s.trim())
-                  ).map((city, idx, arr) => (
-                    <Fragment key={idx}>
-                      <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-slate-800 text-xs sm:text-[13px] font-semibold border border-slate-200/80 shadow-2xs">
-                        {city}
-                      </span>
-                      {idx < arr.length - 1 && (
-                        <ChevronRight size={13} className="text-slate-400 shrink-0" />
-                      )}
-                    </Fragment>
-                  ))}
-                </div>
+              <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-slate-600 font-medium">
+                <span className="flex items-center gap-1.5 text-slate-500 font-semibold mr-1">
+                  <MapPin size={14} className="text-[#F8904D]" />
+                  <span>Route:</span>
+                </span>
+                {(journey.route && journey.route.length > 0
+                  ? journey.route.map((c) => c.title)
+                  : journey.destination.split("-").map((s) => s.trim())
+                ).map((city, idx, arr) => (
+                  <Fragment key={idx}>
+                    <span className="text-slate-800 font-semibold">
+                      {city}
+                    </span>
+                    {idx < arr.length - 1 && (
+                      <span className="text-slate-300 font-normal mx-0.5">→</span>
+                    )}
+                  </Fragment>
+                ))}
               </div>
             )}
 
@@ -440,9 +436,9 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
         </div>
       </div>
 
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 py-8 md:py-12 grid grid-cols-1 lg:grid-cols-[9fr_5fr] gap-6 lg:gap-8">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 py-8 md:py-12 grid grid-cols-1 lg:grid-cols-[9fr_5fr] gap-6 lg:gap-8 items-start">
         {/* ===== MAIN ===== */}
-        <div className="space-y-8 md:space-y-10">
+        <div className="space-y-8 md:space-y-10 min-w-0">
           {journey.highlights && journey.highlights.length > 0 && (
             <section>
               <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
@@ -454,7 +450,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               <div className="bg-teal-50/50 rounded-2xl md:rounded-3xl p-5 md:p-6 border border-teal-100/80">
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   {journey.highlights.map((h, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[15px] font-medium text-slate-800 leading-[1.5]">
+                    <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-normal text-slate-700 leading-relaxed">
                       <BadgeCheck size={18} className="shrink-0 mt-0.5 text-[#2E8B8B]" />
                       <span>{h}</span>
                     </li>
@@ -472,7 +468,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-4">
                 About <span className="text-[#F8904D]">This Tour</span>
               </h2>
-              <div className="bg-white rounded-2xl md:rounded-3xl p-5 md:p-8 border border-slate-200/80 shadow-sm text-[15px] sm:text-base text-slate-600 leading-[1.8]">
+              <div className="bg-white rounded-2xl md:rounded-3xl p-5 md:p-8 border border-slate-200/80 shadow-sm text-[15px] font-normal text-slate-600 leading-[1.8]">
                 <RichContent html={linkKeywords(journey.overView, paragraphLinkRules)} className="rich-text-plain-links" />
               </div>
             </section>
@@ -509,8 +505,9 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   </h3>
                   <ul className="space-y-3">
                     {(journey.inclusions ?? []).map((item, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-semibold text-emerald-950 leading-relaxed">
-                        <CheckCircle2 size={18} className="text-emerald-500 mt-[2px] shrink-0" /> {item}
+                      <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-normal text-slate-700 leading-relaxed">
+                        <CheckCircle2 size={18} className="text-emerald-600 mt-[2px] shrink-0" />
+                        <span>{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -523,8 +520,9 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   </h3>
                   <ul className="space-y-3">
                     {(journey.exclusions ?? []).map((item, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-medium text-red-950 leading-relaxed">
-                        <XCircle size={18} className="text-red-400 mt-[2px] shrink-0" /> {item}
+                      <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-normal text-slate-700 leading-relaxed">
+                        <XCircle size={18} className="text-red-400 mt-[2px] shrink-0" />
+                        <span>{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -551,11 +549,11 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
                 <ul className="relative z-10 space-y-4 md:space-y-5">
                   {(journey.whyChooseUs ?? []).map((item, i) => (
-                    <li key={i} className="flex items-start gap-3.5 text-sm sm:text-[15px] font-medium text-slate-700 leading-[1.6]">
+                    <li key={i} className="flex items-start gap-3.5 text-sm sm:text-[14.5px] font-normal text-slate-700 leading-[1.6]">
                       <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center shrink-0 mt-0.5 border border-slate-200/80 shadow-xs">
                         <ShieldCheck size={16} className="text-[#2E8B8B]" />
                       </div>
-                      {item}
+                      <span>{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -564,8 +562,8 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           )}
         </div>
 
-        {/* ===== SIDEBAR ===== */}
-        <aside className="space-y-6 lg:sticky lg:top-24 self-start">
+        {/* ===== SIDEBAR (STICKY) ===== */}
+        <aside className="space-y-6 lg:sticky lg:top-24 self-start w-full">
           <div className="rounded-3xl shadow-sm bg-white border border-slate-200/80 overflow-hidden">
             <TourBookingForm embedded />
           </div>
@@ -578,9 +576,9 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               </h4>
               <ul className="space-y-3">
                 {(journey.bookingPolicyList ?? []).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm font-medium text-slate-600 leading-relaxed">
+                  <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm font-normal text-slate-600 leading-relaxed">
                     <BadgeCheck size={16} className="shrink-0 mt-[2px] text-[#2E8B8B]" />
-                    {item}
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
@@ -591,7 +589,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                 <ShieldCheck size={15} className="text-[#2E8B8B]" />
                 Why Book With Confidence
               </h4>
-              <ul className="space-y-2.5 text-xs sm:text-[13px] font-medium text-slate-700">
+              <ul className="space-y-2.5 text-xs sm:text-[13px] font-normal text-slate-700">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 size={15} className="text-[#2E8B8B] shrink-0 mt-0.5" />
                   <span>100% Tailor-made with free itinerary consultation</span>
@@ -629,6 +627,9 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
         </aside>
       </div>
 
+      {/* ===== FAQ SECTION (Placed Before Trip Guide) ===== */}
+      <FaqSection faqs={journey.faqs} />
+
       {/* ===== TRIP GUIDE (MORE DESCRIPTION) ===== */}
       {journey.moreDescription && (
         <section id="more" className="bg-slate-50/80 border-t border-slate-200/80 py-10 md:py-14">
@@ -648,9 +649,6 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           </div>
         </section>
       )}
-
-      {/* ===== FAQ SECTION ===== */}
-      <FaqSection faqs={journey.faqs} />
 
       {lightboxOpen && (
         <JourneyLightbox
@@ -674,7 +672,7 @@ function DayItem({
   day: { id: number; day: string; description?: string; image?: string };
   defaultOpen?: boolean;
 }) {
-  const dayTitle = sanitizeHtml(day.day.replace(/^Day\s*\d+\s*:\s*/i, "").trim());
+  const dayTitle = stripHtml(day.day.replace(/^Day\s*\d+\s*:\s*/i, "").trim());
 
   const handleToggle = (e: React.SyntheticEvent<HTMLDetailsElement>) => {
     const details = e.currentTarget;
@@ -713,17 +711,17 @@ function DayItem({
           aria-hidden="true"
           className="hidden md:block absolute left-[15px] top-0 -bottom-px w-[2px] bg-[#2E8B8B]/20 z-0 pointer-events-none"
         />
-        <span className="flex items-center gap-2.5 font-heading text-[17px] font-bold text-[#1C1C1C] rich-text-plain-links relative z-10">
+        <span className="flex items-center gap-2.5 font-heading text-[16px] sm:text-[17px] font-bold text-slate-900 relative z-10">
           {/* Timeline Dot */}
-          <span className="hidden md:flex w-8 h-8 rounded-full bg-white border-[3px] border-[#2E8B8B] items-center justify-center shadow-sm z-10 transition-colors duration-300 shrink-0">
-            <span className="text-xs font-black text-[#2E8B8B]">{index}</span>
+          <span className="hidden md:flex w-7 h-7 rounded-full bg-white border-2 border-orange-500 items-center justify-center shadow-xs z-10 transition-colors duration-300 shrink-0">
+            <span className="text-xs font-bold text-orange-600">{index}</span>
           </span>
-          <span className="mr-1.5 text-[#F8904D]">Day {index}:</span>
-          <span dangerouslySetInnerHTML={{ __html: dayTitle }} />
+          <span className="mr-1 text-orange-500 font-bold shrink-0">Day {index}:</span>
+          <span className="text-slate-900 font-bold">{dayTitle}</span>
         </span>
         <ChevronDown
-          size={20}
-          className="shrink-0 text-[#2E8B8B] transition-transform duration-300 group-open:rotate-180"
+          size={18}
+          className="shrink-0 text-slate-400 group-hover:text-slate-700 transition-transform duration-300 group-open:rotate-180"
         />
       </summary>
 
