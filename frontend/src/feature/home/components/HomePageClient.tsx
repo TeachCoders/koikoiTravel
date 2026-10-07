@@ -45,7 +45,6 @@ export const HomePageClient: React.FC<{
         initialExperiences={initialExperiences}
         initialJourneys={initialJourneys}
       />
-      <SeasonalTripsSection initialSeasons={initialSeasons} initialJourneys={initialJourneys} />
       <WhyChooseUsSection />
       <SeoTextBlock />
       <TrustedPartners />
