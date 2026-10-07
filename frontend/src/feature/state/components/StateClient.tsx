@@ -140,6 +140,14 @@ export default function StateClient() {
     deleteState(id);
   };
 
+  const leftOptions = React.useMemo(() => {
+    return allStates.filter((s) => !domesticOrderedIds.includes(s.id) || orderedIds.includes(s.id));
+  }, [allStates, domesticOrderedIds, orderedIds]);
+
+  const rightOptions = React.useMemo(() => {
+    return allStates.filter((s) => !orderedIds.includes(s.id) || domesticOrderedIds.includes(s.id));
+  }, [allStates, orderedIds, domesticOrderedIds]);
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-start">
@@ -210,7 +218,7 @@ export default function StateClient() {
           <OrderAtTopCard
             title="Left Column (Inbound) Top Destinations"
             helperText="Selected states appear on the Left Column in this order."
-            options={allStates.filter((s) => !domesticOrderedIds.includes(s.id))}
+            options={leftOptions}
             activeOnly
             columns={2}
             selectedIds={orderedIds}
@@ -227,7 +235,7 @@ export default function StateClient() {
           <OrderAtTopCard
             title="Right Column (Domestic) Top Destinations"
             helperText="Selected states appear on the Right Column in this order."
-            options={allStates.filter((s) => !orderedIds.includes(s.id))}
+            options={rightOptions}
             activeOnly
             columns={2}
             selectedIds={domesticOrderedIds}
