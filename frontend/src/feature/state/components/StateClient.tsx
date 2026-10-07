@@ -9,7 +9,7 @@ import PageLoader from "@/components/shared/PageLoader";
 import TableWraper from "@/components/shared/TableWraper";
 import PageSizeSelect from "@/components/shared/PageSizeSelect";
 import OrderAtTopCard from "@/components/shared/OrderAtTopCard";
-import { useGetStates, useDeleteState, useToggleStateActive, useUpdateStateOrder } from "@/feature/state/api/useState";
+import { useGetStates, useDeleteState, useToggleStateActive, useUpdateStateOrder, useUpdateStateDomesticOrder } from "@/feature/state/api/useState";
 import DirectoryTableLayout from "@/components/shared/DirectoryTableLayout";
 import DirectoryTable, { ColumnDef } from "@/components/shared/DirectoryTable";
 import { getStates } from "@/feature/state/api";
@@ -60,12 +60,15 @@ export default function StateClient() {
   const { deleteState, isPending: isDeleting } = useDeleteState();
   const { toggleStateActive, isPending: isToggling } = useToggleStateActive();
   const { updateStateOrder, isPending: isOrderSaving } = useUpdateStateOrder();
+  const { updateStateDomesticOrder, isPending: isDomesticOrderSaving } = useUpdateStateDomesticOrder();
   const { user } = useGetCurrentUser();
 
   const [allStates, setAllStates] = useState<{ id: number; title: string; isActive?: boolean }[]>([]);
   const [orderedIds, setOrderedIds] = useState<number[]>([]);
+  const [domesticOrderedIds, setDomesticOrderedIds] = useState<number[]>([]);
   const [orderLoading, setOrderLoading] = useState(true);
   const initialOrderRef = React.useRef<number[]>([]);
+  const initialDomesticOrderRef = React.useRef<number[]>([]);
 
   React.useEffect(() => {
     setOrderLoading(true);
@@ -81,17 +84,34 @@ export default function StateClient() {
           .map((s) => s.id);
         initialOrderRef.current = pinned;
         setOrderedIds(pinned);
+
+        const domesticPinned = res.data
+          .filter((s) => s.domesticDisplayOrder && s.domesticDisplayOrder > 0)
+          .sort((a, b) => a.domesticDisplayOrder! - b.domesticDisplayOrder!)
+          .map((s) => s.id);
+        initialDomesticOrderRef.current = domesticPinned;
+        setDomesticOrderedIds(domesticPinned);
+
         setOrderLoading(false);
       })
       .catch(() => setOrderLoading(false));
   }, [countryId]);
 
   const orderDirty = JSON.stringify(orderedIds) !== JSON.stringify(initialOrderRef.current);
+  const domesticOrderDirty = JSON.stringify(domesticOrderedIds) !== JSON.stringify(initialDomesticOrderRef.current);
 
   const handleSaveOrder = () => {
     updateStateOrder(orderedIds, {
       onSuccess: () => {
         initialOrderRef.current = [...orderedIds];
+      },
+    });
+  };
+
+  const handleSaveDomesticOrder = () => {
+    updateStateDomesticOrder(domesticOrderedIds, {
+      onSuccess: () => {
+        initialDomesticOrderRef.current = [...domesticOrderedIds];
       },
     });
   };
@@ -185,19 +205,47 @@ export default function StateClient() {
         ]}
       />
 
+      {canEdit && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <OrderAtTopCard
+            title="Left Column (Inbound) Top Destinations"
+            helperText="Selected states appear on the Left Column in this order."
+            options={allStates}
+            activeOnly
+            columns={2}
+            selectedIds={orderedIds}
+            onChange={setOrderedIds}
+            loading={orderLoading}
+            loadingText="Loading states..."
+            placeholder="Select left column states"
+            searchPlaceholder="Search states..."
+            saving={isOrderSaving}
+            onSave={handleSaveOrder}
+            dirty={orderDirty}
+            variant="card"
+          />
+          <OrderAtTopCard
+            title="Right Column (Domestic) Top Destinations"
+            helperText="Selected states appear on the Right Column in this order."
+            options={allStates}
+            activeOnly
+            columns={2}
+            selectedIds={domesticOrderedIds}
+            onChange={setDomesticOrderedIds}
+            loading={orderLoading}
+            loadingText="Loading states..."
+            placeholder="Select right column states"
+            searchPlaceholder="Search states..."
+            saving={isDomesticOrderSaving}
+            onSave={handleSaveDomesticOrder}
+            dirty={domesticOrderDirty}
+            variant="card"
+          />
+        </div>
+      )}
+
       <DirectoryTableLayout
-        showOrderAtTop={canEdit}
-        orderOptions={allStates}
-        orderActiveOnly
-        orderSelectedIds={orderedIds}
-        orderOnChange={setOrderedIds}
-        orderLoading={orderLoading}
-        orderLoadingText="Loading states..."
-        orderPlaceholder="Select states to show at top"
-        orderSearchPlaceholder="Search states..."
-        orderSaving={isOrderSaving}
-        orderOnSave={handleSaveOrder}
-        orderDirty={orderDirty}
+        showOrderAtTop={false}
         isLoading={isLoading}
         isEmpty={states.length === 0}
         emptyIcon={Map}
@@ -215,13 +263,27 @@ export default function StateClient() {
           })}
           columns={[
             {
-              header: "Display Order",
+              header: "Left Order",
               className: "tbl-th-center",
               cellClassName: "px-4 py-3 text-center",
               render: (state) => (
                 state.displayOrder && state.displayOrder > 0 ? (
                   <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-bold shadow-sm">
                     #{state.displayOrder}
+                  </span>
+                ) : (
+                  <span className="text-xs text-slate-300">-</span>
+                )
+              ),
+            },
+            {
+              header: "Right Order",
+              className: "tbl-th-center",
+              cellClassName: "px-4 py-3 text-center",
+              render: (state) => (
+                state.domesticDisplayOrder && state.domesticDisplayOrder > 0 ? (
+                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold shadow-sm">
+                    #{state.domesticDisplayOrder}
                   </span>
                 ) : (
                   <span className="text-xs text-slate-300">-</span>

@@ -8,6 +8,7 @@ import {
   deleteState,
   toggleStateActive,
   updateStateOrder,
+  updateStateDomesticOrder,
 } from ".";
 import { successToast, errorToast } from "@/components/shared/tost";
 import type { State, PaginatedResponse } from "../type";
@@ -143,6 +144,25 @@ export const useUpdateStateOrder = () => {
   });
   return {
     updateStateOrder: mutation.mutate,
+    isPending: mutation.isPending,
+  };
+};
+
+export const useUpdateStateDomesticOrder = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: updateStateDomesticOrder,
+    onSuccess: (res: any) => {
+      queryClient.invalidateQueries({ queryKey: ["states"] });
+      
+      successToast(res?.data?.count ? `Right column (domestic) order updated · ${res.data.count} pinned` : "Right column order updated");
+    },
+    onError: (error: any) => {
+      errorToast(error?.response?.data?.message || "Failed to update domestic order");
+    },
+  });
+  return {
+    updateStateDomesticOrder: mutation.mutate,
     isPending: mutation.isPending,
   };
 };

@@ -639,12 +639,14 @@ model State {
   showOnSite  Boolean @default(true)
   activeSnapshot Json?
   displayOrder Int     @default(0)
+  domesticDisplayOrder Int @default(0)
   cities      City[]
   journeys    Journey[]
   featuredJourneyOrder Int[] @default([])
 
   @@index([countryId, isActive])
   @@index([isActive, displayOrder])
+  @@index([isActive, domesticDisplayOrder])
 }
 
 model City {

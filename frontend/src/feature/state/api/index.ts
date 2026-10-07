@@ -57,3 +57,9 @@ export async function updateStateOrder(ids: number[]) {
   const { data } = await apiClient.post("/state/order", { ids });
   return data;
 }
+
+export async function updateStateDomesticOrder(ids: number[]) {
+  const { data } = await apiClient.put("/state/bulk-domestic-order", { ids });
+  return data;
+}
+

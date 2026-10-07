@@ -77,15 +77,15 @@ export const PopularDestinations: React.FC<{
     }
   }, [defaultCountryId, selectedCountryId]);
 
-  // Destination items (Top Ordered States selected by Admin)
-  const items = useMemo<DestinationItem[]>(() => {
+  // Left Column items (Inbound / Iconic circuit destinations)
+  const leftItems = useMemo<DestinationItem[]>(() => {
     return states
       .filter((s) => (s.displayOrder ?? 0) > 0)
       .map((s) => {
         const tours = s.tourCount ?? (s.journeys?.length || 0);
         const countrySlug = s.country?.slug || "india";
         return {
-          id: `state-${s.id}`,
+          id: `left-state-${s.id}`,
           countryId: s.countryId || s.country?.id,
           title: s.title,
           image:
@@ -105,16 +105,52 @@ export const PopularDestinations: React.FC<{
       .sort((a, b) => a.displayOrder - b.displayOrder);
   }, [states]);
 
+  // Right Column items (Domestic / Regional destinations)
+  const rightItems = useMemo<DestinationItem[]>(() => {
+    return states
+      .filter((s) => (s.domesticDisplayOrder ?? 0) > 0)
+      .map((s) => {
+        const tours = s.tourCount ?? (s.journeys?.length || 0);
+        const countrySlug = s.country?.slug || "india";
+        return {
+          id: `right-state-${s.id}`,
+          countryId: s.countryId || s.country?.id,
+          title: s.title,
+          image:
+            s.thumbImg ||
+            s.banner?.images?.[0] ||
+            (s.slug === "golden-triangle"
+              ? "/golden-triangle/trip/golden-triangle.webp"
+              : undefined),
+          subtitle: tours > 0 ? `${tours}+ tours` : undefined,
+          href:
+            s.slug === "golden-triangle"
+              ? `/travel-experiences/golden-triangle`
+              : `/tour-packages/${countrySlug}/${s.slug}`,
+          displayOrder: s.domesticDisplayOrder ?? 999,
+        };
+      })
+      .sort((a, b) => a.displayOrder - b.displayOrder);
+  }, [states]);
+
   // Filter items by selected country
-  const filteredItems = useMemo(() => {
-    if (!selectedCountryId || selectedCountryId === "all") return items;
-    return items.filter(
+  const filteredLeftItems = useMemo(() => {
+    if (!selectedCountryId || selectedCountryId === "all") return leftItems;
+    return leftItems.filter(
       (i) => !i.countryId || String(i.countryId) === String(selectedCountryId)
     );
-  }, [items, selectedCountryId]);
+  }, [leftItems, selectedCountryId]);
+
+  const filteredRightItems = useMemo(() => {
+    if (!selectedCountryId || selectedCountryId === "all") return rightItems;
+    return rightItems.filter(
+      (i) => !i.countryId || String(i.countryId) === String(selectedCountryId)
+    );
+  }, [rightItems, selectedCountryId]);
 
   const isLoading = statesLoading || countriesLoading || experiencesLoading;
-  const bentoItems = filteredItems.slice(0, 18);
+  const leftBentoItems = filteredLeftItems.slice(0, 12);
+  const rightBentoItems = filteredRightItems.slice(0, 12);
 
   const activeCountryObj = availableCountries.find(
     (c) => c.id === selectedCountryId
@@ -124,6 +160,28 @@ export const PopularDestinations: React.FC<{
     : selectedCountryId === "all"
     ? "All Destinations"
     : "India";
+
+  const renderGrid = (columnItems: DestinationItem[]) => (
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 auto-rows-[140px] sm:auto-rows-[160px] lg:auto-rows-[170px]">
+      {columnItems.map((item, idx) => {
+        const isLarge = idx === 0;
+        return (
+          <DestinationCard
+            key={item.id}
+            title={item.title}
+            image={item.image}
+            subtitle={item.subtitle}
+            href={item.href}
+            className={`!rounded-2xl !h-full w-full ${
+              isLarge
+                ? "col-span-2 row-span-2"
+                : "col-span-1 row-span-1"
+            }`}
+          />
+        );
+      })}
+    </div>
+  );
 
   return (
     <section
@@ -212,44 +270,59 @@ export const PopularDestinations: React.FC<{
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 auto-rows-[160px] lg:auto-rows-[180px]">
-            <div className="col-span-2 row-span-2 rounded-2xl bg-slate-100 animate-pulse h-full" />
-            <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
-            <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
-            <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
-            <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 auto-rows-[160px] lg:auto-rows-[170px]">
+              <div className="col-span-2 row-span-2 rounded-2xl bg-slate-100 animate-pulse h-full" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 auto-rows-[160px] lg:auto-rows-[170px]">
+              <div className="col-span-2 row-span-2 rounded-2xl bg-slate-100 animate-pulse h-full" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
+            </div>
           </div>
-        ) : bentoItems.length === 0 ? (
+        ) : leftBentoItems.length === 0 && rightBentoItems.length === 0 ? (
           <p className="text-center text-slate-400 py-16">No destinations found.</p>
         ) : (
           <div className="space-y-6">
-            <div
-              key={selectedCountryId || "all"}
-              className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 auto-rows-[140px] sm:auto-rows-[160px] lg:auto-rows-[180px] animate-in fade-in duration-500"
-            >
-              {bentoItems.map((item, idx) => {
-                const isLarge =
-                  idx === 0 || (bentoItems.length >= 14 && idx === 13);
+            {rightBentoItems.length > 0 ? (
+              <div
+                key={selectedCountryId || "all"}
+                className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 animate-in fade-in duration-500"
+              >
+                <div>{renderGrid(leftBentoItems)}</div>
+                <div>{renderGrid(rightBentoItems)}</div>
+              </div>
+            ) : (
+              <div
+                key={selectedCountryId || "all"}
+                className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 auto-rows-[140px] sm:auto-rows-[160px] lg:auto-rows-[180px] animate-in fade-in duration-500"
+              >
+                {leftBentoItems.map((item, idx) => {
+                  const isLarge = idx === 0 || (leftBentoItems.length >= 14 && idx === 13);
+                  return (
+                    <DestinationCard
+                      key={item.id}
+                      title={item.title}
+                      image={item.image}
+                      subtitle={item.subtitle}
+                      href={item.href}
+                      className={`!rounded-2xl !h-full w-full ${
+                        isLarge ? "col-span-2 row-span-2" : "col-span-1 row-span-1"
+                      }`}
+                    />
+                  );
+                })}
+              </div>
+            )}
 
-                return (
-                  <DestinationCard
-                    key={item.id}
-                    title={item.title}
-                    image={item.image}
-                    subtitle={item.subtitle}
-                    href={item.href}
-                    className={`!rounded-2xl !h-full w-full ${
-                      isLarge
-                        ? "col-span-2 row-span-2"
-                        : "col-span-1 row-span-1"
-                    }`}
-                  />
-                );
-              })}
-            </div>
-
-            {/* View All Link at the bottom if filtered list is long */}
-            {items.length > 18 && (
+            {/* View All Link at the bottom if list is long */}
+            {(leftItems.length + rightItems.length) > 12 && (
               <div className="flex justify-center pt-4">
                 <Link
                   href="/tour-packages"
@@ -268,3 +341,4 @@ export const PopularDestinations: React.FC<{
 };
 
 export default PopularDestinations;
+

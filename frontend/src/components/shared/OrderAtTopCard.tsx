@@ -5,6 +5,8 @@ import { Star } from "lucide-react";
 import OrderedMultiSelect from "./OrderedMultiSelect";
 
 interface OrderAtTopCardProps {
+  title?: string;
+  helperText?: string;
   options: { id: number; title: string; isActive?: boolean }[];
   selectedIds: number[];
   onChange: (ids: number[]) => void;
@@ -21,6 +23,8 @@ interface OrderAtTopCardProps {
 }
 
 export default function OrderAtTopCard({
+  title = "Order at Top",
+  helperText = "Selected items appear at the top in this order. Drag from the grip icon to reorder.",
   options,
   selectedIds,
   onChange,
@@ -46,7 +50,7 @@ export default function OrderAtTopCard({
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Star size={18} className="text-slate-500" />
-          <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Order at Top</h2>
+          <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider">{title}</h2>
         </div>
         {dirty && (
           <span className="text-[11px] font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
@@ -62,7 +66,7 @@ export default function OrderAtTopCard({
         searchPlaceholder={searchPlaceholder}
         loading={loading}
         loadingText={loadingText}
-        helperText="Selected items appear at the top in this order. Drag from the grip icon to reorder."
+        helperText={helperText}
         isOpen={isOpen}
         onOpenChange={setIsOpen}
         activeOnly={activeOnly}
