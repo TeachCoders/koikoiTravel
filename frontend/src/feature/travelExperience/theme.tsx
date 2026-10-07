@@ -316,46 +316,103 @@ function HoneymoonCartoon() {
   );
 }
 
-// 5. Realistic Spiritual & Ghat Aarti (Varanasi Diya & Temple Dome)
+// 5. Realistic Multi-Faith Spiritual Journeys (Hindu Temple & Diya, Christian Church & Cross, Islamic Mosque & Crescent)
 function SpiritualCartoon() {
   return (
     <svg viewBox="0 0 240 170" fill="none" className="w-full h-full max-h-[140px]" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="divineSun" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#FBBF24" />
+        <linearGradient id="multiFaithSun" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#FEF08A" stopOpacity="0.8" />
+          <stop offset="50%" stopColor="#FDE047" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#F59E0B" stopOpacity="0.05" />
+        </linearGradient>
+        <linearGradient id="templeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FED7AA" />
           <stop offset="100%" stopColor="#EA580C" />
         </linearGradient>
-        <linearGradient id="diyaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#D97706" />
-          <stop offset="100%" stopColor="#78350F" />
+        <linearGradient id="churchGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#E2E8F0" />
+          <stop offset="100%" stopColor="#94A3B8" />
+        </linearGradient>
+        <linearGradient id="mosqueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#99F6E4" />
+          <stop offset="100%" stopColor="#0D9488" />
+        </linearGradient>
+        <linearGradient id="goldDiya" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FDE047" />
+          <stop offset="100%" stopColor="#CA8A04" />
         </linearGradient>
       </defs>
 
-      {/* Sacred Divine Aura */}
-      <circle cx="120" cy="74" r="50" fill="#FEF3C7" opacity="0.6" />
-      <circle cx="120" cy="74" r="34" fill="url(#divineSun)" opacity="0.3" />
+      {/* Radiant Divine Aura & Sunburst Glow */}
+      <circle cx="120" cy="70" r="54" fill="url(#multiFaithSun)" />
+      <circle cx="120" cy="70" r="38" fill="#FFFBEB" opacity="0.6" />
 
-      {/* Temple Shikhara Silhouettes */}
-      <path d="M85 135 L85 90 Q120 45 155 90 L155 135 Z" fill="#FDE68A" opacity="0.6" />
-      <path d="M120 38 L120 54" stroke="#D97706" strokeWidth="3" strokeLinecap="round" />
-      <path d="M120 38 L134 45 L120 52 Z" fill="#EA580C" />
+      {/* Floating White Dove of Peace in Sky */}
+      <path d="M120 22 Q126 14 134 20 Q128 26 120 22 Z" fill="#FFFFFF" />
+      <path d="M120 22 Q114 14 106 20 Q112 26 120 22 Z" fill="#FFFFFF" />
+      <circle cx="120" cy="22" r="2.5" fill="#FFFFFF" />
+      <circle cx="121" cy="21.5" r="0.8" fill="#000" />
 
-      {/* Hanging Temple Brass Bells */}
-      <line x1="56" y1="45" x2="56" y2="78" stroke="#78716C" strokeWidth="1.8" />
-      <path d="M48 78 Q56 70 64 78 L66 90 L46 90 Z" fill="#F59E0B" stroke="#B45309" strokeWidth="1.5" />
-      <line x1="184" y1="45" x2="184" y2="78" stroke="#78716C" strokeWidth="1.8" />
-      <path d="M176 78 Q184 70 192 78 L194 90 L174 90 Z" fill="#F59E0B" stroke="#B45309" strokeWidth="1.5" />
+      {/* 1. LEFT: Hindu Temple Shikhara & Saffron Dhwaja */}
+      {/* Temple Tiered Shikhara */}
+      <path d="M42 135 L48 95 L56 70 L64 95 L70 135 Z" fill="url(#templeGrad)" stroke="#C2410C" strokeWidth="0.8" />
+      <path d="M48 95 L64 95" stroke="#9A3412" strokeWidth="1" />
+      <path d="M52 82 L60 82" stroke="#9A3412" strokeWidth="1" />
+      {/* Kalash & Saffron Flag (Dhwaja) */}
+      <circle cx="56" cy="67" r="3" fill="#F59E0B" />
+      <line x1="56" y1="52" x2="56" y2="67" stroke="#9A3412" strokeWidth="1.2" />
+      <path d="M56 52 L68 57 L56 62 Z" fill="#EA580C" />
+      {/* Temple Arch Portal */}
+      <path d="M50 135 L50 115 Q56 108 62 115 L62 135 Z" fill="#7C2D12" />
 
-      {/* Golden Illuminated Brass Diya (Ganga Aarti Lamp) */}
-      <ellipse cx="120" cy="120" rx="46" ry="12" fill="#B45309" />
-      <path d="M74 120 Q120 152 166 120 Q120 135 74 120 Z" fill="url(#diyaGrad)" />
-      {/* Sacred Flame */}
-      <path d="M120 72 Q106 98 120 118 Q134 98 120 72 Z" fill="#DC2626" />
-      <path d="M120 82 Q112 100 120 114 Q128 100 120 82 Z" fill="#FDE047" />
-      <circle cx="120" cy="100" r="4" fill="#FFFFFF" />
+      {/* 2. CENTER: Christian Cathedral / Church Steeple & Holy Cross */}
+      {/* Church Main Body */}
+      <rect x="106" y="80" width="28" height="55" fill="url(#churchGrad)" stroke="#64748B" strokeWidth="0.8" />
+      {/* Tall Steeple Tower */}
+      <path d="M106 80 L120 38 L134 80 Z" fill="#64748B" stroke="#475569" strokeWidth="0.8" />
+      {/* Holy Cross Atop Church */}
+      <line x1="120" y1="24" x2="120" y2="38" stroke="#FDE047" strokeWidth="2.2" strokeLinecap="round" />
+      <line x1="114" y1="29" x2="126" y2="29" stroke="#FDE047" strokeWidth="2.2" strokeLinecap="round" />
+      {/* Cathedral Stained Glass Arch Window */}
+      <path d="M114 96 L114 120 Q120 110 126 120 L126 96 Q120 86 114 96 Z" fill="#0284C7" stroke="#38BDF8" strokeWidth="0.8" />
+      {/* Church Rose Window */}
+      <circle cx="120" cy="62" r="5" fill="#F43F5E" stroke="#FBBF24" strokeWidth="1" />
+
+      {/* 3. RIGHT: Islamic Mosque Dome, Minaret & Crescent Moon (Hilal) */}
+      {/* Mosque Main Structure */}
+      <rect x="170" y="90" width="30" height="45" fill="#CCFBF1" stroke="#0D9488" strokeWidth="0.8" />
+      {/* Mosque Onion Dome */}
+      <path d="M185 58 C173 70 170 78 170 90 L200 90 C200 78 197 70 185 58 Z" fill="url(#mosqueGrad)" stroke="#0F766E" strokeWidth="0.8" />
+      {/* Golden Crescent Moon (Hilal) Finial */}
+      <line x1="185" y1="48" x2="185" y2="58" stroke="#FDE047" strokeWidth="1.5" />
+      <path d="M187 47 C185 45 181 47 181 50 C181 53 185 55 187 53 C184 53 183 50 187 47 Z" fill="#FDE047" />
+      {/* Mosque Minaret Tower */}
+      <rect x="206" y="65" width="7" height="70" fill="#F0FDFA" stroke="#0D9488" strokeWidth="0.8" />
+      <path d="M209.5 54 Q206 62 206 65 L213 65 Q213 62 209.5 54 Z" fill="url(#mosqueGrad)" />
+      {/* Mosque Arch Portal */}
+      <path d="M178 135 L178 114 Q185 106 192 114 L192 135 Z" fill="#134E4A" />
+
+      {/* Base Marble Terrace with Glowing Aarti Lamp & Lotus */}
+      <rect x="22" y="135" width="196" height="8" rx="2" fill="#FEF3C7" stroke="#FDE68A" strokeWidth="0.8" />
+
+      {/* Center Sacred Diya (Light of Wisdom & Unity) */}
+      <ellipse cx="120" cy="144" rx="28" ry="7" fill="url(#goldDiya)" />
+      <path d="M96 144 Q120 160 144 144 Q120 152 96 144 Z" fill="#B45309" />
+      {/* Diya Flame */}
+      <path d="M120 118 Q110 134 120 144 Q130 134 120 118 Z" fill="#DC2626" />
+      <path d="M120 124 Q114 135 120 142 Q126 135 120 124 Z" fill="#FDE047" />
+      <circle cx="120" cy="136" r="2.5" fill="#FFFFFF" />
+
+      {/* Floating Sparkles of Divinity */}
+      <circle cx="34" cy="60" r="1.5" fill="#F59E0B" />
+      <circle cx="85" cy="45" r="2" fill="#FDE047" />
+      <circle cx="155" cy="42" r="2" fill="#FDE047" />
+      <circle cx="225" cy="55" r="1.5" fill="#14B8A6" />
     </svg>
   );
 }
+
 
 // 6. Realistic Family & Group Vacations
 function FamilyCartoon() {
