@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, MapPin } from "lucide-react";
+import { ArrowLeft, MapPin, Star } from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -67,6 +67,8 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
     countryId: initialData?.countryId || 0,
     isActive: initialData?.isActive ?? false,
     showOnSite: initialData?.showOnSite ?? true,
+    displayOrder: initialData?.displayOrder ?? 0,
+    domesticDisplayOrder: initialData?.domesticDisplayOrder ?? 0,
   });
 
   const countrySlug = initialData?.country?.slug || countries.find(c => c.id === formData.countryId)?.slug || "";
@@ -103,6 +105,8 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
         countryId: initialData.countryId || 0,
         isActive: initialData.isActive ?? true,
         showOnSite: initialData.showOnSite ?? true,
+        displayOrder: initialData.displayOrder ?? 0,
+        domesticDisplayOrder: initialData.domesticDisplayOrder ?? 0,
       });
       setBannerTile(initialData.banner?.bannerTitle || "");
       setBannerTag(initialData.banner?.bannerTag || "");
@@ -188,6 +192,8 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
       countryId: formData.countryId,
       isActive: formData.isActive,
       showOnSite: formData.showOnSite,
+      displayOrder: Number(formData.displayOrder) || 0,
+      domesticDisplayOrder: Number(formData.domesticDisplayOrder) || 0,
       bannerTitle: bannerTitle.trim() || undefined,
       bannerTag: bannerTag.trim() || undefined,
       bannerImages: finalBannerImages,
@@ -316,6 +322,69 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
                 />
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Homepage Top Destination Placement */}
+        <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-6 space-y-4">
+          <div className="flex items-center gap-2">
+            <Star size={18} className="text-amber-500" />
+            <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider">
+              Homepage Top Destination Placement
+            </h2>
+          </div>
+          <p className="text-xs text-slate-500">
+            Set order number (1, 2, 3...) if this state should appear on the Homepage Top Places section. Leave 0 if not featured.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-1">
+            <div className="p-4 rounded-xl border border-amber-200/70 bg-amber-50/30 space-y-2">
+              <div className="flex items-center justify-between">
+                <Label className="text-sm font-bold text-slate-800">
+                  Left Column (Inbound) Order
+                </Label>
+                {Number(formData.displayOrder) > 0 && (
+                  <span className="text-[11px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">
+                    Position #{formData.displayOrder}
+                  </span>
+                )}
+              </div>
+              <Input
+                type="number"
+                min={0}
+                value={formData.displayOrder ?? 0}
+                onChange={(e) => setFormData((prev) => ({ ...prev, displayOrder: Number(e.target.value) }))}
+                placeholder="0 = Not featured, 1, 2, 3..."
+                className="bg-white"
+              />
+              <p className="text-[11px] text-slate-500">
+                Shows in Left Column (Iconic / Inbound) on Homepage. 0 = Disabled.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-xl border border-blue-200/70 bg-blue-50/30 space-y-2">
+              <div className="flex items-center justify-between">
+                <Label className="text-sm font-bold text-slate-800">
+                  Right Column (Domestic) Order
+                </Label>
+                {Number(formData.domesticDisplayOrder) > 0 && (
+                  <span className="text-[11px] font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+                    Position #{formData.domesticDisplayOrder}
+                  </span>
+                )}
+              </div>
+              <Input
+                type="number"
+                min={0}
+                value={formData.domesticDisplayOrder ?? 0}
+                onChange={(e) => setFormData((prev) => ({ ...prev, domesticDisplayOrder: Number(e.target.value) }))}
+                placeholder="0 = Not featured, 1, 2, 3..."
+                className="bg-white"
+              />
+              <p className="text-[11px] text-slate-500">
+                Shows in Right Column (Domestic / Regional) on Homepage. 0 = Disabled.
+              </p>
+            </div>
           </div>
         </div>
 
