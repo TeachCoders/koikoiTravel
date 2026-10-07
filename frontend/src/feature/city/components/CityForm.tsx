@@ -313,7 +313,13 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
             selectedIds={journeyIds}
             onChange={setJourneyIds}
             fetchOptions={async (search) => {
-              const res = await getJourneys({ search, isActive: "true", limit: 100 });
+              const res = await getJourneys({
+                search,
+                cityId: initialData?.id || undefined,
+                stateId: formData.stateId || undefined,
+                isActive: "true",
+                limit: 100,
+              });
               return (res.data || []).map((j: any) => {
                 const daysLabel = j.duration || (j.noDays ? `${j.noDays} Days` : "");
                 const mainTitle = j.h1Title || j.title;

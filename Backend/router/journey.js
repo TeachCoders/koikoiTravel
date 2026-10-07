@@ -92,25 +92,34 @@ router.get("/", async (req, res) => {
       ...new Set(routeRaw.split(/[\s,>-]+/).map((t) => t.toLowerCase().trim()).filter(Boolean)),
     ];
 
-    const where = {};
-    if (req.query.isActive === "true" || req.query.isActive === "false") where.isActive = req.query.isActive === "true";
-    else if (isPublic) where.isActive = true;
+    const conditions = [];
+    if (req.query.isActive === "true" || req.query.isActive === "false") {
+      conditions.push({ isActive: req.query.isActive === "true" });
+    } else if (isPublic) {
+      conditions.push({ isActive: true });
+    }
     if (search) {
-      where.OR = ["title", "slug", "seoKeyword"].map((f) => ({ [f]: { contains: search, mode: "insensitive" } }));
+      conditions.push({
+        OR: ["title", "slug", "seoKeyword"].map((f) => ({ [f]: { contains: search, mode: "insensitive" } })),
+      });
     }
     if (req.query.cityId) {
       const cityId = parseInt(req.query.cityId);
       if (isNaN(cityId)) return res.status(400).json({ success: false, message: "Invalid cityId" });
-      where.cities = { some: { id: cityId } };
+      conditions.push({ cities: { some: { id: cityId } } });
     } else if (req.query.stateId) {
       const stateId = parseInt(req.query.stateId);
       if (isNaN(stateId)) return res.status(400).json({ success: false, message: "Invalid stateId" });
-      where.cities = { some: { stateId } };
+      conditions.push({
+        OR: [{ cities: { some: { stateId } } }, { states: { some: { id: stateId } } }],
+      });
     } else if (req.query.countryId) {
       const countryId = parseInt(req.query.countryId);
       if (isNaN(countryId)) return res.status(400).json({ success: false, message: "Invalid countryId" });
-      where.cities = { some: { state: { countryId } } };
+      conditions.push({ cities: { some: { state: { countryId } } } });
     }
+
+    const where = conditions.length > 0 ? { AND: conditions } : {};
 
     const listSelect = {
       id: true,

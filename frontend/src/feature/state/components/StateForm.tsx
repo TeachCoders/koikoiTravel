@@ -335,7 +335,12 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
             selectedIds={journeyIds}
             onChange={setJourneyIds}
             fetchOptions={async (search) => {
-              const res = await getJourneys({ search, isActive: "true", limit: 100 });
+              const res = await getJourneys({
+                search,
+                stateId: initialData?.id || undefined,
+                isActive: "true",
+                limit: 100,
+              });
               return (res.data || []).map((j: any) => {
                 const daysLabel = j.duration || (j.noDays ? `${j.noDays} Days` : "");
                 const mainTitle = j.h1Title || j.title;
