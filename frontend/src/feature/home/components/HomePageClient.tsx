@@ -7,7 +7,6 @@ import PopularDestinations from "./PopularDestinations";
 import BestSellingPackages from "./BestSellingPackages";
 import TravelExperiencesSection from "./TravelExperiencesSection";
 import SeasonalTripsSection from "./SeasonalTripsSection";
-import FaqSection from "./FaqSection";
 import TrustedPartners from "./TrustedPartners";
 import TravelerMoments from "./TravelerMoments";
 import WhyChooseUsSection from "@/components/shared/WhyChooseUsSection";
@@ -49,7 +48,6 @@ export const HomePageClient: React.FC<{
       />
       <SeasonalTripsSection initialSeasons={initialSeasons} initialJourneys={initialJourneys} />
       <WhyChooseUsSection />
-      <FaqSection />
       <TrustedPartners />
     </div>
   );
