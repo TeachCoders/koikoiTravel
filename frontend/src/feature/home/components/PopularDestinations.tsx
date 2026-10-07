@@ -181,7 +181,7 @@ export const PopularDestinations: React.FC<{
     : "India";
 
   const renderColumnGrid = (columnItems: DestinationItem[]) => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {columnItems.map((item) => (
         <DestinationCard
           key={item.id}
@@ -189,7 +189,7 @@ export const PopularDestinations: React.FC<{
           image={item.image}
           subtitle={item.subtitle}
           href={item.href}
-          className="!rounded-2xl !h-[185px] sm:!h-[195px] w-full"
+          className="!rounded-2xl !h-[200px] sm:!h-[220px] w-full"
         />
       ))}
     </div>
@@ -283,15 +283,17 @@ export const PopularDestinations: React.FC<{
 
         {isLoading ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="rounded-2xl bg-slate-100 animate-pulse h-[185px]" />
-              ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="rounded-2xl bg-slate-100 animate-pulse h-[185px]" />
-              ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
             </div>
           </div>
         ) : displayLeft.length === 0 && displayRight.length === 0 ? (
