@@ -108,10 +108,18 @@ export default function SeoFields({
   const handleThumbUpload = async (file: File) => {
     const fd = new FormData();
     fd.append("category", "thumb");
-    const filename = formData.slug || formData.title;
-    if (filename) {
-      fd.append("filename", filename.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + "-thumb");
-      fd.append("label", `${filename} - Thumbnail`);
+    const rawCustomName = file.name && !file.name.startsWith("processed-image") && file.name !== "blob" && file.name !== "image.webp"
+      ? file.name.replace(/\.[^/.]+$/, "")
+      : "";
+    const baseName = rawCustomName || formData.slug || formData.title;
+    if (baseName) {
+      const formatted = baseName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const finalFilename = formatted.endsWith("-thumb") ? formatted : `${formatted}-thumb`;
+      fd.append("filename", finalFilename);
+      fd.append("label", `${rawCustomName || baseName} - Thumbnail`);
+    }
+    if (folderPath) {
+      fd.append("folder", folderPath);
     }
     fd.append("file", file);
     try {

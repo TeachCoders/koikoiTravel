@@ -31,6 +31,7 @@ export default function BannerImageUpload({
   const [imgNatural, setImgNatural] = useState({ w: 0, h: 0 });
   const [urlMode, setUrlMode] = useState(false);
   const [urlInput, setUrlInput] = useState("");
+  const [customFileName, setCustomFileName] = useState("");
   const [urlLoading, setUrlLoading] = useState(false);
   const [urlError, setUrlError] = useState("");
   const [dragIndex, setDragIndex] = useState<number | null>(null);
@@ -226,17 +227,21 @@ export default function BannerImageUpload({
 
     outCanvas.toBlob((blob) => {
       if (!blob) return;
-      const file = new File([blob], "banner-image.webp", { type: "image/webp" });
+      const formatted = customFileName.trim()
+        ? customFileName.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
+        : "";
+      const fileName = formatted ? `${formatted}.webp` : "banner-image.webp";
+      const file = new File([blob], fileName, { type: "image/webp" });
       const previewUrl = URL.createObjectURL(blob);
       setPendingFiles(prev => [...prev, file]);
       setPendingPreviews(prev => [...prev, previewUrl]);
       if (onFilesSelect) onFilesSelect([...pendingFiles, file]);
-      setCropOpen(false); setCropSrc(null);
+      setCropOpen(false); setCropSrc(null); setUrlInput(""); setCustomFileName("");
       if (fileQueueRef.current.length > 0) {
         setTimeout(() => processNextInQueue(), 100);
       }
     }, "image/webp", 0.80);
-  }, [cropBox, pendingFiles, onFilesSelect, processNextInQueue]);
+  }, [cropBox, pendingFiles, onFilesSelect, processNextInQueue, customFileName]);
 
   const buildItems = () => [
     ...value.map((url) => ({ kind: "existing" as const, url })),
@@ -387,20 +392,31 @@ export default function BannerImageUpload({
             </button>
           </div>
           {urlMode && (
-            <div className="flex gap-2 items-end">
-              <input
-                type="url"
-                value={urlInput}
-                onChange={(e) => { setUrlInput(e.target.value); setUrlError(""); }}
-                onKeyDown={(e) => e.key === "Enter" && handleUrlLoad()}
-                placeholder="Paste image URL from any website..."
-                className="flex-1 px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-primary/30"
-              />
-              <button type="button" onClick={handleUrlLoad} disabled={urlLoading || !urlInput.trim()}
-                className="px-4 py-2 bg-emerald-600 text-white text-sm font-semibold rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 whitespace-nowrap">
-                {urlLoading ? <Loader2 size={14} className="animate-spin" /> : <Link size={14} />}
-                {urlLoading ? "Loading..." : "Load & Crop"}
-              </button>
+            <div className="space-y-2 p-3 border border-emerald-200 rounded-xl bg-emerald-50/50">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <input
+                  type="url"
+                  value={urlInput}
+                  onChange={(e) => { setUrlInput(e.target.value); setUrlError(""); }}
+                  onKeyDown={(e) => e.key === "Enter" && handleUrlLoad()}
+                  placeholder="Paste image URL from any website..."
+                  className="flex-1 px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-primary/30 bg-white"
+                />
+                <input
+                  type="text"
+                  value={customFileName}
+                  onChange={(e) => setCustomFileName(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleUrlLoad()}
+                  placeholder="Image Name (optional)"
+                  className="w-full sm:w-52 px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-primary/30 bg-white"
+                />
+                <button type="button" onClick={handleUrlLoad} disabled={urlLoading || !urlInput.trim()}
+                  className="px-4 py-2 bg-emerald-600 text-white text-sm font-semibold rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+                  {urlLoading ? <Loader2 size={14} className="animate-spin" /> : <Link size={14} />}
+                  {urlLoading ? "Loading..." : "Load & Crop"}
+                </button>
+              </div>
+              {urlError && <p className="text-xs text-red-500">{urlError}</p>}
             </div>
           )}
           {urlError && <p className="text-xs text-red-500">{urlError}</p>}
@@ -440,9 +456,17 @@ export default function BannerImageUpload({
               )}
             </div>
 
-            <div className="flex items-center justify-between px-5 py-3 border-t border-brand-neutral-border bg-brand-neutral-light rounded-b-2xl">
+            <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-t border-brand-neutral-border bg-brand-neutral-light rounded-b-2xl">
               <p className="text-xs text-slate-400">{imgNatural.w} × {imgNatural.h}px</p>
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={customFileName}
+                  onChange={(e) => setCustomFileName(e.target.value)}
+                  placeholder="Image name (optional)"
+                  title="Custom image name (optional)"
+                  className="px-3 py-1.5 text-xs border border-slate-300 rounded-lg bg-white w-36 sm:w-48 focus:outline-none focus:border-brand-primary"
+                />
                 <button type="button" onClick={() => { setCropOpen(false); setCropSrc(null); fileQueueRef.current = []; }}
                   className="px-4 py-2 rounded-lg text-sm font-semibold text-brand-neutral bg-slate-200 hover:bg-slate-300">Cancel</button>
                 <button type="button" onClick={handleApplyCrop}

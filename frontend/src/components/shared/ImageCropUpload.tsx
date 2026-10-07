@@ -33,6 +33,7 @@ export default function ImageCropUpload({
   const [preview, setPreview] = useState<string | null>(initialImage || null);
   const [mode, setMode] = useState<"file" | "url">("file");
   const [urlInput, setUrlInput] = useState("");
+  const [customFileName, setCustomFileName] = useState("");
   const [urlLoading, setUrlLoading] = useState(false);
   const [urlError, setUrlError] = useState("");
   const [zoomPercent, setZoomPercent] = useState(100);
@@ -287,16 +288,21 @@ export default function ImageCropUpload({
 
     outCanvas.toBlob((blob) => {
       if (!blob) return;
-      const file = new File([blob], "processed-image.webp", { type: outputFormat });
+      const formatted = customFileName.trim()
+        ? customFileName.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
+        : "";
+      const ext = outputFormat === "image/png" ? ".png" : outputFormat === "image/jpeg" ? ".jpg" : ".webp";
+      const fileName = formatted ? `${formatted}${ext}` : `processed-image${ext}`;
+      const file = new File([blob], fileName, { type: outputFormat });
       setPreview(URL.createObjectURL(blob));
       setCropOpen(false);
       setSrc(null);
       setUrlInput("");
       onFileSelect(file);
     }, outputFormat, quality);
-  }, [maxWidth, maxHeight, outputFormat, quality, onFileSelect, getContainDimensions]);
+  }, [maxWidth, maxHeight, outputFormat, quality, onFileSelect, getContainDimensions, customFileName]);
 
-  const handleClear = () => { if (preview) URL.revokeObjectURL(preview); setPreview(null); setSrc(null); setCropOpen(false); setUrlInput(""); onClear?.(); };
+  const handleClear = () => { if (preview) URL.revokeObjectURL(preview); setPreview(null); setSrc(null); setCropOpen(false); setUrlInput(""); setCustomFileName(""); onClear?.(); };
   const handleReCrop = () => { if (preview) { URL.revokeObjectURL(preview); setPreview(null); } fileInputRef.current?.click(); };
 
   const [isDragOver, setIsDragOver] = useState(false);
@@ -361,7 +367,7 @@ const [outputSize, setOutputSize] = useState<null | { w: number; h: number }>(nu
             </div>
           ) : (
             <div className="border border-slate-200 rounded-xl p-4 space-y-3">
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="url"
                   value={urlInput}
@@ -370,8 +376,16 @@ const [outputSize, setOutputSize] = useState<null | { w: number; h: number }>(nu
                   placeholder="Paste image URL (e.g. https://example.com/photo.jpg)"
                   className="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
                 />
+                <input
+                  type="text"
+                  value={customFileName}
+                  onChange={(e) => setCustomFileName(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleUrlLoad()}
+                  placeholder="Image Name (optional)"
+                  className="w-full sm:w-52 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
+                />
                 <button type="button" onClick={handleUrlLoad} disabled={urlLoading || !urlInput.trim()}
-                  className="btn-primary px-4 py-2 text-sm flex items-center gap-1.5 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed">
+                  className="btn-primary px-4 py-2 text-sm flex items-center justify-center gap-1.5 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed shrink-0">
                   {urlLoading ? <Loader2 size={14} className="animate-spin" /> : <Link size={14} />}
                   {urlLoading ? "Loading..." : "Load"}
                 </button>
@@ -478,29 +492,38 @@ const [outputSize, setOutputSize] = useState<null | { w: number; h: number }>(nu
               </div>
             </div>
             {outputSize && (
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-slate-400 mt-1 px-5">
                 Output size: {outputSize.w} × {outputSize.h} px
               </p>
             )}
-            <div className="flex items-center gap-3 px-5 py-3 border-t border-slate-200 bg-slate-50">
-
-              <p className="text-xs text-slate-400 shrink-0">{imgNatural.w} x {imgNatural.h}px</p>
-              <div className="flex items-center gap-2 flex-1">
-                <button type="button" onClick={() => setScale(imgScaleRef.current - 0.1)}
-                  className="p-1 rounded hover:bg-slate-200 transition-colors"><ZoomOut size={14} className="text-slate-500" /></button>
-                <input type="range" min={25} max={500} step={1} value={zoomPercent}
-                  onChange={(e) => setScale(parseInt(e.target.value) / 100)}
-                  className="flex-1 accent-indigo-600 h-1.5" />
-                <button type="button" onClick={() => setScale(imgScaleRef.current + 0.1)}
-                  className="p-1 rounded hover:bg-slate-200 transition-colors"><ZoomIn size={14} className="text-slate-500" /></button>
-                <span className="text-xs text-slate-400 w-12 text-right shrink-0">{zoomPercent}%</span>
+            <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-t border-slate-200 bg-slate-50">
+              <div className="flex items-center gap-3">
+                <p className="text-xs text-slate-400 shrink-0">{imgNatural.w} x {imgNatural.h}px</p>
+                <div className="flex items-center gap-2">
+                  <button type="button" onClick={() => setScale(imgScaleRef.current - 0.1)}
+                    className="p-1 rounded hover:bg-slate-200 transition-colors"><ZoomOut size={14} className="text-slate-500" /></button>
+                  <input type="range" min={25} max={500} step={1} value={zoomPercent}
+                    onChange={(e) => setScale(parseInt(e.target.value) / 100)}
+                    className="w-24 sm:w-32 accent-indigo-600 h-1.5" />
+                  <button type="button" onClick={() => setScale(imgScaleRef.current + 0.1)}
+                    className="p-1 rounded hover:bg-slate-200 transition-colors"><ZoomIn size={14} className="text-slate-500" /></button>
+                  <span className="text-xs text-slate-400 w-10 text-right shrink-0">{zoomPercent}%</span>
+                </div>
               </div>
-              <div className="flex gap-2 shrink-0">
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={customFileName}
+                  onChange={(e) => setCustomFileName(e.target.value)}
+                  placeholder="Image name (optional)"
+                  title="Custom image name (optional)"
+                  className="px-3 py-1.5 text-xs border border-slate-300 rounded-lg bg-white w-36 sm:w-48 focus:outline-none focus:border-indigo-500"
+                />
                 <button type="button" onClick={() => { setCropOpen(false); setSrc(null); }}
-                  className="px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 bg-slate-200 hover:bg-slate-300">Cancel</button>
+                  className="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 bg-slate-200 hover:bg-slate-300">Cancel</button>
                 <button type="button" onClick={handleApply}
-                  className="btn-primary px-4 py-2 text-sm flex items-center gap-1">
-                  <Check size={16} /> Apply & Upload
+                  className="btn-primary px-3.5 py-1.5 text-xs flex items-center gap-1">
+                  <Check size={14} /> Apply & Upload
                 </button>
               </div>
             </div>

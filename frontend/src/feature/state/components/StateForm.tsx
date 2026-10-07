@@ -153,8 +153,14 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
         for (const { file, index } of ordered) {
           const fd = new FormData();
           fd.append("category", "banner");
-          fd.append("filename", formData.slug ? `${formData.slug}-holiday-${index + 1}` : `new-state-holiday-${index + 1}`);
-          fd.append("label", formData.slug ? `${formData.slug}-holiday-${index + 1}` : `New State Holiday ${index + 1}`);
+          const customName = file.name && file.name !== "banner-image.webp" && file.name !== "processed-image.webp" && file.name !== "blob"
+            ? file.name.replace(/\.[^/.]+$/, "")
+            : "";
+          const defaultName = formData.slug ? `${formData.slug}-holiday-${index + 1}` : `new-state-holiday-${index + 1}`;
+          const filename = customName || defaultName;
+          fd.append("filename", filename);
+          fd.append("label", customName || (formData.slug ? `${formData.slug}-holiday-${index + 1}` : `New State Holiday ${index + 1}`));
+          if (countrySlug) fd.append("folder", `${countrySlug}/holiday`);
           fd.append("file", file);
           const res = await apiClient.post("/upload", fd, { headers: { "Content-Type": "multipart/form-data" } });
           const url = res.data?.url;
