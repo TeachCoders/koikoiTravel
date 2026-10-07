@@ -16,6 +16,7 @@ interface OrderAtTopCardProps {
   onSave: () => void;
   dirty: boolean;
   activeOnly?: boolean;
+  columns?: 1 | 2 | 3 | 4;
   variant?: "card" | "flush";
 }
 
@@ -31,6 +32,7 @@ export default function OrderAtTopCard({
   onSave,
   dirty,
   activeOnly = false,
+  columns = 2,
   variant = "card",
 }: OrderAtTopCardProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,6 +66,7 @@ export default function OrderAtTopCard({
         isOpen={isOpen}
         onOpenChange={setIsOpen}
         activeOnly={activeOnly}
+        columns={columns}
         actionButton={
           <button
             type="button"

@@ -19,6 +19,7 @@ interface DirectoryTableLayoutProps {
   orderOnSave?: () => void;
   orderDirty?: boolean;
   orderActiveOnly?: boolean;
+  orderColumns?: 1 | 2 | 3 | 4;
 
   // Table Props
   isLoading: boolean;
@@ -45,6 +46,7 @@ export default function DirectoryTableLayout({
   orderOnSave = () => {},
   orderDirty = false,
   orderActiveOnly = false,
+  orderColumns = 2,
   isLoading,
   isEmpty,
   emptyIcon: EmptyIcon,
@@ -61,6 +63,7 @@ export default function DirectoryTableLayout({
           <OrderAtTopCard
             options={orderOptions}
             activeOnly={orderActiveOnly}
+            columns={orderColumns}
             selectedIds={orderSelectedIds}
             onChange={orderOnChange}
             loading={orderLoading}

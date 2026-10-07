@@ -17,6 +17,7 @@ interface SearchableMultiSelectProps<T extends string | number = number> {
   onOpenChange?: (open: boolean) => void;
   onReorder?: (fromId: T, toId: T) => void;
   activeOnly?: boolean;
+  columns?: 1 | 2 | 3 | 4;
 }
 
 export default function SearchableMultiSelect<T extends string | number = number>({
@@ -33,6 +34,7 @@ export default function SearchableMultiSelect<T extends string | number = number
   onOpenChange,
   onReorder,
   activeOnly = false,
+  columns = 2,
 }: SearchableMultiSelectProps<T>) {
   const [internalOpen, setInternalOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -87,6 +89,14 @@ export default function SearchableMultiSelect<T extends string | number = number
     }
   };
 
+  const gridClass = useMemo(() => {
+    if (columns === 1) return "space-y-0.5";
+    if (columns === 2) return "grid grid-cols-1 md:grid-cols-2 gap-1";
+    if (columns === 3) return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1";
+    if (columns === 4) return "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1";
+    return "grid grid-cols-1 md:grid-cols-2 gap-1";
+  }, [columns]);
+
   return (
     <div ref={containerRef} className="relative w-full">
       <button
@@ -124,7 +134,7 @@ export default function SearchableMultiSelect<T extends string | number = number
               />
             </div>
           </div>
-          <div className={`max-h-96 overflow-y-auto p-1.5 ${filtered.length > 10 && !loading ? "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1" : "space-y-0.5"}`}>
+          <div className={`max-h-96 overflow-y-auto p-1.5 ${gridClass}`}>
             {loading ? (
               <p className="text-xs text-slate-400 p-3">{loadingText}</p>
             ) : filtered.length === 0 ? (

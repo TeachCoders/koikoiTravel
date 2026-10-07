@@ -17,6 +17,7 @@ interface OrderedMultiSelectProps<T extends string | number = number> {
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   activeOnly?: boolean;
+  columns?: 1 | 2 | 3 | 4;
   actionButton?: React.ReactNode;
 }
 
@@ -33,6 +34,7 @@ export default function OrderedMultiSelect<T extends string | number = number>({
   isOpen,
   onOpenChange,
   activeOnly = false,
+  columns = 2,
   actionButton,
 }: OrderedMultiSelectProps<T>) {
   const [dragIndex, setDragIndex] = useState<number | null>(null);
@@ -73,6 +75,7 @@ export default function OrderedMultiSelect<T extends string | number = number>({
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             activeOnly={activeOnly}
+            columns={columns}
           />
           {helperText && <p className="text-[11px] text-slate-400 mt-1.5">{helperText}</p>}
         </div>

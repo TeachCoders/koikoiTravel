@@ -58,7 +58,7 @@ export default function JourneyClient() {
   const { updateJourneyOrder, isPending: isOrderSaving } = useUpdateJourneyOrder();
   const { user } = useGetCurrentUser();
 
-  const [allJourneys, setAllJourneys] = useState<{ id: number; title: string }[]>([]);
+  const [allJourneys, setAllJourneys] = useState<{ id: number; title: string; isActive?: boolean }[]>([]);
   const [orderedIds, setOrderedIds] = useState<number[]>([]);
   const [orderLoading, setOrderLoading] = useState(true);
   const initialOrderRef = React.useRef<number[]>([]);
@@ -66,7 +66,17 @@ export default function JourneyClient() {
   React.useEffect(() => {
     getJourneys({ limit: 1000 })
       .then((res) => {
-        setAllJourneys(res.data.map((j) => ({ id: j.id, title: j.title })));
+        setAllJourneys(
+          res.data.map((j) => {
+            const daysText = j.duration
+              ? j.duration
+              : j.noDays
+              ? `${j.noDays} ${j.noDays === 1 ? "Day" : "Days"}`
+              : "";
+            const titleWithDays = daysText ? `${j.title} · (${daysText})` : j.title;
+            return { id: j.id, title: titleWithDays, isActive: j.isActive };
+          })
+        );
         const pinned = res.data
           .filter((j) => j.displayOrder && j.displayOrder > 0)
           .sort((a, b) => a.displayOrder! - b.displayOrder!)
@@ -183,6 +193,7 @@ export default function JourneyClient() {
         orderSaving={isOrderSaving}
         orderOnSave={handleSaveOrder}
         orderDirty={orderDirty}
+        orderColumns={2}
         isLoading={isLoading}
         isEmpty={journeys.length === 0}
         emptyIcon={Map}
