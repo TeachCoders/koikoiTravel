@@ -1,305 +1,391 @@
 "use client";
 
-import React from "react";
-
-// 1. Discover the possibilities SVG Icon (Ticket / Passport / Sparkles)
-const DiscoverPossibilitiesIcon = () => (
-  <svg className="w-16 h-16 sm:w-20 sm:h-20" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Soft lavender background blob */}
-    <ellipse cx="36" cy="46" rx="22" ry="18" fill="#EEF2FF" transform="rotate(-10 36 46)" />
-    
-    {/* Background Orange Loop / Ribbon */}
-    <path
-      d="M48 24C53.5228 24 58 28.4772 58 34C58 39.5228 53.5228 44 48 44C42.4772 44 38 39.5228 38 34C38 28.4772 42.4772 24 48 24Z"
-      stroke="#FF8A00"
-      strokeWidth="3.5"
-      strokeLinecap="round"
-      fill="none"
-    />
-
-    {/* Main Golden Ticket / Pass (angled) */}
-    <g transform="rotate(-12 32 40)">
-      <rect x="16" y="24" width="34" height="42" rx="6" fill="url(#ticket_grad)" />
-      {/* Ticket Header & details */}
-      <path d="M16 35H50" stroke="#F59E0B" strokeWidth="1.5" strokeDasharray="3 3" />
-      <rect x="22" y="42" width="18" height="3" rx="1.5" fill="#FFFFFF" fillOpacity="0.85" />
-      <rect x="22" y="49" width="24" height="3" rx="1.5" fill="#FFFFFF" fillOpacity="0.85" />
-      <rect x="22" y="56" width="12" height="3" rx="1.5" fill="#FFFFFF" fillOpacity="0.85" />
-      {/* Ticket cutouts */}
-      <circle cx="16" cy="35" r="3" fill="#EEF2FF" />
-      <circle cx="50" cy="35" r="3" fill="#EEF2FF" />
-    </g>
-
-    {/* Cyan / Teal ribbon accent */}
-    <path
-      d="M32 50C34 56 38 60 44 62"
-      stroke="#06B6D4"
-      strokeWidth="3"
-      strokeLinecap="round"
-    />
-
-    {/* Sparkles */}
-    <path d="M22 18L23.5 22L27.5 23.5L23.5 25L22 29L20.5 25L16.5 23.5L20.5 22L22 18Z" fill="#FBBF24" />
-    <circle cx="56" cy="18" r="2" fill="#F59E0B" />
-    <circle cx="62" cy="46" r="2.5" fill="#FB923C" />
-
-    <defs>
-      <linearGradient id="ticket_grad" x1="16" y1="24" x2="50" y2="66" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#FDE047" />
-        <stop offset="0.6" stopColor="#F59E0B" />
-        <stop offset="1" stopColor="#D97706" />
-      </linearGradient>
-    </defs>
-  </svg>
-);
-
-// 2. Enjoy deals & delights SVG Icon (3D Gold Coins + Orange % Tag)
-const EnjoyDealsIcon = () => (
-  <svg className="w-16 h-16 sm:w-20 sm:h-20" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Soft peach background blob */}
-    <ellipse cx="40" cy="44" rx="24" ry="20" fill="#FFF7ED" />
-
-    {/* Cyan string connecting tag */}
-    <path
-      d="M48 24C44 20 40 22 42 28"
-      stroke="#06B6D4"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-    />
-
-    {/* Gold Coins Stack (Bottom & Top) */}
-    {/* Bottom Coin */}
-    <ellipse cx="32" cy="42" rx="14" ry="6" fill="#D97706" />
-    <ellipse cx="32" cy="40" rx="14" ry="6" fill="url(#coin_grad_bot)" />
-    
-    {/* Angled Standing Gold Coin */}
-    <g transform="rotate(-20 28 32)">
-      <ellipse cx="28" cy="32" rx="12" ry="15" fill="#D97706" />
-      <ellipse cx="28" cy="30" rx="11" ry="14" fill="url(#coin_grad)" />
-      <ellipse cx="28" cy="30" rx="7" ry="10" stroke="#FDE68A" strokeWidth="1.5" fill="none" />
-      <text x="25" y="34" fill="#B45309" fontSize="10" fontWeight="bold" fontFamily="sans-serif">₹</text>
-    </g>
-
-    {/* Orange Discount Tag */}
-    <g transform="rotate(22 50 44)">
-      {/* Tag body */}
-      <path
-        d="M38 30L52 30C54 30 55.5 31.5 56 33L62 44C63 46 62.5 48 61 49.5L51.5 59C50 60.5 48 61 46 60L35 54C33.5 53.5 32 52 32 50L32 36C32 32.7 34.7 30 38 30Z"
-        fill="url(#tag_grad)"
-      />
-      {/* Tag hole */}
-      <circle cx="39" cy="37" r="2.5" fill="#FFF7ED" />
-      {/* Percentage % sign */}
-      <text x="43" y="50" fill="#FFFFFF" fontSize="13" fontWeight="900" fontFamily="sans-serif">%</text>
-    </g>
-
-    {/* Sparkle sparkles */}
-    <path d="M60 20L61 22.5L63.5 23.5L61 24.5L60 27L59 24.5L56.5 23.5L59 22.5L60 20Z" fill="#FBBF24" />
-    <circle cx="20" cy="52" r="2" fill="#F59E0B" />
-
-    <defs>
-      <linearGradient id="coin_grad" x1="17" y1="16" x2="39" y2="44" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#FDE047" />
-        <stop offset="0.6" stopColor="#F59E0B" />
-        <stop offset="1" stopColor="#D97706" />
-      </linearGradient>
-      <linearGradient id="coin_grad_bot" x1="18" y1="34" x2="46" y2="46" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#FDE047" />
-        <stop offset="1" stopColor="#F59E0B" />
-      </linearGradient>
-      <linearGradient id="tag_grad" x1="32" y1="30" x2="62" y2="60" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#FB923C" />
-        <stop offset="0.7" stopColor="#F97316" />
-        <stop offset="1" stopColor="#EA580C" />
-      </linearGradient>
-    </defs>
-  </svg>
-);
-
-// 3. Exploring made easy SVG Icon (Smartphone with lightning speed badge)
-const ExploringEasyIcon = () => (
-  <svg className="w-16 h-16 sm:w-20 sm:h-20" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Soft mint / cyan background blob */}
-    <ellipse cx="40" cy="44" rx="23" ry="19" fill="#ECFEFF" />
-
-    {/* Cyan accent ring / swoop */}
-    <path
-      d="M22 48C20 54 26 59 36 60C48 61 56 55 58 48"
-      stroke="#06B6D4"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-    />
-
-    {/* Smartphone (Angled) */}
-    <g transform="rotate(-15 36 40)">
-      {/* Phone Body */}
-      <rect x="22" y="18" width="28" height="48" rx="6" fill="#FFFFFF" stroke="#F59E0B" strokeWidth="3" />
-      {/* Screen area */}
-      <rect x="24" y="24" width="24" height="36" rx="2" fill="#FEF3C7" />
-      {/* App interface lines */}
-      <rect x="27" y="28" width="14" height="2.5" rx="1" fill="#F59E0B" />
-      <rect x="27" y="34" width="18" height="2" rx="1" fill="#D97706" fillOpacity="0.4" />
-      <rect x="27" y="38" width="12" height="2" rx="1" fill="#D97706" fillOpacity="0.4" />
-      {/* Orange search bar placeholder */}
-      <rect x="27" y="44" width="18" height="6" rx="2" fill="#FF8A00" />
-      {/* Home indicator bar */}
-      <rect x="33" y="62" width="6" height="1.5" rx="0.75" fill="#D97706" />
-    </g>
-
-    {/* Circular Lightning Badge */}
-    <g transform="translate(42, 14)">
-      <circle cx="12" cy="12" r="10" fill="url(#flash_grad)" />
-      {/* Lightning bolt */}
-      <path
-        d="M13.5 6L8.5 13H12.5L10.5 19L16.5 11.5H12.5L13.5 6Z"
-        fill="#FFFFFF"
-      />
-    </g>
-
-    {/* Sparkle sparkles */}
-    <circle cx="18" cy="28" r="2" fill="#FBBF24" />
-    <path d="M60 48L61 50.5L63.5 51.5L61 52.5L60 55L59 52.5L56.5 51.5L59 50.5L60 48Z" fill="#F97316" />
-
-    <defs>
-      <linearGradient id="flash_grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#FB923C" />
-        <stop offset="1" stopColor="#EA580C" />
-      </linearGradient>
-    </defs>
-  </svg>
-);
-
-// 4. Travel you can trust SVG Icon (Hot Air Balloon + Orange Shield)
-const TravelTrustIcon = () => (
-  <svg className="w-16 h-16 sm:w-20 sm:h-20" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Soft peach / blush background blob */}
-    <ellipse cx="36" cy="46" rx="23" ry="19" fill="#FFF1F2" />
-
-    {/* Hot Air Balloon */}
-    <g transform="translate(18, 14)">
-      {/* Balloon Envelope */}
-      <path
-        d="M16 2C24 2 30 7.5 30 15C30 21 24 28 18 31L14 31C8 28 2 21 2 15C2 7.5 8 2 16 2Z"
-        fill="url(#balloon_grad)"
-      />
-      {/* Balloon Stripes */}
-      <path
-        d="M16 2C20 2 24 7.5 24 15C24 21 19 28 16 31C13 28 8 21 8 15C8 7.5 12 2 16 2Z"
-        fill="#FBBF24"
-      />
-      <path
-        d="M16 2C17.5 2 19 7.5 19 15C19 21 17 28 16 31C15 28 13 21 13 15C13 7.5 14.5 2 16 2Z"
-        fill="#FFFFFF"
-        fillOpacity="0.6"
-      />
-      {/* Basket Ropes & Basket */}
-      <line x1="13" y1="31" x2="13" y2="34" stroke="#78350F" strokeWidth="1" />
-      <line x1="19" y1="31" x2="19" y2="34" stroke="#78350F" strokeWidth="1" />
-      <rect x="12" y="34" width="8" height="5" rx="1.5" fill="#D97706" />
-    </g>
-
-    {/* Orange Security Shield with Gold Check */}
-    <g transform="translate(42, 34)">
-      {/* Shield Base */}
-      <path
-        d="M14 2L2 6V14C2 21 7 26 14 28C21 26 26 21 26 14V6L14 2Z"
-        fill="url(#shield_grad)"
-        stroke="#FFFFFF"
-        strokeWidth="1.5"
-      />
-      {/* Checkmark */}
-      <path
-        d="M9 14.5L12.5 18L19 10"
-        stroke="#FFFFFF"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </g>
-
-    {/* Sparkles */}
-    <path d="M54 18L55 20.5L57.5 21.5L55 22.5L54 25L53 22.5L50.5 21.5L53 20.5L54 18Z" fill="#FBBF24" />
-    <circle cx="20" cy="56" r="2" fill="#FB923C" />
-
-    <defs>
-      <linearGradient id="balloon_grad" x1="2" y1="2" x2="30" y2="31" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#FB923C" />
-        <stop offset="1" stopColor="#EA580C" />
-      </linearGradient>
-      <linearGradient id="shield_grad" x1="2" y1="2" x2="26" y2="28" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#FB923C" />
-        <stop offset="0.7" stopColor="#F97316" />
-        <stop offset="1" stopColor="#EA580C" />
-      </linearGradient>
-    </defs>
-  </svg>
-);
-
-const VALUE_PROPS = [
-  {
-    id: "possibilities",
-    icon: <DiscoverPossibilitiesIcon />,
-    title: "Discover the possibilities",
-    description: "Explore hundreds of handpicked private tour packages, scenic circuits & custom itineraries curated by KoiKoi Travel.",
-  },
-  {
-    id: "deals",
-    icon: <EnjoyDealsIcon />,
-    title: "Enjoy deals & delights",
-    description: "Direct transparent pricing with zero hidden charges. Get maximum value and peace of mind on every KoiKoi Travel journey.",
-  },
-  {
-    id: "easy",
-    icon: <ExploringEasyIcon />,
-    title: "Exploring made easy",
-    description: "Hassle-free custom planning, flexible dates & a dedicated 24/7 personal trip manager assigned to your tour.",
-  },
-  {
-    id: "trust",
-    icon: <TravelTrustIcon />,
-    title: "Travel you can trust",
-    description: "Loved by travelers worldwide — handpicked verified accommodations, courteous private chauffeurs & end-to-end safety.",
-  },
-];
+import React, { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Maximize2, X, MapPin } from "lucide-react";
+import { SectionLabel } from "@/components/shared/SectionLabel";
+import { useGuestGallery } from "@/feature/guestGallery/api";
+import FallbackImage from "@/components/shared/FallbackImage";
 
 interface WhyChooseUsSectionProps {
   images?: string[];
   hideGallery?: boolean;
 }
 
-export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = () => {
+const REVIEWS = [
+  {
+    id: 1,
+    name: "James & Eleanor Vance",
+    location: "London, UK",
+    tripName: "Golden Triangle & Varanasi (8D/7N)",
+    rating: 5,
+    comment: "Landing in Delhi at 2 AM was seamless with our driver Ramesh waiting with a warm smile. Clean vehicle, bottled water always ready, and he took us to a quiet rooftop facing the Taj Mahal!",
+  },
+  {
+    id: 2,
+    name: "Marcus & Clara Weber",
+    location: "Munich, Germany",
+    tripName: "Rajasthan Forts & Desert Safari (7D/6N)",
+    rating: 5,
+    comment: "What we appreciated most was the complete transparency with zero hidden charges. Our driver Kuldeep was extremely courteous. Sleeping under the stars in Jaisalmer was magical!",
+  },
+  {
+    id: 3,
+    name: "Sarah & Daniel Jenkins",
+    location: "Manchester, UK",
+    tripName: "Kashmir Luxury Tour (6D/5N)",
+    rating: 5,
+    comment: "Our driver Tariq was amazing in Kashmir! Clean Innova cab, warm hotel rooms in Pahalgam, and zero hassle with Gulmarg snow passes.",
+  },
+  {
+    id: 4,
+    name: "Liam & Emma Davies",
+    location: "Sydney, Australia",
+    tripName: "Kerala Backwaters & Hills (5D/4N)",
+    rating: 5,
+    comment: "Traveled with our elderly mother and a toddler. Driver Sunil drove very carefully on Munnar curves, and the houseboat chef cooked mild non-spicy food specifically for our kid!",
+  },
+  {
+    id: 5,
+    name: "Clara & Thomas Schmidt",
+    location: "Berlin, Germany",
+    tripName: "Himachal Manali & Shimla (7D/6N)",
+    rating: 5,
+    comment: "Booked for 6 of us. Clean cab, huge breakfast spread, and Atal Tunnel permits were pre-arranged to avoid traffic jams. Highly recommend their local team!",
+  },
+];
+
+export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images = [], hideGallery = false }) => {
+  const { data: apiData } = useGuestGallery(1, 8, true);
+  
+  const dbItems = apiData?.data?.map(item => ({
+    url: item.imageUrl,
+    caption: item.caption || "",
+    location: item.location || ""
+  })) || [];
+
+  let galleryItems = images && images.length > 0 
+    ? images.map(url => ({ url, caption: "", location: "" }))
+    : dbItems;
+
+  galleryItems = galleryItems.slice(0, 8);
+
+  if (galleryItems.length === 0) {
+    galleryItems = [{ url: "", caption: "", location: "" }];
+  }
+  
+  const showGallery = !hideGallery && galleryItems.length > 0;
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  // Review Slider State
+  const [reviewIndex, setReviewIndex] = useState(0);
+
+  useEffect(() => {
+    const rTimer = setInterval(() => {
+      setReviewIndex((prev) => (prev + 1) % REVIEWS.length);
+    }, 5000);
+    return () => clearInterval(rTimer);
+  }, []);
+
+  useEffect(() => {
+    if (!showGallery || galleryItems.length <= 1 || isLightboxOpen) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % galleryItems.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [showGallery, galleryItems.length, isLightboxOpen]);
+
+  const handlePrev = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setCurrentIndex((prev) => (prev === 0 ? galleryItems.length - 1 : prev - 1));
+  };
+
+  const handleNext = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setCurrentIndex((prev) => (prev + 1) % galleryItems.length);
+  };
+
+  const currentReview = REVIEWS[reviewIndex];
+
   return (
-    <section className="py-8 sm:py-10 md:py-12 bg-white border-t border-slate-100">
+    <section className="py-8 sm:py-10 md:py-12 bg-white border-t border-slate-100 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)] overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         
-        {/* Section Heading - Clean Klook Style */}
-        <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-6 sm:mb-8">
-          Why choose KoiKoi Travel
-        </h2>
+        <div className={`grid grid-cols-1 ${showGallery ? "lg:grid-cols-2 gap-8 lg:gap-12" : "gap-8"} items-center`}>
+          
+          {/* Left Column: Seamless Borderless Reviews & Trusted Traveler Proof */}
+          <div className="flex flex-col justify-center">
+            <SectionLabel>Traveler Stories & Experiences</SectionLabel>
+            <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5 mb-2">
+              Loved by Travelers Worldwide
+            </h2>
+            <p className="text-slate-500 text-xs sm:text-sm mb-5 leading-relaxed max-w-xl">
+              Unlike generic travel booking engines, KoiKoi Travel provides dedicated private local tour managers, 100% custom itineraries, and courteous reliable chauffeurs.
+            </p>
 
-        {/* 4 Value Pillars Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
-          {VALUE_PROPS.map((item) => (
-            <div key={item.id} className="flex flex-col items-start text-left">
-              {/* Illustrated Icon with soft padding */}
-              <div className="mb-4 sm:mb-5 shrink-0 transition-transform duration-300 hover:scale-105">
-                {item.icon}
+            {/* Seamless Borderless Review (No Card Box, No Border) */}
+            <div className="mb-5 pt-1">
+              {/* Star Rating & Trip Tag */}
+              <div className="flex items-center gap-3 mb-2.5">
+                <div className="flex items-center gap-1 text-amber-500">
+                  {[...Array(currentReview.rating)].map((_, i) => (
+                    <span key={i} className="text-base">★</span>
+                  ))}
+                </div>
+                <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                  {currentReview.tripName}
+                </span>
               </div>
 
-              {/* Title */}
-              <h3 className="text-base sm:text-[17px] font-bold text-slate-900 mb-2 leading-snug">
-                {item.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-xs sm:text-[13.5px] text-slate-500 leading-relaxed max-w-sm">
-                {item.description}
+              {/* Review Comment Quote */}
+              <p className="text-slate-800 text-xs sm:text-sm leading-relaxed italic mb-3.5 min-h-[60px]">
+                "{currentReview.comment}"
               </p>
+
+              {/* Reviewer Details & Normal Indicator Dots */}
+              <div className="flex items-center justify-between gap-4 pt-1">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-orange-500 text-white font-bold flex items-center justify-center text-xs shadow-xs">
+                    {currentReview.name.split(" ")[0]?.[0]}
+                    {currentReview.name.split(" ")[1]?.[0] || ""}
+                  </div>
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900">
+                      {currentReview.name}
+                    </h4>
+                    <p className="text-[11px] text-slate-500 font-medium">{currentReview.location}</p>
+                  </div>
+                </div>
+
+                {/* Normal Dots Navigation */}
+                <div className="flex items-center gap-1.5">
+                  {REVIEWS.map((_, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setReviewIndex(idx)}
+                      className={`h-2 rounded-full transition-all cursor-pointer ${
+                        idx === reviewIndex ? "w-6 bg-orange-500" : "w-2 bg-slate-300 hover:bg-slate-400"
+                      }`}
+                      aria-label={`Go to review ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
-          ))}
+
+            {/* Quick Trust Highlights */}
+            <div className="grid grid-cols-2 gap-2.5 pt-3.5 border-t border-slate-100">
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                <span>100% Tailored Private Trips</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                <span>24/7 Personal Trip Manager</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                <span>Direct Transparent Pricing</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                <span>Comfortable Vehicles & Top Drivers</span>
+              </div>
+            </div>
+          </div>
+          
+          {/* Right Column: Photo Slider + Lightbox Feature */}
+          {showGallery && (
+            <div className="flex flex-col">
+
+              <div className="relative group">
+              {/* Rotated Accent Backdrop */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-amber-400/20 via-orange-400/10 to-amber-500/10 rounded-[32px] transform rotate-2" />
+              
+              <div 
+                className="relative z-10 w-full h-[380px] sm:h-[420px] md:h-[460px] rounded-[32px] overflow-hidden shadow-xl bg-white border border-slate-100 cursor-pointer"
+                onClick={() => setIsLightboxOpen(true)}
+              >
+                
+                {/* Expand Lightbox Hint Icon */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsLightboxOpen(true);
+                  }}
+                  className="absolute top-4 right-4 z-30 w-9 h-9 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white backdrop-blur-md flex items-center justify-center transition-all opacity-90 hover:opacity-100 hover:scale-110 shadow-lg border border-white/30"
+                  title="Expand Fullscreen Lightbox"
+                >
+                  <Maximize2 size={16} />
+                </button>
+
+                {/* Horizontal Track Slider */}
+                <div className="w-full h-full overflow-hidden relative">
+                  <div
+                    className="flex w-full h-full transition-transform duration-500 ease-out"
+                    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                  >
+                    {galleryItems.map((item, idx) => (
+                      <div key={idx} className="w-full h-full relative shrink-0 flex-none group/slide overflow-hidden rounded-2xl">
+                        <FallbackImage
+                          src={item.url || null}
+                          alt={`Traveler Moment ${idx + 1}`}
+                          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/slide:scale-105"
+                          fill
+                        />
+                        
+                        {(item.caption || item.location) && (
+                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent p-5 sm:p-6 pt-24 flex flex-col justify-end pointer-events-none transition-all duration-300">
+                            {item.caption && <h4 className="text-white font-bold text-lg sm:text-xl tracking-tight drop-shadow-md mb-1">{item.caption}</h4>}
+                            {item.location && (
+                              <p className="text-orange-300 text-xs sm:text-sm font-semibold flex items-center gap-1.5 drop-shadow-sm">
+                                <MapPin size={14} className="text-orange-400" />
+                                {item.location}
+                              </p>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Navigation Controls */}
+                {galleryItems.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={handlePrev}
+                      className="absolute left-3.5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-slate-900 flex items-center justify-center shadow-md backdrop-blur-md transition-all hover:scale-105 active:scale-95 border border-slate-200/60 opacity-90 hover:opacity-100"
+                      aria-label="Previous Slide"
+                    >
+                      <ChevronLeft size={18} />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleNext}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-slate-900 flex items-center justify-center shadow-md backdrop-blur-md transition-all hover:scale-105 active:scale-95 border border-slate-200/60 opacity-90 hover:opacity-100"
+                      aria-label="Next Slide"
+                    >
+                      <ChevronRight size={18} />
+                    </button>
+
+                    {/* Indicator Dots */}
+                    <div className="absolute bottom-4 inset-x-0 z-30 flex items-center justify-center gap-2" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20">
+                        {galleryItems.map((_, idx) => (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentIndex(idx);
+                            }}
+                            className={`h-1.5 rounded-full transition-all ${
+                              idx === currentIndex ? "w-5 bg-orange-500" : "w-1.5 bg-white/70 hover:bg-white"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+
+              </div>
+            </div>
+
+            {/* Premium Gallery Subtext */}
+            <div className="mt-4 px-2 text-center lg:text-right self-center lg:self-end">
+              <h4 className="text-slate-700 font-bold text-sm sm:text-base tracking-tight flex items-center justify-center lg:justify-end gap-2">
+                <span className="w-8 h-px bg-orange-400 hidden sm:block"></span>
+                Sightseeing & Moments shared by our guests
+              </h4>
+            </div>
+          </div>
+          )}
+
         </div>
 
       </div>
+
+      {/* Fullscreen Lightbox Modal */}
+      {isLightboxOpen && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-fade-in"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          {/* Close Button */}
+          <button
+            type="button"
+            onClick={() => setIsLightboxOpen(false)}
+            className="absolute top-6 right-6 z-50 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-md transition-all cursor-pointer"
+            title="Close Lightbox"
+          >
+            <X size={24} />
+          </button>
+
+          {/* Photo Counter */}
+          <div className="absolute top-6 left-6 z-50 text-white/90 font-bold text-sm bg-black/50 px-4 py-2 rounded-full border border-white/20 backdrop-blur-md">
+            {currentIndex + 1} / {galleryItems.length}
+          </div>
+
+          {/* Lightbox Image Container */}
+          <div 
+            className="relative max-w-5xl max-h-[85vh] w-full h-full flex flex-col items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative w-full h-full min-h-[50vh]">
+              <FallbackImage
+                src={galleryItems[currentIndex]?.url || null}
+                alt={`Lightbox Photo ${currentIndex + 1}`}
+                className="object-contain rounded-2xl shadow-2xl"
+                fill
+              />
+            </div>
+
+            {(galleryItems[currentIndex]?.caption || galleryItems[currentIndex]?.location) && (
+              <div className="mt-6 text-center shrink-0">
+                {galleryItems[currentIndex]?.caption && (
+                  <h3 className="text-white font-bold text-2xl sm:text-3xl tracking-tight drop-shadow-lg mb-1.5">
+                    {galleryItems[currentIndex].caption}
+                  </h3>
+                )}
+                {galleryItems[currentIndex]?.location && (
+                  <div className="inline-flex items-center justify-center gap-1.5 mt-1 px-3 py-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm shadow-sm">
+                    <MapPin size={14} className="text-orange-400" />
+                    <span className="text-white/90 text-xs font-semibold tracking-wide uppercase">
+                      {galleryItems[currentIndex].location}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Prev / Next Buttons in Lightbox */}
+            {galleryItems.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  className="absolute left-2 sm:-left-12 top-1/2 -translate-y-1/2 text-white bg-black/60 hover:bg-black p-3.5 rounded-full border border-white/30 backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                >
+                  <ChevronLeft size={28} />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="absolute right-2 sm:-right-12 top-1/2 -translate-y-1/2 text-white bg-black/60 hover:bg-black p-3.5 rounded-full border border-white/30 backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                >
+                  <ChevronRight size={28} />
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 };

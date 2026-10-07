@@ -48,8 +48,6 @@ export const HomePageClient: React.FC<{
         initialJourneys={initialJourneys}
       />
       <WhyChooseUsSection />
-      <TestimonialsSection />
-      <TravelerMoments />
       <TrustedPartners />
     </div>
   );
