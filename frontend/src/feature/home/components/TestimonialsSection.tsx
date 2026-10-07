@@ -115,9 +115,8 @@ export const TestimonialsSection: React.FC = () => {
           {(item.name || "A").trim().charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="font-bold text-slate-900 text-sm flex items-center gap-1.5 truncate">
-            <span className="truncate">{item.name}</span>
-            <CheckCircle className="w-3.5 h-3.5 text-orange-500 fill-orange-500/20 shrink-0" />
+          <h4 className="font-bold text-slate-900 text-sm truncate">
+            {item.name}
           </h4>
           <p className="text-xs text-slate-500">{item.location}</p>
           {item.tripName && (
@@ -131,18 +130,18 @@ export const TestimonialsSection: React.FC = () => {
   );
 
   return (
-    <section ref={ref} className="py-20 bg-slate-50 overflow-hidden relative shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
+    <section ref={ref} className="py-8 sm:py-10 md:py-12 bg-slate-50 overflow-hidden relative border-t border-slate-100 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
       {/* Testimonials Pattern Background */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.8]" style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23D4561A' stroke-width='1.5' opacity='0.08'%3E%3Cpath d='M0 60 Q30 10, 60 60 T120 60' stroke-dasharray='4 4' /%3E%3Ccircle cx='60' cy='60' r='3' fill='%23D4561A' /%3E%3Ccircle cx='60' cy='60' r='8' stroke-dasharray='2 2' /%3E%3C/g%3E%3C/svg%3E")`,
         backgroundSize: '120px 120px'
       }} />
-      <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 relative z-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6 sm:mb-8">
           <div>
             <SectionLabel>Traveler Reviews</SectionLabel>
-            <h2 className="h2 text-[#1C1C1C] mt-2">Real Stories From Our Guests</h2>
-            <p className="mt-2 text-sm sm:text-base text-[#555] max-w-xl">Real stories from our guests who experienced the perfect holiday with zero stress.</p>
+            <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5">Real Stories From Our Guests</h2>
+            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">Real stories from our guests who experienced the perfect holiday with zero stress.</p>
           </div>
         </div>
 

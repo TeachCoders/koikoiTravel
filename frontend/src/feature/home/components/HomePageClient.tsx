@@ -8,6 +8,7 @@ import BestSellingPackages from "./BestSellingPackages";
 import TravelExperiencesSection from "./TravelExperiencesSection";
 import SeasonalTripsSection from "./SeasonalTripsSection";
 import TrustedPartners from "./TrustedPartners";
+import TestimonialsSection from "./TestimonialsSection";
 import TravelerMoments from "./TravelerMoments";
 import WhyChooseUsSection from "@/components/shared/WhyChooseUsSection";
 import SeoTextBlock from "./TravelYourWaySection";
@@ -35,6 +36,7 @@ export const HomePageClient: React.FC<{
   return (
     <div className="flex flex-col min-h-screen">
       <HeroSection />
+      <SeoTextBlock />
       <BestSellingPackages initialJourneys={initialJourneys} />
       <PopularDestinations
         initialStates={initialStates}
@@ -46,7 +48,8 @@ export const HomePageClient: React.FC<{
         initialJourneys={initialJourneys}
       />
       <WhyChooseUsSection />
-      <SeoTextBlock />
+      <TestimonialsSection />
+      <TravelerMoments />
       <TrustedPartners />
     </div>
   );

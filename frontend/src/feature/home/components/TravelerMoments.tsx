@@ -20,16 +20,16 @@ const TravelerMoments: React.FC = () => {
   if (moments.length === 0) return null;
 
   return (
-    <section className="py-20 bg-white relative shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]">
-      <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+    <section className="py-8 sm:py-10 md:py-12 bg-white relative border-t border-slate-100 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6 sm:mb-8">
           <div>
             <SectionLabel>Real Stories</SectionLabel>
-            <h2 className="h2 text-[#1C1C1C] mt-2">#KoiKoiTravelMoments</h2>
-            <p className="mt-2 text-base text-[#555]">Join thousands of happy travelers making memories for a lifetime.</p>
+            <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5">#KoiKoiTravelMoments</h2>
+            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">Join thousands of happy travelers making memories for a lifetime.</p>
           </div>
-          <button className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold transition-colors">
-            <InstagramIcon className="w-5 h-5 text-pink-600" />
+          <button className="btn-outline">
+            <InstagramIcon className="w-4 h-4 text-pink-600" />
             <span>Follow Us</span>
           </button>
         </div>
