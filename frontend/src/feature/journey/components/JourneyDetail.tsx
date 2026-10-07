@@ -154,16 +154,17 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           <div className="mb-6">
 
             {pageH1 && (
-              <h1 className="font-heading text-2xl sm:text-3xl md:text-[32px] font-extrabold tracking-tight text-slate-900 mb-3 leading-[1.2]">
+              <h1 className="font-heading text-2xl sm:text-3xl md:text-[34px] font-extrabold tracking-tight text-slate-900 mb-3 leading-[1.25]">
                 {durationText && (
                   <span className="text-[#2E8B8B] mr-2">{durationText} -</span>
                 )}
                 {pageH1}
               </h1>
             )}
+
             {journey.destination && (
-              <div className="flex flex-wrap items-center gap-2 mb-2">
-                <div className="flex items-center gap-1.5 text-xs sm:text-[13px] font-bold text-teal-700 bg-teal-50 border border-teal-200/80 px-3 py-1 rounded-full shrink-0 shadow-2xs">
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="flex items-center gap-1.5 text-xs sm:text-[13px] font-bold text-teal-800 bg-teal-50 border border-teal-200/80 px-3 py-1 rounded-full shrink-0 shadow-2xs">
                   <Route size={14} className="text-[#2E8B8B]" />
                   <span>Journey Route:</span>
                 </div>
@@ -173,7 +174,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     : journey.destination.split("-").map((s) => s.trim())
                   ).map((city, idx, arr) => (
                     <Fragment key={idx}>
-                      <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100/90 text-slate-800 text-xs sm:text-[13px] font-semibold border border-slate-200/70 shadow-2xs">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-slate-800 text-xs sm:text-[13px] font-semibold border border-slate-200/80 shadow-2xs">
                         {city}
                       </span>
                       {idx < arr.length - 1 && (
