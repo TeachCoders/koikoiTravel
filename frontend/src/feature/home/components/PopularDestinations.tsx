@@ -156,19 +156,9 @@ export const PopularDestinations: React.FC<{
 
   const isLoading = statesLoading || countriesLoading || experiencesLoading;
 
-  // Derive left and right columns: if right items configured, use them. Otherwise split left items in two
-  const { displayLeft, displayRight } = useMemo(() => {
-    if (filteredRightItems.length > 0) {
-      return {
-        displayLeft: filteredLeftItems,
-        displayRight: filteredRightItems,
-      };
-    }
-    const half = Math.ceil(filteredLeftItems.length / 2);
-    return {
-      displayLeft: filteredLeftItems.slice(0, half),
-      displayRight: filteredLeftItems.slice(half),
-    };
+  // Combined destinations: Top row has leftItems (Inbound), bottom rows have rightItems (Domestic)
+  const allDestinations = useMemo(() => {
+    return [...filteredLeftItems, ...filteredRightItems];
   }, [filteredLeftItems, filteredRightItems]);
 
   const activeCountryObj = availableCountries.find(
@@ -179,21 +169,6 @@ export const PopularDestinations: React.FC<{
     : activeCountryId === "all"
     ? "All Destinations"
     : "India";
-
-  const renderColumnGrid = (columnItems: DestinationItem[]) => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {columnItems.map((item) => (
-        <DestinationCard
-          key={item.id}
-          title={item.title}
-          image={item.image}
-          subtitle={item.subtitle}
-          href={item.href}
-          className="!rounded-2xl !h-[200px] sm:!h-[220px] w-full"
-        />
-      ))}
-    </div>
-  );
 
   return (
     <section
@@ -282,35 +257,36 @@ export const PopularDestinations: React.FC<{
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
-            </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <div key={i} className="space-y-2">
+                <div className="rounded-2xl bg-slate-100 animate-pulse aspect-square" />
+                <div className="h-4 bg-slate-100 rounded w-3/4 mx-auto animate-pulse" />
+                <div className="h-3 bg-slate-100 rounded w-1/2 mx-auto animate-pulse" />
+              </div>
+            ))}
           </div>
-        ) : displayLeft.length === 0 && displayRight.length === 0 ? (
+        ) : allDestinations.length === 0 ? (
           <p className="text-center text-slate-400 py-16">No destinations found.</p>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div
               key={selectedCountryId || "all"}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 animate-in fade-in duration-500"
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5 animate-in fade-in duration-500"
             >
-              <div>{renderColumnGrid(displayLeft)}</div>
-              <div>{renderColumnGrid(displayRight)}</div>
+              {allDestinations.map((item) => (
+                <DestinationCard
+                  key={item.id}
+                  title={item.title}
+                  image={item.image}
+                  subtitle={item.subtitle}
+                  href={item.href}
+                />
+              ))}
             </div>
 
-            {/* View All Link at the bottom if list is long */}
-            {(leftItems.length + rightItems.length) > 12 && (
-              <div className="flex justify-center pt-4">
+            {allDestinations.length > 12 && (
+              <div className="flex justify-center pt-2">
                 <Link
                   href="/tour-packages"
                   className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-orange-50 text-orange-600 text-sm font-bold hover:bg-orange-500 hover:text-white transition-all shadow-sm"

@@ -23,35 +23,33 @@ export default function DestinationCard({
   return (
     <Link
       href={href}
-      className={cn(
-        "group relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-350 flex flex-col justify-end",
-        "h-[200px] sm:h-[230px]",
-        className
-      )}
+      className={cn("group block text-center select-none", className)}
     >
-      <FallbackImage
-        src={image}
-        alt={`${title} Tour Packages & Sightseeing | KoiKoi Travel`}
-        fill
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-        fallbackSrc="/logo-with-name.png"
-        theme="dark"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-      {tag && (
-        <div className="absolute top-3 left-3 z-10">
-          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full inline-flex items-center bg-[#F8904D] text-white shadow-md">
-            {tag}
-          </span>
-        </div>
-      )}
-      <div className="relative z-10 p-4 text-center text-white">
-        <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-white capitalize drop-shadow-sm">
+      <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-slate-100 shadow-sm border border-slate-200/60 group-hover:shadow-md group-hover:border-slate-300 transition-all duration-300">
+        <FallbackImage
+          src={image}
+          alt={`${title} Tour Packages & Sightseeing | KoiKoi Travel`}
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+          className="object-cover object-center group-hover:scale-108 transition-transform duration-500 ease-out"
+          fallbackSrc="/logo-with-name.png"
+          theme="light"
+        />
+        {tag && (
+          <div className="absolute top-2.5 left-2.5 z-10">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full inline-flex items-center bg-[#F8904D] text-white shadow-sm">
+              {tag}
+            </span>
+          </div>
+        )}
+      </div>
+
+      <div className="pt-2.5 pb-1">
+        <h3 className="font-heading text-sm sm:text-[15px] font-bold text-slate-900 capitalize group-hover:text-[#F8904D] transition-colors leading-tight line-clamp-1">
           {title}
         </h3>
         {subtitle && (
-          <p className="mt-1.5 inline-flex items-center justify-center gap-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/15 px-3 py-0.5 text-xs font-medium text-white/90">
+          <p className="text-[12px] text-slate-500 mt-0.5 font-normal line-clamp-1">
             {subtitle}
           </p>
         )}
