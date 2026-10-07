@@ -173,14 +173,14 @@ export const PopularDestinations: React.FC<{
   return (
     <section
       id="destinations"
-      className="py-20 bg-white relative border shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)] z-10"
+      className="py-8 sm:py-10 md:py-12 bg-white relative border-t border-slate-100 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)] z-10"
     >
-      <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6 relative z-30">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-6 sm:mb-8 gap-6 relative z-30">
           <div>
             <SectionLabel>Popular Destinations</SectionLabel>
-            <h2 className="h2 text-[#1C1C1C] mt-2">Explore Top Places</h2>
-            <p className="mt-2 text-base text-[#555]">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1.5">Explore Top Places</h2>
+            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
               Find the best holiday packages for India&apos;s most loved states and iconic circuits.
             </p>
           </div>

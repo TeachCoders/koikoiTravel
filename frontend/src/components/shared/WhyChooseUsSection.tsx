@@ -269,11 +269,11 @@ interface WhyChooseUsSectionProps {
 
 export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = () => {
   return (
-    <section className="py-14 sm:py-16 md:py-20 bg-white border-t border-slate-100">
+    <section className="py-8 sm:py-10 md:py-12 bg-white border-t border-slate-100">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         
         {/* Section Heading - Clean Klook Style */}
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1c1c1c] tracking-tight mb-10 sm:mb-12">
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mb-6 sm:mb-8">
           Why choose KoiKoi Travel
         </h2>
 

@@ -74,14 +74,14 @@ export const TravelExperiencesSection: React.FC<{
   };
 
   return (
-    <section id="experiences" className="py-20 bg-white relative shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]">
-      <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
+    <section id="experiences" className="py-8 sm:py-10 md:py-12 bg-white relative border-t border-slate-100 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         {/* Header with Title & Arrow Slider Controls */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6 sm:mb-8">
           <div>
             <SectionLabel>Curated Travel Styles</SectionLabel>
-            <h2 className="h2 text-[#1C1C1C] mt-2">Travel Built Around Your Vibe</h2>
-            <p className="mt-2 text-base text-[#555] max-w-xl">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1.5">Travel Built Around Your Vibe</h2>
+            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
               From peaceful hill stations to wildlife safaris & spiritual retreats, pick the trip style that fits you best.
             </p>
           </div>
@@ -107,7 +107,7 @@ export const TravelExperiencesSection: React.FC<{
 
             {/* View All Button */}
             <Link href="/travel-experiences" className="hidden sm:inline-block ml-2">
-              <button className="btn-outline px-4 py-2 text-xs sm:text-sm font-medium flex items-center gap-1.5">
+              <button className="btn-outline">
                 <span>View All ({experiences.length})</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
@@ -126,11 +126,11 @@ export const TravelExperiencesSection: React.FC<{
             ))}
           </div>
         ) : experiences.length === 0 ? (
-          <p className="text-center text-slate-400 py-16">No travel experiences yet.</p>
+          <p className="text-center text-slate-400 py-12">No travel experiences yet.</p>
         ) : (
           <div
             ref={sliderRef}
-            className="flex gap-6 overflow-x-auto scrollbar-none snap-x snap-mandatory scroll-smooth pb-4 -mx-2 px-2"
+            className="flex gap-6 overflow-x-auto scrollbar-none snap-x snap-mandatory scroll-smooth pb-2 -mx-2 px-2"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {experiences.map((exp: any) => {
