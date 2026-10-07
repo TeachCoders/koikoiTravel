@@ -241,17 +241,7 @@ export default async function DestinationsPage() {
   // and the browser balances them by height, so putting the biggest blocks
   // first is what keeps the two columns close to the same length.
   const stateGroups = orderByDisplay(states)
-    .map((s) => ({ state: s, cities: orderByDisplay(s.cities || []) }))
-    .filter((g) => g.cities.length > 0)
-    .sort((a, b) => {
-      const az = (a.state.tourCount || 0) === 0;
-      const bz = (b.state.tourCount || 0) === 0;
-      if (az !== bz) return az ? 1 : -1;
-      const at = a.state.tourCount || 0;
-      const bt = b.state.tourCount || 0;
-      if (at !== bt) return bt - at;
-      return b.cities.length - a.cities.length;
-    });
+    .map((s) => ({ state: s, cities: orderByDisplay(s.cities || []) }));
 
   const jsonLd = {
     "@context": "https://schema.org",

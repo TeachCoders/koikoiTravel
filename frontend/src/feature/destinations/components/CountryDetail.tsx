@@ -111,9 +111,13 @@ function CountryContent({
   const journeyCountForState = (stateId: number) =>
     countryJourneys.filter((j) => j.cities?.some((c) => c.state?.id === stateId)).length;
 
-  const displayedStates = journeysLoading
-    ? states
-    : states.filter((s) => journeyCountForState(s.id) > 0);
+  const displayedStates = useMemo(() => {
+    return [...states].sort((a, b) => {
+      const aOrder = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999;
+      const bOrder = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
+      return aOrder - bOrder;
+    });
+  }, [states]);
 
   const [selectedStates, setSelectedStates] = useState<string[]>([]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
@@ -124,10 +128,8 @@ function CountryContent({
   const stateOptionsList = useMemo(() => {
     const map = new Map<string, { value: string; label: string; count: number }>();
     for (const s of displayedStates) {
-      const count = journeyCountForState(s.id);
-      if (count > 0) {
-        map.set(s.title, { value: s.title, label: s.title, count });
-      }
+      const count = journeyCountForState(s.id) || (s.tourCount || 0);
+      map.set(s.title, { value: s.title, label: s.title, count });
     }
     return [...map.values()].sort((a, b) => a.label.localeCompare(b.label));
   }, [displayedStates, countryJourneys]);

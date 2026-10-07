@@ -77,10 +77,9 @@ export const PopularDestinations: React.FC<{
     }
   }, [defaultCountryId, selectedCountryId]);
 
-  // Destination items (Top Ordered States + Golden Triangle)
+  // Destination items (Top Ordered States selected by Admin)
   const items = useMemo<DestinationItem[]>(() => {
-    // 1. States with displayOrder > 0
-    const orderedStates: DestinationItem[] = states
+    return states
       .filter((s) => (s.displayOrder ?? 0) > 0)
       .map((s) => {
         const tours = s.tourCount ?? (s.journeys?.length || 0);
@@ -89,51 +88,22 @@ export const PopularDestinations: React.FC<{
           id: `state-${s.id}`,
           countryId: s.countryId || s.country?.id,
           title: s.title,
-          image: s.thumbImg || s.banner?.images?.[0],
+          image:
+            s.thumbImg ||
+            s.banner?.images?.[0] ||
+            (s.slug === "golden-triangle"
+              ? "/golden-triangle/trip/golden-triangle.webp"
+              : undefined),
           subtitle: tours > 0 ? `${tours}+ tours` : undefined,
-          href: `/tour-packages/${countrySlug}/${s.slug}`,
+          href:
+            s.slug === "golden-triangle"
+              ? `/travel-experiences/golden-triangle`
+              : `/tour-packages/${countrySlug}/${s.slug}`,
           displayOrder: s.displayOrder ?? 999,
         };
-      });
-
-    // 2. Include Golden Triangle experience
-    const goldenTriangle = travelExperiences.find(
-      (e: TravelExperience) =>
-        e.slug === "golden-triangle" ||
-        e.title?.toLowerCase().includes("golden triangle")
-    );
-
-    const gtCountry = availableCountries.find((c) => c.slug.toLowerCase() === "india");
-    const gtCountryId = gtCountry ? Number(gtCountry.id) : undefined;
-
-    const gtItem: DestinationItem | null = goldenTriangle
-      ? {
-          id: `exp-${goldenTriangle.id}`,
-          countryId: gtCountryId,
-          title: "Golden Triangle",
-          image:
-            goldenTriangle.thumbImg ||
-            goldenTriangle.banner?.images?.[0] ||
-            "/golden-triangle/trip/golden-triangle.webp",
-          subtitle:
-            (goldenTriangle.tourCount ?? 0) > 0
-              ? `${goldenTriangle.tourCount}+ tours`
-              : "19+ tours",
-          href: `/travel-experiences/${goldenTriangle.slug}`,
-          displayOrder:
-            goldenTriangle.displayOrder && goldenTriangle.displayOrder > 0
-              ? goldenTriangle.displayOrder
-              : 9,
-        }
-      : null;
-
-    const allItems = [...orderedStates];
-    if (gtItem) {
-      allItems.push(gtItem);
-    }
-
-    return allItems.sort((a, b) => a.displayOrder - b.displayOrder);
-  }, [states, travelExperiences, availableCountries]);
+      })
+      .sort((a, b) => a.displayOrder - b.displayOrder);
+  }, [states]);
 
   // Filter items by selected country
   const filteredItems = useMemo(() => {

@@ -2,7 +2,7 @@
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   MapPin,
   ChevronRight,
@@ -183,13 +183,13 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   const cityImageFor = (cityId: number) =>
     stateJourneys.find((j) => j.cities?.some((c) => c.id === cityId) || j.cityIds?.includes(cityId))?.thumbImg;
 
-  const displayedCities = journeysLoading
-    ? stateCities
-    : stateCities.filter(
-        (c) =>
-          c.id != null &&
-          ((c.displayOrder ?? 0) > 0 || (c.tourCount ?? 0) > 0 || (c._count?.journeys ?? 0) > 0 || journeyCountFor(c.id) > 0)
-      );
+  const displayedCities = useMemo(() => {
+    return [...stateCities].sort((a, b) => {
+      const aOrder = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999;
+      const bOrder = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
+      return aOrder - bOrder;
+    });
+  }, [stateCities]);
 
   const cityCount = displayedCities.length ?? 0;
 
