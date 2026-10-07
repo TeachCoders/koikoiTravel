@@ -19,10 +19,6 @@ const TrustedPartners: React.FC = () => {
             <Globe className="w-8 h-8 text-slate-600" />
             <span className="font-bold text-slate-600 text-lg">Handpicked Experiences</span>
           </div>
-          <div className="flex items-center gap-3">
-            <HeartHandshake className="w-8 h-8 text-slate-600" />
-            <span className="font-bold text-slate-600 text-lg">Best Price Guarantee</span>
-          </div>
         </div>
       </div>
     </div>
