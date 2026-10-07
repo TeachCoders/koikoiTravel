@@ -669,6 +669,7 @@ model City {
   activeSnapshot Json?
   displayOrder Int      @default(0)
   journeys    Journey[]
+  featuredJourneyOrder Int[] @default([])
   travelExperiences TravelExperience[]
 
   @@index([stateId, isActive])

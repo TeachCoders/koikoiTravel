@@ -1,3 +1,5 @@
+import type { Journey } from "@/feature/journey/type";
+
 export interface Banner {
   id: number;
   bannerTitle: string;
@@ -27,7 +29,8 @@ export interface City {
     slug: string;
     country?: { id: number; title: string; slug: string };
   };
-  journeys?: { id: number; title: string; slug: string }[];
+  journeys?: Journey[];
+  featuredJourneyOrder?: number[];
   isActive: boolean;
   showOnSite?: boolean;
   displayOrder?: number;
@@ -59,6 +62,7 @@ export interface CityPayload {
   bannerTag?: string;
   bannerImages?: string[];
   faqs?: { ques: string; ans: string }[];
+  journeyIds?: number[];
 }
 
 export interface PaginatedResponse<T> {
