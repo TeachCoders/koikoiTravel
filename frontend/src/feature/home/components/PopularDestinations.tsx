@@ -149,8 +149,21 @@ export const PopularDestinations: React.FC<{
   }, [rightItems, selectedCountryId]);
 
   const isLoading = statesLoading || countriesLoading || experiencesLoading;
-  const leftBentoItems = filteredLeftItems.slice(0, 12);
-  const rightBentoItems = filteredRightItems.slice(0, 12);
+
+  // Derive left and right columns: if right items configured, use them. Otherwise split left items in two
+  const { displayLeft, displayRight } = useMemo(() => {
+    if (filteredRightItems.length > 0) {
+      return {
+        displayLeft: filteredLeftItems,
+        displayRight: filteredRightItems,
+      };
+    }
+    const half = Math.ceil(filteredLeftItems.length / 2);
+    return {
+      displayLeft: filteredLeftItems.slice(0, half),
+      displayRight: filteredLeftItems.slice(half),
+    };
+  }, [filteredLeftItems, filteredRightItems]);
 
   const activeCountryObj = availableCountries.find(
     (c) => c.id === selectedCountryId
@@ -161,25 +174,18 @@ export const PopularDestinations: React.FC<{
     ? "All Destinations"
     : "India";
 
-  const renderGrid = (columnItems: DestinationItem[]) => (
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 auto-rows-[140px] sm:auto-rows-[160px] lg:auto-rows-[170px]">
-      {columnItems.map((item, idx) => {
-        const isLarge = idx === 0;
-        return (
-          <DestinationCard
-            key={item.id}
-            title={item.title}
-            image={item.image}
-            subtitle={item.subtitle}
-            href={item.href}
-            className={`!rounded-2xl !h-full w-full ${
-              isLarge
-                ? "col-span-2 row-span-2"
-                : "col-span-1 row-span-1"
-            }`}
-          />
-        );
-      })}
+  const renderColumnGrid = (columnItems: DestinationItem[]) => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {columnItems.map((item) => (
+        <DestinationCard
+          key={item.id}
+          title={item.title}
+          image={item.image}
+          subtitle={item.subtitle}
+          href={item.href}
+          className="!rounded-2xl !h-[200px] sm:!h-[220px] w-full"
+        />
+      ))}
     </div>
   );
 
@@ -271,55 +277,30 @@ export const PopularDestinations: React.FC<{
 
         {isLoading ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 auto-rows-[160px] lg:auto-rows-[170px]">
-              <div className="col-span-2 row-span-2 rounded-2xl bg-slate-100 animate-pulse h-full" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 auto-rows-[160px] lg:auto-rows-[170px]">
-              <div className="col-span-2 row-span-2 rounded-2xl bg-slate-100 animate-pulse h-full" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
-              <div className="rounded-2xl bg-slate-100 animate-pulse h-full" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
+              <div className="rounded-2xl bg-slate-100 animate-pulse h-[200px]" />
             </div>
           </div>
-        ) : leftBentoItems.length === 0 && rightBentoItems.length === 0 ? (
+        ) : displayLeft.length === 0 && displayRight.length === 0 ? (
           <p className="text-center text-slate-400 py-16">No destinations found.</p>
         ) : (
           <div className="space-y-6">
-            {rightBentoItems.length > 0 ? (
-              <div
-                key={selectedCountryId || "all"}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 animate-in fade-in duration-500"
-              >
-                <div>{renderGrid(leftBentoItems)}</div>
-                <div>{renderGrid(rightBentoItems)}</div>
-              </div>
-            ) : (
-              <div
-                key={selectedCountryId || "all"}
-                className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 auto-rows-[140px] sm:auto-rows-[160px] lg:auto-rows-[180px] animate-in fade-in duration-500"
-              >
-                {leftBentoItems.map((item, idx) => {
-                  const isLarge = idx === 0 || (leftBentoItems.length >= 14 && idx === 13);
-                  return (
-                    <DestinationCard
-                      key={item.id}
-                      title={item.title}
-                      image={item.image}
-                      subtitle={item.subtitle}
-                      href={item.href}
-                      className={`!rounded-2xl !h-full w-full ${
-                        isLarge ? "col-span-2 row-span-2" : "col-span-1 row-span-1"
-                      }`}
-                    />
-                  );
-                })}
-              </div>
-            )}
+            <div
+              key={selectedCountryId || "all"}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 animate-in fade-in duration-500"
+            >
+              <div>{renderColumnGrid(displayLeft)}</div>
+              <div>{renderColumnGrid(displayRight)}</div>
+            </div>
 
             {/* View All Link at the bottom if list is long */}
             {(leftItems.length + rightItems.length) > 12 && (
