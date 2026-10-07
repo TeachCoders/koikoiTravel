@@ -11,16 +11,20 @@ import {
 } from ".";
 import { successToast, errorToast } from "@/components/shared/tost";
 
-export const useGetTravelExperiences = (params?: {
-  page?: number;
-  limit?: number;
-  search?: string;
-  isActive?: string;
-}) => {
+export const useGetTravelExperiences = (
+  params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    isActive?: string;
+  },
+  initialData?: PaginatedResponse<TravelExperience> | null
+) => {
   const query = useQuery({
     queryKey: ["travelExperiences", params],
     queryFn: () => getTravelExperiences(params),
     staleTime: 2 * 60 * 1000,
+    initialData: initialData ?? undefined,
   });
   return {
     travelExperiences: query.data?.data || [],

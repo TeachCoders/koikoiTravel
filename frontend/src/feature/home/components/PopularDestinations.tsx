@@ -98,9 +98,9 @@ export const PopularDestinations: React.FC<{
 
     // 2. Include Golden Triangle experience
     const goldenTriangle = travelExperiences.find(
-      (e) =>
+      (e: TravelExperience) =>
         e.slug === "golden-triangle" ||
-        e.title.toLowerCase().includes("golden triangle")
+        e.title?.toLowerCase().includes("golden triangle")
     );
 
     const gtCountry = availableCountries.find((c) => c.slug.toLowerCase() === "india");
