@@ -7,7 +7,6 @@ import PopularDestinations from "./PopularDestinations";
 import BestSellingPackages from "./BestSellingPackages";
 import TravelExperiencesSection from "./TravelExperiencesSection";
 import SeasonalTripsSection from "./SeasonalTripsSection";
-import TestimonialsSection from "./TestimonialsSection";
 import FaqSection from "./FaqSection";
 import TrustedPartners from "./TrustedPartners";
 import TravelerMoments from "./TravelerMoments";
@@ -50,7 +49,6 @@ export const HomePageClient: React.FC<{
       />
       <SeasonalTripsSection initialSeasons={initialSeasons} initialJourneys={initialJourneys} />
       <WhyChooseUsSection />
-      <TestimonialsSection />
       <FaqSection />
       <TrustedPartners />
     </div>

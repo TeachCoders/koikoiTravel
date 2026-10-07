@@ -11,6 +11,49 @@ interface WhyChooseUsSectionProps {
   hideGallery?: boolean;
 }
 
+const REVIEWS = [
+  {
+    id: 1,
+    name: "James & Eleanor Vance",
+    location: "London, UK",
+    tripName: "Golden Triangle & Varanasi (8D/7N)",
+    rating: 5,
+    comment: "Landing in Delhi at 2 AM was seamless with our driver Ramesh waiting with a warm smile. Clean vehicle, bottled water always ready, and he took us to a quiet rooftop facing the Taj Mahal!",
+  },
+  {
+    id: 2,
+    name: "Marcus & Clara Weber",
+    location: "Munich, Germany",
+    tripName: "Rajasthan Forts & Desert Safari (7D/6N)",
+    rating: 5,
+    comment: "What we appreciated most was the complete transparency with zero hidden charges. Our driver Kuldeep was extremely courteous. Sleeping under the stars in Jaisalmer was magical!",
+  },
+  {
+    id: 3,
+    name: "Sarah & Daniel Jenkins",
+    location: "Manchester, UK",
+    tripName: "Kashmir Luxury Tour (6D/5N)",
+    rating: 5,
+    comment: "Our driver Tariq was amazing in Kashmir! Clean Innova cab, warm hotel rooms in Pahalgam, and zero hassle with Gulmarg snow passes.",
+  },
+  {
+    id: 4,
+    name: "Liam & Emma Davies",
+    location: "Sydney, Australia",
+    tripName: "Kerala Backwaters & Hills (5D/4N)",
+    rating: 5,
+    comment: "Traveled with our elderly mother and a toddler. Driver Sunil drove very carefully on Munnar curves, and the houseboat chef cooked mild non-spicy food specifically for our kid!",
+  },
+  {
+    id: 5,
+    name: "Clara & Thomas Schmidt",
+    location: "Berlin, Germany",
+    tripName: "Himachal Manali & Shimla (7D/6N)",
+    rating: 5,
+    comment: "Booked for 6 of us. Clean cab, huge breakfast spread, and Atal Tunnel permits were pre-arranged to avoid traffic jams. Highly recommend their local team!",
+  },
+];
+
 export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images = [], hideGallery = false }) => {
   const { data: apiData } = useGuestGallery(1, 8, true);
   
@@ -27,12 +70,22 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
   galleryItems = galleryItems.slice(0, 8);
 
   if (galleryItems.length === 0) {
-    galleryItems = [{ url: "", caption: "", location: "" }]; // Trigger FallbackImage
+    galleryItems = [{ url: "", caption: "", location: "" }];
   }
   
   const showGallery = !hideGallery && galleryItems.length > 0;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  // Review Slider State
+  const [reviewIndex, setReviewIndex] = useState(0);
+
+  useEffect(() => {
+    const rTimer = setInterval(() => {
+      setReviewIndex((prev) => (prev + 1) % REVIEWS.length);
+    }, 5000);
+    return () => clearInterval(rTimer);
+  }, []);
 
   useEffect(() => {
     if (!showGallery || galleryItems.length <= 1 || isLightboxOpen) return;
@@ -52,58 +105,114 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
     setCurrentIndex((prev) => (prev + 1) % galleryItems.length);
   };
 
-  const features = [
-    {
-      icon: Banknote,
-      title: "Direct Local Pricing",
-      description: "No middlemen or platform commissions. We connect you directly with local hoteliers and cab operators for the best price.",
-    },
-    {
-      icon: UserCheck,
-      title: "100% Custom Itineraries",
-      description: "Don't like waking up early? Want a specific hotel? We build the entire trip schedule exactly the way you want it.",
-    },
-    {
-      icon: HeartHandshake,
-      title: "24/7 Personal Trip Manager",
-      description: "From the moment you land until you fly back, a dedicated local expert is always available on WhatsApp/Call for any help.",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Verified Safe Transport",
-      description: "All our vehicles are thoroughly sanitized, and drivers are verified professionals with years of experience in local terrains.",
-    }
-  ];
+  const currentReview = REVIEWS[reviewIndex];
 
   return (
     <section className="py-12 md:py-20 bg-white shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)] overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         
-        <div className={`grid grid-cols-1 ${showGallery ? "lg:grid-cols-2 gap-12 lg:gap-20" : "gap-12"} items-center`}>
+        <div className={`grid grid-cols-1 ${showGallery ? "lg:grid-cols-2 gap-12 lg:gap-16" : "gap-12"} items-center`}>
           
-          {/* Left Column: Heading & 4 Text Features */}
-          <div>
-            <SectionLabel>Why Book With Us</SectionLabel>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mt-2 mb-4 md:mb-6">
-              Your Preferred & Reliable Travel Partner
+          {/* Left Column: Reviews & Trusted Traveler Proof */}
+          <div className="flex flex-col justify-center">
+            <SectionLabel>Verified Reviews & Experiences</SectionLabel>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mt-2 mb-3">
+              Loved by Travelers Worldwide
             </h2>
-            <p className="text-slate-600 text-base md:text-lg mb-6 md:mb-10 leading-relaxed">
-              Unlike huge travel portals that treat you like a booking number, we focus on delivering personalized, high-quality local experiences with complete transparency.
+            <p className="text-slate-600 text-sm sm:text-base mb-6 leading-relaxed max-w-xl">
+              Unlike generic travel booking engines, we provide dedicated private local tour managers, 100% custom itineraries, and verified reliable drivers.
             </p>
-            
-            <div className={`grid grid-cols-1 sm:grid-cols-2 ${!showGallery ? "lg:grid-cols-4" : ""} gap-8`}>
-              {features.map((f, idx) => {
-                const Icon = f.icon;
-                return (
-                  <div key={idx} className="space-y-3">
-                    <div className="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center shadow-sm border border-orange-100">
-                      <Icon size={24} />
-                    </div>
-                    <h3 className="font-bold text-slate-900 leading-snug">{f.title}</h3>
-                    <p className="text-sm text-slate-600 leading-relaxed">{f.description}</p>
+
+            {/* Overall Rating Badge */}
+            <div className="flex flex-wrap items-center gap-3 mb-6 p-3 rounded-2xl bg-amber-50/70 border border-amber-200/80 w-fit">
+              <div className="flex items-center gap-1 text-amber-500">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-base font-bold">★</span>
+                ))}
+              </div>
+              <span className="text-xs sm:text-sm font-bold text-slate-800">
+                4.9 / 5.0 Rating
+              </span>
+              <span className="text-xs text-slate-500 font-medium">
+                • 1,200+ Happy Guests Worldwide
+              </span>
+            </div>
+
+            {/* Active Review Card with Smooth Controls */}
+            <div className="relative rounded-3xl bg-gradient-to-br from-slate-50 to-orange-50/30 border border-slate-200/90 p-6 sm:p-7 shadow-sm mb-6">
+              {/* Top Star Rating & Tour Name */}
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <div className="flex items-center gap-1 text-amber-400 text-sm">
+                  {[...Array(currentReview.rating)].map((_, i) => (
+                    <span key={i} className="text-base">★</span>
+                  ))}
+                </div>
+                <span className="text-[11.5px] font-bold px-2.5 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700 shadow-2xs">
+                  {currentReview.tripName}
+                </span>
+              </div>
+
+              {/* Review Comment Quote */}
+              <p className="text-slate-700 text-xs sm:text-sm leading-relaxed italic mb-5">
+                "{currentReview.comment}"
+              </p>
+
+              {/* Reviewer Info & Navigation Arrows */}
+              <div className="flex items-center justify-between pt-4 border-t border-slate-200/70">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-orange-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
+                    {currentReview.name.split(" ")[0]?.[0]}
+                    {currentReview.name.split(" ")[1]?.[0] || ""}
                   </div>
-                );
-              })}
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                      <span>{currentReview.name}</span>
+                      <span className="text-emerald-700 text-[11px] font-bold">✓ Verified</span>
+                    </h4>
+                    <p className="text-[11px] text-slate-500 font-medium">{currentReview.location}</p>
+                  </div>
+                </div>
+
+                {/* Review Navigation Prev / Next */}
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setReviewIndex((prev) => (prev === 0 ? REVIEWS.length - 1 : prev - 1))}
+                    className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-900 hover:text-white hover:border-slate-900 flex items-center justify-center text-slate-700 transition-all cursor-pointer shadow-2xs"
+                    aria-label="Previous Review"
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setReviewIndex((prev) => (prev + 1) % REVIEWS.length)}
+                    className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-900 hover:text-white hover:border-slate-900 flex items-center justify-center text-slate-700 transition-all cursor-pointer shadow-2xs"
+                    aria-label="Next Review"
+                  >
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Trust Highlights */}
+            <div className="grid grid-cols-2 gap-3 pt-1">
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <span>100% Tailored Private Trips</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <span>24/7 Personal Trip Manager</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <span>Direct Local Transparent Pricing</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <span>Verified Clean Vehicles & Drivers</span>
+              </div>
             </div>
           </div>
           
