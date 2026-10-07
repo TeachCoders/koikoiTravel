@@ -12,20 +12,20 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://koikoitravel.com"),
-  title: "KoiKoi Travel | Premier India Inbound Tour Operator & Local DMC",
+  title: "India Tours & Custom Holiday Packages | KoiKoi Travel",
   description:
-    "Leading India inbound tour operator offering bespoke luxury tours, private cab rentals, and custom holiday packages across India.",
+    "Plan your dream India holiday with KoiKoi Travel. Explore custom India tours, Rajasthan, Kashmir, Kerala, wildlife, honeymoon and family trips with local travel experts.",
   alternates: { canonical: "https://koikoitravel.com" },
   verification: { google: "El1jKO1piAq20XL3gueQKlsrPhBvrZFOUF-Jg6addow" },
   openGraph: {
-    title: "KoiKoi Travel | Premier India Inbound Tour Operator & Local DMC",
+    title: "India Tours & Custom Holiday Packages | KoiKoi Travel",
     description:
-      "Bespoke India holiday packages, private luxury transport, and local tour guides for international tourists.",
+      "Plan your dream India holiday with KoiKoi Travel. Explore custom India tours, Rajasthan, Kashmir, Kerala, wildlife, honeymoon and family trips with local travel experts.",
     url: "https://koikoitravel.com",
     siteName: "KoiKoi Travel India",
-    locale: "en_US", // International inbound clients target karne ke liye en_US optimal hai
+    locale: "en_US",
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "KoiKoi Travel" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "KoiKoi Travel - Custom India Tours" }],
   },
   other: {
     "geo.region": "IN",

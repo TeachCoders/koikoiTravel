@@ -2,20 +2,20 @@
 
 import React from "react";
 import HeroSection from "./HeroSection";
-import StatsCounter from "./StatsCounter";
-import PopularDestinations from "./PopularDestinations";
+import HomeLeadForm from "./HomeLeadForm";
+import TrustBar from "./TrustBar";
 import BestSellingPackages from "./BestSellingPackages";
-import TravelExperiencesSection from "./TravelExperiencesSection";
-import SeasonalTripsSection from "./SeasonalTripsSection";
-import TrustedPartners from "./TrustedPartners";
-import TestimonialsSection from "./TestimonialsSection";
-import TravelerMoments from "./TravelerMoments";
-import WhyChooseUsSection from "@/components/shared/WhyChooseUsSection";
-import SeoTextBlock from "./TravelYourWaySection";
+import WhichExperienceSection from "./WhichExperienceSection";
+import WhyBookWithUsSection from "./WhyBookWithUsSection";
+import HowItWorksSection from "./HowItWorksSection";
+import ActivitiesSection from "./ActivitiesSection";
+import ReviewsSection from "./ReviewsSection";
+import PopularDestinationsHome from "./PopularDestinationsHome";
+import HomepageFaqSection from "./HomepageFaqSection";
+import FinalCtaSection from "./FinalCtaSection";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
 import type { Country, PaginatedResponse as CountryPage } from "@/feature/country/type";
 import type { TravelExperience, PaginatedResponse as ExperiencePage } from "@/feature/travelExperience/type";
-import type { City, PaginatedResponse as CityPage } from "@/feature/city/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import type { Season, PaginatedResponse as SeasonPage } from "@/feature/season/type";
 
@@ -23,7 +23,6 @@ export const HomePageClient: React.FC<{
   initialStates?: StatePage<State> | null;
   initialCountries?: CountryPage<Country> | null;
   initialExperiences?: ExperiencePage<TravelExperience> | null;
-  initialCities?: CityPage<City> | null;
   initialJourneys?: JourneyPage<Journey> | null;
   initialSeasons?: SeasonPage<Season> | null;
 }> = ({
@@ -34,21 +33,42 @@ export const HomePageClient: React.FC<{
   initialSeasons,
 }) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-white">
+      {/* 1. Hero Section + CTAs */}
       <HeroSection />
-      <SeoTextBlock />
+
+      {/* 2. Short Lead Form */}
+      <HomeLeadForm />
+
+      {/* 3. Trust Bar */}
+      <TrustBar />
+
+      {/* 4. Best-Selling Tours */}
       <BestSellingPackages initialJourneys={initialJourneys} />
-      <PopularDestinations
-        initialStates={initialStates}
-        initialCountries={initialCountries}
-        initialExperiences={initialExperiences}
-      />
-      <TravelExperiencesSection
-        initialExperiences={initialExperiences}
-        initialJourneys={initialJourneys}
-      />
-      <WhyChooseUsSection />
-      <TrustedPartners />
+
+      {/* 5. Which India Experience? */}
+      <WhichExperienceSection />
+
+      {/* 6. Why KoiKoi Travel */}
+      <WhyBookWithUsSection />
+
+      {/* 7. How It Works (3 Steps) */}
+      <HowItWorksSection />
+
+      {/* 8. Amazing Experiences / Activities */}
+      <ActivitiesSection />
+
+      {/* 9. Real Traveler Reviews */}
+      <ReviewsSection />
+
+      {/* 10. Popular Destinations */}
+      <PopularDestinationsHome />
+
+      {/* 11. Homepage FAQs */}
+      <HomepageFaqSection />
+
+      {/* 12. Final WhatsApp + Free Itinerary CTA */}
+      <FinalCtaSection />
     </div>
   );
 };

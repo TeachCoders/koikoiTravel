@@ -2,64 +2,170 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { SectionLabel } from "@/components/shared/SectionLabel";
-import TourPackageCard from "@/components/shared/TourPackageCard";
-import { useGetJourneys } from "@/feature/journey/api/useJourney";
+import { ArrowRight, Sparkles, MapPin, CheckCircle2 } from "lucide-react";
+import { FallbackImage } from "@/components/shared/FallbackImage";
+import { QuoteModal } from "@/components/shared/QuoteModal";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 
-const MAX_PACKAGES = 4;
+const CURATED_BESTSELLERS = [
+  {
+    title: "Golden Triangle Tour India",
+    destinations: "Delhi • Agra • Jaipur",
+    description:
+      "See India's most iconic destinations with a comfortable private journey designed around your pace.",
+    image: "/content/taj-mahal-holiday-1.webp",
+    href: "/tour-packages/3-days-delhi-agra-private-tour-with-tajmahal",
+    badge: "Most Popular",
+    duration: "3 to 5 Days",
+  },
+  {
+    title: "Rajasthan Tour Package",
+    destinations: "Jaipur • Jodhpur • Udaipur",
+    description:
+      "Experience royal cities, colorful markets, desert adventures, beautiful forts, and unforgettable local experiences.",
+    image: "/content/rajasthan-tours-holiday-1.webp",
+    href: "/tour-packages/india/rajasthan",
+    badge: "Bestseller",
+    duration: "7 to 10 Days",
+  },
+  {
+    title: "Kashmir Holiday Package",
+    destinations: "Srinagar • Gulmarg • Pahalgam",
+    description:
+      "Enjoy mountain landscapes, peaceful valleys, outdoor adventures, and unforgettable Himalayan experiences.",
+    image: "/content/srinagar-holiday-1.webp",
+    href: "/tour-packages/india/jammu-and-kashmir",
+    badge: "Scenic Paradise",
+    duration: "5 to 7 Days",
+  },
+  {
+    title: "Kerala Tour Package",
+    destinations: "Kochi • Munnar • Alleppey",
+    description:
+      "Combine green hills, wildlife, beaches, local experiences, and a relaxing houseboat stay.",
+    image: "/content/delhi-holiday-1.webp",
+    href: "/tour-packages/india",
+    badge: "Nature & Backwaters",
+    duration: "6 to 8 Days",
+  },
+  {
+    title: "India Wildlife Tour",
+    destinations: "National Parks • Tiger Safari • Wildlife Experiences",
+    description:
+      "Get closer to India's incredible wildlife with carefully planned safari experiences and comfortable stays.",
+    image: "/content/rajasthan-tours-holiday-2.webp",
+    href: "/travel-experiences/wildlife-safari",
+    badge: "Wild Safari",
+    duration: "5 to 8 Days",
+  },
+  {
+    title: "India Honeymoon Package",
+    destinations: "Romantic India • Private Experiences • Beautiful Stays",
+    description:
+      "Create a memorable honeymoon with romantic stays, private experiences, scenic destinations, and plenty of time together.",
+    image: "/content/manali-holiday-1.webp",
+    href: "/travel-experiences/honeymoon-packages",
+    badge: "Romantic Escape",
+    duration: "6 to 9 Days",
+  },
+];
 
 export const BestSellingPackages: React.FC<{
   initialJourneys?: JourneyPage<Journey> | null;
-}> = ({ initialJourneys }) => {
-  const { journeys, isLoading } = useGetJourneys(
-    {
-      limit: 100,
-      isActive: "true",
-    },
-    initialJourneys
-  );
-
-  const packages = journeys
-    .filter((j: any) => (j.displayOrder ?? 0) > 0)
-    .slice(0, MAX_PACKAGES);
-
+}> = () => {
   return (
-    <section id="packages" className="py-8 sm:py-10 md:py-12 bg-[#f8f8f8] relative overflow-hidden shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]">
-      {/* Taj Mahal + Dance + Mandala pattern */}
-      <div className="absolute inset-0 opacity-[0.07]" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23D4561A' stroke-width='0.8'%3E%3Crect x='0' y='0' width='200' height='200' fill='none'/%3E%3Cpath d='M90 60 L100 20 L110 60 M85 62 L80 75 L120 75 L115 62 M75 75 L75 90 L125 90 L125 75 M100 20 L100 14 M96 38 L100 25 L104 38 M80 90 L80 120 L120 120 L120 90 M85 120 L85 125 L115 125 L115 120 M100 90 L100 120'/%3E%3Ccircle cx='100' cy='72' r='4'/%3E%3Cpath d='M60 155 Q60 145 65 140 Q60 135 55 140 Q60 145 60 155 M52 160 L60 155 L68 160 M50 168 L52 160 L48 170 M68 160 L72 168 L64 170 M55 140 L48 135 M65 140 L72 135 M55 140 L52 132 M65 140 L68 132 M55 150 L52 155 M65 150 L68 155 M60 155 L60 168 M55 168 L65 168'/%3E%3Ccircle cx='60' cy='135' r='5'/%3E%3Ccircle cx='40' cy='40' r='15'/%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3Ccircle cx='40' cy='40' r='5'/%3E%3Cpath d='M40 25 L40 15 M40 55 L40 65 M25 40 L15 40 M55 40 L65 40'/%3E%3Ccircle cx='160' cy='160' r='12'/%3E%3Ccircle cx='160' cy='160' r='7'/%3E%3Ccircle cx='160' cy='160' r='3'/%3E%3Cpath d='M160 148 L160 140 M160 172 L160 180 M148 160 L140 160 M172 160 L180 160'/%3E%3C/g%3E%3C/svg%3E")`
-      }} />
+    <section id="packages" className="py-10 sm:py-14 md:py-16 bg-white relative overflow-hidden border-b border-slate-100">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6 sm:mb-8">
-          <div>
-            <SectionLabel>Featured Itineraries</SectionLabel>
-            <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5">Top-Rated Holiday Packages</h2>
-            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">All-inclusive private tours featuring handpicked hotels, dedicated chauffeurs, and personalized sightseeing.</p>
-          </div>
-          <Link href="/tour-packages">
-            <button className="btn-outline">
-              <span>Explore All Tours</span><ArrowRight className="w-4 h-4" />
-            </button>
-          </Link>
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
+          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#F8904D] mb-2">
+            <Sparkles className="w-3.5 h-3.5" /> Best-Selling Tours
+          </span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
+            Explore Our Most Loved India Tours
+          </h2>
+          <p className="text-slate-600 text-sm sm:text-base mt-2.5 leading-relaxed">
+            Wondering which India trip is right for you? Start with the journeys our travelers love most.
+          </p>
         </div>
 
-        {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="rounded-xl bg-white animate-pulse h-[420px] border border-brand-200" />
-            ))}
-          </div>
-        ) : packages.length === 0 ? (
-          <p className="text-center text-slate-400 py-16">No packages yet.</p>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {packages.map((pkg) => (
-              <TourPackageCard key={pkg.id} journey={pkg} />
-            ))}
-          </div>
-        )}
+        {/* 6 Tour Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {CURATED_BESTSELLERS.map((tour, idx) => (
+            <div
+              key={idx}
+              className="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#F8904D]/40 transition-all duration-300 flex flex-col overflow-hidden"
+            >
+              {/* Tour Image */}
+              <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
+                <FallbackImage
+                  src={tour.image}
+                  alt={tour.title}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                
+                {/* Badge */}
+                <div className="absolute top-3 left-3">
+                  <span className="px-3 py-1 rounded-full bg-slate-900/85 backdrop-blur-sm text-white text-xs font-bold uppercase tracking-wider border border-white/10">
+                    {tour.badge}
+                  </span>
+                </div>
+
+                <div className="absolute bottom-3 left-3 right-3 text-white">
+                  <div className="flex items-center gap-1.5 text-xs text-white/90 font-medium">
+                    <MapPin className="w-3.5 h-3.5 text-[#F8904D] shrink-0" />
+                    <span>{tour.destinations}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card Body */}
+              <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 group-hover:text-[#2E8B8B] transition-colors leading-snug">
+                    <Link href={tour.href}>{tour.title}</Link>
+                  </h3>
+                  <p className="mt-2.5 text-slate-600 text-xs sm:text-sm leading-relaxed line-clamp-3">
+                    {tour.description}
+                  </p>
+                </div>
+
+                {/* CTAs */}
+                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center gap-3">
+                  <Link
+                    href={tour.href}
+                    className="flex-1 text-center py-2.5 px-3 rounded-xl border border-slate-300 hover:border-[#2E8B8B] hover:text-[#2E8B8B] text-slate-700 text-xs sm:text-sm font-bold transition-all"
+                  >
+                    VIEW TOUR
+                  </Link>
+
+                  <QuoteModal>
+                    <button
+                      type="button"
+                      className="flex-1 py-2.5 px-3 rounded-xl bg-[#F8904D] hover:bg-[#e07b3b] text-white text-xs sm:text-sm font-bold shadow-sm shadow-[#F8904D]/30 active:scale-95 transition-all cursor-pointer text-center"
+                    >
+                      GET A QUOTE
+                    </button>
+                  </QuoteModal>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom Explorer Button */}
+        <div className="mt-10 sm:mt-12 text-center">
+          <Link
+            href="/tour-packages"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm sm:text-base tracking-wide shadow-md transition-all active:scale-95"
+          >
+            <span>EXPLORE ALL INDIA TOURS</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
     </section>
   );
