@@ -40,19 +40,27 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
     return (
       <div
         key={faq.id}
+        itemScope
+        itemProp="mainEntity"
+        itemType="https://schema.org/Question"
         className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
-          isOpen ? "border-[#2E8B8B]/30 shadow-md bg-white" : "border-slate-200/80 bg-white hover:border-slate-300"
+          isOpen ? "border-[#2E8B8B]/40 shadow-sm bg-white" : "border-slate-200/80 bg-white hover:border-slate-300"
         }`}
       >
         <button
           type="button"
           onClick={() => toggleFaq(faq.id)}
+          aria-expanded={isOpen}
+          aria-controls={`faq-answer-${faq.id}`}
           className="w-full flex items-center justify-between gap-4 px-4 py-4 md:px-5 md:py-4 text-left cursor-pointer focus:outline-none"
         >
           <div className="flex items-center gap-2.5 min-w-0 flex-1">
-            <span className={`text-[15px] sm:text-[16px] font-semibold transition-colors leading-snug ${
-              isOpen ? "text-[#2E8B8B]" : "text-slate-900"
-            }`}>
+            <span
+              itemProp="name"
+              className={`text-[15px] sm:text-[16px] font-semibold transition-colors leading-snug ${
+                isOpen ? "text-[#2E8B8B]" : "text-slate-900"
+              }`}
+            >
               {faq.question}
             </span>
           </div>
@@ -63,17 +71,30 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
           </span>
         </button>
 
-        {isOpen && (
-          <div className="px-4 pb-4 md:px-5 md:pb-5 text-slate-600 text-xs sm:text-sm leading-relaxed border-t border-slate-100 pt-3.5">
+        {/* Answer is always preserved in DOM for SSR HTML crawlers */}
+        <div
+          id={`faq-answer-${faq.id}`}
+          itemScope
+          itemProp="acceptedAnswer"
+          itemType="https://schema.org/Answer"
+          className={`overflow-hidden transition-all duration-300 ${
+            isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
+          }`}
+          aria-hidden={!isOpen}
+        >
+          <div
+            itemProp="text"
+            className="px-4 pb-4 md:px-5 md:pb-5 text-slate-600 text-xs sm:text-sm leading-relaxed border-t border-slate-100 pt-3.5"
+          >
             {faq.answer}
           </div>
-        )}
+        </div>
       </div>
     );
   };
 
   return (
-    <section id="faq" className="py-8 sm:py-10 md:py-12 bg-white relative border-t border-slate-200/70">
+    <section id="faq" className="py-8 sm:py-10 md:py-12 bg-white relative border-t border-slate-200/70" itemScope itemType="https://schema.org/FAQPage">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 space-y-6 sm:space-y-8">
         {/* Section Header */}
         <div>
