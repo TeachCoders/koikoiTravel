@@ -105,7 +105,7 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
   { terms: ["Orchha Fort", "Orchha"], href: "/tour-packages/india/madhya-pradesh/orchha" },
   { terms: ["Bandhavgarh National Park", "Bandhavgarh"], href: "/tour-packages/india/madhya-pradesh/bandhavgarh" },
   { terms: ["Kanha National Park", "Kanha"], href: "/tour-packages/india/madhya-pradesh/kanha-national-park" },
-  { terms: ["Gwalior Fort", "Gwalior"], href: "/tour-packages/india/madhya-pradesh/gwalior" },
+  { terms: ["Gwalior Fort", "Gwalior"], href: "/tour-packages/india/madhya-pradesh" },
   { terms: ["Jaipur"], href: "/tour-packages/india/rajasthan/jaipur" },
   { terms: ["Udaipur"], href: "/tour-packages/india/rajasthan/udaipur" },
   { terms: ["Jodhpur"], href: "/tour-packages/india/rajasthan/jodhpur" },

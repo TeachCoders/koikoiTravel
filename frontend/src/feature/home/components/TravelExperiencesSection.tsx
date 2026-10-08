@@ -30,14 +30,14 @@ export const TravelExperiencesSection: React.FC<{
     initialJourneys
   );
 
-  const experiences = travelExperiences.filter(
-    (e: any) => !/^test\b/i.test(e.title || "")
-  );
-
   const tourCount = (id: number) =>
     journeys.filter((j: any) =>
       (j.travelExperiences || []).some((e: any) => e.id === id)
     ).length;
+
+  const experiences = travelExperiences.filter(
+    (e: any) => !/^test\b/i.test(e.title || "") && tourCount(e.id) > 0
+  );
 
   const sliderRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);

@@ -97,11 +97,13 @@ export const PopularDestinations: React.FC<{
             (s.slug === "golden-triangle"
               ? "/golden-triangle/trip/golden-triangle.webp"
               : undefined),
-          subtitle: tours > 0 ? `${tours}+ tours` : undefined,
+          subtitle: tours > 0 ? `${tours}+ tours` : "Coming Soon",
           href:
-            s.slug === "golden-triangle"
-              ? `/travel-experiences/golden-triangle`
-              : `/tour-packages/${countrySlug}/${s.slug}`,
+            tours > 0
+              ? (s.slug === "golden-triangle"
+                  ? `/travel-experiences/golden-triangle`
+                  : `/tour-packages/${countrySlug}/${s.slug}`)
+              : (undefined as any),
           displayOrder: s.displayOrder ?? 999,
         };
       })
@@ -128,11 +130,13 @@ export const PopularDestinations: React.FC<{
             (s.slug === "golden-triangle"
               ? "/golden-triangle/trip/golden-triangle.webp"
               : undefined),
-          subtitle: tours > 0 ? `${tours}+ tours` : undefined,
+          subtitle: tours > 0 ? `${tours}+ tours` : "Coming Soon",
           href:
-            s.slug === "golden-triangle"
-              ? `/travel-experiences/golden-triangle`
-              : `/tour-packages/${countrySlug}/${s.slug}`,
+            tours > 0
+              ? (s.slug === "golden-triangle"
+                  ? `/travel-experiences/golden-triangle`
+                  : `/tour-packages/${countrySlug}/${s.slug}`)
+              : (undefined as any),
           displayOrder: s.domesticDisplayOrder ?? 999,
         };
       })

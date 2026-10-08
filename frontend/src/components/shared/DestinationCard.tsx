@@ -8,7 +8,7 @@ interface DestinationCardProps {
   image?: string;
   subtitle?: ReactNode;
   tag?: string;
-  href: string;
+  href?: string;
   className?: string;
 }
 
@@ -20,11 +20,8 @@ export default function DestinationCard({
   href,
   className,
 }: DestinationCardProps) {
-  return (
-    <Link
-      href={href}
-      className={cn("group block text-center select-none", className)}
-    >
+  const cardBody = (
+    <>
       <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-slate-100 shadow-sm border border-slate-200/60 group-hover:shadow-md group-hover:border-slate-300 transition-all duration-300">
         <FallbackImage
           src={image}
@@ -54,6 +51,23 @@ export default function DestinationCard({
           </p>
         )}
       </div>
+    </>
+  );
+
+  if (!href) {
+    return (
+      <div className={cn("block text-center select-none cursor-default opacity-85", className)}>
+        {cardBody}
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      href={href}
+      className={cn("group block text-center select-none", className)}
+    >
+      {cardBody}
     </Link>
   );
 }

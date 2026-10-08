@@ -49,8 +49,19 @@ function wrapResponsiveTables(html: string): string {
   return wrapped;
 }
 
+function cleanDeadExternalLinks(html: string): string {
+  if (!html) return html;
+  return html.replace(/<a\b[^>]*href=["']https?:\/\/([^"'>]+)["'][^>]*>(.*?)<\/a>/gi, (match, host, text) => {
+    if (/badri-kedar\.gov\.in/i.test(host)) {
+      return text;
+    }
+    return match;
+  });
+}
+
 export function sanitizeHtml(html: string): string {
-  const clean = DOMPurify.sanitize(html, {
+  const sanitizedLinks = cleanDeadExternalLinks(html);
+  const clean = DOMPurify.sanitize(sanitizedLinks, {
     USE_PROFILES: { html: true },
     FORBID_TAGS: ["style", "script", "iframe", "form", "input", "button"],
     ADD_ATTR: ["target", "rel"],

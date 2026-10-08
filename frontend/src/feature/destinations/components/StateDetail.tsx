@@ -173,19 +173,27 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     return (a.title ?? "").localeCompare(b.title ?? "");
   });
 
-  const journeyCountFor = (cityId: number) =>
-    stateJourneys.filter((j) => j.cities?.some((c) => c.id === cityId) || j.cityIds?.includes(cityId)).length;
+  const journeyCountFor = (cityId?: number) =>
+    cityId == null
+      ? 0
+      : stateJourneys.filter((j) => j.cities?.some((c) => c.id === cityId) || j.cityIds?.includes(cityId)).length;
 
-  const cityImageFor = (cityId: number) =>
-    stateJourneys.find((j) => j.cities?.some((c) => c.id === cityId) || j.cityIds?.includes(cityId))?.thumbImg;
+  const cityImageFor = (cityId?: number) =>
+    cityId == null
+      ? undefined
+      : stateJourneys.find((j) => j.cities?.some((c) => c.id === cityId) || j.cityIds?.includes(cityId))?.thumbImg;
 
   const displayedCities = useMemo(() => {
     return [...stateCities].sort((a, b) => {
+      const aCount = journeyCountFor(a.id);
+      const bCount = journeyCountFor(b.id);
+      if (aCount > 0 && bCount === 0) return -1;
+      if (aCount === 0 && bCount > 0) return 1;
       const aOrder = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999;
       const bOrder = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
       return aOrder - bOrder;
     });
-  }, [stateCities]);
+  }, [stateCities, stateJourneys]);
 
   const cityCount = displayedCities.length ?? 0;
 
