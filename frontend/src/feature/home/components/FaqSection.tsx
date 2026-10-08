@@ -120,7 +120,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
               <MessageSquare size={22} className="text-[#2E8B8B]" />
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-white">Still have questions about your trip?</h4>
+              <h3 className="text-lg font-semibold text-white">Still have questions about your trip?</h3>
               <p className="text-sm text-slate-300 mt-0.5">Talk to our destination specialist for personalized itinerary guidance & custom quotes.</p>
             </div>
           </div>

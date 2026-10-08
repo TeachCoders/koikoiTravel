@@ -30,7 +30,7 @@ export function stripHtml(html?: string) {
     .trim();
 }
 
-export function truncateMeta(text?: string, max = 160): string {
+export function truncateMeta(text?: string, max = 150): string {
   if (!text) return "";
   const clean = stripHtml(text);
   if (clean.length <= max) return clean;

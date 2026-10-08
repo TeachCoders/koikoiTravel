@@ -35,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
     cmsPage?.seoTitle || cmsPage?.title || "Contact Us | KoiKoi Travel - Get in Touch for Custom Tours";
   const description =
     truncateMeta(cmsPage?.seoDescription || cmsPage?.moreDescription || "") ||
-    "Contact KoiKoi Travel for custom India tour packages, cab rentals, and 24/7 travel assistance. Reach us via phone, email, or visit our head office in New Delhi.";
+    "Contact KoiKoi Travel for custom India tours, private cabs & 24/7 travel support. Reach our local destination experts by phone, WhatsApp, or email.";
   const canonical = cmsPage?.canonical || "/contact-us";
 
   return {

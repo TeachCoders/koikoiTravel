@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     default: "KoiKoi Travel",
     template: "%s",
   },
-  description: "Book customized holiday tour packages, luxury stays, verified cabs, and local tour guides across Kashmir, Kerala, Himachal, Rajasthan and international destinations.",
+  description: "Book custom India tour packages, luxury stays, verified private cabs & local guides across Rajasthan, Kerala, Kashmir & Himachal with KoiKoi Travel.",
   openGraph: {
     type: "website",
     siteName: "KoiKoi Travel",

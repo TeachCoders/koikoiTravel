@@ -15,13 +15,13 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://koikoitravel.com"),
   title: "India Tours & Custom Holiday Packages | KoiKoi Travel",
   description:
-    "Plan your dream India holiday with KoiKoi Travel. Explore custom India tours, Rajasthan, Kashmir, Kerala, wildlife, honeymoon and family trips with local travel experts.",
+    "Plan your dream India holiday with KoiKoi Travel. Explore custom tours, Rajasthan, Kerala, Kashmir & wildlife safaris with local travel experts.",
   alternates: { canonical: "https://koikoitravel.com" },
   verification: { google: "El1jKO1piAq20XL3gueQKlsrPhBvrZFOUF-Jg6addow" },
   openGraph: {
     title: "India Tours & Custom Holiday Packages | KoiKoi Travel",
     description:
-      "Plan your dream India holiday with KoiKoi Travel. Explore custom India tours, Rajasthan, Kashmir, Kerala, wildlife, honeymoon and family trips with local travel experts.",
+      "Plan your dream India holiday with KoiKoi Travel. Explore custom tours, Rajasthan, Kerala, Kashmir & wildlife safaris with local travel experts.",
     url: "https://koikoitravel.com",
     siteName: "KoiKoi Travel India",
     locale: "en_US",

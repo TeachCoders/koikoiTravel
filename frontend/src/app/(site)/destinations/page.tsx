@@ -203,7 +203,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Destinations | KoiKoi Travel",
     description:
-      "Explore our hand-crafted tour destinations across Rajasthan, Kerala, Himachal Pradesh, Uttarakhand, Goa, Kashmir & more — curated India holiday packages for every traveller.",
+      "Explore top India tour destinations across Rajasthan, Kerala, Himachal, Kashmir & Uttarakhand with curated holiday packages by KoiKoi Travel.",
     alternates: { canonical: "/destinations" },
     openGraph: {
       type: "website",
@@ -316,9 +316,9 @@ export default async function DestinationsPage() {
             <span className="accent-label inline-flex items-center gap-1.5 !text-[#FFD9A8]">
               <Globe2 size={12} /> Hand-Crafted Holiday Destinations
             </span>
-            <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight mt-4 leading-tight drop-shadow-lg">
+            <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight mt-4 leading-tight drop-shadow-lg">
               Explore Destinations
-            </h2>
+            </h1>
             <p className="mt-5 text-white/90 text-base md:text-lg leading-relaxed max-w-2xl">
               From royal forts and misty Himalayan trails to golden beaches and
               serene backwaters — discover hand-picked holiday destinations,
@@ -405,9 +405,9 @@ export default async function DestinationsPage() {
         <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-14">
           <div className="max-w-4xl ">
 
-            <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-2">
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-2">
               Explore with KoiKoi
-            </h1>
+            </h2>
           </div>
           <div className="mt-8 w-full space-y-5 text-[18px] leading-relaxed text-slate-600">
             <p>
@@ -700,9 +700,9 @@ export default async function DestinationsPage() {
 
                       <div className="mt-4">
                         <div className="flex items-center gap-2.5 mb-3">
-                          <h4 className="font-heading text-base font-extrabold text-[#1C1C1C]">
+                          <h3 className="font-heading text-base font-extrabold text-[#1C1C1C]">
                             {state.title}
-                          </h4>
+                          </h3>
                           <span className="text-[11px] font-semibold text-slate-400">
                             {cityList.length}{" "}
                             {cityList.length === 1 ? "city" : "cities"}

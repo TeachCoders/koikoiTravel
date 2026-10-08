@@ -266,9 +266,9 @@ function ExperienceContent({
             <aside className="space-y-6 lg:sticky lg:top-24 self-start">
               {facts.length > 0 && (
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                  <h4 className="text-xs font-bold uppercase tracking-widest text-[#2E8B8B] mb-4">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-[#2E8B8B] mb-4">
                     Quick Info
-                  </h4>
+                  </h3>
                   <dl className="space-y-3">
                     {facts.map((f) => (
                       <div key={f.label} className="flex items-center justify-between gap-4">
@@ -300,7 +300,7 @@ function ExperienceContent({
 
               {experienceJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0 && (
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                  <h4 className="text-xs font-bold uppercase tracking-widest text-[#2E8B8B] mb-1 flex items-center justify-between">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-[#2E8B8B] mb-1 flex items-center justify-between">
                     Top 10 Tour Packages
                     <span className="text-[10px] font-semibold text-[#F8904D] bg-[#F8904D]/10 px-2 py-0.5 rounded-full">
                       {Math.min(
@@ -308,7 +308,7 @@ function ExperienceContent({
                         experienceJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length
                       )}
                     </span>
-                  </h4>
+                  </h3>
                   <ol className="mt-2">
                     {[...experienceJourneys]
                       .filter((j) => (j.displayOrder ?? 0) > 0)

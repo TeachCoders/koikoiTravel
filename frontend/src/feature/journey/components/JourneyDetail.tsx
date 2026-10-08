@@ -498,12 +498,12 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           )}
 
           {(journey.inclusions?.length ?? 0) > 0 || (journey.exclusions?.length ?? 0) > 0 ? (
-            <div className="grid grid-cols-1 gap-6">
+            <section className="grid grid-cols-1 gap-6">
               {(journey.inclusions?.length ?? 0) > 0 && (
                 <div className="bg-emerald-50/50 border border-emerald-200/70 rounded-2xl md:rounded-3xl p-5 md:p-7 shadow-xs">
-                  <h3 className="font-heading text-lg sm:text-xl font-bold text-emerald-900 mb-4 flex items-center gap-2">
+                  <h2 className="font-heading text-lg sm:text-xl font-bold text-emerald-900 mb-4 flex items-center gap-2">
                     <CheckCircle2 size={20} className="text-emerald-600" /> What's Included
-                  </h3>
+                  </h2>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     {(journey.inclusions ?? []).map((item, i) => (
                       <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-normal text-slate-700 leading-relaxed">
@@ -516,9 +516,9 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               )}
               {(journey.exclusions?.length ?? 0) > 0 && (
                 <div className="bg-red-50/50 border border-red-200/70 rounded-2xl md:rounded-3xl p-5 md:p-7 shadow-xs">
-                  <h3 className="font-heading text-lg sm:text-xl font-bold text-red-900 mb-4 flex items-center gap-2">
+                  <h2 className="font-heading text-lg sm:text-xl font-bold text-red-900 mb-4 flex items-center gap-2">
                     <XCircle size={20} className="text-red-500" /> What's Excluded
-                  </h3>
+                  </h2>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     {(journey.exclusions ?? []).map((item, i) => (
                       <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-normal text-slate-700 leading-relaxed">
@@ -529,7 +529,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   </ul>
                 </div>
               )}
-            </div>
+            </section>
           ) : null}
 
           {(journey.whyChooseUs?.length ?? 0) > 0 && (
@@ -571,10 +571,10 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
           {(journey.bookingPolicyList?.length ?? 0) > 0 ? (
             <div className="rounded-2xl md:rounded-3xl bg-slate-50/80 border border-slate-200/80 p-5 sm:p-6">
-              <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#2E8B8B] mb-4 flex items-center gap-2">
+              <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#2E8B8B] mb-4 flex items-center gap-2">
                 <Sparkles size={15} className="text-[#F8904D]" />
                 Booking Policy
-              </h4>
+              </h3>
               <ul className="space-y-3">
                 {(journey.bookingPolicyList ?? []).map((item, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm font-normal text-slate-600 leading-relaxed">
@@ -586,10 +586,10 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
             </div>
           ) : (
             <div className="rounded-2xl md:rounded-3xl bg-gradient-to-br from-teal-50/50 to-slate-50 border border-teal-200/60 p-5 sm:p-6">
-              <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#2E8B8B] mb-3.5 flex items-center gap-2">
+              <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#2E8B8B] mb-3.5 flex items-center gap-2">
                 <ShieldCheck size={15} className="text-[#2E8B8B]" />
                 Why Book With Confidence
-              </h4>
+              </h3>
               <ul className="space-y-2.5 text-xs sm:text-[13px] font-normal text-slate-700">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 size={15} className="text-[#2E8B8B] shrink-0 mt-0.5" />

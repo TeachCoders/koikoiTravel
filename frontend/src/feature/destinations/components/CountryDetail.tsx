@@ -434,9 +434,9 @@ function CountryContent({
             <aside className="space-y-6 lg:sticky lg:top-28 z-10 self-start">
               {facts.length > 0 && (
                 <div className="rounded-2xl border border-slate-100 bg-white p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                  <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5">
+                  <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5">
                     Quick Facts
-                  </h4>
+                  </h3>
                   <dl className="flex flex-col divide-y divide-slate-100">
                     {facts.map((f) => (
                       <div key={f.label} className="flex items-center justify-between gap-4 py-3.5 first:pt-0 last:pb-0">
@@ -452,7 +452,7 @@ function CountryContent({
 
               {countryJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0 && (
                 <div className="rounded-2xl border border-slate-100 bg-white p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                  <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5 flex items-center justify-between">
+                  <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5 flex items-center justify-between">
                     Top 10 Tour Packages
                     <span className="text-[10px] font-black text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-0.5 rounded-full">
                       {Math.min(
@@ -460,7 +460,7 @@ function CountryContent({
                         countryJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length
                       )}
                     </span>
-                  </h4>
+                  </h3>
                   <ol className="mt-2 space-y-1">
                     {[...countryJourneys]
                       .filter((j) => (j.displayOrder ?? 0) > 0)

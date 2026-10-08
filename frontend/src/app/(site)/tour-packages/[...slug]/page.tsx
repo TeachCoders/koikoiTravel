@@ -117,8 +117,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         country?.title ||
         (slug[0] ? slug[0] : "Tour Package");
       const seoDescription =
-        stripHtml(country?.seoDescription || country?.overView || "")
-          .slice(0, 160) || undefined;
+        truncateMeta(country?.seoDescription || country?.overView || "");
       const canonical = `/tour-packages/${country.slug}`;
       const ogImage = absoluteUrl(country?.thumbImg);
       return {

@@ -150,9 +150,9 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
                     {currentReview.name.split(" ")[1]?.[0] || ""}
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-900">
+                    <h3 className="text-sm font-semibold text-slate-900">
                       {currentReview.name}
-                    </h4>
+                    </h3>
                     <p className="text-xs text-slate-500 font-normal">{currentReview.location}</p>
                   </div>
                 </div>
@@ -238,7 +238,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
                         
                         {(item.caption || item.location) && (
                           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent p-5 sm:p-6 pt-24 flex flex-col justify-end pointer-events-none transition-all duration-300">
-                            {item.caption && <h4 className="text-white font-bold text-lg sm:text-xl tracking-tight drop-shadow-md mb-1">{item.caption}</h4>}
+                            {item.caption && <h3 className="text-white font-bold text-lg sm:text-xl tracking-tight drop-shadow-md mb-1">{item.caption}</h3>}
                             {item.location && (
                               <p className="text-orange-300 text-xs sm:text-sm font-semibold flex items-center gap-1.5 drop-shadow-sm">
                                 <MapPin size={14} className="text-orange-400" />
@@ -299,10 +299,10 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
 
             {/* Premium Gallery Subtext */}
             <div className="mt-4 px-2 text-center lg:text-right self-center lg:self-end">
-              <h4 className="text-slate-600 font-medium text-xs sm:text-sm tracking-tight flex items-center justify-center lg:justify-end gap-2">
+              <p className="text-slate-600 font-medium text-xs sm:text-sm tracking-tight flex items-center justify-center lg:justify-end gap-2">
                 <span className="w-8 h-px bg-slate-300 hidden sm:block"></span>
                 Sightseeing & Moments shared by our guests
-              </h4>
+              </p>
             </div>
           </div>
           )}
