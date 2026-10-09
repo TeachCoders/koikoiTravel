@@ -99,18 +99,32 @@ OUTPUT SCHEMA (Return strictly valid raw JSON only):
 async function fetchReferenceText(url) {
   try {
     const res = await fetch(url, {
-      headers: { "User-Agent": "Mozilla/5.0 (compatible; KoiKoiTravelBot/1.0)" },
-      signal: AbortSignal.timeout(6000),
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      },
+      signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return "";
-    const html = await res.text();
-    return html
+    let html = await res.text();
+
+    html = html
       .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
       .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "")
+      .replace(/<header\b[^<]*(?:(?!<\/header>)<[^<]*)*<\/header>/gi, "")
+      .replace(/<footer\b[^<]*(?:(?!<\/footer>)<[^<]*)*<\/footer>/gi, "")
+      .replace(/<nav\b[^<]*(?:(?!<\/nav>)<[^<]*)*<\/nav>/gi, "");
+
+    let text = html
       .replace(/<[^>]+>/g, " ")
       .replace(/\s+/g, " ")
-      .trim()
-      .slice(0, 3500);
+      .trim();
+
+    const matchIdx = text.search(/day\s*1|itinerary|overview|tour\s*plan|highlights/i);
+    if (matchIdx > 200) {
+      text = text.slice(matchIdx - 100);
+    }
+    return text.slice(0, 4500);
   } catch {
     return "";
   }
@@ -149,27 +163,35 @@ router.post("/generate-itinerary", async (req, res) => {
     if (referenceUrl && typeof referenceUrl === "string" && referenceUrl.startsWith("http")) {
       const refText = await fetchReferenceText(referenceUrl);
       if (refText) {
-        referenceContext = `\n\nREFERENCE URL CONTEXT:\n${refText}\n`;
+        referenceContext = `\n\nREFERENCE URL CONTEXT (MUST FOLLOW THIS EXACT ITINERARY & SIGHTSEEING SEQUENCE):\n${refText}\n`;
       }
     }
 
     const systemPrompt = customMasterPrompt?.trim() || SYSTEM_INSTRUCTIONS;
 
-    const userPrompt = `Generate a complete, high-converting, human-written tour package itinerary for KoiKoi Travel.
+    const userPrompt = `Generate a complete, high-converting, 100% human travel specialist itinerary for KoiKoi Travel.
+
 Inputs:
 - Tour Title: ${title || "N/A"}
 - Route Circuit: ${route || "(If Route is N/A, intelligently infer the best sequential route cities based on Tour Title)"}
 - Focus Keywords: ${focusKeywords || "(Extract high-intent Google 'People Also Search For' queries automatically)"}
 ${referenceContext}
 
-Strict Requirements:
-1. Format <strong>KoiKoi Travel</strong>, destination cities, and core activities in <strong>.
-2. Overview: 100-150 words starting with traveler pain points.
-3. Day program: <p> overview followed by <ul><li> bullet points with timings.
-4. Exactly 10 circuit-specific FAQs.
-5. Inclusions, exclusions, why choose us.
-6. routeCities, destination, suggestedExperiences, suggestedSeasons.
-7. Return strictly valid raw JSON only.`;
+Strict Generation Mandates:
+1. Format <strong>KoiKoi Travel</strong> (3-4 times), destination cities, and core activities in <strong>.
+2. Overview ("overView"): 100-150 words HTML (<p> and <strong>) starting with traveler pain points.
+3. Day Program Structure ("days"):
+   - STRICTLY ZERO clock timings (No 09:00 AM, 12:00 PM, etc.).
+   - If REFERENCE URL CONTEXT is provided above, you MUST match its exact day-by-day sightseeing sequence, specific waterfalls (e.g. Cheeyappara, Valara), heritage sites (Chinese Fishing Nets, Synagogue, Forts), and activities!
+   - Day 1: Arrival & Transfer, Sightseeing & Activities, Overnight Stay.
+   - Day 2+: Morning Breakfast & Transfer, Sightseeing & Activities (incorporate reference URL details), Overnight Stay.
+   - Final Day: Morning Breakfast & Check-out, Local Shopping & Sightseeing, Departure Drop-off.
+4. Mandatory 5-7 Highlights ("highlights").
+5. Mandatory Inclusions ("inclusions"), Exclusions ("exclusions"), and 4-5 Why Choose Us trust points ("whyChooseUs").
+6. Exactly 10 circuit-specific FAQs ("faqs").
+7. Mandatory Additional Description / Travel Guide ("moreDescription").
+8. routeCities, destination, suggestedExperiences, suggestedSeasons.
+9. Return strictly valid raw JSON only matching the schema.`;
 
     const geminiPayload = {
       systemInstruction: { parts: [{ text: systemPrompt }] },
