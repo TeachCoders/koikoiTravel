@@ -245,6 +245,14 @@ export default function RichTextEditor({
     },
   });
 
+  useEffect(() => {
+    if (editor && content !== undefined && content !== null && !editor.isFocused) {
+      if (editor.getHTML() !== content) {
+        editor.commands.setContent(content);
+      }
+    }
+  }, [content, editor]);
+
   const openLinkModal = useCallback(() => {
     if (!editor) return;
     const attrs = editor.getAttributes("link") as { href?: string; target?: string; rel?: string };
