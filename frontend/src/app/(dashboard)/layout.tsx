@@ -38,6 +38,7 @@ import {
   CircleHelp,
   LineChart,
   Images,
+  Sparkles,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -141,6 +142,7 @@ const sidebarSections: SidebarSection[] = [{
     { name: "Hero Full Banners", href: "/dashboard/hero-banners", icon: Images, teams: ["it"] },
     { name: "Blog", href: "/dashboard/blog", icon: Newspaper, teams: ["it"] },
     { name: "Blog Categories", href: "/dashboard/blog-category", icon: Tags, teams: ["it"] },
+    { name: "AI Prompts Studio", href: "/dashboard/ai-prompts", icon: Sparkles, teams: ["it"] },
     
   ],
 },

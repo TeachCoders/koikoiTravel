@@ -21,6 +21,7 @@ import type { DayPlan } from "@/components/shared/DayItineraryEditor";
 import JourneyBasicInfo from "./form-sections/JourneyBasicInfo";
 import JourneyItineraryBuilder from "./form-sections/JourneyItineraryBuilder";
 import JourneyMedia from "./form-sections/JourneyMedia";
+import AiJourneyPromptBar from "./AiJourneyPromptBar";
 import { useEntityQuickCreate, QuickCreateTarget } from "@/hooks/useEntityQuickCreate";
 import {
   useCreateJourney,
@@ -399,6 +400,9 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
           Best Selling Tour
         </button>
       </div>
+
+      {/* AI Journey Prompt Bar (Static UI with 4 individual inputs) */}
+      <AiJourneyPromptBar />
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* 1. SEO Fields — Title, Meta Description, Page URL, Short Description */}
