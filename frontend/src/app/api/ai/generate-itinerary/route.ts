@@ -160,14 +160,19 @@ Strict Requirements:
       },
     };
 
-    // Try gemini-2.0-flash first, fallback to gemini-1.5-flash
-    let response = await callGeminiApi("gemini-2.0-flash", apiKey, geminiPayload);
-    if (!response.ok && response.status === 404) {
-      response = await callGeminiApi("gemini-1.5-flash", apiKey, geminiPayload);
+    // Try models in order: gemini-2.5-flash -> gemini-2.0-flash -> gemini-1.5-flash -> gemini-flash-latest
+    const modelsToTry = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-flash-latest"];
+    let response: Response | null = null;
+
+    for (const model of modelsToTry) {
+      response = await callGeminiApi(model, apiKey, geminiPayload);
+      if (response.ok) break;
+      // If error is 404 (model not found), try next model. If 400 (bad key), break early to show key error.
+      if (response.status !== 404) break;
     }
 
-    if (!response.ok) {
-      const errText = await response.text();
+    if (!response || !response.ok) {
+      const errText = response ? await response.text() : "";
       let errMsg = "Failed to communicate with Google Gemini API.";
       try {
         const parsedErr = JSON.parse(errText);
@@ -177,7 +182,12 @@ Strict Requirements:
       } catch {
         errMsg = errText || errMsg;
       }
-      return NextResponse.json({ error: errMsg }, { status: response.status });
+
+      if (errMsg.includes("API key not valid") || errMsg.includes("API_KEY_INVALID")) {
+        errMsg = "Invalid Gemini API Key. Please make sure your key starts with 'AIzaSy...' (copied from Google AI Studio).";
+      }
+
+      return NextResponse.json({ error: errMsg }, { status: response?.status || 500 });
     }
 
     const data = await response.json();
