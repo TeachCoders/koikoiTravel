@@ -48,6 +48,7 @@ import adLandingPageRouter from "./router/adLandingPage.js";
 import guestGalleryRouter from "./router/guestGallery.js";
 import heroFullBannerRouter from "./router/heroFullBanner.js";
 import aiPromptRouter from "./router/aiPrompt.js";
+import aiGeneratorRouter from "./router/aiGenerator.js";
 import { scheduleAnalyticsRetention } from "./utils/analyticsRetention.js";
 import { cacheGet, clearCacheOnWrite } from "./services/httpCache.js";
 import * as Sentry from "@sentry/node";
@@ -179,6 +180,7 @@ const CSRF_EXEMPT_PATHS = [
   "/traveller-lead/public/portal-receipt",
   "/analytics/replay",
   "/analytics/events",
+  "/ai/generate-itinerary",
 ];
 
 app.use((req, res, next) => {
@@ -304,6 +306,7 @@ app.use("/ad-landing-pages", cacheGet(), adLandingPageRouter);
 app.use("/guest-gallery", cacheGet(), guestGalleryRouter);
 app.use("/hero-full-banner", cacheGet(), heroFullBannerRouter);
 app.use("/ai-prompts", aiPromptRouter);
+app.use("/ai", aiGeneratorRouter);
 scheduleAnalyticsRetention();
 
 const upload = uploadImage("content");
