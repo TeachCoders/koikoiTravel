@@ -24,21 +24,22 @@ CORE PRINCIPLES & RULES:
    - "overView" field MUST be generated as a 100-150 word HTML (<p> with <strong>).
    - The very first sentence MUST start with traveler pain-points (unreliable taxis, confusing routes, hidden charges, bad hotels) and position <strong>KoiKoi Travel</strong> as the hassle-free solution.
 
-5. Day Program Structure & Daily Flow (STRICT NO CLOCK TIMINGS):
+5. Day Program Structure & Daily Flow (STRICT NO CLOCK TIMINGS & NO BARE FRAGMENTS):
    - STRICTLY BANNED: Do NOT include clock timings (e.g. "09:00 AM", "12:00 PM", "03:00 PM").
+   - STRICTLY BANNED: Do NOT output bare 2-3 word fragment bullets (e.g. "Breakfast onboard", "Disembarkation", "Return drive"). Every bullet point MUST begin with a bold category label <li><strong>Category Label:</strong> ...</li> followed by full, engaging narrative sentences.
    - Day Intro <p>: Exactly 1 factual sentence with route & distance (e.g. "<p>Arrival at <strong>Cochin</strong> and scenic drive to <strong>Munnar</strong> (130 km / 4 hours) through tea gardens.</p>").
    - Day 1 Bullet Points (<ul>):
-     - <li><strong>Arrival & Transfer:</strong> Warm welcome at Airport/Railway Station, private AC cab transfer to hotel, and smooth check-in.</li>
-     - <li><strong>Sightseeing & Activities:</strong> Explore initial local highlights or relax at the hotel/resort.</li>
-     - <li><strong>Overnight Stay:</strong> Relaxing night stay at [City / Hotel / Resort].</li>
+     - <li><strong>Arrival & Transfer:</strong> Warm welcome at Airport/Railway Station by <strong>KoiKoi Travel</strong> team, private AC cab transfer to hotel, and smooth check-in.</li>
+     - <li><strong>Sightseeing & Activities:</strong> Explore initial local highlights, photo viewpoints, or relax at the hotel/resort.</li>
+     - <li><strong>Overnight Stay:</strong> Relaxing night stay at hotel/resort in <strong>[City]</strong>.</li>
    - Day 2 to Second-to-Last Day Bullet Points (<ul>):
-     - <li><strong>Morning Breakfast & Transfer:</strong> Savor a delicious breakfast at hotel/resort followed by a scenic drive to [Destination].</li>
+     - <li><strong>Morning Breakfast & Transfer:</strong> Savor a delicious breakfast at hotel/resort followed by a scenic drive to <strong>[Destination]</strong> (distance & drive time).</li>
      - <li><strong>Sightseeing & Activities:</strong> Explore key sightseeing spots, outdoor fun, boat rides, tea garden walks, etc. (incorporate any reference URL details if provided).</li>
-     - <li><strong>Overnight Stay:</strong> Night stay at [City / Hotel / Resort / Deluxe Houseboat].</li>
+     - <li><strong>Overnight Stay:</strong> Night stay at hotel/resort or deluxe houseboat in <strong>[City]</strong>.</li>
    - Final Day Bullet Points (<ul>):
-     - <li><strong>Morning Breakfast & Check-out:</strong> Savor breakfast at hotel/resort and complete check-out formalities.</li>
-     - <li><strong>Local Shopping & Sightseeing:</strong> Enjoy last-minute souvenir shopping or quick local sightseeing.</li>
-     - <li><strong>Departure Drop-off:</strong> Timely transfer to Airport/Railway Station in private cab for your onward journey.</li>
+     - <li><strong>Morning Breakfast & Check-out:</strong> Savor breakfast at hotel/houseboat and complete check-out formalities with your driver.</li>
+     - <li><strong>Local Shopping & Sightseeing:</strong> Drive towards <strong>[Drop-off City]</strong> for last-minute souvenir/spice shopping or quick local sightseeing.</li>
+     - <li><strong>Departure Drop-off:</strong> Timely private cab transfer to Airport/Railway Station for your onward journey with sweet memories by <strong>KoiKoi Travel</strong>.</li>
 
 6. Mandatory Tour Highlights ("highlights"):
    - "highlights" MUST be an array of 5-7 punchy bullet points summarizing key tour highlights (e.g. ["Private AC Cab Transfer for all Sightseeing", "Overnight Deluxe Houseboat Stay with All Meals", "Guided Tea Plantation Walk & Spice Garden Visit", "Kathakali & Kalaripayattu Cultural Show Tickets"]).
@@ -182,10 +183,11 @@ Strict Generation Mandates:
 2. Overview ("overView"): 100-150 words HTML (<p> and <strong>) starting with traveler pain points.
 3. Day Program Structure ("days"):
    - STRICTLY ZERO clock timings (No 09:00 AM, 12:00 PM, etc.).
+   - STRICTLY ZERO bare fragment bullet points (Do NOT output dry fragments like "Breakfast onboard", "Disembarkation", "Return drive"). Every bullet MUST begin with bold category headers:
+     - Day 1: <li><strong>Arrival & Transfer:</strong> ...</li>, <li><strong>Sightseeing & Activities:</strong> ...</li>, <li><strong>Overnight Stay:</strong> ...</li>
+     - Day 2+: <li><strong>Morning Breakfast & Transfer:</strong> ...</li>, <li><strong>Sightseeing & Activities:</strong> ...</li>, <li><strong>Overnight Stay:</strong> ...</li>
+     - Final Day: <li><strong>Morning Breakfast & Check-out:</strong> ...</li>, <li><strong>Local Shopping & Sightseeing:</strong> ...</li>, <li><strong>Departure Drop-off:</strong> ...</li>
    - If REFERENCE URL CONTEXT is provided above, you MUST match its exact day-by-day sightseeing sequence, specific waterfalls (e.g. Cheeyappara, Valara), heritage sites (Chinese Fishing Nets, Synagogue, Forts), and activities!
-   - Day 1: Arrival & Transfer, Sightseeing & Activities, Overnight Stay.
-   - Day 2+: Morning Breakfast & Transfer, Sightseeing & Activities (incorporate reference URL details), Overnight Stay.
-   - Final Day: Morning Breakfast & Check-out, Local Shopping & Sightseeing, Departure Drop-off.
 4. Mandatory 5-7 Highlights ("highlights").
 5. Mandatory Inclusions ("inclusions"), Exclusions ("exclusions"), and 4-5 Why Choose Us trust points ("whyChooseUs").
 6. Exactly 10 circuit-specific FAQs ("faqs").
