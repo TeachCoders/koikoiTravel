@@ -1009,3 +1009,18 @@ model GuestGallery {
 
   @@map("guest_gallery")
 }
+
+model AiPrompt {
+  id           Int      @id @default(autoincrement())
+  key          String   @unique // 'journey' | 'blog' | 'destination'
+  title        String
+  systemPrompt String   @db.Text
+  tone         String?
+  maxDays      String?
+  apiKey       String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("ai_prompts")
+}
+

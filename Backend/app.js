@@ -47,6 +47,7 @@ import analyticsRouter from "./router/analytics.js";
 import adLandingPageRouter from "./router/adLandingPage.js";
 import guestGalleryRouter from "./router/guestGallery.js";
 import heroFullBannerRouter from "./router/heroFullBanner.js";
+import aiPromptRouter from "./router/aiPrompt.js";
 import { scheduleAnalyticsRetention } from "./utils/analyticsRetention.js";
 import { cacheGet, clearCacheOnWrite } from "./services/httpCache.js";
 import * as Sentry from "@sentry/node";
@@ -302,6 +303,7 @@ app.use("/analytics", analyticsRouter);
 app.use("/ad-landing-pages", cacheGet(), adLandingPageRouter);
 app.use("/guest-gallery", cacheGet(), guestGalleryRouter);
 app.use("/hero-full-banner", cacheGet(), heroFullBannerRouter);
+app.use("/ai-prompts", aiPromptRouter);
 scheduleAnalyticsRetention();
 
 const upload = uploadImage("content");
