@@ -11,9 +11,11 @@ export function useEntityQuickCreate(onSuccess?: (target: QuickCreateTarget, new
   const [quickCreateLoading, setQuickCreateLoading] = useState(false);
   const [quickCreateError, setQuickCreateError] = useState("");
   const [quickParentId, setQuickParentId] = useState<number | null>(null);
+  const [quickInitialTitle, setQuickInitialTitle] = useState("");
 
-  const openQuickCreate = (target: QuickCreateTarget, parentId: number | null = null) => {
+  const openQuickCreate = (target: QuickCreateTarget, parentId: number | null = null, initialTitle: string = "") => {
     setQuickParentId(parentId);
+    setQuickInitialTitle(initialTitle);
     setQuickCreateError("");
     setQuickCreate(target);
   };
@@ -21,6 +23,7 @@ export function useEntityQuickCreate(onSuccess?: (target: QuickCreateTarget, new
   const closeQuickCreate = () => {
     setQuickCreate(null);
     setQuickParentId(null);
+    setQuickInitialTitle("");
     setQuickCreateError("");
   };
 
@@ -64,6 +67,7 @@ export function useEntityQuickCreate(onSuccess?: (target: QuickCreateTarget, new
     quickCreateLoading,
     quickCreateError,
     quickParentId,
+    quickInitialTitle,
     openQuickCreate,
     closeQuickCreate,
     handleQuickCreate,

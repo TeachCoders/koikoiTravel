@@ -1,11 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
-import { Sparkles, Bot, Save, RotateCcw, Check, BookOpen, Route, Newspaper, MapPin } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import {
+  Sparkles,
+  Save,
+  RotateCcw,
+  Check,
+  Route,
+  Newspaper,
+  MapPin,
+  Copy,
+  BookOpen,
+} from "lucide-react";
 import PrivatePageHeading from "@/components/shared/PrivatePageHeading";
 import { Label } from "@/components/ui/label";
 
-const DEFAULT_JOURNEY_PROMPT = `You are a senior Indian travel specialist, local destination guide, and high-converting SEO copywriter for KoiKoi Travel.
+export const DEFAULT_JOURNEY_PROMPT = `You are a senior Indian travel specialist, local destination guide, and high-converting SEO copywriter for KoiKoi Travel.
 Your mission is to generate a 100% human, engaging, activity-packed tour package itinerary based on the user's input.
 
 CORE WRITING & SEO RULES:
@@ -19,9 +29,39 @@ CORE WRITING & SEO RULES:
 8. Strict White-Hat Linking: ZERO links in H1, H2, H3, or Day Titles. In-body text only (<p> and <li>). Maximum 1 link per city/keyword across entire page. 2-4 contextual links total.
 9. Keyword Integration: Weave target keywords naturally into H1, Overview, Day plans, and FAQs. If keywords not provided, auto-extract Google "People Also Search" queries.
 10. Auto-Detection: Return routeCities array (for auto-selecting cities), suggestedExperiences array (matching category pills), and suggestedSeasons array (best travel seasons).
-11. Reference URL: If provided, extract extra perks and special sightseeing for inclusions, but write in 100% original voice with zero copying.`;
+11. Reference URL: If provided, extract extra perks and special sightseeing for inclusions, but write in 100% original voice with zero copying.
 
-const DEFAULT_BLOG_PROMPT = `You are an expert travel writer and SEO copywriter for KoiKoi Travel India.
+OUTPUT SCHEMA (JSON):
+{
+  "title": "string",
+  "slug": "string",
+  "h1Title": "string",
+  "seoTitle": "string",
+  "seoDescription": "string",
+  "seoKeyword": "string",
+  "destination": "string",
+  "routeCities": ["string"],
+  "suggestedExperiences": ["string"],
+  "suggestedSeasons": ["string"],
+  "suggestedMonths": ["string"],
+  "overView": "string (HTML with <p> and <strong>, 100-150 words pain-point hook)",
+  "highlights": ["string"],
+  "days": [
+    {
+      "day": "Day 1: Title",
+      "description": "HTML containing <p> intro followed by <ul><li> activities</li></ul>"
+    }
+  ],
+  "inclusions": ["string"],
+  "exclusions": ["string"],
+  "whyChooseUs": ["string"],
+  "faqs": [
+    { "ques": "Question string", "ans": "Answer string" }
+  ],
+  "moreDescription": "string (HTML comprehensive trip guide & travel tips)"
+}`;
+
+export const DEFAULT_BLOG_PROMPT = `You are an expert travel writer and SEO copywriter for KoiKoi Travel India.
 Write a comprehensive, engaging, high-ranking travel guide / blog post for international tourists, NRIs, and domestic explorers.
 
 STRICT WRITING RULES:
@@ -29,7 +69,7 @@ STRICT WRITING RULES:
 2. Tone: Highly practical, authentic, friendly, and trustworthy.
 3. Meta Description: Strictly between 140 and 150 characters with focus keywords.`;
 
-const DEFAULT_DESTINATION_PROMPT = `You are a local destination expert for KoiKoi Travel India.
+export const DEFAULT_DESTINATION_PROMPT = `You are a local destination expert for KoiKoi Travel India.
 Generate unique, culturally accurate, and compelling descriptions for Cities and States across India.
 
 STRICT WRITING RULES:
@@ -49,16 +89,80 @@ export default function AiPromptsManager() {
   const [destPrompt, setDestPrompt] = useState(DEFAULT_DESTINATION_PROMPT);
 
   const [savedStatus, setSavedStatus] = useState<string | null>(null);
+  const [copiedStatus, setCopiedStatus] = useState<string | null>(null);
 
-  const handleSave = (tabName: string) => {
-    setSavedStatus(tabName);
-    setTimeout(() => setSavedStatus(null), 2500);
+  useEffect(() => {
+    try {
+      const storedJP = localStorage.getItem("koi_journey_prompt");
+      if (storedJP) setJourneyPrompt(storedJP);
+
+      const storedJT = localStorage.getItem("koi_journey_tone");
+      if (storedJT) setJourneyTone(storedJT);
+
+      const storedJMD = localStorage.getItem("koi_journey_max_days");
+      if (storedJMD) setJourneyMaxDays(storedJMD);
+
+      const storedBP = localStorage.getItem("koi_blog_prompt");
+      if (storedBP) setBlogPrompt(storedBP);
+
+      const storedBT = localStorage.getItem("koi_blog_tone");
+      if (storedBT) setBlogTone(storedBT);
+
+      const storedDP = localStorage.getItem("koi_dest_prompt");
+      if (storedDP) setDestPrompt(storedDP);
+    } catch {}
+  }, []);
+
+  const handleSavePrompt = (tabName: string) => {
+    try {
+      if (tabName === "Journey") {
+        localStorage.setItem("koi_journey_prompt", journeyPrompt);
+        localStorage.setItem("koi_journey_tone", journeyTone);
+        localStorage.setItem("koi_journey_max_days", journeyMaxDays);
+      } else if (tabName === "Blog") {
+        localStorage.setItem("koi_blog_prompt", blogPrompt);
+        localStorage.setItem("koi_blog_tone", blogTone);
+      } else if (tabName === "Destination") {
+        localStorage.setItem("koi_dest_prompt", destPrompt);
+      }
+      setSavedStatus(tabName);
+      setTimeout(() => setSavedStatus(null), 2500);
+    } catch {
+      setSavedStatus(null);
+    }
+  };
+
+  const handleCopyPrompt = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedStatus(label);
+    setTimeout(() => setCopiedStatus(null), 2500);
   };
 
   const handleReset = (tab: "journey" | "blog" | "destination") => {
-    if (tab === "journey") setJourneyPrompt(DEFAULT_JOURNEY_PROMPT);
-    if (tab === "blog") setBlogPrompt(DEFAULT_BLOG_PROMPT);
-    if (tab === "destination") setDestPrompt(DEFAULT_DESTINATION_PROMPT);
+    if (tab === "journey") {
+      setJourneyPrompt(DEFAULT_JOURNEY_PROMPT);
+      setJourneyTone("Friendly Local Travel Specialist");
+      setJourneyMaxDays("15");
+      try {
+        localStorage.removeItem("koi_journey_prompt");
+        localStorage.removeItem("koi_journey_tone");
+        localStorage.removeItem("koi_journey_max_days");
+      } catch {}
+    }
+    if (tab === "blog") {
+      setBlogPrompt(DEFAULT_BLOG_PROMPT);
+      setBlogTone("Engaging Travel Storyteller & Practical Guide");
+      try {
+        localStorage.removeItem("koi_blog_prompt");
+        localStorage.removeItem("koi_blog_tone");
+      } catch {}
+    }
+    if (tab === "destination") {
+      setDestPrompt(DEFAULT_DESTINATION_PROMPT);
+      try {
+        localStorage.removeItem("koi_dest_prompt");
+      } catch {}
+    }
   };
 
   return (
@@ -67,13 +171,13 @@ export default function AiPromptsManager() {
         <PrivatePageHeading
           icon={Sparkles}
           title="AI Prompt Studio"
-          description="Manage master system prompts, tone instructions & formatting rules for AI content generation"
+          description="View, edit, and copy master system prompts & formatting rules for tour generation"
         />
 
         {savedStatus && (
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 text-sm font-semibold animate-in fade-in duration-200">
             <Check size={16} />
-            <span>{savedStatus} prompt settings saved!</span>
+            <span>{savedStatus} prompt rules saved!</span>
           </div>
         )}
       </div>
@@ -83,7 +187,7 @@ export default function AiPromptsManager() {
         <button
           type="button"
           onClick={() => setActiveTab("journey")}
-          className={`flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-xl transition-all ${
+          className={`flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-xl transition-all cursor-pointer ${
             activeTab === "journey"
               ? "bg-[#2E8B8B] text-white shadow-sm"
               : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -96,7 +200,7 @@ export default function AiPromptsManager() {
         <button
           type="button"
           onClick={() => setActiveTab("blog")}
-          className={`flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-xl transition-all ${
+          className={`flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-xl transition-all cursor-pointer ${
             activeTab === "blog"
               ? "bg-[#2E8B8B] text-white shadow-sm"
               : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -109,7 +213,7 @@ export default function AiPromptsManager() {
         <button
           type="button"
           onClick={() => setActiveTab("destination")}
-          className={`flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-xl transition-all ${
+          className={`flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-xl transition-all cursor-pointer ${
             activeTab === "destination"
               ? "bg-[#2E8B8B] text-white shadow-sm"
               : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -130,17 +234,27 @@ export default function AiPromptsManager() {
                 Tour Itinerary Master Prompt
               </h3>
               <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                These rules control how AI generates Day-by-Day plans, Overview, Inclusions, and FAQs when you create a Journey.
+                These rules control how Day-by-Day plans, Overview, Inclusions, and FAQs are structured.
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() => handleReset("journey")}
-              className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
-            >
-              <RotateCcw size={13} />
-              Reset Default
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleCopyPrompt(journeyPrompt, "Journey")}
+                className="text-xs font-semibold text-slate-700 hover:text-slate-900 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer"
+              >
+                {copiedStatus === "Journey" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
+                <span>{copiedStatus === "Journey" ? "Copied!" : "Copy Prompt"}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleReset("journey")}
+                className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer"
+              >
+                <RotateCcw size={13} />
+                Reset Default
+              </button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -153,7 +267,7 @@ export default function AiPromptsManager() {
                 value={journeyTone}
                 onChange={(e) => setJourneyTone(e.target.value)}
                 className="w-full h-10 px-3.5 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B]"
-                placeholder="e.g. Warm, Local Travel Expert"
+                placeholder="e.g. Friendly Local Travel Specialist"
               />
             </div>
             <div>
@@ -173,20 +287,20 @@ export default function AiPromptsManager() {
           <div>
             <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 block flex items-center justify-between">
               <span>Master System Instructions (Prompt Body)</span>
-              <span className="text-[11px] text-slate-400 font-normal">Passed directly to Gemini API</span>
+              <span className="text-[11px] text-slate-400 font-normal">Editable prompt template</span>
             </Label>
             <textarea
-              rows={12}
+              rows={16}
               value={journeyPrompt}
               onChange={(e) => setJourneyPrompt(e.target.value)}
-              className="w-full p-4 text-sm font-mono leading-relaxed rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all"
+              className="w-full p-4 text-xs font-mono leading-relaxed rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all"
             />
           </div>
 
           <div className="pt-2 flex justify-end">
             <button
               type="button"
-              onClick={() => handleSave("Journey")}
+              onClick={() => handleSavePrompt("Journey")}
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#2E8B8B] hover:bg-[#257373] text-white font-bold text-sm shadow-sm transition-all cursor-pointer"
             >
               <Save size={16} />
@@ -206,17 +320,27 @@ export default function AiPromptsManager() {
                 Blog & Travel Guide Master Prompt
               </h3>
               <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                Controls the tone, formatting structure, and SEO keyword density when generating travel blog posts.
+                Controls the tone, formatting structure, and SEO keyword density for travel blogs.
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() => handleReset("blog")}
-              className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
-            >
-              <RotateCcw size={13} />
-              Reset Default
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleCopyPrompt(blogPrompt, "Blog")}
+                className="text-xs font-semibold text-slate-700 hover:text-slate-900 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer"
+              >
+                {copiedStatus === "Blog" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
+                <span>{copiedStatus === "Blog" ? "Copied!" : "Copy Prompt"}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleReset("blog")}
+                className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer"
+              >
+                <RotateCcw size={13} />
+                Reset Default
+              </button>
+            </div>
           </div>
 
           <div>
@@ -234,20 +358,20 @@ export default function AiPromptsManager() {
           <div>
             <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 block flex items-center justify-between">
               <span>Blog System Instructions</span>
-              <span className="text-[11px] text-slate-400 font-normal">Passed directly to Gemini API</span>
+              <span className="text-[11px] text-slate-400 font-normal">Editable prompt template</span>
             </Label>
             <textarea
-              rows={12}
+              rows={14}
               value={blogPrompt}
               onChange={(e) => setBlogPrompt(e.target.value)}
-              className="w-full p-4 text-sm font-mono leading-relaxed rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all"
+              className="w-full p-4 text-xs font-mono leading-relaxed rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all"
             />
           </div>
 
           <div className="pt-2 flex justify-end">
             <button
               type="button"
-              onClick={() => handleSave("Blog")}
+              onClick={() => handleSavePrompt("Blog")}
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#2E8B8B] hover:bg-[#257373] text-white font-bold text-sm shadow-sm transition-all cursor-pointer"
             >
               <Save size={16} />
@@ -270,33 +394,43 @@ export default function AiPromptsManager() {
                 Controls how destination highlights, attractions, famous for, and weather descriptions are generated.
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() => handleReset("destination")}
-              className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
-            >
-              <RotateCcw size={13} />
-              Reset Default
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleCopyPrompt(destPrompt, "Destination")}
+                className="text-xs font-semibold text-slate-700 hover:text-slate-900 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer"
+              >
+                {copiedStatus === "Destination" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
+                <span>{copiedStatus === "Destination" ? "Copied!" : "Copy Prompt"}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleReset("destination")}
+                className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer"
+              >
+                <RotateCcw size={13} />
+                Reset Default
+              </button>
+            </div>
           </div>
 
           <div>
             <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 block flex items-center justify-between">
               <span>Destination System Instructions</span>
-              <span className="text-[11px] text-slate-400 font-normal">Passed directly to Gemini API</span>
+              <span className="text-[11px] text-slate-400 font-normal">Editable prompt template</span>
             </Label>
             <textarea
-              rows={12}
+              rows={14}
               value={destPrompt}
               onChange={(e) => setDestPrompt(e.target.value)}
-              className="w-full p-4 text-sm font-mono leading-relaxed rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all"
+              className="w-full p-4 text-xs font-mono leading-relaxed rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all"
             />
           </div>
 
           <div className="pt-2 flex justify-end">
             <button
               type="button"
-              onClick={() => handleSave("Destination")}
+              onClick={() => handleSavePrompt("Destination")}
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#2E8B8B] hover:bg-[#257373] text-white font-bold text-sm shadow-sm transition-all cursor-pointer"
             >
               <Save size={16} />
@@ -308,4 +442,3 @@ export default function AiPromptsManager() {
     </div>
   );
 }
-
