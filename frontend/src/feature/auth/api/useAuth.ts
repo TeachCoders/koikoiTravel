@@ -6,17 +6,26 @@ import { Login, LoginResponse } from "./types";
 
 
 export function useLogin() {
+  const queryClient = useQueryClient();
   const mutation = useMutation<
     AxiosResponse<LoginResponse>,
     AxiosError<LoginResponse>,
     Login
   >({
     mutationFn: loginUser,
+    onSuccess: async (res) => {
+      const userInfo = (res.data as any)?.info || (res.data as any)?.user;
+      if (userInfo) {
+        queryClient.setQueryData(["currentUser"], userInfo);
+      }
+      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+    },
   });
 
   return {
     isloading: mutation.isPending,
     loginAuthUser: mutation.mutate,
+    loginAuthUserAsync: mutation.mutateAsync,
   };
 }
 
@@ -25,7 +34,8 @@ export const useGetCurrentUser = () => {
     queryKey: ["currentUser"],
     queryFn: getCurrentUser,
     retry: false,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 60 * 1000,
+    refetchOnWindowFocus: true,
   });
 
   return {

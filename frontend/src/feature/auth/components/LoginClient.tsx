@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/shared/PasswordInput";
 import { useLogin } from "../api/useAuth";
+import { getCurrentUser } from "../api";
+import { useQueryClient } from "@tanstack/react-query";
 import { errorToast, successToast } from "@/components/shared/tost";
 import { fetchCsrfToken } from "@/lib/apiClient";
 import { AxiosError, AxiosResponse } from "axios";
@@ -23,6 +25,7 @@ export function Login() {
   const [form, setForm] = useState<LoginForm>({ email: "", password: "" });
   const [errors, setErrors] = useState<Partial<LoginForm>>({});
   const { isloading, loginAuthUser } = useLogin();
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   const handleLogin = async (e?: React.MouseEvent) => {
@@ -48,10 +51,16 @@ export function Login() {
     loginAuthUser(form, {
       onSuccess: async (e: AxiosResponse<LoginResponse>) => {
         successToast(e.data.message);
-        // Login regenerates the session id – the old CSRF token is bound to
-        // the previous session and would fail validation. Mint a fresh one.
         await fetchCsrfToken();
+        try {
+          const freshUser = await getCurrentUser();
+          if (freshUser) {
+            queryClient.setQueryData(["currentUser"], freshUser);
+          }
+        } catch {}
+        queryClient.invalidateQueries({ queryKey: ["currentUser"] });
         router.push("/dashboard");
+        router.refresh();
       },
       onError: (e) => {
         errorToast(e.response?.data?.message || "Something went wrong");
