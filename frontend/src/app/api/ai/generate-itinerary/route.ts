@@ -208,22 +208,7 @@ Strict Requirements:
       );
     }
 
-    // Clean markdown code blocks if any
-    let cleanJsonText = candidate
-      .replace(/^```json\s*/i, "")
-      .replace(/^```\s*/i, "")
-      .replace(/```\s*$/i, "")
-      .trim();
-
-    // Extract exact JSON object between first { and last }
-    const firstBrace = cleanJsonText.indexOf("{");
-    const lastBrace = cleanJsonText.lastIndexOf("}");
-    if (firstBrace !== -1 && lastBrace !== -1) {
-      cleanJsonText = cleanJsonText.slice(firstBrace, lastBrace + 1);
-    }
-
-    const parsedItinerary = JSON.parse(cleanJsonText);
-
+    const parsedItinerary = extractAndParseJson(candidate);
     return NextResponse.json({ success: true, data: parsedItinerary });
   } catch (error: any) {
     console.error("AI Itinerary Generation Error:", error);
@@ -232,4 +217,63 @@ Strict Requirements:
       { status: 500 }
     );
   }
+}
+
+function extractAndParseJson(candidate: string) {
+  if (!candidate || typeof candidate !== "string") {
+    throw new Error("Invalid or empty response text received from AI.");
+  }
+
+  let text = candidate.trim().replace(/^```(?:json)?\s*/gi, "").replace(/\s*```$/gi, "").trim();
+
+  try {
+    return JSON.parse(text);
+  } catch {}
+
+  const firstBrace = text.indexOf("{");
+  if (firstBrace !== -1) {
+    let braceCount = 0;
+    let endBrace = -1;
+    let inString = false;
+    let escape = false;
+
+    for (let i = firstBrace; i < text.length; i++) {
+      const char = text[i];
+      if (escape) {
+        escape = false;
+        continue;
+      }
+      if (char === "\\") {
+        escape = true;
+        continue;
+      }
+      if (char === '"') {
+        inString = !inString;
+        continue;
+      }
+      if (!inString) {
+        if (char === "{") braceCount++;
+        else if (char === "}") {
+          braceCount--;
+          if (braceCount === 0) {
+            endBrace = i;
+            break;
+          }
+        }
+      }
+    }
+
+    if (endBrace !== -1) {
+      const jsonSub = text.slice(firstBrace, endBrace + 1);
+      try {
+        return JSON.parse(jsonSub);
+      } catch {
+        const sanitized = jsonSub.replace(/,\s*([\]}])/g, "$1");
+        return JSON.parse(sanitized);
+      }
+    }
+  }
+
+  const sanitized = text.replace(/,\s*([\]}])/g, "$1");
+  return JSON.parse(sanitized);
 }
