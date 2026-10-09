@@ -138,20 +138,21 @@ Strict Requirements:
     };
 
     const modelsToTry = [
-      "gemini-3.5-flash",
       "gemini-3.1-flash-lite",
-      "gemini-3.7-flash",
       "gemini-flash-latest",
-      "gemini-2.5-flash",
-      "gemini-2.0-flash",
-      "gemini-1.5-flash",
+      "gemini-3.5-flash",
+      "gemini-3.7-flash",
     ];
 
     let response = null;
     for (const model of modelsToTry) {
       response = await callGeminiApi(model, apiKey, geminiPayload);
       if (response.ok) break;
-      if (response.status !== 404) break;
+      // If error is temporary or model not found (503, 429, 404, 500), try next model
+      if ([404, 503, 429, 500, 502, 504].includes(response.status)) {
+        continue;
+      }
+      break;
     }
 
     if (!response || !response.ok) {

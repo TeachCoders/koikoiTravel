@@ -160,23 +160,21 @@ Strict Requirements:
       },
     };
 
-    // Try latest models in order: gemini-3.5-flash -> gemini-3.1-flash-lite -> gemini-3.7-flash -> gemini-flash-latest -> gemini-2.5-flash
     const modelsToTry = [
-      "gemini-3.5-flash",
       "gemini-3.1-flash-lite",
-      "gemini-3.7-flash",
       "gemini-flash-latest",
-      "gemini-2.5-flash",
-      "gemini-2.0-flash",
-      "gemini-1.5-flash"
+      "gemini-3.5-flash",
+      "gemini-3.7-flash",
     ];
     let response: Response | null = null;
 
     for (const model of modelsToTry) {
       response = await callGeminiApi(model, apiKey, geminiPayload);
       if (response.ok) break;
-      // If error is 404 (model not found), try next model. If 400 (bad key), break early to show key error.
-      if (response.status !== 404) break;
+      if ([404, 503, 429, 500, 502, 504].includes(response.status)) {
+        continue;
+      }
+      break;
     }
 
     if (!response || !response.ok) {
