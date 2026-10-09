@@ -40,7 +40,9 @@ CORE PRINCIPLES & RULES:
      - <li><strong>Departure Drop-off:</strong> Timely private cab transfer to Airport/Railway Station for your onward journey with sweet memories by <strong>KoiKoi Travel</strong>.</li>
 
 6. Mandatory Tour Highlights ("highlights"):
-   - "highlights" MUST be an array of 5-7 punchy bullet points summarizing key tour highlights (e.g. ["Private AC Cab Transfer for all Sightseeing", "Overnight Deluxe Houseboat Stay with All Meals", "Guided Tea Plantation Walk & Spice Garden Visit", "Kathakali & Kalaripayattu Cultural Show Tickets"]).
+   - "highlights" field MUST be generated as an array of 5-7 punchy, high-converting bullet strings summarizing top tour USPs.
+   - Example Highlights: ["Private Dedicated AC Cab Transfer for all Sightseeing", "Overnight Deluxe Backwater Houseboat Cruise with All Meals Included", "Guided Tea Plantation Walk & Spice Garden Tour", "Passes for Traditional Kathakali Dance & Kalaripayattu Martial Arts Shows", "24/7 Dedicated On-Trip Manager Support by KoiKoi Travel"].
+   - NEVER skip or return an empty array. Always return 5-7 high-intent highlights.
 
 7. Mandatory Inclusions, Exclusions & Why Choose Us:
    - "inclusions": Array of 6-8 specific inclusive items (Cab, Hotels, Breakfast, Houseboat Meals, Driver Allowances, Toll/Taxes).
@@ -201,7 +203,7 @@ Strict Generation Mandates:
      - Day 2+: <li><strong>Morning Breakfast & Transfer:</strong> ...</li>, <li><strong>Sightseeing & Activities:</strong> ...</li>, <li><strong>Overnight Stay:</strong> ...</li>
      - Final Day: <li><strong>Morning Breakfast & Check-out:</strong> ...</li>, <li><strong>Local Shopping & Sightseeing:</strong> ...</li>, <li><strong>Departure Drop-off:</strong> ...</li>
    - If REFERENCE URL CONTEXT is provided above, you MUST match its exact day-by-day sightseeing sequence, specific waterfalls (e.g. Cheeyappara, Valara), heritage sites (Chinese Fishing Nets, Synagogue, Forts), and activities!
-4. Mandatory 5-7 Highlights ("highlights").
+4. Mandatory 5-7 Tour Highlights ("highlights"): Must generate 5-7 punchy bullet points covering key USPs (Private AC Cab, Houseboat/Resort Stay, Core Landmark Visits, Cultural Shows, Daily Breakfast).
 5. Mandatory Inclusions ("inclusions"), Exclusions ("exclusions"), and 4-5 Why Choose Us trust points ("whyChooseUs").
 6. Exactly 10 circuit-specific FAQs ("faqs").
 7. Mandatory Additional Description / Travel Guide ("moreDescription").
