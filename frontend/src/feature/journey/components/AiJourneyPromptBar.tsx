@@ -11,9 +11,13 @@ import {
   ChevronUp,
   Copy,
   Check,
-  Eye,
   FileText,
   RotateCcw,
+  Loader2,
+  AlertCircle,
+  CheckCircle2,
+  Key,
+  ExternalLink,
 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 
@@ -71,18 +75,51 @@ OUTPUT SCHEMA (Return strictly valid raw JSON only):
   "moreDescription": "string (HTML comprehensive trip guide & travel tips)"
 }`;
 
-export default function AiJourneyPromptBar() {
+interface AiJourneyPromptBarProps {
+  onGenerate?: (aiResponseData: any) => void;
+  isGenerating?: boolean;
+}
+
+export default function AiJourneyPromptBar({
+  onGenerate,
+  isGenerating: externalIsGenerating,
+}: AiJourneyPromptBarProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [title, setTitle] = useState("");
   const [route, setRoute] = useState("");
   const [focusKeywords, setFocusKeywords] = useState("");
   const [referenceUrl, setReferenceUrl] = useState("");
 
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
   const [compiledPrompt, setCompiledPrompt] = useState("");
   const [showPromptBox, setShowPromptBox] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // Auto-generate compiled prompt whenever fields change
+  // Quick API Key state
+  const [apiKey, setApiKey] = useState("");
+  const [showKeyInput, setShowKeyInput] = useState(false);
+
+  useEffect(() => {
+    try {
+      const storedKey = localStorage.getItem("koi_gemini_api_key");
+      if (storedKey) setApiKey(storedKey);
+    } catch {}
+  }, []);
+
+  const isGenerating = externalIsGenerating || loading;
+
+  const handleSaveApiKey = (key: string) => {
+    setApiKey(key.trim());
+    try {
+      localStorage.setItem("koi_gemini_api_key", key.trim());
+      setErrorMsg(null);
+      setShowKeyInput(false);
+    } catch {}
+  };
+
   const buildPrompt = () => {
     let customRules = DEFAULT_MASTER_RULES;
     try {
@@ -116,11 +153,71 @@ Generate a complete, high-converting, human-written tour package itinerary for K
     return promptText;
   };
 
-  const handleShowPrompt = (e: React.FormEvent) => {
+  const handleShowPrompt = (e: React.MouseEvent) => {
     e.preventDefault();
     const prompt = buildPrompt();
     setCompiledPrompt(prompt);
     setShowPromptBox(true);
+  };
+
+  const handleGenerateClick = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg(null);
+    setSuccessMsg(null);
+
+    if (!title.trim() && !route.trim()) {
+      setErrorMsg("Please enter at least a Journey Title or Route.");
+      return;
+    }
+
+    let currentApiKey = apiKey.trim();
+    if (!currentApiKey) {
+      try {
+        currentApiKey = localStorage.getItem("koi_gemini_api_key") || "";
+      } catch {}
+    }
+
+    setLoading(true);
+
+    try {
+      let customPrompt: string | undefined;
+      try {
+        customPrompt = localStorage.getItem("koi_journey_prompt") || undefined;
+      } catch {}
+
+      const res = await fetch("/api/ai/generate-itinerary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: title.trim(),
+          route: route.trim(),
+          focusKeywords: focusKeywords.trim(),
+          referenceUrl: referenceUrl.trim(),
+          customMasterPrompt: customPrompt,
+          apiKey: currentApiKey || undefined,
+        }),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok || !json.success) {
+        if (json.error && json.error.toLowerCase().includes("gemini api key")) {
+          setShowKeyInput(true);
+        }
+        throw new Error(json.error || "Failed to generate itinerary. Please try again.");
+      }
+
+      setSuccessMsg("✨ Itinerary generated successfully! All form fields below have been auto-filled.");
+      setTimeout(() => setSuccessMsg(null), 6000);
+
+      if (onGenerate) {
+        onGenerate(json.data);
+      }
+    } catch (err: any) {
+      setErrorMsg(err?.message || "An unexpected error occurred while generating the itinerary.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCopy = () => {
@@ -137,6 +234,8 @@ Generate a complete, high-converting, human-written tour package itinerary for K
     setReferenceUrl("");
     setCompiledPrompt("");
     setShowPromptBox(false);
+    setErrorMsg(null);
+    setSuccessMsg(null);
   };
 
   return (
@@ -153,19 +252,30 @@ Generate a complete, high-converting, human-written tour package itinerary for K
           <div>
             <div className="flex items-center gap-2">
               <h3 className="text-base font-bold text-slate-900">
-                AI Prompt Generator for Journey
+                Create Journey with AI
               </h3>
               <span className="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-[#F8904D]/15 text-[#F8904D]">
-                Prompt Ready
+                Auto-Fill
               </span>
             </div>
             <p className="text-xs text-slate-500 mt-0.5">
-              Enter 4 tour details to generate the complete ready-to-run master prompt for your itinerary.
+              Enter 4 tour details to auto-generate overview, days, highlights, inclusions, and SEO metadata.
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
+          {!apiKey && (
+            <button
+              type="button"
+              onClick={() => setShowKeyInput(!showKeyInput)}
+              className="text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition-colors cursor-pointer"
+            >
+              <Key size={13} />
+              <span>Set Gemini Key</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={() => setIsExpanded(!isExpanded)}
@@ -177,9 +287,61 @@ Generate a complete, high-converting, human-written tour package itinerary for K
         </div>
       </div>
 
+      {/* Inline Key Setup */}
+      {showKeyInput && (
+        <div className="mt-4 p-3.5 bg-amber-50/80 border border-amber-200 rounded-xl text-xs space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="font-bold text-amber-900 flex items-center gap-1.5">
+              <Key size={14} /> Quick Gemini API Key Setup
+            </span>
+            <a
+              href="https://aistudio.google.com/app/apikey"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-800 hover:underline inline-flex items-center gap-1"
+            >
+              Get free key <ExternalLink size={11} />
+            </a>
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="password"
+              placeholder="Paste AIzaSy... key here"
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+              className="flex-1 h-8 px-2.5 bg-white border border-amber-300 rounded-lg text-xs font-mono focus:outline-none focus:ring-1 focus:ring-amber-500"
+            />
+            <button
+              type="button"
+              onClick={() => handleSaveApiKey(apiKey)}
+              className="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold text-xs cursor-pointer"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Status Messages */}
+      {errorMsg && (
+        <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 flex items-start gap-2">
+          <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-500" />
+          <div className="flex-1">
+            <span>{errorMsg}</span>
+          </div>
+        </div>
+      )}
+
+      {successMsg && (
+        <div className="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 font-medium flex items-center gap-2">
+          <CheckCircle2 size={15} className="shrink-0 text-emerald-600" />
+          <span>{successMsg}</span>
+        </div>
+      )}
+
       {/* 4 Individual Fields Container */}
       {isExpanded && (
-        <form onSubmit={handleShowPrompt} className="mt-5 space-y-4 pt-4 border-t border-[#2E8B8B]/15">
+        <form onSubmit={handleGenerateClick} className="mt-5 space-y-4 pt-4 border-t border-[#2E8B8B]/15">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Field 1: Journey Title */}
             <div>
@@ -192,7 +354,8 @@ Generate a complete, high-converting, human-written tour package itinerary for K
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. 8 Days Golden Triangle with Ranthambore Tiger Safari"
-                className="w-full h-10 px-3.5 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all"
+                disabled={isGenerating}
+                className="w-full h-10 px-3.5 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all disabled:opacity-60"
               />
             </div>
 
@@ -207,7 +370,8 @@ Generate a complete, high-converting, human-written tour package itinerary for K
                 value={route}
                 onChange={(e) => setRoute(e.target.value)}
                 placeholder="e.g. Delhi - Agra - Ranthambore - Jaipur - Delhi"
-                className="w-full h-10 px-3.5 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all"
+                disabled={isGenerating}
+                className="w-full h-10 px-3.5 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all disabled:opacity-60"
               />
             </div>
 
@@ -222,7 +386,8 @@ Generate a complete, high-converting, human-written tour package itinerary for K
                 value={focusKeywords}
                 onChange={(e) => setFocusKeywords(e.target.value)}
                 placeholder="e.g. golden triangle tiger safari, delhi agra jaipur ranthambore tour"
-                className="w-full h-10 px-3.5 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all"
+                disabled={isGenerating}
+                className="w-full h-10 px-3.5 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all disabled:opacity-60"
               />
             </div>
 
@@ -240,7 +405,8 @@ Generate a complete, high-converting, human-written tour package itinerary for K
                 value={referenceUrl}
                 onChange={(e) => setReferenceUrl(e.target.value)}
                 placeholder="e.g. https://example.com/reference-tour-page"
-                className="w-full h-10 px-3.5 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all"
+                disabled={isGenerating}
+                className="w-full h-10 px-3.5 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]/20 focus:border-[#2E8B8B] transition-all disabled:opacity-60"
               />
             </div>
           </div>
@@ -248,7 +414,7 @@ Generate a complete, high-converting, human-written tour package itinerary for K
           {/* Action Row */}
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p className="text-[12px] text-slate-500">
-              💡 <span className="font-semibold">Note:</span> Click below to view and copy the complete compiled prompt for this journey.
+              💡 <span className="font-semibold">Note:</span> Clicking generate will fill Overview, Days, Highlights, Inclusions &amp; SEO metadata below.
             </p>
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -256,7 +422,8 @@ Generate a complete, high-converting, human-written tour package itinerary for K
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 transition-colors flex items-center gap-1 cursor-pointer"
+                  disabled={isGenerating}
+                  className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50"
                 >
                   <RotateCcw size={13} />
                   <span>Clear</span>
@@ -264,23 +431,42 @@ Generate a complete, high-converting, human-written tour package itinerary for K
               )}
 
               <button
-                type="submit"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#2E8B8B] hover:bg-[#236e6e] active:scale-95 text-white text-sm font-bold shadow-md shadow-[#2E8B8B]/20 transition-all cursor-pointer"
+                type="button"
+                onClick={handleShowPrompt}
+                disabled={isGenerating}
+                className="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs transition-colors cursor-pointer disabled:opacity-50"
               >
-                <Sparkles size={16} className="text-amber-300" />
-                <span>Show AI Prompt</span>
+                <span>View Prompt</span>
+              </button>
+
+              <button
+                type="submit"
+                disabled={isGenerating || (!title.trim() && !route.trim())}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#2E8B8B] hover:bg-[#236e6e] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold shadow-md shadow-[#2E8B8B]/20 transition-all cursor-pointer shrink-0"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin text-white" />
+                    <span>Generating Itinerary (10-15s)...</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles size={16} className="text-amber-300" />
+                    <span>🚀 Auto-Fill Form with AI</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
 
-          {/* COMPILED PROMPT BOX */}
+          {/* COMPILED PROMPT PREVIEW BOX */}
           {showPromptBox && (
             <div className="mt-4 rounded-xl border border-[#2E8B8B]/30 bg-white p-4 shadow-sm space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
                 <div className="flex items-center gap-2">
                   <FileText size={16} className="text-[#2E8B8B]" />
                   <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    Ready-to-Use AI Prompt
+                    Ready-to-Use AI Prompt Preview
                   </span>
                   <span className="text-[11px] text-slate-400 font-normal">
                     ({compiledPrompt.length} characters)
@@ -315,23 +501,10 @@ Generate a complete, high-converting, human-written tour package itinerary for K
               <div className="relative">
                 <textarea
                   readOnly
-                  rows={14}
+                  rows={12}
                   value={compiledPrompt}
                   className="w-full p-3.5 text-xs font-mono leading-relaxed rounded-lg border border-slate-200 bg-slate-50/70 text-slate-800 select-all focus:outline-none focus:ring-1 focus:ring-[#2E8B8B]"
                 />
-              </div>
-
-              <div className="flex items-center justify-between text-[11.5px] text-slate-500 pt-1">
-                <span>
-                  📋 Click <strong>Copy Prompt</strong> to paste into Google Gemini / AI Studio to generate your itinerary JSON.
-                </span>
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  className="text-xs text-[#2E8B8B] font-bold hover:underline cursor-pointer"
-                >
-                  {copied ? "Copied!" : "Copy to Clipboard"}
-                </button>
               </div>
             </div>
           )}

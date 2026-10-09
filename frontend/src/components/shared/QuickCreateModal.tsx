@@ -10,6 +10,7 @@ interface ParentOption {
 interface QuickCreateModalProps {
   open: boolean;
   title: string;
+  initialTitle?: string;
   submitLabel?: string;
   parentLabel?: string;
   parentPlaceholder?: string;

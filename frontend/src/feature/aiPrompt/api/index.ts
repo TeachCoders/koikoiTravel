@@ -29,3 +29,4 @@ export async function resetAiPrompt(key: string): Promise<AiPromptData> {
   const res = await apiClient.post(`/ai-prompts/reset/${key}`);
   return res.data?.data;
 }
+

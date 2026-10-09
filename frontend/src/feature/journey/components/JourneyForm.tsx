@@ -234,7 +234,142 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
     initialData?.isBestSelling ? "bestSelling" : "general"
   );
 
-  const isBestSellingTab = activeTab === "bestSelling";
+  const [missingRouteCities, setMissingRouteCities] = useState<string[]>([]);
+
+  const handleAiGeneratedData = React.useCallback((aiData: any) => {
+    if (!aiData) return;
+
+    setFormData((prev) => ({
+      ...prev,
+      title: aiData.title || prev.title,
+      slug: aiData.slug || prev.slug,
+      h1Title: aiData.h1Title || aiData.title || prev.h1Title,
+      seoTitle: aiData.seoTitle || prev.seoTitle,
+      seoDescription: aiData.seoDescription || prev.seoDescription,
+      seoKeyword: aiData.seoKeyword || prev.seoKeyword,
+      overView: aiData.overView || prev.overView,
+      destination: aiData.destination || (aiData.routeCities ? aiData.routeCities.join("-") : prev.destination),
+      noDays: aiData.days?.length || prev.noDays,
+    }));
+
+    if (aiData.title && !bannerTitle) {
+      setBannerTile(aiData.title);
+    }
+    if (!bannerTag) {
+      setBannerTag("Best Seller Tour");
+    }
+
+    if (Array.isArray(aiData.days) && aiData.days.length > 0) {
+      setDays(
+        aiData.days.map((d: any, index: number) => ({
+          day: index + 1,
+          title: d.day || `Day ${index + 1}`,
+          content: d.description || "",
+        }))
+      );
+    }
+
+    if (Array.isArray(aiData.highlights) && aiData.highlights.length > 0) {
+      setHighlights(aiData.highlights);
+    }
+    if (Array.isArray(aiData.inclusions) && aiData.inclusions.length > 0) {
+      setInclusions(aiData.inclusions);
+    }
+    if (Array.isArray(aiData.exclusions) && aiData.exclusions.length > 0) {
+      setExclusions(aiData.exclusions);
+    }
+    if (Array.isArray(aiData.whyChooseUs) && aiData.whyChooseUs.length > 0) {
+      setWhyChooseUs(aiData.whyChooseUs);
+    }
+    if (Array.isArray(aiData.faqs) && aiData.faqs.length > 0) {
+      setFaqs(aiData.faqs);
+    }
+    if (aiData.moreDescription) {
+      setMoreDescription(aiData.moreDescription);
+    }
+
+    if (Array.isArray(aiData.routeCities) && aiData.routeCities.length > 0) {
+      const matchedCityIds: number[] = [];
+      const matchedStateIdSet = new Set<number>();
+      const matchedCountryIdSet = new Set<number>();
+      const missing: string[] = [];
+
+      aiData.routeCities.forEach((rawCityName: string) => {
+        const target = rawCityName.trim().toLowerCase();
+        if (!target) return;
+
+        const found = cities.find((c) => {
+          const t = c.title.trim().toLowerCase();
+          const s = c.slug.trim().toLowerCase();
+          return t === target || s === target || t.includes(target) || target.includes(t);
+        });
+
+        if (found) {
+          if (!matchedCityIds.includes(found.id)) {
+            matchedCityIds.push(found.id);
+          }
+          if (found.state?.id) matchedStateIdSet.add(found.state.id);
+          if (found.state?.country?.id) matchedCountryIdSet.add(found.state.country.id);
+        } else {
+          if (!missing.includes(rawCityName.trim())) {
+            missing.push(rawCityName.trim());
+          }
+        }
+      });
+
+      if (matchedCityIds.length > 0) {
+        setFormData((prev) => ({
+          ...prev,
+          cityIds: matchedCityIds,
+        }));
+      }
+      if (matchedStateIdSet.size > 0) {
+        setFilterStateIds((prev) => Array.from(new Set([...prev, ...Array.from(matchedStateIdSet)])));
+      }
+      if (matchedCountryIdSet.size > 0) {
+        setFilterCountryIds((prev) => Array.from(new Set([...prev, ...Array.from(matchedCountryIdSet)])));
+      }
+      setMissingRouteCities(missing);
+    }
+
+    if (Array.isArray(aiData.suggestedExperiences) && experiences.length > 0) {
+      const matchedExpIds: number[] = [];
+      aiData.suggestedExperiences.forEach((expName: string) => {
+        const target = expName.trim().toLowerCase();
+        const found = experiences.find((e) => {
+          const t = e.title.trim().toLowerCase();
+          return t.includes(target) || target.includes(t);
+        });
+        if (found && !matchedExpIds.includes(found.id)) {
+          matchedExpIds.push(found.id);
+        }
+      });
+      if (matchedExpIds.length > 0) {
+        setTravelExperienceIds((prev) => Array.from(new Set([...prev, ...matchedExpIds])));
+      }
+    }
+
+    const candidateSeasons = [
+      ...(Array.isArray(aiData.suggestedSeasons) ? aiData.suggestedSeasons : []),
+      ...(Array.isArray(aiData.suggestedMonths) ? aiData.suggestedMonths : []),
+    ];
+    if (candidateSeasons.length > 0 && seasons.length > 0) {
+      const matchedSeasonIds: number[] = [];
+      candidateSeasons.forEach((seasonName: string) => {
+        const target = String(seasonName).trim().toLowerCase();
+        const found = seasons.find((s) => {
+          const t = s.title.trim().toLowerCase();
+          return t.includes(target) || target.includes(t);
+        });
+        if (found && !matchedSeasonIds.includes(found.id)) {
+          matchedSeasonIds.push(found.id);
+        }
+      });
+      if (matchedSeasonIds.length > 0) {
+        setSeasonIds((prev) => Array.from(new Set([...prev, ...matchedSeasonIds])));
+      }
+    }
+  }, [cities, experiences, seasons, bannerTitle, bannerTag]);
 
   const isLoading = isCreating || isUpdating;
 
@@ -257,6 +392,8 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
       setLoadingExperiences(false);
     }).catch(() => setLoadingExperiences(false));
   }, []);
+
+  const isBestSellingTab = activeTab === "bestSelling";
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -401,8 +538,8 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
         </button>
       </div>
 
-      {/* AI Journey Prompt Bar (Static UI with 4 individual inputs) */}
-      <AiJourneyPromptBar />
+      {/* AI Journey Prompt Bar */}
+      <AiJourneyPromptBar onGenerate={handleAiGeneratedData} />
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* 1. SEO Fields — Title, Meta Description, Page URL, Short Description */}
@@ -448,6 +585,9 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
             quickCreateProps={mergedQuickCreateProps}
             quickCreatedOptions={quickCreatedOptions}
             initialData={initialData}
+            cities={cities}
+            missingRouteCities={missingRouteCities}
+            onQuickCreateCityWithName={(name) => mergedQuickCreateProps.openQuickCreate("city", null, name)}
           />
           <JourneyItineraryBuilder 
             formData={formData}
