@@ -37,9 +37,9 @@ CORE PRINCIPLES & RULES:
 6. Inclusions & Exclusions: Specific items. Inclusions must integrate any extra perks found in reference URL. Exclusions must be clear. Why Choose Us must be 100% original KoiKoi trust points.
 7. Strictly 10 Unique FAQs: Exactly 10 tour-specific FAQs. At least 6-7 must be 100% circuit-specific (referencing exact cities, permits, regional food/weather). Never generic.
 8. Route & Auto-Detection:
-   - "destination": Clean route string e.g. "Delhi - Agra - Ranthambore - Jaipur - Delhi"
-   - "routeCities": Array of sequential city names e.g. ["Delhi", "Agra", "Ranthambore", "Jaipur"]
-   - "suggestedExperiences": Array of matching categories e.g. ["Wildlife", "Heritage & Culture", "Golden Triangle"]
+   - "destination": Clean route string e.g. "Cochin - Munnar - Thekkady - Alleppey - Cochin"
+   - "routeCities": Array of sequential city names e.g. ["Cochin", "Munnar", "Thekkady", "Alleppey"]
+   - "suggestedExperiences": Array of matching categories e.g. ["Backwaters", "Nature & Wildlife"]
    - "suggestedSeasons": Array of matching seasons e.g. ["Winter", "Spring"]
    - "suggestedMonths": Array of best months e.g. ["October", "November", "December", "January", "February", "March"]
 9. White-Hat Internal Linking: ZERO links in H1, H2, H3, or Day Titles. In-body text only (<p> and <li>). Maximum 1 link per city/keyword across entire page. 2-4 contextual links total.
@@ -112,9 +112,10 @@ export default function AiJourneyPromptBar({
   const isGenerating = externalIsGenerating || loading;
 
   const handleSaveApiKey = (key: string) => {
-    setApiKey(key.trim());
+    const trimmed = key.trim();
+    setApiKey(trimmed);
     try {
-      localStorage.setItem("koi_gemini_api_key", key.trim());
+      localStorage.setItem("koi_gemini_api_key", trimmed);
       setErrorMsg(null);
       setShowKeyInput(false);
     } catch {}
@@ -201,10 +202,12 @@ Generate a complete, high-converting, human-written tour package itinerary for K
       const json = await res.json();
 
       if (!res.ok || !json.success) {
-        if (json.error && json.error.toLowerCase().includes("gemini api key")) {
+        const errorDetail = json.error || "Failed to generate itinerary. Please check your Gemini API key.";
+        if (errorDetail.toLowerCase().includes("key") || errorDetail.toLowerCase().includes("api")) {
           setShowKeyInput(true);
         }
-        throw new Error(json.error || "Failed to generate itinerary. Please try again.");
+        setErrorMsg(errorDetail);
+        return;
       }
 
       setSuccessMsg("✨ Itinerary generated successfully! All form fields below have been auto-filled.");
@@ -265,16 +268,14 @@ Generate a complete, high-converting, human-written tour package itinerary for K
         </div>
 
         <div className="flex items-center gap-2">
-          {!apiKey && (
-            <button
-              type="button"
-              onClick={() => setShowKeyInput(!showKeyInput)}
-              className="text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition-colors cursor-pointer"
-            >
-              <Key size={13} />
-              <span>Set Gemini Key</span>
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => setShowKeyInput(!showKeyInput)}
+            className="text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition-colors cursor-pointer"
+          >
+            <Key size={13} />
+            <span>{apiKey ? "Change Key" : "Set Gemini Key"}</span>
+          </button>
 
           <button
             type="button"
@@ -289,18 +290,18 @@ Generate a complete, high-converting, human-written tour package itinerary for K
 
       {/* Inline Key Setup */}
       {showKeyInput && (
-        <div className="mt-4 p-3.5 bg-amber-50/80 border border-amber-200 rounded-xl text-xs space-y-2">
+        <div className="mt-4 p-3.5 bg-amber-50/90 border border-amber-200 rounded-xl text-xs space-y-2">
           <div className="flex items-center justify-between">
             <span className="font-bold text-amber-900 flex items-center gap-1.5">
-              <Key size={14} /> Quick Gemini API Key Setup
+              <Key size={14} /> Paste Free Google Gemini API Key
             </span>
             <a
               href="https://aistudio.google.com/app/apikey"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-amber-800 hover:underline inline-flex items-center gap-1"
+              className="text-amber-800 font-semibold hover:underline inline-flex items-center gap-1"
             >
-              Get free key <ExternalLink size={11} />
+              Get free key from Google AI Studio <ExternalLink size={11} />
             </a>
           </div>
           <div className="flex gap-2">
@@ -309,14 +310,14 @@ Generate a complete, high-converting, human-written tour package itinerary for K
               placeholder="Paste AIzaSy... key here"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
-              className="flex-1 h-8 px-2.5 bg-white border border-amber-300 rounded-lg text-xs font-mono focus:outline-none focus:ring-1 focus:ring-amber-500"
+              className="flex-1 h-9 px-3 bg-white border border-amber-300 rounded-lg text-xs font-mono focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
             <button
               type="button"
               onClick={() => handleSaveApiKey(apiKey)}
-              className="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold text-xs cursor-pointer"
+              className="px-4 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold text-xs cursor-pointer shadow-2xs"
             >
-              Save
+              Save Key
             </button>
           </div>
         </div>
@@ -324,11 +325,23 @@ Generate a complete, high-converting, human-written tour package itinerary for K
 
       {/* Status Messages */}
       {errorMsg && (
-        <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 flex items-start gap-2">
-          <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-500" />
-          <div className="flex-1">
-            <span>{errorMsg}</span>
+        <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 flex items-start justify-between gap-2">
+          <div className="flex items-start gap-2">
+            <AlertCircle size={15} className="shrink-0 mt-0.5 text-red-500" />
+            <div className="flex-1">
+              <span className="font-semibold block">Generation Error:</span>
+              <span>{errorMsg}</span>
+            </div>
           </div>
+          {!apiKey && (
+            <button
+              type="button"
+              onClick={() => setShowKeyInput(true)}
+              className="text-[11px] font-bold text-red-800 bg-red-100 hover:bg-red-200 px-2.5 py-1 rounded-lg shrink-0 cursor-pointer"
+            >
+              Set Key
+            </button>
+          )}
         </div>
       )}
 

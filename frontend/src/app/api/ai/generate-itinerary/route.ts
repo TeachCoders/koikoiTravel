@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Fallback master prompt instructions if not passed from client
 const SYSTEM_INSTRUCTIONS = `You are a senior Indian travel specialist, local destination guide, and high-converting SEO copywriter for KoiKoi Travel.
 Your mission is to generate a 100% human, engaging, activity-packed tour package itinerary based on the user's input.
 
@@ -17,16 +16,15 @@ CORE PRINCIPLES & RULES:
 6. Inclusions & Exclusions: Specific items. Inclusions must integrate any extra perks found in reference URL. Exclusions must be clear. Why Choose Us must be 100% original KoiKoi trust points.
 7. Strictly 10 Unique FAQs: Exactly 10 tour-specific FAQs. At least 6-7 must be 100% circuit-specific (referencing exact cities, permits, regional food/weather). Never generic.
 8. Route & Auto-Detection:
-   - "destination": Clean route string e.g. "Delhi - Agra - Ranthambore - Jaipur - Delhi"
-   - "routeCities": Array of sequential city names e.g. ["Delhi", "Agra", "Ranthambore", "Jaipur"]
-   - "suggestedExperiences": Array of matching categories e.g. ["Wildlife", "Heritage & Culture", "Golden Triangle"]
+   - "destination": Clean route string e.g. "Cochin - Munnar - Thekkady - Alleppey - Cochin"
+   - "routeCities": Array of sequential city names e.g. ["Cochin", "Munnar", "Thekkady", "Alleppey"]
+   - "suggestedExperiences": Array of matching categories e.g. ["Backwaters", "Nature & Wildlife", "Hills & Mountains"]
    - "suggestedSeasons": Array of matching seasons e.g. ["Winter", "Spring"]
    - "suggestedMonths": Array of best months e.g. ["October", "November", "December", "January", "February", "March"]
 9. White-Hat Internal Linking: ZERO links in H1, H2, H3, or Day Titles. In-body text only (<p> and <li>). Maximum 1 link per city/keyword across entire page. 2-4 contextual links total.
 10. SEO Metadata: slug (URL-safe lowercase), h1Title, seoTitle (<60 chars), seoDescription (strictly 140-150 chars), seoKeyword (comma-separated keywords naturally present in content).
 
-OUTPUT FORMAT:
-Return strictly valid raw JSON only (no markdown code blocks, no backticks, no extra text outside the JSON) matching this exact schema:
+OUTPUT SCHEMA (Return strictly valid raw JSON only):
 {
   "title": "string",
   "slug": "string",
@@ -100,7 +98,7 @@ export async function POST(req: NextRequest) {
 
     if (!title && !route) {
       return NextResponse.json(
-        { error: "Please provide at least a Journey Title or Route." },
+        { error: "Please enter at least a Journey Title or Route." },
         { status: 400 }
       );
     }
@@ -114,7 +112,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "Gemini API Key is not configured. Please paste your free Google Gemini API Key in the AI Prompts Studio or in the prompt bar.",
+            "Gemini API Key missing. Please click 'Set Gemini Key' to paste your free key from Google AI Studio.",
         },
         { status: 400 }
       );
@@ -133,7 +131,7 @@ export async function POST(req: NextRequest) {
     const userPrompt = `Generate a complete, high-converting, human-written tour package itinerary for KoiKoi Travel.
 Inputs:
 - Tour Title: ${title || "N/A"}
-- Route: ${route || "N/A"}
+- Route Circuit: ${route || "(If Route is N/A, intelligently infer the best sequential route cities based on Tour Title)"}
 - Focus Keywords: ${focusKeywords || "(Extract high-intent Google 'People Also Search For' queries automatically)"}
 ${referenceContext}
 
@@ -141,7 +139,7 @@ Strict Requirements:
 1. Format <strong>KoiKoi Travel</strong>, destination cities, and core activities in <strong>.
 2. Overview: 100-150 words starting with traveler pain points.
 3. Day program: <p> overview followed by <ul><li> bullet points with timings.
-4. Exactly 10 tour-specific FAQs.
+4. Exactly 10 circuit-specific FAQs.
 5. Inclusions, exclusions, why choose us.
 6. routeCities, destination, suggestedExperiences, suggestedSeasons.
 7. Return strictly valid raw JSON only.`;
@@ -164,7 +162,7 @@ Strict Requirements:
 
     // Try gemini-2.0-flash first, fallback to gemini-1.5-flash
     let response = await callGeminiApi("gemini-2.0-flash", apiKey, geminiPayload);
-    if (!response.ok && (response.status === 404 || response.status === 400)) {
+    if (!response.ok && response.status === 404) {
       response = await callGeminiApi("gemini-1.5-flash", apiKey, geminiPayload);
     }
 
@@ -173,7 +171,9 @@ Strict Requirements:
       let errMsg = "Failed to communicate with Google Gemini API.";
       try {
         const parsedErr = JSON.parse(errText);
-        if (parsedErr?.error?.message) errMsg = parsedErr.error.message;
+        if (parsedErr?.error?.message) {
+          errMsg = parsedErr.error.message;
+        }
       } catch {
         errMsg = errText || errMsg;
       }
