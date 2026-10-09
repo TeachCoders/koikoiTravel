@@ -44,9 +44,9 @@ export default function JourneyMedia({
       />
 
       <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-6 space-y-5">
-        <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Additional Description</h2>
+        <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Additional Description / Travel Guide</h2>
         <div className="space-y-1.5">
-          <Label className="text-sm font-semibold text-slate-600 mb-2 block">Additional Banner Description</Label>
+          <Label className="text-sm font-semibold text-slate-600 mb-2 block">Additional Description (Comprehensive Trip &amp; Travel Guide)</Label>
           <RichTextEditor
             content={moreDescription}
             onChange={(html) => setMoreDescription(html)}

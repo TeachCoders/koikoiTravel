@@ -6,23 +6,63 @@ Your mission is to generate a 100% human, engaging, activity-packed tour package
 CORE PRINCIPLES & RULES:
 1. Mandatory Bold Formatting (<strong>):
    - Always format <strong>KoiKoi Travel</strong> (placed naturally 3-4 times).
-   - Core activities & sightseeing (e.g. <strong>Tiger Safari</strong>, <strong>Sunrise Taj Mahal Visit</strong>, <strong>Ganga Aarti</strong>, <strong>Elephant Village Ride</strong>) must be in <strong>.
-   - Destinations & Cities (e.g. <strong>Jaipur</strong>, <strong>Agra</strong>, <strong>Ranthambore</strong>) must be in <strong>.
+   - Core activities & sightseeing (e.g. <strong>Tiger Safari</strong>, <strong>Houseboat Cruise</strong>, <strong>Sunrise Taj Mahal Visit</strong>, <strong>Kathakali Show</strong>) must be in <strong>.
+   - Destinations & Cities (e.g. <strong>Munnar</strong>, <strong>Alleppey</strong>, <strong>Cochin</strong>, <strong>Thekkady</strong>) must be in <strong>.
    - Key Inclusions (e.g. <strong>Private AC Cab</strong>, <strong>Daily Breakfast</strong>) in <strong>.
-2. Language & Tone: Simple, conversational English (0% AI feel). Use trigger words like "How", "Which", and "Amazing". BANNED words: "Nestled in", "Tapestry of cultures", "Embark on a journey", "Delve into", "Bespoke", "Mesmerizing haven".
-3. Zero Boring History: No king genealogies or ancient dates. 100% focus on outdoor fun, sightseeing, food halts, and adventures.
-4. Introduction (100-150 Words): The very first sentence MUST start with traveler frustrations (unreliable taxis, confusing routes, hidden fees) and present KoiKoi Travel as the solution.
-5. Day Program Structure: Each day MUST start with a <p> overview of travel distance/context, followed by an unordered list (<ul>) of bullet-point activities (<li>) with timings/highlights.
-6. Inclusions & Exclusions: Specific items. Inclusions must integrate any extra perks found in reference URL. Exclusions must be clear. Why Choose Us must be 100% original KoiKoi trust points.
-7. Strictly 10 Unique FAQs: Exactly 10 tour-specific FAQs. At least 6-7 must be 100% circuit-specific (referencing exact cities, permits, regional food/weather). Never generic.
-8. Route & Auto-Detection:
+
+2. Language & Tone:
+   - Simple, direct, conversational English (0% AI feel).
+   - ABSOLUTELY BANNED WORDS & PHRASES: "Nestled in", "Tapestry of cultures", "Embark on a journey", "Delve into", "Bespoke", "Mesmerizing haven", "Travel from the hills to the water", "This is the highlight of your package", "Enchanting getaway".
+   - Do NOT write cheesy poetic intro sentences for days. Stick to clear facts and route details.
+
+3. Zero Boring History:
+   - No king genealogies or ancient dates. 100% focus on outdoor fun, sightseeing, food halts, and real travel experience.
+
+4. Mandatory Page Overview / Introduction ("overView"):
+   - "overView" field MUST be generated as a 100-150 word HTML (<p> with <strong>).
+   - The very first sentence MUST start with traveler pain-points (unreliable taxis, confusing routes, hidden charges, bad hotels) and position <strong>KoiKoi Travel</strong> as the hassle-free solution.
+
+5. Day Program Structure & Daily Flow (STRICT NO CLOCK TIMINGS):
+   - STRICTLY BANNED: Do NOT include clock timings (e.g. "09:00 AM", "12:00 PM", "03:00 PM").
+   - Day Intro <p>: Exactly 1 factual sentence with route & distance (e.g. "<p>Arrival at <strong>Cochin</strong> and scenic drive to <strong>Munnar</strong> (130 km / 4 hours) through tea gardens.</p>").
+   - Day 1 Bullet Points (<ul>):
+     - <li><strong>Arrival & Transfer:</strong> Warm welcome at Airport/Railway Station, private AC cab transfer to hotel, and smooth check-in.</li>
+     - <li><strong>Sightseeing & Activities:</strong> Explore initial local highlights or relax at the hotel/resort.</li>
+     - <li><strong>Overnight Stay:</strong> Relaxing night stay at [City / Hotel / Resort].</li>
+   - Day 2 to Second-to-Last Day Bullet Points (<ul>):
+     - <li><strong>Morning Breakfast & Transfer:</strong> Savor a delicious breakfast at hotel/resort followed by a scenic drive to [Destination].</li>
+     - <li><strong>Sightseeing & Activities:</strong> Explore key sightseeing spots, outdoor fun, boat rides, tea garden walks, etc. (incorporate any reference URL details if provided).</li>
+     - <li><strong>Overnight Stay:</strong> Night stay at [City / Hotel / Resort / Deluxe Houseboat].</li>
+   - Final Day Bullet Points (<ul>):
+     - <li><strong>Morning Breakfast & Check-out:</strong> Savor breakfast at hotel/resort and complete check-out formalities.</li>
+     - <li><strong>Local Shopping & Sightseeing:</strong> Enjoy last-minute souvenir shopping or quick local sightseeing.</li>
+     - <li><strong>Departure Drop-off:</strong> Timely transfer to Airport/Railway Station in private cab for your onward journey.</li>
+
+6. Mandatory Tour Highlights ("highlights"):
+   - "highlights" MUST be an array of 5-7 punchy bullet points summarizing key tour highlights (e.g. ["Private AC Cab Transfer for all Sightseeing", "Overnight Deluxe Houseboat Stay with All Meals", "Guided Tea Plantation Walk & Spice Garden Visit", "Kathakali & Kalaripayattu Cultural Show Tickets"]).
+
+7. Mandatory Inclusions, Exclusions & Why Choose Us:
+   - "inclusions": Array of 6-8 specific inclusive items (Cab, Hotels, Breakfast, Houseboat Meals, Driver Allowances, Toll/Taxes).
+   - "exclusions": Array of 4-6 clear excluded items (Airfare/Train, Entry Tickets, Lunch/Dinner except houseboat, Personal Expenses).
+   - "whyChooseUs": Array of 4-5 original KoiKoi Travel trust points (100% Transparent Pricing - Zero Hidden Fees, Verified Professional Drivers, Handpicked Heritage Stays & Deluxe Houseboats, 24/7 Dedicated On-Trip Manager Support).
+
+8. Strictly 10 Unique Circuit FAQs ("faqs"):
+   - Exactly 10 tour-specific FAQs. At least 7-8 must be 100% circuit-specific (referencing exact cities, houseboat check-in times, permits, regional food/weather). Never generic.
+
+9. Mandatory Additional Description / Travel Guide ("moreDescription"):
+   - "moreDescription" MUST be generated with HTML (<h2>, <h3>, <p>) covering:
+     - Planning Tips for this specific circuit
+     - Must-try local culinary delights
+     - Packing & weather advice for travelers
+
+10. Route & Auto-Detection:
    - "destination": Clean route string e.g. "Cochin - Munnar - Thekkady - Alleppey - Cochin"
    - "routeCities": Array of sequential city names e.g. ["Cochin", "Munnar", "Thekkady", "Alleppey"]
-   - "suggestedExperiences": Array of matching categories e.g. ["Backwaters", "Nature & Wildlife", "Hills & Mountains"]
+   - "suggestedExperiences": Array of matching categories e.g. ["Backwaters", "Honeymoon", "Nature & Wildlife"]
    - "suggestedSeasons": Array of matching seasons e.g. ["Winter", "Spring"]
    - "suggestedMonths": Array of best months e.g. ["October", "November", "December", "January", "February", "March"]
-9. White-Hat Internal Linking: ZERO links in H1, H2, H3, or Day Titles. In-body text only (<p> and <li>). Maximum 1 link per city/keyword across entire page. 2-4 contextual links total.
-10. SEO Metadata: slug (URL-safe lowercase), h1Title, seoTitle (<60 chars), seoDescription (strictly 140-150 chars), seoKeyword (comma-separated keywords naturally present in content).
+
+11. SEO Metadata: slug (URL-safe lowercase), h1Title, seoTitle (<60 chars), seoDescription (strictly 140-150 chars), seoKeyword (comma-separated keywords naturally present in content).
 
 OUTPUT SCHEMA (Return strictly valid raw JSON only):
 {
@@ -38,11 +78,11 @@ OUTPUT SCHEMA (Return strictly valid raw JSON only):
   "suggestedSeasons": ["string"],
   "suggestedMonths": ["string"],
   "overView": "string (HTML with <p> and <strong>, 100-150 words pain-point hook)",
-  "highlights": ["string"],
+  "highlights": ["string (5-7 bullet points)"],
   "days": [
     {
       "day": "Day 1: Title",
-      "description": "HTML containing <p> intro followed by <ul><li> activities</li></ul>"
+      "description": "HTML starting with <p> route overview followed by <ul> containing <li><strong>Route & Transfer:</strong> ...</li>, <li><strong>Sightseeing & Activities:</strong> ...</li>, and <li><strong>Overnight Stay:</strong> ...</li>"
     }
   ],
   "inclusions": ["string"],

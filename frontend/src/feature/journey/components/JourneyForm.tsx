@@ -239,6 +239,14 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
   const handleAiGeneratedData = React.useCallback((aiData: any) => {
     if (!aiData) return;
 
+    const overViewText = aiData.overView || aiData.overview || aiData.intro || aiData.introduction || "";
+    const highlightsList = aiData.highlights || aiData.highlightsList || aiData.tourHighlights || [];
+    const inclusionsList = aiData.inclusions || aiData.inclusionsList || [];
+    const exclusionsList = aiData.exclusions || aiData.exclusionsList || [];
+    const whyChooseList = aiData.whyChooseUs || aiData.whyChoose || aiData.whyChooseUsList || aiData.why_choose_us || [];
+    const faqsList = aiData.faqs || aiData.faqList || aiData.faq || [];
+    const moreDescText = aiData.moreDescription || aiData.more_description || aiData.additionalDescription || aiData.travelGuide || "";
+
     setFormData((prev) => ({
       ...prev,
       title: aiData.title || prev.title,
@@ -247,7 +255,7 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
       seoTitle: aiData.seoTitle || prev.seoTitle,
       seoDescription: aiData.seoDescription || prev.seoDescription,
       seoKeyword: aiData.seoKeyword || prev.seoKeyword,
-      overView: aiData.overView || prev.overView,
+      overView: overViewText || prev.overView,
       destination: aiData.destination || (aiData.routeCities ? aiData.routeCities.join("-") : prev.destination),
       noDays: aiData.days?.length || prev.noDays,
     }));
@@ -263,29 +271,29 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
       setDays(
         aiData.days.map((d: any, index: number) => ({
           day: index + 1,
-          title: d.day || `Day ${index + 1}`,
-          content: d.description || "",
+          title: d.day || d.title || `Day ${index + 1}`,
+          content: d.description || d.content || d.details || "",
         }))
       );
     }
 
-    if (Array.isArray(aiData.highlights) && aiData.highlights.length > 0) {
-      setHighlights(aiData.highlights);
+    if (Array.isArray(highlightsList) && highlightsList.length > 0) {
+      setHighlights(highlightsList);
     }
-    if (Array.isArray(aiData.inclusions) && aiData.inclusions.length > 0) {
-      setInclusions(aiData.inclusions);
+    if (Array.isArray(inclusionsList) && inclusionsList.length > 0) {
+      setInclusions(inclusionsList);
     }
-    if (Array.isArray(aiData.exclusions) && aiData.exclusions.length > 0) {
-      setExclusions(aiData.exclusions);
+    if (Array.isArray(exclusionsList) && exclusionsList.length > 0) {
+      setExclusions(exclusionsList);
     }
-    if (Array.isArray(aiData.whyChooseUs) && aiData.whyChooseUs.length > 0) {
-      setWhyChooseUs(aiData.whyChooseUs);
+    if (Array.isArray(whyChooseList) && whyChooseList.length > 0) {
+      setWhyChooseUs(whyChooseList);
     }
-    if (Array.isArray(aiData.faqs) && aiData.faqs.length > 0) {
-      setFaqs(aiData.faqs);
+    if (Array.isArray(faqsList) && faqsList.length > 0) {
+      setFaqs(faqsList);
     }
-    if (aiData.moreDescription) {
-      setMoreDescription(aiData.moreDescription);
+    if (moreDescText) {
+      setMoreDescription(moreDescText);
     }
 
     if (Array.isArray(aiData.routeCities) && aiData.routeCities.length > 0) {
