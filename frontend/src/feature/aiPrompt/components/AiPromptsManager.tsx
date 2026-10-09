@@ -17,7 +17,9 @@ CORE WRITING & SEO RULES:
 6. Day Program Structure: Each day MUST start with a <p> overview of travel context/distance, followed by <ul><li> bullet points of specific day activities & timings.
 7. Anti-Duplication FAQs: Generate strictly 10 FAQs. At least 6 must be 100% tour-specific (referencing exact cities, permits, and regional weather).
 8. Strict White-Hat Linking: ZERO links in H1, H2, H3, or Day Titles. In-body text only (<p> and <li>). Maximum 1 link per city/keyword across entire page. 2-4 contextual links total.
-9. Keyword Integration: Weave target keywords naturally into H1, Overview, Day plans, and FAQs. If keywords not provided, auto-extract Google "People Also Search" queries.`;
+9. Keyword Integration: Weave target keywords naturally into H1, Overview, Day plans, and FAQs. If keywords not provided, auto-extract Google "People Also Search" queries.
+10. Auto-Detection: Return routeCities array (for auto-selecting cities), suggestedExperiences array (matching category pills), and suggestedSeasons array (best travel seasons).
+11. Reference URL: If provided, extract extra perks and special sightseeing for inclusions, but write in 100% original voice with zero copying.`;
 
 const DEFAULT_BLOG_PROMPT = `You are an expert travel writer and SEO copywriter for KoiKoi Travel India.
 Write a comprehensive, engaging, high-ranking travel guide / blog post for international tourists, NRIs, and domestic explorers.
