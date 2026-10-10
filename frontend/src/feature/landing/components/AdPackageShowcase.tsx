@@ -291,7 +291,7 @@ export default function AdPackageShowcase({
                     {selectedDetailsPkg.highlights.map((point, pointIdx) => (
                       <li key={pointIdx} className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm text-slate-800 font-medium leading-relaxed">
                         <CheckCircle2 size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                        <span>{point}</span>
+                        <span dangerouslySetInnerHTML={{ __html: point }} />
                       </li>
                     ))}
                   </ul>

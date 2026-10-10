@@ -89,7 +89,7 @@ export default function AdAccordionSection({
                 {inclusions.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-3 text-[15.5px] font-bold text-emerald-950 leading-relaxed">
                     <CheckCircle2 size={20} className="text-emerald-500 mt-[2px] shrink-0" />
-                    <span>{item}</span>
+                    <span dangerouslySetInnerHTML={{ __html: item }} />
                   </li>
                 ))}
               </ul>
@@ -106,7 +106,7 @@ export default function AdAccordionSection({
                 {exclusions.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-3 text-[15.5px] font-medium text-red-950 leading-relaxed">
                     <XCircle size={20} className="text-red-500 mt-[2px] shrink-0" />
-                    <span>{item}</span>
+                    <span dangerouslySetInnerHTML={{ __html: item }} />
                   </li>
                 ))}
               </ul>

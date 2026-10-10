@@ -453,7 +453,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   {journey.highlights.map((h, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-normal text-slate-700 leading-relaxed">
                       <BadgeCheck size={18} className="shrink-0 mt-0.5 text-[#2E8B8B]" />
-                      <span>{h}</span>
+                      <span dangerouslySetInnerHTML={{ __html: h }} />
                     </li>
                   ))}
                 </ul>
@@ -508,7 +508,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     {(journey.inclusions ?? []).map((item, i) => (
                       <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-normal text-slate-700 leading-relaxed">
                         <CheckCircle2 size={18} className="text-emerald-600 mt-[2px] shrink-0" />
-                        <span>{item}</span>
+                        <span dangerouslySetInnerHTML={{ __html: item }} />
                       </li>
                     ))}
                   </ul>
@@ -523,7 +523,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     {(journey.exclusions ?? []).map((item, i) => (
                       <li key={i} className="flex items-start gap-2.5 text-sm sm:text-[14.5px] font-normal text-slate-700 leading-relaxed">
                         <XCircle size={18} className="text-red-400 mt-[2px] shrink-0" />
-                        <span>{item}</span>
+                        <span dangerouslySetInnerHTML={{ __html: item }} />
                       </li>
                     ))}
                   </ul>
@@ -554,7 +554,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                       <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center shrink-0 mt-0.5 border border-slate-200/80 shadow-xs">
                         <ShieldCheck size={16} className="text-[#2E8B8B]" />
                       </div>
-                      <span>{item}</span>
+                      <span dangerouslySetInnerHTML={{ __html: item }} />
                     </li>
                   ))}
                 </ul>
@@ -579,7 +579,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                 {(journey.bookingPolicyList ?? []).map((item, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm font-normal text-slate-600 leading-relaxed">
                     <BadgeCheck size={16} className="shrink-0 mt-[2px] text-[#2E8B8B]" />
-                    <span>{item}</span>
+                    <span dangerouslySetInnerHTML={{ __html: item }} />
                   </li>
                 ))}
               </ul>

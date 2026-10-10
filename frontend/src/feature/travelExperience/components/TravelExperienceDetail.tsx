@@ -291,7 +291,7 @@ function ExperienceContent({
                     {highlights.map((h: string, i: number) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-white/85">
                         <BadgeCheck size={16} className="shrink-0 mt-0.5 text-[#F5B041]" />
-                        {h}
+                        <span dangerouslySetInnerHTML={{ __html: h }} />
                       </li>
                     ))}
                   </ul>
