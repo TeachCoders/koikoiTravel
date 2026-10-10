@@ -448,7 +448,7 @@ export default async function DestinationsPage() {
 
       <main className="flex-1">
         {/* ===== COUNTRIES ===== */}
-        <section id="countries" className="scroll-mt-24 bg-slate-50">
+        {/* <section id="countries" className="scroll-mt-24 bg-slate-50">
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-16 md:py-20">
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
               <div>
@@ -524,7 +524,7 @@ export default async function DestinationsPage() {
               })}
             </div>
           </div>
-        </section>
+        </section> */}
 
      
         {/* ===== STATE BANNERS + CITIES (TourRadar style) ===== */}
