@@ -2,625 +2,610 @@ import { prisma } from './utils/prismaConnection.js';
 
 const SOUTH_INDIA_DATA = [
   {
-    state: {
-      title: 'Tamil Nadu',
-      slug: 'tamil-nadu',
-      seoTitle: 'Tamil Nadu Tour Packages | Temples, Hill Stations & Heritage Circuits',
-      h1Title: 'Tamil Nadu Tour Packages & Local Travel Guide',
-      seoDescription: 'Book 100% customized Tamil Nadu tour packages. Explore Madurai Meenakshi Temple, Mahabalipuram shore temples, Ooty tea hills, and French Pondicherry with KoiKoi Travel.',
-      seoKeyword: 'Tamil Nadu tour packages, Tamil Nadu trip itinerary, Madurai Ooty tour, South India temple tour packages, KoiKoi Travel Tamil Nadu',
-      overView: `<p>Planning a trip across <strong>Tamil Nadu</strong> can quickly feel overwhelming. Between endless temple queues, unverified local taxi drivers demanding hidden surge charges, confusing mountain routes up to <strong>Ooty</strong> and <strong>Kodaikanal</strong>, and overcrowded tourist traps, what should be a peaceful vacation can turn into a stressful hassle. You deserve a smooth, comfortable journey where every transfer is pre-arranged, every hotel is handpicked, and your local driver knows the best scenic routes and food stops.</p>
-<p>That is where <strong>KoiKoi Travel</strong> steps in as your trusted South Indian travel companion. We replace travel confusion with pure comfort. Our specialized <strong>Tamil Nadu</strong> packages come complete with dedicated private AC cab transfers, pre-booked temple VIP entry access, handpicked heritage resorts, and custom daily itineraries tailored to your pace. Whether you want to admire the colossal towering gopurams of <strong>Madurai</strong>, stroll down the French Quarter streets of Pondicherry, or sip fresh tea in the misty hills of <strong>Coonoor</strong>, we ensure a 100% stress-free holiday.</p>
-<p>Forget fixed rigid schedules and unpredictable costs. With <strong>KoiKoi Travel</strong>, you enjoy 24/7 dedicated trip manager support, transparent pricing with zero hidden fees, and complete flexibility on the road. Ready to experience the true essence of South India? Check out our handpicked tour packages listed below and pick your dream itinerary today!</p>`,
-      famousFor: 'Dravidian Temple Architecture, Nilgiri Hill Stations, UNESCO Monuments, Kanjeevaram Silk, Chettinad Cuisine',
-      capital: 'Chennai',
-      language: 'Tamil, English',
-      area: '130,058 sq km',
-      moreDescription: `<h2>Complete Tamil Nadu Travel Guide & Tips</h2>
-<p>Tamil Nadu is a vibrant southern realm where ancient stone craftsmanship meets misty blue mountain ranges and pristine coastal coastlines. Here is everything you need to know to plan a flawless trip.</p>
-<h3>Best Time to Visit</h3>
-<p>The winter months from November to March bring pleasant weather across the state, with cool hill station breezes in Ooty and comfortable sightseeing temperatures in Madurai, Tanjore, and Chennai.</p>
-<h3>Must-Try Regional Delights</h3>
-<p>Savor authentic South Indian filter coffee, crispy ghee roast dosas, Chettinad spicy chicken curry, and fresh coastal seafood thalis served on banana leaves.</p>
-<h3>Smart Travel Advice</h3>
-<p>Dress respectfully when visiting active temples (shoulders and knees covered). Keep lightweight cotton clothes for coastal towns and a light jacket for Ooty and Kodaikanal hill stations.</p>`,
-      faqs: [
-        { ques: "What is the best time to plan a Tamil Nadu tour?", ans: "November to March is the ideal season when temperatures are pleasant for temple visits and hill station drives." },
-        { ques: "Are private AC cab transfers included in KoiKoi Travel packages?", ans: "Yes! Every KoiKoi Travel package includes a dedicated private AC cab with an experienced driver for all airport transfers and daily sightseeing." },
-        { ques: "Can we combine Tamil Nadu with Kerala or Pondicherry?", ans: "Absolutely. We specialize in cross-state circuits like Chennai - Pondicherry - Tanjore - Madurai - Munnar - Alleppey." },
-        { ques: "What dress code is required for temples in Tamil Nadu?", ans: "Traditional conservative attire (dhotis/trousers for men, sarees/salwars for women) is required inside major temples like Madurai Meenakshi Temple." }
+    "state": {
+      "title": "Tamil Nadu",
+      "slug": "tamil-nadu",
+      "seoTitle": "Tamil Nadu Tour Packages | Temples, Hill Stations & Heritage Circuits",
+      "h1Title": "Tamil Nadu Tour Packages & Local Travel Guide",
+      "seoDescription": "Book 100% customized Tamil Nadu tour packages. Explore Madurai Meenakshi Temple, Mahabalipuram shore temples, Ooty tea hills, and French Pondicherry with KoiKoi Travel.",
+      "seoKeyword": "Tamil Nadu tour packages, Tamil Nadu trip itinerary, Madurai Ooty tour, South India temple tour packages, KoiKoi Travel Tamil Nadu",
+      "overView": "<p>Planning a trip across <strong>Tamil Nadu</strong> can feel overwhelming. Between endless temple queues, unverified local taxi drivers demanding hidden surge fares, and confusing mountain roads up to <strong>Ooty</strong> and <strong>Kodaikanal</strong>, travel stress can easily ruin your vacation.</p>\n<p>That is where <strong>KoiKoi Travel</strong> comes in. We eliminate travel confusion with dedicated private AC cab transfers, pre-booked VIP temple access, and handpicked heritage resorts. Whether exploring the gopurams of <strong>Madurai</strong>, French lanes of Pondicherry, or tea gardens in <strong>Coonoor</strong>, we ensure a smooth, worry-free holiday.</p>\n<p>Enjoy transparent pricing, 24/7 dedicated trip support, and complete flexibility. Ready for an unforgettable South India experience? Check out our handpicked tour packages listed below and choose your ideal itinerary today!</p>",
+      "famousFor": "Dravidian Temple Architecture, Nilgiri Hill Stations, UNESCO Monuments, Kanjeevaram Silk, Chettinad Cuisine",
+      "capital": "Chennai",
+      "language": "Tamil, English",
+      "area": "130,058 sq km",
+      "moreDescription": "<h2>Complete Tamil Nadu Travel Guide & Tips</h2>\n<p>Tamil Nadu is a vibrant southern realm where ancient stone craftsmanship meets misty blue mountain ranges and pristine coastal coastlines. Here is everything you need to know to plan a flawless trip.</p>\n<h3>Best Time to Visit</h3>\n<p>The winter months from November to March bring pleasant weather across the state, with cool hill station breezes in Ooty and comfortable sightseeing temperatures in Madurai, Tanjore, and Chennai.</p>\n<h3>Must-Try Regional Delights</h3>\n<p>Savor authentic South Indian filter coffee, crispy ghee roast dosas, Chettinad spicy chicken curry, and fresh coastal seafood thalis served on banana leaves.</p>\n<h3>Smart Travel Advice</h3>\n<p>Dress respectfully when visiting active temples (shoulders and knees covered). Keep lightweight cotton clothes for coastal towns and a light jacket for Ooty and Kodaikanal hill stations.</p>",
+      "faqs": [
+        {
+          "ques": "What is the best time to plan a Tamil Nadu tour?",
+          "ans": "November to March is the ideal season when temperatures are pleasant for temple visits and hill station drives."
+        },
+        {
+          "ques": "Are private AC cab transfers included in KoiKoi Travel packages?",
+          "ans": "Yes! Every KoiKoi Travel package includes a dedicated private AC cab with an experienced driver for all airport transfers and daily sightseeing."
+        },
+        {
+          "ques": "Can we combine Tamil Nadu with Kerala or Pondicherry?",
+          "ans": "Absolutely. We specialize in cross-state circuits like Chennai - Pondicherry - Tanjore - Madurai - Munnar - Alleppey."
+        },
+        {
+          "ques": "What dress code is required for temples in Tamil Nadu?",
+          "ans": "Traditional conservative attire (dhotis/trousers for men, sarees/salwars for women) is required inside major temples like Madurai Meenakshi Temple."
+        }
       ]
     },
-    cities: [
+    "cities": [
       {
-        title: 'Chennai',
-        slug: 'chennai',
-        seoTitle: 'Chennai Tour Packages | Coastal Heritage & Local Sightseeing',
-        h1Title: 'Chennai Tour Packages & Travel Guide',
-        seoDescription: 'Book Chennai tour packages with KoiKoi Travel. Explore Kapaleeshwarar Temple, Marina Beach, Mylapore filter coffee walks, and Fort St. George with private cab transfers.',
-        seoKeyword: 'Chennai tour packages, Chennai sightseeing tour, Kapaleeshwarar Temple visit, Marina Beach tour, KoiKoi Travel Chennai',
-        overView: `<p>Arriving in <strong>Chennai</strong> can be chaotic for first-time visitors. Navigating busy auto-rickshaw fares, dealing with heavy coastal humidity, and guessing where to find authentic local filter coffee instead of tourist traps can eat into your precious vacation time. Without a reliable local plan, you risk missing the true soul of this vibrant coastal capital.</p>
-<p>With <strong>KoiKoi Travel</strong>, your arrival in <strong>Chennai</strong> is completely seamless. Your private AC driver meets you right at Chennai Airport (MAA) or Central Railway Station, whisking you away to handpicked hotels in prime locations. We take you straight to the ancient peacocks of <strong>Kapaleeshwarar Temple</strong>, sunset strolls along <strong>Marina Beach</strong>, and hidden traditional eateries in Mylapore where authentic South Indian flavors come alive.</p>
-<p>Whether Chennai is your main destination or the starting gateway for a broader South India circuit, <strong>KoiKoi Travel</strong> handles every transfer and meal stop with 100% care. Check out our curated Chennai tour packages below to begin your trip!</p>`,
-        famousFor: 'Marina Beach, Kapaleeshwarar Temple, Mylapore Filter Coffee, Fort St. George, Silk Shopping',
-        attractions: 'Kapaleeshwarar Temple, Marina Beach, Fort St. George, San Thome Basilica, Government Museum, Kalakshetra Foundation',
-        weather: 'Tropical coastal climate (24°C to 34°C). Best visited between November and February for cooler ocean breezes.',
-        moreDescription: `<h2>Chennai Visitor Guide & Travel Tips</h2>
-<p>Chennai seamlessly blends centuries of Carnatic music and temple traditions with a thriving modern food and beach scene.</p>
-<h3>Top Experiences in Chennai</h3>
-<p>Take an early morning temple walk in Mylapore, sip piping hot filter coffee in a brass tumbler, and watch the sun set over the Bay of Bengal at Marina Beach.</p>
-<h3>Food & Dining Highlights</h3>
-<p>Do not miss authentic Tamil breakfast items like Murugan Idli, crispy Ghee Podi Dosa, and traditional South Indian thalis.</p>`,
-        faqs: [
-          { ques: "Is 1 or 2 days enough for Chennai sightseeing?", ans: "Yes, 1 to 2 days is perfect to cover Kapaleeshwarar Temple, Marina Beach, Fort St. George, and local shopping." },
-          { ques: "How far is Chennai from Mahabalipuram?", ans: "Mahabalipuram is just 55 km from Chennai (about 1.5 hours drive along the scenic East Coast Road)." }
+        "title": "Chennai",
+        "slug": "chennai",
+        "seoTitle": "Chennai Tour Packages | Coastal Heritage & Local Sightseeing",
+        "h1Title": "Chennai Tour Packages & Travel Guide",
+        "seoDescription": "Book Chennai tour packages with KoiKoi Travel. Explore Kapaleeshwarar Temple, Marina Beach, Mylapore filter coffee walks, and Fort St. George with private cab transfers.",
+        "seoKeyword": "Chennai tour packages, Chennai sightseeing tour, Kapaleeshwarar Temple visit, Marina Beach tour, KoiKoi Travel Chennai",
+        "overView": "<p>Arriving in <strong>Chennai</strong> can feel chaotic. Navigating crowded auto fares, coastal humidity, and guessing where to find authentic local filter coffee instead of tourist traps can drain your vacation energy.</p>\n<p>With <strong>KoiKoi Travel</strong>, your trip to <strong>Chennai</strong> is completely seamless. Your private AC cab driver meets you at the airport or station, escorting you to handpicked hotels. We take you straight to <strong>Kapaleeshwarar Temple</strong>, sunset strolls at <strong>Marina Beach</strong>, and genuine Mylapore eateries.</p>\n<p>Enjoy transparent fares and 24/7 local manager support. Explore our handpicked Chennai packages listed below and choose your favorite itinerary today!</p>",
+        "famousFor": "Marina Beach, Kapaleeshwarar Temple, Mylapore Filter Coffee, Fort St. George, Silk Shopping",
+        "attractions": "Kapaleeshwarar Temple, Marina Beach, Fort St. George, San Thome Basilica, Government Museum, Kalakshetra Foundation",
+        "weather": "Tropical coastal climate (24\u00b0C to 34\u00b0C). Best visited between November and February for cooler ocean breezes.",
+        "moreDescription": "<h2>Chennai Visitor Guide & Travel Tips</h2>\n<p>Chennai seamlessly blends centuries of Carnatic music and temple traditions with a thriving modern food and beach scene.</p>\n<h3>Top Experiences in Chennai</h3>\n<p>Take an early morning temple walk in Mylapore, sip piping hot filter coffee in a brass tumbler, and watch the sun set over the Bay of Bengal at Marina Beach.</p>\n<h3>Food & Dining Highlights</h3>\n<p>Do not miss authentic Tamil breakfast items like Murugan Idli, crispy Ghee Podi Dosa, and traditional South Indian thalis.</p>",
+        "faqs": [
+          {
+            "ques": "Is 1 or 2 days enough for Chennai sightseeing?",
+            "ans": "Yes, 1 to 2 days is perfect to cover Kapaleeshwarar Temple, Marina Beach, Fort St. George, and local shopping."
+          },
+          {
+            "ques": "How far is Chennai from Mahabalipuram?",
+            "ans": "Mahabalipuram is just 55 km from Chennai (about 1.5 hours drive along the scenic East Coast Road)."
+          }
         ]
       },
       {
-        title: 'Mahabalipuram',
-        slug: 'mahabalipuram',
-        seoTitle: 'Mahabalipuram Tour Packages | UNESCO Shore Temples & Beach Resorts',
-        h1Title: 'Mahabalipuram Coastal Heritage Tours',
-        seoDescription: 'Discover UNESCO World Heritage Mahabalipuram tour packages. Visit Shore Temple, Five Rathas, Arjuna\'s Penance, and pristine coastal resorts with KoiKoi Travel.',
-        seoKeyword: 'Mahabalipuram tour packages, Shore Temple tour, Mahabalipuram beach resort, East Coast Road tour, KoiKoi Travel Mahabalipuram',
-        overView: `<p>Visiting <strong>Mahabalipuram</strong> as a day trip often leaves travelers feeling rushed and exhausted. Pushing through crowded tour buses, haggling with street vendors, and walking beneath the open coastal sun without a knowledgeable guide can take away from the magic of these 7th-century rock wonders. You deserve time to relax beside the Bay of Bengal while admiring ancient UNESCO stone art at your own pace.</p>
-<p><strong>KoiKoi Travel</strong> transforms your visit to <strong>Mahabalipuram</strong> into a peaceful coastal getaway. We arrange private AC transfers along the breathtaking East Coast Road, luxury beachside resort stays, and guided walks through the iconic <strong>Shore Temple</strong>, <strong>Five Rathas</strong>, and the giant gravity-defying <strong>Krishna\'s Butterball</strong> stone.</p>
-<p>Unwind with fresh catch-of-the-day seafood by the waves and enjoy true coastal tranquility curated by <strong>KoiKoi Travel</strong>. Browse our handpicked Mahabalipuram itineraries below to book your coastal holiday!</p>`,
-        famousFor: 'Shore Temple, Pancha Rathas, Arjuna\'s Penance, Krishna\'s Butterball, Beach Resorts',
-        attractions: 'Shore Temple, Five Rathas (Pancha Rathas), Arjuna\'s Penance, Krishna\'s Butterball, Mahabalipuram Beach, Lighthouse',
-        weather: 'Warm ocean climate (22°C to 33°C). October to March is the best time for outdoor rock temple walks.',
-        moreDescription: `<h2>Mahabalipuram Travel Guide</h2>
-<p>Mahabalipuram is a stunning UNESCO World Heritage town where ancient Pallava stone sculptors carved temples directly out of seaside granite boulders.</p>
-<h3>Must-Do Activities</h3>
-<p>Visit the Shore Temple during golden hour sunrise, explore local stone-carving workshops, and enjoy a relaxed evening at beachside cafes.</p>`,
-        faqs: [
-          { ques: "What is Mahabalipuram famous for?", ans: "It is world-famous for 7th-century Pallava UNESCO rock-cut monuments, the Shore Temple, and beachside stone art." },
-          { ques: "Can we stay overnight in Mahabalipuram?", ans: "Yes! Staying overnight at a luxury beach resort along East Coast Road is highly recommended for a relaxing experience." }
+        "title": "Mahabalipuram",
+        "slug": "mahabalipuram",
+        "seoTitle": "Mahabalipuram Tour Packages | Shore Temple & UNESCO Heritage",
+        "h1Title": "Mahabalipuram Tour Packages & Travel Guide",
+        "seoDescription": "Discover UNESCO stone marvels in Mahabalipuram with KoiKoi Travel. Explore Shore Temple, Pancha Rathas, Krishna's Butterball, and beachside seafood dining.",
+        "seoKeyword": "Mahabalipuram tour packages, Shore Temple trip, UNESCO Mahabalipuram tour, East Coast Road trip, KoiKoi Travel Mahabalipuram",
+        "overView": "<p>Exploring <strong>Mahabalipuram</strong> without a structured plan can mean dealing with persistent beach vendors, confusing monument layouts, and unverified taxi rates along East Coast Road.</p>\n<p>With <strong>KoiKoi Travel</strong>, your <strong>Mahabalipuram</strong> getaway is effortless. Enjoy private AC cab transfers directly from Chennai, pre-booked tickets for the <strong>Shore Temple</strong> and <strong>Pancha Rathas</strong>, and comfortable coastal resort stays.</p>\n<p>Relax by the ocean with zero hidden costs and total peace of mind. Check out our curated Mahabalipuram tour packages below to book your coastal heritage escape today!</p>",
+        "famousFor": "Shore Temple, Pancha Rathas, Krishna's Butterball, Rock Carvings, Seafood & Beach Resorts",
+        "attractions": "Shore Temple, Pancha Rathas, Arjuna's Penance, Krishna's Butterball, Mahabalipuram Lighthouse, Covelong Beach",
+        "weather": "Coastal sunny climate (22\u00b0C to 33\u00b0C). November to March brings breezy beach weather.",
+        "moreDescription": "<h2>Mahabalipuram Travel Guide & Sightseeing Tips</h2>\n<p>A UNESCO World Heritage town located right on the ocean, Mahabalipuram showcases 7th-century Pallava rock architecture.</p>\n<h3>Must-See Highlights</h3>\n<p>Walk around the oceanfront Shore Temple at sunrise, marvel at the giant balancing boulder Krishna's Butterball, and explore the monolith Pancha Rathas.</p>",
+        "faqs": [
+          {
+            "ques": "Can Mahabalipuram be done as a day trip from Chennai?",
+            "ans": "Yes! Mahabalipuram is only 1.5 hours from Chennai via the East Coast Road, making it ideal for a day excursion or 1-night beach stay."
+          }
         ]
       },
       {
-        title: 'Madurai',
-        slug: 'madurai',
-        seoTitle: 'Madurai Tour Packages | Meenakshi Temple & Heritage Food Trails',
-        h1Title: 'Madurai Temple & Cultural Tour Packages',
-        seoDescription: 'Book Madurai tour packages featuring Meenakshi Amman Temple, Thirumalai Nayakkar Palace, night ceremony rituals, and famous Jigarthanda with KoiKoi Travel.',
-        seoKeyword: 'Madurai tour packages, Meenakshi Temple tour, Madurai travel guide, Madurai heritage food tour, KoiKoi Travel Madurai',
-        overView: `<p>Navigating the bustling temple streets of <strong>Madurai</strong> can be intense. Finding proper temple entry gates, understanding sacred ritual timings, and avoiding overcrowded local transport can easily drain your energy. Many travelers miss out on Madurai\'s famous night ceremony or legendary street food simply because they lack proper local guidance.</p>
-<p>With <strong>KoiKoi Travel</strong>, exploring <strong>Madurai</strong> is effortless and deeply rewarding. Our private drivers and expert local guides escort you straight to the awe-inspiring <strong>Meenakshi Amman Temple</strong>, help you secure comfortable entry passes, and show you the majestic pillars of <strong>Thirumalai Nayakkar Palace</strong>.</p>
-<p>We also take you on a mouthwatering local food journey to sample authentic Madurai Bun Parotta and chilled Jigarthanda. Let <strong>KoiKoi Travel</strong> make your temple holiday smooth and memorable. Check out our detailed Madurai tour packages listed below!</p>`,
-        famousFor: 'Meenakshi Amman Temple, Thirumalai Nayakkar Palace, Street Food, Famous Jigarthanda, Sungudi Sarees',
-        attractions: 'Meenakshi Amman Temple, Thirumalai Nayakkar Palace, Gandhi Memorial Museum, Alagar Koyil, Vandiyur Mariamman Teppakulam',
-        weather: 'Warm interior climate (23°C to 36°C). October to March offers comfortable morning and evening temple visit temperatures.',
-        moreDescription: `<h2>Madurai Travel & Cultural Guide</h2>
-<p>Madurai is a living cultural treasure and one of the world\'s oldest continuously inhabited cities, centered around the multi-colored towers of Meenakshi Temple.</p>
-<h3>Insider Tips</h3>
-<p>Do not miss the evening temple palanquin procession around 9:00 PM and make sure to try famous local drinks like famous Madurai Jigarthanda.</p>`,
-        faqs: [
-          { ques: "How much time is needed to visit Meenakshi Temple?", ans: "Around 2 to 3 hours is ideal to explore the carved corridors, sacred tank, and main sanctum towers." },
-          { ques: "Are cameras allowed inside Meenakshi Temple?", ans: "Mobile phones and cameras are restricted inside the inner sanctum. Lockers are available at temple security gates." }
+        "title": "Madurai",
+        "slug": "madurai",
+        "seoTitle": "Madurai Tour Packages | Meenakshi Amman Temple & Heritage Trails",
+        "h1Title": "Madurai Tour Packages & Travel Guide",
+        "seoDescription": "Experience the soul of Madurai with KoiKoi Travel. Visit Meenakshi Amman Temple, Thirumalai Nayak Palace, Jigarthanda street food, and night ceremony rituals.",
+        "seoKeyword": "Madurai tour packages, Meenakshi Temple trip, Madurai heritage tour, Jigarthanda Madurai, KoiKoi Travel Madurai",
+        "overView": "<p>Visiting <strong>Madurai</strong> can feel daunting due to intense temple crowds, strict entry rules, and tricky narrow market lanes around the ancient city center.</p>\n<p><strong>KoiKoi Travel</strong> solves your travel worries in <strong>Madurai</strong>. We arrange seamless transfers, comfortable hotel stays near the temple, and guided visits to <strong>Meenakshi Amman Temple</strong> and <strong>Thirumalai Nayak Palace</strong>. Enjoy authentic local street treats like iconic <i>Jigarthanda</i> without hassle.</p>\n<p>Travel comfortably with dedicated driver support and clear pricing. Browse our handpicked Madurai tour packages below and plan your temple journey today!</p>",
+        "famousFor": "Meenakshi Amman Temple, Thirumalai Nayak Palace, Jigarthanda Drink, Jasmine Markets, Temple Architecture",
+        "attractions": "Meenakshi Amman Temple, Thirumalai Nayakkar Palace, Gandhi Memorial Museum, Alagar Koyil, Vandiyur Mariamman Teppakulam",
+        "weather": "Warm tropical climate (23\u00b0C to 36\u00b0C). October to March is the best time for temple sightseeing.",
+        "moreDescription": "<h2>Madurai Sightseeing & Cultural Guide</h2>\n<p>Known as the 'Athens of the East', Madurai revolves around its breathtaking 2,500-year-old Meenakshi Temple.</p>\n<h3>Cultural Experiences</h3>\n<p>Attend the evening night ceremony at Meenakshi Temple, sample famous Jigarthanda near Town Hall, and shop for traditional Madurai cotton sarees.</p>",
+        "faqs": [
+          {
+            "ques": "What is the dress code for Madurai Meenakshi Temple?",
+            "ans": "Strict traditional dress code applies. Dhotis/trousers for men, sarees/salwars for women. Mobile phones and cameras are prohibited inside."
+          }
         ]
       },
       {
-        title: 'Tanjore',
-        slug: 'tanjore',
-        seoTitle: 'Tanjore (Thanjavur) Tour Packages | UNESCO Great Living Chola Temples',
-        h1Title: 'Thanjavur Chola Heritage & Art Tours',
-        seoDescription: 'Explore Tanjore tour packages featuring UNESCO Brihadeeswarar Temple, Tanjore gold leaf paintings, Royal Palace, and Chola bronze art with KoiKoi Travel.',
-        seoKeyword: 'Tanjore tour packages, Thanjavur temple tour, Brihadeeswarar Temple visit, Chola heritage tour, KoiKoi Travel Tanjore',
-        overView: `<p>Visiting the massive 1,000-year-old Big Temple in <strong>Tanjore</strong> (Thanjavur) without proper travel arrangements can lead to long waits under the hot sun and missed historical context. Without a dedicated vehicle, traveling between the temple, the Royal Palace complex, and local bronze handicraft villages can prove frustrating.</p>
-<p><strong>KoiKoi Travel</strong> ensures your trip to <strong>Tanjore</strong> is enriching and comfortable. We provide private AC transfers, expert heritage guides, and seamless visits to the magnificent UNESCO World Heritage <strong>Brihadeeswarar Temple</strong>, built entirely out of granite stone.</p>
-<p>Discover traditional gold-leaf Tanjore art studios and royal palace galleries with complete ease. Trust <strong>KoiKoi Travel</strong> for an authentic Chola heritage tour. Explore our Tanjore itineraries below to plan your visit!</p>`,
-        famousFor: 'Brihadeeswarar Temple (Big Temple), Tanjore Gold Paintings, Chola Bronze Statues, Thanjavur Royal Palace',
-        attractions: 'Brihadeeswarar Temple, Thanjavur Royal Palace & Art Gallery, Saraswathi Mahal Library, Schwartz Church',
-        weather: 'Tropical interior weather (22°C to 35°C). November to February is best for heritage temple walks.',
-        moreDescription: `<h2>Thanjavur Heritage Visitor Guide</h2>
-<p>Thanjavur was the majestic royal capital of the Chola Empire, world-famous for architectural engineering feats and fine arts.</p>
-<h3>Key Highlights</h3>
-<p>Marvel at the 81-ton single stone cap atop the Brihadeeswarar Temple vimana tower and visit artisan workshops crafting gold Tanjore paintings.</p>`,
-        faqs: [
-          { ques: "Why is Tanjore Big Temple famous?", ans: "It is a 1,000-year-old UNESCO World Heritage temple built entirely of granite, famed for its massive shadowless vimana tower." },
-          { ques: "Is Tanjore suitable for a 1-day trip?", ans: "Yes, 1 day is sufficient to visit the Big Temple, Royal Palace, and local art galleries." }
+        "title": "Tanjore (Thanjavur)",
+        "slug": "tanjore",
+        "seoTitle": "Tanjore Tour Packages | Brihadeeswarar Temple & Chola Art",
+        "h1Title": "Tanjore Tour Packages & Travel Guide",
+        "seoDescription": "Discover Chola grandeur in Tanjore with KoiKoi Travel. Visit Brihadeeswarar Temple, Tanjore Royal Palace, Tanjore paintings, and bronze craft workshops.",
+        "seoKeyword": "Tanjore tour packages, Thanjavur temple tour, Brihadeeswarar Temple trip, Chola heritage tour, KoiKoi Travel Tanjore",
+        "overView": "<p>Planning a trip to <strong>Tanjore</strong> often brings confusion around monument timings, finding authentic Chola bronze artisan workshops, and securing clean reliable cabs.</p>\n<p>With <strong>KoiKoi Travel</strong>, exploring <strong>Tanjore</strong> is smooth and enriching. We handle your private transfers, handpick comfortable heritage stays, and ensure easy visits to the grand UNESCO-listed <strong>Brihadeeswarar Temple</strong> and <strong>Thanjavur Maratha Palace</strong>.</p>\n<p>Experience genuine Chola art and temple architecture with 100% transparent rates. Check out our customized Tanjore tour packages listed below and choose your trip today!</p>",
+        "famousFor": "Brihadeeswarar Temple, Tanjore Paintings, Chola Bronze Idols, Thanjavur Royal Palace, Dancing Dolls",
+        "attractions": "Brihadeeswarar Temple (Big Temple), Thanjavur Royal Palace & Art Gallery, Saraswathi Mahal Library, Schwartz Church",
+        "weather": "Warm inland climate (22\u00b0C to 35\u00b0C). Best visited between November and February.",
+        "moreDescription": "<h2>Tanjore Travel Guide & Heritage Insights</h2>\n<p>Tanjore was the celebrated capital of the Chola Empire, famous for architectural wonders and classical arts.</p>\n<h3>Sightseeing Highlights</h3>\n<p>Marvel at the giant monolithic Nandi statue and towering shadowless Vimana at the Big Temple, and inspect centuries-old palm-leaf manuscripts at Saraswathi Mahal Library.</p>",
+        "faqs": [
+          {
+            "ques": "Why is Tanjore Big Temple famous?",
+            "ans": "Built by Emperor Raja Raja Chola I in 1010 AD, it features one of India's tallest temple towers (66m) made entirely of granite."
+          }
         ]
       },
       {
-        title: 'Trichy',
-        slug: 'trichy',
-        seoTitle: 'Trichy (Tiruchirappalli) Tour Packages | Rockfort & Srirangam Island',
-        h1Title: 'Trichy Heritage & Temple Expeditions',
-        seoDescription: 'Book Trichy tour packages with KoiKoi Travel. Visit Rockfort Ucchi Pillayar Temple, Sri Ranganathaswamy Temple at Srirangam, and Kaveri riverfront.',
-        seoKeyword: 'Trichy tour packages, Srirangam temple tour, Rockfort temple Trichy, Tiruchirappalli tour, KoiKoi Travel Trichy',
-        overView: `<p>Tiruchirappalli (<strong>Trichy</strong>) houses two of South India\'s most monumental landmarks—the sprawling island temple of Srirangam and the high Rockfort Temple. However, climbing the 400 stone steps of Rockfort in peak afternoon heat or navigating the 7 concentric enclosure walls of Srirangam without a plan can leave you exhausted.</p>
-<p>With <strong>KoiKoi Travel</strong>, your <strong>Trichy</strong> itinerary is structured for maximum comfort. We schedule your temple visits during pleasant early morning hours, provide private AC cab transfers, and arrange comfortable halts along the Kaveri River.</p>
-<p>Experience the world\'s largest functioning temple complex at <strong>Srirangam</strong> without any stress. Let <strong>KoiKoi Travel</strong> manage your journey. Browse our Trichy packages listed below!</p>`,
-        famousFor: 'Rockfort Ucchi Pillayar Temple, Sri Ranganathaswamy Temple (Srirangam), Kaveri Riverfront, Cigar Making',
-        attractions: 'Sri Ranganathaswamy Temple (Srirangam), Rockfort Ucchi Pillayar Temple, Jambukeswarar Temple (Thiruvanaikaval), St. Lourde\'s Church',
-        weather: 'Warm and dry (23°C to 37°C). Best visited between November and March.',
-        moreDescription: `<h2>Trichy Travel & Sightseeing Guide</h2>
-<p>Trichy is a bustling riverfront city home to breathtaking hillfort temples and island shrines along the sacred Kaveri River.</p>`,
-        faqs: [
-          { ques: "How many steps are there to climb Rockfort Temple?", ans: "There are approximately 437 stone steps cut into the rock leading up to the Ucchi Pillayar Temple summit." },
-          { ques: "What is special about Srirangam Temple?", ans: "It is the largest functioning Hindu temple complex in the world, covering 156 acres with 21 magnificent gopuram towers." }
+        "title": "Trichy (Tiruchirappalli)",
+        "slug": "trichy",
+        "seoTitle": "Trichy Tour Packages | Rockfort Temple & Srirangam Island",
+        "h1Title": "Trichy Tour Packages & Travel Guide",
+        "seoDescription": "Book Trichy tour packages with KoiKoi Travel. Explore Rockfort Ucchi Pillayar Temple, Srirangam Ranganathaswamy Temple, and Kaveri river views with private cab.",
+        "seoKeyword": "Trichy tour packages, Srirangam temple visit, Rockfort Temple Trichy, South India temple circuit, KoiKoi Travel Trichy",
+        "overView": "<p>Sightseeing in <strong>Trichy</strong> can be exhausting due to steep stone stair climbs, busy inner-city traffic, and crowded pilgrim queues across Srirangam island.</p>\n<p><strong>KoiKoi Travel</strong> makes your <strong>Trichy</strong> visit effortless. We provide dedicated private AC cab transfers, well-located hotel bookings, and comfortable sightseeing at <strong>Rockfort Temple</strong> and <strong>Srirangam Ranganathaswamy Temple</strong>.</p>\n<p>Enjoy hassle-free transit with dedicated 24/7 travel support and zero hidden costs. Browse our curated Trichy tour packages below and pick your ideal itinerary today!</p>",
+        "famousFor": "Rockfort Ucchi Pillayar Temple, Srirangam Ranganathaswamy Temple, Kaveri River, Brass Utensils",
+        "attractions": "Rockfort Temple, Srirangam Temple, Jambukeswarar Temple (Thiruvanaikaval), Kallanai Dam, St. Lourdes Church",
+        "weather": "Tropical climate (24\u00b0C to 36\u00b0C). Best visited from November to February.",
+        "moreDescription": "<h2>Trichy Visitor Guide & Temple Highlights</h2>\n<p>Trichy sits along the Kaveri River, blending ancient rock-cut temples with vibrant bazaar streets.</p>\n<h3>Top Attractions</h3>\n<p>Climb the 437 steps inside Rockfort for panoramic city views and explore Srirangam, the world's largest functioning Hindu temple complex.</p>",
+        "faqs": [
+          {
+            "ques": "How many steps are there at Rockfort Temple Trichy?",
+            "ans": "There are 437 stone steps cut into the ancient 3.8 billion-year-old rock leading to the top Ucchi Pillayar Temple."
+          }
         ]
       },
       {
-        title: 'Kodaikanal',
-        slug: 'kodaikanal',
-        seoTitle: 'Kodaikanal Tour Packages | Hill Station Boating & Pine Forests',
-        h1Title: 'Kodaikanal Hill Station & Honeymoon Packages',
-        seoDescription: 'Book Kodaikanal hill station tour packages with KoiKoi Travel. Enjoy Kodai Lake boating, Coaker\'s Walk, Pillar Rocks, Bryant Park, and pine forest walks.',
-        seoKeyword: 'Kodaikanal tour packages, Kodaikanal honeymoon package, Kodai lake boating, Kodaikanal hill station, KoiKoi Travel Kodaikanal',
-        overView: `<p>Driving up the winding mountain hairpins to <strong>Kodaikanal</strong> with an inexperienced driver can cause motion sickness and unnecessary anxiety. Once in town, finding parking near <strong>Kodai Lake</strong> or getting caught in long weekend traffic jams can ruin the peaceful mountain vibe you came for.</p>
-<p><strong>KoiKoi Travel</strong> ensures a smooth, romantic mountain holiday in <strong>Kodaikanal</strong>. Our skilled hill-station drivers navigate the Palani Hills smoothly while you relax and enjoy the scenic views. We arrange charming lakefront resort stays, private boat rides on Kodai Lake, and scenic walks along <strong>Coaker\'s Walk</strong> and <strong>Pillar Rocks</strong>.</p>
-<p>Escape into misty pine forests and taste handmade chocolates with complete peace of mind. Let <strong>KoiKoi Travel</strong> craft your hill getaway. Check out our Kodaikanal tour packages below!</p>`,
-        famousFor: 'Kodai Lake Boating, Coaker\'s Walk, Pillar Rocks, Pine Forest Walks, Homemade Chocolates',
-        attractions: 'Kodai Lake, Coaker\'s Walk, Pillar Rocks, Bryant Park, Silver Cascade Falls, Pine Forest, Bear Shola Falls',
-        weather: 'Cool mountain climate (10°C to 20°C). Perfect year-round escape; September to May offers clear skies.',
-        moreDescription: `<h2>Kodaikanal Hill Station Guide</h2>
-<p>Kodaikanal, known as the "Princess of Hill Stations," is situated 2,133 meters above sea level amidst dense shola forests and misty lakes.</p>`,
-        faqs: [
-          { ques: "Which month is best to visit Kodaikanal?", ans: "October to May is the best time for clear weather, lake boating, and flower blooms." },
-          { ques: "Is Kodaikanal good for a honeymoon?", ans: "Yes! Its cool mist, scenic lake walks, pine forests, and quiet luxury resorts make it a top honeymoon destination." }
+        "title": "Kodaikanal",
+        "slug": "kodaikanal",
+        "seoTitle": "Kodaikanal Tour Packages | Misty Lakes, Pine Forests & Hill Escapes",
+        "h1Title": "Kodaikanal Tour Packages & Travel Guide",
+        "seoDescription": "Escape to misty Kodai hills with KoiKoi Travel. Book customized packages covering Kodai Lake, Pillar Rocks, Coaker's Walk, and Pine Forest with private cab.",
+        "seoKeyword": "Kodaikanal tour packages, Kodaikanal trip itinerary, Kodai hill station tour, Kodaikanal honeymoon package, KoiKoi Travel Kodaikanal",
+        "overView": "<p>Traveling to <strong>Kodaikanal</strong> often involves stressful mountain hairpin drives, unverified local taxi surges, and overpriced boat ride queues at Kodai Lake.</p>\n<p>With <strong>KoiKoi Travel</strong>, your <strong>Kodaikanal</strong> hill retreat is pure relaxation. Experienced mountain drivers guide your private AC cab along scenic roads, dropping you at handpicked valley-view resorts. Explore <strong>Kodai Lake</strong>, <strong>Pillar Rocks</strong>, and <strong>Coaker's Walk</strong> at your own pace.</p>\n<p>Enjoy transparent rates and total comfort in the misty hills. Check out our handpicked Kodaikanal tour packages listed below and choose your dream holiday today!</p>",
+        "famousFor": "Kodai Lake, Pillar Rocks, Coaker's Walk, Pine Forests, Homemade Chocolates, Kurinji Flowers",
+        "attractions": "Kodaikanal Lake, Pillar Rocks, Coaker's Walk, Bryant Park, Pine Forest, Silver Cascade Falls, Moir Point",
+        "weather": "Cool mountain climate (11\u00b0C to 20\u00b0C). Pleasant year-round, ideal from September to May.",
+        "moreDescription": "<h2>Kodaikanal Hill Station Guide & Insider Tips</h2>\n<p>Known as the 'Princess of Hill Stations', Kodaikanal sits at 2,133m altitude amid dense pine forests and misty valleys.</p>\n<h3>Best Experiences</h3>\n<p>Enjoy a pedal boat ride on Kodai Lake, stroll along Coaker's Walk for sweeping valley views, and buy freshly made artisanal chocolates from local markets.</p>",
+        "faqs": [
+          {
+            "ques": "Which is better for a honeymoon: Ooty or Kodaikanal?",
+            "ans": "Kodaikanal is generally quieter, greener, and offers more secluded romantic forest walks, while Ooty is larger with tea garden landscapes."
+          }
         ]
       },
       {
-        title: 'Ooty',
-        slug: 'ooty',
-        seoTitle: 'Ooty Tour Packages | Queen of Hill Stations & Nilgiri Toy Train',
-        h1Title: 'Ooty Hill Station & Toy Train Packages',
-        seoDescription: 'Discover Ooty tour packages with KoiKoi Travel. Ride UNESCO Nilgiri Mountain Railway, visit Ooty Botanical Gardens, Doddabetta Peak, and tea estates.',
-        seoKeyword: 'Ooty tour packages, Ooty toy train booking, Ooty honeymoon package, Nilgiri hill station tour, KoiKoi Travel Ooty',
-        overView: `<p>Planning an <strong>Ooty</strong> vacation without pre-booked toy train tickets or proper hotel reservations often ends in disappointment. The famous UNESCO <strong>Nilgiri Mountain Railway</strong> tickets sell out weeks in advance, and chaotic traffic around Botanical Gardens can waste hours of your mountain stay.</p>
-<p>With <strong>KoiKoi Travel</strong>, your <strong>Ooty</strong> holiday is completely stress-free. We assist with toy train bookings, arrange comfortable private cab sightseeing to <strong>Doddabetta Peak</strong> and Pykara Lake, and book charming heritage hotels nestled amidst green tea estates.</p>
-<p>Breathe in fresh Nilgiri eucalyptus air and sip freshly brewed mountain tea with <strong>KoiKoi Travel</strong>. Browse our popular Ooty packages listed below!</p>`,
-        famousFor: 'UNESCO Toy Train Ride, Ooty Lake, Botanical Garden, Doddabetta Peak, Tea Factory Tours',
-        attractions: 'Nilgiri Mountain Railway (Toy Train), Ooty Botanical Garden, Ooty Lake, Doddabetta Peak, Tea Museum, Rose Garden, Pykara Lake',
-        weather: 'Crisp mountain climate (5°C to 20°C). October to June is peak travel season.',
-        moreDescription: `<h2>Ooty Travel Guide</h2>
-<p>Ooty (Udhagamandalam) is South India\'s most legendary hill station, featuring rolling tea gardens and colonial-era charm.</p>`,
-        faqs: [
-          { ques: "How do I book the Ooty Toy Train?", ans: "Toy train tickets should be booked in advance via IRCTC. KoiKoi Travel assists with integrating train rides into your itinerary." },
-          { ques: "How many days are needed for Ooty and Coonoor?", ans: "3 days and 2 nights is ideal to comfortably explore both Ooty and Coonoor." }
+        "title": "Ooty",
+        "slug": "ooty",
+        "seoTitle": "Ooty Tour Packages | Nilgiri Tea Gardens & Toy Train Journeys",
+        "h1Title": "Ooty Tour Packages & Travel Guide",
+        "seoDescription": "Plan your Ooty getaway with KoiKoi Travel. Explore Nilgiri Tea Estates, Doddabetta Peak, Ooty Lake, Botanical Gardens, and Nilgiri Mountain Railway.",
+        "seoKeyword": "Ooty tour packages, Ooty travel itinerary, Nilgiri toy train booking, Ooty honeymoon package, KoiKoi Travel Ooty",
+        "overView": "<p>Planning an <strong>Ooty</strong> trip can get stressful with peak season traffic jams, sold-out toy train tickets, and inflated hotel rates near town center.</p>\n<p><strong>KoiKoi Travel</strong> takes the hassle out of your <strong>Ooty</strong> vacation. We pre-arrange private AC cab transfers, comfortable hill stay bookings, and sightseeing across <strong>Doddabetta Peak</strong>, <strong>Ooty Botanical Gardens</strong>, and lush <strong>Nilgiri Tea Estates</strong>.</p>\n<p>Enjoy transparent pricing and dedicated 24/7 manager support. Browse our curated Ooty tour packages listed below and pick your ideal hill escape today!</p>",
+        "famousFor": "Nilgiri Mountain Railway (Toy Train), Tea Plantations, Doddabetta Peak, Ooty Lake, Homemade Chocolates",
+        "attractions": "Doddabetta Peak, Ooty Botanical Gardens, Ooty Lake, Rose Garden, Pykara Lake & Waterfalls, Tea Factory Museum",
+        "weather": "Cool hill climate (5\u00b0C to 20\u00b0C). Best visited between October and May.",
+        "moreDescription": "<h2>Ooty Travel Guide & Sightseeing Highlights</h2>\n<p>Ooty (Udhagamandalam) is South India's quintessential hill station, surrounded by rolling tea gardens and Nilgiri mist.</p>\n<h3>Top Activities in Ooty</h3>\n<p>Ride the historic UNESCO Nilgiri Mountain Railway toy train, sample fresh tea at tea factories, and watch panoramic sunsets from Doddabetta Peak.</p>",
+        "faqs": [
+          {
+            "ques": "How to book the Nilgiri Toy Train in Ooty?",
+            "ans": "Tickets can be booked via IRCTC. KoiKoi Travel helps coordinate toy train schedules as part of your customized Ooty itinerary."
+          }
         ]
       },
       {
-        title: 'Coonoor',
-        slug: 'coonoor',
-        seoTitle: 'Coonoor Tour Packages | Tea Estate Walks & Dolphin\'s Nose',
-        h1Title: 'Coonoor Quiet Tea Garden Holidays',
-        seoDescription: 'Book Coonoor tour packages featuring Sim\'s Park, Highfield Tea Factory, Dolphin\'s Nose viewpoint, and scenic Nilgiri views with KoiKoi Travel.',
-        seoKeyword: 'Coonoor tour packages, Coonoor tea estate tour, Sim\'s park Coonoor, Dolphin\'s nose Coonoor, KoiKoi Travel Coonoor',
-        overView: `<p>If you want to escape the heavy tourist crowds of Ooty, <strong>Coonoor</strong> offers a far quieter, tea-scented hill retreat. However, finding secluded tea estate walks and scenic gorge viewpoints without local driver guidance can be tricky.</p>
-<p><strong>KoiKoi Travel</strong> brings you the peaceful side of the Nilgiris in <strong>Coonoor</strong>. We arrange stays at boutique tea garden resorts, guided tours of <strong>Highfield Tea Factory</strong>, and scenic drives to <strong>Dolphin\'s Nose</strong> and <strong>Sim\'s Park</strong>.</p>
-<p>Relax in quiet luxury and take in panoramic valley views with <strong>KoiKoi Travel</strong>. Check out our Coonoor tour packages below!</p>`,
-        famousFor: 'Sim\'s Park, Highfield Tea Estate, Dolphin\'s Nose Viewpoint, Lamb\'s Rock',
-        attractions: 'Sim\'s Park, Dolphin\'s Nose, Lamb\'s Rock, Highfield Tea Factory, Law\'s Falls',
-        weather: 'Pleasant mountain climate (10°C to 22°C). Best visited between October and May.',
-        moreDescription: `<h2>Coonoor Tea Country Guide</h2>
-<p>Coonoor is a quiet hill town surrounded by rolling tea plantations, ideal for slow travel and nature walks.</p>`,
-        faqs: [
-          { ques: "Is Coonoor less crowded than Ooty?", ans: "Yes! Coonoor is much quieter and offers more serene tea estate stays compared to central Ooty." }
+        "title": "Coonoor",
+        "slug": "coonoor",
+        "seoTitle": "Coonoor Tour Packages | Quiet Tea Estates & Nilgiri Viewpoints",
+        "h1Title": "Coonoor Tour Packages & Travel Guide",
+        "seoDescription": "Discover serene Coonoor with KoiKoi Travel. Explore Sim's Park, Dolphin's Nose, Highfield Tea Factory, and scenic Nilgiri toy train rides.",
+        "seoKeyword": "Coonoor tour packages, Coonoor tea estate stay, Dolphin's Nose Coonoor, Nilgiri hill tour, KoiKoi Travel Coonoor",
+        "overView": "<p>Visiting <strong>Coonoor</strong> without private transport can lead to cab availability issues, missed tea estate views, and confusing hill roads.</p>\n<p>With <strong>KoiKoi Travel</strong>, your <strong>Coonoor</strong> experience is seamless. Your dedicated private AC cab driver guides you along scenic mountain routes, taking you to <strong>Sim's Park</strong>, <strong>Dolphin's Nose</strong> viewpoint, and organic tea factories.</p>\n<p>Relax in peaceful tea garden resorts with transparent rates and full support. Check out our customized Coonoor tour packages below and book your serene Nilgiri retreat today!</p>",
+        "famousFor": "Sim's Park, Dolphin's Nose Viewpoint, Tea Estates, Lamb's Rock, Highfield Tea Factory",
+        "attractions": "Sim's Park, Dolphin's Nose, Lamb's Rock, Catherine Falls, Highfield Tea Factory, Laws Falls",
+        "weather": "Mild pleasant climate (10\u00b0C to 22\u00b0C). Ideal to visit year-round, especially September to May.",
+        "moreDescription": "<h2>Coonoor Travel Guide & Quiet Hill Tips</h2>\n<p>Coonoor is a peaceful alternative to busy Ooty, famous for sprawling green tea plantations and botanical gardens.</p>\n<h3>Must-Do Experiences</h3>\n<p>Take a guided tea tasting tour at Highfield Tea Factory, walk among rare plants at Sim's Park, and enjoy dramatic gorge views from Dolphin's Nose.</p>",
+        "faqs": [
+          {
+            "ques": "Is Coonoor worth visiting along with Ooty?",
+            "ans": "Yes! Coonoor is only 18 km from Ooty and offers a much quieter, less crowded tea estate environment."
+          }
         ]
       },
       {
-        title: 'Rameshwaram',
-        slug: 'rameshwaram',
-        seoTitle: 'Rameshwaram Tour Packages | Ramanathaswamy Temple & Pamban Bridge',
-        h1Title: 'Rameshwaram Pilgrimage & Island Expeditions',
-        seoDescription: 'Explore Rameshwaram tour packages. Visit Ramanathaswamy Temple 22 Holy Wells, Dhanushkodi ghost town, Pamban Sea Bridge, and APJ Abdul Kalam Memorial with KoiKoi Travel.',
-        seoKeyword: 'Rameshwaram tour packages, Ramanathaswamy Temple tour, Dhanushkodi trip, Pamban bridge view, KoiKoi Travel Rameshwaram',
-        overView: `<p>Traveling to the sacred island of <strong>Rameshwaram</strong> involves long drives across the ocean bridge and early morning ritual bath queues. Without proper pre-arranged cab transfers and temple guidance, elderly family members or solo travelers can find the journey exhausting.</p>
-<p><strong>KoiKoi Travel</strong> makes your <strong>Rameshwaram</strong> pilgrimage smooth and sacred. Our experienced private drivers guide you across the famous <strong>Pamban Sea Bridge</strong>, arrange hassle-free visits to the 22 holy wells at <strong>Ramanathaswamy Temple</strong>, and take you to the ghost town of <strong>Dhanushkodi</strong>.</p>
-<p>Experience spiritual peace and dramatic sea landscapes with <strong>KoiKoi Travel</strong>. Explore our Rameshwaram tour packages listed below!</p>`,
-        famousFor: 'Ramanathaswamy Temple 22 Wells, Pamban Sea Bridge, Dhanushkodi Ghost Town, APJ Kalam Memorial',
-        attractions: 'Ramanathaswamy Temple, Agnitheertham, Dhanushkodi Beach & Ruins, Pamban Bridge, Dr. APJ Abdul Kalam Memorial, Kothandaramaswamy Temple',
-        weather: 'Coastal tropical weather (23°C to 34°C). October to March is the most comfortable season for beach and temple visits.',
-        moreDescription: `<h2>Rameshwaram Island Guide</h2>
-<p>Rameshwaram is a holy island destination where myth, ocean landscapes, and modern engineering meet at Pamban Bridge.</p>`,
-        faqs: [
-          { ques: "How do you reach Dhanushkodi from Rameshwaram?", ans: "Dhanushkodi is located 20 km from Rameshwaram town, easily accessible via private cab along the scenic ocean road." },
-          { ques: "What are the 22 Wells in Rameshwaram Temple?", ans: "They are sacred water springs inside Ramanathaswamy Temple where pilgrims take ritual holy baths before worship." }
+        "title": "Rameshwaram",
+        "slug": "rameshwaram",
+        "seoTitle": "Rameshwaram Tour Packages | Sacred Temple Baths & Dhanushkodi Beach",
+        "h1Title": "Rameshwaram Tour Packages & Travel Guide",
+        "seoDescription": "Book Rameshwaram tour packages with KoiKoi Travel. Visit Ramanathaswamy Temple, 22 Holy Wells bath ritual, Pamban Bridge, and Dhanushkodi ghost town.",
+        "seoKeyword": "Rameshwaram tour packages, Ramanathaswamy Temple visit, Dhanushkodi tour, Pamban Bridge drive, KoiKoi Travel Rameshwaram",
+        "overView": "<p>Planning a <strong>Rameshwaram</strong> pilgrimage can involve confusing temple bath rules, long ticket queues, and unreliable local cabs for Dhanushkodi.</p>\n<p><strong>KoiKoi Travel</strong> handles your entire <strong>Rameshwaram</strong> trip with care. We arrange comfortable hotel stays near the temple, private AC cab transfers for <strong>Pamban Bridge</strong> and <strong>Dhanushkodi</strong>, and clear guidance for the 22 holy wells bath ritual.</p>\n<p>Experience a spiritual, stress-free island journey with transparent pricing. Explore our handpicked Rameshwaram packages listed below and choose your itinerary today!</p>",
+        "famousFor": "Ramanathaswamy Temple, 22 Holy Theerthams, Pamban Bridge, Dhanushkodi Ghost Town, APJ Abdul Kalam Memorial",
+        "attractions": "Ramanathaswamy Temple, Dhanushkodi Beach, Pamban Sea Bridge, Dr. APJ Abdul Kalam Memorial, Agni Theertham, Panchamukhi Hanuman Temple",
+        "weather": "Tropical island climate (23\u00b0C to 34\u00b0C). Best visited between October and March.",
+        "moreDescription": "<h2>Rameshwaram Pilgrimage & Visitor Guide</h2>\n<p>Rameshwaram is a holy island town connected to mainland India by the iconic Pamban Bridge.</p>\n<h3>Key Pilgrimage Steps</h3>\n<p>Take a holy dip at Agni Theertham sea, experience the 22 sacred well baths inside Ramanathaswamy Temple, and marvel at the world's longest temple corridor.</p>",
+        "faqs": [
+          {
+            "ques": "How to visit Dhanushkodi from Rameshwaram?",
+            "ans": "Dhanushkodi is 20 km from Rameshwaram. Private cabs can easily drive up to the tip of Dhanushkodi along the scenic newly built road."
+          }
         ]
       },
       {
-        title: 'Kanchipuram',
-        slug: 'kanchipuram',
-        seoTitle: 'Kanchipuram Tour Packages | City of 1,000 Temples & Silk Weaving',
-        h1Title: 'Kanchipuram Heritage & Silk Weaving Tours',
-        seoDescription: 'Book Kanchipuram tour packages featuring Ekambareswarar Temple, Kailasanathar Temple, Varadharaja Perumal Temple, and authentic Kanjeevaram silk weaving with KoiKoi Travel.',
-        seoKeyword: 'Kanchipuram tour packages, Kanjeevaram silk saree shopping, Kanchipuram temple tour, Ekambareswarar Temple, KoiKoi Travel Kanchipuram',
-        overView: `<p>Visiting <strong>Kanchipuram</strong> for genuine silk saree shopping or temple tours can be overwhelming due to crowded streets and fake middleman shops. Without local knowledge, finding authentic weaver cooperatives or exploring ancient Pallava stone architecture becomes difficult.</p>
-<p><strong>KoiKoi Travel</strong> provides an authentic <strong>Kanchipuram</strong> experience. We take you straight to trusted master weaver looms for pure Kanjeevaram silk shopping and arrange guided visits to <strong>Ekambareswarar Temple</strong> and <strong>Kailasanathar Temple</strong>.</p>
-<p>Enjoy rich heritage and genuine craftsmanship with <strong>KoiKoi Travel</strong>. Browse our Kanchipuram packages below!</p>`,
-        famousFor: 'Kanjeevaram Pure Silk Sarees, Ekambareswarar Temple, Kailasanathar Temple, Varadharaja Perumal Temple',
-        attractions: 'Ekambareswarar Temple, Kailasanathar Temple, Varadharaja Perumal Temple, Kamakshi Amman Temple, Silk Weaving Society Looms',
-        weather: 'Warm interior climate (22°C to 36°C). October to March is ideal for sightseeing.',
-        moreDescription: `<h2>Kanchipuram Silk & Temple Guide</h2>
-<p>Kanchipuram is one of India\'s seven sacred cities, celebrated both for ancient temple architecture and handwoven silk sarees.</p>`,
-        faqs: [
-          { ques: "Where can I buy authentic Kanjeevaram silk sarees?", ans: "We take you directly to government-certified weaver societies and master loom houses in Kanchipuram." }
+        "title": "Kanchipuram",
+        "slug": "kanchipuram",
+        "seoTitle": "Kanchipuram Tour Packages | Thousand Temples & Silk Weaving Trails",
+        "h1Title": "Kanchipuram Tour Packages & Travel Guide",
+        "seoDescription": "Explore silk and stone in Kanchipuram with KoiKoi Travel. Visit Kailasanathar Temple, Kamakshi Amman Temple, Varadharaja Perumal, and authentic silk sari weavers.",
+        "seoKeyword": "Kanchipuram tour packages, Kanchipuram silk sari tour, Kailasanathar temple visit, Temple town Tamil Nadu, KoiKoi Travel Kanchipuram",
+        "overView": "<p>Visiting <strong>Kanchipuram</strong> can become exhausting with aggressive silk commission touts, crowded temple lanes, and unorganized transport options.</p>\n<p>With <strong>KoiKoi Travel</strong>, your <strong>Kanchipuram</strong> excursion is relaxed and authentic. Enjoy private AC cab transfers from Chennai, guided visits to ancient temples like <strong>Kailasanathar</strong> and <strong>Kamakshi Amman</strong>, and direct visits to genuine silk weaver society stores.</p>\n<p>Shop for real Kanjeevaram silk with zero pressure and zero hidden fees. Check out our customized Kanchipuram tour packages below and book your trip today!</p>",
+        "famousFor": "Silk Sarees (Kanjeevaram), Kailasanathar Temple, Kamakshi Amman Temple, Varadharaja Perumal Temple, Temple Architecture",
+        "attractions": "Kailasanathar Temple, Ekambareswarar Temple, Kamakshi Amman Temple, Varadharaja Perumal Temple, Weaver Cooperative Societies",
+        "weather": "Tropical inland climate (22\u00b0C to 35\u00b0C). Best visited between October and March.",
+        "moreDescription": "<h2>Kanchipuram Travel Guide & Temple Insights</h2>\n<p>Known as the 'City of Thousand Temples', Kanchipuram is legendary for Dravidian stone architecture and handwoven silk.</p>\n<h3>Sightseeing Highlights</h3>\n<p>Admire 8th-century Pallava stone carvings at Kailasanathar Temple and buy certified pure mulberry silk sarees directly from weaver cooperatives.</p>",
+        "faqs": [
+          {
+            "ques": "How far is Kanchipuram from Chennai?",
+            "ans": "Kanchipuram is approximately 75 km from Chennai (about 2 hours drive via the Chennai - Bengaluru highway)."
+          }
         ]
       }
     ]
   },
   {
-    state: {
-      title: 'Kerala',
-      slug: 'kerala',
-      seoTitle: 'Kerala Tour Packages | Backwater Houseboats, Tea Hills & Ayurveda',
-      h1Title: 'Kerala Tour Packages (God\'s Own Country)',
-      seoDescription: 'Book 100% customized Kerala tour packages. Experience Alleppey deluxe houseboat cruises, Munnar tea plantation hills, Periyar tiger safaris, and Kovalam beaches with KoiKoi Travel.',
-      seoKeyword: 'Kerala tour packages, Kerala honeymoon package, Alleppey houseboat tour, Munnar tour package, KoiKoi Travel Kerala',
-      overView: `<p>Planning a trip to <strong>Kerala</strong> often comes with common travel headaches: unverified houseboat operators providing sub-standard meals, long exhausting road mountain drives between <strong>Munnar</strong> and <strong>Alleppey</strong>, hidden vehicle driver charges, and crowded commercial resorts. Your dream holiday in "God\'s Own Country" should be relaxing, not stressful.</p>
-<p>At <strong>KoiKoi Travel</strong>, we turn your <strong>Kerala</strong> holiday into a pure luxury experience. We partner exclusively with verified deluxe and luxury houseboat operators in Alleppey, provide pre-booked private AC cab transfers with professional local drivers, and handpick top-rated eco-resorts nestled amidst green tea gardens and backwaters.</p>
-<p>Savor authentic Keralite meals served on banana leaves, witness private Kathakali dance shows, and wake up to misty mountain views. With 24/7 trip manager support and zero hidden fees, <strong>KoiKoi Travel</strong> ensures an unforgettable journey. Check out our handpicked Kerala tour packages listed below and choose your package today!</p>`,
-      famousFor: 'Alleppey Deluxe Houseboats, Munnar Tea Plantations, Periyar Wildlife Safaris, Ayurvedic Rejuvenation, Kovalam & Varkala Beaches',
-      capital: 'Thiruvananthapuram',
-      language: 'Malayalam, English',
-      area: '38,863 sq km',
-      moreDescription: `<h2>Complete Kerala Visitor Guide & Travel Tips</h2>
-<p>Kerala is a lush tropical paradise along the Malabar Coast, famous for backwaters, spice hills, and coconut palms.</p>
-<h3>Best Time to Visit</h3>
-<p>September to March is peak season with pleasant sunny weather for backwater cruises and hill station tours. Monsoon (June to August) is ideal for traditional Ayurvedic detox wellness retreats.</p>
-<h3>Must-Try Experiences</h3>
-<p>Overnight houseboat stay in Alleppey, guided tea plantation walks in Munnar, elephant safaris in Thekkady, and fresh seafood by Marari Beach.</p>`,
-      faqs: [
-        { ques: "What is the best month for a Kerala tour?", ans: "September to March offers perfect weather for sightseeing, backwater cruises, and hill station drives." },
-        { ques: "Are meals included during the Alleppey Houseboat stay?", ans: "Yes! Deluxe houseboat bookings include all meals—welcome drinks, lunch, evening tea/snacks, dinner, and breakfast." },
-        { ques: "How many days are recommended for a complete Kerala trip?", ans: "6 Days and 5 Nights (Cochin - Munnar - Thekkady - Alleppey) is the ideal itinerary." }
+    "state": {
+      "title": "Kerala",
+      "slug": "kerala",
+      "seoTitle": "Kerala Tour Packages | Backwaters, Tea Hills & Beach Resorts",
+      "h1Title": "Kerala Tour Packages & Local Travel Guide",
+      "seoDescription": "Book 100% customized Kerala tour packages with KoiKoi Travel. Experience Alleppey houseboats, Munnar tea hills, Thekkady wildlife safaris, and Kovalam beaches.",
+      "seoKeyword": "Kerala tour packages, Kerala backwater houseboat, Munnar Alleppey tour, Kerala travel itinerary, KoiKoi Travel Kerala",
+      "overView": "<p>Planning a trip to <strong>Kerala</strong> can get confusing. Unlicensed houseboat operators overcharging for poor quality boats, tricky ghat driving routes to <strong>Munnar</strong>, and unverified spice farm fees can easily ruin your dream holiday.</p>\n<p>That is where <strong>KoiKoi Travel</strong> steps in. We ensure a 100% smooth Kerala experience with verified luxury houseboats in <strong>Alleppey</strong>, private AC cab transfers with mountain-trained drivers, and handpicked hill resorts in <strong>Munnar</strong> and <strong>Thekkady</strong>.</p>\n<p>Enjoy transparent pricing, 24/7 dedicated trip support, and complete itinerary flexibility. Ready to experience God's Own Country? Check out our handpicked Kerala tour packages listed below and choose your ideal holiday today!</p>",
+      "famousFor": "Backwaters & Houseboats, Tea Gardens, Ayurvedic Massages, Spice Plantations, Kathakali Dance, Beaches",
+      "capital": "Thiruvananthapuram",
+      "language": "Malayalam, English",
+      "area": "38,863 sq km",
+      "moreDescription": "<h2>Complete Kerala Travel Guide & Insider Tips</h2>\n<p>Kerala is a tropical paradise in South India renowned for palm-fringed backwaters, misty mountain ranges, and rich cultural traditions.</p>\n<h3>Best Time to Visit</h3>\n<p>September to March offers pleasant, dry weather perfect for backwater cruises and hill station sightseeing in Munnar and Wayanad.</p>\n<h3>Must-Try Local Experiences</h3>\n<p>Overnight stay in a private houseboat, authentic Ayurvedic massage, watching a Kathakali performance, and savoring Kerala Karimeen fish curry.</p>",
+      "faqs": [
+        {
+          "ques": "How many days are recommended for a complete Kerala tour?",
+          "ans": "6 to 8 days is ideal to cover Cochin, Munnar tea hills, Thekkady wildlife, and Alleppey backwater houseboat."
+        },
+        {
+          "ques": "Are houseboats safe for families and couples?",
+          "ans": "Yes! All KoiKoi Travel houseboats are 100% verified, private, fully equipped with safety gear, private bedrooms, and dedicated chef & crew."
+        }
       ]
     },
-    cities: [
+    "cities": [
       {
-        title: 'Cochin',
-        slug: 'cochin',
-        seoTitle: 'Cochin (Kochi) Tour Packages | Chinese Fishing Nets & Heritage Forts',
-        h1Title: 'Cochin Heritage & Gateway Tour Packages',
-        seoDescription: 'Book Cochin tour packages with KoiKoi Travel. Discover Fort Kochi, Chinese Fishing Nets, Mattancherry Palace, Jewish Synagogue, and Kathakali shows.',
-        seoKeyword: 'Cochin tour packages, Fort Kochi sightseeing, Chinese fishing nets Kochi, Mattancherry tour, KoiKoi Travel Cochin',
-        overView: `<p>Arriving in <strong>Cochin</strong> (Kochi) without a structured plan can mean missing out on Fort Kochi\'s charm, getting stuck in city traffic, or paying inflated prices for local auto tours. Finding authentic Kathakali cultural shows or heritage walks requires trusted local guidance.</p>
-<p><strong>KoiKoi Travel</strong> makes your arrival in <strong>Cochin</strong> smooth and enjoyable. Our private driver welcomes you at Cochin International Airport (COK) or Ernakulam Station, whisking you to boutique heritage hotels in Fort Kochi. We guide you past <strong>Chinese Fishing Nets</strong>, <strong>Mattancherry Palace</strong>, and the 400-year-old Jewish Synagogue.</p>
-<p>Enjoy fresh coastal dining and evening cultural shows curated by <strong>KoiKoi Travel</strong>. Explore our Cochin tour packages listed below!</p>`,
-        famousFor: 'Chinese Fishing Nets, Fort Kochi Heritage Walk, Mattancherry Spice Market, St. Francis Church, Kathakali Shows',
-        attractions: 'Fort Kochi Beach, Chinese Fishing Nets, Mattancherry Palace (Dutch Palace), Paradesi Synagogue, St. Francis Church, Santa Cruz Basilica',
-        weather: 'Tropical ocean climate (23°C to 33°C). October to March is peak sightseeing season.',
-        moreDescription: `<h2>Cochin Visitor Guide</h2>
-<p>Cochin is Kerala\'s historical port city where Portuguese, Dutch, British, and Chinese influences blend with Malabar charm.</p>`,
-        faqs: [
-          { ques: "How far is Cochin Airport from Fort Kochi?", ans: "Cochin International Airport (COK) is about 42 km (1 hour drive) from Fort Kochi." }
+        "title": "Cochin (Kochi)",
+        "slug": "cochin",
+        "seoTitle": "Cochin Tour Packages | Fort Kochi Heritage & Colonial Charm",
+        "h1Title": "Cochin Tour Packages & Travel Guide",
+        "seoDescription": "Explore Fort Kochi with KoiKoi Travel. Visit Chinese Fishing Nets, Mattancherry Palace, Jew Town, St. Francis Church, and Kathakali shows with private cab.",
+        "seoKeyword": "Cochin tour packages, Fort Kochi sightseeing, Chinese Fishing Nets Kochi, Jew Town Mattancherry, KoiKoi Travel Cochin",
+        "overView": "<p>Arriving in <strong>Cochin</strong> can feel overwhelming with airport cab hassles, confusing ferry lines, and overpriced tourist shows in Fort Kochi.</p>\n<p>With <strong>KoiKoi Travel</strong>, your <strong>Cochin</strong> arrival is effortless. Your private AC driver meets you at Cochin Airport (COK), whisking you to boutique heritage stays. Explore iconic <strong>Chinese Fishing Nets</strong>, <strong>Jew Town</strong>, and authentic Kathakali performances without stress.</p>\n<p>Enjoy transparent pricing and 24/7 trip assistance. Check out our curated Cochin tour packages below and pick your ideal gateway itinerary today!</p>",
+        "famousFor": "Chinese Fishing Nets, Fort Kochi Heritage, Jew Town, Mattancherry Palace, Kathakali Dance, Seafood",
+        "attractions": "Chinese Fishing Nets, Mattancherry Dutch Palace, Paradesi Synagogue, St. Francis Church, Fort Kochi Beach, Marine Drive",
+        "weather": "Tropical coastal climate (23\u00b0C to 33\u00b0C). Best visited between October and March.",
+        "moreDescription": "<h2>Cochin Travel Guide & Heritage Walking Tips</h2>\n<p>Cochin (Kochi) is Kerala's historical port city where Portuguese, Dutch, British, and Chinese influences blend seamlessly.</p>\n<h3>Top Sightseeing Spots</h3>\n<p>Stroll through the colonial streets of Fort Kochi, buy spice souvenirs in Jew Town, and watch fishermen operate giant wooden Chinese fishing nets.</p>",
+        "faqs": [
+          {
+            "ques": "How far is Cochin Airport from Fort Kochi?",
+            "ans": "Cochin International Airport (COK) is about 42 km from Fort Kochi (approx 1 hour 15 minutes drive)."
+          }
         ]
       },
       {
-        title: 'Munnar',
-        slug: 'munnar',
-        seoTitle: 'Munnar Tour Packages | Tea Plantations, Waterfalls & Anamudi Peak',
-        h1Title: 'Munnar Tea Garden & Honeymoon Tour Packages',
-        seoDescription: 'Book Munnar tour packages with KoiKoi Travel. Explore endless tea plantations, Eravikulam National Park (Nilgiri Tahr), Mattupetty Dam, and Cheeyappara Waterfalls.',
-        seoKeyword: 'Munnar tour packages, Munnar honeymoon package, Munnar tea garden tour, Eravikulam national park, KoiKoi Travel Munnar',
-        overView: `<p>Driving the hill curves to <strong>Munnar</strong> without an experienced mountain cab driver can cause motion sickness and stress. During peak season, long vehicle lines near tea museums and park entry gates can waste your precious day in the hills.</p>
-<p><strong>KoiKoi Travel</strong> provides a serene hill holiday in <strong>Munnar</strong>. Our expert drivers navigate hill roads smoothly while you take in views of <strong>Cheeyappara Waterfalls</strong>. We book pre-arranged passes for <strong>Eravikulam National Park</strong> to spot the endangered Nilgiri Tahr and reserve luxury tea resort stays.</p>
-<p>Breathe in mountain tea air and enjoy private tea garden walks with <strong>KoiKoi Travel</strong>. Browse our popular Munnar packages below!</p>`,
-        famousFor: 'Tea Plantation Gardens, Eravikulam National Park, Cheeyappara & Valara Waterfalls, Mattupetty Dam, Tea Museum',
-        attractions: 'Eravikulam National Park, Mattupetty Dam, Tea Museum, Anamudi Peak, Kundala Lake, Top Station, Cheeyappara Waterfalls',
-        weather: 'Cool hill climate (10°C to 22°C). Best visited between September and May.',
-        moreDescription: `<h2>Munnar Hill Station Guide</h2>
-<p>Munnar is situated 1,600 meters above sea level amidst vast manicured tea estates, lakes, and misty valleys.</p>`,
-        faqs: [
-          { ques: "Is Munnar good for a honeymoon?", ans: "Munnar is one of India\'s top honeymoon destinations thanks to its misty climate, luxury tea resorts, and peaceful nature." }
+        "title": "Munnar",
+        "slug": "munnar",
+        "seoTitle": "Munnar Tour Packages | Tea Estates, Waterfalls & Mountain Escapes",
+        "h1Title": "Munnar Tour Packages & Travel Guide",
+        "seoDescription": "Escape to misty Munnar hills with KoiKoi Travel. Explore Tea Gardens, Eravikulam National Park (Nilgiri Tahr), Mattupetty Dam, and spice plantations.",
+        "seoKeyword": "Munnar tour packages, Munnar tea estate tour, Munnar honeymoon package, Eravikulam safari, KoiKoi Travel Munnar",
+        "overView": "<p>Driving up to <strong>Munnar</strong> can be stressful due to steep mountain hairpin bends, heavy fog, and unverified local driver charges.</p>\n<p><strong>KoiKoi Travel</strong> ensures a peaceful <strong>Munnar</strong> holiday. Our mountain-trained private drivers navigate scenic ghats comfortably while you relax. Enjoy handpicked tea-resort stays and guided visits to <strong>Eravikulam National Park</strong>, <strong>Mattupetty Dam</strong>, and lush tea estates.</p>\n<p>Travel with 100% transparent rates and 24/7 dedicated support. Explore our handpicked Munnar tour packages listed below and book your tea hill retreat today!</p>",
+        "famousFor": "Tea Plantations, Eravikulam National Park (Nilgiri Tahr), Mattupetty Dam, Anamudi Peak, Tea Museum, Waterfalls",
+        "attractions": "Eravikulam National Park, Mattupetty Dam, Tea Museum, Echo Point, Anamudi Peak, Attukad Waterfalls, Kundala Lake",
+        "weather": "Cool hill climate (10\u00b0C to 20\u00b0C). Ideal to visit year-round, especially September to May.",
+        "moreDescription": "<h2>Munnar Hill Station Guide & Travel Tips</h2>\n<p>Perched at 1,600m altitude, Munnar is South India's premier tea town surrounded by green hills and cascading waterfalls.</p>\n<h3>Best Experiences</h3>\n<p>Spotted endangered Nilgiri Tahr mountain goats at Rajamalai, sip freshly plucked tea at the Tea Museum, and take photo stops at Echo Point.</p>",
+        "faqs": [
+          {
+            "ques": "How many days are needed for Munnar?",
+            "ans": "2 to 3 days is ideal to comfortably explore tea gardens, national parks, waterfalls, and spice plantations."
+          }
         ]
       },
       {
-        title: 'Thekkady',
-        slug: 'thekkady',
-        seoTitle: 'Thekkady (Periyar) Tour Packages | Wildlife Boat Safari & Spice Gardens',
-        h1Title: 'Thekkady Wildlife & Spice Plantation Tours',
-        seoDescription: 'Discover Thekkady (Periyar) tour packages with KoiKoi Travel. Enjoy Periyar Lake jungle boat safari, elephant rides, spice plantation tours, and Kalaripayattu martial art shows.',
-        seoKeyword: 'Thekkady tour packages, Periyar boat safari booking, Thekkady spice garden tour, Periyar tiger reserve, KoiKoi Travel Thekkady',
-        overView: `<p>Getting tickets for the popular <strong>Periyar Lake boat safari</strong> in <strong>Thekkady</strong> can be frustrating due to long queues and sold-out slots. Finding genuine spice plantation tours instead of tourist trap shops requires trusted local contacts.</p>
-<p><strong>KoiKoi Travel</strong> ensures your trip to <strong>Thekkady</strong> is adventurous and hassle-free. We assist with pre-booked Periyar boat safari passes to view wild elephant herds along the lake, arrange organic spice garden walks, and book passes for authentic <strong>Kalaripayattu</strong> martial arts shows.</p>
-<p>Immerse yourself in nature and spice fragrance with <strong>KoiKoi Travel</strong>. Explore our Thekkady packages listed below!</p>`,
-        famousFor: 'Periyar Lake Boat Safari, Elephant Rides & Bathing, Spice Plantation Walks, Martial Arts Shows',
-        attractions: 'Periyar National Park & Lake, Elephant Junction, Spice Plantations, Kadathanadan Kalari Centre, Mangala Devi Temple',
-        weather: 'Pleasant jungle climate (15°C to 28°C). October to March offers prime wildlife viewing.',
-        moreDescription: `<h2>Thekkady Travel Guide</h2>
-<p>Thekkady is India\'s spice capital and home to the famous Periyar Tiger Reserve.</p>`,
-        faqs: [
-          { ques: "Can we see wild elephants in Periyar?", ans: "Yes! The morning lake boat safari in Periyar National Park frequently offers sightings of wild elephant herds by the water." }
+        "title": "Periyar (Thekkady)",
+        "slug": "periyar",
+        "seoTitle": "Periyar Tour Packages | Wildlife Safaris & Spice Plantation Walks",
+        "h1Title": "Periyar (Thekkady) Tour Packages & Travel Guide",
+        "seoDescription": "Experience Thekkady wildlife with KoiKoi Travel. Book Periyar Lake boat safaris, spice plantation walks, elephant interactions, and jungle eco-tours.",
+        "seoKeyword": "Periyar tour packages, Thekkady wildlife safari, Periyar boat ride booking, Spice garden tour Kerala, KoiKoi Travel Thekkady",
+        "overView": "<p>Visiting <strong>Periyar (Thekkady)</strong> often involves last-minute boat safari ticket rushes, unverified spice farm fees, and crowded transport hubs.</p>\n<p>With <strong>KoiKoi Travel</strong>, your <strong>Thekkady</strong> adventure is completely smooth. We pre-arrange your <strong>Periyar Lake</strong> boat safari tickets, private AC transfers, and handpicked jungle lodge stays. Explore organic cardamom gardens and elephant sanctuaries with ease.</p>\n<p>Enjoy transparent rates and 24/7 local trip coordination. Check out our customized Periyar tour packages below and pick your wildlife itinerary today!</p>",
+        "famousFor": "Periyar Wildlife Sanctuary, Boat Safari, Spice Plantations, Elephant Rides, Kalaripayattu Martial Arts",
+        "attractions": "Periyar Lake Boat Safari, Elephant Junction, Anakkara Spice Gardens, Kadathanadan Kalari Centre, Mangala Devi Temple",
+        "weather": "Pleasant forest climate (15\u00b0C to 26\u00b0C). Best visited between September and May.",
+        "moreDescription": "<h2>Periyar & Thekkady Travel Guide</h2>\n<p>Thekkady is Kerala's spice and wildlife hub, centered around the sprawling Periyar Tiger Reserve.</p>\n<h3>Top Jungle Activities</h3>\n<p>Spot wild elephants and sambar deer on a Periyar Lake boat cruise, take a guided spice garden walk, and watch a live Kalaripayattu martial arts show.</p>",
+        "faqs": [
+          {
+            "ques": "How to book Periyar Lake boat safari tickets?",
+            "ans": "Boat tickets are limited and sold online via Kerala Forest Department. KoiKoi Travel pre-arranges tickets as part of your customized package."
+          }
         ]
       },
       {
-        title: 'Kumarakom',
-        slug: 'kumarakom',
-        seoTitle: 'Kumarakom Tour Packages | Vembanad Lake & Luxury Backwater Resorts',
-        h1Title: 'Kumarakom Lakefront & Resort Packages',
-        seoDescription: 'Book Kumarakom tour packages with KoiKoi Travel. Relax at luxury resorts on Vembanad Lake, visit Kumarakom Bird Sanctuary, and enjoy sunset shikara cruises.',
-        seoKeyword: 'Kumarakom tour packages, Vembanad lake resort, Kumarakom bird sanctuary, Kumarakom backwaters, KoiKoi Travel Kumarakom',
-        overView: `<p>If you prefer a quiet, tranquil backwater stay over busy town canals, <strong>Kumarakom</strong> is ideal. However, choosing the right waterfront resort on <strong>Vembanad Lake</strong> can be confusing with so many online listings.</p>
-<p><strong>KoiKoi Travel</strong> selects top-rated luxury backwater resorts in <strong>Kumarakom</strong>. Enjoy private boat rides, migratory bird watching at <strong>Kumarakom Bird Sanctuary</strong>, and sunset shikara cruises across Vembanad Lake.</p>
-<p>Relax in peaceful backwater luxury with <strong>KoiKoi Travel</strong>. Check out our Kumarakom tour packages below!</p>`,
-        famousFor: 'Vembanad Lake Sunset Cruises, Kumarakom Bird Sanctuary, Luxury Waterfront Resorts, Shikara Rides',
-        attractions: 'Vembanad Lake, Kumarakom Bird Sanctuary, Bay Island Driftwood Museum, Pathiramanal Island',
-        weather: 'Tropical backwater climate (22°C to 32°C). Best visited between November and February.',
-        moreDescription: `<h2>Kumarakom Visitor Guide</h2>
-<p>Kumarakom is a cluster of serene islands on Vembanad Lake, famous for luxury wellness retreats.</p>`,
-        faqs: [
-          { ques: "What is the difference between Alleppey and Kumarakom?", ans: "Alleppey is famous for moving houseboat cruises, while Kumarakom is known for luxury stationary lakefront resort stays." }
+        "title": "Kumarakom",
+        "slug": "kumarakom",
+        "seoTitle": "Kumarakom Tour Packages | Vembanad Lake & Luxury Backwater Resorts",
+        "h1Title": "Kumarakom Tour Packages & Travel Guide",
+        "seoDescription": "Discover luxury backwaters in Kumarakom with KoiKoi Travel. Explore Vembanad Lake cruises, Kumarakom Bird Sanctuary, and premium lakefront resort stays.",
+        "seoKeyword": "Kumarakom tour packages, Vembanad Lake resort, Kumarakom bird sanctuary tour, Kerala luxury backwaters, KoiKoi Travel Kumarakom",
+        "overView": "<p>Planning a <strong>Kumarakom</strong> stay can lead to confusion over resort locations, unverified boat jetty rates, and tourist trap dining spots.</p>\n<p><strong>KoiKoi Travel</strong> ensures a luxurious, peaceful <strong>Kumarakom</strong> escape. We book handpicked waterfront resorts along <strong>Vembanad Lake</strong>, private motorboat cruises, and visits to the <strong>Kumarakom Bird Sanctuary</strong>.</p>\n<p>Unwind in total tranquil comfort with transparent pricing and 24/7 manager support. Browse our handpicked Kumarakom tour packages listed below and choose your luxury retreat today!</p>",
+        "famousFor": "Vembanad Lake, Luxury Water Resorts, Kumarakom Bird Sanctuary, Shikara Boat Cruises, Ayurvedic Wellness",
+        "attractions": "Vembanad Lake, Kumarakom Bird Sanctuary, Arosseril Waterfalls, Pathiramanal Island, Bay Island Driftwood Museum",
+        "weather": "Tropical humid climate (22\u00b0C to 32\u00b0C). Best visited from September to March.",
+        "moreDescription": "<h2>Kumarakom Backwater Visitor Guide</h2>\n<p>Kumarakom is a cluster of peaceful islands on Vembanad Lake, famous for migratory birds and high-end luxury resorts.</p>\n<h3>Serene Highlights</h3>\n<p>Spot migratory herons and Siberian storks at Kumarakom Bird Sanctuary, enjoy sunset shikara rides, and relax with authentic Kerala Ayurveda treatments.</p>",
+        "faqs": [
+          {
+            "ques": "What is the difference between Alleppey and Kumarakom?",
+            "ans": "Alleppey is the busy hub for houseboat cruises, while Kumarakom offers quieter, high-end luxury lakefront resort stays."
+          }
         ]
       },
       {
-        title: 'Alleppey',
-        slug: 'alleppey',
-        seoTitle: 'Alleppey Tour Packages | Deluxe Houseboat Cruises & Backwaters',
-        h1Title: 'Alleppey Houseboat & Backwater Tour Packages',
-        seoDescription: 'Book Alleppey (Alappuzha) tour packages with KoiKoi Travel. Overnight deluxe houseboat stay with freshly cooked meals, canal cruises, and beach sunsets.',
-        seoKeyword: 'Alleppey tour packages, Alleppey houseboat booking, Alleppey backwater tour, Kerala houseboat package, KoiKoi Travel Alleppey',
-        overView: `<p>Booking a houseboat in <strong>Alleppey</strong> independently comes with risks: outdated wooden boats, noisy engine generators, poor air conditioning, and sub-standard meals. A bad houseboat experience can ruin your entire Kerala vacation.</p>
-<p><strong>KoiKoi Travel</strong> guarantees verified, high-quality deluxe and luxury houseboats in <strong>Alleppey</strong>. Cruise through narrow palm-fringed backwater canals, watch village life along the riverbanks, and enjoy freshly prepared Kerala lunch and dinner on board.</p>
-<p>Wake up to misty waters and hot South Indian breakfast served on your private deck with <strong>KoiKoi Travel</strong>. Browse our Alleppey houseboat packages below!</p>`,
-        famousFor: 'Overnight Houseboat Stay, Backwater Canal Cruise, Marari Beach, Toddy Shop Delicacies, Nehru Trophy Boat Race',
-        attractions: 'Alleppey Backwaters, Punnamada Lake, Marari Beach, Alleppey Lighthouse, Kuttanad Paddy Fields',
-        weather: 'Tropical backwater weather (23°C to 33°C). October to March is peak houseboat season.',
-        moreDescription: `<h2>Alleppey Houseboat Guide</h2>
-<p>Alleppey, the "Venice of the East," is world-famous for traditional wooden Kettuvallam houseboat cruises.</p>`,
-        faqs: [
-          { ques: "What time does houseboat check-in happen in Alleppey?", ans: "Standard houseboat check-in is at 12:00 PM (noon) with check-out at 9:00 AM the following morning after breakfast." },
-          { ques: "Are AC houseboats available all night?", ans: "Yes! Deluxe houseboats provide AC from 9:00 PM to 6:00 AM, while Premium/Luxury boats provide 24-hour full-time AC." }
+        "title": "Alleppey (Alappuzha)",
+        "slug": "alleppey",
+        "seoTitle": "Alleppey Tour Packages | Houseboat Cruises & Backwater Trails",
+        "h1Title": "Alleppey (Alappuzha) Tour Packages & Travel Guide",
+        "seoDescription": "Book authentic Alleppey houseboat packages with KoiKoi Travel. Cruise Punnamada Lake, backwater canals, village life, and enjoy freshly cooked Kerala meals.",
+        "seoKeyword": "Alleppey houseboat package, Alappuzha backwater tour, Kerala houseboat booking, Alleppey trip itinerary, KoiKoi Travel Alleppey",
+        "overView": "<p>Booking an <strong>Alleppey</strong> houseboat can be risky with tout scams, unverified old boats, poor food quality, and hidden AC electricity fees.</p>\n<p>With <strong>KoiKoi Travel</strong>, your <strong>Alleppey</strong> houseboat experience is 100% verified and stress-free. Cruise peaceful backwaters on private deluxe or luxury houseboats featuring air-conditioned bedrooms, private upper decks, and dedicated onboard chefs serving fresh Karimeen fish.</p>\n<p>Enjoy transparent rates and total peace of mind. Check out our curated Alleppey houseboat packages below and book your backwater cruise today!</p>",
+        "famousFor": "Houseboat Overnight Stay, Backwater Canals, Punnamada Lake, Nehru Trophy Boat Race, Marari Beach",
+        "attractions": "Alleppey Backwaters, Punnamada Lake, Alappuzha Beach & Lighthouse, Marari Beach, Krishnapuram Palace, Revi Karunakaran Museum",
+        "weather": "Warm coastal backwater climate (23\u00b0C to 33\u00b0C). Best visited from October to March.",
+        "moreDescription": "<h2>Alleppey Houseboat & Backwater Travel Guide</h2>\n<p>Known as the 'Venice of the East', Alleppey is famous worldwide for its vast network of emerald backwater canals.</p>\n<h3>Houseboat Stay Experience</h3>\n<p>Check-in at noon, enjoy freshly cooked Kerala lunch while gliding past palm-lined villages, watch sunset over the lake, and anchor peacefully for the night.</p>",
+        "faqs": [
+          {
+            "ques": "What is included in a KoiKoi Travel Alleppey houseboat booking?",
+            "ans": "Every houseboat booking includes private boat, AC bedroom, all meals (lunch, evening tea/snacks, dinner, breakfast), and personal crew/chef."
+          }
         ]
       },
       {
-        title: 'Wayanad',
-        slug: 'wayanad',
-        seoTitle: 'Wayanad Tour Packages | Rainforests, Edakkal Caves & Waterfalls',
-        h1Title: 'Wayanad Nature & Wildlife Tour Packages',
-        seoDescription: 'Explore Wayanad tour packages with KoiKoi Travel. Visit Edakkal Caves prehistoric carvings, Banasura Sagar Dam, Chembra Peak heart lake, and wildlife sanctuaries.',
-        seoKeyword: 'Wayanad tour packages, Wayanad rainforest resort, Edakkal caves Wayanad, Banasura dam tour, KoiKoi Travel Wayanad',
-        overView: `<p>Navigating the rainforest roads of <strong>Wayanad</strong> without a clear route plan means spending hours driving between spread-out attractions like <strong>Edakkal Caves</strong> and <strong>Banasura Sagar Dam</strong>. Finding authentic treehouse resort stays requires trusted guidance.</p>
-<p><strong>KoiKoi Travel</strong> plans your <strong>Wayanad</strong> rainforest getaway smoothly. Our local cab drivers take you to prehistoric rock art at Edakkal Caves, boat rides on Banasura Lake, and lush coffee and spice plantations.</p>
-<p>Stay in eco-resorts surrounded by mountain mist with <strong>KoiKoi Travel</strong>. Explore our Wayanad packages listed below!</p>`,
-        famousFor: 'Edakkal Caves, Banasura Sagar Earth Dam, Chembra Peak Heart Lake, Treehouses, Spice Plantations',
-        attractions: 'Edakkal Caves, Banasura Sagar Dam, Chembra Peak, Kuruva Island, Soochipara Falls, Wayanad Wildlife Sanctuary',
-        weather: 'Cool green mountain climate (15°C to 25°C). Best visited from September to May.',
-        moreDescription: `<h2>Wayanad Rainforest Guide</h2>
-<p>Wayanad is a high-altitude green paradise in North Kerala filled with spice hills and ancient cave art.</p>`,
-        faqs: [
-          { ques: "What is special about Edakkal Caves?", ans: "They feature prehistoric rock carvings dating back to the Neolithic age, reached via a short scenic trek." }
+        "title": "Wayanad",
+        "slug": "wayanad",
+        "seoTitle": "Wayanad Tour Packages | Forest Trails, Caves & Eco-Resorts",
+        "h1Title": "Wayanad Tour Packages & Travel Guide",
+        "seoDescription": "Explore green Wayanad hills with KoiKoi Travel. Visit Edakkal Caves, Banasura Sagar Dam, Chembra Peak, Kuruva Island, and coffee estate resorts.",
+        "seoKeyword": "Wayanad tour packages, Wayanad travel itinerary, Edakkal caves tour, Banasura dam Wayanad, KoiKoi Travel Wayanad",
+        "overView": "<p>Exploring <strong>Wayanad</strong> without local planning can lead to navigation confusion on remote forest roads, unverified cab rates, and missed sight timings.</p>\n<p><strong>KoiKoi Travel</strong> makes your <strong>Wayanad</strong> trip smooth and enjoyable. We provide private AC cab transfers, mountain drivers, and handpicked stays in coffee plantation resorts. Explore prehistoric <strong>Edakkal Caves</strong>, <strong>Banasura Sagar Dam</strong>, and <strong>Kuruva Island</strong> with ease.</p>\n<p>Enjoy 100% transparent pricing and 24/7 local manager support. Explore our handpicked Wayanad tour packages listed below and choose your eco-escape today!</p>",
+        "famousFor": "Edakkal Caves (Neolithic Carvings), Banasura Sagar Dam, Coffee & Spice Estates, Chembra Peak, Kuruva Island",
+        "attractions": "Edakkal Caves, Banasura Sagar Dam, Chembra Peak (Heart Lake), Kuruva Dweep Island, Wayanad Wildlife Sanctuary, Soochipara Falls",
+        "weather": "Cool green forest climate (15\u00b0C to 27\u00b0C). Best visited between September and May.",
+        "moreDescription": "<h2>Wayanad Hill & Forest Visitor Guide</h2>\n<p>Wayanad is North Kerala's green highland district, filled with dense wildlife sanctuaries, mist-covered peaks, and ancient caves.</p>\n<h3>Top Sightseeing Highlights</h3>\n<p>Trek up to Edakkal Caves to see 7,000-year-old rock carvings, ride speedboats at Banasura Sagar Dam, and walk through spice plantations.</p>",
+        "faqs": [
+          {
+            "ques": "How far is Wayanad from Calicut (Kozhikode)?",
+            "ans": "Wayanad is about 85 km from Calicut Airport/Railway Station (approx 2.5 hours drive up the scenic Thamarassery Ghat pass)."
+          }
         ]
       },
       {
-        title: 'Bekal',
-        slug: 'bekal',
-        seoTitle: 'Bekal Tour Packages | Historic Keyhole Fort & Coastal Escapes',
-        h1Title: 'Bekal Fort & Beach Resort Packages',
-        seoDescription: 'Book Bekal tour packages with KoiKoi Travel. Visit 300-year-old Bekal Fort overlooking Arabian Sea, luxury beach resorts, and pristine golden sand coastlines.',
-        seoKeyword: 'Bekal tour packages, Bekal fort tour, Bekal beach resort, North Kerala tour, KoiKoi Travel Bekal',
-        overView: `<p>Looking for an unspoiled, crowd-free beach escape in North Kerala? <strong>Bekal</strong> is home to the dramatic 300-year-old <strong>Bekal Fort</strong> standing right over the Arabian Sea waves, but finding luxury resort options without local guidance can be tough.</p>
-<p><strong>KoiKoi Travel</strong> arranges exclusive coastal stays in <strong>Bekal</strong>. Walk the stone ramparts of Bekal Fort, enjoy private beach walks, and relax at premier backwater estuary resorts.</p>
-<p>Experience uncrowded beach luxury with <strong>KoiKoi Travel</strong>. Browse our Bekal tour packages below!</p>`,
-        famousFor: 'Bekal Fort, Bekal Beach Park, Estuary Views, Taj Bekal Luxury Resort',
-        attractions: 'Bekal Fort, Bekal Fort Beach, Kappil Beach, Ananthapura Lake Temple',
-        weather: 'Coastal tropical climate (22°C to 33°C). October to March is peak season.',
-        moreDescription: `<h2>Bekal Coastal Guide</h2>
-<p>Bekal is a quiet beach town in Kasaragod district famed for its majestic keyhole sea fort.</p>`,
-        faqs: [
-          { ques: "Why is Bekal Fort famous?", ans: "It is the largest and best-preserved fort in Kerala, famous for its keyhole shape rising directly out of the Arabian Sea." }
+        "title": "Bekal",
+        "slug": "bekal",
+        "seoTitle": "Bekal Tour Packages | Historic Ocean Fort & Quiet Beaches",
+        "h1Title": "Bekal Tour Packages & Travel Guide",
+        "seoDescription": "Discover serene Bekal with KoiKoi Travel. Explore historic Bekal Fort overlooking the Arabian Sea, pristine beaches, and luxury coastal resorts.",
+        "seoKeyword": "Bekal tour packages, Bekal fort trip, Bekal beach resort Kerala, North Kerala tour, KoiKoi Travel Bekal",
+        "overView": "<p>Visiting <strong>Bekal</strong> in North Kerala can be tricky due to sparse public transport, limited local cab availability, and lack of guided information.</p>\n<p>With <strong>KoiKoi Travel</strong>, your <strong>Bekal</strong> retreat is completely comfortable. Enjoy private AC cab transfers, luxury oceanfront resort stays, and effortless visits to the giant keyhole-shaped <strong>Bekal Fort</strong> overlooking the Arabian Sea.</p>\n<p>Relax on untouched golden beaches with zero hidden fees and total peace of mind. Check out our customized Bekal tour packages below and plan your coastal getaway today!</p>",
+        "famousFor": "Bekal Fort, Arabian Sea Sunset Views, Bekal Beach, Backwater Estuaries, Luxury Resorts",
+        "attractions": "Bekal Fort, Bekal Fort Beach, Kappil Beach, Chandragiri Fort, Nombili Hill, Ananthapura Lake Temple",
+        "weather": "Coastal tropical climate (23\u00b0C to 33\u00b0C). Best visited from October to March.",
+        "moreDescription": "<h2>Bekal Coastal Visitor Guide</h2>\n<p>Bekal is North Kerala's hidden coastal jewel, dominated by 300-year-old Bekal Fort built right on the ocean waves.</p>\n<h3>Quiet Beach Highlights</h3>\n<p>Walk along the stone ramparts of Bekal Fort for 360-degree ocean views, watch golden sunsets at Kappil Beach, and enjoy peaceful luxury resort stays.</p>",
+        "faqs": [
+          {
+            "ques": "Which is the nearest airport to Bekal?",
+            "ans": "Mangalore International Airport (IXE) in Karnataka is the nearest airport, located just 50 km from Bekal (1.5 hours drive)."
+          }
         ]
       },
       {
-        title: 'Calicut',
-        slug: 'calicut',
-        seoTitle: 'Calicut (Kozhikode) Tour Packages | Spice Coast & Malabar Cuisine',
-        h1Title: 'Calicut Cultural & Malabar Culinary Tours',
-        seoDescription: 'Book Calicut (Kozhikode) tour packages with KoiKoi Travel. Visit Kappad Beach (Vasco da Gama landing site), Sweet Street (SM Street), and sample legendary Kozhikode Biryani.',
-        seoKeyword: 'Calicut tour packages, Kozhikode tour, Malabar food tour, Kappad beach Calicut, KoiKoi Travel Calicut',
-        overView: `<p>Calicut (<strong>Kozhikode</strong>) is India\'s historic spice trade coast, but travelers often miss out on its rich culinary heritage or historic beaches without a guided food and city plan.</p>
-<p>With <strong>KoiKoi Travel</strong>, explore historical <strong>Kappad Beach</strong>, stroll down lively <strong>SM Street</strong> for authentic Kozhikode Halwa, and sample world-famous Malabar Biryani.</p>
-<p>Enjoy historic coastlines and legendary food trails with <strong>KoiKoi Travel</strong>. Check out our Calicut packages below!</p>`,
-        famousFor: 'Kappad Beach, Kozhikode Halwa & Biryani, SM Street Market, Beypore Shipyards',
-        attractions: 'Kappad Beach, Kozhikode Beach, SM Street (Sweetmeat Street), Beypore Port & Shipyard, Mananchira Square',
-        weather: 'Coastal tropical weather (23°C to 33°C). October to March is ideal for beach and market walks.',
-        moreDescription: `<h2>Calicut Visitor Guide</h2>
-<p>Kozhikode is the legendary Spice Coast where European trade routes first connected with South India.</p>`,
-        faqs: [
-          { ques: "What food is Kozhikode famous for?", ans: "Kozhikode is world-renowned for Malabar Biryani, Kozhikode Halwa, banana chips, and fresh seafood." }
+        "title": "Calicut (Kozhikode)",
+        "slug": "calicut",
+        "seoTitle": "Calicut Tour Packages | Malabar Culinary Trails & Coastal Culture",
+        "h1Title": "Calicut (Kozhikode) Tour Packages & Travel Guide",
+        "seoDescription": "Experience Calicut with KoiKoi Travel. Explore Kozhikode Beach, Sweet Street (Mithai Theravu), authentic Malabar Biryani hubs, and Mananchira Square.",
+        "seoKeyword": "Calicut tour packages, Kozhikode biryani tour, Malabar tourism Kerala, Kozhikode beach, KoiKoi Travel Calicut",
+        "overView": "<p>Exploring <strong>Calicut (Kozhikode)</strong> without local insight can mean getting stuck in city traffic and missing legendary culinary spots and sweet shops.</p>\n<p><strong>KoiKoi Travel</strong> ensures a rich <strong>Calicut</strong> experience. We arrange private AC transfers, central hotel stays, and guided food walks to authentic Malabar Biryani houses, <i>Mithai Theravu</i> (Sweet Street), and sunset strolls on <strong>Kozhikode Beach</strong>.</p>\n<p>Taste true Malabar hospitality with clear pricing and 24/7 support. Browse our curated Calicut tour packages listed below and choose your food & coastal trip today!</p>",
+        "famousFor": "Malabar Biryani, Kozhikode Halwa, Sweet Street (Mithai Theravu), Kozhikode Beach, Vasco da Gama Landing (Kappad)",
+        "attractions": "Kozhikode Beach, Sweet Street (SM Street), Mananchira Square, Kappad Beach, Beypore Shipyard, Regional Science Centre",
+        "weather": "Tropical coastal climate (24\u00b0C to 34\u00b0C). Best visited from October to March.",
+        "moreDescription": "<h2>Calicut Cultural & Food Guide</h2>\n<p>Calicut is the historic capital of Malabar where Vasco da Gama first set foot in India in 1498, world-famous for spice trade and food.</p>\n<h3>Must-Try Culinary Highlights</h3>\n<p>Feast on aromatic Malabar Dum Biryani, try colorful Kozhikode Banana Halwa, and sip warm Sulaimani tea along Kozhikode Beach at dusk.</p>",
+        "faqs": [
+          {
+            "ques": "What is Calicut famous for?",
+            "ans": "Calicut is world-famous for Malabar cuisine (Biryani & Halwa), historic beach sunsets, and traditional Beypore wooden shipbuilding (Urus)."
+          }
         ]
       },
       {
-        title: 'Kannur',
-        slug: 'kannur',
-        seoTitle: 'Kannur Tour Packages | Theyyam Ritual Performance & Drive-in Beach',
-        h1Title: 'Kannur Theyyam Ritual & Beach Tours',
-        seoDescription: 'Discover Kannur tour packages with KoiKoi Travel. Experience mystical Theyyam ritual performances, Muzhappilangad Drive-in Beach, and St. Angelo Fort.',
-        seoKeyword: 'Kannur tour packages, Theyyam performance tour, Muzhappilangad drive in beach, Kannur travel guide, KoiKoi Travel Kannur',
-        overView: `<p>Witnessing a real <strong>Theyyam</strong> ritual dance performance in <strong>Kannur</strong> requires exact shrine schedule knowledge that most regular tourists miss. Driving on Asia\'s longest drive-in beach at <strong>Muzhappilangad</strong> also requires local coordination.</p>
-<p><strong>KoiKoi Travel</strong> connects you with authentic <strong>Kannur</strong> experiences. We arrange night shrine visits for Theyyam rituals, private cab drives along Muzhappilangad Beach, and tours of <strong>St. Angelo Fort</strong>.</p>
-<p>Experience North Kerala\'s rich folklore and beaches with <strong>KoiKoi Travel</strong>. Explore our Kannur packages listed below!</p>`,
-        famousFor: 'Theyyam Ritual Performance, Muzhappilangad Drive-in Beach, St. Angelo Fort, Handloom Weaving',
-        attractions: 'Muzhappilangad Drive-in Beach, St. Angelo Fort, Payyambalam Beach, Parassinikkadavu Snake Park, Theyyam Shrines',
-        weather: 'Coastal tropical climate (22°C to 33°C). November to April is Theyyam ritual season.',
-        moreDescription: `<h2>Kannur Cultural Guide</h2>
-<p>Kannur is North Kerala\'s land of loom and lore, famous for Theyyam rituals and drive-in beaches.</p>`,
-        faqs: [
-          { ques: "What is Theyyam in Kannur?", ans: "Theyyam is a sacred, centuries-old ritual dance performance where shamans embody divine deities in vibrant costumes." }
+        "title": "Kannur",
+        "slug": "kannur",
+        "seoTitle": "Kannur Tour Packages | Theyyam Rituals & Drive-in Beach Trails",
+        "h1Title": "Kannur Tour Packages & Travel Guide",
+        "seoDescription": "Discover cultural Kannur with KoiKoi Travel. Experience Theyyam ritual performances, Muzhappilangad Drive-in Beach, St. Angelo Fort, and handloom crafts.",
+        "seoKeyword": "Kannur tour packages, Theyyam ritual tour, Muzhappilangad drive in beach, St Angelo Fort Kannur, KoiKoi Travel Kannur",
+        "overView": "<p>Tracking down sacred <strong>Theyyam</strong> ritual dates in <strong>Kannur</strong> and arranging remote beach transfers can be confusing for travelers.</p>\n<p>With <strong>KoiKoi Travel</strong>, your <strong>Kannur</strong> trip is seamless. We coordinate local Theyyam temple calendars, provide private AC cab transfers, and take you to <strong>St. Angelo Fort</strong> and <strong>Muzhappilangad Drive-in Beach</strong>\u2014Asia's longest drive-in beach.</p>\n<p>Experience North Kerala's raw culture with transparent rates and full support. Check out our customized Kannur tour packages below and book your trip today!</p>",
+        "famousFor": "Theyyam Ritual Performances, Muzhappilangad Drive-in Beach, St. Angelo Fort, Handloom Fabrics, Theyyam Temples",
+        "attractions": "Muzhappilangad Drive-in Beach, St. Angelo Fort (Kannur Fort), Arakkal Museum, Payyambalam Beach, Parassinikkadavu Snake Park",
+        "weather": "Tropical coastal climate (23\u00b0C to 33\u00b0C). Best visited between October and March for Theyyam season.",
+        "moreDescription": "<h2>Kannur Cultural & Theyyam Guide</h2>\n<p>Kannur is North Kerala's cultural crown, famous for ancient Theyyam ritual art forms where dancers embody divine spirits.</p>\n<h3>Unique Experiences</h3>\n<p>Drive your car right onto the sands of Muzhappilangad Beach, explore Portuguese stone battlements at St. Angelo Fort, and witness night Theyyam rituals.</p>",
+        "faqs": [
+          {
+            "ques": "When is the Theyyam season in Kannur?",
+            "ans": "Theyyam ritual performances take place in village temples across Kannur from October to May every year."
+          }
         ]
       }
     ]
   },
   {
-    state: {
-      title: 'Karnataka',
-      slug: 'karnataka',
-      seoTitle: 'Karnataka Tour Packages | Palaces, Hampi Ruins & Coorg Coffee Hills',
-      h1Title: 'Karnataka Tour Packages & Travel Guide',
-      seoDescription: 'Book 100% customized Karnataka tour packages. Discover Mysore Palace, UNESCO Hampi ruins, Coorg coffee hill stays, Bandipur tiger safaris, and Bangalore city with KoiKoi Travel.',
-      seoKeyword: 'Karnataka tour packages, Karnataka trip itinerary, Mysore Hampi tour, Coorg tour packages, KoiKoi Travel Karnataka',
-      overView: `<p>Planning a multi-city circuit across <strong>Karnataka</strong> can get complicated fast. Coordinating long road transfers between Silicon Valley <strong>Bangalore</strong>, the grand royal heritage of <strong>Mysore</strong>, misty coffee estates in <strong>Coorg</strong>, and the spread-out UNESCO ruins of <strong>Hampi</strong> often leads to driver confusion, fatigue, and inflated prices.</p>
-<p>With <strong>KoiKoi Travel</strong>, exploring <strong>Karnataka</strong> is smooth, comfortable, and well-organized. We provide dedicated private AC cab transfers with courteous drivers, handpicked heritage hotel stays, and custom daily itineraries tailored to your pace.</p>
-<p>Marvel at the golden illumination of <strong>Mysore Palace</strong>, explore ancient stone chariots in <strong>Hampi</strong>, and relax in serene coffee plantations with 24/7 trip manager support. Browse our handpicked Karnataka tour packages below and start planning today!</p>`,
-      famousFor: 'Mysore Palace Illumination, UNESCO Hampi Ruins, Coorg Coffee Estates, Bandipur & Nagarhole Safaris, Silicon Valley Bangalore',
-      capital: 'Bengaluru (Bangalore)',
-      language: 'Kannada, English',
-      area: '191,791 sq km',
-      moreDescription: `<h2>Complete Karnataka Travel Guide & Tips</h2>
-<p>Karnataka is a diverse state combining royal heritage, UNESCO ancient architecture, coffee hills, and tiger reserves.</p>
-<h3>Best Time to Visit</h3>
-<p>October to March offers cool, pleasant weather ideal for exploring Hampi ruins, Mysore Palace, Coorg, and Bandipur safaris.</p>
-<h3>Must-Try Local Cuisine</h3>
-<p>Enjoy Mysore Masala Dosa, Coorg Pandi Curry, Bisi Bele Bath, Neer Dosa, and authentic filter coffee.</p>`,
-      faqs: [
-        { ques: "What is the best month to visit Karnataka?", ans: "October to March is peak season with comfortable temperatures across palaces, ruins, and hill stations." },
-        { ques: "How many days are needed for Bangalore, Mysore, and Coorg?", ans: "5 Days and 4 Nights is the perfect duration for the Bangalore - Mysore - Coorg circuit." }
+    "state": {
+      "title": "Karnataka",
+      "slug": "karnataka",
+      "seoTitle": "Karnataka Tour Packages | Palaces, UNESCO Ruins & Coffee Hills",
+      "h1Title": "Karnataka Tour Packages & Local Travel Guide",
+      "seoDescription": "Book 100% customized Karnataka tour packages with KoiKoi Travel. Explore Hampi UNESCO ruins, Mysore Palace, Coorg coffee hills, and Bandipur tiger safaris.",
+      "seoKeyword": "Karnataka tour packages, Hampi Mysore Coorg tour, Karnataka travel itinerary, Bangalore sightsee, KoiKoi Travel Karnataka",
+      "overView": "<p>Traveling across <strong>Karnataka</strong> can get complicated. Navigating urban traffic in <strong>Bengaluru</strong>, securing long palace entry tickets in <strong>Mysore</strong>, and finding reliable cabs in remote <strong>Hampi</strong> or <strong>Coorg</strong> can drain your vacation energy.</p>\n<p>That is where <strong>KoiKoi Travel</strong> steps in. We make your Karnataka journey completely hassle-free with private AC cab transfers, pre-arranged tickets, and handpicked stays in heritage hotels and coffee estate resorts.</p>\n<p>Enjoy 100% transparent pricing, 24/7 dedicated trip support, and complete flexibility. Ready for an incredible Karnataka expedition? Check out our handpicked tour packages listed below and choose your ideal itinerary today!</p>",
+      "famousFor": "Hampi UNESCO Ruins, Mysore Palace, Coorg Coffee Estates, Bandipur Wildlife Safaris, Gokarna Beaches, Silk",
+      "capital": "Bengaluru (Bangalore)",
+      "language": "Kannada, English",
+      "area": "191,791 sq km",
+      "moreDescription": "<h2>Complete Karnataka Travel Guide & Insider Tips</h2>\n<p>Karnataka is a diverse state in South India offering ancient stone empires, regal palaces, lush Western Ghat hill stations, and wildlife reserves.</p>\n<h3>Best Time to Visit</h3>\n<p>October to March brings pleasant weather ideal for exploring Hampi ruins, Mysore royal heritage, and coffee plantation walks in Coorg.</p>\n<h3>Top Regional Highlights</h3>\n<p>Marvel at Vijayanagara stone architecture in Hampi, witness the illuminated Mysore Palace, taste Mysore Pak sweets, and sip fresh Coorg filter coffee.</p>",
+      "faqs": [
+        {
+          "ques": "What are the top places to visit in Karnataka?",
+          "ans": "The ultimate Karnataka circuit covers Bengaluru, Mysore Palace, Coorg coffee hills, Belur-Halebid stone temples, and Hampi UNESCO ruins."
+        },
+        {
+          "ques": "Are private cab transfers included in Karnataka packages?",
+          "ans": "Yes! All KoiKoi Travel Karnataka packages include a dedicated private AC cab with an experienced driver for all transfers and daily sightseeing."
+        }
       ]
     },
-    cities: [
+    "cities": [
       {
-        title: 'Bangalore',
-        slug: 'bangalore',
-        seoTitle: 'Bangalore (Bengaluru) Tour Packages | Garden City & Tech Hub',
-        h1Title: 'Bangalore City Sightseeing & Tour Packages',
-        seoDescription: 'Book Bangalore tour packages with KoiKoi Travel. Visit Lalbagh Botanical Garden, Bangalore Palace, ISKCON Temple, Cubbon Park, and craft breweries.',
-        seoKeyword: 'Bangalore tour packages, Bengaluru sightseeing tour, Bangalore palace visit, Lalbagh garden tour, KoiKoi Travel Bangalore',
-        overView: `<p>Navigating traffic in <strong>Bangalore</strong> (Bengaluru) without a reliable private cab can make city sightseeing exhausting. Finding the right mix of heritage sites, lush parks, and modern craft breweries requires local coordination.</p>
-<p><strong>KoiKoi Travel</strong> ensures your <strong>Bangalore</strong> city tour is smooth and hassle-free. Your private AC driver takes you to Tudor-style <strong>Bangalore Palace</strong>, glasshouse blooms at <strong>Lalbagh Botanical Garden</strong>, and the majestic <strong>ISKCON Temple</strong>.</p>
-<p>Enjoy pleasant weather and vibrant city life with <strong>KoiKoi Travel</strong>. Explore our Bangalore tour packages listed below!</p>`,
-        famousFor: 'Lalbagh Botanical Garden, Bangalore Palace, Cubbon Park, Craft Breweries, Vidhana Soudha',
-        attractions: 'Lalbagh Botanical Garden, Bangalore Palace, Cubbon Park, ISKCON Temple, Vidhana Soudha, Bannerghatta National Park',
-        weather: 'Pleasant year-round weather (18°C to 30°C). Best visited from September to March.',
-        moreDescription: `<h2>Bangalore City Guide</h2>
-<p>Bangalore, the "Garden City" and tech capital of India, offers lush parks, historic palaces, and vibrant dining.</p>`,
-        faqs: [
-          { ques: "What is Bangalore famous for?", ans: "It is famous for pleasant weather, IT hubs, Lalbagh Garden, Bangalore Palace, and craft brewery culture." }
+        "title": "Bangalore (Bengaluru)",
+        "slug": "bangalore",
+        "seoTitle": "Bangalore Tour Packages | Garden City & Tech Capital Sightseeing",
+        "h1Title": "Bangalore (Bengaluru) Tour Packages & Travel Guide",
+        "seoDescription": "Explore Bengaluru with KoiKoi Travel. Visit Lalbagh Botanical Garden, Bangalore Palace, ISKCON Temple, Cubbon Park, and craft breweries with private cab.",
+        "seoKeyword": "Bangalore tour packages, Bengaluru sightseeing tour, Bangalore Palace visit, Lalbagh garden tour, KoiKoi Travel Bangalore",
+        "overView": "<p>Arriving in <strong>Bangalore</strong> can feel overwhelming with notorious city traffic, long airport highway drives, and confusing metro routes.</p>\n<p>With <strong>KoiKoi Travel</strong>, your <strong>Bengaluru</strong> trip is smooth and effortless. Your private AC driver handles all navigation from Bengaluru Airport (BLR), taking you directly to <strong>Lalbagh Botanical Garden</strong>, <strong>Bangalore Palace</strong>, and vibrant dining hubs.</p>\n<p>Enjoy transparent fares and 24/7 manager assistance. Check out our curated Bangalore tour packages below and choose your gateway itinerary today!</p>",
+        "famousFor": "Garden City Parks, Bangalore Palace, Lalbagh Glass House, Craft Breweries, IT Hubs, Mysore Dosa",
+        "attractions": "Lalbagh Botanical Garden, Bangalore Palace, Cubbon Park, ISKCON Temple, Tipu Sultan's Summer Palace, Commercial Street",
+        "weather": "Pleasant moderate climate (18\u00b0C to 30\u00b0C). Best visited between September and March.",
+        "moreDescription": "<h2>Bangalore Visitor Guide & Sightseeing Tips</h2>\n<p>India's 'Garden City' and tech capital seamlessly combines royal heritage palaces with sprawling green parks and modern pub culture.</p>\n<h3>Top Sightseeing Highlights</h3>\n<p>Walk through the historic glasshouse at Lalbagh, admire Tudor-style architecture at Bangalore Palace, and sample legendary Benne Masala Dosa.</p>",
+        "faqs": [
+          {
+            "ques": "How far is Bangalore Airport from the city center?",
+            "ans": "Kempegowda International Airport (BLR) is about 35 km from Bangalore city center (approx 1 to 1.5 hours drive)."
+          }
         ]
       },
       {
-        title: 'Mysore',
-        slug: 'mysore',
-        seoTitle: 'Mysore (Mysuru) Tour Packages | Royal Palace & Chamundi Hill',
-        h1Title: 'Mysore Royal Heritage & Palace Tours',
-        seoDescription: 'Explore Mysore tour packages with KoiKoi Travel. Visit illuminated Mysore Palace, Chamundeshwari Temple, Brindavan Gardens, and silk shopping centers.',
-        seoKeyword: 'Mysore tour packages, Mysore palace tour, Chamundi hill Mysore, Brindavan garden tour, KoiKoi Travel Mysore',
-        overView: `<p>Visiting <strong>Mysore</strong> (Mysuru) as a rushed day trip often means missing out on the magical Sunday evening lighting of <strong>Mysore Palace</strong> and the musical fountain show at <strong>Brindavan Gardens</strong>.</p>
-<p>With <strong>KoiKoi Travel</strong>, experience royal Mysore in complete comfort. We arrange pre-booked entry to Mysore Palace, private cab drives up <strong>Chamundi Hill</strong>, and visits to authentic Mysore silk and sandalwood shops.</p>
-<p>Taste legendary Mysore Pak and immerse yourself in royal history with <strong>KoiKoi Travel</strong>. Check out our Mysore packages below!</p>`,
-        famousFor: 'Mysore Palace Illumination, Chamundi Hill Temple, Brindavan Gardens Fountains, Mysore Silk & Sandalwood',
-        attractions: 'Mysore Palace, Chamundeshwari Temple, Brindavan Gardens, St. Philomena\'s Church, Mysore Zoo, Devaraja Market',
-        weather: 'Mild and pleasant (19°C to 31°C). October to March is peak royal sightseeing season.',
-        moreDescription: `<h2>Mysore Heritage Visitor Guide</h2>
-<p>Mysore is the cultural capital of Karnataka, world-famous for its majestic royal palace and Dasara celebrations.</p>`,
-        faqs: [
-          { ques: "When does Mysore Palace illumination happen?", ans: "Mysore Palace is illuminated with nearly 100,000 electric bulbs every Sunday and public holiday from 7:00 PM to 7:45 PM." }
+        "title": "Mysore (Mysuru)",
+        "slug": "mysore",
+        "seoTitle": "Mysore Tour Packages | Royal Palace Heritage & Silk Trails",
+        "h1Title": "Mysore (Mysuru) Tour Packages & Travel Guide",
+        "seoDescription": "Discover royal Mysore with KoiKoi Travel. Visit grand Mysore Palace, Chamundi Hill, Brindavan Gardens, Mysore Zoo, and authentic silk & sandalwood markets.",
+        "seoKeyword": "Mysore tour packages, Mysore Palace trip, Mysuru Dasara tour, Chamundi Hill Mysore, KoiKoi Travel Mysore",
+        "overView": "<p>Visiting <strong>Mysore</strong> can become tiring with long palace ticket queues, crowded festival markets, and unverified local taxi fares.</p>\n<p><strong>KoiKoi Travel</strong> makes your <strong>Mysore</strong> royal tour relaxed and memorable. We arrange private AC cab transfers, well-located hotel stays, and pre-booked entrance tickets for <strong>Mysore Palace</strong>, <strong>Chamundi Hill</strong>, and <strong>Brindavan Gardens</strong>.</p>\n<p>Shop for real Mysore Silk and Mysore Pak with zero hassle and transparent rates. Explore our handpicked Mysore tour packages listed below and book your royal trip today!</p>",
+        "famousFor": "Mysore Palace, Chamundi Hill Temple, Mysore Silk Sarees, Mysore Pak Sweet, Sandalwood Carvings, Brindavan Gardens",
+        "attractions": "Mysore Palace, Chamundeshwari Temple, Brindavan Gardens, Sri Chamarajendra Zoological Gardens, St. Philomena's Church, Jaganmohan Palace",
+        "weather": "Pleasant inland climate (19\u00b0C to 31\u00b0C). Best visited from October to March.",
+        "moreDescription": "<h2>Mysore Royal Heritage & Sightseeing Guide</h2>\n<p>Mysore is Karnataka's cultural capital, renowned worldwide for the grand Wodeyar dynasty palace and royal traditions.</p>\n<h3>Must-See Highlights</h3>\n<p>Witness the evening illumination of Mysore Palace with nearly 100,000 light bulbs, visit the giant Nandi monolith on Chamundi Hill, and sample fresh hot Mysore Pak.</p>",
+        "faqs": [
+          {
+            "ques": "When is Mysore Palace illuminated?",
+            "ans": "Mysore Palace is illuminated on Sundays and public holidays from 7:00 PM to 7:45 PM, and during the 10 days of Dasara festival."
+          }
         ]
       },
       {
-        title: 'Coorg',
-        slug: 'coorg',
-        seoTitle: 'Coorg (Kodagu) Tour Packages | Coffee Plantations & Waterfalls',
-        h1Title: 'Coorg Coffee Garden & Nature Escapes',
-        seoDescription: 'Book Coorg (Kodagu) hill station tour packages with KoiKoi Travel. Experience coffee plantation stays, Abbey Falls, Dubare Elephant Camp, and Raja\'s Seat.',
-        seoKeyword: 'Coorg tour packages, Coorg honeymoon package, Coorg coffee plantation resort, Abbey falls Coorg, KoiKoi Travel Coorg',
-        overView: `<p>Driving up the winding forest routes to <strong>Coorg</strong> (Kodagu) requires an experienced mountain driver. Booking authentic coffee estate resorts and finding hidden waterfalls like <strong>Abbey Falls</strong> is best handled by travel experts.</p>
-<p><strong>KoiKoi Travel</strong> delivers a relaxing hill stay in <strong>Coorg</strong>. We arrange stays at luxury coffee plantation resorts, elephant interaction at <strong>Dubare Elephant Camp</strong>, and golden hour views at <strong>Raja\'s Seat</strong>.</p>
-<p>Wake up to fresh coffee aroma and misty green hills with <strong>KoiKoi Travel</strong>. Explore our Coorg packages listed below!</p>`,
-        famousFor: 'Coffee Plantation Stays, Abbey Falls, Dubare Elephant Camp, Raja\'s Seat Sunset, Golden Temple Monastery',
-        attractions: 'Abbey Falls, Dubare Elephant Camp, Raja\'s Seat, Namdroling Monastery (Bylakuppe Golden Temple), Talakaveri, Madikeri Fort',
-        weather: 'Cool hill climate (14°C to 24°C). October to May is peak travel season.',
-        moreDescription: `<h2>Coorg Coffee Country Guide</h2>
-<p>Coorg, the "Scotland of India," is a lush hill district famous for coffee estates, Kodava culture, and waterfalls.</p>`,
-        faqs: [
-          { ques: "Is Coorg suitable for a family vacation?", ans: "Yes! Coorg offers elephant interaction camps, waterfall visits, coffee estate walks, and quiet luxury resorts for families." }
+        "title": "Coorg (Kodagu)",
+        "slug": "coorg",
+        "seoTitle": "Coorg Tour Packages | Coffee Estates, Waterfalls & Hill Resorts",
+        "h1Title": "Coorg (Kodagu) Tour Packages & Travel Guide",
+        "seoDescription": "Escape to coffee hills in Coorg with KoiKoi Travel. Book customized packages covering Abbey Falls, Raja's Seat, Dubare Elephant Camp, and plantation resorts.",
+        "seoKeyword": "Coorg tour packages, Coorg coffee estate stay, Coorg travel itinerary, Abbey Falls Coorg, KoiKoi Travel Coorg",
+        "overView": "<p>Driving to <strong>Coorg</strong> can be challenging due to winding coffee plantation roads, unverified homestay pricing, and local cab shortages.</p>\n<p>With <strong>KoiKoi Travel</strong>, your <strong>Coorg</strong> holiday is smooth and relaxing. Experienced mountain drivers guide your private AC cab along green estate roads, taking you to <strong>Abbey Falls</strong>, <strong>Raja's Seat</strong>, and <strong>Dubare Elephant Camp</strong>.</p>\n<p>Stay in handpicked coffee plantation resorts with transparent rates. Check out our customized Coorg tour packages below and choose your green hill retreat today!</p>",
+        "famousFor": "Coffee Plantations, Abbey Falls, Raja's Seat Sunset, Dubare Elephant Camp, Namdroling Monastery (Bylakuppe)",
+        "attractions": "Abbey Falls, Raja's Seat, Dubare Elephant Camp, Namdroling Monastery (Golden Temple), Talakaveri, Madikeri Fort",
+        "weather": "Cool hill climate (14\u00b0C to 26\u00b0C). Ideal to visit year-round, especially October to May.",
+        "moreDescription": "<h2>Coorg Hill Station & Plantation Guide</h2>\n<p>Known as the 'Scotland of India', Coorg is a misty highland region famous for sprawling coffee plantations and Kodava culture.</p>\n<h3>Best Experiences in Coorg</h3>\n<p>Take a guided coffee estate walk, bathe elephants at Dubare Camp, watch sunsets at Raja's Seat, and visit the Tibetan Golden Temple at Bylakuppe.</p>",
+        "faqs": [
+          {
+            "ques": "Which is the nearest railway station or airport to Coorg?",
+            "ans": "Mysore Railway Station (95 km) and Mangalore Airport (140 km) are the nearest transport hubs to Coorg."
+          }
         ]
       },
       {
-        title: 'Hassan',
-        slug: 'hassan',
-        seoTitle: 'Hassan Tour Packages | Belur & Halebidu Hoysala Temple Sculptures',
-        h1Title: 'Hassan Hoysala Architecture & Heritage Tours',
-        seoDescription: 'Discover Hassan tour packages with KoiKoi Travel. Visit Belur Chennakesava Temple, Halebidu Hoysaleswara Temple, and Shravanabelagola Bahubali Statue.',
-        seoKeyword: 'Hassan tour packages, Belur Halebidu tour, Shravanabelagola statue, Hoysala temple architecture, KoiKoi Travel Hassan',
-        overView: `<p>Visiting the magnificent Hoysala temple stone carvings of <strong>Belur</strong> and <strong>Halebidu</strong> in <strong>Hassan</strong> without a knowledgeable guide means missing out on the intricate stories behind thousands of hand-carved stone figures.</p>
-<p><strong>KoiKoi Travel</strong> makes your <strong>Hassan</strong> heritage tour deeply engaging. Our private AC cab driver takes you to <strong>Belur Chennakesava Temple</strong>, <strong>Halebidu</strong>, and the 57-foot monolithic Bahubali statue at <strong>Shravanabelagola</strong>.</p>
-<p>Marvel at 12th-century stone craftsmanship with <strong>KoiKoi Travel</strong>. Browse our Hassan tour packages below!</p>`,
-        famousFor: 'Belur Chennakesava Temple, Halebidu Sculptures, Shravanabelagola Monolith, Hoysala Architecture',
-        attractions: 'Belur Chennakesava Temple, Halebidu Hoysaleswara Temple, Shravanabelagola Monolithic Statue, Shettihalli Rosary Church Ruins',
-        weather: 'Pleasant interior weather (20°C to 32°C). October to March is ideal for heritage walks.',
-        moreDescription: `<h2>Hassan Hoysala Heritage Guide</h2>
-<p>Hassan is the architectural cradle of the Hoysala Empire, world-famous for stone temple carvings.</p>`,
-        faqs: [
-          { ques: "Why are Belur and Halebidu temples famous?", ans: "They feature some of the world\'s most detailed chloritic schist stone carvings, showcasing 12th-century Hoysala architectural mastery." }
+        "title": "Hassan",
+        "slug": "hassan",
+        "seoTitle": "Hassan Tour Packages | Belur & Halebid Hoysala Temple Marvels",
+        "h1Title": "Hassan Tour Packages & Travel Guide",
+        "seoDescription": "Explore Hoysala stone art in Hassan with KoiKoi Travel. Visit Belur Chennakesava Temple, Halebidu Hoysaleswara Temple, and Shravanabelagola Gommateshwara statue.",
+        "seoKeyword": "Hassan tour packages, Belur Halebidu temple tour, Shravanabelagola Gommateshwara, Hoysala architecture, KoiKoi Travel Hassan",
+        "overView": "<p>Exploring <strong>Hassan</strong> temple sites without guided arrangements can lead to transport hassle, missed historical details, and crowded monument stops.</p>\n<p><strong>KoiKoi Travel</strong> makes your <strong>Hassan</strong> heritage tour completely effortless. We provide private AC cab transfers, comfortable hotel stays, and expert visits to UNESCO-listed Hoysala stone wonders at <strong>Belur</strong>, <strong>Halebidu</strong>, and the giant monolithic statue at <strong>Shravanabelagola</strong>.</p>\n<p>Discover intricate 12th-century stone carvings with clear rates and 24/7 support. Browse our curated Hassan tour packages listed below and choose your heritage trip today!</p>",
+        "famousFor": "Belur Chennakesava Temple, Halebidu Hoysaleswara Temple, Shravanabelagola (Gommateshwara Monolith), Hoysala Architecture",
+        "attractions": "Chennakesava Temple Belur, Hoysaleswara Temple Halebidu, Shravanabelagola Monolith, Shettihalli Rosary Church (Submerged Church)",
+        "weather": "Pleasant inland climate (18\u00b0C to 32\u00b0C). Best visited between October and March.",
+        "moreDescription": "<h2>Hassan Heritage & Hoysala Temple Guide</h2>\n<p>Hassan is the cradle of 12th-century Hoysala empire stone architecture, world-renowned for soapstone temple carvings.</p>\n<h3>Key Architectural Marvels</h3>\n<p>Marvel at the star-shaped Chennakesava Temple in Belur, intricate friezes of elephants and dancers at Halebidu, and climb Vindhyagiri hill at Shravanabelagola.</p>",
+        "faqs": [
+          {
+            "ques": "Are Belur and Halebid UNESCO World Heritage sites?",
+            "ans": "Yes! The Sacred Ensembles of the Hoysalas (Belur, Halebidu, and Somnathpura) were officially inscribed as UNESCO World Heritage sites in 2023."
+          }
         ]
       },
       {
-        title: 'Hampi',
-        slug: 'hampi',
-        seoTitle: 'Hampi Tour Packages | UNESCO Vijayanagara Ruins & Stone Chariot',
-        h1Title: 'Hampi UNESCO World Heritage Ruins Expeditions',
-        seoDescription: 'Book Hampi tour packages with KoiKoi Travel. Explore Virupaksha Temple, Stone Chariot at Vittala Temple, Lotus Mahal, Elephant Stables, and Coracle boat rides.',
-        seoKeyword: 'Hampi tour packages, Hampi ruins tour, Stone chariot Hampi, Virupaksha temple Hampi, KoiKoi Travel Hampi',
-        overView: `<p>Exploring the vast 26-square-kilometer boulder ruins of <strong>Hampi</strong> on foot under the sun can be physically exhausting. Navigating between the Royal Center, Sacred Center, and across the river to Hippie Island without an organized vehicle wastes valuable time.</p>
-<p>With <strong>KoiKoi Travel</strong>, exploring <strong>Hampi</strong> is comfortable and inspiring. We arrange private AC cab transport between iconic monuments like the <strong>Vittala Temple Stone Chariot</strong>, <strong>Virupaksha Temple</strong>, <strong>Lotus Mahal</strong>, and traditional coracle boat rides on the Tungabhadra River.</p>
-<p>Watch golden sunsets over boulder hills with <strong>KoiKoi Travel</strong>. Explore our Hampi packages listed below!</p>`,
-        famousFor: 'UNESCO Vijayanagara Ruins, Stone Chariot, Virupaksha Temple, Coracle River Boat Rides, Sunset at Hemakuta Hill',
-        attractions: 'Vittala Temple & Stone Chariot, Virupaksha Temple, Lotus Mahal, Elephant Stables, Hemakuta Hill Sunset, Matanga Hill, Coracle Boat Ride',
-        weather: 'Warm desert-boulder climate (20°C to 34°C). November to February offers comfortable walking weather.',
-        moreDescription: `<h2>Hampi UNESCO Heritage Guide</h2>
-<p>Hampi is a surreal boulder landscape preserving the grand 14th-century ruins of the Vijayanagara Empire.</p>`,
-        faqs: [
-          { ques: "How many days are needed to explore Hampi?", ans: "2 to 3 days is ideal to comfortably explore both the Sacred Center and Royal Enclosure ruins." }
+        "title": "Hampi",
+        "slug": "hampi",
+        "seoTitle": "Hampi Tour Packages | UNESCO Ruins & Vijayanagara Stone Empire",
+        "h1Title": "Hampi Tour Packages & Travel Guide",
+        "seoDescription": "Book Hampi UNESCO tour packages with KoiKoi Travel. Explore Virupaksha Temple, Vittala Temple Stone Chariot, Lotus Mahal, Elephant Stables, and Coracle boat rides.",
+        "seoKeyword": "Hampi tour packages, Hampi UNESCO trip, Hampi stone chariot, Vijayanagara ruins tour, KoiKoi Travel Hampi",
+        "overView": "<p>Visiting <strong>Hampi</strong> can get exhausting due to intense sun exposure while walking between vast scattered ruins, unreliable auto rates, and remote transport logistics.</p>\n<p>With <strong>KoiKoi Travel</strong>, your <strong>Hampi</strong> expedition is smooth and comfortable. Enjoy private AC cab transfers between monument zones, handpicked hotel stays, and easy visits to the iconic <strong>Vittala Temple Stone Chariot</strong>, <strong>Virupaksha Temple</strong>, and <strong>Lotus Mahal</strong>.</p>\n<p>Explore India's greatest stone empire with transparent pricing and 24/7 manager support. Check out our customized Hampi tour packages below and book your UNESCO trip today!</p>",
+        "famousFor": "UNESCO World Heritage Ruins, Vittala Temple Stone Chariot, Virupaksha Temple, Lotus Mahal, Coracle Boat Rides, Boulder Landscapes",
+        "attractions": "Vittala Temple & Stone Chariot, Virupaksha Temple, Lotus Mahal, Elephant Stables, Queen's Bath, Hemakuta Hill Sunsets, Tungabhadra River",
+        "weather": "Dry inland climate (18\u00b0C to 36\u00b0C). Best visited between October and March.",
+        "moreDescription": "<h2>Hampi UNESCO Ruins Visitor Guide</h2>\n<p>Hampi was the magnificent 14th-century capital of the Vijayanagara Empire, set amidst a surreal landscape of giant granite boulders.</p>\n<h3>Must-Do Activities</h3>\n<p>Photograph the iconic Stone Chariot at Vittala Temple, watch sunset from Hemakuta Hill, and ride a traditional round coracle boat on the Tungabhadra River.</p>",
+        "faqs": [
+          {
+            "ques": "How many days are needed to explore Hampi?",
+            "ans": "2 to 3 days is ideal to thoroughly cover both the Sacred Center temples and Royal Enclosure monuments across Hampi."
+          }
         ]
       },
       {
-        title: 'Badami',
-        slug: 'badami',
-        seoTitle: 'Badami Tour Packages | Chalukya Rock-Cut Cave Temples & Agastya Lake',
-        h1Title: 'Badami Cave Temple & Rock-Cut Art Tours',
-        seoDescription: 'Book Badami tour packages featuring 6th-century Chalukya rock-cut cave temples, Badami Fort, Agastya Lake, Pattadakal, and Aihole with KoiKoi Travel.',
-        seoKeyword: 'Badami tour packages, Badami cave temples, Pattadakal tour, Aihole heritage tour, KoiKoi Travel Badami',
-        overView: `<p>Visiting the 6th-century red sandstone cave temples of <strong>Badami</strong>, <strong>Pattadakal</strong>, and <strong>Aihole</strong> requires careful route planning due to remote locations and limited public transport.</p>
-<p><strong>KoiKoi Travel</strong> organizes a seamless Chalukya heritage circuit in <strong>Badami</strong>. Our private driver takes you to the 4 rock-cut cave temples overlooking <strong>Agastya Lake</strong>, Badami Fort, and UNESCO temples at Pattadakal.</p>
-<p>Discover India\'s earliest rock temple architecture with <strong>KoiKoi Travel</strong>. Browse our Badami tour packages below!</p>`,
-        famousFor: 'Chalukya Rock-Cut Caves, Agastya Lake Views, Badami Red Sandstone Fort, Pattadakal & Aihole Temples',
-        attractions: 'Badami Cave Temples, Agastya Lake, Badami Fort, Pattadakal UNESCO Group of Monuments, Aihole Durga Temple',
-        weather: 'Warm interior climate (20°C to 34°C). October to March is the best time for rock temple tours.',
-        moreDescription: `<h2>Badami Chalukya Heritage Guide</h2>
-<p>Badami was the ancient capital of the Chalukya kings, famous for red sandstone rock-cut cave temples.</p>`,
-        faqs: [
-          { ques: "What are the key attractions in Badami?", ans: "The 4 rock-cut cave temples, Agastya Lake view, Badami Fort, and nearby UNESCO temple complexes of Pattadakal and Aihole." }
+        "title": "Badami",
+        "slug": "badami",
+        "seoTitle": "Badami Tour Packages | Chalukya Cave Temples & Pattadakal Ruins",
+        "h1Title": "Badami Tour Packages & Travel Guide",
+        "seoDescription": "Discover Chalukya cave art in Badami with KoiKoi Travel. Explore Badami Rock-Cut Caves, Agastya Lake, Bhutanatha Temples, Pattadakal, and Aihole.",
+        "seoKeyword": "Badami tour packages, Badami cave temples, Pattadakal UNESCO, Aihole temple circuit, KoiKoi Travel Badami",
+        "overView": "<p>Exploring <strong>Badami</strong> cave temples can be tiring with steep stone steps, unorganized transport to nearby Pattadakal and Aihole, and lack of guided insights.</p>\n<p><strong>KoiKoi Travel</strong> ensures an organized, comfortable <strong>Badami</strong> tour. We provide private AC cab transfers connecting Badami, UNESCO-listed <strong>Pattadakal</strong>, and <strong>Aihole</strong>, alongside well-located hotel bookings and rock-cut cave visits.</p>\n<p>Experience 6th-century Chalukya stone art with transparent rates and full support. Browse our handpicked Badami tour packages listed below and choose your heritage itinerary today!</p>",
+        "famousFor": "Badami Rock-Cut Cave Temples, Agastya Lake, Bhutanatha Temples, Pattadakal UNESCO Ruins, Aihole (Cradle of Indian Architecture)",
+        "attractions": "Badami Cave Temples (1-4), Agastya Teertha Lake, Bhutanatha Temple Complex, Badami Fort, Pattadakal Temples, Aihole Durga Temple",
+        "weather": "Warm dry climate (20\u00b0C to 36\u00b0C). Best visited from October to March.",
+        "moreDescription": "<h2>Badami & Chalukya Heritage Guide</h2>\n<p>Badami was the regal capital of the Early Chalukyas, famous for red sandstone rock-cut cave temples carved into cliffs overlooking Agastya Lake.</p>\n<h3>Heritage Highlights</h3>\n<p>Climb into the four ancient cave temples, photograph the sandstone reflections of Bhutanatha Temple on Agastya Lake, and visit UNESCO monuments at Pattadakal.</p>",
+        "faqs": [
+          {
+            "ques": "Are Badami, Pattadakal, and Aihole visited together?",
+            "ans": "Yes! They form the Chalukya Golden Triangle circuit and are located within 35 km of each other."
+          }
         ]
       },
       {
-        title: 'Nagarhole',
-        slug: 'nagarhole',
-        seoTitle: 'Nagarhole Tour Packages | Kabini Tiger & Black Panther Jungle Safaris',
-        h1Title: 'Nagarhole & Kabini Wildlife Safaris',
-        seoDescription: 'Book Nagarhole (Kabini) wildlife safari packages with KoiKoi Travel. Experience open-jeep tiger safaris, black panther tracking, and Kabini river boat safaris.',
-        seoKeyword: 'Nagarhole tour packages, Kabini safari booking, Kabini tiger reserve resort, Nagarhole national park, KoiKoi Travel Nagarhole',
-        overView: `<p>Securing open-jeep wildlife safari permits and Kabini boat safari slots in <strong>Nagarhole</strong> National Park is highly competitive. Missing out on official safari permits can leave wildlife enthusiasts disappointed.</p>
-<p><strong>KoiKoi Travel</strong> arranges complete wildlife packages in <strong>Nagarhole</strong> (Kabini). We assist with pre-booked jungle safaris, river boat safaris, and luxury eco-lodge resort stays along the Kabini River.</p>
-<p>Track tigers, leopards, and wild elephant herds with <strong>KoiKoi Travel</strong>. Explore our Nagarhole wildlife packages below!</p>`,
-        famousFor: 'Kabini River Boat Safari, Tiger Tracking, Black Panther Sightings, Elephant Herds, Eco Lodges',
-        attractions: 'Nagarhole National Park, Kabini River Safari, Open Jeep Jungle Safari, Iruppu Falls, Kuruva Dweep',
-        weather: 'Jungle climate (16°C to 30°C). October to May offers prime tiger and wildlife spotting.',
-        moreDescription: `<h2>Nagarhole & Kabini Wildlife Guide</h2>
-<p>Nagarhole National Park along the Kabini River is one of Asia\'s premier wildlife habitats for big cats and wild elephants.</p>`,
-        faqs: [
-          { ques: "Why is Kabini Wildlife Safari famous?", ans: "Kabini in Nagarhole is famous for frequent tiger sightings, large wild elephant herds, and rare melanistic black panther tracking." }
+        "title": "Nagarhole",
+        "slug": "nagarhole",
+        "seoTitle": "Nagarhole Tour Packages | Kabini Tiger Safari & Jungle Lodges",
+        "h1Title": "Nagarhole Tour Packages & Travel Guide",
+        "seoDescription": "Book Nagarhole wildlife safaris with KoiKoi Travel. Experience Kabini tiger & leopard boat safaris, Nagarhole National Park, and luxury jungle resort stays.",
+        "seoKeyword": "Nagarhole tour packages, Kabini safari booking, Nagarhole tiger reserve, Kabini jungle lodge, KoiKoi Travel Nagarhole",
+        "overView": "<p>Booking a <strong>Nagarhole (Kabini)</strong> safari can be frustrating due to strict limit safari permits, complex forest checkpost rules, and sold-out jungle lodges.</p>\n<p>With <strong>KoiKoi Travel</strong>, your <strong>Nagarhole</strong> wildlife expedition is completely pre-organized. We secure your Kabini jeep & boat safari permits, private AC transfers, and luxury forest lodge stays right on the edge of the sanctuary.</p>\n<p>Spot tigers, leopards, and wild elephant herds with zero stress and transparent rates. Check out our curated Nagarhole packages below and book your safari today!</p>",
+        "famousFor": "Kabini River Boat Safari, Tiger & Leopard Sightings, Elephant Herds, Nagarhole National Park, Jungle Lodges",
+        "attractions": "Kabini River Safari, Nagarhole Jeep Safari, Iruppu Falls, Brahmagiri Wildlife Sanctuary, Kuruva Island",
+        "weather": "Pleasant forest climate (14\u00b0C to 28\u00b0C). Best visited between October and May for optimal wildlife sightings.",
+        "moreDescription": "<h2>Nagarhole & Kabini Wildlife Visitor Guide</h2>\n<p>Nagarhole (Rajiv Gandhi National Park) and Kabini form India's premier tiger reserve, blessed with dense teak forests and river estuaries.</p>\n<h3>Safari Highlights</h3>\n<p>Take a Kabini river boat safari to watch herds of wild elephants swimming, and join jeep safaris to track Bengal tigers and melanistic leopards (black panthers).</p>",
+        "faqs": [
+          {
+            "ques": "How far is Nagarhole/Kabini from Mysore and Bangalore?",
+            "ans": "Kabini is 80 km from Mysore (approx 2 hours drive) and 215 km from Bangalore (approx 4.5 hours drive)."
+          }
         ]
       },
       {
-        title: 'Bandipur',
-        slug: 'bandipur',
-        seoTitle: 'Bandipur Tour Packages | Tiger Reserve & Nilgiri Biosphere Safaris',
-        h1Title: 'Bandipur National Park Wildlife Tours',
-        seoDescription: 'Explore Bandipur National Park tour packages with KoiKoi Travel. Jeep jungle safaris, tiger and leopard tracking, Indian gaur sightings, and jungle resort stays.',
-        seoKeyword: 'Bandipur tour packages, Bandipur jungle safari booking, Bandipur tiger reserve resort, KoiKoi Travel Bandipur',
-        overView: `<p>Traveling along the Mysore-Ooty highway through <strong>Bandipur</strong> without a pre-arranged safari stay often means missing out on morning and evening game drives inside the tiger reserve.</p>
-<p><strong>KoiKoi Travel</strong> arranges seamless jungle safari stays in <strong>Bandipur National Park</strong>. Experience open-jeep safaris inside the Nilgiri Biosphere, spot Indian gaurs and wild elephants, and relax at forest resorts.</p>
-<p>Experience wild Indian jungles with <strong>KoiKoi Travel</strong>. Check out our Bandipur packages listed below!</p>`,
-        famousFor: 'Open Jeep Tiger Safaris, Nilgiri Biosphere Reserve, Wild Elephants, Gaurs, Jungle Resorts',
-        attractions: 'Bandipur National Park, Open Jeep Safari, Gopalaswamy Betta Peak, Mudumalai Wildlife Sanctuary border',
-        weather: 'Jungle mountain climate (15°C to 28°C). October to May is peak wildlife season.',
-        moreDescription: `<h2>Bandipur Tiger Reserve Guide</h2>
-<p>Bandipur is a core part of the Nilgiri Biosphere Reserve, famous for big cat conservation and elephant corridors.</p>`,
-        faqs: [
-          { ques: "What wildlife can you see in Bandipur?", ans: "Bengal tigers, leopards, Indian gaurs (bison), Asian elephants, dholes (wild dogs), and spotted deer." }
+        "title": "Bandipur",
+        "slug": "bandipur",
+        "seoTitle": "Bandipur Tour Packages | Tiger Reserve & Western Ghat Safaris",
+        "h1Title": "Bandipur Tour Packages & Travel Guide",
+        "seoDescription": "Experience Bandipur National Park with KoiKoi Travel. Book jungle jeep safaris, tiger reserve tours, eco-lodge stays, and Nilgiri Biosphere trails.",
+        "seoKeyword": "Bandipur tour packages, Bandipur safari booking, Bandipur tiger reserve, Bandipur jungle lodge, KoiKoi Travel Bandipur",
+        "overView": "<p>Planning a <strong>Bandipur</strong> wildlife trip can involve long forest checkpost delays, last-minute safari ticket shortages, and unverified stay options.</p>\n<p><strong>KoiKoi Travel</strong> takes care of your entire <strong>Bandipur</strong> safari experience. We pre-book forest department safari slots, arrange comfortable eco-lodge stays, and provide private AC cab transfers along the scenic Mysore-Ooty highway.</p>\n<p>Enjoy thrilling tiger and elephant sightings with 100% transparent pricing. Explore our handpicked Bandipur tour packages listed below and choose your safari adventure today!</p>",
+        "famousFor": "Bandipur Tiger Reserve, Forest Jeep Safaris, Elephant Sightings, Nilgiri Biosphere Reserve, Jungle Eco-Lodges",
+        "attractions": "Bandipur National Park Safari, Himavad Gopalaswamy Betta Peak, Mudumalai Wildlife Sanctuary border, Wayanad forest border",
+        "weather": "Pleasant forest climate (15\u00b0C to 30\u00b0C). Best visited from October to May.",
+        "moreDescription": "<h2>Bandipur Tiger Reserve Travel Guide</h2>\n<p>Bandipur is a key part of the Nilgiri Biosphere Reserve along the Western Ghats, famous for tiger conservation and rich biodiversity.</p>\n<h3>Jungle Safari Tips</h3>\n<p>Join early morning or late afternoon forest department jeep safaris to spot tigers, Indian gaurs, dholes (wild dogs), and Asian elephants.</p>",
+        "faqs": [
+          {
+            "ques": "Can Bandipur be combined with Mysore and Ooty?",
+            "ans": "Yes! Bandipur lies directly on the Mysore-Ooty highway (80 km from Mysore, 50 km from Ooty), making it an ideal stopover."
+          }
         ]
       }
     ]
@@ -628,154 +613,128 @@ const SOUTH_INDIA_DATA = [
 ];
 
 async function main() {
-  console.log('Seeding Tamil Nadu, Kerala, and Karnataka States & Cities with 100% Human 300-Word Copy, SEO Keywords, Weather, Attractions, and FAQs...\n');
+  console.log('Seeding Tamil Nadu, Kerala, and Karnataka States & Cities with 100% Human <200-Word Copy, SEO Keywords, Weather, Attractions, and FAQs...');
 
-  // 1. Ensure Country India exists
-  const countries = await prisma.$queryRawUnsafe(`SELECT id, title, slug FROM country WHERE LOWER(title) LIKE '%india%' OR slug = 'india' LIMIT 1`);
-  let countryId;
-  if (countries && countries.length > 0) {
-    countryId = countries[0].id;
-    console.log('Using Country: India (ID:', countryId, ')');
-  } else {
-    const newCountry = await prisma.$queryRawUnsafe(`INSERT INTO country (title, slug, "seoDescription", "overView", "isActive", "showOnSite", "displayOrder") VALUES ('India', 'india', 'Explore India tour packages with KoiKoi Travel', 'Welcome to India', true, true, 0) RETURNING id`);
-    countryId = newCountry[0].id;
-    console.log('Created Country: India (ID:', countryId, ')');
+  const countries = await prisma.$queryRawUnsafe(`SELECT id, title FROM country WHERE LOWER(title) LIKE '%india%' OR slug = 'india' LIMIT 1`);
+  if (!countries || countries.length === 0) {
+    throw new Error('Country India not found in DB! Please seed Country first.');
   }
+  const countryId = countries[0].id;
+  console.log(`Using Country India (ID: ${countryId})`);
 
-  for (const block of SOUTH_INDIA_DATA) {
-    const sData = block.state;
+  for (const group of SOUTH_INDIA_DATA) {
+    const s = group.state;
+    console.log(`\nProcessing State: ${s.title}...`);
 
-    // Check or Insert State
-    let existingState = await prisma.$queryRawUnsafe(`SELECT id, title FROM "State" WHERE slug = '${sData.slug}' OR LOWER(title) = '${sData.title.toLowerCase()}' LIMIT 1`);
+    const existingStates = await prisma.$queryRawUnsafe(`
+      SELECT id FROM "State" 
+      WHERE slug = '${s.slug}' OR LOWER(title) = '${s.title.toLowerCase()}' 
+      LIMIT 1
+    `);
+
     let stateId;
 
-    if (existingState && existingState.length > 0) {
-      stateId = existingState[0].id;
-      console.log(`\nFound State: ${sData.title} (ID: ${stateId})`);
+    if (existingStates && existingStates.length > 0) {
+      stateId = existingStates[0].id;
+      console.log(`Updating State ${s.title} (ID: ${stateId})...`);
       await prisma.$executeRawUnsafe(`
         UPDATE "State"
-        SET "seoTitle" = '${sData.seoTitle.replace(/'/g, "''")}',
-            "h1Title" = '${sData.h1Title.replace(/'/g, "''")}',
-            "seoDescription" = '${sData.seoDescription.replace(/'/g, "''")}',
-            "seoKeyword" = '${sData.seoKeyword.replace(/'/g, "''")}',
-            "overView" = '${sData.overView.replace(/'/g, "''")}',
-            "famousFor" = '${sData.famousFor.replace(/'/g, "''")}',
-            "moreDescription" = '${sData.moreDescription.replace(/'/g, "''")}',
-            "capital" = '${sData.capital ? sData.capital.replace(/'/g, "''") : ''}',
-            "language" = '${sData.language ? sData.language.replace(/'/g, "''") : ''}',
-            "area" = '${sData.area ? sData.area.replace(/'/g, "''") : ''}',
-            "thumbImg" = NULL,
-            "isActive" = true,
-            "showOnSite" = true
+        SET 
+          "seoTitle" = $1,
+          "h1Title" = $2,
+          "seoDescription" = $3,
+          "seoKeyword" = $4,
+          "overView" = $5,
+          "famousFor" = $6,
+          "capital" = $7,
+          "language" = $8,
+          "area" = $9,
+          "moreDescription" = $10,
+          "isActive" = true,
+          "showOnSite" = true,
+          "updatedAt" = NOW()
         WHERE id = ${stateId}
-      `);
+      `, s.seoTitle, s.h1Title, s.seoDescription, s.seoKeyword, s.overView, s.famousFor, s.capital, s.language, s.area, s.moreDescription);
     } else {
-      const newState = await prisma.$queryRawUnsafe(`
-        INSERT INTO "State" (title, slug, "countryId", "seoTitle", "h1Title", "seoDescription", "seoKeyword", "overView", "famousFor", "moreDescription", "capital", "language", "area", "thumbImg", "isActive", "showOnSite", "displayOrder")
-        VALUES (
-          '${sData.title.replace(/'/g, "''")}',
-          '${sData.slug}',
-          ${countryId},
-          '${sData.seoTitle.replace(/'/g, "''")}',
-          '${sData.h1Title.replace(/'/g, "''")}',
-          '${sData.seoDescription.replace(/'/g, "''")}',
-          '${sData.seoKeyword.replace(/'/g, "''")}',
-          '${sData.overView.replace(/'/g, "''")}',
-          '${sData.famousFor.replace(/'/g, "''")}',
-          '${sData.moreDescription.replace(/'/g, "''")}',
-          '${sData.capital ? sData.capital.replace(/'/g, "''") : ''}',
-          '${sData.language ? sData.language.replace(/'/g, "''") : ''}',
-          '${sData.area ? sData.area.replace(/'/g, "''") : ''}',
-          NULL,
-          true,
-          true,
-          0
-        )
-        RETURNING id
-      `);
-      stateId = newState[0].id;
-      console.log(`\nCreated State: ${sData.title} (ID: ${stateId})`);
+      console.log(`Inserting State ${s.title}...`);
+      const inserted = await prisma.$queryRawUnsafe(`
+        INSERT INTO "State" (
+          "title", "slug", "countryId", "seoTitle", "h1Title", "seoDescription", "seoKeyword",
+          "overView", "famousFor", "capital", "language", "area", "moreDescription", "isActive", "showOnSite", "displayOrder", "createdAt", "updatedAt"
+        ) VALUES (
+          $1, $2, ${countryId}, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, true, true, 0, NOW(), NOW()
+        ) RETURNING id
+      `, s.title, s.slug, s.seoTitle, s.h1Title, s.seoDescription, s.seoKeyword, s.overView, s.famousFor, s.capital, s.language, s.area, s.moreDescription);
+      stateId = inserted[0].id;
     }
 
-    // Insert State FAQs into Faq Table
-    if (sData.faqs && sData.faqs.length > 0) {
+    if (s.faqs && s.faqs.length > 0) {
       await prisma.$executeRawUnsafe(`DELETE FROM "Faq" WHERE "entityType" = 'State' AND "entityId" = ${stateId}`);
-      for (const faq of sData.faqs) {
+      for (const faq of s.faqs) {
         await prisma.$executeRawUnsafe(`
-          INSERT INTO "Faq" (ques, ans, "entityType", "entityId")
-          VALUES ('${faq.ques.replace(/'/g, "''")}', '${faq.ans.replace(/'/g, "''")}', 'State', ${stateId})
-        `);
+          INSERT INTO "Faq" ("ques", "ans", "entityType", "entityId", "isActive", "displayOrder", "createdAt", "updatedAt")
+          VALUES ($1, $2, 'State', ${stateId}, true, 0, NOW(), NOW())
+        `, faq.ques, faq.ans);
       }
-      console.log(` -> Seeded ${sData.faqs.length} FAQs for State: ${sData.title}`);
+      console.log(`Inserted ${s.faqs.length} FAQs for State ${s.title}`);
     }
 
-    // Cities Loop
-    for (const cData of block.cities) {
-      let existingCity = await prisma.$queryRawUnsafe(`SELECT id, title FROM "City" WHERE slug = '${cData.slug}' LIMIT 1`);
+    for (const c of group.cities) {
+      const existingCities = await prisma.$queryRawUnsafe(`
+        SELECT id FROM "City" 
+        WHERE slug = '${c.slug}' OR (LOWER(title) = '${c.title.toLowerCase()}' AND "stateId" = ${stateId})
+        LIMIT 1
+      `);
+
       let cityId;
 
-      if (existingCity && existingCity.length > 0) {
-        cityId = existingCity[0].id;
+      if (existingCities && existingCities.length > 0) {
+        cityId = existingCities[0].id;
+        console.log(`  Updating City ${c.title} (ID: ${cityId})...`);
         await prisma.$executeRawUnsafe(`
           UPDATE "City"
-          SET "title" = '${cData.title.replace(/'/g, "''")}',
-              "stateId" = ${stateId},
-              "seoTitle" = '${cData.seoTitle.replace(/'/g, "''")}',
-              "h1Title" = '${cData.h1Title.replace(/'/g, "''")}',
-              "seoDescription" = '${cData.seoDescription.replace(/'/g, "''")}',
-              "seoKeyword" = '${cData.seoKeyword ? cData.seoKeyword.replace(/'/g, "''") : ''}',
-              "overView" = '${cData.overView.replace(/'/g, "''")}',
-              "famousFor" = '${cData.famousFor.replace(/'/g, "''")}',
-              "attractions" = '${cData.attractions ? cData.attractions.replace(/'/g, "''") : ''}',
-              "weather" = '${cData.weather ? cData.weather.replace(/'/g, "''") : ''}',
-              "moreDescription" = '${cData.moreDescription ? cData.moreDescription.replace(/'/g, "''") : ''}',
-              "thumbImg" = NULL,
-              "isActive" = true,
-              "showOnSite" = true
+          SET 
+            "stateId" = ${stateId},
+            "seoTitle" = $1,
+            "h1Title" = $2,
+            "seoDescription" = $3,
+            "seoKeyword" = $4,
+            "overView" = $5,
+            "famousFor" = $6,
+            "attractions" = $7,
+            "weather" = $8,
+            "moreDescription" = $9,
+            "isActive" = true,
+            "showOnSite" = true,
+            "updatedAt" = NOW()
           WHERE id = ${cityId}
-        `);
-        console.log(`   -> Updated City: ${cData.title} (ID: ${cityId})`);
+        `, c.seoTitle, c.h1Title, c.seoDescription, c.seoKeyword, c.overView, c.famousFor, c.attractions, c.weather, c.moreDescription);
       } else {
-        const newCity = await prisma.$queryRawUnsafe(`
-          INSERT INTO "City" (title, slug, "stateId", "seoTitle", "h1Title", "seoDescription", "seoKeyword", "overView", "famousFor", "attractions", "weather", "moreDescription", "thumbImg", "isActive", "showOnSite", "displayOrder")
-          VALUES (
-            '${cData.title.replace(/'/g, "''")}',
-            '${cData.slug}',
-            ${stateId},
-            '${cData.seoTitle.replace(/'/g, "''")}',
-            '${cData.h1Title.replace(/'/g, "''")}',
-            '${cData.seoDescription.replace(/'/g, "''")}',
-            '${cData.seoKeyword ? cData.seoKeyword.replace(/'/g, "''") : ''}',
-            '${cData.overView.replace(/'/g, "''")}',
-            '${cData.famousFor.replace(/'/g, "''")}',
-            '${cData.attractions ? cData.attractions.replace(/'/g, "''") : ''}',
-            '${cData.weather ? cData.weather.replace(/'/g, "''") : ''}',
-            '${cData.moreDescription ? cData.moreDescription.replace(/'/g, "''") : ''}',
-            NULL,
-            true,
-            true,
-            0
-          )
-          RETURNING id
-        `);
-        cityId = newCity[0].id;
-        console.log(`   -> Created City: ${cData.title} (ID: ${cityId})`);
+        console.log(`  Inserting City ${c.title}...`);
+        const insertedCity = await prisma.$queryRawUnsafe(`
+          INSERT INTO "City" (
+            "title", "slug", "stateId", "seoTitle", "h1Title", "seoDescription", "seoKeyword",
+            "overView", "famousFor", "attractions", "weather", "moreDescription", "isActive", "showOnSite", "displayOrder", "createdAt", "updatedAt"
+          ) VALUES (
+            $1, $2, ${stateId}, $3, $4, $5, $6, $7, $8, $9, $10, $11, true, true, 0, NOW(), NOW()
+          ) RETURNING id
+        `, c.title, c.slug, c.seoTitle, c.h1Title, c.seoDescription, c.seoKeyword, c.overView, c.famousFor, c.attractions, c.weather, c.moreDescription);
+        cityId = insertedCity[0].id;
       }
 
-      // Insert City FAQs into Faq Table
-      if (cData.faqs && cData.faqs.length > 0) {
+      if (c.faqs && c.faqs.length > 0) {
         await prisma.$executeRawUnsafe(`DELETE FROM "Faq" WHERE "entityType" = 'City' AND "entityId" = ${cityId}`);
-        for (const faq of cData.faqs) {
+        for (const faq of c.faqs) {
           await prisma.$executeRawUnsafe(`
-            INSERT INTO "Faq" (ques, ans, "entityType", "entityId")
-            VALUES ('${faq.ques.replace(/'/g, "''")}', '${faq.ans.replace(/'/g, "''")}', 'City', ${cityId})
-          `);
+            INSERT INTO "Faq" ("ques", "ans", "entityType", "entityId", "isActive", "displayOrder", "createdAt", "updatedAt")
+            VALUES ($1, $2, 'City', ${cityId}, true, 0, NOW(), NOW())
+          `, faq.ques, faq.ans);
         }
       }
     }
   }
 
-  console.log('\nSUCCESS! ALL 3 STATES & 27 CITIES UPDATED WITH 100% HUMAN ~300-WORD COPY, SEO KEYWORDS, ATTRACTIONS, WEATHER, MORE DESCRIPTION & FAQS!');
+  console.log('\n✅ South India Seed completed successfully with all Overviews under 200 words!');
 }
 
 main()
