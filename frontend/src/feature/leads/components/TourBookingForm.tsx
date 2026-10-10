@@ -109,25 +109,9 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
           <Field hideLabel label="Full Name" name="name" type="text" value={data.name} onChange={handleChange} placeholder="Full Name *" required />
           <Field hideLabel label="Email Address" name="email" type="email" value={data.email} onChange={handleChange} placeholder="Email Address *" required />
 
-          <Select value={data.countryId} onValueChange={onCountryCodeChange}>
-              <SelectTrigger aria-label="Select country" className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 h-10 text-slate-800 text-sm max-sm:text-[13px] truncate focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
-              <SelectValue placeholder="Select Country" />
-            </SelectTrigger>
-            <SelectContent className="bg-white rounded-xl shadow-xl border border-slate-200 max-h-60 z-50">
-              {COUNTRIES.map((c) => (
-                <SelectItem key={c.code} value={c.code}>
-                  <span className="flex items-center gap-2">
-                    <span>{getCountryFlagEmoji(c.code)}</span>
-                    <span>{c.name} ({c.dialCode})</span>
-                  </span>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
           <div className="flex gap-2">
             <Select value={data.countryId} onValueChange={onCountryCodeChange}>
-              <SelectTrigger aria-label="Country dial code" className="w-[84px] sm:w-[110px] shrink-0 min-w-0 bg-white border border-slate-200 rounded-xl px-2 py-2 h-10 text-slate-800 text-sm max-sm:text-[13px] truncate focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
+              <SelectTrigger aria-label="Country dial code" className="w-[100px] sm:w-[120px] shrink-0 min-w-0 bg-white border border-slate-200 rounded-xl px-2 py-2 h-10 text-slate-800 text-sm max-sm:text-[13px] truncate focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
                 <SelectValue>
                   {getCountryFlagEmoji(data.countryId || "IN")} {selectedDialCode}
                 </SelectValue>
@@ -137,7 +121,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
                   <SelectItem key={c.code} value={c.code}>
                     <span className="flex items-center gap-2">
                       <span>{getCountryFlagEmoji(c.code)}</span>
-                      <span>{c.dialCode} ({c.code})</span>
+                      <span>{c.name} ({c.dialCode})</span>
                     </span>
                   </SelectItem>
                 ))}
@@ -155,20 +139,20 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
               value={data.noOfPersons}
               onValueChange={(val) => setData((prev) => ({ ...prev, noOfPersons: val }))}
             >
-              <SelectTrigger aria-label="Number of persons" className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 h-10 text-slate-800 text-sm max-sm:text-[13px] truncate focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
-                <SelectValue placeholder="Persons" />
+              <SelectTrigger aria-label="Number of adults" className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 h-10 text-slate-800 text-sm max-sm:text-[13px] truncate focus:border-[#2E8B8B] focus:ring-1 focus:ring-[#2E8B8B]/30 font-medium shadow-none">
+                <SelectValue placeholder="Adults" />
               </SelectTrigger>
               <SelectContent className="bg-white rounded-xl shadow-xl border border-slate-200 z-50">
-                <SelectItem value="1">1 Person</SelectItem>
-                <SelectItem value="2">2 Persons</SelectItem>
-                <SelectItem value="3">3 Persons</SelectItem>
-                <SelectItem value="4">4 Persons</SelectItem>
-                <SelectItem value="5">5 Persons</SelectItem>
-                <SelectItem value="6">6 Persons</SelectItem>
-                <SelectItem value="7">7 Persons</SelectItem>
-                <SelectItem value="8">8 Persons</SelectItem>
-                <SelectItem value="9">9 Persons</SelectItem>
-                <SelectItem value="10+">10+ Persons</SelectItem>
+                <SelectItem value="1">1 Adult</SelectItem>
+                <SelectItem value="2">2 Adults</SelectItem>
+                <SelectItem value="3">3 Adults</SelectItem>
+                <SelectItem value="4">4 Adults</SelectItem>
+                <SelectItem value="5">5 Adults</SelectItem>
+                <SelectItem value="6">6 Adults</SelectItem>
+                <SelectItem value="7">7 Adults</SelectItem>
+                <SelectItem value="8">8 Adults</SelectItem>
+                <SelectItem value="9">9 Adults</SelectItem>
+                <SelectItem value="10+">10+ Adults</SelectItem>
               </SelectContent>
             </Select>
 
@@ -205,8 +189,8 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
           </Select>
 
           <div className="flex gap-2">
-            <DarkDatePicker value={arrivalDate} onChange={setArrivalDate} />
-            <DarkDatePicker value={departureDate} onChange={setDepartureDate} minDate={arrivalDate} />
+            <DarkDatePicker value={arrivalDate} onChange={setArrivalDate} placeholder="Journey Start Date" />
+            <DarkDatePicker value={departureDate} onChange={setDepartureDate} minDate={arrivalDate} placeholder="Journey End Date" />
           </div>
 
           <textarea name="travellerMessage" value={data.travellerMessage} onChange={handleChange} aria-label="Message"
@@ -249,25 +233,6 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
             <Field label="Email Address" name="email" type="email" value={data.email} onChange={handleChange} placeholder="john@example.com" required />
 
             <div>
-              <label className="block text-[11px] font-bold uppercase tracking-widest text-brand-primary mb-1.5">Country</label>
-              <Select value={data.countryId} onValueChange={onCountryCodeChange}>
-                <SelectTrigger aria-label="Select country" className="w-full bg-white border border-brand-neutral-border rounded-lg px-4 py-2 text-brand-neutral-dark text-sm focus:border-indigo-500 focus:ring-1 focus:ring-brand-primary/30 font-medium shadow-none">
-                  <SelectValue placeholder="Select country" />
-                </SelectTrigger>
-                <SelectContent className="bg-white rounded-xl shadow-xl border border-slate-200 max-h-60 z-50">
-                  {COUNTRIES.map((c) => (
-                    <SelectItem key={c.code} value={c.code}>
-                      <span className="flex items-center gap-2">
-                        <span>{getCountryFlagEmoji(c.code)}</span>
-                        <span>{c.name} ({c.dialCode})</span>
-                      </span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
               <label className="block text-[11px] font-bold uppercase tracking-widest text-brand-primary mb-1.5">
                 Mobile Number<span className="text-rose-500 ml-0.5">*</span>
               </label>
@@ -283,7 +248,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
                       <SelectItem key={c.code} value={c.code}>
                         <span className="flex items-center gap-2">
                           <span>{getCountryFlagEmoji(c.code)}</span>
-                          <span>{c.dialCode} ({c.code})</span>
+                          <span>{c.name} ({c.dialCode})</span>
                         </span>
                       </SelectItem>
                     ))}
@@ -299,25 +264,25 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[11px] font-bold uppercase tracking-widest text-brand-primary mb-1.5">No. of Persons</label>
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-brand-primary mb-1.5">No. of Adults</label>
                 <Select
                   value={data.noOfPersons}
                   onValueChange={(val) => setData((prev) => ({ ...prev, noOfPersons: val }))}
                 >
-                  <SelectTrigger aria-label="Number of persons" className="w-full bg-white border border-brand-neutral-border rounded-lg px-4 py-2 text-brand-neutral-dark text-sm focus:border-indigo-500 focus:ring-1 focus:ring-brand-primary/30 font-medium">
-                    <SelectValue placeholder="Select Persons" />
+                  <SelectTrigger aria-label="Number of adults" className="w-full bg-white border border-brand-neutral-border rounded-lg px-4 py-2 text-brand-neutral-dark text-sm focus:border-indigo-500 focus:ring-1 focus:ring-brand-primary/30 font-medium">
+                    <SelectValue placeholder="Select Adults" />
                   </SelectTrigger>
                   <SelectContent className="bg-white rounded-xl shadow-xl border border-slate-200 z-50">
-                    <SelectItem value="1">1 Person</SelectItem>
-                    <SelectItem value="2">2 Persons</SelectItem>
-                    <SelectItem value="3">3 Persons</SelectItem>
-                    <SelectItem value="4">4 Persons</SelectItem>
-                    <SelectItem value="5">5 Persons</SelectItem>
-                    <SelectItem value="6">6 Persons</SelectItem>
-                    <SelectItem value="7">7 Persons</SelectItem>
-                    <SelectItem value="8">8 Persons</SelectItem>
-                    <SelectItem value="9">9 Persons</SelectItem>
-                    <SelectItem value="10+">10+ Persons</SelectItem>
+                    <SelectItem value="1">1 Adult</SelectItem>
+                    <SelectItem value="2">2 Adults</SelectItem>
+                    <SelectItem value="3">3 Adults</SelectItem>
+                    <SelectItem value="4">4 Adults</SelectItem>
+                    <SelectItem value="5">5 Adults</SelectItem>
+                    <SelectItem value="6">6 Adults</SelectItem>
+                    <SelectItem value="7">7 Adults</SelectItem>
+                    <SelectItem value="8">8 Adults</SelectItem>
+                    <SelectItem value="9">9 Adults</SelectItem>
+                    <SelectItem value="10+">10+ Adults</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -361,8 +326,8 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
             </div>
 
             <div className="flex gap-3">
-              <DarkDatePicker value={arrivalDate} onChange={setArrivalDate} label="Arrival Date" />
-              <DarkDatePicker value={departureDate} onChange={setDepartureDate} label="Departure Date" minDate={arrivalDate} />
+              <DarkDatePicker value={arrivalDate} onChange={setArrivalDate} label="Journey Start Date" placeholder="Journey Start Date" />
+              <DarkDatePicker value={departureDate} onChange={setDepartureDate} label="Journey End Date" placeholder="Journey End Date" minDate={arrivalDate} />
             </div>
 
             <div>

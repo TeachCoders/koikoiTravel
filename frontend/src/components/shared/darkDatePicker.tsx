@@ -9,10 +9,11 @@ interface DarkDatePickerProps {
   value?: Date;
   onChange: (date: Date | undefined) => void;
   label?: string;
+  placeholder?: string;
   minDate?: Date;
 }
 
-export function DarkDatePicker({ value, onChange, label, minDate }: DarkDatePickerProps) {
+export function DarkDatePicker({ value, onChange, label, placeholder, minDate }: DarkDatePickerProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -32,7 +33,7 @@ export function DarkDatePicker({ value, onChange, label, minDate }: DarkDatePick
             {value ? (
               <span className="text-brand-neutral-dark text-sm font-medium">{format(value, "MMM d, yyyy")}</span>
             ) : (
-              <span className="text-slate-400 text-sm">Select date</span>
+              <span className="text-slate-400 text-sm truncate">{placeholder || "Select date"}</span>
             )}
           </button>
         </PopoverTrigger>

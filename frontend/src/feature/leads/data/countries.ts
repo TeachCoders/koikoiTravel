@@ -75,16 +75,10 @@ export const COUNTRIES: Country[] = [
 ];
 
 export const HOTEL_CATEGORIES = [
-  "Budget",
   "3 Star",
   "4 Star",
   "5 Star",
-  "5 Star Luxury",
-  "Heritage",
-  "Resort",
-  "Hostel",
-  "Villa",
-  "Homestay",
+  "Luxury",
 ];
 
 export function getCountryByCode(code: string): Country | undefined {

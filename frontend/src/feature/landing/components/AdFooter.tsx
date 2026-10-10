@@ -122,7 +122,6 @@ export default function AdFooter({ destinationName = "Holidays" }: AdFooterProps
           <div className="flex items-center gap-6 text-[#a8a8a8]">
             <span className="hover:text-white transition cursor-pointer">Privacy Policy</span>
             <span className="hover:text-white transition cursor-pointer">Terms of Service</span>
-            <span className="hover:text-white transition cursor-pointer">Cancellation Policy</span>
           </div>
         </div>
 

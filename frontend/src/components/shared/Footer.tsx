@@ -253,9 +253,6 @@ export const Footer: React.FC = () => {
             <Link href="/terms-and-conditions" className="hover:text-white transition-colors">
               Terms of Service
             </Link>
-            <Link href="/cancellation-and-refund" className="hover:text-white transition-colors">
-              Cancellation & Refund
-            </Link>
           </div>
         </div>
       </div>
