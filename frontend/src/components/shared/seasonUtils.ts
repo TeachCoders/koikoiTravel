@@ -1,12 +1,11 @@
-export type SeasonKey = "winter" | "spring" | "monsoon";
+export type SeasonKey = "winter" | "monsoon";
 
 export const SEASON_META: Record<string, { label: string; color: string }> = {
   winter: { label: "Winter Special", color: "#2E8B8B" },
-  spring: { label: "Spring", color: "#F8904D" },
   monsoon: { label: "Monsoon", color: "#5B8DEF" },
 };
 
-export const SEASON_ORDER: SeasonKey[] = ["winter", "spring", "monsoon"];
+export const SEASON_ORDER: SeasonKey[] = ["winter", "monsoon"];
 
 const MONTH_SHORT: Record<string, string> = {
   january: "Jan",
