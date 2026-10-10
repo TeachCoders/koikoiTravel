@@ -182,7 +182,7 @@ export const Footer: React.FC = () => {
                   <MapPin className="w-4 h-4 text-[#2E8B8B]" />
                 </div>
                 <span className="text-[#b0b0b0] leading-relaxed pt-0.5">
-                  FIEE Complex, Okhla Phase 2, New Delhi - 110020, India
+                  H12, Patparganj, India, 110091
                 </span>
               </div>
               <div className="flex items-center gap-3">

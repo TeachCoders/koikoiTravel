@@ -97,7 +97,7 @@ export default function AdFooter({ destinationName = "Holidays" }: AdFooterProps
                 </div>
                 <div>
                   <div className="text-[10px] text-[#777] uppercase font-bold tracking-wider">Headquarters</div>
-                  <span className="text-[#a8a8a8]">FIEE Complex, Okhla Phase 2, New Delhi - 110020</span>
+                  <span className="text-[#a8a8a8]">H12, Patparganj, India, 110091</span>
                 </div>
               </li>
             </ul>

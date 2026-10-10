@@ -20,10 +20,10 @@ export const organizationSchema: Record<string, unknown> = {
   email: "support@koikoitravel.com",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "FIEE Complex, Okhla Phase 2",
+    streetAddress: "H12, Patparganj",
     addressLocality: "New Delhi",
     addressRegion: "Delhi",
-    postalCode: "110020",
+    postalCode: "110091",
     addressCountry: "IN",
   },
   areaServed: "Worldwide",

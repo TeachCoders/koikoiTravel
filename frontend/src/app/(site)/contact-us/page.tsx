@@ -203,8 +203,8 @@ export default async function ContactUsPage() {
                 </span>
                 <h3 className="text-lg font-bold text-slate-900 mt-0.5">Visit Our Office</h3>
                 <address className="not-italic text-sm text-slate-600 leading-relaxed mt-2">
-                  FIEE Complex, Okhla Phase 2,<br />
-                  New Delhi, Delhi - 110020, India
+                  H12, Patparganj,<br />
+                  India - 110091
                 </address>
               </div>
             </div>
