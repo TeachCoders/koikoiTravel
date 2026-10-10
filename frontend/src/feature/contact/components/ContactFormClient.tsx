@@ -217,12 +217,11 @@ export default function ContactFormClient() {
         <div className="space-y-1.5">
           <label htmlFor="contact-message" className="block text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
             <MessageSquare size={14} className="text-[#2E8B8B]" />
-            <span>Message <span className="text-rose-500">*</span></span>
+            <span>Message</span>
           </label>
           <textarea
             id="contact-message"
             name="message"
-            required
             rows={4}
             value={formData.message}
             onChange={handleChange}
