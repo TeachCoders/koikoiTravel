@@ -526,76 +526,10 @@ export default async function DestinationsPage() {
           </div>
         </section>
 
-        {/* ===== STATES & REGIONS ===== */}
-        {states.length > 0 && (
-          <section id="states" className="scroll-mt-24 bg-white">
-            <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-16 md:py-20">
-              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
-                <div>
-                  <SectionLabel icon={<Route size={12} />}>
-                    By Region
-                  </SectionLabel>
-                  <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-1">
-                    Popular States &amp; Regions
-                  </h2>
-                  <p className="mt-2 text-slate-500 text-sm md:text-base">
-                    Explore hill stations, heritage cities and coastal getaways.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-                {states.map((state) => {
-                  const image = img(
-                    state.banner?.images?.[0],
-                    state.thumbImg
-                  );
-                  return (
-                    <Link
-                      key={state.id}
-                      href={`/tour-packages/${state.country?.slug}/${state.slug}`}
-                      className="group relative block overflow-hidden rounded-3xl aspect-[4/5] shadow-[0_2px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_24px_60px_rgba(46,139,139,0.2)] hover:-translate-y-1.5 transition-all duration-500"
-                    >
-                      {image ? (
-                        <FallbackImage
-                          src={image}
-                          alt={state.h1Title || state.title}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-110"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-[#2E8B8B]/85 to-[#1c4e4e]" />
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                      <span className="absolute top-3 left-3 flex h-9 w-9 items-center justify-center rounded-full bg-[#F8904D] text-white shadow-lg opacity-0 -translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none">
-                        <ArrowRight size={15} />
-                      </span>
-                      {state.tourCount ? (
-                        <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-[#F8904D] px-2.5 py-1 text-[10px] font-bold text-white shadow">
-                          <Crown size={10} /> {state.tourCount}
-                        </span>
-                      ) : null}
-                      <div className="absolute bottom-3.5 left-3.5 right-3.5">
-                        <h3 className="font-heading text-lg font-extrabold text-white tracking-tight drop-shadow-md">
-                          {state.h1Title || state.title}
-                        </h3>
-                        {state.famousFor && (
-                          <p className="mt-1 text-[11px] font-medium text-white/75 line-clamp-1">
-                            {state.famousFor}
-                          </p>
-                        )}
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-        )}
-
+     
         {/* ===== STATE BANNERS + CITIES (TourRadar style) ===== */}
         {stateGroups.length > 0 && (
-          <section id="cities" className="scroll-mt-24 bg-slate-50">
+          <section id="cities" className="scroll-mt-24 bg-white">
             <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-16 md:py-20">
               <div className="mb-9">
                 <SectionLabel icon={<MapPin size={12} />}>By State</SectionLabel>
