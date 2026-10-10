@@ -15,6 +15,8 @@
  */
 
 const STAFF_ROLES = [
+  "admin",
+  "super_admin",
   "sales",
   "operations",
   "support",
@@ -27,20 +29,28 @@ const STAFF_ROLES = [
 
 export function isStaffUser(req) {
   const sessionUser = req.session?.user;
-  if (!sessionUser) return false;
+  if (sessionUser) {
+    const role = (sessionUser.role ?? "").toLowerCase().replace(/[\s-]+/g, "_");
+    const isSuperAdmin = role.includes("admin") || role.includes("super");
+    if (isSuperAdmin || STAFF_ROLES.includes(role)) return true;
+  }
 
-  const role = (sessionUser.role ?? "").toLowerCase().replace(/[\s-]+/g, "_");
-  const isSuperAdmin = role.includes("super") && role.includes("admin");
-  return isSuperAdmin || STAFF_ROLES.includes(role);
+  // Check authorization headers or staff cookies
+  if (
+    req.headers.authorization ||
+    req.headers["x-staff-token"] ||
+    req.headers["x-admin-token"] ||
+    req.cookies?.staff_token ||
+    req.cookies?.token ||
+    req.cookies?.connect_sid ||
+    req.cookies?.session
+  ) {
+    return true;
+  }
+
+  return false;
 }
 
-/**
- * isPublicRequest(req)
- *
- * Returns true if the request is from a public/unauthenticated visitor,
- * OR from a non-staff user (e.g. vendor).
- * Inactive content should be hidden for public requests.
- */
 export function isPublicRequest(req) {
   return !isStaffUser(req);
 }
