@@ -270,7 +270,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
             : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
         )}
       >
-        <span>{cleanStateName} Tour Packages</span>
+        <span>Top Tour Packages</span>
         <span
           className={cn(
             "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
@@ -296,7 +296,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
             : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
         )}
       >
-        <span>{cleanStateName} with Other Cities</span>
+        <span>Combined City Packages</span>
         <span
           className={cn(
             "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
@@ -423,14 +423,14 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           accentLabel={activeTab === "with-other" ? "Combined Circuits" : "State Itineraries"}
           h1Title={
             activeTab === "with-other"
-              ? `${cleanStateName} with Other Cities Tour Packages`
+              ? `${cleanStateName} Combined City Tour Packages`
               : formatToursH1(state.h1Title || state.title)
           }
           tabs={tourTabs}
           overView={state.overView ?? undefined}
           emptyLabel={`No tour packages found matching your criteria in ${
             activeTab === "with-other"
-              ? `${cleanStateName} with Other Cities`
+              ? `${cleanStateName} Combined City Packages`
               : cleanStateName
           }`}
           filterBar={currentTabJourneys.length > 0 ? filterBar : undefined}
