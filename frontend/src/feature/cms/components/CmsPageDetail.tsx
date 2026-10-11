@@ -54,7 +54,7 @@ export default function CmsPageDetail({ page }: { page: CmsPage }) {
 
         <div className="relative z-10 max-w-[1600px] py-12 md:py-16 mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-center">
           {/* Main Title (H1) */}
-          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight drop-shadow-lg mb-3 max-w-4xl">
+          <h1 className="font-luxury text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-wide drop-shadow-lg mb-3 max-w-4xl">
             {displayTitle}
           </h1>
 

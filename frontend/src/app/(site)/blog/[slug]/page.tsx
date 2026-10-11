@@ -157,7 +157,7 @@ export default async function BlogPostPage({ params }: Props) {
           ))}
           
           {/* Always Guarantee H1 for Search Bots */}
-          <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight drop-shadow-2xl max-w-5xl mx-auto">
+          <h1 className="font-luxury text-3xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight leading-tight drop-shadow-2xl max-w-5xl mx-auto">
             {post.h1Title || post.title}
           </h1>
 

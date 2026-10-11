@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Poppins } from "next/font/google";
+import { Poppins, Cinzel, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AppProviders } from "@/components/providers/app-provider";
@@ -19,6 +19,20 @@ const poppins = Poppins({
   variable: "--font-poppins",
   display: "swap",
   weight: ["300", "400", "500", "600", "700", "800", "900"],
+});
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  variable: "--font-cinzel",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -71,7 +85,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full antialiased", poppins.variable, "font-sans")}
+      className={cn(
+        "h-full antialiased",
+        poppins.variable,
+        cinzel.variable,
+        playfair.variable,
+        "font-sans"
+      )}
     >
       <head>
         <link rel="preconnect" href="https://www.googletagmanager.com" />
