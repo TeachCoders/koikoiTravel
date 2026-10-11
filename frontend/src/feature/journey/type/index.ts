@@ -47,22 +47,26 @@ export interface Journey {
     id: number;
     title: string;
     slug: string;
+    h1Title?: string | null;
     state?: {
       id: number;
       title: string;
       slug: string;
-      country?: { id: number; title: string; slug: string };
+      h1Title?: string | null;
+      country?: { id: number; title: string; slug: string; h1Title?: string | null };
     };
   }[];
   route?: {
     id: number;
     title: string;
     slug: string;
+    h1Title?: string | null;
     state?: {
       id: number;
       title: string;
       slug: string;
-      country?: { id: number; title: string; slug: string };
+      h1Title?: string | null;
+      country?: { id: number; title: string; slug: string; h1Title?: string | null };
     };
   }[];
   months?: { id: number; title: string; slug: string; season?: string | null }[];

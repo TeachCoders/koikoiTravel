@@ -62,7 +62,7 @@ type CState = {
   famousFor?: string | null;
   capital?: string | null;
   banner?: CBanner;
-  country?: { id: number; title: string; slug: string } | null;
+  country?: { id: number; title: string; slug: string; h1Title?: string | null } | null;
   cities?: CCity[];
 };
 
@@ -70,6 +70,7 @@ type CCity = {
   id: number;
   title: string;
   slug: string;
+  h1Title?: string | null;
   thumbImg?: string | null;
   displayOrder?: number | null;
   isActive?: boolean;

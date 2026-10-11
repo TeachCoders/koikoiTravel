@@ -181,7 +181,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   .map((city, idx, arr) => {
                     const capCity = city
                       .split(/\s+/)
-                      .map((w) => (w.length > 0 ? w.charAt(0).toUpperCase() + w.slice(1) : ""))
+                      .map((w: string) => (w.length > 0 ? w.charAt(0).toUpperCase() + w.slice(1) : ""))
                       .join(" ");
                     return (
                       <Fragment key={idx}>
