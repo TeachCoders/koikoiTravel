@@ -296,9 +296,14 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
       const initialJourneys = await fetchPublicJsonCached<JourneyPage<Journey>>(
         "/journey?limit=100&isActive=true"
       );
-      const stateJourneys = (initialJourneys?.data || []).filter((j) =>
-        j.cities?.some((c) => c.state?.id === state.id)
+      const embeddedJourneys = state.journeys || [];
+      const stateJourneys = (initialJourneys?.data || []).filter(
+        (j) =>
+          embeddedJourneys.some((ej) => ej.id === j.id) ||
+          (j as any).states?.some((s: any) => s.id === state.id || s.slug === state.slug) ||
+          j.cities?.some((c) => c.state?.id === state.id || c.state?.slug === state.slug)
       );
+      const finalStateJourneys = stateJourneys.length > 0 ? stateJourneys : embeddedJourneys;
       const schema = graphSchema([
         touristDestinationSchema({
           name: state.title,
@@ -307,7 +312,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
           url: `/tour-packages/${state.country?.slug}/${state.slug}`,
         }),
         itemListSchema(
-          stateJourneys.slice(0, 10).map((j) => ({
+          finalStateJourneys.slice(0, 10).map((j) => ({
             name: journeyCardTitle(j),
             url: journeyPackageHref(j),
           }))

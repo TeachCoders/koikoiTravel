@@ -73,24 +73,34 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     { enabled: true }
   );
 
-  // All active journeys that visit cities in this state
-  const stateJourneys = (
-    journeys.length > 0
-      ? journeys.filter((j) =>
-          j.cities?.some((c) => c.state?.id === state.id || (state.cities && state.cities.some((sc) => sc.id === c.id))) ||
-          (state.cities && j.cityIds?.some((cid) => state.cities?.some((sc) => sc.id === cid)))
-        )
-      : embeddedJourneys
-  ).sort((a, b) => {
-    const aOrder = a.displayOrder ?? 0;
-    const bOrder = b.displayOrder ?? 0;
-    if (aOrder > 0 && bOrder > 0) return aOrder - bOrder;
-    if (aOrder > 0) return -1;
-    if (bOrder > 0) return 1;
-    if (a.isBestSelling && !b.isBestSelling) return -1;
-    if (!a.isBestSelling && b.isBestSelling) return 1;
-    return 0;
-  });
+  // All active journeys that visit cities in this state or are linked directly to this state
+  const stateJourneys = useMemo(() => {
+    const list = journeys.length > 0 ? journeys : embeddedJourneys;
+    const matching = list.filter((j) =>
+      embeddedJourneys.some((ej) => ej.id === j.id) ||
+      (j as any).states?.some((s: any) => s.id === state.id || s.slug === state.slug) ||
+      j.cities?.some(
+        (c) =>
+          c.state?.id === state.id ||
+          c.state?.slug === state.slug ||
+          (state.cities && state.cities.some((sc) => sc.id === c.id))
+      ) ||
+      (state.cities && j.cityIds?.some((cid) => state.cities?.some((sc) => sc.id === cid)))
+    );
+
+    const result = matching.length > 0 ? matching : embeddedJourneys;
+
+    return [...result].sort((a, b) => {
+      const aOrder = a.displayOrder ?? 0;
+      const bOrder = b.displayOrder ?? 0;
+      if (aOrder > 0 && bOrder > 0) return aOrder - bOrder;
+      if (aOrder > 0) return -1;
+      if (bOrder > 0) return 1;
+      if (a.isBestSelling && !b.isBestSelling) return -1;
+      if (!a.isBestSelling && b.isBestSelling) return 1;
+      return 0;
+    });
+  }, [journeys, embeddedJourneys, state.id, state.slug, state.cities]);
 
   // Tab state: "state-only" | "with-other"
   const [activeTab, setActiveTab] = useState<"state-only" | "with-other">("state-only");
@@ -429,9 +439,9 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           basePath={basePath}
           journeys={filteredCurrentJourneys}
           isLoading={journeysLoading && currentTabJourneys.length === 0}
-          accentLabel={activeTab === "with-other" ? "Combined Circuits" : "State Itineraries"}
+          accentLabel={activeTab === "with-other" && hasBothCategories ? "Combined Circuits" : "State Itineraries"}
           h1Title={
-            activeTab === "with-other"
+            activeTab === "with-other" && hasBothCategories
               ? `${cleanStateName} Combined City Tour Packages`
               : formatToursH1(state.h1Title || state.title)
           }
@@ -439,7 +449,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           overView={state.overView ?? undefined}
           serviceHighlights={<ServiceHighlights />}
           emptyLabel={`No tour packages found matching your criteria in ${
-            activeTab === "with-other"
+            activeTab === "with-other" && hasBothCategories
               ? `${cleanStateName} Combined City Packages`
               : cleanStateName
           }`}
