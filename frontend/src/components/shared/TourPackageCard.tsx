@@ -88,6 +88,41 @@ function InclusionTransfersIcon({ className = "w-5.5 h-5.5" }: { className?: str
   );
 }
 
+function capitalizeWords(str: string): string {
+  if (!str) return "";
+  return str
+    .split(/\s+/)
+    .map((w) => (w.length > 0 ? w.charAt(0).toUpperCase() + w.slice(1) : ""))
+    .join(" ");
+}
+
+export function formatRouteText(journey: Partial<Journey>, stateFallback?: string): string {
+  if (journey.route && journey.route.length > 0) {
+    return journey.route
+      .map((c: any) => capitalizeWords(c.title || c.name || ""))
+      .filter(Boolean)
+      .join(" - ");
+  }
+
+  if (journey.destination) {
+    return journey.destination
+      .split(/[-–—,→]/)
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map((s) => capitalizeWords(s))
+      .join(" - ");
+  }
+
+  if (journey.cities && journey.cities.length > 0) {
+    return journey.cities
+      .map((c: any) => capitalizeWords(c.title || c.name || ""))
+      .filter(Boolean)
+      .join(" - ");
+  }
+
+  return stateFallback ? capitalizeWords(stateFallback) : "";
+}
+
 export default function TourPackageCard({
   journey,
   contextName,
@@ -186,10 +221,10 @@ export default function TourPackageCard({
         {!isCompact && (
           <>
             {/* Route / Destination */}
-            {(journey.destination || state) && (
+            {(journey.destination || state || (journey.route && journey.route.length > 0)) && (
               <div className="flex items-center gap-1.5 mb-2.5 text-[12.5px] text-slate-500 font-normal">
                 <MapPin size={13} className="shrink-0 text-[#F8904D]" />
-                <span className="truncate">{journey.destination || state}</span>
+                <span className="truncate">{formatRouteText(journey, state)}</span>
               </div>
             )}
 

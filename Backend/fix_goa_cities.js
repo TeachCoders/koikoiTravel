@@ -88,7 +88,34 @@ async function main() {
       console.log("No duplicate City with slug 'goa' found under Goa State.");
     }
 
-    // 4. Invalidate Redis Cache
+    // 4. Capitalize and format destination strings in Journey table
+    const journeysWithDest = await prisma.journey.findMany({
+      where: { destination: { not: null } },
+      select: { id: true, destination: true }
+    });
+
+    let updatedJourneysCount = 0;
+    for (const j of journeysWithDest) {
+      if (!j.destination) continue;
+      const formatted = j.destination
+        .split(/[-–—,→]/)
+        .map(s => s.trim())
+        .filter(Boolean)
+        .map(s => s.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '))
+        .join('-');
+
+      if (formatted !== j.destination) {
+        await prisma.journey.update({
+          where: { id: j.id },
+          data: { destination: formatted }
+        });
+        updatedJourneysCount++;
+        console.log(`Updated Journey ID ${j.id} destination: "${j.destination}" -> "${formatted}"`);
+      }
+    }
+    console.log(`✅ Formatted destinations for ${updatedJourneysCount} journey(s) in DB.`);
+
+    // 5. Invalidate Redis Cache
     await clearRedis();
 
     console.log("=== GOA DESTINATION FIX COMPLETED SUCCESSFULLY ===");

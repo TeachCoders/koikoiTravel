@@ -172,17 +172,25 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                 </span>
                 {(journey.route && journey.route.length > 0
                   ? journey.route.map((c) => c.title)
-                  : journey.destination.split("-").map((s) => s.trim())
-                ).map((city, idx, arr) => (
-                  <Fragment key={idx}>
-                    <span className="text-slate-800 font-semibold">
-                      {city}
-                    </span>
-                    {idx < arr.length - 1 && (
-                      <span className="text-slate-300 font-normal mx-0.5">→</span>
-                    )}
-                  </Fragment>
-                ))}
+                  : journey.destination.split(/[-–—,→]/).map((s) => s.trim())
+                )
+                  .filter(Boolean)
+                  .map((city, idx, arr) => {
+                    const capCity = city
+                      .split(/\s+/)
+                      .map((w) => (w.length > 0 ? w.charAt(0).toUpperCase() + w.slice(1) : ""))
+                      .join(" ");
+                    return (
+                      <Fragment key={idx}>
+                        <span className="text-slate-800 font-semibold">
+                          {capCity}
+                        </span>
+                        {idx < arr.length - 1 && (
+                          <span className="text-slate-300 font-normal mx-0.5">→</span>
+                        )}
+                      </Fragment>
+                    );
+                  })}
               </div>
             )}
 
