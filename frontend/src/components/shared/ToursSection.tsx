@@ -22,7 +22,6 @@ export interface ToursSectionProps {
   id?: string;
   cardVariant?: "default" | "compact";
   tabs?: React.ReactNode;
-  serviceHighlights?: React.ReactNode;
 }
 
 export default function ToursSection({
@@ -39,7 +38,6 @@ export default function ToursSection({
   id = "tours",
   cardVariant = "default",
   tabs,
-  serviceHighlights,
 }: ToursSectionProps) {
   const hasFilters = Boolean(filterBar && onClearFilters);
 
@@ -64,8 +62,6 @@ export default function ToursSection({
           )}
           {overView && <RichContent html={overView} className="mt-2 text-slate-600 font-normal text-sm sm:text-base leading-relaxed" />}
         </div>
-
-        {serviceHighlights && <div className="mb-6 sm:mb-8">{serviceHighlights}</div>}
 
         {tabs}
 

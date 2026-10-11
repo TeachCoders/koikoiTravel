@@ -21,7 +21,6 @@ import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
-import ServiceHighlights from "@/components/shared/ServiceHighlights";
 import TourPackageCard from "@/components/shared/TourPackageCard";
 import FilterBar from "@/components/shared/FilterBar";
 import {
@@ -452,7 +451,6 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           }
           tabs={tourTabs}
           overView={state.overView ?? undefined}
-          serviceHighlights={<ServiceHighlights />}
           emptyLabel={`No tour packages found matching your criteria in ${
             activeTab === "with-other" && hasBothCategories
               ? `${cleanStateName} Combined City Packages`
