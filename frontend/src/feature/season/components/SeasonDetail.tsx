@@ -11,6 +11,7 @@ import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
 import FilterBar from "@/components/shared/FilterBar";
 import FaqSection from "@/feature/home/components/FaqSection";
+import { stripHtml } from "@/lib/utils";
 import {
   cityOptions,
   travelExperienceOptions,
@@ -122,11 +123,13 @@ export default function SeasonDetail({
     />
   );
 
-  // The left column renders seoDescription, attractions, weather and
-  // moreDescription, all of which are optional. Without any of them the
-  // "Everything About" heading had nothing to sit above, so the column
-  // is dropped and the sidebar is given the full width.
-  const hasKnowMoreText = Boolean(initialSeason.seoDescription || initialSeason.moreDescription);
+  const hasSeoDesc = Boolean(stripHtml(initialSeason.seoDescription).trim());
+  const hasMoreDesc = Boolean(stripHtml(initialSeason.moreDescription).trim());
+  const hasKnowMoreText = hasSeoDesc || hasMoreDesc;
+
+  const hasTopPackages = seasonJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0;
+  const hasSidebar = facts.length > 0 || hasTopPackages;
+  const showMoreSection = hasKnowMoreText || hasSidebar;
 
   return (
     <div>
@@ -188,25 +191,27 @@ export default function SeasonDetail({
       />
 
       {/* ===== MORE DESCRIPTION (ALL INFO) ===== */}
-      <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-16 md:py-20">
-        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
-          <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText ? "lg:grid-cols-3" : ""}`}>
-          {hasKnowMoreText && (
-              <div className="lg:col-span-2">
-                <span className="accent-label">Know More</span>
-                <h2 className="h3 text-[#1C1C1C] mt-2 mb-8">Everything About {initialSeason.title}</h2>
+      {showMoreSection && (
+        <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-16 md:py-20">
+          <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
+            <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
+              {hasKnowMoreText && (
+                <div className={hasSidebar ? "lg:col-span-2" : "w-full"}>
+                  <span className="accent-label">Know More</span>
+                  <h2 className="h3 text-[#1C1C1C] mt-2 mb-8">Everything About {initialSeason.title}</h2>
 
-                {initialSeason.seoDescription && (
-                  <RichContent html={initialSeason.seoDescription} />
-                )}
+                  {hasSeoDesc && (
+                    <RichContent html={initialSeason.seoDescription!} />
+                  )}
 
-                {initialSeason.moreDescription && (
-                  <RichContent html={initialSeason.moreDescription} className="mt-8" />
-                )}
-              </div>
-          )}
+                  {hasMoreDesc && (
+                    <RichContent html={initialSeason.moreDescription!} className={hasSeoDesc ? "mt-8" : ""} />
+                  )}
+                </div>
+              )}
 
-            <aside className="space-y-6 lg:sticky lg:top-24 self-start">
+              {hasSidebar && (
+                <aside className={`space-y-6 lg:sticky lg:top-24 self-start ${!hasKnowMoreText ? "max-w-xl mx-auto w-full" : ""}`}>
               {facts.length > 0 && (
                 <div className="rounded-2xl border border-slate-100 bg-white p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
                   <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5">
@@ -264,9 +269,11 @@ export default function SeasonDetail({
                 </div>
               )}
             </aside>
+            )}
           </div>
         </div>
       </section>
+      )}
 
       {/* ===== OTHER SEASONS ===== */}
       <OtherSeasonsSection currentSlug={initialSeason.slug} />

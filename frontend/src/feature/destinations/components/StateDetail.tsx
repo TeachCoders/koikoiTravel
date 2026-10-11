@@ -347,7 +347,15 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     />
   );
 
-  const hasKnowMoreText = Boolean(state.seoDescription || state.moreDescription);
+  const hasSeoDesc = Boolean(stripHtml(state.seoDescription).trim());
+  const hasMoreDesc = Boolean(stripHtml(state.moreDescription).trim());
+  const hasKnowMoreText = hasSeoDesc || hasMoreDesc;
+
+  const hasFamousFor = Boolean(stripHtml(state.famousFor || "").trim());
+  const hasTopPackages = stateJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0;
+  const hasSidebar = facts.length > 0 || hasFamousFor || hasTopPackages;
+  const showMoreSection = hasKnowMoreText || hasSidebar;
+
   const basePath = state.country?.slug
     ? `/tour-packages/${state.country.slug}/${state.slug}`
     : `/tour-packages/${state.slug}`;
@@ -530,29 +538,31 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       <FaqSection faqs={state.faqs} />
 
       {/* ===== ARTICLE / MORE DESCRIPTION (ALL INFO) AT BOTTOM WITH WHITE BACKGROUND ===== */}
-      <section id="more" className="bg-white border-t border-slate-200/60 py-8 sm:py-10 md:py-12">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-          <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText ? "lg:grid-cols-3" : ""}`}>
-          {hasKnowMoreText && (
-              <div className="lg:col-span-2">
-                <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                  Know More
-                </span>
-                <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 mb-6">
-                  Everything About {state.title}
-                </h2>
+      {showMoreSection && (
+        <section id="more" className="bg-white border-t border-slate-200/60 py-8 sm:py-10 md:py-12">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+            <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
+              {hasKnowMoreText && (
+                <div className={hasSidebar ? "lg:col-span-2" : "w-full"}>
+                  <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+                    Know More
+                  </span>
+                  <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 mb-6">
+                    Everything About {state.title}
+                  </h2>
 
-                {state.seoDescription && (
-                  <RichContent html={state.seoDescription} />
-                )}
+                  {hasSeoDesc && (
+                    <RichContent html={state.seoDescription!} />
+                  )}
 
-                {state.moreDescription && (
-                  <RichContent html={state.moreDescription} className="mt-8" />
-                )}
-              </div>
-          )}
+                  {hasMoreDesc && (
+                    <RichContent html={state.moreDescription!} className={hasSeoDesc ? "mt-8" : ""} />
+                  )}
+                </div>
+              )}
 
-            <aside className="space-y-6 lg:sticky lg:top-28 z-10 self-start">
+              {hasSidebar && (
+                <aside className={`space-y-6 lg:sticky lg:top-28 z-10 self-start ${!hasKnowMoreText ? "max-w-xl mx-auto w-full" : ""}`}>
               {facts.length > 0 && (
                 <div className="rounded-2xl border border-slate-200/70 bg-slate-50/70 p-6 shadow-sm relative overflow-hidden">
                   <h3 className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#2E8B8B] mb-4">
@@ -643,9 +653,11 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                 </div>
               )}
             </aside>
+            )}
           </div>
         </div>
       </section>
+      )}
     </div>
   );
 }

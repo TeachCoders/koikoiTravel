@@ -27,7 +27,7 @@ import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
 import FilterBar from "@/components/shared/FilterBar";
-import { formatToursH1 } from "@/lib/utils";
+import { formatToursH1, stripHtml } from "@/lib/utils";
 import {
   travelExperienceOptions,
   durationOptions,
@@ -85,11 +85,9 @@ function CountryContent({
   initialJourneys?: JourneyPage<Journey> | null;
 }) {
   const displayTitle = country.title.replace(/\s*Tour$/i, "") || country.title;
-  // The left column renders seoDescription and moreDescription, both
-  // optional. Without either, the "Everything About" heading had nothing
-  // to sit above, so the column is dropped and the sidebar takes the full
-  // width.
-  const hasKnowMoreText = Boolean(country.seoDescription || country.moreDescription);
+  const hasSeoDesc = Boolean(stripHtml(country.seoDescription).trim());
+  const hasMoreDesc = Boolean(stripHtml(country.moreDescription).trim());
+  const hasKnowMoreText = hasSeoDesc || hasMoreDesc;
 
 
   const { states, isLoading: statesLoading } = useGetStates(
@@ -209,6 +207,10 @@ function CountryContent({
     { icon: Globe, label: "Timezone", value: country.timezone },
     { icon: Clock, label: "Dial Code", value: country.dialCode },
   ].filter((f) => f.value);
+
+  const hasTopPackages = countryJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0;
+  const hasSidebar = facts.length > 0 || hasTopPackages;
+  const showMoreSection = hasKnowMoreText || hasSidebar;
 
   const { swiperRef: statesSwiperRef, slidePrev, slideNext, canScroll } = useSliderControl();
 
@@ -409,29 +411,31 @@ function CountryContent({
       </section>
 
       {/* ===== KNOW MORE (ALL INFO) ===== */}
-      <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-8 sm:py-10 md:py-12">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-          <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText ? "lg:grid-cols-3" : ""}`}>
-          {hasKnowMoreText && (
-              <div className="lg:col-span-2">
-                <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                  Know More
-                </span>
-                <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 mb-6">
-                  Everything About {displayTitle}
-                </h2>
+      {showMoreSection && (
+        <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-8 sm:py-10 md:py-12">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+            <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
+              {hasKnowMoreText && (
+                <div className={hasSidebar ? "lg:col-span-2" : "w-full"}>
+                  <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+                    Know More
+                  </span>
+                  <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 mb-6">
+                    Everything About {displayTitle}
+                  </h2>
 
-                {country.seoDescription && (
-                  <RichContent html={country.seoDescription} />
-                )}
+                  {hasSeoDesc && (
+                    <RichContent html={country.seoDescription!} />
+                  )}
 
-                {country.moreDescription && (
-                  <RichContent html={country.moreDescription} className="mt-8" />
-                )}
-              </div>
-          )}
+                  {hasMoreDesc && (
+                    <RichContent html={country.moreDescription!} className={hasSeoDesc ? "mt-8" : ""} />
+                  )}
+                </div>
+              )}
 
-            <aside className="space-y-6 lg:sticky lg:top-28 z-10 self-start">
+              {hasSidebar && (
+                <aside className={`space-y-6 lg:sticky lg:top-28 z-10 self-start ${!hasKnowMoreText ? "max-w-xl mx-auto w-full" : ""}`}>
               {facts.length > 0 && (
                 <div className="rounded-2xl border border-slate-100 bg-white p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
                   <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5">
@@ -500,9 +504,11 @@ function CountryContent({
                 </div>
               )}
             </aside>
+            )}
           </div>
         </div>
       </section>
+      )}
 
       {/* ===== FAQ SECTION ===== */}
       <FaqSection faqs={country.faqs} />

@@ -191,11 +191,16 @@ function CityContent({
     />
   );
 
-  // The left column renders seoDescription, attractions, weather and
-  // moreDescription, all of which are optional. Without any of them the
-  // "Everything About" heading had nothing to sit above, so the column
-  // is dropped and the sidebar is given the full width.
-  const hasKnowMoreText = Boolean(city.seoDescription || city.attractions || city.weather || city.moreDescription);
+  const hasSeoDesc = Boolean(stripHtml(city.seoDescription).trim());
+  const hasMoreDesc = Boolean(stripHtml(city.moreDescription).trim());
+  const hasAttractions = Boolean(stripHtml(city.attractions).trim());
+  const hasWeather = Boolean(stripHtml(city.weather).trim());
+  const hasKnowMoreText = hasSeoDesc || hasMoreDesc || hasAttractions || hasWeather;
+
+  const hasFamousFor = Boolean(stripHtml(city.famousFor || "").trim());
+  const hasTopPackages = cityJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0;
+  const hasSidebar = facts.length > 0 || hasFamousFor || hasTopPackages;
+  const showMoreSection = hasKnowMoreText || hasSidebar;
 
   return (
     <div>
@@ -287,47 +292,49 @@ function CityContent({
       />
 
       {/* ===== KNOW MORE (ALL INFO) ===== */}
-      <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-8 sm:py-10 md:py-12">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-          <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText ? "lg:grid-cols-3" : ""}`}>
-          {hasKnowMoreText && (
-              <div className="lg:col-span-2">
-                <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                  Know More
-                </span>
-                <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 mb-6">
-                  Everything About {city.h1Title || city.title}
-                </h2>
+      {showMoreSection && (
+        <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-8 sm:py-10 md:py-12">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+            <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
+              {hasKnowMoreText && (
+                <div className={hasSidebar ? "lg:col-span-2" : "w-full"}>
+                  <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+                    Know More
+                  </span>
+                  <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 mb-6">
+                    Everything About {city.h1Title || city.title}
+                  </h2>
 
-                {city.seoDescription && (
-                  <RichContent html={city.seoDescription} />
-                )}
+                  {hasSeoDesc && (
+                    <RichContent html={city.seoDescription!} />
+                  )}
 
-                {city.attractions && (
-                  <div className="mt-8">
-                    <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
-                      <Compass size={18} className="text-[#2E8B8B]" /> Top Attractions
-                    </h3>
-                    <RichContent html={city.attractions} />
-                  </div>
-                )}
+                  {hasAttractions && (
+                    <div className="mt-8">
+                      <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
+                        <Compass size={18} className="text-[#2E8B8B]" /> Top Attractions
+                      </h3>
+                      <RichContent html={city.attractions!} />
+                    </div>
+                  )}
 
-                {city.weather && (
-                  <div className="mt-8">
-                    <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
-                      <CloudSun size={18} className="text-[#F5B041]" /> Weather & Best Time
-                    </h3>
-                    <RichContent html={city.weather} />
-                  </div>
-                )}
+                  {hasWeather && (
+                    <div className="mt-8">
+                      <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
+                        <CloudSun size={18} className="text-[#F5B041]" /> Weather & Best Time
+                      </h3>
+                      <RichContent html={city.weather!} />
+                    </div>
+                  )}
 
-                {city.moreDescription && (
-                  <RichContent html={city.moreDescription} className="mt-8" />
-                )}
-              </div>
-          )}
+                  {hasMoreDesc && (
+                    <RichContent html={city.moreDescription!} className="mt-8" />
+                  )}
+                </div>
+              )}
 
-            <aside className="space-y-6 lg:sticky lg:top-28 z-10 self-start">
+              {hasSidebar && (
+                <aside className={`space-y-6 lg:sticky lg:top-28 z-10 self-start ${!hasKnowMoreText ? "max-w-xl mx-auto w-full" : ""}`}>
               {facts.length > 0 && (
                 <div className="rounded-2xl border border-slate-100 bg-white p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
                   <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5">
@@ -418,9 +425,11 @@ function CityContent({
                 </div>
               )}
             </aside>
+            )}
           </div>
         </div>
       </section>
+      )}
 
       {/* ===== FAQ SECTION ===== */}
       <FaqSection faqs={city.faqs} />
