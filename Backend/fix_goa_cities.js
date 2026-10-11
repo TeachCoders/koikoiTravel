@@ -1,5 +1,16 @@
 import { prisma } from './utils/prismaConnection.js';
-import redisClient from './utils/redis.js';
+
+async function clearRedis() {
+  try {
+    const { cacheClearAll } = await import('./services/redisClient.js');
+    if (typeof cacheClearAll === 'function') {
+      await cacheClearAll();
+      console.log("✅ Redis cache cleared successfully.");
+    }
+  } catch (err) {
+    console.warn("Notice: Could not clear Redis directly (not critical):", err.message);
+  }
+}
 
 async function main() {
   console.log("=== FIXING GOA AND PONDICHERRY DESTINATION DATA ===");
@@ -78,22 +89,14 @@ async function main() {
     }
 
     // 4. Invalidate Redis Cache
-    if (redisClient && redisClient.isOpen) {
-      console.log("Flushing Redis cache...");
-      await redisClient.flushAll();
-      console.log("✅ Redis cache flushed successfully.");
-    } else {
-      console.log("Redis client not open, skipping cache flush.");
-    }
+    await clearRedis();
 
     console.log("=== GOA DESTINATION FIX COMPLETED SUCCESSFULLY ===");
   } catch (error) {
     console.error("Error running fix script:", error);
   } finally {
     await prisma.$disconnect();
-    if (redisClient && redisClient.isOpen) {
-      await redisClient.quit();
-    }
+    process.exit(0);
   }
 }
 
