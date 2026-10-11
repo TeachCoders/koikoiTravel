@@ -94,7 +94,7 @@ export const HeroSection: React.FC = () => {
       </div>
 
       <div className="relative z-30 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-center">
-        <h1 className="font-luxury text-white text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight sm:tracking-normal leading-tight max-w-4xl mx-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] transition-all duration-700 block">
+        <h1 className="font-luxury text-white text-xl sm:text-3xl md:text-4xl lg:text-[42px] font-black tracking-tight sm:tracking-normal leading-tight max-w-3xl mx-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] transition-all duration-700 block">
           Plan Your Dream India Trip With KoiKoi Travel
         </h1>
 
