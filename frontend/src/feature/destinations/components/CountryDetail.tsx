@@ -485,14 +485,12 @@ function CountryContent({
                               </span>
                               <div className="flex items-center gap-2 mt-0.5 text-[11.5px] font-semibold text-slate-500">
                                 <span>{j.duration || (j.noDays > 0 ? `${j.noDays} Days` : "")}</span>
-                                {((j.discountPrice ?? 0) > 0 || (j.pricePerPerson ?? 0) > 0) ? (
+                                {j.destination && (
                                   <>
                                     <span>•</span>
-                                    <span className="text-[#F8904D] font-extrabold">
-                                      ₹{((j.discountPrice || j.pricePerPerson) as number).toLocaleString("en-IN")}
-                                    </span>
+                                    <span className="truncate max-w-[140px]">{j.destination}</span>
                                   </>
-                                ) : null}
+                                )}
                               </div>
                             </div>
                           </Link>
