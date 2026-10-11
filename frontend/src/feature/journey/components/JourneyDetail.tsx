@@ -339,7 +339,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                       </div>
 
                       {/* Best Season to Visit */}
-                      {(journey.months?.length ?? 0) > 0 && (
+                      {/* {(journey.months?.length ?? 0) > 0 && (
                         <div className="pt-3.5 border-t border-slate-100 flex flex-col gap-2">
                           <h4 className="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2">
                             <CalendarDays size={15} className="text-[#2E8B8B]" />
@@ -368,7 +368,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                             })}
                           </div>
                         </div>
-                      )}
+                      )} */}
                     </div>
                   </div>
 
