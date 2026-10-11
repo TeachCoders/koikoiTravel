@@ -21,6 +21,7 @@ export interface ToursSectionProps {
   sectionClassName?: string;
   id?: string;
   cardVariant?: "default" | "compact";
+  tabs?: React.ReactNode;
 }
 
 export default function ToursSection({
@@ -36,6 +37,7 @@ export default function ToursSection({
   sectionClassName = "py-8 sm:py-10 md:py-12 bg-[#f8f8f8] relative overflow-hidden shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]",
   id = "tours",
   cardVariant = "default",
+  tabs,
 }: ToursSectionProps) {
   const hasFilters = Boolean(filterBar && onClearFilters);
 
@@ -61,36 +63,41 @@ export default function ToursSection({
           {overView && <RichContent html={overView} className="mt-2 text-slate-600 font-normal text-sm sm:text-base leading-relaxed" />}
         </div>
 
-      {isLoading ? (
-        <DestinationsSkeleton count={8} />
-      ) : journeys.length === 0 ? (
-        hasFilters ? (
-          <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
-            <p className="text-slate-500">No tour packages match your filters</p>
-            <button
-              onClick={onClearFilters}
-              className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
-            >
-              Clear all filters
-            </button>
-          </div>
-        ) : (
-          <div className="text-center py-14">
-            <MapPin size={40} className="mx-auto text-slate-300 mb-3" />
-            <p className="text-slate-500">{emptyLabel}</p>
-          </div>
-        )
-      ) : (
-        <div>
-          {filterBar}
+        {tabs}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-            {journeys.map((j) => (
-              <TourPackageCard key={j.id} journey={j} contextName={contextName} variant={cardVariant} />
-            ))}
+        {isLoading ? (
+          <DestinationsSkeleton count={8} />
+        ) : journeys.length === 0 ? (
+          hasFilters ? (
+            <div>
+              {filterBar}
+              <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
+                <p className="text-slate-500">No tour packages match your filters</p>
+                <button
+                  onClick={onClearFilters}
+                  className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
+                >
+                  Clear all filters
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-14">
+              <MapPin size={40} className="mx-auto text-slate-300 mb-3" />
+              <p className="text-slate-500">{emptyLabel}</p>
+            </div>
+          )
+        ) : (
+          <div>
+            {filterBar}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+              {journeys.map((j) => (
+                <TourPackageCard key={j.id} journey={j} contextName={contextName} variant={cardVariant} />
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </section>
   );
