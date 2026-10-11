@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, type ReactNode } from "react";
-import { Check, ChevronDown, X, SlidersHorizontal } from "lucide-react";
+import { useState, useEffect, useMemo, type ReactNode } from "react";
+import { Check, ChevronDown, X, SlidersHorizontal, Search } from "lucide-react";
 import * as Popover from "@radix-ui/react-popover";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +16,7 @@ export interface FilterSection {
   title: string;
   /** Shorter label shown on mobile-only (e.g. "Season" instead of "Best Season / Month"). */
   shortTitle?: string;
+  searchPlaceholder?: string;
   icon?: ReactNode;
   options: FilterOption[];
   selected: string[];
@@ -68,14 +69,24 @@ export default function FilterBar({
 
 function FilterSelect({ section: s }: { section: FilterSection }) {
   const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
   const selectedCount = s.selected.length;
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      setSearch("");
+      return;
+    }
     const handleScroll = () => setOpen(false);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [open]);
+
+  const filteredOptions = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return s.options;
+    return s.options.filter((opt) => opt.label.toLowerCase().includes(q));
+  }, [s.options, search]);
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
@@ -131,52 +142,83 @@ function FilterSelect({ section: s }: { section: FilterSection }) {
                 onClick={() => s.onChange([])}
                 className="text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer"
               >
-                Clear
+                Clear ({selectedCount})
               </button>
             )}
           </div>
 
-          <div className="max-h-72 overflow-y-auto p-2 space-y-0.5">
-            {s.options.length === 0 && (
-              <p className="text-xs text-[#999] px-3 py-2">No options available</p>
-            )}
-            {s.options.map((opt) => {
-              const checked = s.selected.includes(opt.value);
-              return (
-                <label
-                  key={opt.value}
-                  onClick={() => {
-                    const next = checked
-                      ? s.selected.filter((v) => v !== opt.value)
-                      : [...s.selected, opt.value];
-                    s.onChange(next);
-                  }}
-                  className={cn(
-                    "flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl text-sm cursor-pointer transition-colors",
-                    checked
-                      ? "bg-slate-50 text-[#1C1C1C] font-semibold"
-                      : "text-[#555] hover:bg-slate-50"
-                  )}
+          {/* Search bar inside dropdown */}
+          <div className="p-2 border-b border-slate-100 bg-slate-50/60">
+            <div className="relative">
+              <Search
+                size={14}
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+              />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={s.searchPlaceholder || `Search ${s.shortTitle ?? s.title}...`}
+                className="w-full pl-8 pr-7 py-1.5 text-xs sm:text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#F8904D] focus:border-[#F8904D] placeholder:text-slate-400 text-slate-800 transition-colors"
+                autoFocus
+              />
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 rounded cursor-pointer"
+                  title="Clear search"
                 >
-                  <span className="flex items-center gap-2.5 min-w-0 pr-2">
-                    <span
-                      className={cn(
-                        "flex items-center justify-center w-[18px] h-[18px] rounded border transition-colors shrink-0",
-                        checked ? "bg-[#F8904D] border-[#F8904D] text-white" : "border-slate-300"
-                      )}
-                    >
-                      {checked && <Check size={11} strokeWidth={3.5} />}
+                  <X size={13} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="max-h-72 overflow-y-auto p-2 space-y-0.5">
+            {filteredOptions.length === 0 ? (
+              <p className="text-xs text-slate-400 px-3 py-4 text-center">
+                {s.options.length === 0 ? "No options available" : `No results for "${search}"`}
+              </p>
+            ) : (
+              filteredOptions.map((opt) => {
+                const checked = s.selected.includes(opt.value);
+                return (
+                  <label
+                    key={opt.value}
+                    onClick={() => {
+                      const next = checked
+                        ? s.selected.filter((v) => v !== opt.value)
+                        : [...s.selected, opt.value];
+                      s.onChange(next);
+                    }}
+                    className={cn(
+                      "flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl text-sm cursor-pointer transition-colors",
+                      checked
+                        ? "bg-slate-50 text-[#1C1C1C] font-semibold"
+                        : "text-[#555] hover:bg-slate-50"
+                    )}
+                  >
+                    <span className="flex items-center gap-2.5 min-w-0 pr-2">
+                      <span
+                        className={cn(
+                          "flex items-center justify-center w-[18px] h-[18px] rounded border transition-colors shrink-0",
+                          checked ? "bg-[#F8904D] border-[#F8904D] text-white" : "border-slate-300"
+                        )}
+                      >
+                        {checked && <Check size={11} strokeWidth={3.5} />}
+                      </span>
+                      <span className="text-sm font-medium leading-snug whitespace-normal">{opt.label}</span>
                     </span>
-                    <span className="text-sm font-medium leading-snug whitespace-normal">{opt.label}</span>
-                  </span>
-                  {opt.count !== undefined && (
-                    <span className="text-[11px] font-semibold text-slate-400 tabular-nums shrink-0 ml-auto">
-                      {opt.count}
-                    </span>
-                  )}
-                </label>
-              );
-            })}
+                    {opt.count !== undefined && (
+                      <span className="text-[11px] font-semibold text-slate-400 tabular-nums shrink-0 ml-auto">
+                        {opt.count}
+                      </span>
+                    )}
+                  </label>
+                );
+              })
+            )}
           </div>
         </Popover.Content>
       </Popover.Portal>
