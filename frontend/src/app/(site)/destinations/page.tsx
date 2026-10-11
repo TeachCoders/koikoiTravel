@@ -314,10 +314,10 @@ export default async function DestinationsPage() {
         </div>
         <div className="relative max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-20 md:py-28">
           <div className="max-w-3xl">
-            <span className="accent-label inline-flex items-center gap-1.5 !text-[#FFD9A8]">
+            <span className="font-luxury font-black accent-label inline-flex items-center gap-1.5 !text-[#FFD9A8] uppercase tracking-widest">
               <Globe2 size={12} /> Hand-Crafted Holiday Destinations
             </span>
-            <h1 className="font-luxury text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-wide mt-4 leading-tight drop-shadow-lg">
+            <h1 className="font-luxury text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-wide mt-4 leading-tight drop-shadow-lg">
               Explore Destinations
             </h1>
             <p className="mt-5 text-white/90 text-base md:text-lg leading-relaxed max-w-2xl">

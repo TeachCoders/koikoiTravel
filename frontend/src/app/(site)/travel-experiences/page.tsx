@@ -226,10 +226,10 @@ export default async function TravelExperiencesPage() {
         <div className="absolute -top-16 right-0 w-72 h-72 rounded-full bg-[#F8904D]/20 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -left-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none" />
         <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-14 md:py-20 text-center flex flex-col items-center">
-          <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#F5B041] mb-3">
+          <span className="font-luxury font-black inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#F5B041] mb-3">
             <Sparkles size={14} /> Curated Travel Themes
           </span>
-          <h1 className="font-luxury text-3xl sm:text-4xl md:text-[46px] font-extrabold text-white tracking-wide leading-tight">
+          <h1 className="font-luxury text-3xl sm:text-4xl md:text-[46px] font-black text-white tracking-wide leading-tight">
             Hand-Crafted Travel Experiences
           </h1>
           <p className="mt-4 text-white/85 text-base md:text-lg max-w-2xl leading-relaxed">

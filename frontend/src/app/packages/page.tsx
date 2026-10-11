@@ -42,7 +42,7 @@ export default async function PackagesPage() {
       {/* Hero */}
       <div className="bg-gradient-to-r from-indigo-700 to-purple-700 text-white py-16 px-6">
         <div className="max-w-[1600px] mx-auto text-center">
-          <h1 className="h1 font-luxury font-extrabold">Tour Packages</h1>
+          <h1 className="h1 font-luxury font-black">Tour Packages</h1>
           <p className="text-indigo-200 mt-3 text-lg">Discover handcrafted travel experiences</p>
         </div>
       </div>

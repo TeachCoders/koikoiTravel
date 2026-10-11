@@ -50,14 +50,14 @@ export default function AdLandingHero({
             
             {/* Offer Pill */}
             {discountBadge && (
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-950/60 border border-white/20 backdrop-blur-md text-amber-300 text-xs font-extrabold uppercase tracking-widest shadow-md">
+              <div className="font-luxury font-black inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-950/60 border border-white/20 backdrop-blur-md text-amber-300 text-xs uppercase tracking-widest shadow-md">
                 <Sparkles size={13} className="text-amber-400" />
                 <span>{discountBadge}</span>
               </div>
             )}
 
             {/* Main Headline */}
-            <h1 className="font-luxury text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-[1.15] tracking-tight max-w-2xl drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
+            <h1 className="font-luxury text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-[1.15] tracking-tight max-w-2xl drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
               {title}
             </h1>
 

@@ -150,14 +150,14 @@ export default async function BlogPostPage({ params }: Props) {
           {(post.categories?.length ? post.categories : post.category ? [post.category] : []).map((cat) => (
             <span
               key={cat}
-              className="inline-block px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white bg-[#F8904D] rounded-full mb-4 mr-2 shadow-lg"
+              className="font-luxury font-black inline-block px-4 py-1.5 text-xs uppercase tracking-wider text-white bg-[#F8904D] rounded-full mb-4 mr-2 shadow-lg"
             >
               {cat}
             </span>
           ))}
           
           {/* Always Guarantee H1 for Search Bots */}
-          <h1 className="font-luxury text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight drop-shadow-2xl max-w-5xl mx-auto">
+          <h1 className="font-luxury text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight drop-shadow-2xl max-w-5xl mx-auto">
             {post.h1Title || post.title}
           </h1>
 
