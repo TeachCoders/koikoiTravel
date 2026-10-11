@@ -25,7 +25,7 @@ export interface State {
   famousFor?: string;
   area?: string;
   countryId: number;
-  country?: { id: number; title: string; slug: string };
+  country?: { id: number; title: string; slug: string; h1Title?: string };
   isActive: boolean;
   showOnSite?: boolean;
   displayOrder?: number;

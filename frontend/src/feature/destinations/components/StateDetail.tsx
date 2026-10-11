@@ -314,7 +314,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                 href={`/tour-packages/${state.country.slug}`}
                 className="hover:text-[#2E8B8B] transition-colors shrink-0"
               >
-                {(state.country.h1Title || state.country.title).replace(/\s*Tour$/i, "")}
+                {((state.country as any)?.h1Title || state.country.title).replace(/\s*Tour$/i, "")}
               </Link>
             </>
           )}

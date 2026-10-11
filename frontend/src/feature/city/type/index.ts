@@ -27,7 +27,8 @@ export interface City {
     id: number;
     title: string;
     slug: string;
-    country?: { id: number; title: string; slug: string };
+    h1Title?: string;
+    country?: { id: number; title: string; slug: string; h1Title?: string };
   };
   journeys?: Journey[];
   featuredJourneyOrder?: number[];

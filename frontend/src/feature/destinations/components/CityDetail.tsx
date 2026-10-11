@@ -261,7 +261,7 @@ function CityContent({
                 href={countrySlug ? `/tour-packages/${countrySlug}/${state.slug}` : `/tour-packages/${state.slug}`}
                 className="hover:text-[#2E8B8B] transition-colors shrink-0 font-medium capitalize"
               >
-                {state.h1Title || state.title}
+                {(state as any)?.h1Title || state.title}
               </Link>
             </>
           )}
