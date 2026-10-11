@@ -69,7 +69,7 @@ export function cityOptions(
       if (cityFilter && !cityFilter(c)) continue;
       const entry = map.get(c.id);
       if (entry) entry.count += 1;
-      else map.set(c.id, { value: String(c.id), label: c.title, count: 1 });
+      else map.set(c.id, { value: String(c.id), label: (c as any).h1Title || c.title, count: 1 });
     }
   }
   return [...map.values()].sort((a, b) => b.count - a.count);

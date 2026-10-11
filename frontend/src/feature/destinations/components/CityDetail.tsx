@@ -261,12 +261,12 @@ function CityContent({
                 href={countrySlug ? `/tour-packages/${countrySlug}/${state.slug}` : `/tour-packages/${state.slug}`}
                 className="hover:text-[#2E8B8B] transition-colors shrink-0 font-medium capitalize"
               >
-                {state.title}
+                {state.h1Title || state.title}
               </Link>
             </>
           )}
           <ChevronRight size={14} className="text-slate-300 shrink-0" />
-          <span className="text-[#1C1C1C] font-semibold capitalize">{city.title}</span>
+          <span className="text-[#1C1C1C] font-semibold capitalize">{city.h1Title || city.title}</span>
         </div>
       </nav>
 
@@ -279,9 +279,9 @@ function CityContent({
         }
         journeys={filteredJourneys}
         isLoading={journeysLoading}
-        h1Title={formatToursH1(city.title)}
+        h1Title={formatToursH1(city.h1Title || city.title)}
         overView={city.overView ?? undefined}
-        emptyLabel={`No tours found in ${city.title} yet`}
+        emptyLabel={`No tours found in ${city.h1Title || city.title} yet`}
         filterBar={cityJourneys.length > 0 ? filterBar : undefined}
         onClearFilters={clearFilters}
       />
@@ -296,7 +296,7 @@ function CityContent({
                   Know More
                 </span>
                 <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 mb-6">
-                  Everything About {city.title}
+                  Everything About {city.h1Title || city.title}
                 </h2>
 
                 {city.seoDescription && (

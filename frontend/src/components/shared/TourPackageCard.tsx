@@ -99,7 +99,7 @@ function capitalizeWords(str: string): string {
 export function formatRouteText(journey: Partial<Journey>, stateFallback?: string): string {
   if (journey.route && journey.route.length > 0) {
     return journey.route
-      .map((c: any) => capitalizeWords(c.title || c.name || ""))
+      .map((c: any) => capitalizeWords(c.h1Title || c.title || c.name || ""))
       .filter(Boolean)
       .join(" - ");
   }
@@ -115,7 +115,7 @@ export function formatRouteText(journey: Partial<Journey>, stateFallback?: strin
 
   if (journey.cities && journey.cities.length > 0) {
     return journey.cities
-      .map((c: any) => capitalizeWords(c.title || c.name || ""))
+      .map((c: any) => capitalizeWords(c.h1Title || c.title || c.name || ""))
       .filter(Boolean)
       .join(" - ");
   }
@@ -137,7 +137,8 @@ export default function TourPackageCard({
   const offPercent = hasDiscount
     ? Math.round(((journey.discountPrice! - price) / journey.discountPrice!) * 100)
     : 0;
-  const state = journey.cities?.[0]?.state?.title;
+  const state =
+    journey.cities?.[0]?.state?.h1Title || journey.cities?.[0]?.state?.title;
   const href = journeyPackageHref(journey);
   const { rating, reviewsCount } = contextName ? getUniquePackageRating(journey) : { rating: null, reviewsCount: 0 };
   const isCompact = variant === "compact";

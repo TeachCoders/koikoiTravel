@@ -234,7 +234,7 @@ export const AllDestinations: React.FC<AllDestinationsProps> = ({
                                     {/* Content - Centered */}
                                     <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 flex flex-col items-center justify-end text-center h-full">
                                       <span className="block text-[18px] md:text-[20px] font-black text-white leading-tight mb-2 group-hover/city:-translate-y-1 transition-transform duration-300 drop-shadow-md">
-                                        {city.title}
+                                        {city.h1Title || city.title}
                                       </span>
                                       
                                       <span className="inline-flex items-center justify-center px-3.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[12px] font-bold text-white border border-white/10 shadow-sm group-hover/city:-translate-y-1 transition-transform duration-300 delay-75">
@@ -256,7 +256,7 @@ export const AllDestinations: React.FC<AllDestinationsProps> = ({
                                   href={`/tour-packages/${country.slug}/${state.slug}`}
                                   className="btn-primary flex items-center justify-center w-full gap-2 text-[15px] py-4"
                                >
-                                 View {state.title} Packages
+                                 View {state.h1Title || state.title} Packages
                                </Link>
                             </div>
                           </div>

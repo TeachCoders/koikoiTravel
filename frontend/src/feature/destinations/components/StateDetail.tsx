@@ -314,12 +314,12 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                 href={`/tour-packages/${state.country.slug}`}
                 className="hover:text-[#2E8B8B] transition-colors shrink-0"
               >
-                {state.country.title.replace(/\s*Tour$/i, "")}
+                {(state.country.h1Title || state.country.title).replace(/\s*Tour$/i, "")}
               </Link>
             </>
           )}
           <ChevronRight size={13} className="text-slate-400 shrink-0" />
-          <span className="text-slate-900 font-semibold">{state.title}</span>
+          <span className="text-slate-900 font-semibold">{state.h1Title || state.title}</span>
         </div>
       </nav>
 
@@ -331,9 +331,9 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           journeys={filteredTopJourneys}
           isLoading={journeysLoading && topJourneys.length === 0}
           accentLabel="Handpicked Top Tour Packages"
-          h1Title={formatToursH1(state.title)}
+          h1Title={formatToursH1(state.h1Title || state.title)}
           overView={state.overView ?? undefined}
-          emptyLabel={`No tour packages found matching your criteria in ${state.title}`}
+          emptyLabel={`No tour packages found matching your criteria in ${state.h1Title || state.title}`}
           filterBar={stateJourneys.length > 0 ? filterBar : undefined}
           onClearFilters={clearFilters}
           sectionClassName="py-8 sm:py-10 md:py-12 bg-[#f8f8f8] border-b border-slate-200/80 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]"
@@ -351,7 +351,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                 Top Destinations
               </span>
               <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5">
-                Cities in {state.title}
+                Cities in {state.h1Title || state.title}
                 <span className="ml-3 align-middle text-xs font-medium text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-1 rounded-full">
                   {cityCount} Cities
                 </span>

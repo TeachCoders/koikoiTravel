@@ -29,7 +29,7 @@ export default function CityCard({
 
   return (
     <DestinationCard
-      title={city.title ?? ""}
+      title={city.h1Title || city.title ?? ""}
       image={city.thumbImg ?? fallbackImage}
       subtitle={journeys > 0 ? `${journeys} ${journeys === 1 ? 'Tour Package' : 'Tour Packages'}` : "Coming Soon"}
       tag={journeys >= 5 ? "Popular Circuit" : undefined}

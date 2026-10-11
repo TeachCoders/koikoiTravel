@@ -668,7 +668,7 @@ export default async function DestinationsPage() {
                                       className="shrink-0 text-[#F8904D]"
                                     />
                                     <span className="truncate group-hover:underline">
-                                      {city.title}
+                                      {city.h1Title || city.title}
                                     </span>
                                     <span className="ml-auto shrink-0 text-[11px] font-semibold text-slate-400 tabular-nums">
                                       {cityTours}
@@ -683,7 +683,7 @@ export default async function DestinationsPage() {
                                   // the destination exists, the tours do not yet.
                                   <span className="flex items-center gap-2 py-1.5 text-[13px] font-semibold text-slate-400">
                                     <MapPin size={12} className="shrink-0 text-slate-300" />
-                                    <span className="truncate">{city.title}</span>
+                                    <span className="truncate">{city.h1Title || city.title}</span>
                                   </span>
                                 )}
                               </li>

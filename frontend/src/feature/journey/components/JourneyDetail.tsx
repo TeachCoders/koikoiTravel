@@ -58,7 +58,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
       (journey?.cities ?? [])
         .filter((c) => c.state?.slug && c.state?.country?.slug && c.slug)
         .map((c) => ({
-          term: c.title,
+          term: c.h1Title || c.title,
           href:
             c.slug === c.state?.slug
               ? `/tour-packages/${c.state!.country!.slug}/${c.state!.slug}`
@@ -90,9 +90,12 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
   if (!journey) return notFound();
 
   const countrySlug = journey.cities?.[0]?.state?.country?.slug;
-  const countryTitle = journey.cities?.[0]?.state?.country?.title;
+  const countryTitle =
+    journey.cities?.[0]?.state?.country?.h1Title ||
+    journey.cities?.[0]?.state?.country?.title;
   const stateSlug = journey.cities?.[0]?.state?.slug;
-  const stateTitle = journey.cities?.[0]?.state?.title;
+  const stateTitle =
+    journey.cities?.[0]?.state?.h1Title || journey.cities?.[0]?.state?.title;
 
   const heroImages = journey.banner?.images?.length
     ? journey.banner.images
@@ -171,7 +174,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   <span>Route:</span>
                 </span>
                 {(journey.route && journey.route.length > 0
-                  ? journey.route.map((c) => c.title)
+                  ? journey.route.map((c) => c.h1Title || c.title)
                   : journey.destination.split(/[-–—,→]/).map((s) => s.trim())
                 )
                   .filter(Boolean)
