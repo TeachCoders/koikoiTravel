@@ -108,11 +108,6 @@ function PackageCard({ pkg, featured = false }: { pkg: PublicTourPackage; featur
               <Star size={10} fill="currentColor" /> BEST SELLING
             </div>
           )}
-          {pkg.discountPrice && pkg.pricePerPerson && pkg.discountPrice > pkg.pricePerPerson && (
-            <div className="absolute top-3 right-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">
-              {Math.round(((pkg.discountPrice - pkg.pricePerPerson) / pkg.discountPrice) * 100)}% OFF
-            </div>
-          )}
         </div>
 
         {/* Content */}
@@ -131,11 +126,8 @@ function PackageCard({ pkg, featured = false }: { pkg: PublicTourPackage; featur
           )}
           <div className="flex items-end justify-between mt-4 pt-3 border-t border-slate-100">
             <div>
-              <p className="text-2xl font-black text-indigo-600">₹{pkg.pricePerPerson?.toLocaleString()}</p>
-              {pkg.discountPrice && pkg.discountPrice > (pkg.pricePerPerson || 0) && (
-                <p className="text-xs text-slate-400 line-through">₹{pkg.discountPrice.toLocaleString()}</p>
-              )}
-              <p className="text-[10px] text-slate-400 mt-0.5">per person</p>
+              <p className="text-sm font-bold text-[#2E8B8B]">100% Tailor-Made</p>
+              <p className="text-[11px] text-slate-400">Personalized Itinerary</p>
             </div>
             {(pkg.purchaseCount ?? 0) > 0 && (
               <div className="flex items-center gap-1 text-xs text-slate-500">

@@ -272,11 +272,8 @@ export default async function PackageDetailPage({ params }: Props) {
           <div className="lg:col-span-1">
             <div className="sticky top-8 bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
               <div className="text-center mb-6">
-                {pkg.discountPrice && pkg.discountPrice > (pkg.pricePerPerson || 0) && (
-                  <p className="text-sm text-slate-400 line-through">₹{pkg.discountPrice.toLocaleString()}</p>
-                )}
-                <p className="text-4xl font-black text-indigo-600">₹{pkg.pricePerPerson?.toLocaleString()}</p>
-                <p className="text-xs text-slate-400 mt-1">per person</p>
+                <p className="text-xl font-bold text-slate-900">Customized Tour Package</p>
+                <p className="text-xs text-slate-500 mt-1">Get quote personalized to your dates & group</p>
               </div>
               <div className="space-y-3 text-sm text-slate-600 mb-6">
                 {pkg.destination && (

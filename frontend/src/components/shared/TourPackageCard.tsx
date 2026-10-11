@@ -132,11 +132,6 @@ export default function TourPackageCard({
   contextName?: string;
   variant?: "default" | "compact";
 }) {
-  const price = journey.discountPrice ?? journey.pricePerPerson ?? 0;
-  const hasDiscount = journey.discountPrice && journey.discountPrice > price;
-  const offPercent = hasDiscount
-    ? Math.round(((journey.discountPrice! - price) / journey.discountPrice!) * 100)
-    : 0;
   const state =
     journey.cities?.[0]?.state?.h1Title || journey.cities?.[0]?.state?.title;
   const href = journeyPackageHref(journey);
@@ -169,12 +164,6 @@ export default function TourPackageCard({
               <Star size={10} fill="currentColor" className="text-slate-900" /> Best Seller
             </span>
           ) : <span />}
-
-          {hasDiscount && offPercent > 0 && (
-            <span className="bg-[#F8904D] text-white text-[10.5px] font-semibold px-2 py-0.5 rounded-full shadow-md pointer-events-auto shrink-0">
-              {offPercent}% OFF
-            </span>
-          )}
         </div>
 
         {/* Bottom Inclusions Bar (MakeMyTrip / OTA Style Overlay with Prominent Icons & Text) */}
@@ -265,26 +254,8 @@ export default function TourPackageCard({
           </>
         )}
 
-        {/* Pricing & CTA Section */}
-        <div className="mt-auto pt-2 flex flex-col gap-2.5">
-          {/* Price Header (Only when price > 0) */}
-          {price > 0 && (
-            <div className="flex items-baseline justify-between">
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-[11.5px] text-slate-400 font-normal">Starts from</span>
-                <span className="text-[18px] font-bold text-slate-900 tracking-tight">
-                  ₹{price.toLocaleString("en-IN")}
-                </span>
-                <span className="text-[11.5px] text-slate-400 font-normal">/ person</span>
-              </div>
-              {hasDiscount && offPercent > 0 && (
-                <span className="text-[11.5px] text-slate-400 line-through">
-                  ₹{journey.discountPrice!.toLocaleString("en-IN")}
-                </span>
-              )}
-            </div>
-          )}
-
+        {/* CTA Section */}
+        <div className="mt-auto pt-3 flex flex-col gap-2">
           {/* Action Buttons Row (Default Minimalist Outline -> Card Hover Active Background) */}
           <div className="grid grid-cols-2 gap-2 pt-0.5">
             <WhatsAppPriceButton
