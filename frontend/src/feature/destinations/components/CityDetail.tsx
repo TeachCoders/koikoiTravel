@@ -141,6 +141,7 @@ function CityContent({
 
   const heroTitle =
     customHeroBanners[0]?.title ||
+    city.h1Title ||
     city.banner?.bannerTitle ||
     city.title;
 

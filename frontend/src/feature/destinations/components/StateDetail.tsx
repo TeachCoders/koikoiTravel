@@ -149,6 +149,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
   const heroTitle =
     customHeroBanners[0]?.title ||
+    state.h1Title ||
     state.banner?.bannerTitle ||
     state.title;
 
