@@ -18,10 +18,13 @@ export default function CityCard({
   const country = countrySlug ?? city.state?.country?.slug;
   
   // Only make clickable if active tour packages exist (> 0)
+  const isSelf = city.slug === stateSlug;
   const href = journeys > 0
-    ? (country
-        ? `/tour-packages/${country}/${stateSlug}/${city.slug}`
-        : `/tour-packages/${stateSlug}/${city.slug}`)
+    ? (isSelf
+        ? (country ? `/tour-packages/${country}/${stateSlug}` : `/tour-packages/${stateSlug}`)
+        : (country
+            ? `/tour-packages/${country}/${stateSlug}/${city.slug}`
+            : `/tour-packages/${stateSlug}/${city.slug}`))
     : undefined;
 
   return (

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import CountryDetail from "@/feature/destinations/components/CountryDetail";
 import StateDetail from "@/feature/destinations/components/StateDetail";
 import CityDetail from "@/feature/destinations/components/CityDetail";
@@ -86,6 +86,9 @@ async function resolveSlug(slug: string[]): Promise<Resolved> {
 
   if (slug.length === 3) {
     const [countrySlug, stateSlug, citySlug] = slug;
+    if (stateSlug === citySlug) {
+      redirect(`/tour-packages/${countrySlug}/${stateSlug}`);
+    }
     const city = await fetchBySlugCached<City>("/city/by-slug", citySlug);
     if (
       city &&

@@ -201,11 +201,12 @@ export const AllDestinations: React.FC<AllDestinationsProps> = ({
                             </Link>
                           </div>
 
-                          {/* Cities Grid List */}
                           <div>
-                            {stateCities.length > 0 ? (
+                            {stateCities.filter((c) => c.slug !== state.slug && (c.title ?? "").toLowerCase() !== (state.title ?? "").toLowerCase()).length > 0 ? (
                               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-5 md:gap-6">
-                                {stateCities.map((city) => (
+                                {stateCities
+                                  .filter((city) => city.slug !== state.slug && (city.title ?? "").toLowerCase() !== (state.title ?? "").toLowerCase())
+                                  .map((city) => (
                                   <Link
                                     key={city.id}
                                     href={`/tour-packages/${country.slug}/${state.slug}/${city.slug}`}

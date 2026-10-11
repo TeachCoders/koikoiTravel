@@ -59,7 +59,10 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
         .filter((c) => c.state?.slug && c.state?.country?.slug && c.slug)
         .map((c) => ({
           term: c.title,
-          href: `/tour-packages/${c.state!.country!.slug}/${c.state!.slug}/${c.slug}`,
+          href:
+            c.slug === c.state?.slug
+              ? `/tour-packages/${c.state!.country!.slug}/${c.state!.slug}`
+              : `/tour-packages/${c.state!.country!.slug}/${c.state!.slug}/${c.slug}`,
         })),
     [journey]
   );

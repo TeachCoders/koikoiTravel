@@ -651,7 +651,9 @@ export default async function DestinationsPage() {
                         </div>
 
                         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-0.5">
-                          {cityList.map((city) => {
+                          {cityList
+                            .filter((city) => city.slug !== state.slug)
+                            .map((city) => {
                             const cityTours = city._count?.journeys ?? 0;
                             const cityHref = `/tour-packages/${state.country?.slug}/${state.slug}/${city.slug}`;
                             return (

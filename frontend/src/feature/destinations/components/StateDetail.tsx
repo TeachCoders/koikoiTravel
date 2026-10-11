@@ -164,7 +164,14 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     { label: "Area", value: state.area },
   ].filter((f) => f.value);
 
-  const stateCities = [...(state.cities ?? [])].sort((a, b) => {
+  const stateCities = [...(state.cities ?? [])]
+    .filter(
+      (c) =>
+        c.isActive !== false &&
+        c.slug !== state.slug &&
+        (c.title ?? "").trim().toLowerCase() !== (state.title ?? "").trim().toLowerCase()
+    )
+    .sort((a, b) => {
     const aOrder = a.displayOrder ?? 0;
     const bOrder = b.displayOrder ?? 0;
     if (aOrder > 0 && bOrder > 0) return aOrder - bOrder;
@@ -334,7 +341,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       )}
 
       {/* ===== SECTION 3: CITIES / TOP DESTINATIONS IN STATE ===== */}
-      {(journeysLoading || displayedCities.length > 0) && (
+      {displayedCities.length > 0 && (
         <section id="cities" className="w-full bg-white py-8 sm:py-10 md:py-12 border-b border-slate-200/60">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className="flex items-end justify-between mb-6 sm:mb-8 flex-wrap gap-4">
