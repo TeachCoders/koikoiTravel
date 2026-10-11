@@ -249,6 +249,10 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
   const cityCount = displayedCities.length ?? 0;
 
+  const cleanStateName = (state.h1Title || state.title)
+    .replace(/\s*Tours?(\s*Packages?)?$/i, "")
+    .trim();
+
   const { swiperRef: citiesSwiperRef, slidePrev, slideNext, canScroll } = useSliderControl();
 
   const tourTabs = hasBothCategories ? (
@@ -262,16 +266,16 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         className={cn(
           "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
           activeTab === "state-only"
-            ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
+            ? "bg-[#F8904D] text-white shadow-md shadow-[#F8904D]/25"
             : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
         )}
       >
-        <span>{state.h1Title || state.title} Tour Packages</span>
+        <span>{cleanStateName} Tour Packages</span>
         <span
           className={cn(
             "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
             activeTab === "state-only"
-              ? "bg-white text-[#2E8B8B]"
+              ? "bg-white text-[#F8904D]"
               : "bg-slate-300 text-slate-800"
           )}
         >
@@ -288,16 +292,16 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         className={cn(
           "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
           activeTab === "with-other"
-            ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
+            ? "bg-[#F8904D] text-white shadow-md shadow-[#F8904D]/25"
             : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
         )}
       >
-        <span>{state.h1Title || state.title} with Other Cities</span>
+        <span>{cleanStateName} with Other Cities</span>
         <span
           className={cn(
             "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
             activeTab === "with-other"
-              ? "bg-white text-[#2E8B8B]"
+              ? "bg-white text-[#F8904D]"
               : "bg-slate-300 text-slate-800"
           )}
         >
@@ -419,15 +423,15 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           accentLabel={activeTab === "with-other" ? "Combined Circuits" : "State Itineraries"}
           h1Title={
             activeTab === "with-other"
-              ? `${state.h1Title || state.title} with Other Cities Tour Packages`
+              ? `${cleanStateName} with Other Cities Tour Packages`
               : formatToursH1(state.h1Title || state.title)
           }
           tabs={tourTabs}
           overView={activeTab === "state-only" ? (state.overView ?? undefined) : undefined}
           emptyLabel={`No tour packages found matching your criteria in ${
             activeTab === "with-other"
-              ? `${state.h1Title || state.title} with Other Cities`
-              : state.h1Title || state.title
+              ? `${cleanStateName} with Other Cities`
+              : cleanStateName
           }`}
           filterBar={currentTabJourneys.length > 0 ? filterBar : undefined}
           onClearFilters={clearFilters}
