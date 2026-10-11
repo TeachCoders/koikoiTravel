@@ -153,7 +153,12 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     [stateJourneys, isOtherCityTour]
   );
 
-  const hasBothCategories = stateOnlyJourneys.length > 0 && withOtherCityJourneys.length > 0;
+  // Only show tabs when BOTH options have enough data (at least 2 tours in each tab)
+  // If either option has 0 or only 1 tour, show all packages directly without tabs
+  const hasBothCategories =
+    stateOnlyJourneys.length >= 2 &&
+    withOtherCityJourneys.length >= 2 &&
+    stateJourneys.length >= 5;
 
   const currentTabJourneys = useMemo(() => {
     if (!hasBothCategories) return stateJourneys;
