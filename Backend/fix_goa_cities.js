@@ -115,7 +115,61 @@ async function main() {
     }
     console.log(`✅ Formatted destinations for ${updatedJourneysCount} journey(s) in DB.`);
 
-    // 5. Invalidate Redis Cache
+    // 5. Capitalize City and State titles in database (e.g., "mumbai" -> "Mumbai")
+    const allCities = await prisma.city.findMany({
+      select: { id: true, title: true, h1Title: true }
+    });
+
+    let fixedCitiesCount = 0;
+    for (const city of allCities) {
+      if (!city.title) continue;
+      const formattedTitle = city.title
+        .split(/\s+/)
+        .map(w => (w.length > 0 ? w.charAt(0).toUpperCase() + w.slice(1) : ""))
+        .join(' ');
+
+      if (formattedTitle !== city.title) {
+        await prisma.city.update({
+          where: { id: city.id },
+          data: {
+            title: formattedTitle,
+            ...(city.h1Title && city.h1Title.toLowerCase() === city.title.toLowerCase()
+              ? { h1Title: formattedTitle }
+              : {})
+          }
+        });
+        fixedCitiesCount++;
+        console.log(`Capitalized City ID ${city.id}: "${city.title}" -> "${formattedTitle}"`);
+      }
+    }
+    console.log(`✅ Capitalized titles for ${fixedCitiesCount} city/cities in DB.`);
+
+    const allStates = await prisma.state.findMany({
+      select: { id: true, title: true, h1Title: true }
+    });
+
+    for (const state of allStates) {
+      if (!state.title) continue;
+      const formattedTitle = state.title
+        .split(/\s+/)
+        .map(w => (w.length > 0 ? w.charAt(0).toUpperCase() + w.slice(1) : ""))
+        .join(' ');
+
+      if (formattedTitle !== state.title) {
+        await prisma.state.update({
+          where: { id: state.id },
+          data: {
+            title: formattedTitle,
+            ...(state.h1Title && state.h1Title.toLowerCase() === state.title.toLowerCase()
+              ? { h1Title: formattedTitle }
+              : {})
+          }
+        });
+        console.log(`Capitalized State ID ${state.id}: "${state.title}" -> "${formattedTitle}"`);
+      }
+    }
+
+    // 6. Invalidate Redis Cache
     await clearRedis();
 
     console.log("=== GOA DESTINATION FIX COMPLETED SUCCESSFULLY ===");
