@@ -222,14 +222,14 @@ export default function TourPackagesList({
                     selected: selectedExperiences,
                     onChange: setSelectedExperiences,
                   },
-                  {
-                    id: "season",
-                    title: "Best Season / Month",
-                    icon: <Sun size={14} />,
-                    options: seasonOptions(countryJourneys),
-                    selected: selectedSeasons,
-                    onChange: setSelectedSeasons,
-                  },
+                  // {
+                  //   id: "season",
+                  //   title: "Best Season / Month",
+                  //   icon: <Sun size={14} />,
+                  //   options: seasonOptions(countryJourneys),
+                  //   selected: selectedSeasons,
+                  //   onChange: setSelectedSeasons,
+                  // },
                   {
                     id: "duration",
                     title: "Duration",

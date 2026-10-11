@@ -167,14 +167,14 @@ function CityContent({
           selected: expSelected,
           onChange: setExpSelected,
         },
-        {
-          id: "season",
-          title: "Best Season / Month",
-          icon: <Sun size={14} />,
-          options: seasonOptions(cityJourneys),
-          selected: seasonSelected,
-          onChange: setSeasonSelected,
-        },
+        // {
+        //   id: "season",
+        //   title: "Best Season / Month",
+        //   icon: <Sun size={14} />,
+        //   options: seasonOptions(cityJourneys),
+        //   selected: seasonSelected,
+        //   onChange: setSeasonSelected,
+        // },
         {
           id: "duration",
           title: "Duration",
