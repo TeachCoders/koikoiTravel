@@ -145,7 +145,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
     case "state": {
       const { state } = resolved;
-      const title = state.seoTitle || state.title;
+      const title = state.seoTitle || state.h1Title || state.title;
       const seoDescription = truncateMeta(state.seoDescription || state.overView);
       const canonical = `/tour-packages/${state.country?.slug}/${state.slug}`;
       const ogImage = absoluteUrl(state.thumbImg);
@@ -171,7 +171,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
     case "city": {
       const { city } = resolved;
-      const title = city.seoTitle || city.title;
+      const title = city.seoTitle || city.h1Title || city.title;
       const seoDescription = truncateMeta(city.seoDescription || city.overView);
       const canonical =
         `/tour-packages/${city.state?.country?.slug}/${city.state?.slug}/${city.slug}`;
