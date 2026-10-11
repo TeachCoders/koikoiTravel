@@ -82,7 +82,7 @@ export default async function TourPackagesPage({
           <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#F8904D] mb-3">
             <Sparkles size={14} /> Tailor-Made Holiday Packages
           </span>
-          <h1 className="font-luxury text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-wide drop-shadow-md">
+          <h1 className="font-luxury text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-wide drop-shadow-md">
             Tour Packages
           </h1>
           <p className="mt-3 text-white/80 text-sm sm:text-base max-w-2xl leading-relaxed">

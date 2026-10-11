@@ -229,7 +229,7 @@ export default async function TravelExperiencesPage() {
           <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#F5B041] mb-3">
             <Sparkles size={14} /> Curated Travel Themes
           </span>
-          <h1 className="font-luxury text-3xl sm:text-4xl md:text-[46px] font-bold text-white tracking-wide leading-tight">
+          <h1 className="font-luxury text-3xl sm:text-4xl md:text-[46px] font-extrabold text-white tracking-wide leading-tight">
             Hand-Crafted Travel Experiences
           </h1>
           <p className="mt-4 text-white/85 text-base md:text-lg max-w-2xl leading-relaxed">

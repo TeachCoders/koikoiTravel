@@ -57,7 +57,7 @@ export default function AdLandingHero({
             )}
 
             {/* Main Headline */}
-            <h1 className="font-luxury text-2xl sm:text-4xl lg:text-5xl font-bold text-white leading-[1.15] tracking-tight max-w-2xl drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
+            <h1 className="font-luxury text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-[1.15] tracking-tight max-w-2xl drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
               {title}
             </h1>
 
