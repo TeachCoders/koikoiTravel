@@ -15,12 +15,13 @@ const DEFAULT_SLIDES = [
 ];
 
 const TRENDING_CHIPS = [
-  { label: "Rajasthan", href: "/tour-packages/india/rajasthan" },
   { label: "Golden Triangle", href: "/travel-experiences/golden-triangle" },
-  { label: "Kashmir", href: "/tour-packages/india/jammu-and-kashmir" },
+  { label: "Rajasthan", href: "/tour-packages/india/rajasthan" },
   { label: "Kerala", href: "/tour-packages/india/kerala" },
-  { label: "Agra Day Tour", href: "/tour-packages/same-day-agra-tour-by-car-from-delhi" },
-  { label: "Varanasi", href: "/tour-packages/india/uttar-pradesh/varanasi" },
+  { label: "Ladakh", href: "/tour-packages/india/ladakh" },
+  { label: "Tamilnadu", href: "/tour-packages/india/tamil-nadu" },
+  { label: "Goa", href: "/tour-packages/india/goa" },
+  { label: "Mumbai", href: "/tour-packages/india/maharashtra/mumbai" },
 ];
 
 export const HeroSection: React.FC = () => {
