@@ -142,27 +142,35 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     [state.id, state.slug]
   );
 
-  const stateOnlyJourneys = useMemo(
-    () => stateJourneys.filter((j) => !isOtherCityTour(j)),
-    [stateJourneys, isOtherCityTour]
-  );
+  // Featured / Top packages explicitly selected by admin in Dashboard
+  const featuredJourneys = useMemo(() => {
+    const order = (state.featuredJourneyOrder || []) as number[];
+    if (order.length > 0) {
+      const selected = order
+        .map((id) => stateJourneys.find((j) => j.id === id))
+        .filter((j): j is Journey => Boolean(j));
+      if (selected.length > 0) return selected;
+    }
+    if (embeddedJourneys.length > 0) {
+      return embeddedJourneys;
+    }
+    return stateJourneys.slice(0, 10);
+  }, [stateJourneys, state.featuredJourneyOrder, embeddedJourneys]);
 
-  const withOtherCityJourneys = useMemo(
-    () => stateJourneys.filter((j) => isOtherCityTour(j)),
-    [stateJourneys, isOtherCityTour]
-  );
+  // Combined / Other city tours: Tours NOT in top selected list
+  const otherJourneys = useMemo(() => {
+    const topIds = new Set(featuredJourneys.map((j) => j.id));
+    return stateJourneys.filter((j) => !topIds.has(j.id));
+  }, [stateJourneys, featuredJourneys]);
 
-  // Only show tabs when BOTH options have enough data (at least 2 tours in each tab)
-  // If either option has 0 or only 1 tour, show all packages directly without tabs
   const hasBothCategories =
-    stateOnlyJourneys.length >= 2 &&
-    withOtherCityJourneys.length >= 2 &&
-    stateJourneys.length >= 5;
+    featuredJourneys.length > 0 &&
+    otherJourneys.length > 0;
 
   const currentTabJourneys = useMemo(() => {
     if (!hasBothCategories) return stateJourneys;
-    return activeTab === "state-only" ? stateOnlyJourneys : withOtherCityJourneys;
-  }, [hasBothCategories, activeTab, stateJourneys, stateOnlyJourneys, withOtherCityJourneys]);
+    return activeTab === "state-only" ? featuredJourneys : otherJourneys;
+  }, [hasBothCategories, activeTab, stateJourneys, featuredJourneys, otherJourneys]);
 
   // Filters for Tour Packages
   const [expSelected, setExpSelected] = useState<string[]>([]);
@@ -294,7 +302,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               : "bg-slate-300 text-slate-800"
           )}
         >
-          {stateOnlyJourneys.length}
+          {featuredJourneys.length}
         </span>
       </button>
 
@@ -320,7 +328,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               : "bg-slate-300 text-slate-800"
           )}
         >
-          {withOtherCityJourneys.length}
+          {otherJourneys.length}
         </span>
       </button>
     </div>

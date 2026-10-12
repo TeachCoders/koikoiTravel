@@ -104,11 +104,16 @@ function ExperienceContent({
     return experienceJourneys.slice(0, 10);
   }, [experienceJourneys, experience.featuredJourneyOrder]);
 
-  const hasTabs = experienceJourneys.length > topTours.length;
+  const otherTours = useMemo(() => {
+    const topIds = new Set(topTours.map((j) => j.id));
+    return experienceJourneys.filter((j) => !topIds.has(j.id));
+  }, [experienceJourneys, topTours]);
+
+  const hasTabs = topTours.length > 0 && otherTours.length > 0;
   const currentTabJourneys = hasTabs
     ? activeTab === "top-tours"
       ? topTours
-      : experienceJourneys
+      : otherTours
     : experienceJourneys;
 
   const [durSelected, setDurSelected] = useState<string[]>([]);
@@ -237,7 +242,7 @@ function ExperienceContent({
                 : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
             )}
           >
-            <span>All Tour Packages</span>
+            <span>Combined Tour Packages</span>
             <span
               className={cn(
                 "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
@@ -246,7 +251,7 @@ function ExperienceContent({
                   : "bg-slate-300 text-slate-800"
               )}
             >
-              {experienceJourneys.length}
+              {otherTours.length}
             </span>
           </button>
         </div>
