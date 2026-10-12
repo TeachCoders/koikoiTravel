@@ -15,7 +15,12 @@ export function cacheGet(ttl = DEFAULT_TTL) {
   return async (req, res, next) => {
     try {
       const isNoCacheHeader = req.headers["cache-control"]?.includes("no-cache") || req.headers["cache-control"]?.includes("no-store");
-      const isBypassQuery = req.query.nocache === "true" || req.query.preview === "true" || req.query.fresh === "true";
+      const isBypassQuery =
+        req.query.nocache === "true" ||
+        req.query.preview === "true" ||
+        req.query.fresh === "true" ||
+        req.headers["x-bypass-cache"] === "1" ||
+        req.cookies?.admin_logged_in === "true";
 
       // If non-GET, or logged-in staff/admin user, or no-cache header/query -> BYPASS REDIS CACHE
       if (req.method !== "GET" || !isPublicRequest(req) || isNoCacheHeader || isBypassQuery || !redisReady()) {

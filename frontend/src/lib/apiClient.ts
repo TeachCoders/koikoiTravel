@@ -35,6 +35,13 @@ apiClient.interceptors.request.use((req) => {
   if (["post", "put", "patch", "delete"].includes(req.method || "") && csrfToken) {
     req.headers["X-CSRF-Token"] = csrfToken;
   }
+  // When browsing from a logged-in admin/staff browser, tell backend to bypass Redis cache
+  // so admins always see fresh real-time data instead of cached responses
+  if (typeof document !== "undefined" && document.cookie.includes("admin_logged_in")) {
+    req.headers["Cache-Control"] = "no-cache";
+    req.headers["Pragma"] = "no-cache";
+    req.headers["X-Bypass-Cache"] = "1";
+  }
   return req;
 });
 

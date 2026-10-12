@@ -40,10 +40,10 @@ export function isStaffUser(req) {
     req.headers.authorization ||
     req.headers["x-staff-token"] ||
     req.headers["x-admin-token"] ||
+    req.headers["x-bypass-cache"] === "1" ||
+    req.cookies?.admin_logged_in === "true" ||
     req.cookies?.staff_token ||
-    req.cookies?.token ||
-    req.cookies?.connect_sid ||
-    req.cookies?.session
+    req.cookies?.token
   ) {
     return true;
   }

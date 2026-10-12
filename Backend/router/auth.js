@@ -6,6 +6,8 @@ const router = express.Router();
 import { uploadImage, deleteOldImage } from "../utils/uploadImage.js";
 import { logger } from "../utils/logger.js";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 const LOGIN_LOCK_THRESHOLD = 5;
 const LOGIN_LOCK_MINUTES = 15;
 
@@ -162,6 +164,13 @@ router.post("/login", async (req, res) => {
         return res.status(500).send({ success: false, message: "Internal Server Error" });
       }
       req.session.user = userDetials;
+      res.cookie("admin_logged_in", "true", {
+        path: "/",
+        sameSite: "lax",
+        secure: isProduction,
+        ...(isProduction && { domain: ".koikoitravel.com" }),
+        maxAge: 24 * 60 * 60 * 1000,
+      });
       req.session.save((saveErr) => {
         if (saveErr) {
           logger.error("Session save error:", { saveErr });
@@ -250,6 +259,8 @@ router.post("/logout", (req, res) => {
     res.clearCookie("connect.sid", { domain: ".koikoitravel.com", path: "/" });
     res.clearCookie("connect.sid", { domain: "api.koikoitravel.com", path: "/" });
     res.clearCookie("connect.sid");
+    res.clearCookie("admin_logged_in", { domain: ".koikoitravel.com", path: "/" });
+    res.clearCookie("admin_logged_in", { path: "/" });
     res.clearCookie("csrf-token");
     res.clearCookie("__Host-csrf-token");
     return res.send({ success: true, message: "Logged out successfully" });
