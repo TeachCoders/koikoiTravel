@@ -44,7 +44,7 @@ const ACTIVITIES = [
   {
     title: "Sunset & Sunrise",
     image: "/content/taj-mahal-holiday-1.webp",
-    href: "/tour-packages/india/golden-triangle",
+    href: "/travel-experiences/golden-triangle",
   },
 ];
 

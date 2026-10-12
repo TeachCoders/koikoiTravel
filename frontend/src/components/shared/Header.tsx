@@ -153,6 +153,8 @@ export const Header: React.FC = () => {
 
     states.forEach(state => {
       if (!state.country) return;
+      // Golden Triangle is an Experience (/travel-experiences/golden-triangle), not a State
+      if (state.slug === "golden-triangle") return;
 
       if (!countryMap.has(state.country.id)) {
         countryMap.set(state.country.id, {

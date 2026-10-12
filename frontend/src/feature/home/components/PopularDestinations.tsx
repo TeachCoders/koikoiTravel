@@ -83,7 +83,7 @@ export const PopularDestinations: React.FC<{
   // Left Column items (Inbound / Iconic circuit destinations)
   const leftItems = useMemo<DestinationItem[]>(() => {
     return states
-      .filter((s) => (s.displayOrder ?? 0) > 0)
+      .filter((s) => (s.displayOrder ?? 0) > 0 && s.slug !== "golden-triangle")
       .map((s) => {
         const tours = s.tourCount ?? (s.journeys?.length || 0);
         const countrySlug = s.country?.slug || "india";
@@ -91,19 +91,9 @@ export const PopularDestinations: React.FC<{
           id: `left-state-${s.id}`,
           countryId: s.countryId || s.country?.id,
           title: s.title,
-          image:
-            s.thumbImg ||
-            s.banner?.images?.[0] ||
-            (s.slug === "golden-triangle"
-              ? "/golden-triangle/trip/golden-triangle.webp"
-              : undefined),
+          image: s.thumbImg || s.banner?.images?.[0],
           subtitle: tours > 0 ? `${tours}+ tours` : "Coming Soon",
-          href:
-            tours > 0
-              ? (s.slug === "golden-triangle"
-                  ? `/travel-experiences/golden-triangle`
-                  : `/tour-packages/${countrySlug}/${s.slug}`)
-              : (undefined as any),
+          href: tours > 0 ? `/tour-packages/${countrySlug}/${s.slug}` : (undefined as any),
           displayOrder: s.displayOrder ?? 999,
         };
       })
@@ -116,7 +106,7 @@ export const PopularDestinations: React.FC<{
       states.filter((s) => (s.displayOrder ?? 0) > 0).map((s) => s.id)
     );
     return states
-      .filter((s) => (s.domesticDisplayOrder ?? 0) > 0 && !leftStateIds.has(s.id))
+      .filter((s) => (s.domesticDisplayOrder ?? 0) > 0 && !leftStateIds.has(s.id) && s.slug !== "golden-triangle")
       .map((s) => {
         const tours = s.tourCount ?? (s.journeys?.length || 0);
         const countrySlug = s.country?.slug || "india";
@@ -124,19 +114,9 @@ export const PopularDestinations: React.FC<{
           id: `right-state-${s.id}`,
           countryId: s.countryId || s.country?.id,
           title: s.title,
-          image:
-            s.thumbImg ||
-            s.banner?.images?.[0] ||
-            (s.slug === "golden-triangle"
-              ? "/golden-triangle/trip/golden-triangle.webp"
-              : undefined),
+          image: s.thumbImg || s.banner?.images?.[0],
           subtitle: tours > 0 ? `${tours}+ tours` : "Coming Soon",
-          href:
-            tours > 0
-              ? (s.slug === "golden-triangle"
-                  ? `/travel-experiences/golden-triangle`
-                  : `/tour-packages/${countrySlug}/${s.slug}`)
-              : (undefined as any),
+          href: tours > 0 ? `/tour-packages/${countrySlug}/${s.slug}` : (undefined as any),
           displayOrder: s.domesticDisplayOrder ?? 999,
         };
       })

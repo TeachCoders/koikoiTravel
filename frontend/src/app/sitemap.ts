@@ -67,6 +67,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   countries.forEach((c: SitemapItem) => entries.push(url(`/tour-packages/${c.slug}`, c.updatedAt)));
   states.forEach((s: SitemapItem) => {
+    if (s.slug === "golden-triangle") return;
     if (s.country?.slug) entries.push(url(`/tour-packages/${s.country.slug}/${s.slug}`, s.updatedAt));
   });
   cities.forEach((c: SitemapItem) => {

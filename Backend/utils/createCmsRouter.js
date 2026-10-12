@@ -209,6 +209,9 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       }
 
       if (modelName === "state") {
+        if (isPublic) {
+          where.slug = { not: "golden-triangle" };
+        }
         if (req.query.stateId) {
           const stateId = parseInt(req.query.stateId);
           if (isNaN(stateId)) return res.status(400).json({ success: false, message: "Invalid stateId" });

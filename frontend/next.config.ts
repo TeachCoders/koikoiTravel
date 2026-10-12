@@ -45,6 +45,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       })),
       {
+        source: "/tour-packages/india/golden-triangle",
+        destination: "/travel-experiences/golden-triangle",
+        permanent: true,
+      },
+      {
         source: "/india-tours/tour-packages/golden-triangle",
         destination: "/travel-experiences/golden-triangle",
         permanent: true,

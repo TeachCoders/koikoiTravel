@@ -14,12 +14,12 @@ const DESTINATIONS = [
   {
     name: "Agra",
     image: "/content/taj-mahal-holiday-1.webp",
-    href: "/tour-packages/india/golden-triangle",
+    href: "/tour-packages/india/uttar-pradesh/agra",
   },
   {
     name: "Delhi",
     image: "/content/delhi-holiday-1.webp",
-    href: "/tour-packages/india/golden-triangle",
+    href: "/tour-packages/india/delhi",
   },
   {
     name: "Kashmir",
