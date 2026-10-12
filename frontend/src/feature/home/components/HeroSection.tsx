@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import HeroSearchBar from "@/components/shared/HeroSearchBar";
 import { FallbackImage } from "@/components/shared/FallbackImage";
@@ -11,6 +12,15 @@ const DEFAULT_SLIDES = [
   { image: "/content/srinagar-holiday-1.webp", alt: "Srinagar Kashmir holiday" },
   { image: "/content/jaipur-holiday-1.webp", alt: "Jaipur royal heritage" },
   { image: "/content/manali-holiday-1.webp", alt: "Manali Himachal holiday" },
+];
+
+const TRENDING_CHIPS = [
+  { label: "Rajasthan", href: "/tour-packages/india/rajasthan" },
+  { label: "Golden Triangle", href: "/travel-experiences/golden-triangle" },
+  { label: "Kashmir", href: "/tour-packages/india/jammu-and-kashmir" },
+  { label: "Kerala", href: "/tour-packages/india/kerala" },
+  { label: "Agra Day Tour", href: "/tour-packages/same-day-agra-tour-by-car-from-delhi" },
+  { label: "Varanasi", href: "/tour-packages/india/uttar-pradesh/varanasi" },
 ];
 
 export const HeroSection: React.FC = () => {
@@ -38,7 +48,7 @@ export const HeroSection: React.FC = () => {
   }, [next]);
 
   return (
-    <section className="relative w-full h-[320px] sm:h-[400px] md:h-[520px] flex items-center justify-center bg-slate-900 z-20">
+    <section className="relative w-full min-h-[380px] sm:min-h-[440px] md:min-h-[520px] py-10 sm:py-14 flex items-center justify-center bg-slate-900 z-20">
       {/* Background slider - clipped with overflow-hidden */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
@@ -78,7 +88,7 @@ export const HeroSection: React.FC = () => {
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      <div className="absolute bottom-2.5 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+      <div className="absolute bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
         {slides.map((_, i) => (
           <button
             key={i}
@@ -100,6 +110,22 @@ export const HeroSection: React.FC = () => {
 
         <div className="mt-4 sm:mt-6 md:mt-8">
           <HeroSearchBar />
+
+          {/* Quick Trending Destination Chips */}
+          <div className="mt-3.5 sm:mt-4 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+            <span className="text-white/80 text-[11px] sm:text-xs font-semibold uppercase tracking-wider select-none mr-0.5">
+              Trending:
+            </span>
+            {TRENDING_CHIPS.map((chip) => (
+              <Link
+                key={chip.label}
+                href={chip.href}
+                className="px-3 py-1 rounded-full text-xs font-medium text-white/90 bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 hover:border-[#F8904D] hover:text-[#F8904D] transition-all hover:scale-105 active:scale-95 shadow-sm inline-flex items-center"
+              >
+                {chip.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>

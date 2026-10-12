@@ -29,7 +29,7 @@ export default function SeoTextBlock() {
           </div>
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6 flex items-center justify-between flex-wrap gap-4">
           <Link
             href="/about-us"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors"
@@ -37,6 +37,42 @@ export default function SeoTextBlock() {
             Learn more about us
             <ArrowRight size={14} />
           </Link>
+        </div>
+
+        {/* Popular Circuits Internal Links for SEO Crawlers & Navigation */}
+        <div className="mt-8 pt-6 border-t border-slate-200/80">
+          <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2.5">
+            Popular India Travel Circuits & Themes
+          </h4>
+          <div className="flex flex-wrap items-center gap-x-3.5 gap-y-2 text-xs text-slate-600">
+            <Link href="/tour-packages/india/rajasthan" className="hover:text-[#F8904D] transition-colors hover:underline">
+              Rajasthan Heritage Tours
+            </Link>
+            <span className="text-slate-300">•</span>
+            <Link href="/travel-experiences/golden-triangle" className="hover:text-[#F8904D] transition-colors hover:underline">
+              Golden Triangle Packages (Delhi, Agra, Jaipur)
+            </Link>
+            <span className="text-slate-300">•</span>
+            <Link href="/tour-packages/india/kerala" className="hover:text-[#F8904D] transition-colors hover:underline">
+              Kerala Backwaters & Houseboat Trips
+            </Link>
+            <span className="text-slate-300">•</span>
+            <Link href="/tour-packages/india/jammu-and-kashmir" className="hover:text-[#F8904D] transition-colors hover:underline">
+              Kashmir & Ladakh Holiday Tours
+            </Link>
+            <span className="text-slate-300">•</span>
+            <Link href="/travel-experiences/wildlife" className="hover:text-[#F8904D] transition-colors hover:underline">
+              India Wildlife & Tiger Safaris
+            </Link>
+            <span className="text-slate-300">•</span>
+            <Link href="/travel-experiences/spiritual" className="hover:text-[#F8904D] transition-colors hover:underline">
+              Varanasi & Spiritual Pilgrimages
+            </Link>
+            <span className="text-slate-300">•</span>
+            <Link href="/tour-packages/same-day-agra-tour-by-car-from-delhi" className="hover:text-[#F8904D] transition-colors hover:underline">
+              Same Day Agra Taj Mahal by Car
+            </Link>
+          </div>
         </div>
 
       </div>

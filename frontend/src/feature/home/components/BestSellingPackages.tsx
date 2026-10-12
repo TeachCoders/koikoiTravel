@@ -8,7 +8,7 @@ import TourPackageCard from "@/components/shared/TourPackageCard";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 
-const MAX_PACKAGES = 4;
+const MAX_PACKAGES = 8;
 
 export const BestSellingPackages: React.FC<{
   initialJourneys?: JourneyPage<Journey> | null;
@@ -21,9 +21,17 @@ export const BestSellingPackages: React.FC<{
     initialJourneys
   );
 
-  const packages = journeys
-    .filter((j: any) => (j.displayOrder ?? 0) > 0)
-    .slice(0, MAX_PACKAGES);
+  const packages = React.useMemo(() => {
+    const ordered = journeys
+      .filter((j: any) => (j.displayOrder ?? 0) > 0)
+      .sort((a: any, b: any) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+    if (ordered.length >= MAX_PACKAGES) {
+      return ordered.slice(0, MAX_PACKAGES);
+    }
+    const orderedIds = new Set(ordered.map((j: any) => j.id));
+    const backfill = journeys.filter((j: any) => !orderedIds.has(j.id));
+    return [...ordered, ...backfill].slice(0, MAX_PACKAGES);
+  }, [journeys]);
 
   return (
     <section id="packages" className="py-8 sm:py-10 md:py-12 bg-[#f8f8f8] relative overflow-hidden shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]">
@@ -52,7 +60,7 @@ export const BestSellingPackages: React.FC<{
 
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {Array.from({ length: 4 }).map((_, i) => (
+            {Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="rounded-xl bg-white animate-pulse h-[420px] border border-brand-200" />
             ))}
           </div>
