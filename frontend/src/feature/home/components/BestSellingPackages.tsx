@@ -41,21 +41,14 @@ export const BestSellingPackages: React.FC<{
       }} />
       
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6 sm:mb-8">
-          <div>
-            <SectionLabel>Featured Itineraries</SectionLabel>
-            <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5">
-              Top-Rated Holiday Packages
-            </h2>
-            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
-              All-inclusive private tours featuring handpicked hotels, dedicated chauffeurs, and personalized sightseeing.
-            </p>
-          </div>
-          <Link href="/tour-packages">
-            <button className="btn-outline">
-              <span>Explore All Tours</span><ArrowRight className="w-4 h-4" />
-            </button>
-          </Link>
+        <div className="mb-6 sm:mb-8">
+          <SectionLabel>Featured Itineraries</SectionLabel>
+          <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5">
+            Top-Rated Holiday Packages
+          </h2>
+          <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
+            All-inclusive private tours featuring handpicked hotels, dedicated chauffeurs, and personalized sightseeing.
+          </p>
         </div>
 
         {isLoading ? (
@@ -73,6 +66,16 @@ export const BestSellingPackages: React.FC<{
             ))}
           </div>
         )}
+
+        {/* Bottom Center Explore All Tours CTA */}
+        <div className="mt-8 sm:mt-10 flex justify-center">
+          <Link href="/tour-packages">
+            <button className="btn-outline px-6 py-2.5 sm:px-8 sm:py-3 text-sm sm:text-base font-semibold shadow-xs hover:shadow-md transition-all inline-flex items-center gap-2">
+              <span>Explore All Tours</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </Link>
+        </div>
       </div>
     </section>
   );
