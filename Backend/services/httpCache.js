@@ -22,9 +22,21 @@ export function cacheGet(ttl = DEFAULT_TTL) {
         req.headers["x-bypass-cache"] === "1" ||
         req.cookies?.admin_logged_in === "true";
 
-      // If non-GET, or logged-in staff/admin user, or no-cache header/query -> BYPASS REDIS CACHE
-      if (req.method !== "GET" || !isPublicRequest(req) || isNoCacheHeader || isBypassQuery || !redisReady()) {
-        res.set("X-Koikoi-Cache", "BYPASS");
+      const bypassReason =
+        req.method !== "GET"
+          ? "non_get"
+          : !isPublicRequest(req)
+          ? "not_public"
+          : isNoCacheHeader
+          ? "no_cache_hdr"
+          : isBypassQuery
+          ? "bypass_query"
+          : !redisReady()
+          ? "redis_not_ready"
+          : null;
+
+      if (bypassReason) {
+        res.set("X-Koikoi-Cache", `BYPASS:${bypassReason}`);
         return next();
       }
 
