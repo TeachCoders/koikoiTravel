@@ -67,13 +67,14 @@ export const BestSellingPackages: React.FC<{
           </div>
         )}
 
-        {/* Bottom Center Explore All Tours CTA */}
+        {/* Bottom Center View All Tours CTA */}
         <div className="mt-8 sm:mt-10 flex justify-center">
-          <Link href="/tour-packages">
-            <button className="btn-outline px-6 py-2.5 sm:px-8 sm:py-3 text-sm sm:text-base font-semibold shadow-xs hover:shadow-md transition-all inline-flex items-center gap-2">
-              <span>Explore All Tours</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+          <Link
+            href="/tour-packages"
+            className="group inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-slate-900 text-white text-sm font-medium hover:bg-[#F8904D] transition-all shadow-sm"
+          >
+            <span>View All Tours</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </div>
