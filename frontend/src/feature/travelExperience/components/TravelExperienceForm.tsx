@@ -374,9 +374,19 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
             onChange={setJourneyIds}
             fetchOptions={async (search) => {
               const res = await getJourneys({ search, isActive: "true", limit: 100 });
-              return res.data;
+              return (res.data || []).map((j: any) => {
+                const daysLabel = j.duration || (j.noDays ? `${j.noDays} Days` : "");
+                const mainTitle = j.h1Title || j.title;
+                const label = daysLabel ? `(${daysLabel}) ${mainTitle}` : mainTitle;
+                return { id: j.id, title: label };
+              });
             }}
-            initialOptions={(initialData?.journeys ?? []).map((j) => ({ id: j.id, title: j.title }))}
+            initialOptions={(initialData?.journeys ?? []).map((j: any) => {
+              const daysLabel = j.duration || (j.noDays ? `${j.noDays} Days` : "");
+              const mainTitle = j.h1Title || j.title;
+              const label = daysLabel ? `(${daysLabel}) ${mainTitle}` : mainTitle;
+              return { id: j.id, title: label };
+            })}
             placeholder={`Select Top Tour Packages for ${formData.title || "Experience"} *`}
             searchPlaceholder={`Search packages for ${formData.title || "Experience"} by title or duration...`}
             onReorder={(fromId, toId) => {
