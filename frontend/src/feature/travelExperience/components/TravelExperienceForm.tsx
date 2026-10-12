@@ -377,8 +377,8 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
               return res.data;
             }}
             initialOptions={(initialData?.journeys ?? []).map((j) => ({ id: j.id, title: j.title }))}
-            placeholder="Select Journeys *"
-            searchPlaceholder="Search journeys..."
+            placeholder={`Select Top Tour Packages for ${formData.title || "Experience"} *`}
+            searchPlaceholder={`Search packages for ${formData.title || "Experience"} by title or duration...`}
             onReorder={(fromId, toId) => {
               const arr = [...journeyIds];
               const fromIdx = arr.indexOf(fromId);

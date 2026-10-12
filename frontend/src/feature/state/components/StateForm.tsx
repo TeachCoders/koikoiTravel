@@ -423,8 +423,8 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
               const label = daysLabel ? `(${daysLabel}) ${mainTitle}` : mainTitle;
               return { id: j.id, title: label };
             })}
-            placeholder="Select Top Tour Packages *"
-            searchPlaceholder="Search packages by title or duration..."
+            placeholder={`Select Top Tour Packages for ${formData.title || "State"} *`}
+            searchPlaceholder={`Search packages for ${formData.title || "State"} by title or duration...`}
             onReorder={(fromId, toId) => {
               const arr = [...journeyIds];
               const fromIdx = arr.indexOf(fromId);
