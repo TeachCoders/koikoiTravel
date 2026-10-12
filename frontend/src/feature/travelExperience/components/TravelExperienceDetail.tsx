@@ -175,21 +175,32 @@ function ExperienceContent({
   );
 
   const durationTabs = experienceJourneys.length > 0 ? (
-    <div className="flex flex-col gap-3 mb-6">
-      {/* Quick Duration Chips */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+    <div className="flex flex-col gap-4 mb-6">
+      {/* Quick Duration Tabs (Styled identically to Rajasthan StateDetail tabs) */}
+      <div className="flex items-center gap-2 sm:gap-3 p-1.5 bg-slate-200/70 rounded-2xl w-fit max-w-full overflow-x-auto border border-slate-300/60 shadow-xs">
         <button
           type="button"
           onClick={() => setDurSelected([])}
           className={cn(
-            "px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all shrink-0 cursor-pointer",
+            "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
             durSelected.length === 0
-              ? "bg-[#1C1C1C] text-white shadow-xs"
-              : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+              ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
+              : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
           )}
         >
-          All Tours ({experienceJourneys.length})
+          <span>All Tours</span>
+          <span
+            className={cn(
+              "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
+              durSelected.length === 0
+                ? "bg-white text-[#2E8B8B]"
+                : "bg-slate-300 text-slate-800"
+            )}
+          >
+            {experienceJourneys.length}
+          </span>
         </button>
+
         {DURATION_BUCKETS.map((b) => {
           const count = experienceJourneys.filter(
             (j) => (j.noDays || 0) >= b.min && (j.noDays || 0) <= b.max
@@ -202,17 +213,19 @@ function ExperienceContent({
               type="button"
               onClick={() => setDurSelected(isSelected ? [] : [b.id])}
               className={cn(
-                "px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all shrink-0 cursor-pointer flex items-center gap-1.5",
+                "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
                 isSelected
-                  ? "bg-[#2E8B8B] text-white shadow-xs"
-                  : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+                  ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
+                  : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
               )}
             >
               <span>{b.label}</span>
               <span
                 className={cn(
-                  "text-[11px] px-1.5 py-0.2 rounded-full",
-                  isSelected ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
+                  "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
+                  isSelected
+                    ? "bg-white text-[#2E8B8B]"
+                    : "bg-slate-300 text-slate-800"
                 )}
               >
                 {count}
