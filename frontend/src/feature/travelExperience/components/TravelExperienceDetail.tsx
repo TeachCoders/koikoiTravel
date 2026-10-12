@@ -30,10 +30,12 @@ import {
   journeyMatchesSeasons,
   journeyMatchesCities,
   journeyPackageHref,
+  DURATION_BUCKETS,
 } from "@/feature/journey/filterOptions";
 import { cn, formatToursH1 } from "@/lib/utils";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
+import { GOLDEN_TRIANGLE_FAQS } from "../goldenTriangleFaqs";
 import type { TravelExperience, TravelExperienceCity } from "@/feature/travelExperience/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 
@@ -172,6 +174,81 @@ function ExperienceContent({
     />
   );
 
+  const durationTabs = experienceJourneys.length > 0 ? (
+    <div className="flex flex-col gap-3 mb-6">
+      {/* Quick Duration Chips */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+        <button
+          type="button"
+          onClick={() => setDurSelected([])}
+          className={cn(
+            "px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all shrink-0 cursor-pointer",
+            durSelected.length === 0
+              ? "bg-[#1C1C1C] text-white shadow-xs"
+              : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+          )}
+        >
+          All Tours ({experienceJourneys.length})
+        </button>
+        {DURATION_BUCKETS.map((b) => {
+          const count = experienceJourneys.filter(
+            (j) => (j.noDays || 0) >= b.min && (j.noDays || 0) <= b.max
+          ).length;
+          if (count === 0) return null;
+          const isSelected = durSelected.includes(b.id);
+          return (
+            <button
+              key={b.id}
+              type="button"
+              onClick={() => setDurSelected(isSelected ? [] : [b.id])}
+              className={cn(
+                "px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all shrink-0 cursor-pointer flex items-center gap-1.5",
+                isSelected
+                  ? "bg-[#2E8B8B] text-white shadow-xs"
+                  : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+              )}
+            >
+              <span>{b.label}</span>
+              <span
+                className={cn(
+                  "text-[11px] px-1.5 py-0.2 rounded-full",
+                  isSelected ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
+                )}
+              >
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Sleek Trust & Inclusions Strip */}
+      <div className="bg-white/95 border border-slate-200/90 rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-y-2 gap-x-4 text-xs sm:text-[13px] text-slate-700 shadow-2xs">
+        <div className="flex items-center gap-2">
+          <span className="text-[#2E8B8B] font-bold">✨ Every Tour Includes:</span>
+        </div>
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 font-medium text-slate-600">
+          <span className="inline-flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#2E8B8B]" />
+            Private AC Chauffeur
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#2E8B8B]" />
+            Handpicked Stays
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#2E8B8B]" />
+            Govt-Licensed Guides
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D]" />
+            100% Tailor-made (Customizable)
+          </span>
+        </div>
+      </div>
+    </div>
+  ) : null;
+
   const heroImages =
     customHeroBanners.length > 0
       ? customHeroBanners.map((b) => b.image)
@@ -238,6 +315,7 @@ function ExperienceContent({
         overView={experience.overView ?? undefined}
         emptyLabel={`No tours found for ${h1Title} yet`}
         showCount={16}
+        tabs={durationTabs}
         filterBar={experienceJourneys.length > 0 ? filterBar : undefined}
         onClearFilters={clearFilters}
         contextName={h1Title}
@@ -345,7 +423,13 @@ function ExperienceContent({
       <OtherExperiencesSection currentSlug={experience.slug} />
 
       {/* ===== FAQ SECTION ===== */}
-      <FaqSection faqs={experience?.faqs} />
+      <FaqSection
+        faqs={
+          experience.slug === "golden-triangle"
+            ? (GOLDEN_TRIANGLE_FAQS as any)
+            : experience?.faqs
+        }
+      />
     </div>
   );
 }

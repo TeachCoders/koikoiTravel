@@ -10,6 +10,8 @@ import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journe
 import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
 import { travelExperienceParams } from "@/lib/prerender";
 
+import { GOLDEN_TRIANGLE_FAQS } from "@/feature/travelExperience/goldenTriangleFaqs";
+
 export const revalidate = 300;
 
 export async function generateStaticParams() {
@@ -22,8 +24,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const data = await fetchBySlugCached<TravelExperience>("/holidays/by-slug", slug);
   if (!data) return { title: "Travel Experience Not Found | KoiKoi Travel" };
-  const title = data.seoTitle || data.title;
-  const seoDescription = truncateMeta(data.seoDescription || data.moreDescription || "");
+
+  const isGoldenTriangle = slug === "golden-triangle" || data.slug === "golden-triangle";
+  const title = isGoldenTriangle
+    ? "Golden Triangle Tour Packages (Delhi Agra Jaipur) | Private Car & Chauffeur"
+    : data.seoTitle || data.title;
+  const seoDescription = isGoldenTriangle
+    ? "Explore Delhi, Agra & Jaipur with 100% private AC chauffeur, verified guides & customizable 1 to 7+ days itineraries. Tailor-made Golden Triangle holiday packages. Request your custom quote!"
+    : truncateMeta(data.seoDescription || data.moreDescription || "");
   const canonical = canonicalFor(data, slug);
   const ogImage = absoluteUrl(data.thumbImg);
   return {
@@ -79,9 +87,15 @@ export default async function TravelExperiencePage({ params }: Props) {
         const bRank = bi === -1 ? Number.MAX_SAFE_INTEGER : bi;
         return aRank - bRank;
       });
-    const faqItems =
-      data.faqs && data.faqs.length > 0
+    const isGoldenTriangle = slug === "golden-triangle" || data.slug === "golden-triangle";
+    const faqSource = isGoldenTriangle
+      ? GOLDEN_TRIANGLE_FAQS
+      : data.faqs && data.faqs.length > 0
         ? data.faqs
+        : [];
+    const faqItems =
+      faqSource.length > 0
+        ? faqSource
             .filter((f) => f?.ques && f?.ans)
             .map((f) => ({ question: stripHtml(f.ques), answer: stripHtml(f.ans) }))
         : HOME_FAQS;

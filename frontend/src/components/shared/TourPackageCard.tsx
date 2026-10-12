@@ -254,8 +254,20 @@ export default function TourPackageCard({
           </>
         )}
 
+        {/* Trust Badging Line (Professional custom tour features) */}
+        <div className="mt-auto pt-2.5 pb-1 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-medium tracking-tight">
+          <span className="inline-flex items-center gap-1 text-slate-700">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#2E8B8B]" />
+            Private Chauffeur
+          </span>
+          <span className="text-slate-300">•</span>
+          <span className="text-slate-600">100% Tailor-made</span>
+          <span className="text-slate-300">•</span>
+          <span className="text-[#F8904D] font-semibold">Custom Quote</span>
+        </div>
+
         {/* CTA Section */}
-        <div className="mt-auto pt-3 flex flex-col gap-2">
+        <div className="pt-1.5 flex flex-col gap-2">
           {/* Action Buttons Row (Default Minimalist Outline -> Card Hover Active Background) */}
           <div className="grid grid-cols-2 gap-2 pt-0.5">
             <WhatsAppPriceButton
