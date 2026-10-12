@@ -22,6 +22,8 @@ const TRENDING_CHIPS = [
   { label: "Tamilnadu", href: "/tour-packages/india/tamil-nadu" },
   { label: "Goa", href: "/tour-packages/india/goa" },
   { label: "Mumbai", href: "/tour-packages/india/maharashtra/mumbai" },
+  { label: "Wildlife", href: "/travel-experiences/wildlife" },
+  { label: "Honeymoon", href: "/travel-experiences/honeymoon" },
 ];
 
 export const HeroSection: React.FC = () => {
