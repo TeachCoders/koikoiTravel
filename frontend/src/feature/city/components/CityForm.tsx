@@ -323,14 +323,18 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
               return (res.data || []).map((j: any) => {
                 const daysLabel = j.duration || (j.noDays ? `${j.noDays} Days` : "");
                 const mainTitle = j.h1Title || j.title;
-                const label = daysLabel ? `(${daysLabel}) ${mainTitle}` : mainTitle;
+                const citiesList = (j.cities || []).map((c: any) => c.title).slice(0, 4).join(", ");
+                const citiesSuffix = citiesList ? ` — [${citiesList}]` : (j.destination ? ` — [${j.destination}]` : "");
+                const label = daysLabel ? `(${daysLabel}) ${mainTitle}${citiesSuffix}` : `${mainTitle}${citiesSuffix}`;
                 return { id: j.id, title: label };
               });
             }}
             initialOptions={(initialData?.journeys ?? []).map((j: any) => {
               const daysLabel = j.duration || (j.noDays ? `${j.noDays} Days` : "");
               const mainTitle = j.h1Title || j.title;
-              const label = daysLabel ? `(${daysLabel}) ${mainTitle}` : mainTitle;
+              const citiesList = (j.cities || []).map((c: any) => c.title).slice(0, 4).join(", ");
+              const citiesSuffix = citiesList ? ` — [${citiesList}]` : (j.destination ? ` — [${j.destination}]` : "");
+              const label = daysLabel ? `(${daysLabel}) ${mainTitle}${citiesSuffix}` : `${mainTitle}${citiesSuffix}`;
               return { id: j.id, title: label };
             })}
             placeholder="Select Top Tour Packages *"
