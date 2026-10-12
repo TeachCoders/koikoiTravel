@@ -357,17 +357,16 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
           </div>
         </div>
 
+        {/* Top / Featured Tour Packages in Experience */}
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
           <label className="text-sm font-bold text-slate-700 uppercase tracking-wider block mb-2">
-            Linked Journeys{" "}
-            <span className="text-xs font-normal text-slate-500">
-              — is experience page par top par &quot;Explore More&quot; mein yahi journeys cards dikhte hain, isi
-              order mein.
+            ⭐ Top Tour Packages in {formData.title || "Experience"}
+            <span className="text-xs font-normal text-slate-500 ml-2">
+              — Ye packages experience page par &quot;Top Tour Packages&quot; tab mein sabse upar dikhenge.
             </span>
           </label>
           <div className="text-xs text-slate-500 mb-3">
-            Sirf unhi journeys ko select karein jo is experience page par dikhni chahiye. Selected journeys ko
-            drag karke top-order set kar sakte hain.
+            In packages ko select karein aur drag karke order (1, 2, 3...) set kar sakte hain. Baki sabhi tours &quot;All Tour Packages&quot; tab mein auto show honge.
           </div>
 
           <AsyncMultiSelect

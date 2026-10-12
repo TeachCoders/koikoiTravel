@@ -94,10 +94,17 @@ function ExperienceContent({
   const [activeTab, setActiveTab] = useState<"top-tours" | "all-tours">("top-tours");
 
   const topTours = useMemo(() => {
+    const order = (experience.featuredJourneyOrder || []) as number[];
+    if (order.length > 0) {
+      const selected = order
+        .map((id) => experienceJourneys.find((j) => j.id === id))
+        .filter((j): j is Journey => Boolean(j));
+      if (selected.length > 0) return selected;
+    }
     return experienceJourneys.slice(0, 10);
-  }, [experienceJourneys]);
+  }, [experienceJourneys, experience.featuredJourneyOrder]);
 
-  const hasTabs = experienceJourneys.length > 10;
+  const hasTabs = experienceJourneys.length > topTours.length;
   const currentTabJourneys = hasTabs
     ? activeTab === "top-tours"
       ? topTours
