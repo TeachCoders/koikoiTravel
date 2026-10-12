@@ -2,7 +2,7 @@
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   MapPin,
   ChevronRight,
@@ -91,11 +91,24 @@ function ExperienceContent({
       return aRank - bRank;
     });
 
+  const [activeTab, setActiveTab] = useState<"top-tours" | "all-tours">("top-tours");
+
+  const topTours = useMemo(() => {
+    return experienceJourneys.slice(0, 10);
+  }, [experienceJourneys]);
+
+  const hasTabs = experienceJourneys.length > 10;
+  const currentTabJourneys = hasTabs
+    ? activeTab === "top-tours"
+      ? topTours
+      : experienceJourneys
+    : experienceJourneys;
+
   const [durSelected, setDurSelected] = useState<string[]>([]);
   const [citySelected, setCitySelected] = useState<string[]>([]);
   const [seasonSelected, setSeasonSelected] = useState<string[]>([]);
 
-  const filteredJourneys = experienceJourneys.filter(
+  const filteredJourneys = currentTabJourneys.filter(
     (j) =>
       journeyMatchesDuration(j, durSelected) &&
       journeyMatchesCities(j, citySelected) &&
@@ -146,7 +159,7 @@ function ExperienceContent({
           id: "city",
           title: "Destination",
           icon: <MapPin size={14} />,
-          options: cityOptions(experienceJourneys),
+          options: cityOptions(currentTabJourneys),
           selected: citySelected,
           onChange: setCitySelected,
         },
@@ -154,7 +167,7 @@ function ExperienceContent({
         //   id: "season",
         //   title: "Best Season / Month",
         //   icon: <Sun size={14} />,
-        //   options: seasonOptions(experienceJourneys),
+        //   options: seasonOptions(currentTabJourneys),
         //   selected: seasonSelected,
         //   onChange: setSeasonSelected,
         // },
@@ -162,7 +175,7 @@ function ExperienceContent({
           id: "duration",
           title: "Duration",
           icon: <CalendarDays size={14} />,
-          options: durationOptions(experienceJourneys),
+          options: durationOptions(currentTabJourneys),
           selected: durSelected,
           onChange: setDurSelected,
         },
@@ -170,70 +183,67 @@ function ExperienceContent({
       activeCount={activeFilterCount}
       onClearAll={clearFilters}
       resultCount={filteredJourneys.length}
-      totalCount={experienceJourneys.length}
+      totalCount={currentTabJourneys.length}
     />
   );
 
-  const durationTabs = experienceJourneys.length > 0 ? (
+  const tourTabs = (
     <div className="flex flex-col gap-4 mb-6">
-      {/* Quick Duration Tabs (Styled identically to Rajasthan StateDetail tabs) */}
-      <div className="flex items-center gap-2 sm:gap-3 p-1.5 bg-slate-200/70 rounded-2xl w-fit max-w-full overflow-x-auto border border-slate-300/60 shadow-xs">
-        <button
-          type="button"
-          onClick={() => setDurSelected([])}
-          className={cn(
-            "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
-            durSelected.length === 0
-              ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
-              : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
-          )}
-        >
-          <span>All Tours</span>
-          <span
+      {hasTabs && (
+        <div className="flex items-center gap-2 sm:gap-3 p-1.5 bg-slate-200/70 rounded-2xl w-fit max-w-full overflow-x-auto border border-slate-300/60 shadow-xs">
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab("top-tours");
+              clearFilters();
+            }}
             className={cn(
-              "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
-              durSelected.length === 0
-                ? "bg-white text-[#2E8B8B]"
-                : "bg-slate-300 text-slate-800"
+              "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
+              activeTab === "top-tours"
+                ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
+                : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
             )}
           >
-            {experienceJourneys.length}
-          </span>
-        </button>
-
-        {DURATION_BUCKETS.map((b) => {
-          const count = experienceJourneys.filter(
-            (j) => (j.noDays || 0) >= b.min && (j.noDays || 0) <= b.max
-          ).length;
-          if (count === 0) return null;
-          const isSelected = durSelected.includes(b.id);
-          return (
-            <button
-              key={b.id}
-              type="button"
-              onClick={() => setDurSelected(isSelected ? [] : [b.id])}
+            <span>Top Tour Packages</span>
+            <span
               className={cn(
-                "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
-                isSelected
-                  ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
-                  : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
+                "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
+                activeTab === "top-tours"
+                  ? "bg-white text-[#2E8B8B]"
+                  : "bg-slate-300 text-slate-800"
               )}
             >
-              <span>{b.label}</span>
-              <span
-                className={cn(
-                  "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
-                  isSelected
-                    ? "bg-white text-[#2E8B8B]"
-                    : "bg-slate-300 text-slate-800"
-                )}
-              >
-                {count}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+              {topTours.length}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab("all-tours");
+              clearFilters();
+            }}
+            className={cn(
+              "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
+              activeTab === "all-tours"
+                ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
+                : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
+            )}
+          >
+            <span>All Tour Packages</span>
+            <span
+              className={cn(
+                "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
+                activeTab === "all-tours"
+                  ? "bg-white text-[#2E8B8B]"
+                  : "bg-slate-300 text-slate-800"
+              )}
+            >
+              {experienceJourneys.length}
+            </span>
+          </button>
+        </div>
+      )}
 
       {/* Sleek Trust & Inclusions Strip */}
       <div className="bg-white/95 border border-slate-200/90 rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-y-2 gap-x-4 text-xs sm:text-[13px] text-slate-700 shadow-2xs">
@@ -260,7 +270,7 @@ function ExperienceContent({
         </div>
       </div>
     </div>
-  ) : null;
+  );
 
   const heroImages =
     customHeroBanners.length > 0
@@ -328,7 +338,7 @@ function ExperienceContent({
         overView={experience.overView ?? undefined}
         emptyLabel={`No tours found for ${h1Title} yet`}
         showCount={16}
-        tabs={durationTabs}
+        tabs={tourTabs}
         filterBar={experienceJourneys.length > 0 ? filterBar : undefined}
         onClearFilters={clearFilters}
         contextName={h1Title}

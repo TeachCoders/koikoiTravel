@@ -37,10 +37,10 @@ export default function FilterBar({
   totalCount: number;
 }) {
   return (
-    <div className="flex items-center gap-2 py-1 -mx-1 px-1 overflow-x-auto sm:flex-wrap sm:overflow-visible sm:-mx-0 sm:px-0 md:gap-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      <span className="hidden lg:flex items-center gap-2 pl-1 pr-1 text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400">
-        <SlidersHorizontal size={14} className="text-slate-400" />
-        Refine
+    <div className="bg-white/95 border border-slate-200/90 rounded-2xl p-2.5 sm:p-3 shadow-xs hover:shadow-sm transition-all flex items-center gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible md:gap-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden mb-6">
+      <span className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100/90 border border-slate-200/60 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-700 shrink-0">
+        <SlidersHorizontal size={13} className="text-[#2E8B8B]" />
+        Filter Tours
       </span>
 
       {sections.map((s) => (
@@ -51,14 +51,14 @@ export default function FilterBar({
         <button
           type="button"
           onClick={onClearAll}
-          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-bold text-slate-500 hover:bg-slate-100 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-colors cursor-pointer shrink-0"
         >
           <X size={13} strokeWidth={2.5} /> Clear all ({activeCount})
         </button>
       )}
 
-      <span className="ml-auto hidden md:flex items-baseline gap-1.5 px-2 text-xs font-medium text-slate-500">
-        <span className="font-bold text-[#1C1C1C]">{resultCount}</span>
+      <span className="ml-auto hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-medium text-slate-600 shrink-0 shadow-2xs">
+        <span className="font-extrabold text-[#2E8B8B] tabular-nums">{resultCount}</span>
         <span className="text-slate-400">
           of {totalCount} {totalCount === 1 ? "tour" : "tours"}
         </span>
@@ -94,10 +94,10 @@ function FilterSelect({ section: s }: { section: FilterSection }) {
         <button
           type="button"
           className={cn(
-            "inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold border bg-white transition-colors duration-200 cursor-pointer whitespace-nowrap shrink-0",
+            "inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold border transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0 shadow-2xs",
             selectedCount > 0
-              ? "border-[#F8904D] bg-[#F8904D] text-white hover:bg-[#D87E43]"
-              : "border-slate-200 text-[#555] hover:border-slate-300 hover:text-[#1C1C1C]"
+              ? "border-[#2E8B8B] bg-[#2E8B8B] text-white shadow-sm hover:bg-[#257272]"
+              : "border-slate-200/90 bg-slate-50/80 hover:bg-white text-slate-700 hover:border-slate-300 hover:text-slate-950"
           )}
         >
           <span className="flex items-center gap-2 min-w-0">
