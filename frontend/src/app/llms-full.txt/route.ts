@@ -48,9 +48,12 @@ export async function GET() {
           ? j.route.map((c: any) => c.title).filter(Boolean).join(" -> ")
           : "";
         const price = j.discountPrice || j.pricePerPerson ? `Starting from ₹${j.discountPrice || j.pricePerPerson}/person` : "Custom Quote";
+        const rawImg = j.thumbImg || (Array.isArray(j.banner?.images) ? j.banner.images[0] : null);
+        const imgUrl = rawImg ? (rawImg.startsWith("http") ? rawImg : `${SITE_URL}${rawImg.startsWith("/") ? "" : "/"}${rawImg}`) : null;
 
         md += `### ${idx + 1}. [${title}](${SITE_URL}/tour-packages/${slug})\n`;
         md += `- **URL**: ${SITE_URL}/tour-packages/${slug}\n`;
+        if (imgUrl) md += `- **Image**: ${imgUrl}\n`;
         md += `- **Duration**: ${dur}\n`;
         if (cities) md += `- **Route**: ${cities}\n`;
         md += `- **Price**: ${price}\n`;
