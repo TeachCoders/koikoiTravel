@@ -63,17 +63,18 @@ export type NavChild = { href: string; label: string };
 export function pickPriorityLinks<T>(
   items: T[],
   getPriority: (item: T) => number,
-  mapItem: (item: T) => NavChild
+  mapItem: (item: T) => NavChild,
+  limit = MAX_NAV_ITEMS
 ): NavChild[] {
-  const sorted = [...items].sort(
-    (a, b) => (getPriority(a) || 0) - (getPriority(b) || 0)
-  );
-  const prioritized = sorted
-    .filter((item) => (getPriority(item) || 0) > 0)
-    .slice(0, MAX_NAV_ITEMS)
-    .map(mapItem);
-  if (prioritized.length) return prioritized;
-  return sorted.slice(0, MAX_NAV_ITEMS).map(mapItem);
+  const sorted = [...items].sort((a, b) => {
+    const pa = getPriority(a) || 0;
+    const pb = getPriority(b) || 0;
+    if (pa > 0 && pb > 0) return pa - pb;
+    if (pa > 0) return -1;
+    if (pb > 0) return 1;
+    return 0;
+  });
+  return sorted.slice(0, limit).map(mapItem);
 }
 
 

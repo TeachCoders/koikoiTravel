@@ -20,58 +20,233 @@ import TopBar from "./TopBar";
 
 const DEFAULT_DESTINATION_LINKS: NavChild[] = [
   { href: "/tour-packages/india", label: "India" },
+  { href: "/tour-packages/india/kerala", label: "Kerala" },
   { href: "/tour-packages/india/rajasthan", label: "Rajasthan" },
-  { href: "/tour-packages/india/uttar-pradesh", label: "Uttar Pradesh" },
-  { href: "/tour-packages/india/uttarakhand", label: "Uttarakhand" },
+  { href: "/tour-packages/india/jammu-and-kashmir", label: "Jammu & Kashmir" },
   { href: "/tour-packages/india/himachal-pradesh", label: "Himachal Pradesh" },
-  { href: "/tour-packages/india/jammu-and-kashmir", label: "Jammu and Kashmir" },
-  { href: "/tour-packages/india/punjab", label: "Punjab" },
+  { href: "/tour-packages/india/uttarakhand", label: "Uttarakhand" },
   { href: "/tour-packages/india/ladakh", label: "Ladakh" },
+  { href: "/tour-packages/india/goa", label: "Goa" },
+  { href: "/tour-packages/india/golden-triangle", label: "Golden Triangle" },
+  { href: "/tour-packages/india/uttar-pradesh", label: "Uttar Pradesh" },
+  { href: "/tour-packages/india/madhya-pradesh", label: "Madhya Pradesh" },
+  { href: "/tour-packages/india/maharashtra", label: "Maharashtra" },
+  { href: "/tour-packages/india/punjab", label: "Punjab" },
   { href: "/tour-packages/india/delhi", label: "Delhi NCR" },
 ];
 
 const DEFAULT_TOUR_LINKS: NavChild[] = [
-  { href: "/tour-packages/india/rajasthan", label: "Rajasthan" },
-  { href: "/tour-packages/india/jammu-and-kashmir", label: "Kashmir" },
-  { href: "/tour-packages/india/himachal-pradesh", label: "Himachal Pradesh" },
-  { href: "/tour-packages/india/uttarakhand", label: "Uttarakhand" },
-  { href: "/tour-packages/india/madhya-pradesh", label: "Madhya Pradesh" },
-  { href: "/tour-packages/india/maharashtra", label: "Maharashtra" },
-  { href: "/tour-packages/india/uttar-pradesh", label: "Uttar Pradesh" },
-  { href: "/tour-packages/india/ladakh", label: "Ladakh" },
+  { href: "/tour-packages/3-days-delhi-agra-weekend-tour", label: "3 Days Delhi Agra Weekend Tour" },
+  { href: "/tour-packages/8-days-rajasthan-wildlife-tour", label: "8 Days Rajasthan Wildlife Tour" },
+  { href: "/tour-packages/8-days-kerala-hills-backwaters-beaches-tour", label: "8 Days Kerala Hills & Backwaters" },
+  { href: "/tour-packages/16-days-rajasthan-itinerary-with-agra-and-delhi", label: "16 Days Rajasthan with Agra & Delhi" },
+  { href: "/tour-packages/india/golden-triangle", label: "Golden Triangle Tour" },
+  { href: "/tour-packages/india/kerala", label: "Kerala Tour Packages" },
+  { href: "/tour-packages/india/rajasthan", label: "Rajasthan Tour Packages" },
+  { href: "/tour-packages/india/jammu-and-kashmir", label: "Kashmir Tour Packages" },
+  { href: "/tour-packages/india/himachal-pradesh", label: "Himachal Tour Packages" },
+  { href: "/tour-packages/india/uttarakhand", label: "Uttarakhand Tour Packages" },
+  { href: "/tour-packages/india/ladakh", label: "Ladakh Tour Packages" },
+  { href: "/tour-packages/india/goa", label: "Goa Holiday Packages" },
 ];
 
 const DEFAULT_EXPERIENCE_LINKS: NavChild[] = [
+  { href: "/travel-experiences/nature", label: "Nature & Eco Tours" },
   { href: "/travel-experiences/golden-triangle", label: "Golden Triangle" },
-  { href: "/travel-experiences/taj-mahal", label: "Taj Mahal" },
-  { href: "/travel-experiences/honeymoon", label: "Honeymoon" },
-  { href: "/travel-experiences/heritage-and-culture", label: "Heritage & Culture" },
-  { href: "/travel-experiences/wildlife", label: "Wildlife" },
+  { href: "/travel-experiences/desert-safari", label: "Desert Safari" },
+  { href: "/travel-experiences/wildlife", label: "Wildlife & Safari" },
+  { href: "/travel-experiences/honeymoon", label: "Honeymoon & Romantic" },
   { href: "/travel-experiences/hill-station", label: "Hill Stations" },
-  { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & Wellness" },
-  { href: "/travel-experiences/spiritual", label: "Spiritual" },
-  { href: "/travel-experiences/family", label: "Family" },
-  { href: "/travel-experiences/weekend-tours-in-india", label: "Weekend Tours" },
+  { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & Yoga" },
+  { href: "/travel-experiences/beach-lake", label: "Beach & Lakes" },
+  { href: "/travel-experiences/heritage-and-culture", label: "Heritage & Culture" },
+  { href: "/travel-experiences/spiritual", label: "Spiritual & Pilgrimage" },
+  { href: "/travel-experiences/family", label: "Family Vacations" },
+  { href: "/travel-experiences/weekend-tours-in-india", label: "Weekend Getaways" },
 ];
 
 function buildDefaultDestinationTree(): DestinationTreeCountry[] {
-  const states: DestinationTreeState[] = DEFAULT_DESTINATION_LINKS.filter(
-    (l) => l.href !== "/tour-packages/india"
-  ).map((l, i) => ({
-    id: i + 1,
-    title: l.label,
-    slug: l.href.split("/").pop() || "",
-    href: l.href,
-    displayOrder: i,
-    cities: [],
-  }));
   return [
     {
       id: 1,
       title: "India",
       slug: "india",
       href: "/tour-packages/india",
-      states,
+      states: [
+        {
+          id: 1,
+          title: "Kerala",
+          slug: "kerala",
+          href: "/tour-packages/india/kerala",
+          displayOrder: 1,
+          cities: [
+            { id: 101, title: "Munnar", slug: "munnar", href: "/tour-packages/india/kerala/munnar" },
+            { id: 102, title: "Alleppey", slug: "alleppey", href: "/tour-packages/india/kerala/alleppey" },
+            { id: 103, title: "Kochi", slug: "kochi", href: "/tour-packages/india/kerala/kochi" },
+            { id: 104, title: "Kovalam", slug: "kovalam", href: "/tour-packages/india/kerala/kovalam" },
+            { id: 105, title: "Thekkady", slug: "thekkady", href: "/tour-packages/india/kerala/thekkady" },
+            { id: 106, title: "Kumarakom", slug: "kumarakom", href: "/tour-packages/india/kerala/kumarakom" },
+          ],
+        },
+        {
+          id: 2,
+          title: "Rajasthan",
+          slug: "rajasthan",
+          href: "/tour-packages/india/rajasthan",
+          displayOrder: 2,
+          cities: [
+            { id: 201, title: "Jaipur", slug: "jaipur", href: "/tour-packages/india/rajasthan/jaipur" },
+            { id: 202, title: "Udaipur", slug: "udaipur", href: "/tour-packages/india/rajasthan/udaipur" },
+            { id: 203, title: "Jodhpur", slug: "jodhpur", href: "/tour-packages/india/rajasthan/jodhpur" },
+            { id: 204, title: "Jaisalmer", slug: "jaisalmer", href: "/tour-packages/india/rajasthan/jaisalmer" },
+            { id: 205, title: "Pushkar", slug: "pushkar", href: "/tour-packages/india/rajasthan/pushkar" },
+            { id: 206, title: "Bikaner", slug: "bikaner", href: "/tour-packages/india/rajasthan/bikaner" },
+            { id: 207, title: "Mount Abu", slug: "mount-abu", href: "/tour-packages/india/rajasthan/mount-abu" },
+            { id: 208, title: "Ranakpur", slug: "ranakpur", href: "/tour-packages/india/rajasthan/ranakpur" },
+            { id: 209, title: "Neemrana", slug: "neemrana", href: "/tour-packages/india/rajasthan/neemrana" },
+            { id: 210, title: "Chittorgarh", slug: "chittorgarh", href: "/tour-packages/india/rajasthan/chittorgarh" },
+            { id: 211, title: "Sariska", slug: "sariska", href: "/tour-packages/india/rajasthan/sariska" },
+            { id: 212, title: "Bharatpur", slug: "bharatpur", href: "/tour-packages/india/rajasthan/bharatpur" },
+            { id: 213, title: "Mandawa", slug: "mandawa", href: "/tour-packages/india/rajasthan/mandawa" },
+            { id: 214, title: "Alwar", slug: "alwar", href: "/tour-packages/india/rajasthan/alwar" },
+            { id: 215, title: "Bundi", slug: "bundi", href: "/tour-packages/india/rajasthan/bundi" },
+            { id: 216, title: "Ajmer", slug: "ajmer", href: "/tour-packages/india/rajasthan/ajmer" },
+          ],
+        },
+        {
+          id: 3,
+          title: "Jammu and Kashmir",
+          slug: "jammu-and-kashmir",
+          href: "/tour-packages/india/jammu-and-kashmir",
+          displayOrder: 3,
+          cities: [
+            { id: 301, title: "Srinagar", slug: "srinagar", href: "/tour-packages/india/jammu-and-kashmir/srinagar" },
+            { id: 302, title: "Gulmarg", slug: "gulmarg", href: "/tour-packages/india/jammu-and-kashmir/gulmarg" },
+            { id: 303, title: "Pahalgam", slug: "pahalgam", href: "/tour-packages/india/jammu-and-kashmir/pahalgam" },
+            { id: 304, title: "Sonamarg", slug: "sonamarg", href: "/tour-packages/india/jammu-and-kashmir/sonamarg" },
+            { id: 305, title: "Patnitop", slug: "patnitop", href: "/tour-packages/india/jammu-and-kashmir/patnitop" },
+          ],
+        },
+        {
+          id: 4,
+          title: "Himachal Pradesh",
+          slug: "himachal-pradesh",
+          href: "/tour-packages/india/himachal-pradesh",
+          displayOrder: 4,
+          cities: [
+            { id: 401, title: "Shimla", slug: "shimla", href: "/tour-packages/india/himachal-pradesh/shimla" },
+            { id: 402, title: "Manali", slug: "manali", href: "/tour-packages/india/himachal-pradesh/manali" },
+            { id: 403, title: "Dharamshala", slug: "dharamshala", href: "/tour-packages/india/himachal-pradesh/dharamshala" },
+            { id: 404, title: "Kufri", slug: "kufri", href: "/tour-packages/india/himachal-pradesh/kufri" },
+            { id: 405, title: "Kasauli", slug: "kasauli", href: "/tour-packages/india/himachal-pradesh/kasauli" },
+            { id: 406, title: "Rohtang Pass", slug: "rohtang-pass", href: "/tour-packages/india/himachal-pradesh/rohtang-pass" },
+            { id: 407, title: "Sarchu", slug: "sarchu", href: "/tour-packages/india/himachal-pradesh/sarchu" },
+          ],
+        },
+        {
+          id: 5,
+          title: "Ladakh",
+          slug: "ladakh",
+          href: "/tour-packages/india/ladakh",
+          displayOrder: 5,
+          cities: [
+            { id: 501, title: "Leh", slug: "leh", href: "/tour-packages/india/ladakh/leh" },
+            { id: 502, title: "Nubra Valley", slug: "nubra-valley", href: "/tour-packages/india/ladakh/nubra-valley" },
+            { id: 503, title: "Pangong Tso", slug: "pangong-tso", href: "/tour-packages/india/ladakh/pangong-tso" },
+            { id: 504, title: "Kargil", slug: "kargil", href: "/tour-packages/india/ladakh/kargil" },
+            { id: 505, title: "Hanle", slug: "hanle", href: "/tour-packages/india/ladakh/hanle" },
+            { id: 506, title: "Alchi Monastery", slug: "alchi-monastery", href: "/tour-packages/india/ladakh/alchi-monastery" },
+            { id: 507, title: "Hemis Monastery", slug: "hemis-monastery", href: "/tour-packages/india/ladakh/hemis-monastery" },
+            { id: 508, title: "Magnetic Hill", slug: "magnetic-hill", href: "/tour-packages/india/ladakh/magnetic-hill" },
+          ],
+        },
+        {
+          id: 6,
+          title: "Uttarakhand",
+          slug: "uttarakhand",
+          href: "/tour-packages/india/uttarakhand",
+          displayOrder: 6,
+          cities: [
+            { id: 601, title: "Rishikesh", slug: "rishikesh", href: "/tour-packages/india/uttarakhand/rishikesh" },
+            { id: 602, title: "Nainital", slug: "nainital", href: "/tour-packages/india/uttarakhand/nainital" },
+            { id: 603, title: "Mussoorie", slug: "mussoorie", href: "/tour-packages/india/uttarakhand/mussoorie" },
+            { id: 604, title: "Auli", slug: "auli", href: "/tour-packages/india/uttarakhand/auli" },
+            { id: 605, title: "Jim Corbett National Park", slug: "jim-corbett-national-park", href: "/tour-packages/india/uttarakhand/jim-corbett-national-park" },
+          ],
+        },
+        {
+          id: 7,
+          title: "Uttar Pradesh",
+          slug: "uttar-pradesh",
+          href: "/tour-packages/india/uttar-pradesh",
+          displayOrder: 7,
+          cities: [
+            { id: 701, title: "Agra", slug: "agra", href: "/tour-packages/india/uttar-pradesh/agra" },
+            { id: 702, title: "Varanasi", slug: "varanasi", href: "/tour-packages/india/uttar-pradesh/varanasi" },
+            { id: 703, title: "Lucknow", slug: "lucknow", href: "/tour-packages/india/uttar-pradesh/lucknow" },
+            { id: 704, title: "Mathura", slug: "mathura", href: "/tour-packages/india/uttar-pradesh/mathura" },
+          ],
+        },
+        {
+          id: 8,
+          title: "Goa",
+          slug: "goa",
+          href: "/tour-packages/india/goa",
+          displayOrder: 8,
+          cities: [
+            { id: 801, title: "North Goa", slug: "north-goa", href: "/tour-packages/india/goa/north-goa" },
+            { id: 802, title: "South Goa", slug: "south-goa", href: "/tour-packages/india/goa/south-goa" },
+          ],
+        },
+        {
+          id: 9,
+          title: "Madhya Pradesh",
+          slug: "madhya-pradesh",
+          href: "/tour-packages/india/madhya-pradesh",
+          displayOrder: 9,
+          cities: [
+            { id: 901, title: "Khajuraho", slug: "khajuraho", href: "/tour-packages/india/madhya-pradesh/khajuraho" },
+            { id: 902, title: "Bandhavgarh", slug: "bandhavgarh", href: "/tour-packages/india/madhya-pradesh/bandhavgarh" },
+            { id: 903, title: "Kanha National Park", slug: "kanha-national-park", href: "/tour-packages/india/madhya-pradesh/kanha-national-park" },
+          ],
+        },
+        {
+          id: 10,
+          title: "Maharashtra",
+          slug: "maharashtra",
+          href: "/tour-packages/india/maharashtra",
+          displayOrder: 10,
+          cities: [
+            { id: 1001, title: "Mumbai", slug: "mumbai", href: "/tour-packages/india/maharashtra/mumbai" },
+            { id: 1002, title: "Tadoba", slug: "tadoba", href: "/tour-packages/india/maharashtra/tadoba" },
+            { id: 1003, title: "Pench", slug: "pench", href: "/tour-packages/india/maharashtra/pench" },
+            { id: 1004, title: "Nashik", slug: "nashik", href: "/tour-packages/india/maharashtra/nashik" },
+            { id: 1005, title: "Nagpur", slug: "nagpur", href: "/tour-packages/india/maharashtra/nagpur" },
+          ],
+        },
+        {
+          id: 11,
+          title: "Punjab",
+          slug: "punjab",
+          href: "/tour-packages/india/punjab",
+          displayOrder: 11,
+          cities: [
+            { id: 1101, title: "Amritsar", slug: "amritsar", href: "/tour-packages/india/punjab/amritsar" },
+            { id: 1102, title: "Chandigarh", slug: "chandigarh", href: "/tour-packages/india/punjab/chandigarh" },
+          ],
+        },
+        {
+          id: 12,
+          title: "Delhi",
+          slug: "delhi",
+          href: "/tour-packages/india/delhi",
+          displayOrder: 12,
+          cities: [
+            { id: 1201, title: "Gurugram", slug: "gurugram", href: "/tour-packages/india/delhi/gurugram" },
+            { id: 1202, title: "New Delhi", slug: "new-delhi", href: "/tour-packages/india/delhi/new-delhi" },
+          ],
+        },
+      ],
     },
   ];
 }
@@ -245,7 +420,7 @@ export const Header: React.FC = () => {
         links.push({ href: state.href, label: state.title })
       )
     );
-    return links.length > 0 ? links.slice(0, 12) : DEFAULT_DESTINATION_LINKS;
+    return links.length > 0 ? links.slice(0, 16) : DEFAULT_DESTINATION_LINKS;
   }, [safeDestinationTree]);
 
   type NavLink = {
