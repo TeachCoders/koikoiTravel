@@ -13,20 +13,31 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://koikoitravel.com"),
-  title: "India Tours & Custom Holiday Packages | KoiKoi Travel",
+  title: "Best Travel Agency in India | Custom Tour Packages - KoiKoi Travel",
   description:
-    "Plan your dream India holiday with KoiKoi Travel. Explore custom tours, Rajasthan, Kerala, Kashmir & wildlife safaris with local travel experts.",
+    "KoiKoi Travel is the best travel agency in India for custom holiday packages, luxury stays, private verified chauffeur cabs, and 24/7 on-ground assistance.",
+  keywords: [
+    "Best Travel Agency in India",
+    "Tour Operator in India",
+    "Custom India Tour Packages",
+    "Private Chauffeur Tour India",
+    "Rajasthan Tour Packages",
+    "Golden Triangle Tour India",
+    "Kerala Holiday Packages",
+    "Inbound Travel Agency India",
+    "KoiKoi Travel",
+  ],
   alternates: { canonical: "https://koikoitravel.com" },
   verification: { google: "El1jKO1piAq20XL3gueQKlsrPhBvrZFOUF-Jg6addow" },
   openGraph: {
-    title: "India Tours & Custom Holiday Packages | KoiKoi Travel",
+    title: "Best Travel Agency in India | Custom Tour Packages - KoiKoi Travel",
     description:
-      "Plan your dream India holiday with KoiKoi Travel. Explore custom tours, Rajasthan, Kerala, Kashmir & wildlife safaris with local travel experts.",
+      "KoiKoi Travel is the best travel agency in India. Plan your tailor-made holiday, Rajasthan tours, Kerala backwaters, Kashmir & Golden Triangle trips.",
     url: "https://koikoitravel.com",
     siteName: "KoiKoi Travel India",
     locale: "en_US",
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "KoiKoi Travel - Custom India Tours" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "KoiKoi Travel - Best Travel Agency in India" }],
   },
   other: {
     "geo.region": "IN",
