@@ -52,28 +52,29 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section className="relative w-full min-h-[380px] sm:min-h-[440px] md:min-h-[520px] py-10 sm:py-14 flex items-center justify-center bg-slate-900 z-20">
-      {/* Background slider - clipped with overflow-hidden */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div
-          className="absolute inset-0 flex transition-transform duration-700 ease-in-out"
-          style={{ transform: `translateX(-${current * 100}%)` }}
-        >
-          {slides.map((s, i) => (
-            <div key={i} className="relative w-full h-full shrink-0">
-              <FallbackImage
-                src={s.image}
-                alt={s.alt}
-                fill
-                priority={i === 0}
-                sizes="100vw"
-                {...(!i ? {} : { loading: "eager" as const, decoding: "async" as const })}
-                className="object-cover object-center"
-                theme="dark"
-              />
-            </div>
-          ))}
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/25" />
+      {/* Background slider - smooth crossfade with zero LCP interference */}
+      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+        {slides.map((s, i) => (
+          <div
+            key={i}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              i === current ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+            }`}
+          >
+            <FallbackImage
+              src={s.image}
+              alt={s.alt}
+              fill
+              priority={i === 0}
+              fetchPriority={i === 0 ? "high" : "low"}
+              loading={i === 0 ? "eager" : "lazy"}
+              sizes="100vw"
+              className="object-cover object-center"
+              theme="dark"
+            />
+          </div>
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/25 z-10 pointer-events-none" />
       </div>
 
       <button
@@ -107,7 +108,7 @@ export const HeroSection: React.FC = () => {
       </div>
 
       <div className="relative z-30 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-center">
-        <h1 className="font-luxury text-white text-xl sm:text-3xl md:text-4xl lg:text-[42px] font-black tracking-tight sm:tracking-normal leading-tight max-w-3xl mx-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] transition-all duration-700 block">
+        <h1 className="font-luxury text-white text-xl sm:text-3xl md:text-4xl lg:text-[42px] font-black tracking-tight sm:tracking-normal leading-tight max-w-3xl mx-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] block">
           Plan Your Dream India Trip With KoiKoi Travel
         </h1>
 

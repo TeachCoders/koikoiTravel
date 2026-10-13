@@ -14,6 +14,7 @@ export interface FallbackImageProps extends Omit<React.ImgHTMLAttributes<HTMLIma
   theme?: "dark" | "light" | "auto";
   fill?: boolean;
   priority?: boolean;
+  fetchPriority?: "high" | "low" | "auto";
   quality?: number;
   unoptimized?: boolean;
 }
@@ -120,6 +121,8 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
         unoptimized={unoptimized ?? shouldBeUnoptimized(src)}
         fill={fill}
         priority={priority}
+        fetchPriority={priority ? "high" : ((props as any).fetchPriority ?? undefined)}
+        loading={priority ? "eager" : props.loading}
         quality={quality}
         width={!fill ? (props.width ? Number(props.width) : 800) : undefined}
         height={!fill ? (props.height ? Number(props.height) : 600) : undefined}
