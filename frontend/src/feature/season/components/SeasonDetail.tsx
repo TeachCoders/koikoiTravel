@@ -12,6 +12,7 @@ import ToursSection from "@/components/shared/ToursSection";
 import FilterBar from "@/components/shared/FilterBar";
 import FaqSection from "@/feature/home/components/FaqSection";
 import { stripHtml } from "@/lib/utils";
+import { resolveSeasonJourneys } from "@/feature/journey/destinationJourneys";
 import {
   cityOptions,
   travelExperienceOptions,
@@ -41,9 +42,7 @@ export default function SeasonDetail({
     { enabled: true }
   );
 
-  const seasonJourneys = journeys.filter((j) =>
-    j.months?.some((m) => m.id === initialSeason.id)
-  );
+  const seasonJourneys = resolveSeasonJourneys(journeys, initialSeason);
 
   const heroImages =
     initialSeason.banner?.images?.length

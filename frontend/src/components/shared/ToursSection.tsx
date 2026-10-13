@@ -7,7 +7,7 @@ import DestinationsSkeleton from "@/feature/destinations/components/Destinations
 import type { Journey } from "@/feature/journey/type";
 
 export interface ToursSectionProps {
-  journeys: Journey[];
+  journeys?: Journey[];
   isLoading?: boolean;
   accentLabel?: string;
   h1Title?: string | null;
@@ -22,6 +22,7 @@ export interface ToursSectionProps {
   id?: string;
   cardVariant?: "default" | "compact";
   tabs?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export default function ToursSection({
@@ -38,6 +39,7 @@ export default function ToursSection({
   id = "tours",
   cardVariant = "default",
   tabs,
+  children,
 }: ToursSectionProps) {
   const hasFilters = Boolean(filterBar && onClearFilters);
 
@@ -65,9 +67,14 @@ export default function ToursSection({
 
         {tabs}
 
-        {isLoading ? (
+        {children ? (
+          <div>
+            {filterBar}
+            {children}
+          </div>
+        ) : isLoading ? (
           <DestinationsSkeleton count={8} />
-        ) : journeys.length === 0 ? (
+        ) : !journeys || journeys.length === 0 ? (
           hasFilters ? (
             <div>
               {filterBar}

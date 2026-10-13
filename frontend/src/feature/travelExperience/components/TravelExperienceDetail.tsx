@@ -19,6 +19,7 @@ import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
+import TourPackageCard from "@/components/shared/TourPackageCard";
 import FilterBar from "@/components/shared/FilterBar";
 import {
   travelExperienceOptions,
@@ -33,6 +34,7 @@ import {
   DURATION_BUCKETS,
 } from "@/feature/journey/filterOptions";
 import { cn, formatToursH1 } from "@/lib/utils";
+import { resolveTravelExperienceJourneys } from "@/feature/journey/destinationJourneys";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 import { GOLDEN_TRIANGLE_FAQS } from "../goldenTriangleFaqs";
@@ -78,38 +80,18 @@ function ExperienceContent({
     },
     initialJourneys ?? undefined
   );
-  const experienceJourneys = (journeys || [])
-    .filter((j) =>
-      (j.travelExperiences || []).some((e: any) => e.slug === experience.slug)
-    )
-    .sort((a, b) => {
-      const order = experience.featuredJourneyOrder || [];
-      const ai = order.indexOf(a.id);
-      const bi = order.indexOf(b.id);
-      const aRank = ai === -1 ? Number.MAX_SAFE_INTEGER : ai;
-      const bRank = bi === -1 ? Number.MAX_SAFE_INTEGER : bi;
-      return aRank - bRank;
-    });
-
   const [activeTab, setActiveTab] = useState<"top-tours" | "all-tours">("top-tours");
 
-  const topTours = useMemo(() => {
-    const order = (experience.featuredJourneyOrder || []) as number[];
-    if (order.length > 0) {
-      const selected = order
-        .map((id) => experienceJourneys.find((j) => j.id === id))
-        .filter((j): j is Journey => Boolean(j));
-      if (selected.length > 0) return selected;
-    }
-    return experienceJourneys.slice(0, 10);
-  }, [experienceJourneys, experience.featuredJourneyOrder]);
+  const {
+    experienceJourneys,
+    topTours,
+    otherTours,
+    hasTabs,
+  } = useMemo(
+    () => resolveTravelExperienceJourneys(journeys, experience),
+    [journeys, experience]
+  );
 
-  const otherTours = useMemo(() => {
-    const topIds = new Set(topTours.map((j) => j.id));
-    return experienceJourneys.filter((j) => !topIds.has(j.id));
-  }, [experienceJourneys, topTours]);
-
-  const hasTabs = topTours.length > 0 && otherTours.length > 0;
   const currentTabJourneys = hasTabs
     ? activeTab === "top-tours"
       ? topTours
@@ -120,13 +102,6 @@ function ExperienceContent({
   const [citySelected, setCitySelected] = useState<string[]>([]);
   const [seasonSelected, setSeasonSelected] = useState<string[]>([]);
 
-  const filteredJourneys = currentTabJourneys.filter(
-    (j) =>
-      journeyMatchesDuration(j, durSelected) &&
-      journeyMatchesCities(j, citySelected) &&
-      journeyMatchesSeasons(j, seasonSelected)
-  );
-
   const activeFilterCount = durSelected.length + citySelected.length + seasonSelected.length;
 
   const clearFilters = () => {
@@ -134,6 +109,39 @@ function ExperienceContent({
     setCitySelected([]);
     setSeasonSelected([]);
   };
+
+  const filteredTopTours = useMemo(() => {
+    if (activeFilterCount === 0) return topTours;
+    return topTours.filter(
+      (j) =>
+        journeyMatchesDuration(j, durSelected) &&
+        journeyMatchesCities(j, citySelected) &&
+        journeyMatchesSeasons(j, seasonSelected)
+    );
+  }, [topTours, activeFilterCount, durSelected, citySelected, seasonSelected]);
+
+  const filteredOtherTours = useMemo(() => {
+    if (activeFilterCount === 0) return otherTours;
+    return otherTours.filter(
+      (j) =>
+        journeyMatchesDuration(j, durSelected) &&
+        journeyMatchesCities(j, citySelected) &&
+        journeyMatchesSeasons(j, seasonSelected)
+    );
+  }, [otherTours, activeFilterCount, durSelected, citySelected, seasonSelected]);
+
+  const filteredJourneys = useMemo(() => {
+    if (!hasTabs) {
+      if (activeFilterCount === 0) return experienceJourneys;
+      return experienceJourneys.filter(
+        (j) =>
+          journeyMatchesDuration(j, durSelected) &&
+          journeyMatchesCities(j, citySelected) &&
+          journeyMatchesSeasons(j, seasonSelected)
+      );
+    }
+    return activeTab === "top-tours" ? filteredTopTours : filteredOtherTours;
+  }, [hasTabs, activeTab, filteredTopTours, filteredOtherTours, experienceJourneys, activeFilterCount, durSelected, citySelected, seasonSelected]);
 
   const { data: heroBannersData } = useHeroBanners("TravelExperience", {
     slug: experience.slug,
@@ -344,7 +352,7 @@ function ExperienceContent({
 
       {/* ===== SHORT DESCRIPTION + TOURS ===== */}
       <ToursSection
-        journeys={filteredJourneys}
+        id="experience-tours"
         isLoading={journeysLoading}
         h1Title={formatToursH1(experience.title)}
         overView={experience.overView ?? undefined}
@@ -355,7 +363,95 @@ function ExperienceContent({
         onClearFilters={clearFilters}
         contextName={h1Title}
         basePath={`/travel-experiences/${experience.slug}`}
-      />
+      >
+        {hasTabs ? (
+          <>
+            {/* Tab 1 Panel: Top Tours - SSR rendered in HTML */}
+            <div
+              className={activeTab === "top-tours" ? "block" : "hidden"}
+              role="tabpanel"
+              aria-hidden={activeTab !== "top-tours"}
+            >
+              {filteredTopTours.length === 0 ? (
+                <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
+                  <p className="text-slate-500">
+                    {activeFilterCount > 0
+                      ? "No tours match your filters"
+                      : `No tours found for ${h1Title} yet`}
+                  </p>
+                  {activeFilterCount > 0 && (
+                    <button
+                      onClick={clearFilters}
+                      className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
+                    >
+                      Clear all filters
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+                  {filteredTopTours.map((j) => (
+                    <TourPackageCard key={j.id} journey={j} contextName={h1Title} variant="default" />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Tab 2 Panel: All Tours - SSR rendered in HTML */}
+            <div
+              className={activeTab === "all-tours" ? "block" : "hidden"}
+              role="tabpanel"
+              aria-hidden={activeTab !== "all-tours"}
+            >
+              {filteredOtherTours.length === 0 ? (
+                <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
+                  <p className="text-slate-500">
+                    {activeFilterCount > 0
+                      ? "No tours match your filters"
+                      : `No tours found for ${h1Title} yet`}
+                  </p>
+                  {activeFilterCount > 0 && (
+                    <button
+                      onClick={clearFilters}
+                      className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
+                    >
+                      Clear all filters
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+                  {filteredOtherTours.map((j) => (
+                    <TourPackageCard key={j.id} journey={j} contextName={h1Title} variant="default" />
+                  ))}
+                </div>
+              )}
+            </div>
+          </>
+        ) : filteredJourneys.length === 0 ? (
+          <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
+            <p className="text-slate-500">
+              {activeFilterCount > 0
+                ? "No tours match your filters"
+                : `No tours found for ${h1Title} yet`}
+            </p>
+            {activeFilterCount > 0 && (
+              <button
+                onClick={clearFilters}
+                className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
+              >
+                Clear all filters
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+            {filteredJourneys.map((j) => (
+              <TourPackageCard key={j.id} journey={j} contextName={h1Title} variant="default" />
+            ))}
+          </div>
+        )}
+      </ToursSection>
 
       {/* ===== EXPLORE MORE DESTINATIONS (linked cities) ===== */}
       <ExploreDestinationsSection experience={experience} />

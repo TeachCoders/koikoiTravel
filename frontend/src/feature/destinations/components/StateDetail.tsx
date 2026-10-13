@@ -35,6 +35,7 @@ import {
   journeyPackageHref,
 } from "@/feature/journey/filterOptions";
 import { cn, stripHtml, formatToursH1 } from "@/lib/utils";
+import { resolveStateJourneys } from "@/feature/journey/destinationJourneys";
 import type { State } from "@/feature/state/type";
 import type { Journey, PaginatedResponse } from "@/feature/journey/type";
 import CityCard from "./CityCard";
@@ -72,100 +73,19 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     { enabled: true }
   );
 
-  // All active journeys that visit cities in this state or are linked directly to this state
-  const stateJourneys = useMemo(() => {
-    const list = journeys.length > 0 ? journeys : embeddedJourneys;
-    const matching = list.filter((j) =>
-      embeddedJourneys.some((ej) => ej.id === j.id) ||
-      (j as any).states?.some((s: any) => s.id === state.id || s.slug === state.slug) ||
-      j.cities?.some(
-        (c) =>
-          c.state?.id === state.id ||
-          c.state?.slug === state.slug ||
-          (state.cities && state.cities.some((sc) => sc.id === c.id))
-      ) ||
-      (state.cities && j.cityIds?.some((cid) => state.cities?.some((sc) => sc.id === cid)))
-    );
-
-    const result = matching.length > 0 ? matching : embeddedJourneys;
-
-    return [...result].sort((a, b) => {
-      const aOrder = a.displayOrder ?? 0;
-      const bOrder = b.displayOrder ?? 0;
-      if (aOrder > 0 && bOrder > 0) return aOrder - bOrder;
-      if (aOrder > 0) return -1;
-      if (bOrder > 0) return 1;
-      if (a.isBestSelling && !b.isBestSelling) return -1;
-      if (!a.isBestSelling && b.isBestSelling) return 1;
-      return 0;
-    });
-  }, [journeys, embeddedJourneys, state.id, state.slug, state.cities]);
-
   // Tab state: "state-only" | "with-other"
   const [activeTab, setActiveTab] = useState<"state-only" | "with-other">("state-only");
 
-  // Helper to detect if a tour goes outside this state (combines other cities)
-  const isOtherCityTour = useCallback(
-    (j: Journey) => {
-      // 1. Check if cities array has any city belonging to another state
-      const hasOtherStateCity = j.cities?.some(
-        (c) => c.state && c.state.id !== state.id && c.state.slug !== state.slug
-      );
-      if (hasOtherStateCity) return true;
-
-      // 2. Check if route has any city belonging to another state
-      const hasOtherStateRoute = j.route?.some(
-        (c) => c.state && c.state.id !== state.id && c.state.slug !== state.slug
-      );
-      if (hasOtherStateRoute) return true;
-
-      // 3. Fallback: check destination string for major outside cities
-      if (j.destination) {
-        const dest = j.destination.toLowerCase();
-        if (state.slug === "rajasthan") {
-          if (
-            dest.includes("delhi") ||
-            dest.includes("agra") ||
-            dest.includes("varanasi") ||
-            dest.includes("khajuraho") ||
-            dest.includes("kashmir") ||
-            dest.includes("shimla") ||
-            dest.includes("rishikesh") ||
-            dest.includes("mumbai")
-          ) {
-            return true;
-          }
-        }
-      }
-      return false;
-    },
-    [state.id, state.slug]
+  // Resolved journeys using canonical destination resolver
+  const {
+    stateJourneys,
+    featuredJourneys,
+    otherJourneys,
+    hasBothCategories,
+  } = useMemo(
+    () => resolveStateJourneys(journeys.length > 0 ? journeys : embeddedJourneys, state),
+    [journeys, embeddedJourneys, state]
   );
-
-  // Featured / Top packages explicitly selected by admin in Dashboard
-  const featuredJourneys = useMemo(() => {
-    const order = (state.featuredJourneyOrder || []) as number[];
-    if (order.length > 0) {
-      const selected = order
-        .map((id) => stateJourneys.find((j) => j.id === id))
-        .filter((j): j is Journey => Boolean(j));
-      if (selected.length > 0) return selected;
-    }
-    if (embeddedJourneys.length > 0) {
-      return embeddedJourneys;
-    }
-    return stateJourneys.slice(0, 10);
-  }, [stateJourneys, state.featuredJourneyOrder, embeddedJourneys]);
-
-  // Combined / Other city tours: Tours NOT in top selected list
-  const otherJourneys = useMemo(() => {
-    const topIds = new Set(featuredJourneys.map((j) => j.id));
-    return stateJourneys.filter((j) => !topIds.has(j.id));
-  }, [stateJourneys, featuredJourneys]);
-
-  const hasBothCategories =
-    featuredJourneys.length > 0 &&
-    otherJourneys.length > 0;
 
   const currentTabJourneys = useMemo(() => {
     if (!hasBothCategories) return stateJourneys;
@@ -188,16 +108,41 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     setSeasonSelected([]);
   };
 
-  const filteredCurrentJourneys = useMemo(() => {
-    if (activeFilterCount === 0) return currentTabJourneys;
-    return currentTabJourneys.filter(
+  const filteredFeaturedJourneys = useMemo(() => {
+    if (activeFilterCount === 0) return featuredJourneys;
+    return featuredJourneys.filter(
       (j) =>
         journeyMatchesExperiences(j, expSelected) &&
         journeyMatchesDuration(j, durSelected) &&
         journeyMatchesCities(j, citySelected) &&
         journeyMatchesSeasons(j, seasonSelected)
     );
-  }, [currentTabJourneys, activeFilterCount, expSelected, durSelected, citySelected, seasonSelected]);
+  }, [featuredJourneys, activeFilterCount, expSelected, durSelected, citySelected, seasonSelected]);
+
+  const filteredOtherJourneys = useMemo(() => {
+    if (activeFilterCount === 0) return otherJourneys;
+    return otherJourneys.filter(
+      (j) =>
+        journeyMatchesExperiences(j, expSelected) &&
+        journeyMatchesDuration(j, durSelected) &&
+        journeyMatchesCities(j, citySelected) &&
+        journeyMatchesSeasons(j, seasonSelected)
+    );
+  }, [otherJourneys, activeFilterCount, expSelected, durSelected, citySelected, seasonSelected]);
+
+  const filteredCurrentJourneys = useMemo(() => {
+    if (!hasBothCategories) {
+      if (activeFilterCount === 0) return stateJourneys;
+      return stateJourneys.filter(
+        (j) =>
+          journeyMatchesExperiences(j, expSelected) &&
+          journeyMatchesDuration(j, durSelected) &&
+          journeyMatchesCities(j, citySelected) &&
+          journeyMatchesSeasons(j, seasonSelected)
+      );
+    }
+    return activeTab === "state-only" ? filteredFeaturedJourneys : filteredOtherJourneys;
+  }, [hasBothCategories, activeTab, filteredFeaturedJourneys, filteredOtherJourneys, stateJourneys, activeFilterCount, expSelected, durSelected, citySelected, seasonSelected]);
 
   const { data: heroBannersData } = useHeroBanners("State", {
     slug: state.slug,
@@ -449,7 +394,6 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         <ToursSection
           id="top-tours"
           basePath={basePath}
-          journeys={filteredCurrentJourneys}
           isLoading={journeysLoading && currentTabJourneys.length === 0}
           accentLabel={activeTab === "with-other" && hasBothCategories ? "Combined Circuits" : "State Itineraries"}
           h1Title={
@@ -468,7 +412,95 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           onClearFilters={clearFilters}
           sectionClassName="py-8 sm:py-10 md:py-12 bg-[#f8f8f8] border-b border-slate-200/80 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]"
           cardVariant="default"
-        />
+        >
+          {hasBothCategories ? (
+            <>
+              {/* Tab 1: Top Tour Packages - SSR rendered in HTML */}
+              <div
+                className={activeTab === "state-only" ? "block" : "hidden"}
+                role="tabpanel"
+                aria-hidden={activeTab !== "state-only"}
+              >
+                {filteredFeaturedJourneys.length === 0 ? (
+                  <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
+                    <p className="text-slate-500">
+                      {activeFilterCount > 0
+                        ? "No tour packages match your filters"
+                        : `No tour packages found yet in ${cleanStateName}`}
+                    </p>
+                    {activeFilterCount > 0 && (
+                      <button
+                        onClick={clearFilters}
+                        className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
+                      >
+                        Clear all filters
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+                    {filteredFeaturedJourneys.map((j) => (
+                      <TourPackageCard key={j.id} journey={j} variant="default" />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Tab 2: Combined City Packages - SSR rendered in HTML */}
+              <div
+                className={activeTab === "with-other" ? "block" : "hidden"}
+                role="tabpanel"
+                aria-hidden={activeTab !== "with-other"}
+              >
+                {filteredOtherJourneys.length === 0 ? (
+                  <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
+                    <p className="text-slate-500">
+                      {activeFilterCount > 0
+                        ? "No tour packages match your filters"
+                        : `No tour packages found in ${cleanStateName} Combined City Packages`}
+                    </p>
+                    {activeFilterCount > 0 && (
+                      <button
+                        onClick={clearFilters}
+                        className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
+                      >
+                        Clear all filters
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+                    {filteredOtherJourneys.map((j) => (
+                      <TourPackageCard key={j.id} journey={j} variant="default" />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          ) : filteredCurrentJourneys.length === 0 ? (
+            <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
+              <p className="text-slate-500">
+                {activeFilterCount > 0
+                  ? "No tour packages match your filters"
+                  : `No tour packages found yet in ${cleanStateName}`}
+              </p>
+              {activeFilterCount > 0 && (
+                <button
+                  onClick={clearFilters}
+                  className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
+                >
+                  Clear all filters
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+              {filteredCurrentJourneys.map((j) => (
+                <TourPackageCard key={j.id} journey={j} variant="default" />
+              ))}
+            </div>
+          )}
+        </ToursSection>
       )}
 
       {/* ===== SECTION 3: CITIES / TOP DESTINATIONS IN STATE ===== */}

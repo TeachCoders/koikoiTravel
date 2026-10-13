@@ -15,6 +15,11 @@ import type { State, PaginatedResponse as StatePage } from "@/feature/state/type
 import type { City } from "@/feature/city/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
+import {
+  resolveStateJourneys,
+  resolveCityJourneys,
+  resolveCountryJourneys,
+} from "@/feature/journey/destinationJourneys";
 import type { CmsPage } from "@/feature/cms/type";
 import { journeyParams } from "@/lib/prerender";
 
@@ -251,9 +256,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
         fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true"),
       ]);
 
-      const countryJourneys = (initialJourneys?.data || []).filter((j) =>
-        j.cities?.some((c) => c.state?.country?.id === country.id)
-      );
+      const countryJourneys = resolveCountryJourneys(initialJourneys?.data, country);
 
       const schema = graphSchema([
         touristDestinationSchema({
@@ -263,7 +266,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
           url: `/tour-packages/${country.slug}`,
         }),
         itemListSchema(
-          countryJourneys.slice(0, 10).map((j) => ({
+          countryJourneys.map((j) => ({
             name: journeyCardTitle(j),
             url: journeyPackageHref(j),
           }))
@@ -296,14 +299,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
       const initialJourneys = await fetchPublicJsonCached<JourneyPage<Journey>>(
         "/journey?limit=100&isActive=true"
       );
-      const embeddedJourneys = state.journeys || [];
-      const stateJourneys = (initialJourneys?.data || []).filter(
-        (j) =>
-          embeddedJourneys.some((ej) => ej.id === j.id) ||
-          (j as any).states?.some((s: any) => s.id === state.id || s.slug === state.slug) ||
-          j.cities?.some((c) => c.state?.id === state.id || c.state?.slug === state.slug)
-      );
-      const finalStateJourneys = stateJourneys.length > 0 ? stateJourneys : embeddedJourneys;
+      const { allOrderedJourneys } = resolveStateJourneys(initialJourneys?.data, state);
       const schema = graphSchema([
         touristDestinationSchema({
           name: state.title,
@@ -312,7 +308,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
           url: `/tour-packages/${state.country?.slug}/${state.slug}`,
         }),
         itemListSchema(
-          finalStateJourneys.slice(0, 10).map((j) => ({
+          allOrderedJourneys.map((j) => ({
             name: journeyCardTitle(j),
             url: journeyPackageHref(j),
           }))
@@ -342,9 +338,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
       const initialJourneys = await fetchPublicJsonCached<JourneyPage<Journey>>(
         "/journey?limit=100&isActive=true"
       );
-      const cityJourneys = (initialJourneys?.data || []).filter((j) =>
-        j.cities?.some((c) => c.id === city.id)
-      );
+      const cityJourneys = resolveCityJourneys(initialJourneys?.data, city);
       const schema = graphSchema([
         touristDestinationSchema({
           name: city.title,
@@ -353,7 +347,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
           url: `/tour-packages/${city.state?.country?.slug}/${city.state?.slug}/${city.slug}`,
         }),
         itemListSchema(
-          cityJourneys.slice(0, 10).map((j) => ({
+          cityJourneys.map((j) => ({
             name: journeyCardTitle(j),
             url: journeyPackageHref(j),
           }))

@@ -2,7 +2,7 @@
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   ChevronRight,
   Sparkles,
@@ -33,6 +33,7 @@ import {
   journeyPackageHref,
 } from "@/feature/journey/filterOptions";
 import { cn, stripHtml, formatToursH1 } from "@/lib/utils";
+import { resolveCityJourneys } from "@/feature/journey/destinationJourneys";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 
@@ -73,37 +74,10 @@ function CityContent({
     { limit: 100, isActive: "true" },
     initialJourneys
   );
-  const embeddedJourneys = (city.journeys ?? []) as Journey[];
-  const allCityJourneys = journeys.filter(
-    (j) => j.cities?.some((c) => c.id === city.id) || j.cityIds?.includes(city.id)
+  const cityJourneys = useMemo(
+    () => resolveCityJourneys(journeys, city),
+    [journeys, city]
   );
-  const embeddedIds = new Set(embeddedJourneys.map((j) => j.id));
-  const remainingJourneys = allCityJourneys
-    .filter((j) => !embeddedIds.has(j.id))
-    .sort((a, b) => {
-      const aOrder = a.displayOrder ?? 0;
-      const bOrder = b.displayOrder ?? 0;
-      if (aOrder > 0 && bOrder > 0) return aOrder - bOrder;
-      if (aOrder > 0) return -1;
-      if (bOrder > 0) return 1;
-      if (a.isBestSelling && !b.isBestSelling) return -1;
-      if (!a.isBestSelling && b.isBestSelling) return 1;
-      return 0;
-    });
-
-  const cityJourneys =
-    embeddedJourneys.length > 0
-      ? [...embeddedJourneys, ...remainingJourneys]
-      : (allCityJourneys.length > 0 ? allCityJourneys : embeddedJourneys).sort((a, b) => {
-          const aOrder = a.displayOrder ?? 0;
-          const bOrder = b.displayOrder ?? 0;
-          if (aOrder > 0 && bOrder > 0) return aOrder - bOrder;
-          if (aOrder > 0) return -1;
-          if (bOrder > 0) return 1;
-          if (a.isBestSelling && !b.isBestSelling) return -1;
-          if (!a.isBestSelling && b.isBestSelling) return 1;
-          return 0;
-        });
 
   const [expSelected, setExpSelected] = useState<string[]>([]);
   const [durSelected, setDurSelected] = useState<string[]>([]);

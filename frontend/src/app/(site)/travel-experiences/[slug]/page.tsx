@@ -8,6 +8,7 @@ import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { TravelExperience } from "@/feature/travelExperience/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
+import { resolveTravelExperienceJourneys } from "@/feature/journey/destinationJourneys";
 import { travelExperienceParams } from "@/lib/prerender";
 
 import { GOLDEN_TRIANGLE_FAQS } from "@/feature/travelExperience/goldenTriangleFaqs";
@@ -75,18 +76,7 @@ export default async function TravelExperiencePage({ params }: Props) {
   let journeys: JourneyPage<Journey> | null = null;
   if (data) {
     journeys = await fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true");
-    const order = (data.featuredJourneyOrder || []) as number[];
-    const relatedJourneys = (journeys?.data || [])
-      .filter((j) =>
-        (j.travelExperiences || []).some((e) => e.slug === data.slug)
-      )
-      .sort((a, b) => {
-        const ai = order.indexOf(a.id);
-        const bi = order.indexOf(b.id);
-        const aRank = ai === -1 ? Number.MAX_SAFE_INTEGER : ai;
-        const bRank = bi === -1 ? Number.MAX_SAFE_INTEGER : bi;
-        return aRank - bRank;
-      });
+    const { allOrderedJourneys } = resolveTravelExperienceJourneys(journeys?.data, data);
     const isGoldenTriangle = slug === "golden-triangle" || data.slug === "golden-triangle";
     const faqSource = isGoldenTriangle
       ? GOLDEN_TRIANGLE_FAQS
@@ -107,7 +97,7 @@ export default async function TravelExperiencePage({ params }: Props) {
         url: `/travel-experiences/${data.slug}`,
       }),
       itemListSchema(
-        relatedJourneys.slice(0, 10).map((j) => ({
+        allOrderedJourneys.map((j) => ({
           name: journeyCardTitle(j),
           url: journeyPackageHref(j),
         }))

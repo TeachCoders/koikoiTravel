@@ -9,6 +9,7 @@ import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { Season } from "@/feature/season/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
+import { resolveSeasonJourneys } from "@/feature/journey/destinationJourneys";
 import { seasonParams } from "@/lib/prerender";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
@@ -66,9 +67,7 @@ export default async function SeasonPage({ params }: Props) {
   if (!season) return notFound();
 
   const initialJourneys = await fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true");
-  const seasonJourneys = (initialJourneys?.data || []).filter((j) =>
-    j.months?.some((m) => m.id === season.id)
-  );
+  const seasonJourneys = resolveSeasonJourneys(initialJourneys?.data, season);
 
   const seasonFaqs =
     season.faqs && season.faqs.length > 0
@@ -85,7 +84,7 @@ export default async function SeasonPage({ params }: Props) {
       url: `/season/${season.slug}`,
     }),
     itemListSchema(
-      seasonJourneys.slice(0, 10).map((j) => ({
+      seasonJourneys.map((j) => ({
         name: journeyCardTitle(j),
         url: journeyPackageHref(j),
       }))
