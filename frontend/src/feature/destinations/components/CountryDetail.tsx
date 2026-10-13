@@ -271,7 +271,8 @@ function CountryContent({
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={displayTitle} />
-            <div className="absolute inset-0 bg-slate-950/20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/50 to-slate-950/40 z-10 pointer-events-none" />
+            <div className="absolute inset-0 bg-black/20 z-10 pointer-events-none" />
           </>
         ) : (
           <div className="absolute inset-0">
@@ -283,26 +284,25 @@ function CountryContent({
               className="object-cover object-center"
               theme="dark"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/50 to-slate-950/30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/55 to-slate-950/40 z-10 pointer-events-none" />
           </div>
         )}
 
-        <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 h-full flex flex-col justify-center items-center py-6 sm:py-8 text-center">
+        <div className="relative z-20 max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 h-full flex flex-col justify-center items-center py-6 sm:py-8 text-center">
           {heroTag && (
-            <p
-              className="font-luxury font-black sm:block w-fit max-w-2xl mx-auto mb-3 text-[17px] sm:text-[19px] uppercase tracking-[0.22em] leading-relaxed pr-[0.22em] text-white/95"
-              style={{ textShadow: "0 2px 4px rgba(0,0,0,0.95), 0 4px 16px rgba(0,0,0,0.85), 0 8px 32px rgba(0,0,0,0.7)" }}
-            >
-              {heroTag}
-            </p>
+            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20 mb-3 sm:mb-4 shadow-xl">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shadow-[0_0_8px_#F8904D]" />
+              <span className="font-luxury font-bold text-xs sm:text-sm uppercase tracking-[0.22em] text-white/95">
+                {heroTag}
+              </span>
+            </div>
           )}
 
-          <div
-            className="font-luxury text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wide"
-            style={{ textShadow: "0 2px 4px rgba(0,0,0,1), 0 4px 16px rgba(0,0,0,0.9), 0 16px 48px rgba(0,0,0,0.7)" }}
+          <h1
+            className="font-luxury text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]"
           >
             {heroTitle}
-          </div>
+          </h1>
         </div>
       </section>
 
