@@ -16,6 +16,8 @@ function PackageImageWithFallback({ src, alt }: { src?: string; alt?: string }) 
     <FallbackImage
       src={src}
       alt={alt || "KoiKoi Travel Package"}
+      fill
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
       className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       fallbackSrc="/logo-with-name.png"
       theme="light"

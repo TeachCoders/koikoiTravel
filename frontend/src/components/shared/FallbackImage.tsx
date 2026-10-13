@@ -46,8 +46,6 @@ function shouldBeUnoptimized(src?: string | null): boolean {
   if (!src || typeof src !== "string") return true;
   if (/\.(svg|gif)$/i.test(src)) return true;
   if (src.startsWith("/")) {
-    // Backend static paths (e.g. /india-tour/..., /destinationImage/...) must be loaded directly by browser
-    if (!FRONTEND_STATIC_FILES.has(src)) return true;
     return false;
   }
   try {
