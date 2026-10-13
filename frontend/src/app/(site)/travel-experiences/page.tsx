@@ -258,7 +258,7 @@ export default async function TravelExperiencesPage() {
               Why Travellers Trust KoiKoi Travel
             </SectionLabel>
             <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-2 leading-tight">
-              Travel Experiences Made Simple & Personal
+              Travel Experiences Made <span className="text-[#F8904D]">Simple & Personal</span>
             </h2>
           </div>
           <div className="mt-8 w-full space-y-5 text-[18px] leading-relaxed text-slate-600">

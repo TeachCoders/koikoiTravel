@@ -35,7 +35,7 @@ export default function MobileStickyActionBar() {
         <QuoteModal>
           <button
             type="button"
-            className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-full bg-[#C2410C] text-white hover:bg-[#9A3412] transition-all active:scale-95 shadow-sm cursor-pointer"
+            className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-full bg-[#F8904D] text-white hover:bg-[#e07b3b] transition-all active:scale-95 shadow-sm cursor-pointer"
           >
             <Sparkles size={15} className="shrink-0" />
             <span className="text-xs font-bold">Get Free Quote</span>

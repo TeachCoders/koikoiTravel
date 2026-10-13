@@ -710,7 +710,7 @@ export default async function DestinationsPage() {
                     Hand-Crafted Itineraries
                   </SectionLabel>
                   <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-1">
-                    Top Tour Packages
+                    Top <span className="text-[#F8904D]">Tour Packages</span>
                   </h2>
                   <p className="mt-2 text-slate-500 text-sm md:text-base">
                     Fully customisable day-by-day itineraries across India.

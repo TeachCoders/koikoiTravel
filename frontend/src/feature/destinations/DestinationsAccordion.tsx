@@ -80,7 +80,9 @@ export const DestinationsAccordion: React.FC<DestinationsAccordionProps> = ({ de
       <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
         <div className="max-w-2xl">
           <SectionLabel icon={<MapPin className="w-4 h-4" />}>Explore Destinations</SectionLabel>
-          <h1 className="h1 text-[#1C1C1C] mt-1">Destinations Across India</h1>
+          <h1 className="h1 text-[#1C1C1C] mt-1">
+            Destinations Across <span className="text-[#F8904D]">India</span>
+          </h1>
           <p className="mt-3 text-base text-[#555] leading-relaxed">
             Browse {destinations.length} hand-picked destinations grouped by state. Tap any destination to view its
             photo gallery.

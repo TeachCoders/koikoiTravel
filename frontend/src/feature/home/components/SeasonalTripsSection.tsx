@@ -250,7 +250,9 @@ export const SeasonalTripsSection: React.FC<{
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
             <SectionLabel icon={<Calendar className="w-4 h-4" />}>Season-wise Planning</SectionLabel>
-            <h2 className="h2 text-[#1C1C1C] mt-2">Best Trips By Season & Month</h2>
+            <h2 className="h2 text-[#1C1C1C] mt-2">
+              Best Trips By <span className="text-[#F8904D]">Season & Month</span>
+            </h2>
             <p className="mt-2 text-sm sm:text-base text-[#555] max-w-xl">
               Plan your trip by season — know when it snows, when it&apos;s cool, and the best time to visit.
             </p>

@@ -117,7 +117,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
           <div className="flex flex-col justify-center">
             <SectionLabel>The KoiKoi Advantage</SectionLabel>
             <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5 mb-2">
-              Why Book Your India Trip With KoiKoi Travel?
+              Why Book Your India Trip With <span className="text-[#F8904D]">KoiKoi Travel?</span>
             </h2>
             <p className="text-slate-500 text-xs sm:text-sm mb-5 leading-relaxed max-w-xl">
               Unlike generic travel booking engines, KoiKoi Travel provides dedicated private local tour managers, 100% custom itineraries, and courteous reliable chauffeurs.

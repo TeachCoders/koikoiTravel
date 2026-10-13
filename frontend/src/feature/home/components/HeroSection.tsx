@@ -45,10 +45,17 @@ export const HeroSection: React.FC = () => {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
   }, [slides.length]);
 
+  const [isMounted, setIsMounted] = useState(false);
+
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
     const timer = setInterval(next, 10000);
     return () => clearInterval(timer);
-  }, [next]);
+  }, [next, isMounted]);
 
   return (
     <section className="relative w-full min-h-[380px] sm:min-h-[440px] md:min-h-[520px] py-10 sm:py-14 flex items-center justify-center bg-slate-900 z-20">
@@ -69,29 +76,30 @@ export const HeroSection: React.FC = () => {
           />
         </div>
 
-        {/* Subsequent slides 1..N: Crossfade smoothly on top (z-10) when active */}
-        {slides.slice(1).map((s, index) => {
-          const slideIndex = index + 1;
-          const isActive = current === slideIndex;
-          return (
-            <div
-              key={slideIndex}
-              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-              }`}
-            >
-              <FallbackImage
-                src={s.image}
-                alt={s.alt}
-                fill
-                loading="lazy"
-                sizes="100vw"
-                className="object-cover object-center"
-                theme="dark"
-              />
-            </div>
-          );
-        })}
+        {/* Subsequent slides 1..N: Only mount on client after hydration to keep initial DOM pristine */}
+        {isMounted &&
+          slides.slice(1).map((s, index) => {
+            const slideIndex = index + 1;
+            const isActive = current === slideIndex;
+            return (
+              <div
+                key={slideIndex}
+                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                  isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+                }`}
+              >
+                <FallbackImage
+                  src={s.image}
+                  alt={s.alt}
+                  fill
+                  loading="lazy"
+                  sizes="100vw"
+                  className="object-cover object-center"
+                  theme="dark"
+                />
+              </div>
+            );
+          })}
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/25 z-10 pointer-events-none" />
       </div>
 
@@ -127,7 +135,7 @@ export const HeroSection: React.FC = () => {
 
       <div className="relative z-30 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-center">
         <h1 className="font-luxury text-white text-xl sm:text-3xl md:text-4xl lg:text-[42px] font-black tracking-tight sm:tracking-normal leading-tight max-w-3xl mx-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] block">
-          Plan Your Dream India Trip With KoiKoi Travel
+          Plan Your Dream India Trip With <span className="text-[#F8904D]">KoiKoi Travel</span>
         </h1>
 
         <div className="mt-4 sm:mt-6 md:mt-8">

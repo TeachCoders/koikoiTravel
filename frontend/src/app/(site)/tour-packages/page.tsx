@@ -124,7 +124,7 @@ export default async function TourPackagesPage({
               Why Travellers Trust KoiKoi Travel
             </SectionLabel>
             <h2 className="font-heading text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1 leading-tight">
-              Simple, Honest Tour Packages for Every Traveller
+              Simple, Honest Tour Packages for <span className="text-[#F8904D]">Every Traveller</span>
             </h2>
           </div>
           <div className="mt-6 w-full space-y-4 text-sm sm:text-[15px] leading-relaxed text-slate-600 font-normal">

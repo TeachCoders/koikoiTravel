@@ -231,11 +231,11 @@
   /* ===== Buttons — Unified App-Wide Button System ===== */
 
   .btn-primary {
-    @apply bg-[#C2410C] text-white font-semibold text-sm px-5 py-2.5 rounded-full shadow-xs hover:bg-[#9A3412] hover:shadow-md transition-all duration-200 cursor-pointer inline-flex items-center justify-center gap-2;
+    @apply bg-[#F8904D] text-white font-semibold text-sm px-5 py-2.5 rounded-full shadow-xs hover:bg-[#e07b3b] hover:shadow-md transition-all duration-200 cursor-pointer inline-flex items-center justify-center gap-2;
   }
 
   .btn-primary-sm {
-    @apply bg-[#C2410C] text-white font-semibold text-xs px-3.5 py-1.5 rounded-full shadow-xs hover:bg-[#9A3412] hover:shadow-md transition-all duration-200 cursor-pointer inline-flex items-center justify-center gap-1.5;
+    @apply bg-[#F8904D] text-white font-semibold text-xs px-3.5 py-1.5 rounded-full shadow-xs hover:bg-[#e07b3b] hover:shadow-md transition-all duration-200 cursor-pointer inline-flex items-center justify-center gap-1.5;
   }
 
   .btn-outline {
