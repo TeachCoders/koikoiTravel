@@ -44,7 +44,7 @@ export const BestSellingPackages: React.FC<{
         <div className="mb-6 sm:mb-8">
           <SectionLabel>Featured Itineraries</SectionLabel>
           <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5">
-            Top-Rated <span className="text-[#F8904D]">Holiday Packages</span>
+            Top-Rated India <span className="text-[#F8904D]">Tour Packages</span>
           </h2>
           <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
             All-inclusive private tours featuring handpicked hotels, dedicated chauffeurs, and personalized sightseeing.

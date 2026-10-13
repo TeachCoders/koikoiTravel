@@ -13,16 +13,18 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://koikoitravel.com"),
-  title: "Best Travel Agency in India | Custom Tour Packages - KoiKoi Travel",
+  title: "Best Travel Agency in India | India Tours, Golden Triangle & Taj Mahal - KoiKoi Travel",
   description:
-    "KoiKoi Travel is the best travel agency in India for custom holiday packages, luxury stays, private verified chauffeur cabs, and 24/7 on-ground assistance.",
+    "KoiKoi Travel is the best travel agency in India for custom India tours, Golden Triangle & Taj Mahal packages, Rajasthan trips, and private chauffeur holidays.",
   keywords: [
     "Best Travel Agency in India",
     "Tour Operator in India",
+    "India Tours",
+    "Golden Triangle Tour",
+    "Taj Mahal Tour Packages",
     "Custom India Tour Packages",
     "Private Chauffeur Tour India",
     "Rajasthan Tour Packages",
-    "Golden Triangle Tour India",
     "Kerala Holiday Packages",
     "Inbound Travel Agency India",
     "KoiKoi Travel",
@@ -30,9 +32,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://koikoitravel.com" },
   verification: { google: "El1jKO1piAq20XL3gueQKlsrPhBvrZFOUF-Jg6addow" },
   openGraph: {
-    title: "Best Travel Agency in India | Custom Tour Packages - KoiKoi Travel",
+    title: "Best Travel Agency in India | India Tours & Golden Triangle - KoiKoi Travel",
     description:
-      "KoiKoi Travel is the best travel agency in India. Plan your tailor-made holiday, Rajasthan tours, Kerala backwaters, Kashmir & Golden Triangle trips.",
+      "KoiKoi Travel is the best travel agency in India. Plan custom India tours, Golden Triangle & Taj Mahal trips, and private chauffeur holidays.",
     url: "https://koikoitravel.com",
     siteName: "KoiKoi Travel India",
     locale: "en_US",
