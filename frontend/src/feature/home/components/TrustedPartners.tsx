@@ -5,7 +5,7 @@ const TrustedPartners: React.FC = () => {
   return (
     <div className="py-8 sm:py-10 border-t border-slate-100 bg-white">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-        <p className="text-center text-[11px] sm:text-xs font-bold tracking-widest text-[#F8904D] uppercase mb-6">The KoiKoi Travel Promise</p>
+        <p className="text-center text-[11px] sm:text-xs font-bold tracking-widest text-[#C2410C] uppercase mb-6">The KoiKoi Travel Promise</p>
         <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
           <div className="flex items-center gap-3">
             <ShieldCheck className="w-7 h-7 text-[#F8904D]" />

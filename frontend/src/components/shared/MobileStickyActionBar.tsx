@@ -25,7 +25,7 @@ export default function MobileStickyActionBar() {
           href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi KoiKoi Travel, I want to inquire about a custom holiday tour package.")}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-full bg-[#2E8B8B] text-white hover:bg-[#247070] transition-all active:scale-95 shadow-sm"
+          className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-full bg-[#196464] text-white hover:bg-[#134e4e] transition-all active:scale-95 shadow-sm"
         >
           <WhatsAppIcon className="w-4 h-4 fill-white shrink-0" />
           <span className="text-xs font-bold">WhatsApp</span>
@@ -35,7 +35,7 @@ export default function MobileStickyActionBar() {
         <QuoteModal>
           <button
             type="button"
-            className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-full bg-[#F8904D] text-white hover:bg-[#d57c42] transition-all active:scale-95 shadow-sm cursor-pointer"
+            className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-full bg-[#C2410C] text-white hover:bg-[#9A3412] transition-all active:scale-95 shadow-sm cursor-pointer"
           >
             <Sparkles size={15} className="shrink-0" />
             <span className="text-xs font-bold">Get Free Quote</span>

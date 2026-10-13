@@ -233,7 +233,7 @@ export default function TourPackageCard({
                   </span>
                 ))}
                 {travelExperiences.length > 2 && (
-                  <span className="inline-flex items-center text-[10.5px] font-medium text-[#F8904D] bg-orange-50/90 border border-orange-200/80 px-2 py-0.5 rounded-full">
+                  <span className="inline-flex items-center text-[10.5px] font-medium text-[#C2410C] bg-orange-50/90 border border-orange-200/80 px-2 py-0.5 rounded-full">
                     +{travelExperiences.length - 2} more
                   </span>
                 )}
@@ -265,7 +265,7 @@ export default function TourPackageCard({
           <span className="text-slate-300">•</span>
           <span className="text-slate-600">100% Tailor-made</span>
           <span className="text-slate-300">•</span>
-          <span className="text-[#F8904D] font-semibold">Custom Quote</span>
+          <span className="text-[#C2410C] font-semibold">Custom Quote</span>
         </div>
 
         {/* CTA Section */}

@@ -41,7 +41,7 @@ export default function SeoTextBlock() {
 
         {/* Popular Circuits Internal Links for SEO Crawlers & Navigation */}
         <div className="mt-8 pt-6 border-t border-slate-200/80">
-          <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2.5">
+          <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-2.5">
             Popular India Travel Circuits & Themes
           </h4>
           <div className="flex flex-wrap items-center gap-x-3.5 gap-y-2 text-xs text-slate-600">

@@ -129,8 +129,10 @@ export function useUserActivityTracker() {
       });
       // Real-time resolution: if this page loads successfully it is no longer
       // a broken/404 URL. Auto-resolve any recorded BROKEN_LINK for this path.
-      // Idempotent – no-op when there are none on record.
-      resolveNotFound(pathname).catch(() => {});
+      // Idempotent – only run when admin credentials exist to prevent 403 Forbidden errors.
+      if (typeof document !== "undefined" && (document.cookie.includes("admin_logged_in") || Boolean(localStorage.getItem("token")))) {
+        resolveNotFound(pathname).catch(() => {});
+      }
     });
     // Start a fresh visible-time visit for this page.
     pageVisit.current = { path: pathname, visibleMs: 0, lastResume: Date.now() };

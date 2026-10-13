@@ -58,7 +58,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             <span
               itemProp="name"
               className={`text-[15px] sm:text-[16px] font-semibold transition-colors leading-snug ${
-                isOpen ? "text-[#2E8B8B]" : "text-slate-900"
+                isOpen ? "text-[#196464]" : "text-slate-900"
               }`}
             >
               {faq.question}

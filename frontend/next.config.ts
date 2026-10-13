@@ -55,12 +55,12 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/india-tours/:path*",
+        source: "/india-tours/:path((?!.*\\.(?:webp|avif|jpg|jpeg|png|gif|svg|ico)$).*)",
         destination: "/tour-packages/india",
         permanent: true,
       },
       {
-        source: "/india-tour/:path*",
+        source: "/india-tour/:path((?!.*\\.(?:webp|avif|jpg|jpeg|png|gif|svg|ico)$).*)",
         destination: "/tour-packages/india",
         permanent: true,
       },

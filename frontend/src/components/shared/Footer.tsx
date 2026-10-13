@@ -254,7 +254,7 @@ export const Footer: React.FC = () => {
             <h5 className="text-[13.5px] font-bold text-white tracking-[0.05em] uppercase mb-4">
               Popular City & Circuit Tour Packages
             </h5>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-5 text-[#8a8a8a] leading-relaxed">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-5 text-[#b0b0b0] leading-relaxed">
               <div>
                 <span className="font-semibold text-white/80 block mb-1.5">Kerala Circuits:</span>
                 <div className="flex flex-wrap gap-x-2 gap-y-1">
@@ -356,7 +356,7 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-4 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-6 text-[12.5px] text-[#7d7d7d]">
+          <div className="pt-4 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-6 text-[12.5px] text-[#b0b0b0]">
             <div>
               <span className="font-semibold text-white/80 block mb-1.5">Featured Tour Packages:</span>
               <div className="flex flex-wrap gap-x-2 gap-y-1">

@@ -22,6 +22,17 @@ let meIdCache: { at: number; promise: Promise<number | null> } | null = null;
 
 /** Cached current-user lookup so frequent calls don't spam /auth/me. */
 export function resolveCurrentUserId(): Promise<number | null> {
+  if (typeof window !== "undefined") {
+    const hasAuthToken =
+      Boolean(localStorage.getItem("token") || sessionStorage.getItem("token")) ||
+      document.cookie.includes("token") ||
+      document.cookie.includes("admin_logged_in") ||
+      document.cookie.includes("connect.sid");
+    if (!hasAuthToken) {
+      return Promise.resolve(null);
+    }
+  }
+
   if (!meIdCache || Date.now() - meIdCache.at > ME_CACHE_MS) {
     meIdCache = {
       at: Date.now(),

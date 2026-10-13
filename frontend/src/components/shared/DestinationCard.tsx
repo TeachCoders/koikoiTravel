@@ -46,7 +46,7 @@ export default function DestinationCard({
           {title}
         </h3>
         {subtitle && (
-          <p className="text-[12px] text-slate-500 mt-0.5 font-normal line-clamp-1">
+          <p className="text-[12px] text-slate-600 mt-0.5 font-normal line-clamp-1">
             {subtitle}
           </p>
         )}

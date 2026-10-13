@@ -145,7 +145,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
               {/* Reviewer Details & Normal Indicator Dots */}
               <div className="flex items-center justify-between gap-4 pt-1">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-[#F8904D] text-white font-bold flex items-center justify-center text-xs shadow-xs">
+                  <div className="w-9 h-9 rounded-full bg-slate-900 text-[#F8904D] border border-slate-700 font-bold flex items-center justify-center text-xs shadow-xs">
                     {currentReview.name.split(" ")[0]?.[0]}
                     {currentReview.name.split(" ")[1]?.[0] || ""}
                   </div>
@@ -281,6 +281,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
                           <button
                             key={idx}
                             type="button"
+                            aria-label={`Go to slide ${idx + 1}`}
                             onClick={(e) => {
                               e.stopPropagation();
                               setCurrentIndex(idx);

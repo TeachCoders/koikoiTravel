@@ -73,8 +73,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 export default function RootLayout({
@@ -85,6 +83,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn(
         "h-full antialiased",
         poppins.variable,
@@ -97,7 +96,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://www.google-analytics.com" />
       </head>
-      <body className="min-h-full flex flex-col font-sans text-[#1C1C1C] pb-16 md:pb-0">
+      <body suppressHydrationWarning className="min-h-full flex flex-col font-sans text-[#1C1C1C] pb-16 md:pb-0">
         <Script
           id="google-analytics"
           strategy="lazyOnload"
