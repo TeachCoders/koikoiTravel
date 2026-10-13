@@ -234,6 +234,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
                           alt={`Traveler Moment ${idx + 1}`}
                           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/slide:scale-105"
                           fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
                         />
                         
                         {(item.caption || item.location) && (

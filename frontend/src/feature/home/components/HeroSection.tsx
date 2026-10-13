@@ -46,34 +46,52 @@ export const HeroSection: React.FC = () => {
   }, [slides.length]);
 
   useEffect(() => {
-    const timer = setInterval(next, 5000);
+    const timer = setInterval(next, 10000);
     return () => clearInterval(timer);
   }, [next]);
 
   return (
     <section className="relative w-full min-h-[380px] sm:min-h-[440px] md:min-h-[520px] py-10 sm:py-14 flex items-center justify-center bg-slate-900 z-20">
-      {/* Background slider - smooth crossfade with zero LCP interference */}
-      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-        {slides.map((s, i) => (
-          <div
-            key={i}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              i === current ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-            }`}
-          >
-            <FallbackImage
-              src={s.image}
-              alt={s.alt}
-              fill
-              priority={i === 0}
-              fetchPriority={i === 0 ? "high" : "low"}
-              loading={i === 0 ? "eager" : "lazy"}
-              sizes="100vw"
-              className="object-cover object-center"
-              theme="dark"
-            />
-          </div>
-        ))}
+      {/* Background slider - permanent Slide 0 guarantees rock-solid, stable LCP candidate */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Base Slide 0: Always in DOM at z-0 with opacity-100 to guarantee valid, stable LCP */}
+        <div className="absolute inset-0 z-0">
+          <FallbackImage
+            src={slides[0]?.image || DEFAULT_SLIDES[0].image}
+            alt={slides[0]?.alt || DEFAULT_SLIDES[0].alt}
+            fill
+            priority
+            fetchPriority="high"
+            loading="eager"
+            sizes="100vw"
+            className="object-cover object-center"
+            theme="dark"
+          />
+        </div>
+
+        {/* Subsequent slides 1..N: Crossfade smoothly on top (z-10) when active */}
+        {slides.slice(1).map((s, index) => {
+          const slideIndex = index + 1;
+          const isActive = current === slideIndex;
+          return (
+            <div
+              key={slideIndex}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
+            >
+              <FallbackImage
+                src={s.image}
+                alt={s.alt}
+                fill
+                loading="lazy"
+                sizes="100vw"
+                className="object-cover object-center"
+                theme="dark"
+              />
+            </div>
+          );
+        })}
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/25 z-10 pointer-events-none" />
       </div>
 

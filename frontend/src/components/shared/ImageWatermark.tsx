@@ -38,7 +38,6 @@ export const ImageWatermark: React.FC<ImageWatermarkProps> = ({
           className={`object-contain filter grayscale ${
             theme === "dark" ? "opacity-70 brightness-0 invert" : "opacity-40"
           }`}
-          unoptimized
         />
       </div>
     </div>

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
@@ -656,9 +657,12 @@ export const Header: React.FC = () => {
       >
         <div className="flex items-stretch justify-between gap-4">
           <Link href="/" className="flex items-center gap-2 group shrink-0">
-            <img
+            <Image
               src="/logo-with-name.png"
               alt="KoiKoi Travel"
+              width={180}
+              height={56}
+              priority
               className="h-[48px] sm:h-[52px] md:h-[56px] w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
             />
           </Link>
