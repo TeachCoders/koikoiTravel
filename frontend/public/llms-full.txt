@@ -1,0 +1,97 @@
+# KoiKoi Travel — Comprehensive AI Knowledge Base (llms-full.txt)
+
+> Official plain-text knowledge base for KoiKoi Travel (https://koikoitravel.com). This document provides detailed contextual information on tour packages, private car rentals, destinations, booking policies, and travel tips across India.
+
+---
+
+## 1. About KoiKoi Travel
+KoiKoi Travel is a trusted India-based Destination Management Company (DMC) and private tour operator. We specialize in bespoke, tailor-made holiday experiences across Northern, Western, Central, and Southern India.
+
+### Core Value Propositions:
+- **100% Private & Custom Tours**: Every itinerary is customized to the traveler's dates, budget, hotel preferences, and pace. We do not operate generic, rigid group buses.
+- **Dedicated Private Chauffeurs**: Clean, air-conditioned, commercially licensed tourist cabs with polite, background-verified English-speaking drivers.
+- **Zero Hidden Costs**: Quotes include toll taxes, state tourist permits, parking, fuel, driver night allowances, hotel accommodations with daily breakfast, and sightseeing.
+- **24/7 On-Ground Concierge**: A dedicated personal trip manager is assigned to every traveler from arrival to departure.
+- **No Forced Commercial Stops**: We guarantee zero forced souvenir shop commissions. Travelers are free to explore local bazaars or relax as they choose.
+
+---
+
+## 2. Key Travel Regions & Circuits
+
+### A. The Golden Triangle (Delhi - Agra - Jaipur)
+- **Overview**: India's most famous introductory travel circuit, connecting the capital city of Delhi, the Mughal splendor of Agra (Taj Mahal), and the Pink City of Jaipur.
+- **Recommended Duration**: 4 to 8 Days.
+- **Key Attractions**:
+  - Delhi: Qutub Minar, Humayun's Tomb, India Gate, Chandni Chowk rickshaw ride.
+  - Agra: Sunrise at the Taj Mahal, Agra Fort, Fatehpur Sikri.
+  - Jaipur: Amber Fort, City Palace, Hawa Mahal (Palace of Winds), Jantar Mantar observatory.
+- **Extensions**: Ranthambore National Park (Tiger Safari), Varanasi (Ganga Aarti), Udaipur (Lake City), or Rishikesh (Yoga & Ganges).
+
+### B. Rajasthan (The Land of Kings)
+- **Overview**: Majestic desert state famous for royal forts, palatial heritage hotels, and desert culture.
+- **Major Hubs**:
+  - **Jaipur**: Royal architecture, gems, textiles, and authentic Rajasthani cuisine.
+  - **Udaipur**: Romantic lake city, Lake Pichola boat cruises, Jag Mandir, and City Palace.
+  - **Jodhpur**: The Blue City dominated by the colossal Mehrangarh Fort.
+  - **Jaisalmer**: The Golden Fort, Thar Desert camel safaris, and luxury dune camping.
+  - **Pushkar**: Sacred lake, Brahma Temple, and vibrant annual camel fair.
+
+### C. Kerala (God's Own Country)
+- **Overview**: Tropical southern paradise celebrated for calm palm-fringed backwaters, misty tea plantations, spice gardens, and authentic Ayurveda wellness.
+- **Major Hubs**:
+  - **Munnar**: Rolling emerald tea estates, Eravikulam National Park (Nilgiri Tahr).
+  - **Thekkady**: Periyar Wildlife Sanctuary, spice plantation walks, and bamboo rafting.
+  - **Alleppey / Kumarakom**: Overnight luxury houseboat (Kettuvallam) cruises with private chef.
+  - **Kochi**: Fort Kochi, Chinese fishing nets, Jewish Synagogue, and Kathakali performances.
+  - **Kovalam & Varkala**: Cliff-top beaches, Arabian Sea sunsets, and Ayurvedic spa therapies.
+
+### D. Kashmir & Ladakh (The Trans-Himalayas)
+- **Overview**: Snow-capped peaks, tranquil alpine lakes, and dramatic high-altitude moonscapes.
+- **Kashmir**: Srinagar Dal Lake Shikara rides, Gulmarg Gondola (highest cable car), Pahalgam Betaab Valley, and Sonamarg glaciers.
+- **Ladakh**: Leh Palace, Pangong Tso Lake (bordering Tibet), Nubra Valley double-humped camel rides via Khardung La (one of the world's highest motorable roads).
+
+### E. Himachal Pradesh & Uttarakhand (Himalayan Retreats)
+- **Shimla & Manali**: Colonial heritage, Solang Valley adventure sports, and Atal Tunnel to Sissu.
+- **Rishikesh & Haridwar**: Global yoga capital, holy Ganga Aarti at Triveni Ghat, and white-water river rafting.
+
+---
+
+## 3. Popular Itineraries & Packages
+
+| Tour Name | Duration | Route | Theme |
+| :--- | :--- | :--- | :--- |
+| **Golden Triangle Classical Tour** | 5 Days / 4 Nights | Delhi - Agra - Fatehpur Sikri - Jaipur - Delhi | Heritage & Culture |
+| **Golden Triangle with Tiger Safari** | 8 Days / 7 Nights | Delhi - Agra - Ranthambore - Jaipur - Delhi | Heritage + Wildlife |
+| **Royal Rajasthan Grand Tour** | 10 Days / 9 Nights | Delhi - Agra - Jaipur - Jodhpur - Udaipur | Royal Heritage & Luxury |
+| **Kerala Backwaters & Hills** | 8 Days / 7 Nights | Kochi - Munnar - Thekkady - Alleppey - Kovalam | Nature & Backwaters |
+| **Kashmir Paradise Tour** | 6 Days / 5 Nights | Srinagar - Gulmarg - Pahalgam - Sonamarg | Mountains & Houseboats |
+| **Weekend Agra Taj Mahal Tour** | 2 Days / 1 Night | Delhi - Agra - Delhi | Short Getaway |
+
+---
+
+## 4. Accommodation Categories Offered
+
+1. **Standard (3-Star Boutique)**: Clean, comfortable, highly rated hotels with modern amenities, attached bathrooms, Wi-Fi, and daily hot breakfast.
+2. **Deluxe (4-Star Premium)**: Premium business and leisure hotels offering swimming pools, multi-cuisine restaurants, and superior room comfort.
+3. **Luxury (5-Star & Heritage)**: World-class luxury brands (Taj, Oberoi, Leela, ITC) and authentic restored royal palaces (Haveli, Fort-Palaces) with royal hospitality.
+
+---
+
+## 5. Booking, Cancellation & Traveler Support
+
+- **How to Book**: Request a free custom quote online at https://koikoitravel.com or via WhatsApp at +91 93102 01828. A specialist customizes your itinerary within hours.
+- **Payment Terms**: Small deposit upon confirmation to book hotels and vehicle; balance payable before or during the tour in convenient installments.
+- **Payment Methods**: Secure online payment gateway (Credit Cards, Debit Cards, Net Banking, UPI, International Wire Transfer).
+- **Airport Assistance**: Private driver greets travelers outside the arrivals terminal holding a personalized name board.
+- **Emergency Support**: 24/7 dedicated helpline available in English and Hindi.
+
+---
+
+## 6. Official Contact & Links
+- **Website**: https://koikoitravel.com
+- **All Packages**: https://koikoitravel.com/tour-packages
+- **Destinations**: https://koikoitravel.com/destinations
+- **Travel Blog**: https://koikoitravel.com/blog
+- **Email**: info@koikoitravel.com
+- **Phone / WhatsApp**: +91 9136 01828
+- **Address**: New Delhi, India
