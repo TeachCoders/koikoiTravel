@@ -19,6 +19,37 @@ async function fetchApi<T>(endpoint: string): Promise<T[]> {
   }
 }
 
+function cleanBrandText(str?: string | null): string {
+  if (!str) return "";
+  return str
+    .replace(/^seo\s*description\s*:\s*/i, "")
+    .replace(/\bKoKoi\s+Travels?\b/gi, "KoiKoi Travel")
+    .replace(/\bKoiKoi\s+Travels\b/gi, "KoiKoi Travel")
+    .replace(/\bKoKoi\s+Tour\b/gi, "KoiKoi Travel")
+    .replace(/\bKoiKoi\s+Tours\b/gi, "KoiKoi Travel")
+    .replace(/\bKoKoi\b/gi, "KoiKoi")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function resolveRouteCities(j: any): string[] {
+  let list = Array.isArray(j.route)
+    ? j.route.map((c: any) => c.title).filter(Boolean)
+    : [];
+  const titleLower = (j.title || "").toLowerCase();
+  if (titleLower.includes("goa") && !list.some((c: string) => c.toLowerCase().includes("goa"))) {
+    list = ["Goa", ...list];
+  }
+  return list;
+}
+
+function resolveImageUrl(j: any, siteUrl: string): string {
+  const raw = j.thumbImg || (Array.isArray(j.banner?.images) && j.banner.images.length > 0 ? j.banner.images[0] : null);
+  if (!raw) return `${siteUrl}/og-image.png`;
+  if (raw.startsWith("http")) return raw;
+  return `${siteUrl}${raw.startsWith("/") ? "" : "/"}${raw}`;
+}
+
 export async function GET() {
   try {
     const [journeys, states, experiences] = await Promise.all([
@@ -43,27 +74,26 @@ export async function GET() {
       md += `## 2. Complete Inventory of Active India Tour Packages (${journeys.length} Tours)\n\n`;
 
       journeys.forEach((j: any, idx: number) => {
-        const title = j.title || "India Tour Package";
+        const title = cleanBrandText(j.title || "India Tour Package");
         const slug = j.slug;
         const dur = j.duration || (j.noDays ? `${j.noDays} Days` : "Custom");
-        const cities = Array.isArray(j.route)
-          ? j.route.map((c: any) => c.title).filter(Boolean).join(" -> ")
-          : "";
+        const citiesList = resolveRouteCities(j);
+        const cities = citiesList.join(" -> ");
         const price = j.discountPrice || j.pricePerPerson ? `Starting from ₹${j.discountPrice || j.pricePerPerson}/person` : "Custom Quote";
-        const rawImg = j.thumbImg || (Array.isArray(j.banner?.images) ? j.banner.images[0] : null);
-        const imgUrl = rawImg ? (rawImg.startsWith("http") ? rawImg : `${SITE_URL}${rawImg.startsWith("/") ? "" : "/"}${rawImg}`) : null;
+        const imgUrl = resolveImageUrl(j, SITE_URL);
+        const cleanedSeo = cleanBrandText(j.seoDescription);
 
         md += `### ${idx + 1}. [${title}](${SITE_URL}/tour-packages/${slug})\n`;
         md += `- **URL**: ${SITE_URL}/tour-packages/${slug}\n`;
-        if (imgUrl) md += `- **Image**: ${imgUrl}\n`;
+        md += `- **Image**: ${imgUrl}\n`;
         md += `- **Duration**: ${dur}\n`;
         if (cities) md += `- **Route**: ${cities}\n`;
         md += `- **Price**: ${price}\n`;
-        if (j.seoDescription) md += `- **Overview**: ${j.seoDescription}\n`;
+        if (cleanedSeo) md += `- **Overview**: ${cleanedSeo}\n`;
         if (Array.isArray(j.highlights) && j.highlights.length > 0) {
           md += `- **Highlights**:\n`;
-          j.highlights.slice(0, 5).forEach((hl: string) => {
-            const cleanHl = hl.replace(/<[^>]*>?/gm, "").trim();
+          j.highlights.slice(0, 6).forEach((hl: string) => {
+            const cleanHl = cleanBrandText(hl.replace(/<[^>]*>?/gm, "").trim());
             if (cleanHl) md += `  * ${cleanHl}\n`;
           });
         }

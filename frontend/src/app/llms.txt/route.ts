@@ -19,6 +19,30 @@ async function fetchApi<T>(endpoint: string): Promise<T[]> {
   }
 }
 
+function cleanBrandText(str?: string | null): string {
+  if (!str) return "";
+  return str
+    .replace(/^seo\s*description\s*:\s*/i, "")
+    .replace(/\bKoKoi\s+Travels?\b/gi, "KoiKoi Travel")
+    .replace(/\bKoiKoi\s+Travels\b/gi, "KoiKoi Travel")
+    .replace(/\bKoKoi\s+Tour\b/gi, "KoiKoi Travel")
+    .replace(/\bKoiKoi\s+Tours\b/gi, "KoiKoi Travel")
+    .replace(/\bKoKoi\b/gi, "KoiKoi")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function resolveRouteCities(j: any): string[] {
+  let list = Array.isArray(j.route)
+    ? j.route.map((c: any) => c.title).filter(Boolean)
+    : [];
+  const titleLower = (j.title || "").toLowerCase();
+  if (titleLower.includes("goa") && !list.some((c: string) => c.toLowerCase().includes("goa"))) {
+    list = ["Goa", ...list];
+  }
+  return list;
+}
+
 export async function GET() {
   try {
     const [journeys, states, experiences, posts] = await Promise.all([
@@ -43,13 +67,13 @@ export async function GET() {
 
       md += `## All India Tour Packages (${journeys.length} Active Tours)\n`;
       journeys.forEach((j: any) => {
-        const title = j.title || "India Tour Package";
+        const title = cleanBrandText(j.title || "India Tour Package");
         const slug = j.slug;
         const dur = j.duration || (j.noDays ? `${j.noDays} Days` : "");
-        const cities = Array.isArray(j.route)
-          ? j.route.map((c: any) => c.title).filter(Boolean).join(" - ")
-          : "";
-        const desc = [dur ? `Duration: ${dur}` : "", cities ? `Route: ${cities}` : "", j.seoDescription]
+        const citiesList = resolveRouteCities(j);
+        const cities = citiesList.join(" - ");
+        const cleanedSeo = cleanBrandText(j.seoDescription);
+        const desc = [dur ? `Duration: ${dur}` : "", cities ? `Route: ${cities}` : "", cleanedSeo]
           .filter(Boolean)
           .join(". ");
         md += `- [${title}](${SITE_URL}/tour-packages/${slug}): ${desc || "Tailor-made private tour with chauffeur and hotels."}\n`;
