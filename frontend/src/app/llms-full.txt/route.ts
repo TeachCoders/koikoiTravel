@@ -100,13 +100,19 @@ export async function GET() {
       });
     }
 
-    const filePath = path.join(process.cwd(), "public", "llms-full.txt");
-    return new Response(fs.readFileSync(filePath, "utf-8"), {
+    const filePath = path.join(process.cwd(), "src", "data", "llms-full-fallback.txt");
+    if (fs.existsSync(filePath)) {
+      return new Response(fs.readFileSync(filePath, "utf-8"), {
+        status: 200,
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
+      });
+    }
+    return new Response("# KoiKoi Travel — Comprehensive AI Knowledge Base\n", {
       status: 200,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   } catch (error) {
-    const filePath = path.join(process.cwd(), "public", "llms-full.txt");
+    const filePath = path.join(process.cwd(), "src", "data", "llms-full-fallback.txt");
     if (fs.existsSync(filePath)) {
       return new Response(fs.readFileSync(filePath, "utf-8"), {
         status: 200,

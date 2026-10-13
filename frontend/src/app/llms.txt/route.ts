@@ -110,14 +110,19 @@ export async function GET() {
     }
 
     // Fallback to static file if API returned empty
-    const filePath = path.join(process.cwd(), "public", "llms.txt");
-    const content = fs.readFileSync(filePath, "utf-8");
-    return new Response(content, {
+    const filePath = path.join(process.cwd(), "src", "data", "llms-fallback.txt");
+    if (fs.existsSync(filePath)) {
+      return new Response(fs.readFileSync(filePath, "utf-8"), {
+        status: 200,
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
+      });
+    }
+    return new Response("# KoiKoi Travel\n\n> Custom tour operator in India offering private tailor-made holiday packages.\n", {
       status: 200,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   } catch (error) {
-    const filePath = path.join(process.cwd(), "public", "llms.txt");
+    const filePath = path.join(process.cwd(), "src", "data", "llms-fallback.txt");
     if (fs.existsSync(filePath)) {
       return new Response(fs.readFileSync(filePath, "utf-8"), {
         status: 200,
