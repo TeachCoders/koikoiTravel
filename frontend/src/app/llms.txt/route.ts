@@ -23,13 +23,14 @@ function cleanBrandText(str?: string | null): string {
   if (!str) return "";
   return str
     .replace(/^seo\s*description\s*:\s*/i, "")
-    .replace(/\bKoKoi\s+Travels?\b/gi, "KoiKoi Travel")
+    .replace(/\bKoKoi\s*Travels?\b/gi, "KoiKoi Travel")
     .replace(/\bKoiKoi\s+Travels\b/gi, "KoiKoi Travel")
-    .replace(/\bKoKoi\s+Tour\b/gi, "KoiKoi Travel")
+    .replace(/\bKoiKoi\s*Tours?\s*for\b/gi, "KoiKoi Travel for")
     .replace(/\bKoiKoi\s+Tours\b/gi, "KoiKoi Travel")
+    .replace(/\bKoKoi\s+Tour\b/gi, "KoiKoi Travel")
+    .replace(/\bKoiKoi\s+Tour\b/gi, "KoiKoi Travel")
     .replace(/\bKoKoi\b/gi, "KoiKoi")
-    .replace(/\s+/g, " ")
-    .trim();
+    .replace(/KoiKoi\s{2,}Travel/g, "KoiKoi Travel");
 }
 
 function resolveRouteCities(j: any): string[] {
@@ -124,7 +125,7 @@ export async function GET() {
       md += `- [Terms & Conditions](${SITE_URL}/terms-and-conditions): Tour booking terms, payment schedules, and operator guidelines.\n`;
       md += `- [Cancellation & Refund Policy](${SITE_URL}/cancellation-and-refund-policy): Transparent cancellation terms and refund processing timelines.\n`;
 
-      return new Response(md, {
+      return new Response(cleanBrandText(md), {
         status: 200,
         headers: {
           "Content-Type": "text/plain; charset=utf-8",

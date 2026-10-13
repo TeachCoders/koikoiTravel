@@ -23,13 +23,14 @@ function cleanBrandText(str?: string | null): string {
   if (!str) return "";
   return str
     .replace(/^seo\s*description\s*:\s*/i, "")
-    .replace(/\bKoKoi\s+Travels?\b/gi, "KoiKoi Travel")
+    .replace(/\bKoKoi\s*Travels?\b/gi, "KoiKoi Travel")
     .replace(/\bKoiKoi\s+Travels\b/gi, "KoiKoi Travel")
-    .replace(/\bKoKoi\s+Tour\b/gi, "KoiKoi Travel")
+    .replace(/\bKoiKoi\s*Tours?\s*for\b/gi, "KoiKoi Travel for")
     .replace(/\bKoiKoi\s+Tours\b/gi, "KoiKoi Travel")
+    .replace(/\bKoKoi\s+Tour\b/gi, "KoiKoi Travel")
+    .replace(/\bKoiKoi\s+Tour\b/gi, "KoiKoi Travel")
     .replace(/\bKoKoi\b/gi, "KoiKoi")
-    .replace(/\s+/g, " ")
-    .trim();
+    .replace(/KoiKoi\s{2,}Travel/g, "KoiKoi Travel");
 }
 
 function resolveRouteCities(j: any): string[] {
@@ -105,7 +106,7 @@ export async function GET() {
         states.forEach((s: any) => {
           if (!s.slug) return;
           md += `### [${s.title || s.name} Tours](${SITE_URL}/tour-packages/india/${s.slug})\n`;
-          if (s.seoDescription) md += `${s.seoDescription}\n\n`;
+          if (s.seoDescription) md += `${cleanBrandText(s.seoDescription)}\n\n`;
         });
       }
 
@@ -114,7 +115,7 @@ export async function GET() {
         experiences.forEach((e: any) => {
           if (!e.slug) return;
           md += `### [${e.title || e.name}](${SITE_URL}/travel-experiences/${e.slug})\n`;
-          if (e.seoDescription) md += `${e.seoDescription}\n\n`;
+          if (e.seoDescription) md += `${cleanBrandText(e.seoDescription)}\n\n`;
         });
       }
 
@@ -126,7 +127,7 @@ export async function GET() {
       md += `- Sightseeing as per customized itinerary with zero forced commercial shopping stops.\n`;
       md += `- 24/7 dedicated personal trip manager available on call/WhatsApp.\n`;
 
-      return new Response(md, {
+      return new Response(cleanBrandText(md), {
         status: 200,
         headers: {
           "Content-Type": "text/plain; charset=utf-8",
