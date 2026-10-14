@@ -68,7 +68,7 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
   priority,
   fetchPriority,
   loading,
-  quality = 80,
+  quality = 75,
   unoptimized,
   ...props
 }) => {

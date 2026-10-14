@@ -19,6 +19,7 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: ["isomorphic-dompurify"],
   images: {
+    qualities: [50, 70, 75, 80, 85, 90, 100],
     deviceSizes: [640, 750, 1080, 1200, 1920],
     imageSizes: [32, 64, 96, 128, 256, 384],
     formats: ["image/webp"],
