@@ -10,7 +10,7 @@ export function AppProviders({
 }: {
   children: React.ReactNode;
 }) {
-
+  const [mounted, setMounted] = useState(false);
   const [queryClient] = useState(
     () => new QueryClient({
       defaultOptions: {
@@ -24,16 +24,19 @@ export function AppProviders({
   );
 
   useEffect(() => {
+    setMounted(true);
     fetchCsrfToken();
   }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-         <Toaster
-        position="top-right"
-        reverseOrder={false}
-      />
+      {mounted && (
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+        />
+      )}
     </QueryClientProvider>
   );
 }

@@ -116,7 +116,7 @@ function buildDefaultDestinationTree(): DestinationTreeCountry[] {
         },
         {
           id: 3,
-          title: "Jammu and Kashmir",
+          title: "Jammu And Kashmir",
           slug: "jammu-and-kashmir",
           href: "/tour-packages/india/jammu-and-kashmir",
           displayOrder: 3,
