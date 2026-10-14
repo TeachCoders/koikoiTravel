@@ -189,8 +189,8 @@ export default function TopBar({ isScrolled }: { isScrolled?: boolean }) {
             aria-haspopup="listbox"
             className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#2f3233] hover:bg-[#353839] border-2 border-[#2E8B8B] text-white text-xs sm:text-[13px] font-bold tracking-wide transition-all shadow-[0_2px_12px_rgba(46,139,139,0.35)] hover:shadow-[0_2px_16px_rgba(46,139,139,0.5)] cursor-pointer"
           >
-            <span className="text-base leading-none">{currentLangObj.flag}</span>
-            <span className="text-white font-bold">{currentLangObj.nativeName}</span>
+            <span className="text-base leading-none" suppressHydrationWarning>{currentLangObj.flag}</span>
+            <span className="text-white font-bold" suppressHydrationWarning>{currentLangObj.nativeName}</span>
             <ChevronDown
               className={`w-4 h-4 text-[#2E8B8B] transition-transform duration-200 ${
                 isOpen ? "rotate-180" : ""

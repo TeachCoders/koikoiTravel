@@ -37,7 +37,10 @@ export const organizationSchema: Record<string, unknown> = {
     "Rajasthan Tours",
     "Kerala Tours"
   ],
-  sameAs: ["https://www.facebook.com/koikoiTravel/"]
+  sameAs: [
+    "https://www.facebook.com/koikoiTravel/",
+    "https://www.youtube.com/@KoiKoiTravel"
+  ]
 };
 
 export const websiteSchema: Record<string, unknown> = {

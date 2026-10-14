@@ -124,7 +124,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
             </p>
 
             {/* Seamless Borderless Review (No Card Box, No Border) */}
-            <div className="mb-5 pt-1">
+            <div className="mb-5 pt-1" suppressHydrationWarning>
               {/* Star Rating & Trip Tag */}
               <div className="flex items-center gap-3 mb-2.5">
                 <div className="flex items-center gap-1 text-amber-500">
@@ -132,28 +132,28 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
                     <span key={i} className="text-base">★</span>
                   ))}
                 </div>
-                <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700" suppressHydrationWarning>
                   {currentReview.tripName}
                 </span>
               </div>
 
               {/* Review Comment Quote */}
-              <p className="text-slate-700 text-sm sm:text-[15px] leading-relaxed italic mb-3.5 min-h-[60px] font-normal">
+              <p className="text-slate-700 text-sm sm:text-[15px] leading-relaxed italic mb-3.5 min-h-[60px] font-normal" suppressHydrationWarning>
                 "{currentReview.comment}"
               </p>
 
               {/* Reviewer Details & Normal Indicator Dots */}
               <div className="flex items-center justify-between gap-4 pt-1">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-slate-900 text-[#F8904D] border border-slate-700 font-bold flex items-center justify-center text-xs shadow-xs">
+                  <div className="w-9 h-9 rounded-full bg-slate-900 text-[#F8904D] border border-slate-700 font-bold flex items-center justify-center text-xs shadow-xs" suppressHydrationWarning>
                     {currentReview.name.split(" ")[0]?.[0]}
                     {currentReview.name.split(" ")[1]?.[0] || ""}
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-slate-900">
+                    <h3 className="text-sm font-semibold text-slate-900" suppressHydrationWarning>
                       {currentReview.name}
                     </h3>
-                    <p className="text-xs text-slate-500 font-normal">{currentReview.location}</p>
+                    <p className="text-xs text-slate-500 font-normal" suppressHydrationWarning>{currentReview.location}</p>
                   </div>
                 </div>
 

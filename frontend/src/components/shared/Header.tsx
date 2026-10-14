@@ -322,7 +322,7 @@ export const Header: React.FC = () => {
   });
 
   const destinationTree = useMemo(() => {
-    if (!states || states.length === 0) return [];
+    if (!mounted || !states || states.length === 0) return [];
 
     const countryMap = new Map<number, DestinationTreeCountry>();
 
@@ -380,9 +380,10 @@ export const Header: React.FC = () => {
     });
 
     return result;
-  }, [states]);
+  }, [mounted, states]);
 
   const tourLinks = useMemo(() => {
+    if (!mounted) return DEFAULT_TOUR_LINKS;
     const links = pickPriorityLinks<Journey>(
       journeys,
       (j) => j.displayOrder ?? 0,
@@ -394,10 +395,11 @@ export const Header: React.FC = () => {
       }
     );
     return links.length > 0 ? links : DEFAULT_TOUR_LINKS;
-  }, [journeys]);
+  }, [mounted, journeys]);
 
   const experienceLinks = useMemo(
     () => {
+      if (!mounted) return DEFAULT_EXPERIENCE_LINKS;
       const links = pickPriorityLinks<TravelExperience>(
         travelExperiences,
         (e) => e.displayOrder ?? 0,
@@ -405,7 +407,7 @@ export const Header: React.FC = () => {
       );
       return links.length > 0 ? links : DEFAULT_EXPERIENCE_LINKS;
     },
-    [travelExperiences]
+    [mounted, travelExperiences]
   );
 
   const safeDestinationTree = useMemo<DestinationTreeCountry[]>(
@@ -414,6 +416,7 @@ export const Header: React.FC = () => {
   );
 
   const destinationLinks = useMemo<NavChild[]>(() => {
+    if (!mounted) return DEFAULT_DESTINATION_LINKS;
     const links: NavChild[] = [];
     safeDestinationTree.forEach((country) =>
       country.states.forEach((state) =>
@@ -421,7 +424,7 @@ export const Header: React.FC = () => {
       )
     );
     return links.length > 0 ? links.slice(0, 16) : DEFAULT_DESTINATION_LINKS;
-  }, [safeDestinationTree]);
+  }, [mounted, safeDestinationTree]);
 
   type NavLink = {
     href: string;
@@ -620,7 +623,7 @@ export const Header: React.FC = () => {
                     onClick={handleMobileClose}
                     className="block px-4 py-2.5 text-[15px] font-medium text-[#444] transition-colors hover:bg-[#f6f7f8] hover:text-[#1C1C1C]"
                   >
-                    {child.label}
+                    <span suppressHydrationWarning>{child.label}</span>
                   </Link>
                 ))}
                 {link.seeAllHref && (
@@ -719,7 +722,7 @@ export const Header: React.FC = () => {
                         : "text-[#444]"
                         }`}
                     >
-                      <span className="relative z-10">{link.label}</span>
+                      <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
                       <ChevronDown
                         className={`w-4 h-4 relative z-10 transition-transform duration-300 ${openDesktopDropdown === link.href ? "rotate-180" : ""
                           }`}
@@ -733,7 +736,7 @@ export const Header: React.FC = () => {
                         : "text-[#444]"
                         }`}
                     >
-                      <span className="relative z-10">{link.label}</span>
+                      <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
                     </Link>
                   )}
 
@@ -771,7 +774,7 @@ export const Header: React.FC = () => {
                               onClick={() => setOpenDesktopDropdown(null)}
                               className="px-2.5 py-1.5 -mx-2.5 rounded-lg text-[15px] text-slate-700 hover:text-[#2E8B8B] hover:bg-slate-50 font-medium transition-colors duration-150 truncate block"
                             >
-                              {child.label}
+                              <span suppressHydrationWarning>{child.label}</span>
                             </Link>
                           ))}
                         </div>
