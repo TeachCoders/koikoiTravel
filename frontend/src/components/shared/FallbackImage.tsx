@@ -66,6 +66,8 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
   theme = "light",
   fill,
   priority,
+  fetchPriority,
+  loading,
   quality = 80,
   unoptimized,
   ...props
@@ -96,12 +98,16 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
     );
   }
 
+  const isPriority = Boolean(priority);
+  const effectiveLoading = isPriority ? "eager" : (loading || "lazy");
+  const effectiveFetchPriority = isPriority ? "high" : (fetchPriority ?? undefined);
+
   // Next.js Image for fast, optimized loading
   // For priority images (above-the-fold / hero), render instantly with no opacity lag.
-  // For other images, use a subtle 150ms transition instead of an artificial 700ms delay.
+  // For other images, use a subtle 150ms transition instead of an artificial delay.
   return (
     <>
-      {!loaded && !priority && (
+      {!loaded && !isPriority && (
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none" aria-hidden="true">
           <ImageWatermark theme={theme} logo={fallbackSrc} alt={alt} />
         </div>
@@ -110,7 +116,7 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
         src={src}
         alt={alt}
         className={`${className} ${
-          priority
+          isPriority
             ? "opacity-100"
             : `transition-opacity duration-150 ease-out ${loaded ? "opacity-100" : "opacity-0"}`
         }`}
@@ -118,9 +124,9 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
         onError={() => setError(true)}
         unoptimized={unoptimized ?? shouldBeUnoptimized(src)}
         fill={fill}
-        priority={priority}
-        fetchPriority={priority ? "high" : ((props as any).fetchPriority ?? undefined)}
-        loading={priority ? "eager" : props.loading}
+        priority={isPriority}
+        fetchPriority={effectiveFetchPriority}
+        loading={effectiveLoading}
         quality={quality}
         width={!fill ? (props.width ? Number(props.width) : 800) : undefined}
         height={!fill ? (props.height ? Number(props.height) : 600) : undefined}

@@ -24,6 +24,7 @@ const nextConfig: NextConfig = {
     formats: ["image/webp"],
     minimumCacheTTL: 31536000,
     dangerouslyAllowSVG: true,
+    contentDispositionType: "inline",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       { protocol: "https", hostname: "res.cloudinary.com" },
