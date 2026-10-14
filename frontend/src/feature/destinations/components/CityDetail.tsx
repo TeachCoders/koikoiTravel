@@ -69,6 +69,15 @@ function CityContent({
 }) {
   const state = city.state;
   const countrySlug = state?.country?.slug;
+  const stateSlug = state?.slug;
+
+  const pageLinkedHrefs = useMemo(() => new Set<string>(), [city.id]);
+  const excludeHrefs = useMemo(() => [
+    `/tour-packages/${countrySlug || "india"}/${stateSlug}/${city.slug}`,
+    `/${countrySlug || "india"}/${stateSlug}/${city.slug}`,
+    `/tour-packages/india/${stateSlug}/${city.slug}`,
+    city.slug,
+  ], [countrySlug, stateSlug, city.slug]);
 
   const { journeys, isLoading: journeysLoading } = useGetJourneys(
     { limit: 100, isActive: "true" },
@@ -284,7 +293,11 @@ function CityContent({
                   </h2>
 
                   {hasSeoDesc && (
-                    <RichContent html={city.seoDescription!} />
+                    <RichContent
+                      html={city.seoDescription!}
+                      sharedLinkedHrefs={pageLinkedHrefs}
+                      excludeHrefs={excludeHrefs}
+                    />
                   )}
 
                   {hasAttractions && (
@@ -292,7 +305,11 @@ function CityContent({
                       <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
                         <Compass size={18} className="text-[#2E8B8B]" /> Top Attractions
                       </h3>
-                      <RichContent html={city.attractions!} />
+                      <RichContent
+                        html={city.attractions!}
+                        sharedLinkedHrefs={pageLinkedHrefs}
+                        excludeHrefs={excludeHrefs}
+                      />
                     </div>
                   )}
 
@@ -301,12 +318,21 @@ function CityContent({
                       <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
                         <CloudSun size={18} className="text-[#F5B041]" /> Weather & Best Time
                       </h3>
-                      <RichContent html={city.weather!} />
+                      <RichContent
+                        html={city.weather!}
+                        sharedLinkedHrefs={pageLinkedHrefs}
+                        excludeHrefs={excludeHrefs}
+                      />
                     </div>
                   )}
 
                   {hasMoreDesc && (
-                    <RichContent html={city.moreDescription!} className="mt-8" />
+                    <RichContent
+                      html={city.moreDescription!}
+                      sharedLinkedHrefs={pageLinkedHrefs}
+                      excludeHrefs={excludeHrefs}
+                      className="mt-8"
+                    />
                   )}
                 </div>
               )}

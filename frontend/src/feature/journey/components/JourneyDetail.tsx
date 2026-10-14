@@ -72,6 +72,52 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
     [cityLinkRules]
   );
 
+  // Single shared set of linked hrefs across the entire tour package page
+  // Ensures maximum 1 link per destination across Overview, all Itinerary Days, Trip Guide, and FAQs
+  const { linkedOverview, linkedDays, linkedMoreDesc, pageLinkedHrefs, excludeHrefs } = useMemo(() => {
+    const pageLinked = new Set<string>();
+    const exclude = [
+      `/tour-packages/${slug}`,
+      `/tour-packages/${journey?.slug || ""}`,
+      slug,
+    ];
+
+    const overview = journey?.overView
+      ? linkKeywords(journey.overView, paragraphLinkRules, {
+          sharedLinkedHrefs: pageLinked,
+          excludeHrefs: exclude,
+        })
+      : "";
+
+    const days = (journey?.days || []).map((day) => {
+      const desc = day.seoDescription || (day as any).description || "";
+      return {
+        ...day,
+        linkedDescription: desc
+          ? linkKeywords(desc, paragraphLinkRules, {
+              sharedLinkedHrefs: pageLinked,
+              excludeHrefs: exclude,
+            })
+          : "",
+      };
+    });
+
+    const moreDesc = journey?.moreDescription
+      ? linkKeywords(journey.moreDescription, paragraphLinkRules, {
+          sharedLinkedHrefs: pageLinked,
+          excludeHrefs: exclude,
+        })
+      : "";
+
+    return {
+      linkedOverview: overview,
+      linkedDays: days,
+      linkedMoreDesc: moreDesc,
+      pageLinkedHrefs: pageLinked,
+      excludeHrefs: exclude,
+    };
+  }, [journey, paragraphLinkRules, slug]);
+
   useEffect(() => {
     setPageUrl(window.location.href);
   }, []);
@@ -524,7 +570,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                 About <span className="text-[#F8904D]">This Tour</span>
               </h2>
               <div className="bg-white rounded-2xl md:rounded-3xl p-5 md:p-8 border border-slate-200/80 shadow-sm text-[15px] font-normal text-slate-600 leading-[1.8]">
-                <RichContent html={linkKeywords(journey.overView, paragraphLinkRules)} className="rich-text-plain-links" />
+                <RichContent html={linkedOverview} autoLink={false} className="rich-text-plain-links" />
               </div>
             </section>
           )}
@@ -543,13 +589,12 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               </div>
               <div className="relative bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 shadow-sm border border-slate-200/80">
                 <div className="day-accordion">
-                  {journey.days.map((day, i) => (
+                  {linkedDays.map((day, i) => (
                     <DayItem
                       key={day.id}
                       index={i + 1}
                       day={day}
                       defaultOpen={i === 0}
-                      linkRules={paragraphLinkRules}
                     />
                   ))}
                 </div>
@@ -689,7 +734,11 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
       </div>
 
       {/* ===== FAQ SECTION (Placed Before Trip Guide) ===== */}
-      <FaqSection faqs={journey.faqs} />
+      <FaqSection
+        faqs={journey.faqs}
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
+      />
 
       {/* ===== TRIP GUIDE (MORE DESCRIPTION) ===== */}
       {journey.moreDescription && (
@@ -703,7 +752,8 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                 Essential <span className="text-[#F8904D]">Trip Guide</span>
               </h2>
               <RichContent
-                html={linkKeywords(journey.moreDescription, paragraphLinkRules)}
+                html={linkedMoreDesc}
+                autoLink={false}
                 className="rich-text-plain-links text-[15px] sm:text-base text-slate-600 leading-[1.8]"
               />
             </div>
@@ -728,12 +778,10 @@ function DayItem({
   index,
   day,
   defaultOpen,
-  linkRules,
 }: {
   index: number;
-  day: { id: number; day: string; description?: string; image?: string };
+  day: { id: number; day: string; description?: string; seoDescription?: string; linkedDescription?: string; image?: string };
   defaultOpen?: boolean;
-  linkRules?: AutoLinkRule[];
 }) {
   const dayTitle = stripHtml(day.day.replace(/^Day\s*\d+\s*:\s*/i, "").trim());
 
@@ -784,10 +832,11 @@ function DayItem({
             whole block smoothly. Padding lives here, not on the outer wrapper, so
             nothing shows through while the row is at 0fr. */}
         <div className="day-accordion-inner pt-1 md:pt-2 pb-4">
-          {day.description && (
+          {(day.linkedDescription || day.seoDescription || day.description) && (
             <div className="text-[14.5px] sm:text-[15px] text-slate-600 font-normal leading-[1.75]">
               <RichContent
-                html={linkRules ? linkKeywords(day.description, linkRules) : day.description}
+                html={day.linkedDescription || day.seoDescription || day.description || ""}
+                autoLink={false}
                 className="rich-text-plain-links"
               />
             </div>

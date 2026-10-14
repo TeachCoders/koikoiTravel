@@ -89,6 +89,14 @@ function CountryContent({
   const hasMoreDesc = Boolean(stripHtml(country.moreDescription).trim());
   const hasKnowMoreText = hasSeoDesc || hasMoreDesc;
 
+  const pageLinkedHrefs = useMemo(() => new Set<string>(), [country.id]);
+  const excludeHrefs = useMemo(() => [
+    `/tour-packages/${country.slug}`,
+    `/${country.slug}`,
+    "/tour-packages/india",
+    "/india",
+  ], [country.slug]);
+
 
   const { states, isLoading: statesLoading } = useGetStates(
     {
@@ -425,11 +433,20 @@ function CountryContent({
                   </h2>
 
                   {hasSeoDesc && (
-                    <RichContent html={country.seoDescription!} />
+                    <RichContent
+                      html={country.seoDescription!}
+                      sharedLinkedHrefs={pageLinkedHrefs}
+                      excludeHrefs={excludeHrefs}
+                    />
                   )}
 
                   {hasMoreDesc && (
-                    <RichContent html={country.moreDescription!} className={hasSeoDesc ? "mt-8" : ""} />
+                    <RichContent
+                      html={country.moreDescription!}
+                      sharedLinkedHrefs={pageLinkedHrefs}
+                      excludeHrefs={excludeHrefs}
+                      className={hasSeoDesc ? "mt-8" : ""}
+                    />
                   )}
                 </div>
               )}

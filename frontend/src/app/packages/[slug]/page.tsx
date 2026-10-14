@@ -84,6 +84,8 @@ export default async function PackageDetailPage({ params }: Props) {
     pricePerDay?: number;
   }[];
   const bannerUrl = Array.isArray(pkg.bannerImageUrl) ? pkg.bannerImageUrl[0] : pkg.bannerImageUrl;
+  const pageLinkedHrefs = new Set<string>();
+  const excludeHrefs = [`/packages/${pkg.slug}`, `/packages/${slug}`, slug];
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -162,7 +164,11 @@ export default async function PackageDetailPage({ params }: Props) {
             {pkg.description && (
               <div className="bg-white rounded-xl border border-slate-200 p-6">
                 <h2 className="text-lg font-bold text-slate-900 mb-4">About This Package</h2>
-                <RichContent html={pkg.description} />
+                <RichContent
+                  html={pkg.description}
+                  sharedLinkedHrefs={pageLinkedHrefs}
+                  excludeHrefs={excludeHrefs}
+                />
               </div>
             )}
 
@@ -181,7 +187,12 @@ export default async function PackageDetailPage({ params }: Props) {
                       </div>
                       <div className="pb-6 flex-1">
                         <h3 className="text-sm font-bold text-slate-900">{day.title || `Day ${i + 1}`}</h3>
-                        <RichContent html={day.content} className="mt-2" />
+                        <RichContent
+                          html={day.content}
+                          className="mt-2"
+                          sharedLinkedHrefs={pageLinkedHrefs}
+                          excludeHrefs={excludeHrefs}
+                        />
                       </div>
                     </div>
                   ))}

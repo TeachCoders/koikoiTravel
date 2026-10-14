@@ -73,6 +73,12 @@ function ExperienceContent({
 }) {
   const h1Title = experience.h1Title || experience.title;
 
+  const pageLinkedHrefs = useMemo(() => new Set<string>(), [experience.id]);
+  const excludeHrefs = useMemo(() => [
+    `/travel-experiences/${experience.slug}`,
+    experience.slug,
+  ], [experience.slug]);
+
   const { journeys, isLoading: journeysLoading } = useGetJourneys(
     {
       limit: 100,
@@ -472,7 +478,11 @@ function ExperienceContent({
               <span className="accent-label">Know More</span>
 
               {experience.moreDescription && (
-                <RichContent html={experience.moreDescription} />
+                <RichContent
+                  html={experience.moreDescription}
+                  sharedLinkedHrefs={pageLinkedHrefs}
+                  excludeHrefs={excludeHrefs}
+                />
               )}
             </div>
 

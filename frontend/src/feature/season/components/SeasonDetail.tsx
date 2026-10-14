@@ -2,7 +2,7 @@
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Sparkles, CalendarDays, BadgeCheck, MapPin, ChevronRight } from "lucide-react";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import HeroSlider from "@/components/shared/HeroSlider";
@@ -67,6 +67,9 @@ export default function SeasonDetail({
     { label: "Best For", value: initialSeason.bestFor },
     { label: "Festivals", value: initialSeason.festivals },
   ].filter((f) => f.value);
+
+  const pageLinkedHrefs = useMemo(() => new Set<string>(), [initialSeason.id]);
+  const excludeHrefs = useMemo(() => [`/season/${initialSeason.slug}`], [initialSeason.slug]);
 
   const [expSelected, setExpSelected] = useState<string[]>([]);
   const [durSelected, setDurSelected] = useState<string[]>([]);
@@ -204,11 +207,20 @@ export default function SeasonDetail({
                   <h2 className="h3 text-[#1C1C1C] mt-2 mb-8">Everything About {initialSeason.title}</h2>
 
                   {hasSeoDesc && (
-                    <RichContent html={initialSeason.seoDescription!} />
+                    <RichContent
+                      html={initialSeason.seoDescription!}
+                      sharedLinkedHrefs={pageLinkedHrefs}
+                      excludeHrefs={excludeHrefs}
+                    />
                   )}
 
                   {hasMoreDesc && (
-                    <RichContent html={initialSeason.moreDescription!} className={hasSeoDesc ? "mt-8" : ""} />
+                    <RichContent
+                      html={initialSeason.moreDescription!}
+                      sharedLinkedHrefs={pageLinkedHrefs}
+                      excludeHrefs={excludeHrefs}
+                      className={hasSeoDesc ? "mt-8" : ""}
+                    />
                   )}
                 </div>
               )}

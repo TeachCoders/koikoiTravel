@@ -12,12 +12,16 @@ interface FaqSectionProps {
   faqs?: any[];
   heading?: string;
   subtitle?: string;
+  sharedLinkedHrefs?: Set<string>;
+  excludeHrefs?: string[];
 }
 
 export const FaqSection: React.FC<FaqSectionProps> = ({
   faqs,
   heading = "Frequently Asked Questions",
   subtitle = "Simple answers about booking, payments, trip plans and help during your holiday.",
+  sharedLinkedHrefs,
+  excludeHrefs,
 }) => {
   const [openId, setOpenId] = useState<number | string | null>(1);
   const toggleFaq = (id: number | string) => setOpenId(openId === id ? null : id);
@@ -88,7 +92,11 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             itemProp="text"
             className="px-4 pb-4 md:px-5 md:pb-5 text-slate-600 text-xs sm:text-sm leading-relaxed border-t border-slate-100 pt-3.5 rich-text-plain-links"
           >
-            <RichContent html={autoLinkKeywords(faq.answer)} />
+            <RichContent
+              html={faq.answer}
+              sharedLinkedHrefs={sharedLinkedHrefs}
+              excludeHrefs={excludeHrefs}
+            />
           </div>
         </div>
       </div>

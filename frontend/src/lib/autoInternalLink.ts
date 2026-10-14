@@ -18,7 +18,7 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
     href: "/travel-experiences/honeymoon",
   },
   {
-    terms: ["Heritage & Culture", "Heritage Tours", "Heritage Tour", "Cultural Heritage", "Heritage"],
+    terms: ["Heritage & Culture", "Heritage Tours", "Heritage Tour", "Cultural Heritage"],
     href: "/travel-experiences/heritage-and-culture",
   },
   {
@@ -26,7 +26,7 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
     href: "/travel-experiences/ayurveda-yoga",
   },
   {
-    terms: ["Wildlife Safari", "Wildlife Tours", "Wildlife Tour", "Jungle Safari", "Tiger Safari", "Wildlife"],
+    terms: ["Wildlife Safari", "Wildlife Tours", "Wildlife Tour", "Jungle Safari", "Tiger Safari"],
     href: "/travel-experiences/wildlife",
   },
   {
@@ -34,11 +34,11 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
     href: "/travel-experiences/desert-safari",
   },
   {
-    terms: ["Spiritual Tours", "Spiritual Tour", "Pilgrimage Tour", "Pilgrimage Tours", "Spiritual"],
+    terms: ["Spiritual Tours", "Spiritual Tour", "Pilgrimage Tour", "Pilgrimage Tours"],
     href: "/travel-experiences/spiritual",
   },
   {
-    terms: ["Hill Station Tours", "Hill Station Tour", "Hill Stations", "Hill Station"],
+    terms: ["Hill Station Tours", "Hill Station Tour", "Hill Stations"],
     href: "/travel-experiences/hill-station",
   },
   {
@@ -54,7 +54,7 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
     href: "/travel-experiences/beach-lake",
   },
   {
-    terms: ["Nature & Eco Tours", "Nature Tour", "Nature Tours", "Nature"],
+    terms: ["Nature & Eco Tours", "Nature Tour", "Nature Tours"],
     href: "/travel-experiences/nature",
   },
 
@@ -292,7 +292,7 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
   { terms: ["South Goa Beaches", "South Goa"], href: "/tour-packages/india/goa/south-goa" },
 
   // General Tours Explorer
-  { terms: ["India Tour Packages", "Tour Packages", "Tour Package", "Holiday Packages"], href: "/tour-packages" },
+  { terms: ["India Tour Packages", "India Holiday Packages"], href: "/tour-packages" },
 ];
 
 function escapeRegex(str: string): string {
@@ -305,20 +305,59 @@ export function buildExperienceLinkRules(): AutoLinkRule[] {
   );
 }
 
+export function normalizeHref(href: string): string {
+  if (!href) return "";
+  let clean = href.trim().toLowerCase();
+  clean = clean.replace(/^https?:\/\/[^\/]+/, "");
+  clean = clean.replace(/[?#].*$/, "");
+  clean = clean.replace(/\/+$/, "");
+  if (clean.startsWith("/india/")) {
+    clean = "/tour-packages" + clean;
+  }
+  return clean || "/";
+}
+
+export interface AutoLinkOptions {
+  /**
+   * Shared set of already-linked normalized hrefs. Allows sharing across multiple
+   * sections/paragraphs/days on the same page so no destination is linked twice.
+   */
+  sharedLinkedHrefs?: Set<string>;
+  /**
+   * Hrefs to completely exclude from linking (e.g. self-referencing links for current page).
+   */
+  excludeHrefs?: string[];
+  /**
+   * Custom rules override.
+   */
+  rules?: AutoLinkRule[];
+}
+
 /**
  * Links keywords safely across HTML text nodes.
  * STRICTLY PREVENTS linking inside:
  * - <h1>, <h2>, <h3>, <h4>, <h5>, <h6> headings
  * - Existing <a> anchor links
  * - HTML tags & attributes
- * Uses non-word Unicode delimiters (\uE000 / \uE001) so word boundaries (\b) match correctly
- * even when keywords are wrapped in <strong>, <b>, <em>, or other HTML tags.
+ * Automatically ignores self-referencing URLs and prevents repeated links to the same destination.
  */
-export function linkKeywords(html: string, rules: AutoLinkRule[]): string {
+export function linkKeywords(
+  html: string,
+  rules: AutoLinkRule[],
+  options?: AutoLinkOptions
+): string {
   if (!html || !rules.length) return html;
 
   const sortedRules = [...rules].sort((a, b) => b.term.length - a.term.length);
   const protectedTokens: string[] = [];
+
+  // Use provided shared set or allocate a local set for this call
+  const linkedHrefs = options?.sharedLinkedHrefs ?? new Set<string>();
+
+  // Normalized set of excluded URLs (e.g. self-referencing page)
+  const excludedHrefs = new Set<string>(
+    (options?.excludeHrefs || []).map((h) => normalizeHref(h))
+  );
 
   // Step 1: Protect all headings (h1, h2, h3, h4, h5, h6) so they are NEVER linked
   let working = html.replace(/<h[1-6]\b[^>]*>[\s\S]*?<\/h[1-6]>/gi, (m) => {
@@ -326,8 +365,12 @@ export function linkKeywords(html: string, rules: AutoLinkRule[]): string {
     return `\uE000H_${protectedTokens.length - 1}\uE001`;
   });
 
-  // Step 2: Protect existing <a>...</a> tags so they don't get nested links
+  // Step 2: Protect existing <a>...</a> tags AND register their destinations so they are NEVER linked again
   working = working.replace(/<a\b[^>]*>[\s\S]*?<\/a>/gi, (m) => {
+    const hrefMatch = /\bhref\s*=\s*["']([^"']+)["']/i.exec(m);
+    if (hrefMatch) {
+      linkedHrefs.add(normalizeHref(hrefMatch[1]));
+    }
     protectedTokens.push(m);
     return `\uE000A_${protectedTokens.length - 1}\uE001`;
   });
@@ -339,14 +382,17 @@ export function linkKeywords(html: string, rules: AutoLinkRule[]): string {
     return `\uE000TAG_${tagTokens.length - 1}\uE001`;
   });
 
-  // Step 4: Link only the FIRST meaningful mention of each destination/experience per section
-  const linkedHrefs = new Set<string>();
-
+  // Step 4: Link only the FIRST meaningful mention of each destination/experience
   for (const rule of sortedRules) {
     const href = rule.href.startsWith("/") ? rule.href : `/${rule.href}`;
-    const normalizedHref = href.toLowerCase();
+    const normalizedHref = normalizeHref(href);
 
-    // Prevent repeated links to the same destination/page
+    // Skip self-referencing links or explicitly excluded URLs
+    if (excludedHrefs.has(normalizedHref)) {
+      continue;
+    }
+
+    // Prevent repeated links to the same destination/page across the entire page
     if (linkedHrefs.has(normalizedHref)) {
       continue;
     }
@@ -376,6 +422,7 @@ export function linkKeywords(html: string, rules: AutoLinkRule[]): string {
   return working;
 }
 
-export function autoLinkKeywords(html: string): string {
-  return linkKeywords(html, buildExperienceLinkRules());
+export function autoLinkKeywords(html: string, options?: AutoLinkOptions): string {
+  const rules = options?.rules && options.rules.length > 0 ? options.rules : buildExperienceLinkRules();
+  return linkKeywords(html, rules, options);
 }

@@ -1,6 +1,5 @@
 import DOMPurify from "isomorphic-dompurify";
 import { cn } from "@/lib/utils";
-import { autoLinkKeywords } from "@/lib/autoInternalLink";
 
 function isDarkCssColor(cssColor: string): boolean {
   let r = 0, g = 0, b = 0;
@@ -59,7 +58,13 @@ function cleanDeadExternalLinks(html: string): string {
   });
 }
 
-export function sanitizeHtml(html: string): string {
+import { autoLinkKeywords, type AutoLinkOptions, type AutoLinkRule } from "@/lib/autoInternalLink";
+
+export interface SanitizeHtmlOptions extends AutoLinkOptions {
+  autoLink?: boolean;
+}
+
+export function sanitizeHtml(html: string, options?: SanitizeHtmlOptions): string {
   const sanitizedLinks = cleanDeadExternalLinks(html);
   const clean = DOMPurify.sanitize(sanitizedLinks, {
     USE_PROFILES: { html: true },
@@ -69,21 +74,46 @@ export function sanitizeHtml(html: string): string {
   const fixed = wrapResponsiveTables(clean)
     .replace(/<h1\b[^>]*>/gi, (match) => match.replace(/<h1/i, "<h2"))
     .replace(/<\/h1>/gi, "</h2>");
-  const linked = autoLinkKeywords(fixed);
+
+  const linked = options?.autoLink === false
+    ? fixed
+    : autoLinkKeywords(fixed, {
+        sharedLinkedHrefs: options?.sharedLinkedHrefs,
+        excludeHrefs: options?.excludeHrefs,
+        rules: options?.rules,
+      });
+
   return fixTableCellTextContrast(linked);
+}
+
+export interface RichContentProps {
+  html: string;
+  className?: string;
+  autoLink?: boolean;
+  sharedLinkedHrefs?: Set<string>;
+  excludeHrefs?: string[];
+  rules?: AutoLinkRule[];
 }
 
 export default function RichContent({
   html,
   className,
-}: {
-  html: string;
-  className?: string;
-}) {
+  autoLink = true,
+  sharedLinkedHrefs,
+  excludeHrefs,
+  rules,
+}: RichContentProps) {
   return (
     <div
       className={cn("rich-text", className)}
-      dangerouslySetInnerHTML={{ __html: sanitizeHtml(html) }}
+      dangerouslySetInnerHTML={{
+        __html: sanitizeHtml(html, {
+          autoLink,
+          sharedLinkedHrefs,
+          excludeHrefs,
+          rules,
+        }),
+      }}
     />
   );
 }

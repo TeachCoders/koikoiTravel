@@ -66,6 +66,15 @@ export default function StateDetail({
 }
 
 function StateContent({ state, initialJourneys }: { state: State; initialJourneys?: PaginatedResponse<Journey> | null }) {
+  const countrySlug = state.country?.slug || "india";
+  const pageLinkedHrefs = useMemo(() => new Set<string>(), [state.id]);
+  const excludeHrefs = useMemo(() => [
+    `/tour-packages/${countrySlug}/${state.slug}`,
+    `/${countrySlug}/${state.slug}`,
+    `/tour-packages/india/${state.slug}`,
+    `/india/${state.slug}`,
+  ], [countrySlug, state.slug]);
+
   const embeddedJourneys = state.journeys ?? [];
   const { journeys, isLoading: journeysLoading } = useGetJourneys(
     { limit: 100, isActive: "true" },
@@ -609,11 +618,20 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                   </h2>
 
                   {hasSeoDesc && (
-                    <RichContent html={state.seoDescription!} />
+                    <RichContent
+                      html={state.seoDescription!}
+                      sharedLinkedHrefs={pageLinkedHrefs}
+                      excludeHrefs={excludeHrefs}
+                    />
                   )}
 
                   {hasMoreDesc && (
-                    <RichContent html={state.moreDescription!} className={hasSeoDesc ? "mt-8" : ""} />
+                    <RichContent
+                      html={state.moreDescription!}
+                      sharedLinkedHrefs={pageLinkedHrefs}
+                      excludeHrefs={excludeHrefs}
+                      className={hasSeoDesc ? "mt-8" : ""}
+                    />
                   )}
                 </div>
               )}
