@@ -421,7 +421,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               ? `${cleanStateName} Combined City Packages`
               : cleanStateName
           }`}
-          filterBar={currentTabJourneys.length > 0 ? filterBar : undefined}
+          filterBar={currentTabJourneys.length >= 8 ? filterBar : undefined}
           onClearFilters={clearFilters}
           sectionClassName="py-8 sm:py-10 md:py-12 bg-[#f8f8f8] border-b border-slate-200/80 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]"
           cardVariant="default"

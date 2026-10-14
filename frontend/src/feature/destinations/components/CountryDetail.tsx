@@ -337,7 +337,7 @@ function CountryContent({
         h1Title={formatToursH1(country.title || displayTitle)}
         overView={country.overView ?? undefined}
         emptyLabel={`No tours found in ${displayTitle} yet`}
-        filterBar={countryJourneys.length > 0 ? filterBar : undefined}
+        filterBar={countryJourneys.length >= 8 ? filterBar : undefined}
         onClearFilters={clearFilters}
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}

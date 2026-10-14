@@ -192,7 +192,7 @@ export default function SeasonDetail({
         overView={initialSeason.overView ?? undefined}
         emptyLabel={`No tours found for ${initialSeason.title} yet`}
         basePath={`/season/${initialSeason.slug}`}
-        filterBar={seasonJourneys.length > 0 ? filterBar : undefined}
+        filterBar={seasonJourneys.length >= 8 ? filterBar : undefined}
         onClearFilters={clearFilters}
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}

@@ -369,7 +369,7 @@ function ExperienceContent({
         emptyLabel={`No tours found for ${h1Title} yet`}
         showCount={16}
         tabs={tourTabs}
-        filterBar={experienceJourneys.length > 0 ? filterBar : undefined}
+        filterBar={currentTabJourneys.length >= 8 ? filterBar : undefined}
         onClearFilters={clearFilters}
         contextName={h1Title}
         basePath={`/travel-experiences/${experience.slug}`}
