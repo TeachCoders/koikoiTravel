@@ -601,7 +601,11 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
 
       {/* ===== FAQ SECTION ===== */}
-      <FaqSection faqs={state.faqs} />
+      <FaqSection
+        faqs={state.faqs}
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
+      />
 
       {/* ===== ARTICLE / MORE DESCRIPTION (ALL INFO) AT BOTTOM WITH WHITE BACKGROUND ===== */}
       {showMoreSection && (

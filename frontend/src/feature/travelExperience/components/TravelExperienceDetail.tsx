@@ -574,6 +574,8 @@ function ExperienceContent({
             ? (GOLDEN_TRIANGLE_FAQS as any)
             : experience?.faqs
         }
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
       />
     </div>
   );

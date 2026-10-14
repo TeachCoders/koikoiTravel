@@ -436,7 +436,11 @@ function CityContent({
       )}
 
       {/* ===== FAQ SECTION ===== */}
-      <FaqSection faqs={city.faqs} />
+      <FaqSection
+        faqs={city.faqs}
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
+      />
     </div>
   );
 }

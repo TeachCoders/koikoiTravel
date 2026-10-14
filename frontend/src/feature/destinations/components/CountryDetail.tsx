@@ -528,7 +528,11 @@ function CountryContent({
       )}
 
       {/* ===== FAQ SECTION ===== */}
-      <FaqSection faqs={country.faqs} />
+      <FaqSection
+        faqs={country.faqs}
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
+      />
     </div>
   );
 }

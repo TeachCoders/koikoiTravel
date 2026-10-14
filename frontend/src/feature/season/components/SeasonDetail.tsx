@@ -294,7 +294,11 @@ export default function SeasonDetail({
       <OtherSeasonsSection currentSlug={initialSeason.slug} />
 
       {/* ===== FAQ SECTION ===== */}
-      <FaqSection faqs={initialSeason.faqs} />
+      <FaqSection
+        faqs={initialSeason.faqs}
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
+      />
     </div>
   );
 }
