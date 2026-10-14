@@ -26,6 +26,7 @@ interface RichTextEditorProps {
   placeholder?: string;
   className?: string;
   minHeight?: string;
+  compact?: boolean;
 }
 
 function ToolbarButton({ onClick, active, children, title }: {
@@ -193,7 +194,7 @@ function BubbleButton({ onClick, active, title, children }: {
 }
 
 export default function RichTextEditor({
-  content, onChange, placeholder = "Start writing...", className = "", minHeight = "min-h-[120px]",
+  content, onChange, placeholder = "Start writing...", className = "", minHeight = "min-h-[120px]", compact = false,
 }: RichTextEditorProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [cropOpen, setCropOpen] = useState(false);
@@ -263,10 +264,14 @@ export default function RichTextEditor({
   }, [editor]);
 
   useEffect(() => {
-    const handleOpenLinkDialog = () => openLinkModal();
+    const handleOpenLinkDialog = () => {
+      if (editor?.isFocused) {
+        openLinkModal();
+      }
+    };
     window.addEventListener(OPEN_LINK_DIALOG_EVENT, handleOpenLinkDialog);
     return () => window.removeEventListener(OPEN_LINK_DIALOG_EVENT, handleOpenLinkDialog);
-  }, [openLinkModal]);
+  }, [editor, openLinkModal]);
 
   const applyLink = () => {
     if (!editor) return;
@@ -517,29 +522,37 @@ export default function RichTextEditor({
         <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} active={editor.isActive("strike")} title="Strikethrough (Ctrl+Shift+X)"><Strikethrough size={14} /></ToolbarButton>
         <ToolbarButton onClick={openLinkModal} active={editor.isActive("link")} title="Link (Ctrl+K)"><Link2 size={14} /></ToolbarButton>
         <div className="w-px h-5 bg-slate-200 mx-1" />
-        <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} active={editor.isActive("heading", { level: 1 })} title="Heading 1 (Ctrl+Alt+1)"><Heading1 size={14} /></ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} active={editor.isActive("heading", { level: 2 })} title="Heading 2 (Ctrl+Alt+2)"><Heading2 size={14} /></ToolbarButton>
+        {!compact && (
+          <>
+            <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} active={editor.isActive("heading", { level: 1 })} title="Heading 1 (Ctrl+Alt+1)"><Heading1 size={14} /></ToolbarButton>
+            <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} active={editor.isActive("heading", { level: 2 })} title="Heading 2 (Ctrl+Alt+2)"><Heading2 size={14} /></ToolbarButton>
+          </>
+        )}
         <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} active={editor.isActive("heading", { level: 3 })} title="Heading 3 (Ctrl+Alt+3)"><Heading3 size={14} /></ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()} active={editor.isActive("heading", { level: 4 })} title="Heading 4 (Ctrl+Alt+4)"><Heading4 size={14} /></ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().setParagraph().run()} active={editor.isActive("paragraph") && !editor.isActive("heading")} title="Paragraph (Ctrl+Alt+0)"><Pilcrow size={14} /></ToolbarButton>
         <div className="w-px h-5 bg-slate-200 mx-1" />
         <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} active={editor.isActive("bulletList")} title="Bullet List (Ctrl+Shift+8)"><List size={14} /></ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} active={editor.isActive("orderedList")} title="Numbered List (Ctrl+Shift+7)"><ListOrdered size={14} /></ToolbarButton>
-        <div className="w-px h-5 bg-slate-200 mx-1" />
-        <ToolbarButton onClick={() => fileInputRef.current?.click()} title="Upload Image (with crop)"><Upload size={14} /></ToolbarButton>
-        <ToolbarButton onClick={addImageFromUrl} title="Insert Image from URL"><ImagePlus size={14} /></ToolbarButton>
-        <div className="w-px h-5 bg-slate-200 mx-1" />
-        <ToolbarButton onClick={() => editor.chain().focus().setHorizontalRule().run()} title="Horizontal Line (Ctrl+Alt+H)"><Minus size={14} /></ToolbarButton>
-        <div className="w-px h-5 bg-slate-200 mx-1" />
-        <ToolbarButton onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()} active={editor.isActive("table")} title="Insert Table"><Table2 size={14} /></ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().addRowAfter().run()} title="Add Row Below (last row ke niche)"><ArrowDown size={14} /></ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().addRowBefore().run()} title="Add Row Above"><ArrowUp size={14} /></ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().deleteRow().run()} title="Delete Row"><Rows3 size={14} /></ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().addColumnAfter().run()} title="Add Column Right"><Columns3 size={14} /></ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().deleteColumn().run()} title="Delete Column"><XCircle size={14} /></ToolbarButton>
-        <ToolbarButton onClick={openCellColorPanel} active={cellColorOpen || !!currentCellBg} title="Header / Cell Background Color"><PaintBucket size={14} /></ToolbarButton>
-        <ToolbarButton onClick={openButtonPanel} active={btnPanelOpen || editor.isActive("rteButton")} title="Add / Edit Button (td ke andar bhi)"><SquarePlus size={14} /></ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().deleteTable().run()} title="Delete Table"><Trash2 size={14} /></ToolbarButton>
+        {!compact && (
+          <>
+            <div className="w-px h-5 bg-slate-200 mx-1" />
+            <ToolbarButton onClick={() => fileInputRef.current?.click()} title="Upload Image (with crop)"><Upload size={14} /></ToolbarButton>
+            <ToolbarButton onClick={addImageFromUrl} title="Insert Image from URL"><ImagePlus size={14} /></ToolbarButton>
+            <div className="w-px h-5 bg-slate-200 mx-1" />
+            <ToolbarButton onClick={() => editor.chain().focus().setHorizontalRule().run()} title="Horizontal Line (Ctrl+Alt+H)"><Minus size={14} /></ToolbarButton>
+            <div className="w-px h-5 bg-slate-200 mx-1" />
+            <ToolbarButton onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()} active={editor.isActive("table")} title="Insert Table"><Table2 size={14} /></ToolbarButton>
+            <ToolbarButton onClick={() => editor.chain().focus().addRowAfter().run()} title="Add Row Below (last row ke niche)"><ArrowDown size={14} /></ToolbarButton>
+            <ToolbarButton onClick={() => editor.chain().focus().addRowBefore().run()} title="Add Row Above"><ArrowUp size={14} /></ToolbarButton>
+            <ToolbarButton onClick={() => editor.chain().focus().deleteRow().run()} title="Delete Row"><Rows3 size={14} /></ToolbarButton>
+            <ToolbarButton onClick={() => editor.chain().focus().addColumnAfter().run()} title="Add Column Right"><Columns3 size={14} /></ToolbarButton>
+            <ToolbarButton onClick={() => editor.chain().focus().deleteColumn().run()} title="Delete Column"><XCircle size={14} /></ToolbarButton>
+            <ToolbarButton onClick={openCellColorPanel} active={cellColorOpen || !!currentCellBg} title="Header / Cell Background Color"><PaintBucket size={14} /></ToolbarButton>
+            <ToolbarButton onClick={openButtonPanel} active={btnPanelOpen || editor.isActive("rteButton")} title="Add / Edit Button (td ke andar bhi)"><SquarePlus size={14} /></ToolbarButton>
+            <ToolbarButton onClick={() => editor.chain().focus().deleteTable().run()} title="Delete Table"><Trash2 size={14} /></ToolbarButton>
+          </>
+        )}
         <div className="w-px h-5 bg-slate-200 mx-1" />
         <ToolbarButton onClick={() => editor.chain().focus().undo().run()} title="Undo (Ctrl+Z)"><Undo2 size={14} /></ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().redo().run()} title="Redo (Ctrl+Shift+Z)"><Redo2 size={14} /></ToolbarButton>

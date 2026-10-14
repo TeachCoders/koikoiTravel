@@ -636,6 +636,13 @@
     color: #111827;
   }
 
+  .rich-text a strong,
+  .rich-text a b,
+  .rich-text strong a,
+  .rich-text b a {
+    color: inherit !important;
+  }
+
   .rich-text a,
   .rich-text a:hover {
     text-decoration: none !important;
@@ -801,6 +808,29 @@
   .rich-text b {
     color: #1C1C1C;
     font-weight: 500 !important;
+  }
+
+  /* When strong/b is inside an anchor or wraps an anchor, keep teal link color */
+  .rich-text a strong,
+  .rich-text a b,
+  .rich-text strong a,
+  .rich-text b a,
+  .rich-text-plain-links a strong,
+  .rich-text-plain-links a b,
+  a strong,
+  a b,
+  strong a,
+  b a {
+    color: inherit !important;
+  }
+
+  .rich-text a:hover strong,
+  .rich-text a:hover b,
+  .rich-text-plain-links a:hover strong,
+  .rich-text-plain-links a:hover b,
+  a:hover strong,
+  a:hover b {
+    color: inherit !important;
   }
 
   .rich-text em {

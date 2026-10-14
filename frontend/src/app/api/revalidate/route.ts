@@ -52,21 +52,33 @@ export async function POST(request: Request) {
   const paths = new Set<string>(LIST_PATHS);
   const { entity, slug, country, state } = payload;
 
+  if (entity === "global") {
+    try {
+      revalidatePath("/", "layout");
+    } catch (err) {
+      console.error("[revalidate] Global layout revalidate error:", err);
+    }
+  }
+
   if (slug) {
     switch (entity) {
       case "blog":
+      case "blogPost":
         paths.add(`/blog/${slug}`);
         break;
       case "journey":
+      case "tourPackage":
         paths.add(`/tour-packages/${slug}`);
         break;
       case "cmsPage":
         paths.add(`/${slug}`);
         break;
       case "travelExperience":
+      case "holiday":
         paths.add(`/travel-experiences/${slug}`);
         break;
       case "season":
+      case "month":
         paths.add(`/season/${slug}`);
         break;
       case "country":
@@ -74,9 +86,11 @@ export async function POST(request: Request) {
         break;
       case "state":
         if (country) paths.add(`/tour-packages/${country}/${slug}`);
+        paths.add(`/tour-packages/india/${slug}`);
         break;
       case "city":
         if (country && state) paths.add(`/tour-packages/${country}/${state}/${slug}`);
+        if (state) paths.add(`/tour-packages/india/${state}/${slug}`);
         break;
       default:
         // Unknown entity: the list paths above still cover the visible change.
@@ -88,9 +102,16 @@ export async function POST(request: Request) {
   // journey pages that list those destinations, so widen from the parent.
   if (entity === "country" || entity === "state" || entity === "city") {
     if (country) paths.add(`/tour-packages/${country}`);
+    paths.add("/tour-packages/india");
   }
 
-  for (const path of paths) revalidatePath(path);
+  for (const path of paths) {
+    try {
+      revalidatePath(path);
+    } catch (err) {
+      console.error(`[revalidate] Error revalidating ${path}:`, err);
+    }
+  }
 
   return NextResponse.json({
     revalidated: true,

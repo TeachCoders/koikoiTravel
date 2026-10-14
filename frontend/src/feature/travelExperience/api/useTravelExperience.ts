@@ -67,6 +67,7 @@ export const useCreateTravelExperience = () => {
     mutationFn: createTravelExperience,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["travelExperiences"] });
+      queryClient.invalidateQueries({ queryKey: ["travelExperience-by-slug"] });
       successToast("Travel experience created successfully");
     },
     onError: (error: any) => {
@@ -86,6 +87,7 @@ export const useUpdateTravelExperience = () => {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["travelExperiences"] });
       queryClient.invalidateQueries({ queryKey: ["travelExperience", variables.id] });
+      queryClient.invalidateQueries({ queryKey: ["travelExperience-by-slug"] });
       successToast("Travel experience updated successfully");
     },
     onError: (error: any) => {
@@ -105,6 +107,7 @@ export const useToggleTravelExperienceActive = () => {
     onSuccess: (res: any, id) => {
       queryClient.invalidateQueries({ queryKey: ["travelExperiences"] });
       queryClient.invalidateQueries({ queryKey: ["travelExperience", id] });
+      queryClient.invalidateQueries({ queryKey: ["travelExperience-by-slug"] });
       queryClient.invalidateQueries({ queryKey: ["journeys"] });
       const a = res?.data?.affected;
       const label = res?.data?.isActive ? "activated" : "deactivated";
@@ -130,6 +133,7 @@ export const useUpdateTravelExperienceOrder = () => {
     mutationFn: updateTravelExperienceOrder,
     onSuccess: (res: any) => {
       queryClient.invalidateQueries({ queryKey: ["travelExperiences"] });
+      queryClient.invalidateQueries({ queryKey: ["travelExperience-by-slug"] });
       successToast(res?.data?.count ? `Travel experience order updated · ${res.data.count} pinned` : "Travel experience order updated");
     },
     onError: (error: any) => {
@@ -149,6 +153,7 @@ export const useDeleteTravelExperience = () => {
     onSuccess: (_data, id) => {
       queryClient.invalidateQueries({ queryKey: ["travelExperiences"] });
       queryClient.invalidateQueries({ queryKey: ["travelExperience", id] });
+      queryClient.invalidateQueries({ queryKey: ["travelExperience-by-slug"] });
       successToast("Travel experience deleted successfully");
     },
     onError: (error: any) => {
