@@ -161,13 +161,13 @@ export default function SeasonDetail({
           {heroTag && (
             <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20 mb-3 sm:mb-4 shadow-xl">
               <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shadow-[0_0_8px_#F8904D]" />
-              <span className="font-luxury font-bold text-xs sm:text-sm uppercase tracking-[0.22em] text-white/95">
+              <span className="font-luxury font-bold text-xs sm:text-sm tracking-wider text-white/95">
                 {heroTag}
               </span>
             </div>
           )}
 
-          <div className="font-luxury text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+          <div className="font-luxury text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
             {heroTitle}
           </div>
         </div>
