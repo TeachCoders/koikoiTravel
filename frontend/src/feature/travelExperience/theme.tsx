@@ -726,8 +726,20 @@ export function resolveExperienceTheme(title: string): ExperienceThemeConfig {
     };
   }
 
-  // 4. Wildlife Safari
-  if (/wildlife|safari|tiger|jungle|national\s*park/.test(t)) {
+  // 4. Desert Safari (Evaluated before generic 'safari' in Wildlife)
+  if (/desert|thar|sam\s*dunes|camel/.test(t)) {
+    return {
+      icon: <Sun size={18} className="text-[#D97706]" />,
+      illustration: <DesertSafariArt />,
+      tag: "Desert Safari",
+      tagColor: "bg-amber-50 text-amber-800 border-amber-200",
+      bgGradient: "from-amber-50/80 via-orange-50/40 to-white",
+      ctaText: "Explore Desert Safaris",
+    };
+  }
+
+  // 5. Wildlife Safari
+  if (/wildlife|tiger|jungle|national\s*park|\bsafari\b/.test(t)) {
     return {
       icon: <Trees size={18} className="text-[#65A30D]" />,
       illustration: <WildlifeSafariArt />,
@@ -738,7 +750,7 @@ export function resolveExperienceTheme(title: string): ExperienceThemeConfig {
     };
   }
 
-  // 5. Honeymoon & Romance
+  // 6. Honeymoon & Romance
   if (/honeymoon|couple|romance|romantic/.test(t)) {
     return {
       icon: <Heart size={18} className="text-[#E11D48]" />,
@@ -750,7 +762,7 @@ export function resolveExperienceTheme(title: string): ExperienceThemeConfig {
     };
   }
 
-  // 6. Ayurveda & Yoga
+  // 7. Ayurveda & Yoga
   if (/ayurveda|yoga|wellness|meditation|spa/.test(t)) {
     return {
       icon: <Flower2 size={18} className="text-[#0D9488]" />,
@@ -762,7 +774,7 @@ export function resolveExperienceTheme(title: string): ExperienceThemeConfig {
     };
   }
 
-  // 7. Spiritual & Pilgrimage (Multi-Faith)
+  // 8. Spiritual & Pilgrimage (Multi-Faith)
   if (/spiritual|temple|pilgrim|sacred|ghat|darshan/.test(t)) {
     return {
       icon: <Sparkles size={18} className="text-[#D97706]" />,
@@ -771,18 +783,6 @@ export function resolveExperienceTheme(title: string): ExperienceThemeConfig {
       tagColor: "bg-amber-50 text-amber-700 border-amber-200",
       bgGradient: "from-amber-50/80 via-yellow-50/40 to-white",
       ctaText: "Explore Spiritual",
-    };
-  }
-
-  // 8. Desert Safari
-  if (/desert|thar|sam\s*dunes|camel/.test(t)) {
-    return {
-      icon: <Sun size={18} className="text-[#D97706]" />,
-      illustration: <DesertSafariArt />,
-      tag: "Golden Dunes",
-      tagColor: "bg-amber-50 text-amber-800 border-amber-200",
-      bgGradient: "from-amber-50/80 via-orange-50/40 to-white",
-      ctaText: "Explore Desert",
     };
   }
 

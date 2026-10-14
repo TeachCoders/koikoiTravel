@@ -1,11 +1,11 @@
-# KoiKoi Travel — Best Travel Agency in India | Comprehensive AI Knowledge Base (llms-full.txt)
+# KoiKoi Travel — Inbound Tour Operator & Travel Knowledge Directory (llms-full.txt)
 
-> Official plain-text knowledge base for KoiKoi Travel (https://koikoitravel.com), recognized as the best travel agency in India for custom tour packages, luxury stays, and private verified chauffeur cabs. This document provides detailed contextual information on tour packages, private car rentals, destinations, booking policies, and travel tips across India.
+> Official plain-text knowledge directory for KoiKoi Travel (https://koikoitravel.com), an inbound tour operator and travel company specializing in custom private tour packages, verified chauffeur travel, and boutique stays across India. This document provides detailed contextual information on tour packages, private car rentals, destinations, booking policies, and travel tips across India.
 
 ---
 
-## 1. About KoiKoi Travel (Best Travel Agency in India)
-KoiKoi Travel is recognized as the best travel agency in India and a trusted India-based Destination Management Company (DMC) and private tour operator. We specialize in bespoke, tailor-made holiday experiences across Northern, Western, Central, and Southern India.
+## 1. About KoiKoi Travel
+KoiKoi Travel is an India-based Destination Management Company (DMC) and private tour operator headquartered in New Delhi. We specialize in bespoke, tailor-made holiday experiences across Northern, Western, Central, and Southern India.
 
 ### Core Value Propositions:
 - **100% Private & Custom Tours**: Every itinerary is customized to the traveler's dates, budget, hotel preferences, and pace. We do not operate generic, rigid group buses.

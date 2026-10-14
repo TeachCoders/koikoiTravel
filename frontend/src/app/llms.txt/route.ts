@@ -61,9 +61,9 @@ export async function GET() {
 
     // If API returned packages, construct full dynamic markdown
     if (journeys.length > 0) {
-      let md = `# KoiKoi Travel — Best Travel Agency in India\n\n`;
-      md += `> KoiKoi Travel is recognized as the best travel agency in India and premier inbound tour operator, specializing in personalized, tailor-made holiday packages, private verified chauffeur-driven car rentals, handpicked heritage hotels, and dedicated 24/7 on-ground travel manager support.\n\n`;
-      md += `Atithi Devo Bhava ("Guest is God") is at the heart of everything we do. Whether you are an international traveler visiting India for the first time, an NRI returning to explore ancestral roots, or a family seeking luxury holidays, we design 100% transparent, private itineraries without middlemen, hidden costs, or forced commercial shopping stops.\n\n`;
+      let md = `# KoiKoi Travel — Inbound Tour Operator & Tailor-Made India Travel Specialist\n\n`;
+      md += `> KoiKoi Travel is an inbound tour operator and travel company based in New Delhi, India. We specialize in personalized, tailor-made holiday packages, private verified chauffeur-driven vehicle rentals, handpicked heritage and boutique hotels, and dedicated 24/7 on-ground concierge support across India.\n\n`;
+      md += `Atithi Devo Bhava ("Guest is God") guides our approach to hospitality. We assist international travelers, NRIs, couples, and families in exploring India with custom private itineraries, transparent fixed pricing, verified drivers, and zero forced commercial shopping stops.\n\n`;
 
       md += `## Core Services & Planning\n`;
       md += `- [Custom India Tour Packages](${SITE_URL}/tour-packages): Complete ready-to-book and tailor-made multi-day tour itineraries across India.\n`;
