@@ -468,104 +468,6 @@ function ExperienceContent({
       {/* ===== EXPLORE MORE DESTINATIONS (linked cities) ===== */}
       <ExploreDestinationsSection experience={experience} />
 
-      {/* ===== MORE DESCRIPTION (ALL INFO) ===== */}
-      <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-16 md:py-20 relative overflow-hidden">
-        {/* Subtle India Travel Doodle Background */}
-        <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23D4561A' stroke-width='0.8'%3E%3Crect x='0' y='0' width='200' height='200' fill='none'/%3E%3Cpath d='M90 60 L100 20 L110 60 M85 62 L80 75 L120 75 L115 62 M75 75 L75 90 L125 90 L125 75 M100 20 L100 14 M96 38 L100 25 L104 38 M80 90 L80 120 L120 120 L120 90 M85 120 L85 125 L115 125 L115 120 M100 90 L100 120'/%3E%3Ccircle cx='100' cy='72' r='4'/%3E%3Cpath d='M60 155 Q60 145 65 140 Q60 135 55 140 Q60 145 60 155 M52 160 L60 155 L68 160 M50 168 L52 160 L48 170 M68 160 L72 168 L64 170 M55 140 L48 135 M65 140 L72 135 M55 150 L52 155 M65 150 L68 155 M60 155 L60 168 M55 168 L65 168'/%3E%3Ccircle cx='60' cy='135' r='5'/%3E%3Ccircle cx='40' cy='40' r='15'/%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3Ccircle cx='40' cy='40' r='5'/%3E%3Cpath d='M40 25 L40 15 M40 55 L40 65 M25 40 L15 40 M55 40 L65 40'/%3E%3Ccircle cx='160' cy='160' r='12'/%3E%3Ccircle cx='160' cy='160' r='7'/%3E%3Ccircle cx='160' cy='160' r='3'/%3E%3Cpath d='M160 148 L160 140 M160 172 L160 180 M148 160 L140 160 M172 160 L180 160'/%3E%3C/g%3E%3C/svg%3E")`
-        }} />
-        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            <div className="lg:col-span-2">
-              <span className="accent-label">Know More</span>
-
-              {experience.moreDescription && (
-                <RichContent
-                  html={experience.moreDescription}
-                  sharedLinkedHrefs={pageLinkedHrefs}
-                  excludeHrefs={excludeHrefs}
-                />
-              )}
-            </div>
-
-            <aside className="space-y-6 lg:sticky lg:top-24 self-start">
-              {facts.length > 0 && (
-                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-[#2E8B8B] mb-4">
-                    Quick Info
-                  </h3>
-                  <dl className="space-y-3">
-                    {facts.map((f) => (
-                      <div key={f.label} className="flex items-center justify-between gap-4">
-                        <dt className="text-sm text-slate-500">{f.label}</dt>
-                        <dd className="text-sm font-semibold text-[#1C1C1C] text-right">{f.value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-              )}
-
-              {highlights.length > 0 && (
-                <div className="rounded-2xl bg-gradient-to-br from-[#1C1C1C] to-[#2b2b2b] text-white p-7 shadow-xl overflow-hidden relative">
-                  <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-[#F8904D]/20 blur-2xl" />
-                  <h3 className="flex items-center gap-2 text-lg font-bold mb-4 text-white">
-                    <Sparkles size={18} className="text-[#F5B041]" />
-                    Highlights
-                  </h3>
-                  <ul className="space-y-2.5">
-                    {highlights.map((h: string, i: number) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-white/85">
-                        <BadgeCheck size={16} className="shrink-0 mt-0.5 text-[#F5B041]" />
-                        <span dangerouslySetInnerHTML={{ __html: h }} />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {experienceJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0 && (
-                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-[#2E8B8B] mb-1 flex items-center justify-between">
-                    Top 10 Tour Packages
-                    <span className="text-[10px] font-semibold text-[#F8904D] bg-[#F8904D]/10 px-2 py-0.5 rounded-full">
-                      {Math.min(
-                        10,
-                        experienceJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length
-                      )}
-                    </span>
-                  </h3>
-                  <ol className="mt-2">
-                    {[...experienceJourneys]
-                      .filter((j) => (j.displayOrder ?? 0) > 0)
-                      .sort(
-                        (a, b) =>
-                          (a.displayOrder ?? Number.MAX_SAFE_INTEGER) -
-                          (b.displayOrder ?? Number.MAX_SAFE_INTEGER)
-                      )
-                      .slice(0, 10)
-                      .map((j, i) => (
-                        <li key={j.id}>
-                          <Link
-                            href={journeyPackageHref(j)}
-                            className="flex items-start gap-2.5 py-1.5 group"
-                          >
-                            <span className="mt-0.5 w-6 h-6 shrink-0 rounded-full bg-[#f5f5f5] text-[#1C1C1C] text-[11px] font-bold flex items-center justify-center group-hover:bg-[#2E8B8B] group-hover:text-white transition-colors">
-                              {i + 1}
-                            </span>
-                            <span className="text-sm font-medium text-[#444] leading-snug group-hover:text-[#2E8B8B] transition-colors">
-                              {j.title}
-                            </span>
-                          </Link>
-                        </li>
-                      ))}
-                  </ol>
-                </div>
-              )}
-            </aside>
-          </div>
-        </div>
-      </section>
-
       {/* ===== OTHER TRAVEL EXPERIENCES ===== */}
       <OtherExperiencesSection currentSlug={experience.slug} />
 
@@ -579,6 +481,106 @@ function ExperienceContent({
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
       />
+
+      {/* ===== ARTICLE / MORE DESCRIPTION (ALL INFO) - FOOTER SE PEHLE ===== */}
+      {(experience.moreDescription || facts.length > 0 || highlights.length > 0) && (
+        <section id="more" className="bg-[#f8f8f8] border-t border-slate-200/60 py-16 md:py-20 relative overflow-hidden">
+          {/* Subtle India Travel Doodle Background */}
+          <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23D4561A' stroke-width='0.8'%3E%3Crect x='0' y='0' width='200' height='200' fill='none'/%3E%3Cpath d='M90 60 L100 20 L110 60 M85 62 L80 75 L120 75 L115 62 M75 75 L75 90 L125 90 L125 75 M100 20 L100 14 M96 38 L100 25 L104 38 M80 90 L80 120 L120 120 L120 90 M85 120 L85 125 L115 125 L115 120 M100 90 L100 120'/%3E%3Ccircle cx='100' cy='72' r='4'/%3E%3Cpath d='M60 155 Q60 145 65 140 Q60 135 55 140 Q60 145 60 155 M52 160 L60 155 L68 160 M50 168 L52 160 L48 170 M68 160 L72 168 L64 170 M55 140 L48 135 M65 140 L72 135 M55 150 L52 155 M65 150 L68 155 M60 155 L60 168 M55 168 L65 168'/%3E%3Ccircle cx='60' cy='135' r='5'/%3E%3Ccircle cx='40' cy='40' r='15'/%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3Ccircle cx='40' cy='40' r='5'/%3E%3Cpath d='M40 25 L40 15 M40 55 L40 65 M25 40 L15 40 M55 40 L65 40'/%3E%3Ccircle cx='160' cy='160' r='12'/%3E%3Ccircle cx='160' cy='160' r='7'/%3E%3Ccircle cx='160' cy='160' r='3'/%3E%3Cpath d='M160 148 L160 140 M160 172 L160 180 M148 160 L140 160 M172 160 L180 160'/%3E%3C/g%3E%3C/svg%3E")`
+          }} />
+          <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+              <div className="lg:col-span-2">
+                <span className="accent-label">Know More</span>
+
+                {experience.moreDescription && (
+                  <RichContent
+                    html={experience.moreDescription}
+                    sharedLinkedHrefs={pageLinkedHrefs}
+                    excludeHrefs={excludeHrefs}
+                  />
+                )}
+              </div>
+
+              <aside className="space-y-6 lg:sticky lg:top-24 self-start">
+                {facts.length > 0 && (
+                  <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-[#2E8B8B] mb-4">
+                      Quick Info
+                    </h3>
+                    <dl className="space-y-3">
+                      {facts.map((f) => (
+                        <div key={f.label} className="flex items-center justify-between gap-4">
+                          <dt className="text-sm text-slate-500">{f.label}</dt>
+                          <dd className="text-sm font-semibold text-[#1C1C1C] text-right">{f.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                )}
+
+                {highlights.length > 0 && (
+                  <div className="rounded-2xl bg-gradient-to-br from-[#1C1C1C] to-[#2b2b2b] text-white p-7 shadow-xl overflow-hidden relative">
+                    <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-[#F8904D]/20 blur-2xl" />
+                    <h3 className="flex items-center gap-2 text-lg font-bold mb-4 text-white">
+                      <Sparkles size={18} className="text-[#F5B041]" />
+                      Highlights
+                    </h3>
+                    <ul className="space-y-2.5">
+                      {highlights.map((h: string, i: number) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-white/85">
+                          <BadgeCheck size={16} className="shrink-0 mt-0.5 text-[#F5B041]" />
+                          <span dangerouslySetInnerHTML={{ __html: h }} />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {experienceJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0 && (
+                  <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-[#2E8B8B] mb-1 flex items-center justify-between">
+                      Top 10 Tour Packages
+                      <span className="text-[10px] font-semibold text-[#F8904D] bg-[#F8904D]/10 px-2 py-0.5 rounded-full">
+                        {Math.min(
+                          10,
+                          experienceJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length
+                        )}
+                      </span>
+                    </h3>
+                    <ol className="mt-2">
+                      {[...experienceJourneys]
+                        .filter((j) => (j.displayOrder ?? 0) > 0)
+                        .sort(
+                          (a, b) =>
+                            (a.displayOrder ?? Number.MAX_SAFE_INTEGER) -
+                            (b.displayOrder ?? Number.MAX_SAFE_INTEGER)
+                        )
+                        .slice(0, 10)
+                        .map((j, i) => (
+                          <li key={j.id}>
+                            <Link
+                              href={journeyPackageHref(j)}
+                              className="flex items-start gap-2.5 py-1.5 group"
+                            >
+                              <span className="mt-0.5 w-6 h-6 shrink-0 rounded-full bg-[#f5f5f5] text-[#1C1C1C] text-[11px] font-bold flex items-center justify-center group-hover:bg-[#2E8B8B] group-hover:text-white transition-colors">
+                                {i + 1}
+                              </span>
+                              <span className="text-sm font-medium text-[#444] leading-snug group-hover:text-[#2E8B8B] transition-colors">
+                                {j.title}
+                              </span>
+                            </Link>
+                          </li>
+                        ))}
+                    </ol>
+                  </div>
+                )}
+              </aside>
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
