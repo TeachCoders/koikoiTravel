@@ -86,8 +86,8 @@ export default function AdFooter({ destinationName = "Holidays" }: AdFooterProps
                 </div>
                 <div>
                   <div className="text-[10px] text-[#777] uppercase font-bold tracking-wider">Email Inquiry</div>
-                  <a href="mailto:support@koikoitravel.com" className="font-medium text-[#a8a8a8] hover:text-[#2E8B8B] transition">
-                    support@koikoitravel.com
+                  <a href="mailto:info@koikoitravel.com" className="font-medium text-[#a8a8a8] hover:text-[#2E8B8B] transition">
+                    info@koikoitravel.com
                   </a>
                 </div>
               </li>

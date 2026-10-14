@@ -23,6 +23,7 @@ function cleanBrandText(str?: string | null): string {
   if (!str) return "";
   return str
     .replace(/^seo\s*description\s*:\s*/i, "")
+    .replace(/\bKoKi\s*Travels?\b/gi, "KoiKoi Travel")
     .replace(/\bKoKoi\s*Travels?\b/gi, "KoiKoi Travel")
     .replace(/\bKoiKoi\s+Travels\b/gi, "KoiKoi Travel")
     .replace(/\bKoiKoi\s*Tours?\s*for\b/gi, "KoiKoi Travel for")
@@ -30,7 +31,11 @@ function cleanBrandText(str?: string | null): string {
     .replace(/\bKoKoi\s+Tour\b/gi, "KoiKoi Travel")
     .replace(/\bKoiKoi\s+Tour\b/gi, "KoiKoi Travel")
     .replace(/\bKoKoi\b/gi, "KoiKoi")
-    .replace(/KoiKoi\s{2,}Travel/g, "KoiKoi Travel");
+    .replace(/\bKoKi\b/gi, "KoiKoi")
+    .replace(/\belephat\b/gi, "elephant")
+    .replace(/\bElephat\b/g, "Elephant")
+    .replace(/KoiKoi\s{2,}Travel/g, "KoiKoi Travel")
+    .replace(/  +/g, " ");
 }
 
 function resolveRouteCities(j: any): string[] {

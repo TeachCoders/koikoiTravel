@@ -23,6 +23,7 @@ function cleanBrandText(str?: string | null): string {
   if (!str) return "";
   return str
     .replace(/^seo\s*description\s*:\s*/i, "")
+    .replace(/\bKoKi\s*Travels?\b/gi, "KoiKoi Travel")
     .replace(/\bKoKoi\s*Travels?\b/gi, "KoiKoi Travel")
     .replace(/\bKoiKoi\s+Travels\b/gi, "KoiKoi Travel")
     .replace(/\bKoiKoi\s*Tours?\s*for\b/gi, "KoiKoi Travel for")
@@ -30,7 +31,11 @@ function cleanBrandText(str?: string | null): string {
     .replace(/\bKoKoi\s+Tour\b/gi, "KoiKoi Travel")
     .replace(/\bKoiKoi\s+Tour\b/gi, "KoiKoi Travel")
     .replace(/\bKoKoi\b/gi, "KoiKoi")
-    .replace(/KoiKoi\s{2,}Travel/g, "KoiKoi Travel");
+    .replace(/\bKoKi\b/gi, "KoiKoi")
+    .replace(/\belephat\b/gi, "elephant")
+    .replace(/\bElephat\b/g, "Elephant")
+    .replace(/KoiKoi\s{2,}Travel/g, "KoiKoi Travel")
+    .replace(/  +/g, " ");
 }
 
 function resolveRouteCities(j: any): string[] {
@@ -74,7 +79,7 @@ export async function GET() {
       md += `- Tagline: Tailor-made Private Tours with Verified Chauffeurs\n`;
       md += `- Website: ${SITE_URL}\n`;
       md += `- Phone / WhatsApp: +91 91367 39178\n`;
-      md += `- Email: contact@koikoitravel.com\n`;
+      md += `- Email: info@koikoitravel.com\n`;
       md += `- Head Office: New Delhi, India\n`;
       md += `- Business Model: Tailor-made private holiday packages, verified chauffeur-driven car rentals, handpicked hotels, and 24/7 dedicated on-ground concierge.\n\n`;
 

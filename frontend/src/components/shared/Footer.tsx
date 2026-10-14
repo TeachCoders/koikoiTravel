@@ -210,10 +210,10 @@ export const Footer: React.FC = () => {
                   <Mail className="w-4 h-4 text-[#2E8B8B]" />
                 </div>
                 <a
-                  href="mailto:contact@koikoitravel.com"
+                  href="mailto:info@koikoitravel.com"
                   className="text-[#b0b0b0] hover:text-white transition-colors"
                 >
-                  contact@koikoitravel.com
+                  info@koikoitravel.com
                 </a>
               </div>
               <div className="flex items-center gap-3">
@@ -349,7 +349,6 @@ export const Footer: React.FC = () => {
                   <Link href="/tour-packages/india/madhya-pradesh/bandhavgarh" className="hover:text-white transition-colors">Bandhavgarh</Link> ·
                   <Link href="/tour-packages/india/madhya-pradesh/kanha-national-park" className="hover:text-white transition-colors">Kanha National Park</Link> ·
                   <Link href="/tour-packages/india/punjab/amritsar" className="hover:text-white transition-colors">Amritsar</Link> ·
-                  <Link href="/tour-packages/india/chandigarh" className="hover:text-white transition-colors">Chandigarh</Link> ·
                   <Link href="/tour-packages/india/delhi/gurugram" className="hover:text-white transition-colors">Gurugram</Link>
                 </div>
               </div>

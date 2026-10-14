@@ -18,7 +18,7 @@ export const organizationSchema: Record<string, unknown> = {
   telephone: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
     ? `+${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`
     : "+919136739178",
-  email: "contact@koikoitravel.com",
+  email: "info@koikoitravel.com",
   address: {
     "@type": "PostalAddress",
     streetAddress: "H12, Patparganj",

@@ -233,7 +233,6 @@ function buildDefaultDestinationTree(): DestinationTreeCountry[] {
           displayOrder: 11,
           cities: [
             { id: 1101, title: "Amritsar", slug: "amritsar", href: "/tour-packages/india/punjab/amritsar" },
-            { id: 1102, title: "Chandigarh", slug: "chandigarh", href: "/tour-packages/india/punjab/chandigarh" },
           ],
         },
         {

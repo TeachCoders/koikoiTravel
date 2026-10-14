@@ -270,8 +270,8 @@ export default async function ContactUsPage() {
                 <div className="text-sm text-slate-600 leading-relaxed mt-2 space-y-1">
 
                   <p>
-                    <a href="mailto:contact@koikoitravel.com" className="hover:text-indigo-600 transition-colors font-medium">
-                      contact@koikoitravel.com
+                    <a href="mailto:info@koikoitravel.com" className="hover:text-indigo-600 transition-colors font-medium">
+                      info@koikoitravel.com
                     </a>
                   </p>
                 </div>

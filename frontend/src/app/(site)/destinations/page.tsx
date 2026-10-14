@@ -585,7 +585,7 @@ export default async function DestinationsPage() {
                           ? `${stateTours} ${
                               stateTours === 1 ? "itinerary" : "itineraries"
                             }`
-                          : "New tours coming soon"}
+                          : "Tailor-made on request"}
                       </p>
                     </div>
                   );

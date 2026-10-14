@@ -33,7 +33,7 @@ export default function StateCard({
             <span>{journeys} {journeys === 1 ? "Tour" : "Tours"}</span>
           </span>
         ) : (
-          <span>Coming Soon</span>
+          <span>Tailor-Made on Request</span>
         )
       }
       href={href}
