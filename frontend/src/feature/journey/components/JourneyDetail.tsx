@@ -504,7 +504,13 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               <div className="relative bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 shadow-sm border border-slate-200/80">
                 <div className="day-accordion">
                   {journey.days.map((day, i) => (
-                    <DayItem key={day.id} index={i + 1} day={day} defaultOpen={i === 0} />
+                    <DayItem
+                      key={day.id}
+                      index={i + 1}
+                      day={day}
+                      defaultOpen={i === 0}
+                      linkRules={paragraphLinkRules}
+                    />
                   ))}
                 </div>
               </div>
@@ -682,10 +688,12 @@ function DayItem({
   index,
   day,
   defaultOpen,
+  linkRules,
 }: {
   index: number;
   day: { id: number; day: string; description?: string; image?: string };
   defaultOpen?: boolean;
+  linkRules?: AutoLinkRule[];
 }) {
   const dayTitle = stripHtml(day.day.replace(/^Day\s*\d+\s*:\s*/i, "").trim());
 
@@ -738,7 +746,10 @@ function DayItem({
         <div className="day-accordion-inner pt-1 md:pt-2 pb-4">
           {day.description && (
             <div className="text-[14.5px] sm:text-[15px] text-slate-600 font-normal leading-[1.75]">
-              <RichContent html={day.description} className="rich-text-plain-links" />
+              <RichContent
+                html={linkRules ? linkKeywords(day.description, linkRules) : day.description}
+                className="rich-text-plain-links"
+              />
             </div>
           )}
           {day.image && (

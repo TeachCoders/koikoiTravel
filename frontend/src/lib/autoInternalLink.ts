@@ -95,8 +95,29 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
     terms: ["Chandigarh"],
     href: "/tour-packages/india/chandigarh",
   },
+  {
+    terms: ["Kerala Tour Packages", "Kerala Holiday Packages", "Kerala Tours", "Kerala"],
+    href: "/tour-packages/india/kerala",
+  },
+  {
+    terms: ["Goa Tour Packages", "Goa Beach Packages", "Goa Tours", "Goa"],
+    href: "/tour-packages/india/goa",
+  },
 
   // Prominent Tourist Destinations & Cities
+  // Kerala Circuits
+  { terms: ["Munnar"], href: "/tour-packages/india/kerala/munnar" },
+  { terms: ["Alleppey Houseboat", "Alleppey", "Alappuzha"], href: "/tour-packages/india/kerala/alleppey" },
+  { terms: ["Kochi", "Cochin"], href: "/tour-packages/india/kerala/kochi" },
+  { terms: ["Thekkady"], href: "/tour-packages/india/kerala/thekkady" },
+  { terms: ["Kovalam Beach", "Kovalam"], href: "/tour-packages/india/kerala/kovalam" },
+  { terms: ["Kumarakom"], href: "/tour-packages/india/kerala/kumarakom" },
+
+  // Goa Circuits
+  { terms: ["North Goa"], href: "/tour-packages/india/goa/north-goa" },
+  { terms: ["South Goa"], href: "/tour-packages/india/goa/south-goa" },
+
+  // Maharashtra & Central India
   { terms: ["Mumbai"], href: "/tour-packages/india/maharashtra/mumbai" },
   { terms: ["Ajanta Caves", "Ellora Caves", "Ajanta Ellora Caves", "Aurangabad", "Chhatrapati Sambhajinagar"], href: "/tour-packages/india/maharashtra/aurangabad" },
   { terms: ["Nashik"], href: "/tour-packages/india/maharashtra/nashik" },
@@ -106,27 +127,42 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
   { terms: ["Bandhavgarh National Park", "Bandhavgarh"], href: "/tour-packages/india/madhya-pradesh/bandhavgarh" },
   { terms: ["Kanha National Park", "Kanha"], href: "/tour-packages/india/madhya-pradesh/kanha-national-park" },
   { terms: ["Gwalior Fort", "Gwalior"], href: "/tour-packages/india/madhya-pradesh" },
+
+  // Rajasthan Circuits
   { terms: ["Jaipur"], href: "/tour-packages/india/rajasthan/jaipur" },
   { terms: ["Udaipur"], href: "/tour-packages/india/rajasthan/udaipur" },
   { terms: ["Jodhpur"], href: "/tour-packages/india/rajasthan/jodhpur" },
   { terms: ["Jaisalmer"], href: "/tour-packages/india/rajasthan/jaisalmer" },
   { terms: ["Pushkar"], href: "/tour-packages/india/rajasthan/pushkar" },
   { terms: ["Ranthambore National Park", "Ranthambore"], href: "/tour-packages/india/rajasthan/ranthambore" },
+
+  // Uttar Pradesh & Golden Triangle
   { terms: ["Agra"], href: "/tour-packages/india/uttar-pradesh/agra" },
+  { terms: ["Fatehpur Sikri"], href: "/tour-packages/india/uttar-pradesh/fatehpur-sikri" },
   { terms: ["Varanasi"], href: "/tour-packages/india/uttar-pradesh/varanasi" },
   { terms: ["Mathura"], href: "/tour-packages/india/uttar-pradesh/mathura" },
   { terms: ["Vrindavan"], href: "/tour-packages/india/uttar-pradesh/vrindavan" },
   { terms: ["Ayodhya"], href: "/tour-packages/india/uttar-pradesh/ayodhya" },
+
+  // Himachal Pradesh
   { terms: ["Shimla"], href: "/tour-packages/india/himachal-pradesh/shimla" },
   { terms: ["Manali"], href: "/tour-packages/india/himachal-pradesh/manali" },
   { terms: ["Dharamshala"], href: "/tour-packages/india/himachal-pradesh/dharamshala" },
+  { terms: ["Dalhousie"], href: "/tour-packages/india/himachal-pradesh/dalhousie" },
+  { terms: ["Spiti Valley", "Spiti"], href: "/tour-packages/india/himachal-pradesh/spiti-valley" },
+
+  // Uttarakhand
   { terms: ["Rishikesh"], href: "/tour-packages/india/uttarakhand/rishikesh" },
   { terms: ["Haridwar"], href: "/tour-packages/india/uttarakhand/haridwar" },
   { terms: ["Jim Corbett National Park", "Jim Corbett"], href: "/tour-packages/india/uttarakhand/jim-corbett-national-park" },
   { terms: ["Nainital"], href: "/tour-packages/india/uttarakhand/nainital" },
+  { terms: ["Mussoorie"], href: "/tour-packages/india/uttarakhand/mussoorie" },
+
+  // Kashmir & Ladakh
   { terms: ["Srinagar"], href: "/tour-packages/india/jammu-and-kashmir/srinagar" },
   { terms: ["Gulmarg"], href: "/tour-packages/india/jammu-and-kashmir/gulmarg" },
   { terms: ["Pahalgam"], href: "/tour-packages/india/jammu-and-kashmir/pahalgam" },
+  { terms: ["Sonamarg", "Sonmarg"], href: "/tour-packages/india/jammu-and-kashmir/sonamarg" },
   { terms: ["Leh"], href: "/tour-packages/india/ladakh/leh" },
   { terms: ["Nubra Valley"], href: "/tour-packages/india/ladakh/nubra-valley" },
   { terms: ["Pangong Tso", "Pangong Lake"], href: "/tour-packages/india/ladakh/pangong-tso" },
