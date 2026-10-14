@@ -1,15 +1,10 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Mail, Phone, MapPin, ShieldCheck, CreditCard } from "lucide-react";
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
-import { useGetStates } from "@/feature/state/api/useState";
-import { useGetTravelExperiences } from "@/feature/travelExperience/api/useTravelExperience";
-import type { State } from "@/feature/state/type";
-import type { TravelExperience } from "@/feature/travelExperience/type";
-import { stripTourSuffix, pickPriorityLinks } from "@/lib/utils";
 
 const QUICK_LINKS = [
   { label: "Home", href: "/" },
@@ -52,45 +47,8 @@ export const Footer: React.FC = () => {
   const pathname = usePathname();
   const isOfferPage = pathname?.startsWith("/offers/");
 
-  const { states } = useGetStates({ limit: 100, isActive: "true" });
-  const { travelExperiences } = useGetTravelExperiences({
-    limit: 100,
-    isActive: "true",
-  });
-
-  const destinationLinks = useMemo(
-    () => {
-      const links = pickPriorityLinks<State>(
-        states,
-        (s) => s.displayOrder ?? 0,
-        (s) => ({
-          href: `/tour-packages/${s.country?.slug ?? "india"}/${s.slug}`,
-          label: stripTourSuffix(s.title || s.h1Title || ""),
-        })
-      );
-      return links.slice(0, 10);
-    },
-    [states]
-  );
-
-  const experienceLinks = useMemo(
-    () => {
-      const links = pickPriorityLinks<TravelExperience>(
-        travelExperiences,
-        (e) => e.displayOrder ?? 0,
-        (e) => ({
-          href: `/travel-experiences/${e.slug}`,
-          label: stripTourSuffix(e.title || e.h1Title || ""),
-        })
-      );
-      return links.slice(0, 10);
-    },
-    [travelExperiences]
-  );
-
-  const footerDestinations =
-    destinationLinks.length > 0 ? destinationLinks : TOP_DESTINATIONS;
-  const footerThemes = experienceLinks.length > 0 ? experienceLinks : TRAVEL_THEMES;
+  const footerDestinations = TOP_DESTINATIONS;
+  const footerThemes = TRAVEL_THEMES;
 
   const salesPhone = process.env.NEXT_PUBLIC_SALES_PHONE || "+918447273005";
   const salesPhoneDigits = salesPhone.replace(/[^0-9]/g, "");
