@@ -34,15 +34,30 @@ function cleanBrandText(str?: string | null): string {
     .replace(/\bKoKi\b/gi, "KoiKoi")
     .replace(/\belephat\b/gi, "elephant")
     .replace(/\bElephat\b/g, "Elephant")
+    .replace(/\bgoa\b/g, "Goa")
     .replace(/KoiKoi\s{2,}Travel/g, "KoiKoi Travel")
     .replace(/  +/g, " ");
 }
 
 function resolveRouteCities(j: any): string[] {
-  let list = Array.isArray(j.route)
-    ? j.route.map((c: any) => c.title).filter(Boolean)
-    : [];
   const titleLower = (j.title || "").toLowerCase();
+  const slugLower = (j.slug || "").toLowerCase();
+
+  // If Goa and Kerala tour, ensure full complete itinerary route is displayed
+  if (slugLower.includes("goa-and-kerala") || (titleLower.includes("goa") && titleLower.includes("kerala"))) {
+    return ["Goa", "Cochin", "Munnar", "Thekkady (Periyar)", "Cochin"];
+  }
+
+  let list: string[] = [];
+  if (Array.isArray(j.route) && j.route.length > 0) {
+    list = j.route.map((c: any) => c.title).filter(Boolean);
+  } else if (typeof j.destination === "string" && j.destination.trim()) {
+    list = j.destination
+      .split(/[-–—>]/)
+      .map((s: string) => s.trim())
+      .filter(Boolean);
+  }
+
   if (titleLower.includes("from mumbai") && !list.some((c: string) => c.toLowerCase().includes("mumbai"))) {
     list = ["Mumbai", ...list];
   }
@@ -58,7 +73,7 @@ function resolveRouteCities(j: any): string[] {
 function resolveImageUrl(j: any, siteUrl: string): string {
   const raw = j.thumbImg || (Array.isArray(j.banner?.images) && j.banner.images.length > 0 ? j.banner.images[0] : null);
   if (!raw) return `${siteUrl}/og-image.png`;
-  if (raw.startsWith("http")) return raw;
+  if (/^https?:\/\//i.test(raw)) return raw;
   return `${siteUrl}${raw.startsWith("/") ? "" : "/"}${raw}`;
 }
 
@@ -93,7 +108,10 @@ export async function GET() {
         const cities = citiesList.join(" -> ");
         const price = j.discountPrice || j.pricePerPerson ? `Starting from ₹${j.discountPrice || j.pricePerPerson}/person` : "Custom Quote";
         const imgUrl = resolveImageUrl(j, SITE_URL);
-        const cleanedSeo = cleanBrandText(j.seoDescription);
+        const rawOverview = (j.seoDescription && j.seoDescription.length > 20)
+          ? j.seoDescription
+          : (j.overView ? j.overView.replace(/<[^>]*>?/gm, "").trim().slice(0, 300) : "Personalized private India tour with verified chauffeur and boutique accommodations.");
+        const cleanedSeo = cleanBrandText(rawOverview);
 
         md += `### ${idx + 1}. [${title}](${SITE_URL}/tour-packages/${slug})\n`;
         md += `- **URL**: ${SITE_URL}/tour-packages/${slug}\n`;
@@ -116,8 +134,13 @@ export async function GET() {
         md += `## 3. Covered Indian States & Regions\n\n`;
         states.forEach((s: any) => {
           if (!s.slug) return;
-          md += `### [${s.title || s.name} Tours](${SITE_URL}/tour-packages/india/${s.slug})\n`;
-          if (s.seoDescription) md += `${cleanBrandText(s.seoDescription)}\n\n`;
+          const sTitle = cleanBrandText(s.title || s.name);
+          md += `### [${sTitle} Tours](${SITE_URL}/tour-packages/india/${s.slug})\n`;
+          let sDesc = cleanBrandText(s.seoDescription);
+          if (!sDesc || sDesc.length < 15 || sDesc.toLowerCase() === "goa") {
+            sDesc = `Discover the vibrant culture, historic architecture, and private chauffeur-driven tour packages across ${sTitle} with KoiKoi Travel.`;
+          }
+          md += `${sDesc}\n\n`;
         });
       }
 
@@ -125,8 +148,13 @@ export async function GET() {
         md += `## 4. Curated Travel Experiences & Themes\n\n`;
         experiences.forEach((e: any) => {
           if (!e.slug) return;
-          md += `### [${e.title || e.name}](${SITE_URL}/travel-experiences/${e.slug})\n`;
-          if (e.seoDescription) md += `${cleanBrandText(e.seoDescription)}\n\n`;
+          const eTitle = cleanBrandText(e.title || e.name);
+          md += `### [${eTitle}](${SITE_URL}/travel-experiences/${e.slug})\n`;
+          let eDesc = cleanBrandText(e.seoDescription);
+          if (!eDesc || eDesc.toLowerCase().includes("quick form") || eDesc.length < 15) {
+            eDesc = `Curated ${eTitle} travel experiences, cultural sightseeing, and private customized itineraries across India by KoiKoi Travel.`;
+          }
+          md += `${eDesc}\n\n`;
         });
       }
 

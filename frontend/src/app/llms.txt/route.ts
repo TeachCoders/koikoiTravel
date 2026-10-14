@@ -34,15 +34,30 @@ function cleanBrandText(str?: string | null): string {
     .replace(/\bKoKi\b/gi, "KoiKoi")
     .replace(/\belephat\b/gi, "elephant")
     .replace(/\bElephat\b/g, "Elephant")
+    .replace(/\bgoa\b/g, "Goa")
     .replace(/KoiKoi\s{2,}Travel/g, "KoiKoi Travel")
     .replace(/  +/g, " ");
 }
 
 function resolveRouteCities(j: any): string[] {
-  let list = Array.isArray(j.route)
-    ? j.route.map((c: any) => c.title).filter(Boolean)
-    : [];
   const titleLower = (j.title || "").toLowerCase();
+  const slugLower = (j.slug || "").toLowerCase();
+
+  // If Goa and Kerala tour, ensure full complete itinerary route is displayed
+  if (slugLower.includes("goa-and-kerala") || (titleLower.includes("goa") && titleLower.includes("kerala"))) {
+    return ["Goa", "Cochin", "Munnar", "Thekkady (Periyar)", "Cochin"];
+  }
+
+  let list: string[] = [];
+  if (Array.isArray(j.route) && j.route.length > 0) {
+    list = j.route.map((c: any) => c.title).filter(Boolean);
+  } else if (typeof j.destination === "string" && j.destination.trim()) {
+    list = j.destination
+      .split(/[-–—>]/)
+      .map((s: string) => s.trim())
+      .filter(Boolean);
+  }
+
   if (titleLower.includes("from mumbai") && !list.some((c: string) => c.toLowerCase().includes("mumbai"))) {
     list = ["Mumbai", ...list];
   }
@@ -84,7 +99,10 @@ export async function GET() {
         const dur = j.duration || (j.noDays ? `${j.noDays} Days` : "");
         const citiesList = resolveRouteCities(j);
         const cities = citiesList.join(" - ");
-        const cleanedSeo = cleanBrandText(j.seoDescription);
+        const rawOverview = (j.seoDescription && j.seoDescription.length > 20)
+          ? j.seoDescription
+          : (j.overView ? j.overView.replace(/<[^>]*>?/gm, "").trim().slice(0, 300) : "Tailor-made private tour with verified chauffeur and boutique accommodations.");
+        const cleanedSeo = cleanBrandText(rawOverview);
         const desc = [dur ? `Duration: ${dur}` : "", cities ? `Route: ${cities}` : "", cleanedSeo]
           .filter(Boolean)
           .join(". ");
