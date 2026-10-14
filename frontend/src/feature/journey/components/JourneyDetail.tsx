@@ -173,27 +173,55 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   <MapPin size={14} className="text-[#F8904D]" />
                   <span>Route:</span>
                 </span>
-                {(journey.route && journey.route.length > 0
-                  ? journey.route.map((c) => c.h1Title || c.title)
-                  : journey.destination.split(/[-–—,→]/).map((s) => s.trim())
-                )
-                  .filter(Boolean)
-                  .map((city, idx, arr) => {
-                    const capCity = city
-                      .split(/\s+/)
-                      .map((w: string) => (w.length > 0 ? w.charAt(0).toUpperCase() + w.slice(1) : ""))
-                      .join(" ");
-                    return (
-                      <Fragment key={idx}>
-                        <span className="text-slate-800 font-semibold">
-                          {capCity}
-                        </span>
-                        {idx < arr.length - 1 && (
-                          <span className="text-slate-300 font-normal mx-0.5">→</span>
-                        )}
-                      </Fragment>
-                    );
-                  })}
+                {journey.route && journey.route.length > 0
+                  ? journey.route.map((c, idx, arr) => {
+                      const cityName = c.h1Title || c.title;
+                      const capCity = cityName
+                        .split(/\s+/)
+                        .map((w: string) => (w.length > 0 ? w.charAt(0).toUpperCase() + w.slice(1) : ""))
+                        .join(" ");
+                      const href =
+                        c.slug && c.state?.slug && c.state?.country?.slug
+                          ? c.slug === c.state.slug
+                            ? `/tour-packages/${c.state.country.slug}/${c.state.slug}`
+                            : `/tour-packages/${c.state.country.slug}/${c.state.slug}/${c.slug}`
+                          : null;
+                      return (
+                        <Fragment key={c.id || idx}>
+                          {href ? (
+                            <Link
+                              href={href}
+                              className="text-slate-800 hover:text-[#2E8B8B] font-semibold hover:underline transition-colors"
+                            >
+                              {capCity}
+                            </Link>
+                          ) : (
+                            <span className="text-slate-800 font-semibold">{capCity}</span>
+                          )}
+                          {idx < arr.length - 1 && (
+                            <span className="text-slate-300 font-normal mx-0.5">→</span>
+                          )}
+                        </Fragment>
+                      );
+                    })
+                  : journey.destination
+                      .split(/[-–—,→]/)
+                      .map((s) => s.trim())
+                      .filter(Boolean)
+                      .map((city, idx, arr) => {
+                        const capCity = city
+                          .split(/\s+/)
+                          .map((w: string) => (w.length > 0 ? w.charAt(0).toUpperCase() + w.slice(1) : ""))
+                          .join(" ");
+                        return (
+                          <Fragment key={idx}>
+                            <span className="text-slate-800 font-semibold">{capCity}</span>
+                            {idx < arr.length - 1 && (
+                              <span className="text-slate-300 font-normal mx-0.5">→</span>
+                            )}
+                          </Fragment>
+                        );
+                      })}
               </div>
             )}
 
@@ -380,15 +408,27 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         Ideal For
                       </h4>
                       <div className="flex flex-wrap gap-1.5">
-                        {journey.travelExperiences!.map((e) => (
-                          <span
-                            key={e.id}
-                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-orange-50 text-slate-700 hover:text-[#F8904D] text-xs font-semibold border border-slate-200/80 hover:border-orange-200 transition-all shadow-2xs"
-                          >
-                            <span className="text-[#2E8B8B] shrink-0">{travelExperienceIcon(e.title)}</span>
-                            <span>{e.title}</span>
-                          </span>
-                        ))}
+                        {journey.travelExperiences!.map((e) => {
+                          const href = e.slug ? `/travel-experiences/${e.slug}` : null;
+                          return href ? (
+                            <Link
+                              key={e.id}
+                              href={href}
+                              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-orange-50 text-slate-700 hover:text-[#F8904D] text-xs font-semibold border border-slate-200/80 hover:border-orange-200 transition-all shadow-2xs"
+                            >
+                              <span className="text-[#2E8B8B] shrink-0">{travelExperienceIcon(e.title)}</span>
+                              <span>{e.title}</span>
+                            </Link>
+                          ) : (
+                            <span
+                              key={e.id}
+                              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-orange-50 text-slate-700 hover:text-[#F8904D] text-xs font-semibold border border-slate-200/80 hover:border-orange-200 transition-all shadow-2xs"
+                            >
+                              <span className="text-[#2E8B8B] shrink-0">{travelExperienceIcon(e.title)}</span>
+                              <span>{e.title}</span>
+                            </span>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
