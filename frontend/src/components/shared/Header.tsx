@@ -23,7 +23,7 @@ const DEFAULT_DESTINATION_LINKS: NavChild[] = [
   { href: "/tour-packages/india", label: "India" },
   { href: "/tour-packages/india/kerala", label: "Kerala" },
   { href: "/tour-packages/india/rajasthan", label: "Rajasthan" },
-  { href: "/tour-packages/india/jammu-and-kashmir", label: "Jammu & Kashmir" },
+  { href: "/tour-packages/india/jammu-and-kashmir", label: "Jammu And Kashmir" },
   { href: "/tour-packages/india/himachal-pradesh", label: "Himachal Pradesh" },
   { href: "/tour-packages/india/uttarakhand", label: "Uttarakhand" },
   { href: "/tour-packages/india/ladakh", label: "Ladakh" },
@@ -33,7 +33,7 @@ const DEFAULT_DESTINATION_LINKS: NavChild[] = [
   { href: "/tour-packages/india/madhya-pradesh", label: "Madhya Pradesh" },
   { href: "/tour-packages/india/maharashtra", label: "Maharashtra" },
   { href: "/tour-packages/india/punjab", label: "Punjab" },
-  { href: "/tour-packages/india/delhi", label: "Delhi NCR" },
+  { href: "/tour-packages/india/delhi", label: "Delhi" },
 ];
 
 const DEFAULT_TOUR_LINKS: NavChild[] = [
@@ -52,18 +52,18 @@ const DEFAULT_TOUR_LINKS: NavChild[] = [
 ];
 
 const DEFAULT_EXPERIENCE_LINKS: NavChild[] = [
-  { href: "/travel-experiences/nature", label: "Nature & Eco Tours" },
-  { href: "/travel-experiences/golden-triangle", label: "Golden Triangle" },
+  { href: "/travel-experiences/nature", label: "Nature" },
+  { href: "/travel-experiences/golden-triangle", label: "Golden Triangle (Delhi, Agra, Jaipur)" },
   { href: "/travel-experiences/desert-safari", label: "Desert Safari" },
-  { href: "/travel-experiences/wildlife", label: "Wildlife & Safari" },
-  { href: "/travel-experiences/honeymoon", label: "Honeymoon & Romantic" },
-  { href: "/travel-experiences/hill-station", label: "Hill Stations" },
-  { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & Yoga" },
+  { href: "/travel-experiences/wildlife", label: "Wildlife" },
+  { href: "/travel-experiences/honeymoon", label: "Honeymoon" },
+  { href: "/travel-experiences/hill-station", label: "Hill Station" },
+  { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & yoga" },
   { href: "/travel-experiences/beach-lake", label: "Beach & Lakes" },
   { href: "/travel-experiences/heritage-and-culture", label: "Heritage & Culture" },
-  { href: "/travel-experiences/spiritual", label: "Spiritual & Pilgrimage" },
-  { href: "/travel-experiences/family", label: "Family Vacations" },
-  { href: "/travel-experiences/weekend-tours-in-india", label: "Weekend Getaways" },
+  { href: "/travel-experiences/spiritual", label: "Spiritual" },
+  { href: "/travel-experiences/family", label: "Family" },
+  { href: "/travel-experiences/weekend-tours-in-india", label: "Weekend" },
 ];
 
 function buildDefaultDestinationTree(): DestinationTreeCountry[] {
@@ -322,7 +322,7 @@ export const Header: React.FC = () => {
   });
 
   const destinationTree = useMemo(() => {
-    if (!mounted || !states || states.length === 0) return [];
+    if (!states || states.length === 0) return [];
 
     const countryMap = new Map<number, DestinationTreeCountry>();
 
@@ -380,10 +380,9 @@ export const Header: React.FC = () => {
     });
 
     return result;
-  }, [mounted, states]);
+  }, [states]);
 
   const tourLinks = useMemo(() => {
-    if (!mounted) return DEFAULT_TOUR_LINKS;
     const links = pickPriorityLinks<Journey>(
       journeys,
       (j) => j.displayOrder ?? 0,
@@ -395,11 +394,10 @@ export const Header: React.FC = () => {
       }
     );
     return links.length > 0 ? links : DEFAULT_TOUR_LINKS;
-  }, [mounted, journeys]);
+  }, [journeys]);
 
   const experienceLinks = useMemo(
     () => {
-      if (!mounted) return DEFAULT_EXPERIENCE_LINKS;
       const links = pickPriorityLinks<TravelExperience>(
         travelExperiences,
         (e) => e.displayOrder ?? 0,
@@ -407,7 +405,7 @@ export const Header: React.FC = () => {
       );
       return links.length > 0 ? links : DEFAULT_EXPERIENCE_LINKS;
     },
-    [mounted, travelExperiences]
+    [travelExperiences]
   );
 
   const safeDestinationTree = useMemo<DestinationTreeCountry[]>(
@@ -416,7 +414,6 @@ export const Header: React.FC = () => {
   );
 
   const destinationLinks = useMemo<NavChild[]>(() => {
-    if (!mounted) return DEFAULT_DESTINATION_LINKS;
     const links: NavChild[] = [];
     safeDestinationTree.forEach((country) =>
       country.states.forEach((state) =>
@@ -424,7 +421,7 @@ export const Header: React.FC = () => {
       )
     );
     return links.length > 0 ? links.slice(0, 16) : DEFAULT_DESTINATION_LINKS;
-  }, [mounted, safeDestinationTree]);
+  }, [safeDestinationTree]);
 
   type NavLink = {
     href: string;
