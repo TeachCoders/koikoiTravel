@@ -339,13 +339,23 @@ export function linkKeywords(html: string, rules: AutoLinkRule[]): string {
     return `\uE000TAG_${tagTokens.length - 1}\uE001`;
   });
 
-  // Step 4: Link first occurrence of each unique keyword in body text
+  // Step 4: Link only the FIRST meaningful mention of each destination/experience per section
+  const linkedHrefs = new Set<string>();
+
   for (const rule of sortedRules) {
+    const href = rule.href.startsWith("/") ? rule.href : `/${rule.href}`;
+    const normalizedHref = href.toLowerCase();
+
+    // Prevent repeated links to the same destination/page
+    if (linkedHrefs.has(normalizedHref)) {
+      continue;
+    }
+
     const regex = new RegExp(`\\b(${escapeRegex(rule.term)})\\b`, "i");
     const match = regex.exec(working);
     if (match) {
+      linkedHrefs.add(normalizedHref);
       const matchedText = match[1];
-      const href = rule.href.startsWith("/") ? rule.href : `/${rule.href}`;
       const anchor = `<a href="${href}" class="text-[#2E8B8B] hover:underline font-medium">${matchedText}</a>`;
       protectedTokens.push(anchor);
       const tokenRef = `\uE000L_${protectedTokens.length - 1}\uE001`;
