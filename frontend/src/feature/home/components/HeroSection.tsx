@@ -110,18 +110,23 @@ export const HeroSection: React.FC = () => {
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      <div className="absolute bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+      <div className="absolute bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center">
         {slides.map((_, i) => (
           <button
             key={i}
+            type="button"
             onClick={() => setCurrent(i)}
             aria-label={`Go to slide ${i + 1}`}
-            className={`rounded-full transition-all duration-300 ${
-              i === current
-                ? "w-6 sm:w-8 h-1.5 sm:h-2 bg-[#F8904D]"
-                : "w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/50 hover:bg-white/70"
-            }`}
-          />
+            className="p-2 sm:p-2.5 flex items-center justify-center cursor-pointer focus:outline-none"
+          >
+            <span
+              className={`block rounded-full transition-all duration-300 ${
+                i === current
+                  ? "w-6 sm:w-8 h-1.5 sm:h-2 bg-[#F8904D]"
+                  : "w-2 sm:w-2.5 h-1.5 sm:h-2 bg-white/60 hover:bg-white"
+              }`}
+            />
+          </button>
         ))}
       </div>
 

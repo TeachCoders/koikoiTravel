@@ -34,6 +34,7 @@ export const WhatsAppPriceButton: React.FC<WhatsAppPriceButtonProps> = ({
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label={packageName ? `Enquire about ${packageName} on WhatsApp` : label}
       className={className}
     >
       <span>{label}</span>

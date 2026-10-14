@@ -158,17 +158,21 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
                 </div>
 
                 {/* Normal Dots Navigation */}
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center -mx-1">
                   {REVIEWS.map((_, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => setReviewIndex(idx)}
-                      className={`h-2 rounded-full transition-all cursor-pointer ${
-                        idx === reviewIndex ? "w-6 bg-[#F8904D]" : "w-2 bg-slate-200 hover:bg-slate-300"
-                      }`}
+                      className="p-2 sm:p-2.5 flex items-center justify-center cursor-pointer focus:outline-none"
                       aria-label={`Go to review ${idx + 1}`}
-                    />
+                    >
+                      <span
+                        className={`block h-2 rounded-full transition-all ${
+                          idx === reviewIndex ? "w-6 bg-[#F8904D]" : "w-2 bg-slate-200 hover:bg-slate-300"
+                        }`}
+                      />
+                    </button>
                   ))}
                 </div>
               </div>
@@ -286,10 +290,14 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
                               e.stopPropagation();
                               setCurrentIndex(idx);
                             }}
-                            className={`h-1.5 rounded-full transition-all ${
-                              idx === currentIndex ? "w-5 bg-orange-500" : "w-1.5 bg-white/70 hover:bg-white"
-                            }`}
-                          />
+                            className="p-1.5 sm:p-2 flex items-center justify-center cursor-pointer focus:outline-none"
+                          >
+                            <span
+                              className={`block h-1.5 rounded-full transition-all ${
+                                idx === currentIndex ? "w-5 bg-orange-500" : "w-1.5 bg-white/70 hover:bg-white"
+                              }`}
+                            />
+                          </button>
                         ))}
                       </div>
                     </div>

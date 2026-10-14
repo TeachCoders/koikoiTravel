@@ -192,16 +192,21 @@ export const TestimonialsSection: React.FC = () => {
           </button>
         </div>
 
-        <div className="flex items-center justify-center gap-2 mt-8">
+        <div className="flex items-center justify-center -mx-1 mt-8">
           {Array.from({ length: maxIndexDesktop + 1 }).map((_, i) => (
             <button
               key={i}
+              type="button"
               onClick={() => setCurrent(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className={`rounded-full transition-all duration-300 cursor-pointer ${
-                i === current ? "w-8 h-2.5 bg-orange-500" : "w-2.5 h-2.5 bg-slate-300 hover:bg-slate-400"
-              }`}
-            />
+              className="p-2 sm:p-2.5 flex items-center justify-center cursor-pointer focus:outline-none"
+            >
+              <span
+                className={`block rounded-full transition-all duration-300 ${
+                  i === current ? "w-8 h-2.5 bg-orange-500" : "w-2.5 h-2.5 bg-slate-300 hover:bg-slate-400"
+                }`}
+              />
+            </button>
           ))}
         </div>
       </div>

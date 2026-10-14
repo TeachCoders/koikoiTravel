@@ -87,6 +87,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
           }`}
           aria-hidden={!isOpen}
+          inert={!isOpen || undefined}
         >
           <div
             itemProp="text"
