@@ -127,11 +127,11 @@ export const HeroSection: React.FC = () => {
 
       <div className="relative z-30 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-center">
         <h1 className="font-luxury text-white text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-black tracking-tight sm:tracking-normal leading-tight max-w-4xl mx-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] block">
-          Explore India Tour Packages With <span className="text-[#F8904D]">KoiKoi Travel</span>
+          Tailor-Made India Tours by <span className="text-[#F8904D]">Your Trusted Inbound Tour Operator</span>
         </h1>
 
         <p className="text-white/90 text-xs sm:text-sm md:text-base max-w-2xl mx-auto mt-2.5 sm:mt-3 leading-relaxed font-normal drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
-          Personalized India holiday packages with verified private chauffeurs, handpicked stays, and 24/7 on-trip assistance. From the Golden Triangle & Rajasthan to Kerala & Kashmir, explore at your own pace.
+          Discover India with KoiKoi Travel. Personalized private holidays with verified chauffeurs, handpicked stays, and dedicated 24/7 on-trip assistance across Rajasthan, Kerala, South India, and the Golden Triangle.
         </p>
 
         {/* Dual Primary Call-to-Actions */}

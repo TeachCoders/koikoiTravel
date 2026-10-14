@@ -10,8 +10,8 @@ export const organizationSchema: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
   name: "KoiKoi Travel",
-  alternateName: ["Best Travel Agency in India", "KoiKoi Travel India", "KoiKoi Travel Inbound India"],
-  description: "KoiKoi Travel is the best travel agency in India, offering customized tour packages, luxury stays, private verified chauffeur-driven cars, and 24/7 dedicated travel manager support.",
+  alternateName: ["India Tour Operator", "Tailor-Made India Tours", "Inbound Tour Operator India"],
+  description: "KoiKoi Travel is an inbound tour operator offering tailor-made India tours and private holidays across Rajasthan, Kerala, South India, and beyond.",
   url: SITE_URL,
   logo: `${SITE_URL}/logo-with-name.png`,
   image: `${SITE_URL}/logo-with-name.png`,
@@ -29,11 +29,13 @@ export const organizationSchema: Record<string, unknown> = {
   },
   areaServed: "Worldwide",
   knowsAbout: [
-    "Best Travel Agency in India",
-    "India Inbound Tourism",
-    "Customized India Tour Packages",
+    "India Tour Operator",
+    "Tailor-Made India Tours",
+    "Inbound Tour Operator India",
     "Private Chauffeur & Cab Rentals India",
-    "Luxury Golden Triangle Tours"
+    "Luxury Golden Triangle Tours",
+    "Rajasthan Tours",
+    "Kerala Tours"
   ],
   sameAs: ["https://www.facebook.com/koikoiTravel/"]
 };
@@ -42,13 +44,13 @@ export const websiteSchema: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "KoiKoi Travel",
-  alternateName: "KoiKoi Travel - Best Travel Agency in India",
+  alternateName: "KoiKoi Travel - Inbound Tour Operator & Tailor-Made India Tours",
   url: SITE_URL,
-  description: "KoiKoi Travel is the best travel agency in India offering bespoke India tour packages, private luxury stays, verified drivers, and local guides for international and domestic travelers.",
+  description: "Discover India with KoiKoi Travel, an inbound tour operator offering tailor-made India tours and private holidays across Rajasthan, Kerala, South India and beyond.",
   inLanguage: ["en", "en-US"],
   publisher: {
     "@type": "TravelAgency",
-    name: "KoiKoi Travel India",
+    name: "KoiKoi Travel",
   },
   potentialAction: {
     "@type": "SearchAction",

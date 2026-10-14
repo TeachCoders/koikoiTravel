@@ -12,7 +12,7 @@ export default function SeoTextBlock() {
         <div>
           <SectionLabel icon={<BookOpen className="w-4 h-4" />}>Our Story</SectionLabel>
           <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5">
-            Best Travel Agency in India — <span className="text-[#F8904D]">About KoiKoi Travel</span>
+            India Tour Operator &amp; Tailor-Made Tours — <span className="text-[#F8904D]">About KoiKoi Travel</span>
           </h2>
         </div>
 
