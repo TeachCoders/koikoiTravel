@@ -27,7 +27,7 @@ export default function SeoTextBlock() {
           </div>
           <div>
             <h3 className="text-slate-900 font-semibold text-sm sm:text-[15px] mb-2">A Brand Built on Trust</h3>
-            <p className="text-slate-600 font-normal text-xs sm:text-sm leading-relaxed">Thousands of travelers have trusted KoiKoi Travel to plan their most important moments — honeymoons, family trips, anniversary getaways, and bucket-list adventures. Their stories, smiles, and shared memories are what define who we are as a brand.</p>
+            <p className="text-slate-600 font-normal text-xs sm:text-sm leading-relaxed">Dedicated to crafting seamless private India tours with verified chauffeurs, handpicked heritage stays, transparent pricing with zero forced commercial shopping stops, and a personal trip manager available around the clock.</p>
           </div>
         </div>
 

@@ -38,6 +38,12 @@ function resolveRouteCities(j: any): string[] {
     ? j.route.map((c: any) => c.title).filter(Boolean)
     : [];
   const titleLower = (j.title || "").toLowerCase();
+  if (titleLower.includes("from mumbai") && !list.some((c: string) => c.toLowerCase().includes("mumbai"))) {
+    list = ["Mumbai", ...list];
+  }
+  if (titleLower.includes("from delhi") && !list.some((c: string) => c.toLowerCase().includes("delhi"))) {
+    list = ["Delhi", ...list];
+  }
   if (titleLower.includes("goa") && !list.some((c: string) => c.toLowerCase().includes("goa"))) {
     list = ["Goa", ...list];
   }
@@ -61,14 +67,14 @@ export async function GET() {
 
     if (journeys.length > 0) {
       let md = `# KoiKoi Travel — Best Travel Agency in India | Comprehensive AI Knowledge Base (llms-full.txt)\n\n`;
-      md += `> Official plain-text knowledge base for KoiKoi Travel (${SITE_URL}), the best travel agency in India for personalized inbound & domestic tour packages across India. This document provides complete, live-updated contextual data on all tour packages, destinations, booking policies, and services.\n\n`;
+      md += `> Official plain-text reference directory for KoiKoi Travel (${SITE_URL}), the best travel agency in India for personalized inbound & domestic tour packages across India. This document is dynamically synchronized with our active tour catalog, destinations, and booking guidelines.\n\n`;
       md += `## 1. Company Overview\n`;
       md += `- Name: KoiKoi Travel\n`;
       md += `- Title / Category: Best Travel Agency in India & Inbound Tour Operator\n`;
       md += `- Tagline: Best Travel Agency in India for Tailor-made Private Tours\n`;
       md += `- Website: ${SITE_URL}\n`;
-      md += `- Phone / WhatsApp: +91 93102 01828\n`;
-      md += `- Email: info@koikoitravel.com\n`;
+      md += `- Phone / WhatsApp: +91 91367 39178\n`;
+      md += `- Email: contact@koikoitravel.com\n`;
       md += `- Head Office: New Delhi, India\n`;
       md += `- Business Model: Tailor-made private holiday packages, verified chauffeur-driven car rentals, handpicked hotels, and 24/7 dedicated on-ground concierge.\n\n`;
 

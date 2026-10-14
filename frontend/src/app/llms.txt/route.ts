@@ -38,6 +38,12 @@ function resolveRouteCities(j: any): string[] {
     ? j.route.map((c: any) => c.title).filter(Boolean)
     : [];
   const titleLower = (j.title || "").toLowerCase();
+  if (titleLower.includes("from mumbai") && !list.some((c: string) => c.toLowerCase().includes("mumbai"))) {
+    list = ["Mumbai", ...list];
+  }
+  if (titleLower.includes("from delhi") && !list.some((c: string) => c.toLowerCase().includes("delhi"))) {
+    list = ["Delhi", ...list];
+  }
   if (titleLower.includes("goa") && !list.some((c: string) => c.toLowerCase().includes("goa"))) {
     list = ["Goa", ...list];
   }
@@ -116,7 +122,7 @@ export async function GET() {
 
       md += `## Company & Booking Policies\n`;
       md += `- [About KoiKoi Travel](${SITE_URL}/about-us): Our founding story, values, verified driver network, and customer commitment.\n`;
-      md += `- [Contact & Trip Consultation](${SITE_URL}/contact-us): Get custom trip quotes, speak with a private trip planner, or WhatsApp our team at +91 93102 01828.\n`;
+      md += `- [Contact & Trip Consultation](${SITE_URL}/contact-us): Get custom trip quotes, speak with a private trip planner, or WhatsApp our team at +91 91367 39178.\n`;
       md += `- [Guest Photo Gallery](${SITE_URL}/guest-gallery): Real photos and candid moments shared by our happy travelers.\n\n`;
 
       md += `## Optional\n`;
