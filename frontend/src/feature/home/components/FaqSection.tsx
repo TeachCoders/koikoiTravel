@@ -5,6 +5,8 @@ import { HelpCircle, ChevronDown, MessageSquare, Sparkles } from "lucide-react";
 import { SectionLabel } from "@/components/shared/SectionLabel";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import { HOME_FAQS } from "@/lib/homeFaqs";
+import RichContent from "@/components/shared/RichContent";
+import { autoLinkKeywords } from "@/lib/autoInternalLink";
 
 interface FaqSectionProps {
   faqs?: any[];
@@ -84,9 +86,9 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
         >
           <div
             itemProp="text"
-            className="px-4 pb-4 md:px-5 md:pb-5 text-slate-600 text-xs sm:text-sm leading-relaxed border-t border-slate-100 pt-3.5"
+            className="px-4 pb-4 md:px-5 md:pb-5 text-slate-600 text-xs sm:text-sm leading-relaxed border-t border-slate-100 pt-3.5 rich-text-plain-links"
           >
-            {faq.answer}
+            <RichContent html={autoLinkKeywords(faq.answer)} />
           </div>
         </div>
       </div>
