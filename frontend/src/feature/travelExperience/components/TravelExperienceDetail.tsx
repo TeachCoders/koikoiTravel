@@ -373,6 +373,8 @@ function ExperienceContent({
         onClearFilters={clearFilters}
         contextName={h1Title}
         basePath={`/travel-experiences/${experience.slug}`}
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
       >
         {hasTabs ? (
           <>

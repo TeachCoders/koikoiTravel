@@ -339,6 +339,8 @@ function CountryContent({
         emptyLabel={`No tours found in ${displayTitle} yet`}
         filterBar={countryJourneys.length > 0 ? filterBar : undefined}
         onClearFilters={clearFilters}
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
       />
 
       {/* ===== STATES ===== */}

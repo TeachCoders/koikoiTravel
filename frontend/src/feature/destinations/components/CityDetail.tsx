@@ -276,6 +276,8 @@ function CityContent({
         emptyLabel={`No tours found in ${city.h1Title || city.title} yet`}
         filterBar={cityJourneys.length > 0 ? filterBar : undefined}
         onClearFilters={clearFilters}
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
       />
 
       {/* ===== KNOW MORE (ALL INFO) ===== */}

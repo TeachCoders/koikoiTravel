@@ -194,6 +194,8 @@ export default function SeasonDetail({
         basePath={`/season/${initialSeason.slug}`}
         filterBar={seasonJourneys.length > 0 ? filterBar : undefined}
         onClearFilters={clearFilters}
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
       />
 
       {/* ===== MORE DESCRIPTION (ALL INFO) ===== */}

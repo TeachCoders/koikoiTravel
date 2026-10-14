@@ -23,6 +23,8 @@ export interface ToursSectionProps {
   cardVariant?: "default" | "compact";
   tabs?: React.ReactNode;
   children?: React.ReactNode;
+  sharedLinkedHrefs?: Set<string>;
+  excludeHrefs?: string[];
 }
 
 export default function ToursSection({
@@ -40,6 +42,8 @@ export default function ToursSection({
   cardVariant = "default",
   tabs,
   children,
+  sharedLinkedHrefs,
+  excludeHrefs,
 }: ToursSectionProps) {
   const hasFilters = Boolean(filterBar && onClearFilters);
 
@@ -62,7 +66,14 @@ export default function ToursSection({
               {h1Title}
             </h1>
           )}
-          {overView && <RichContent html={overView} className="mt-2 text-slate-600 font-normal text-sm sm:text-base leading-relaxed" />}
+          {overView && (
+            <RichContent
+              html={overView}
+              className="mt-2 text-slate-600 font-normal text-sm sm:text-base leading-relaxed"
+              sharedLinkedHrefs={sharedLinkedHrefs}
+              excludeHrefs={excludeHrefs}
+            />
+          )}
         </div>
 
         {tabs}
