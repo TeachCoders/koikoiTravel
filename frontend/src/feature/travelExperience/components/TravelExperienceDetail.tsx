@@ -497,7 +497,6 @@ function ExperienceContent({
                 {experience.moreDescription && (
                   <RichContent
                     html={experience.moreDescription}
-                    sharedLinkedHrefs={pageLinkedHrefs}
                     excludeHrefs={excludeHrefs}
                   />
                 )}
