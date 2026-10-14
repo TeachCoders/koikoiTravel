@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Poppins, Cinzel, Playfair_Display } from "next/font/google";
+import { Poppins, Cinzel, Playfair_Display, Outfit } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AppProviders } from "@/components/providers/app-provider";
@@ -33,6 +33,13 @@ const playfair = Playfair_Display({
   variable: "--font-playfair",
   display: "swap",
   weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -105,6 +112,7 @@ export default function RootLayout({
         poppins.variable,
         cinzel.variable,
         playfair.variable,
+        outfit.variable,
         "font-sans"
       )}
     >
