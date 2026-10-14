@@ -167,9 +167,9 @@ export default function SeasonDetail({
             </div>
           )}
 
-          <h1 className="font-luxury text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+          <div className="font-luxury text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
             {heroTitle}
-          </h1>
+          </div>
         </div>
       </section>
 
