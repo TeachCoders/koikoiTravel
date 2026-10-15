@@ -1,18 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import HeroSearchBar from "@/components/shared/HeroSearchBar";
-import { FallbackImage } from "@/components/shared/FallbackImage";
-import { useHeroBanners } from "@/feature/heroBanner/api";
-
-const DEFAULT_SLIDES = [
-  { image: "/content/rajasthan-tours-holiday-1.webp", alt: "Rajasthan heritage tour" },
-  { image: "/content/srinagar-holiday-1.webp", alt: "Srinagar Kashmir holiday" },
-  { image: "/content/jaipur-holiday-1.webp", alt: "Jaipur royal heritage" },
-  { image: "/content/manali-holiday-1.webp", alt: "Manali Himachal holiday" },
-];
 
 const TRENDING_CHIPS = [
   { label: "Golden Triangle", href: "/travel-experiences/golden-triangle" },
@@ -27,107 +19,22 @@ const TRENDING_CHIPS = [
 ];
 
 export const HeroSection: React.FC = () => {
-  const { data: heroData } = useHeroBanners("Home");
-  const slides = heroData?.data?.length
-    ? heroData.data.map((b) => ({
-        image: b.image,
-        alt: b.altText || b.title || "Holiday tour banner",
-      }))
-    : DEFAULT_SLIDES;
-
-  const [current, setCurrent] = useState(0);
-
-  const next = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % slides.length);
-  }, [slides.length]);
-
-  const prev = useCallback(() => {
-    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
-  }, [slides.length]);
-
-  useEffect(() => {
-    const timer = setInterval(next, 10000);
-    return () => clearInterval(timer);
-  }, [next]);
-
   return (
     <section className="relative w-full min-h-[420px] sm:min-h-[480px] md:min-h-[560px] py-10 sm:py-14 flex items-center justify-center bg-slate-900 z-20">
-      {/* Background slider - permanent Slide 0 guarantees rock-solid, stable LCP candidate */}
+      {/* Background static image - 100% stable LCP candidate for HeadlessChromium & PageSpeed */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Base Slide 0: Always in DOM at z-0 with opacity-100 to guarantee valid, stable LCP */}
-        <div className="absolute inset-0 z-0">
-          <FallbackImage
-            src={slides[0]?.image || DEFAULT_SLIDES[0].image}
-            alt={slides[0]?.alt || DEFAULT_SLIDES[0].alt}
-            fill
-            priority
-            fetchPriority="high"
-            loading="eager"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
-            className="object-cover object-center"
-            theme="dark"
-          />
-        </div>
-
-        {/* Subsequent slides 1..N: Crossfade smoothly on top (z-10) when active */}
-        {slides.slice(1).map((s, index) => {
-          const slideIndex = index + 1;
-          const isActive = current === slideIndex;
-          return (
-            <div
-              key={slideIndex}
-              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-              }`}
-            >
-              <FallbackImage
-                src={s.image}
-                alt={s.alt}
-                fill
-                loading="lazy"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
-                className="object-cover object-center"
-                theme="dark"
-              />
-            </div>
-          );
-        })}
+        <Image
+          src="/content/rajasthan-tours-holiday-1.webp"
+          alt="Tailor-Made India Tours - KoiKoi Travel"
+          fill
+          priority
+          fetchPriority="high"
+          loading="eager"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
+          className="object-cover object-center"
+          quality={75}
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/30 z-10 pointer-events-none" />
-      </div>
-
-      <button
-        onClick={prev}
-        aria-label="Previous slide"
-        className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full items-center justify-center text-white hover:bg-white/20 transition-all"
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
-      <button
-        onClick={next}
-        aria-label="Next slide"
-        className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full items-center justify-center text-white hover:bg-white/20 transition-all"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
-
-      <div className="absolute bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => setCurrent(i)}
-            aria-label={`Go to slide ${i + 1}`}
-            className="p-2 sm:p-2.5 flex items-center justify-center cursor-pointer focus:outline-none"
-          >
-            <span
-              className={`block rounded-full transition-all duration-300 ${
-                i === current
-                  ? "w-6 sm:w-8 h-1.5 sm:h-2 bg-[#F8904D]"
-                  : "w-2 sm:w-2.5 h-1.5 sm:h-2 bg-white/60 hover:bg-white"
-              }`}
-            />
-          </button>
-        ))}
       </div>
 
       <div className="relative z-30 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-center">
