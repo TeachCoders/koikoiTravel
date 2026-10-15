@@ -885,7 +885,7 @@ export const Header: React.FC = () => {
                   href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919136739178"}?text=${encodeURIComponent("Hi KoiKoi Travel, I want to inquire about a custom holiday tour package.")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#2E8B8B] py-3 text-base font-bold text-white transition-colors hover:bg-[#266f6f] active:scale-95"
+                  className="flex w-full items-center justify-center gap-2 rounded-[8px] bg-[#2E8B8B] py-3 text-base font-bold text-white transition-colors hover:bg-[#266f6f] active:scale-95"
                 >
                   <WhatsAppIcon className="h-4 w-4" />
                   Chat on WhatsApp

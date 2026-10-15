@@ -415,7 +415,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#2E8B8B] hover:bg-[#247070] active:scale-95 text-white text-xs sm:text-sm font-bold shadow-sm transition-all text-center"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-[8px] bg-[#2E8B8B] hover:bg-[#247070] active:scale-95 text-white text-xs sm:text-sm font-bold shadow-sm transition-all text-center"
                     >
                       <WhatsAppIcon className="w-4 h-4 fill-white shrink-0" />
                       <span>WhatsApp Us</span>
@@ -424,7 +424,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     <QuoteModal>
                       <button
                         type="button"
-                        className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#F8904D] hover:bg-[#d97536] active:scale-95 text-white text-xs sm:text-sm font-bold shadow-sm transition-all text-center cursor-pointer"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-[8px] bg-[#F8904D] hover:bg-[#d97536] active:scale-95 text-white text-xs sm:text-sm font-bold shadow-sm transition-all text-center cursor-pointer"
                       >
                         <CalendarDays size={15} className="shrink-0" />
                         <span>Request Quote</span>
@@ -660,7 +660,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               </p>
               <Link
                 href={`/tour-packages/${countrySlug}/${stateSlug}`}
-                className="mt-3.5 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-slate-900 text-xs sm:text-sm font-bold hover:bg-[#F8904D] hover:text-white transition-all shadow-xs"
+                className="mt-3.5 inline-flex items-center gap-1.5 px-4 py-2 rounded-[8px] bg-white text-slate-900 text-xs sm:text-sm font-bold hover:bg-[#F8904D] hover:text-white transition-all shadow-xs"
               >
                 View All Tours <ArrowRight size={14} />
               </Link>
