@@ -451,7 +451,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   <div className="grid grid-cols-2 gap-2.5 pt-1">
                     <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50/80 border border-slate-200/60 text-slate-800 text-xs font-semibold">
                       <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                      <span className="truncate">100% Tailored Plan</span>
+                      <span className="truncate">100% Free Planning</span>
                     </div>
                     <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50/80 border border-slate-200/60 text-slate-800 text-xs font-semibold">
                       <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
