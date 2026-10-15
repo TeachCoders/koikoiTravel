@@ -35,11 +35,11 @@ export default function DeferredAnalytics({
       if (timeoutId) clearTimeout(timeoutId);
 
       // Pre-initialize dataLayer
-      window.dataLayer = window.dataLayer || [];
       const w = window as any;
+      w.dataLayer = w.dataLayer || [];
       if (!w.gtag) {
         w.gtag = function () {
-          window.dataLayer.push(arguments);
+          w.dataLayer.push(arguments);
         };
       }
 
