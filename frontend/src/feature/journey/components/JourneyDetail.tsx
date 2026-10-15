@@ -25,8 +25,6 @@ import {
   Moon,
   SunMoon,
   Timer,
-  Clock,
-  Check,
   MapPin,
 } from "lucide-react";
 import { useEffect, useState, Fragment, useMemo } from "react";
@@ -418,28 +416,28 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     </div>
                   </div>
 
-                  {/* 4 Verified Trust Points - Clean & Simple */}
-                  <div className="grid grid-cols-2 gap-x-3 gap-y-2.5 pt-1 text-xs text-slate-600 font-medium">
+                  {/* Verified Trust Points - Unified Single Group (same as Home Hero) */}
+                  <div className="grid grid-cols-2 gap-x-3 gap-y-2.5 pt-1 text-xs text-slate-700 font-medium">
                     <span className="flex items-center gap-1.5">
-                      <span className="text-emerald-500 font-bold">✓</span>
-                      <span>100% Tailored Plan</span>
+                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                      <span>100% Tailored Itineraries</span>
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <span className="text-emerald-500 font-bold">✓</span>
-                      <span>Verified Chauffeurs</span>
+                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                      <span>Verified Private Chauffeurs</span>
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <span className="text-emerald-500 font-bold">✓</span>
+                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
                       <span>Transparent Fixed Quotes</span>
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <span className="text-emerald-500 font-bold">✓</span>
+                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
                       <span>24/7 Dedicated Support</span>
                     </span>
                   </div>
                 </div>
 
-                {/* Bottom: Action Buttons & Micro-Trust */}
+                {/* Bottom: Action Buttons */}
                 <div className="pt-5 mt-5 border-t border-slate-100 flex flex-col gap-3 relative z-10">
                   <div className="grid grid-cols-2 gap-2.5 w-full">
                     <a
@@ -463,23 +461,6 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         <span>Request Quote</span>
                       </button>
                     </QuoteModal>
-                  </div>
-
-                  <div className="flex items-center justify-around text-center text-[11px] font-semibold text-slate-600 pt-1">
-                    <span className="flex items-center gap-1 text-slate-600">
-                      <Check size={12} className="text-[#2E8B8B]" />
-                      Free Planning
-                    </span>
-                    <span className="text-slate-300">&bull;</span>
-                    <span className="flex items-center gap-1 text-slate-600">
-                      <Clock size={11} className="text-slate-400" />
-                      &lt;15m Response
-                    </span>
-                    <span className="text-slate-300">&bull;</span>
-                    <span className="flex items-center gap-1 text-slate-600">
-                      <ShieldCheck size={12} className="text-[#2E8B8B]" />
-                      Zero Booking Fee
-                    </span>
                   </div>
                 </div>
               </div>
