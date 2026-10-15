@@ -636,12 +636,12 @@
     color: #111827;
   }
 
-  .rich-text a strong,
+  /* .rich-text a strong,
   .rich-text a b,
   .rich-text strong a,
   .rich-text b a {
     color: inherit !important;
-  }
+  } */
 
   .rich-text a,
   .rich-text a:hover {
