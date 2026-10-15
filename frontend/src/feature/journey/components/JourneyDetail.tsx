@@ -446,38 +446,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     </div>
                   </div>
 
-                  {/* Ideal For */}
-                  {(journey.travelExperiences?.length ?? 0) > 0 && (
-                    <div className="relative z-10 pt-3.5 border-t border-slate-100">
-                      <h4 className="text-xs sm:text-sm font-bold text-slate-800 mb-2.5 flex items-center gap-2">
-                        <Star size={15} className="text-[#F5B041] fill-[#F5B041]" />
-                        Ideal For
-                      </h4>
-                      <div className="flex flex-wrap gap-1.5">
-                        {journey.travelExperiences!.map((e) => {
-                          const href = e.slug ? `/travel-experiences/${e.slug}` : null;
-                          return href ? (
-                            <Link
-                              key={e.id}
-                              href={href}
-                              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-orange-50 text-slate-700 hover:text-[#F8904D] text-xs font-semibold border border-slate-200/80 hover:border-orange-200 transition-all shadow-2xs"
-                            >
-                              <span className="text-[#2E8B8B] shrink-0">{travelExperienceIcon(e.title)}</span>
-                              <span>{e.title}</span>
-                            </Link>
-                          ) : (
-                            <span
-                              key={e.id}
-                              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-orange-50 text-slate-700 hover:text-[#F8904D] text-xs font-semibold border border-slate-200/80 hover:border-orange-200 transition-all shadow-2xs"
-                            >
-                              <span className="text-[#2E8B8B] shrink-0">{travelExperienceIcon(e.title)}</span>
-                              <span>{e.title}</span>
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
+
                 </div>
 
                 {/* Interested in this tour */}
