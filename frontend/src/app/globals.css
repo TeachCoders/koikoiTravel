@@ -810,27 +810,72 @@
     font-weight: 500 !important;
   }
 
-  /* When strong/b is inside an anchor or wraps an anchor, keep teal link color */
-  .rich-text a strong,
-  .rich-text a b,
+  /* Interlinking / In-Content Links: Always Teal Green (#2E8B8B) */
+  .rich-text a:not([data-rte-button]),
+  .rich-text a:not([data-rte-button]) *,
   .rich-text strong a,
   .rich-text b a,
+  .rich-text strong a *,
+  .rich-text b a *,
+  .rich-text a strong,
+  .rich-text a b,
+  .rich-text a span,
+  .rich-text-plain-links a:not([data-rte-button]),
+  .rich-text-plain-links a:not([data-rte-button]) *,
+  .rich-text-plain-links strong a,
+  .rich-text-plain-links b a,
+  .rich-text-plain-links strong a *,
+  .rich-text-plain-links b a *,
   .rich-text-plain-links a strong,
   .rich-text-plain-links a b,
-  a strong,
-  a b,
-  strong a,
-  b a {
-    color: inherit !important;
+  .prose a:not([data-rte-button]),
+  .prose a:not([data-rte-button]) *,
+  article a:not([data-rte-button]),
+  article a:not([data-rte-button]) *,
+  [itemprop="text"] a:not([data-rte-button]),
+  [itemprop="text"] a:not([data-rte-button]) *,
+  [itemprop="acceptedAnswer"] a:not([data-rte-button]),
+  [itemprop="acceptedAnswer"] a:not([data-rte-button]) * {
+    color: #2E8B8B !important;
   }
 
-  .rich-text a:hover strong,
-  .rich-text a:hover b,
-  .rich-text-plain-links a:hover strong,
-  .rich-text-plain-links a:hover b,
-  a:hover strong,
-  a:hover b {
-    color: inherit !important;
+  .rich-text a:not([data-rte-button]):hover,
+  .rich-text a:not([data-rte-button]):hover *,
+  .rich-text strong a:hover,
+  .rich-text b a:hover,
+  .rich-text strong a:hover *,
+  .rich-text b a:hover *,
+  .prose a:not([data-rte-button]):hover,
+  .prose a:not([data-rte-button]):hover *,
+  article a:not([data-rte-button]):hover,
+  article a:not([data-rte-button]):hover * {
+    color: #1a5c5c !important;
+  }
+
+  .rich-text-plain-links a:not([data-rte-button]):hover,
+  .rich-text-plain-links a:not([data-rte-button]):hover *,
+  .rich-text-plain-links strong a:hover,
+  .rich-text-plain-links b a:hover,
+  .rich-text-plain-links strong a:hover *,
+  .rich-text-plain-links b a:hover *,
+  [itemprop="text"] a:not([data-rte-button]):hover,
+  [itemprop="text"] a:not([data-rte-button]):hover *,
+  [itemprop="acceptedAnswer"] a:not([data-rte-button]):hover,
+  [itemprop="acceptedAnswer"] a:not([data-rte-button]):hover * {
+    color: #F8904D !important;
+  }
+
+  /* TipTap & ProseMirror Editor Links: Always Teal Green (#2E8B8B) with underline */
+  .tiptap a:not([data-rte-button]),
+  .tiptap a:not([data-rte-button]) *,
+  .ProseMirror a:not([data-rte-button]),
+  .ProseMirror a:not([data-rte-button]) *,
+  .rte-editor a:not([data-rte-button]),
+  .rte-editor a:not([data-rte-button]) * {
+    color: #2E8B8B !important;
+    text-decoration: underline !important;
+    text-underline-offset: 3px !important;
+    font-weight: 600 !important;
   }
 
   .rich-text em {

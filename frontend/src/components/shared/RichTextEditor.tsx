@@ -960,11 +960,11 @@ export default function RichTextEditor({
         .rte-editor .tiptap strong { font-weight: 700; color: #0f172a; }
         .rte-editor .tiptap em { font-style: italic; }
         .rte-editor .tiptap u { text-decoration: underline; }
-        .rte-editor .tiptap s { text-decoration: line-through; }
-        .rte-editor .tiptap a { color: #2563eb; text-decoration: underline; }
-        .rte-editor .tiptap a[data-rte-button] { color: #fff; text-decoration: none; transition: opacity 0.2s; }
+        .rte-editor .tiptap a { color: #2E8B8B !important; text-decoration: underline !important; text-underline-offset: 3px; font-weight: 600; }
+        .rte-editor .tiptap a strong, .rte-editor .tiptap a b, .rte-editor .tiptap strong a, .rte-editor .tiptap b a { color: #2E8B8B !important; }
+        .rte-editor .tiptap a[data-rte-button] { color: #fff !important; text-decoration: none !important; transition: opacity 0.2s; }
         .rte-editor .tiptap a[data-rte-button]:hover { opacity: 0.9; }
-        .rte-editor .tiptap a[data-rte-button].ProseMirror-selectednode { outline: 2px dashed #6366f1; outline-offset: 2px; }
+        .rte-editor .tiptap a[data-rte-button].ProseMirror-selectednode { outline: 2px dashed #2E8B8B; outline-offset: 2px; }
         .rte-editor .tiptap blockquote { border-left: 3px solid #6366f1; padding-left: 1rem; margin: 0.5rem 0; color: #64748b; font-style: italic; }
         .rte-editor .tiptap hr { border: none; border-top: 2px solid #e2e8f0; margin: 1rem 0; }
         .rte-editor .tiptap .tableWrapper { overflow-x: auto; margin: 0.75rem 0; }

@@ -58,6 +58,22 @@ function cleanDeadExternalLinks(html: string): string {
   });
 }
 
+function cleanBlackAnchorColors(html: string): string {
+  if (!html) return html;
+  return html.replace(/<a\b([^>]*)>/gi, (match, attrs) => {
+    if (/data-rte-button/i.test(attrs)) return match;
+    const cleanedAttrs = attrs.replace(/\bstyle\s*=\s*(['"])(.*?)\1/i, (_styleAttr: string, quote: string, styleBody: string) => {
+      const kept = styleBody
+        .split(";")
+        .map((decl: string) => decl.trim())
+        .filter((decl: string) => decl && !/^color\s*:\s*(#000|#000000|#1c1c1c|#111|#222|#333|black|rgb\(\s*0\s*,\s*0\s*,\s*0\s*\)|rgb\(\s*28\s*,\s*28\s*,\s*28\s*\))/i.test(decl))
+        .join(";");
+      return kept ? `style=${quote}${kept}${quote}` : "";
+    });
+    return `<a${cleanedAttrs}>`;
+  });
+}
+
 import { autoLinkKeywords, type AutoLinkOptions, type AutoLinkRule } from "@/lib/autoInternalLink";
 
 export interface SanitizeHtmlOptions extends AutoLinkOptions {
@@ -71,7 +87,8 @@ export function sanitizeHtml(html: string, options?: SanitizeHtmlOptions): strin
     FORBID_TAGS: ["style", "script", "iframe", "form", "input", "button"],
     ADD_ATTR: ["target", "rel"],
   });
-  const fixed = wrapResponsiveTables(clean)
+  const unblackened = cleanBlackAnchorColors(clean);
+  const fixed = wrapResponsiveTables(unblackened)
     .replace(/<h1\b[^>]*>/gi, (match) => match.replace(/<h1/i, "<h2"))
     .replace(/<\/h1>/gi, "</h2>");
 

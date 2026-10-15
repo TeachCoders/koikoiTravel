@@ -1,10 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import HeroSearchBar from "@/components/shared/HeroSearchBar";
+
+const SLIDES = [
+  { image: "/content/rajasthan-tours-holiday-1.webp", alt: "Rajasthan royal heritage tour" },
+  { image: "/content/srinagar-holiday-1.webp", alt: "Srinagar Kashmir mountain holiday" },
+  { image: "/content/jaipur-holiday-1.webp", alt: "Jaipur cultural heritage tour" },
+  { image: "/content/manali-holiday-1.webp", alt: "Manali Himachal holiday package" },
+];
 
 const TRENDING_CHIPS = [
   { label: "Golden Triangle", href: "/travel-experiences/golden-triangle" },
@@ -19,22 +26,103 @@ const TRENDING_CHIPS = [
 ];
 
 export const HeroSection: React.FC = () => {
+  const [current, setCurrent] = useState(0);
+
+  const next = useCallback(() => {
+    setCurrent((prev) => (prev + 1) % SLIDES.length);
+  }, []);
+
+  const prev = useCallback(() => {
+    setCurrent((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+  }, []);
+
+  // Automatic slide rotation
+  useEffect(() => {
+    const timer = setInterval(next, 7000);
+    return () => clearInterval(timer);
+  }, [next]);
+
   return (
     <section className="relative w-full min-h-[420px] sm:min-h-[480px] md:min-h-[560px] py-10 sm:py-14 flex items-center justify-center bg-slate-900 z-20">
-      {/* Background static image - 100% stable LCP candidate for HeadlessChromium & PageSpeed */}
+      {/* Background slider with permanent Slide 0 for rock-solid LCP performance */}
       <div className="absolute inset-0 overflow-hidden">
-        <Image
-          src="/content/rajasthan-tours-holiday-1.webp"
-          alt="Tailor-Made India Tours - KoiKoi Travel"
-          fill
-          priority
-          fetchPriority="high"
-          loading="eager"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
-          className="object-cover object-center"
-          quality={75}
-        />
+        {/* Base Slide 0: Always in DOM at z-0 with full opacity for instant LCP detection */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={SLIDES[0].image}
+            alt={SLIDES[0].alt}
+            fill
+            priority
+            fetchPriority="high"
+            loading="eager"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
+            className="object-cover object-center"
+            quality={75}
+          />
+        </div>
+
+        {/* Subsequent slides 1..N: Crossfade on top (z-10) when active */}
+        {SLIDES.slice(1).map((s, index) => {
+          const slideIndex = index + 1;
+          const isActive = current === slideIndex;
+          return (
+            <div
+              key={slideIndex}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
+            >
+              <Image
+                src={s.image}
+                alt={s.alt}
+                fill
+                loading="lazy"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
+                className="object-cover object-center"
+                quality={75}
+              />
+            </div>
+          );
+        })}
+
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/30 z-10 pointer-events-none" />
+      </div>
+
+      {/* Navigation arrows (desktop) */}
+      <button
+        onClick={prev}
+        aria-label="Previous slide"
+        className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+      <button
+        onClick={next}
+        aria-label="Next slide"
+        className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full items-center justify-center text-white hover:bg-white/20 transition-all cursor-pointer"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+
+      {/* Bottom slide indicator dots with touch-friendly 44px hit-target */}
+      <div className="absolute bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center">
+        {SLIDES.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => setCurrent(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            className="p-2.5 flex items-center justify-center cursor-pointer focus:outline-none"
+          >
+            <span
+              className={`block rounded-full transition-all duration-300 ${
+                i === current
+                  ? "w-6 sm:w-8 h-1.5 sm:h-2 bg-[#F8904D]"
+                  : "w-2 sm:w-2.5 h-1.5 sm:h-2 bg-white/60 hover:bg-white"
+              }`}
+            />
+          </button>
+        ))}
       </div>
 
       <div className="relative z-30 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-center">
