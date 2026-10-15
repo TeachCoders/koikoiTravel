@@ -383,118 +383,64 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
             {/* RIGHT: DETAILS */}
             <aside className="h-full">
-              <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm relative overflow-hidden flex flex-col h-full">
-                <div className="absolute top-0 right-0 p-6 opacity-[0.03] pointer-events-none">
-                  <Sparkles className="w-32 h-32 rotate-12" />
-                </div>
-
-                <div className="p-6 sm:p-7 lg:p-8 flex-1">
-
-                  {/* Quick Facts / Trip Overview */}
-                  <div className="mb-6 relative z-10 space-y-4">
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+              <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm relative overflow-hidden flex flex-col justify-between p-6 sm:p-7 h-full">
+                {/* Top: Overview & Customization */}
+                <div className="space-y-5 relative z-10">
+                  {/* Header */}
+                  <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
+                    <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
                       <Sparkles size={18} className="text-[#F8904D]" />
                       Trip Overview
                     </h3>
-
-                    <div className="space-y-3.5">
-                      {/* Duration */}
-                      <div className="flex items-center justify-between gap-4 py-1">
-                        <span className="flex items-center gap-2 text-sm text-slate-600 font-semibold">
-                          <SunMoon size={16} className="text-[#2E8B8B]" />
-                          Duration
-                        </span>
-                        <span className="text-sm sm:text-[15px] font-bold text-slate-900">
-                          {journey.duration ||
-                            (journey.noDays > 0
-                              ? `${journey.noDays > 1 ? `${journey.noDays - 1} Nights / ` : ""}${journey.noDays} Days`
-                              : "—")}
-                        </span>
-                      </div>
-
-                      {/* Best Season to Visit */}
-                      {/* {(journey.months?.length ?? 0) > 0 && (
-                        <div className="pt-3.5 border-t border-slate-100 flex flex-col gap-2">
-                          <h4 className="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2">
-                            <CalendarDays size={15} className="text-[#2E8B8B]" />
-                            Best Season to Visit
-                          </h4>
-                          <div className="flex flex-wrap gap-1.5">
-                            {groupMonthsBySeason(journey.months!).map((g) => {
-                              const rangeText = formatSeasonRange(g);
-                              return (
-                                <div
-                                  key={g.season}
-                                  className={cn(
-                                    "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-all shadow-2xs",
-                                    getSeasonStyles(g.season)
-                                  )}
-                                >
-                                  {getSeasonIcon(g.season)}
-                                  <div className="flex items-center gap-1">
-                                    <span>{g.label}</span>
-                                    {rangeText && (
-                                      <span className="opacity-75 font-medium text-[10.5px]">({rangeText})</span>
-                                    )}
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )} */}
+                    <div className="text-right">
+                      <span className="text-[11px] text-slate-600 block uppercase font-bold tracking-wider">Duration</span>
+                      <span className="text-sm sm:text-[15px] font-black text-slate-900">
+                        {journey.duration ||
+                          (journey.noDays > 0
+                            ? `${journey.noDays > 1 ? `${journey.noDays - 1} Nights / ` : ""}${journey.noDays} Days`
+                            : "—")}
+                      </span>
                     </div>
                   </div>
 
-                  {/* 100% Customizable Tour & Verified Trust Points */}
-                  <div className="pt-4 border-t border-slate-100 space-y-3.5 relative z-10">
-                    <div className="bg-gradient-to-br from-teal-50/70 via-white to-orange-50/40 p-3.5 sm:p-4 rounded-2xl border border-teal-100/80 shadow-2xs">
-                      <div className="flex items-start gap-2.5">
-                        <span className="w-7 h-7 rounded-full bg-[#2E8B8B]/10 text-[#2E8B8B] flex items-center justify-center shrink-0 mt-0.5">
-                          <Sparkles size={14} className="text-[#2E8B8B]" />
-                        </span>
-                        <div>
-                          <h4 className="text-xs sm:text-[13px] font-bold text-slate-900 tracking-tight leading-snug">
-                            100% Tailor-Made &amp; Customizable
-                          </h4>
-                          <p className="text-[11.5px] sm:text-xs text-slate-600 leading-relaxed font-normal mt-1">
-                            This tour can be customized according to your travel needs, preferred pace, dates &amp; hotel category.
-                          </p>
-                        </div>
-                      </div>
+                  {/* Clean 100% Customizable Note (No nested borders or cards) */}
+                  <div className="flex items-start gap-3">
+                    <span className="w-8 h-8 rounded-full bg-teal-50 text-[#2E8B8B] flex items-center justify-center shrink-0 mt-0.5">
+                      <Sparkles size={15} />
+                    </span>
+                    <div>
+                      <h4 className="text-sm font-bold text-slate-900 leading-snug">
+                        100% Tailor-Made &amp; Customizable
+                      </h4>
+                      <p className="text-xs text-slate-500 leading-relaxed font-normal mt-0.5">
+                        This tour can be customized according to your travel needs, preferred pace, dates &amp; hotel category.
+                      </p>
                     </div>
+                  </div>
 
-                    {/* Trust Points Badges */}
-                    <div className="grid grid-cols-2 gap-2 pt-1">
-                      <div className="flex items-center gap-1.5 text-slate-700 text-[11px] sm:text-xs font-medium">
-                        <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                        <span>100% Tailored Plan</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-slate-700 text-[11px] sm:text-xs font-medium">
-                        <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                        <span>Verified Chauffeurs</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-slate-700 text-[11px] sm:text-xs font-medium">
-                        <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                        <span>Transparent Fixed Quotes</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-slate-700 text-[11px] sm:text-xs font-medium">
-                        <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                        <span>24/7 Dedicated Support</span>
-                      </div>
-                    </div>
+                  {/* 4 Verified Trust Points - Clean & Simple */}
+                  <div className="grid grid-cols-2 gap-x-3 gap-y-2.5 pt-1 text-xs text-slate-600 font-medium">
+                    <span className="flex items-center gap-1.5">
+                      <span className="text-emerald-500 font-bold">✓</span>
+                      <span>100% Tailored Plan</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="text-emerald-500 font-bold">✓</span>
+                      <span>Verified Chauffeurs</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="text-emerald-500 font-bold">✓</span>
+                      <span>Transparent Fixed Quotes</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="text-emerald-500 font-bold">✓</span>
+                      <span>24/7 Dedicated Support</span>
+                    </span>
                   </div>
                 </div>
 
-                {/* Interested in this tour */}
-                <div className="p-5 sm:p-6 lg:p-7 bg-slate-50/70 border-t border-slate-100 hidden lg:flex flex-col gap-3.5 relative z-10">
-                  <div>
-                    <h3 className="text-base sm:text-[17px] font-bold text-slate-900 mb-1 leading-snug">Ready to personalize this trip?</h3>
-                    <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-normal">
-                      Connect directly with our destination specialist for a tailor-made plan &amp; instant quote.
-                    </p>
-                  </div>
-
+                {/* Bottom: Action Buttons & Micro-Trust */}
+                <div className="pt-5 mt-5 border-t border-slate-100 flex flex-col gap-3 relative z-10">
                   <div className="grid grid-cols-2 gap-2.5 w-full">
                     <a
                       href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
@@ -519,24 +465,23 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     </QuoteModal>
                   </div>
 
-                  <div className="pt-2 flex items-center justify-around text-center text-xs font-semibold text-slate-500 border-t border-slate-200/60 mt-0.5">
+                  <div className="flex items-center justify-around text-center text-[11px] font-semibold text-slate-600 pt-1">
                     <span className="flex items-center gap-1 text-slate-600">
-                      <Check size={13} className="text-[#2E8B8B]" />
+                      <Check size={12} className="text-[#2E8B8B]" />
                       Free Planning
                     </span>
                     <span className="text-slate-300">&bull;</span>
                     <span className="flex items-center gap-1 text-slate-600">
-                      <Clock size={12} className="text-slate-400" />
+                      <Clock size={11} className="text-slate-400" />
                       &lt;15m Response
                     </span>
                     <span className="text-slate-300">&bull;</span>
                     <span className="flex items-center gap-1 text-slate-600">
-                      <ShieldCheck size={13} className="text-[#2E8B8B]" />
+                      <ShieldCheck size={12} className="text-[#2E8B8B]" />
                       Zero Booking Fee
                     </span>
                   </div>
                 </div>
-
               </div>
             </aside>
           </div>
