@@ -446,7 +446,44 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     </div>
                   </div>
 
+                  {/* 100% Customizable Tour & Verified Trust Points */}
+                  <div className="pt-4 border-t border-slate-100 space-y-3.5 relative z-10">
+                    <div className="bg-gradient-to-br from-teal-50/70 via-white to-orange-50/40 p-3.5 sm:p-4 rounded-2xl border border-teal-100/80 shadow-2xs">
+                      <div className="flex items-start gap-2.5">
+                        <span className="w-7 h-7 rounded-full bg-[#2E8B8B]/10 text-[#2E8B8B] flex items-center justify-center shrink-0 mt-0.5">
+                          <Sparkles size={14} className="text-[#2E8B8B]" />
+                        </span>
+                        <div>
+                          <h4 className="text-xs sm:text-[13px] font-bold text-slate-900 tracking-tight leading-snug">
+                            100% Tailor-Made &amp; Customizable
+                          </h4>
+                          <p className="text-[11.5px] sm:text-xs text-slate-600 leading-relaxed font-normal mt-1">
+                            This tour can be customized according to your travel needs, preferred pace, dates &amp; hotel category.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
 
+                    {/* Trust Points Badges */}
+                    <div className="grid grid-cols-2 gap-2 pt-1">
+                      <div className="flex items-center gap-1.5 text-slate-700 text-[11px] sm:text-xs font-medium">
+                        <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                        <span>100% Tailored Plan</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-slate-700 text-[11px] sm:text-xs font-medium">
+                        <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                        <span>Verified Chauffeurs</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-slate-700 text-[11px] sm:text-xs font-medium">
+                        <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                        <span>Transparent Fixed Quotes</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-slate-700 text-[11px] sm:text-xs font-medium">
+                        <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                        <span>24/7 Dedicated Support</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Interested in this tour */}
