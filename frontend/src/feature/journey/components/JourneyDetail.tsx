@@ -278,10 +278,10 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                 <div className="flex flex-col h-full">
                   <div
                     className={cn(
-                      "grid gap-2 md:gap-3 lg:h-full w-full",
-                      heroImages.length === 1 ? "grid-cols-1 grid-rows-1 md:h-[380px]" :
-                        heroImages.length === 2 ? "grid-cols-1 grid-rows-2 h-[260px] md:h-[380px]" :
-                          "grid-cols-2 grid-rows-2 h-[260px] md:h-[380px]" // 3 or 4+ images
+                      "grid gap-2 md:gap-3 w-full h-[260px] md:h-[380px] lg:h-full",
+                      heroImages.length === 1 ? "grid-cols-1 grid-rows-1" :
+                        heroImages.length === 2 ? "grid-cols-1 grid-rows-2" :
+                          "grid-cols-2 grid-rows-2" // 3 or 4+ images
                     )}
                   >
                     {/* Image 1 */}
@@ -383,15 +383,17 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
             <aside className="h-full">
               <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm relative overflow-hidden flex flex-col justify-between p-6 sm:p-7 h-full">
                 {/* Top: Header & Action Buttons */}
-                <div className="space-y-5 relative z-10">
-                  {/* Header */}
+                <div className="space-y-4 relative z-10">
+                  {/* Header: Title & Duration */}
                   <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
-                    <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                      <Sparkles size={18} className="text-[#F8904D]" />
-                      Trip Overview
-                    </h3>
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-4.5 rounded-full bg-[#F8904D]" />
+                      <h3 className="text-base sm:text-[17px] font-bold text-slate-900 tracking-tight">
+                        Tour Snapshot
+                      </h3>
+                    </div>
                     <div className="text-right">
-                      <span className="text-[11px] text-slate-600 block uppercase font-bold tracking-wider">Duration</span>
+                      <span className="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">Duration</span>
                       <span className="text-sm sm:text-[15px] font-black text-slate-900">
                         {journey.duration ||
                           (journey.noDays > 0
@@ -427,40 +429,38 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   </div>
                 </div>
 
-                {/* Bottom: 100% Customizable Note followed by Verified Trust Points */}
-                <div className="pt-5 mt-5 border-t border-slate-100 space-y-3.5 relative z-10">
-                  <div className="flex items-start gap-3">
-                    <span className="w-8 h-8 rounded-full bg-teal-50 text-[#2E8B8B] flex items-center justify-center shrink-0 mt-0.5">
-                      <Sparkles size={15} />
-                    </span>
-                    <div>
+                {/* Bottom: 100% Customizable Note followed by Verified Trust Badges */}
+                <div className="pt-4 mt-4 border-t border-slate-100 space-y-3 relative z-10">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Sparkles size={15} className="text-[#2E8B8B] shrink-0" />
                       <h4 className="text-sm font-bold text-slate-900 leading-snug">
                         100% Tailor-Made &amp; Customizable
                       </h4>
-                      <p className="text-xs text-slate-500 leading-relaxed font-normal mt-0.5">
-                        This tour can be customized according to your travel needs, preferred pace, dates &amp; hotel category.
-                      </p>
                     </div>
+                    <p className="text-xs text-slate-500 leading-relaxed pl-6 font-normal">
+                      This tour can be customized according to your travel needs, preferred pace, dates &amp; hotel category.
+                    </p>
                   </div>
 
-                  {/* Verified Trust Points following the customizable text */}
-                  <div className="grid grid-cols-2 gap-x-3 gap-y-2.5 pt-1 text-xs text-slate-700 font-medium">
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                      <span>100% Tailored Plan</span>
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                      <span>Verified Chauffeurs</span>
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                      <span>Transparent Fixed Quotes</span>
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                      <span>24/7 Dedicated Support</span>
-                    </span>
+                  {/* Verified Trust Badges - Natural Pill Snapshot Style */}
+                  <div className="grid grid-cols-2 gap-2.5 pt-1">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50/80 border border-slate-200/60 text-slate-800 text-xs font-semibold">
+                      <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                      <span className="truncate">100% Tailored Plan</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50/80 border border-slate-200/60 text-slate-800 text-xs font-semibold">
+                      <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                      <span className="truncate">Verified Chauffeurs</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50/80 border border-slate-200/60 text-slate-800 text-xs font-semibold">
+                      <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                      <span className="truncate">Transparent Quotes</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50/80 border border-slate-200/60 text-slate-800 text-xs font-semibold">
+                      <span className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                      <span className="truncate">24/7 Dedicated Support</span>
+                    </div>
                   </div>
                 </div>
               </div>
