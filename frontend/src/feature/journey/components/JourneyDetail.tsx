@@ -382,7 +382,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
             {/* RIGHT: DETAILS */}
             <aside className="h-full">
               <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm relative overflow-hidden flex flex-col justify-between p-6 sm:p-7 h-full">
-                {/* Top: Overview & Customization */}
+                {/* Top: Header & Action Buttons */}
                 <div className="space-y-5 relative z-10">
                   {/* Header */}
                   <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
@@ -401,45 +401,8 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     </div>
                   </div>
 
-                  {/* Clean 100% Customizable Note (No nested borders or cards) */}
-                  <div className="flex items-start gap-3">
-                    <span className="w-8 h-8 rounded-full bg-teal-50 text-[#2E8B8B] flex items-center justify-center shrink-0 mt-0.5">
-                      <Sparkles size={15} />
-                    </span>
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-900 leading-snug">
-                        100% Tailor-Made &amp; Customizable
-                      </h4>
-                      <p className="text-xs text-slate-500 leading-relaxed font-normal mt-0.5">
-                        This tour can be customized according to your travel needs, preferred pace, dates &amp; hotel category.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Verified Trust Points - Unified Single Group (same as Home Hero) */}
-                  <div className="grid grid-cols-2 gap-x-3 gap-y-2.5 pt-1 text-xs text-slate-700 font-medium">
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                      <span>100% Tailored Itineraries</span>
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                      <span>Verified Private Chauffeurs</span>
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                      <span>Transparent Fixed Quotes</span>
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                      <span>24/7 Dedicated Support</span>
-                    </span>
-                  </div>
-                </div>
-
-                {/* Bottom: Action Buttons */}
-                <div className="pt-5 mt-5 border-t border-slate-100 flex flex-col gap-3 relative z-10">
-                  <div className="grid grid-cols-2 gap-2.5 w-full">
+                  {/* Action Buttons */}
+                  <div className="grid grid-cols-2 gap-2.5 w-full pt-1">
                     <a
                       href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
                         `Hi KoiKoi Travel! I'm interested in "${journey.title}". Please share the best tailor-made quote and options.\n\nTour Page: ${pageUrl}`
@@ -461,6 +424,43 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         <span>Request Quote</span>
                       </button>
                     </QuoteModal>
+                  </div>
+                </div>
+
+                {/* Bottom: 100% Customizable Note followed by Verified Trust Points */}
+                <div className="pt-5 mt-5 border-t border-slate-100 space-y-3.5 relative z-10">
+                  <div className="flex items-start gap-3">
+                    <span className="w-8 h-8 rounded-full bg-teal-50 text-[#2E8B8B] flex items-center justify-center shrink-0 mt-0.5">
+                      <Sparkles size={15} />
+                    </span>
+                    <div>
+                      <h4 className="text-sm font-bold text-slate-900 leading-snug">
+                        100% Tailor-Made &amp; Customizable
+                      </h4>
+                      <p className="text-xs text-slate-500 leading-relaxed font-normal mt-0.5">
+                        This tour can be customized according to your travel needs, preferred pace, dates &amp; hotel category.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Verified Trust Points following the customizable text */}
+                  <div className="grid grid-cols-2 gap-x-3 gap-y-2.5 pt-1 text-xs text-slate-700 font-medium">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                      <span>100% Tailored Plan</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                      <span>Verified Chauffeurs</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                      <span>Transparent Fixed Quotes</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
+                      <span>24/7 Dedicated Support</span>
+                    </span>
                   </div>
                 </div>
               </div>
