@@ -31,7 +31,7 @@ export const HomePageClient: React.FC<{
 }) => {
   return (
     <div className="flex flex-col min-h-screen">
-      {/* <HeroSection /> */}
+      <HeroSection />
       <BestSellingPackages initialJourneys={initialJourneys} />
       <PopularDestinations
         initialStates={initialStates}
