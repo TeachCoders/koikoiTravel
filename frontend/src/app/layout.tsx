@@ -126,15 +126,7 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning className="min-h-full flex flex-col font-sans text-[#1C1C1C] pb-16 md:pb-0">
-        <DeferredAnalytics gtmId={GTM_ID} gaId={GA_ID} clarityId={CLARITY_ID} />
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
+        <DeferredAnalytics gaId={GA_ID} clarityId={CLARITY_ID} />
         <JsonLd data={graphSchema([organizationSchema, websiteSchema])} />
         <AppProviders>
           <SentryErrorBoundary>

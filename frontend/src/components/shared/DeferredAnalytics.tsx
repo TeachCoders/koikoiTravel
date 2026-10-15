@@ -43,21 +43,7 @@ export default function DeferredAnalytics({
         };
       }
 
-      // 1. Load Google Tag Manager
-      if (gtmId) {
-        (function (wObj: any, d: Document, s: string, l: string, i: string) {
-          wObj[l] = wObj[l] || [];
-          wObj[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-          const f = d.getElementsByTagName(s)[0];
-          const j = d.createElement(s) as HTMLScriptElement;
-          const dl = l !== "dataLayer" ? "&l=" + l : "";
-          j.async = true;
-          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-          f?.parentNode?.insertBefore(j, f);
-        })(window, document, "script", "dataLayer", gtmId);
-      }
-
-      // 2. Load Google Analytics (gtag.js)
+      // 1. Load Google Analytics 4 (gtag.js) - Direct GA4 tracking without duplicate GTM overhead
       if (gaId) {
         w.gtag("js", new Date());
         w.gtag("config", gaId);

@@ -63,7 +63,7 @@ export const HeroSection: React.FC = () => {
             priority
             fetchPriority="high"
             loading="eager"
-            sizes="100vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
             className="object-cover object-center"
             theme="dark"
           />
@@ -85,7 +85,7 @@ export const HeroSection: React.FC = () => {
                 alt={s.alt}
                 fill
                 loading="lazy"
-                sizes="100vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
                 className="object-cover object-center"
                 theme="dark"
               />
