@@ -173,6 +173,51 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
     });
   }
 
+  // Extract accurate journey route from day program destinations
+  const itineraryRoute = useMemo(() => {
+    const days = journey.days || [];
+    if (!days.length) return [];
+
+    const candidateCities: string[] = [];
+    const addCandidate = (cityStr?: string | null) => {
+      if (!cityStr) return;
+      const clean = cityStr.trim();
+      if (clean && !candidateCities.some((c) => c.toLowerCase() === clean.toLowerCase())) {
+        candidateCities.push(clean);
+      }
+    };
+
+    (journey.cities || []).forEach((c) => addCandidate(c.h1Title || c.title));
+    (journey.route || []).forEach((c) => addCandidate(c.h1Title || c.title));
+
+    if (journey.destination) {
+      journey.destination.split(/[-–—,→]/).forEach((p) => addCandidate(p));
+    }
+
+    const routeFlow: string[] = [];
+    days.forEach((d) => {
+      const text = d.day || "";
+      const foundInDay: { pos: number; city: string }[] = [];
+      candidateCities.forEach((city) => {
+        const escaped = city.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const regex = new RegExp(`\\b${escaped}\\b`, "gi");
+        let match: RegExpExecArray | null;
+        while ((match = regex.exec(text)) !== null) {
+          foundInDay.push({ pos: match.index, city });
+        }
+      });
+      foundInDay.sort((a, b) => a.pos - b.pos);
+      foundInDay.forEach(({ city }) => {
+        if (!routeFlow.length || routeFlow[routeFlow.length - 1].toLowerCase() !== city.toLowerCase()) {
+          routeFlow.push(city);
+        }
+      });
+    });
+
+    if (routeFlow.length > 0) return routeFlow;
+    return candidateCities.slice(0, 6);
+  }, [journey.days, journey.cities, journey.route, journey.destination]);
+
   return (
     <div className="pb-20 lg:pb-0 bg-[#f8f8f8] relative overflow-hidden">
       {/* Subtle India Travel Doodle Background */}
@@ -206,69 +251,10 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           <div className="mb-6">
 
             {pageH1 && (
-              <h1 className="font-heading text-xl sm:text-2xl md:text-[28px] font-bold tracking-tight text-slate-900 mb-3 leading-[1.3]">
+              <h1 className="font-heading text-xl sm:text-2xl md:text-[28px] font-bold tracking-tight text-slate-900 leading-[1.3]">
                 {durationText ? `${durationText} - ${pageH1}` : pageH1}
               </h1>
             )}
-
-            {journey.destination && (
-              <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-slate-600 font-medium">
-                <span className="flex items-center gap-1.5 text-slate-500 font-semibold mr-1">
-                  <MapPin size={14} className="text-[#F8904D]" />
-                  <span>Route:</span>
-                </span>
-                {journey.route && journey.route.length > 0
-                  ? journey.route.map((c, idx, arr) => {
-                      const cityName = c.h1Title || c.title;
-                      const capCity = cityName
-                        .split(/\s+/)
-                        .map((w: string) => (w.length > 0 ? w.charAt(0).toUpperCase() + w.slice(1) : ""))
-                        .join(" ");
-                      const href =
-                        c.slug && c.state?.slug && c.state?.country?.slug
-                          ? c.slug === c.state.slug
-                            ? `/tour-packages/${c.state.country.slug}/${c.state.slug}`
-                            : `/tour-packages/${c.state.country.slug}/${c.state.slug}/${c.slug}`
-                          : null;
-                      return (
-                        <Fragment key={c.id || idx}>
-                          {href ? (
-                            <Link
-                              href={href}
-                              className="text-slate-800 hover:text-[#2E8B8B] font-semibold hover:underline transition-colors"
-                            >
-                              {capCity}
-                            </Link>
-                          ) : (
-                            <span className="text-slate-800 font-semibold">{capCity}</span>
-                          )}
-                          {idx < arr.length - 1 && (
-                            <span className="text-slate-300 font-normal mx-0.5">→</span>
-                          )}
-                        </Fragment>
-                      );
-                    })
-                  : journey.destination
-                      .split(/[-–—,→]/)
-                      .map((s) => s.trim())
-                      .filter(Boolean)
-                      .map((city, idx, arr) => {
-                        const capCity = city
-                          .split(/\s+/)
-                          .map((w: string) => (w.length > 0 ? w.charAt(0).toUpperCase() + w.slice(1) : ""))
-                          .join(" ");
-                        return (
-                          <Fragment key={idx}>
-                            <span className="text-slate-800 font-semibold">{capCity}</span>
-                            {idx < arr.length - 1 && (
-                              <span className="text-slate-300 font-normal mx-0.5">→</span>
-                            )}
-                          </Fragment>
-                        );
-                      })}
-              </div>
-            )}
-
           </div>
 
           {/* LEFT: BANNER | RIGHT: BOOKING CARD */}
@@ -382,29 +368,47 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
             {/* RIGHT: DETAILS */}
             <aside className="h-full">
               <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm relative overflow-hidden flex flex-col justify-between p-6 sm:p-7 h-full">
-                {/* Top: Header & Action Buttons */}
+                {/* Top: Header, Duration, Journey Route & Action Buttons */}
                 <div className="space-y-4 relative z-10">
-                  {/* Header: Title & Duration */}
-                  <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
+                  {/* Header: Title */}
+                  <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
+                    <span className="w-1.5 h-4.5 rounded-full bg-[#F8904D]" />
+                    <h3 className="text-base sm:text-[17px] font-bold text-slate-900 tracking-tight">
+                      Tour Snapshot
+                    </h3>
+                  </div>
+
+                  {/* Duration & Simple Journey Route */}
+                  <div className="space-y-2 text-xs sm:text-[13px]">
                     <div className="flex items-center gap-2">
-                      <span className="w-1.5 h-4.5 rounded-full bg-[#F8904D]" />
-                      <h3 className="text-base sm:text-[17px] font-bold text-slate-900 tracking-tight">
-                        Tour Snapshot
-                      </h3>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">Duration</span>
-                      <span className="text-sm sm:text-[15px] font-black text-slate-900">
+                      <span className="text-slate-400 font-bold uppercase text-[10.5px] tracking-wider w-16 shrink-0">Duration:</span>
+                      <span className="font-bold text-slate-900 text-sm">
                         {journey.duration ||
                           (journey.noDays > 0
                             ? `${journey.noDays > 1 ? `${journey.noDays - 1} Nights / ` : ""}${journey.noDays} Days`
                             : "—")}
                       </span>
                     </div>
+
+                    {itineraryRoute.length > 0 && (
+                      <div className="flex items-start gap-2 pt-0.5">
+                        <span className="text-slate-400 font-bold uppercase text-[10.5px] tracking-wider w-16 shrink-0 mt-0.5">Route:</span>
+                        <div className="flex flex-wrap items-center gap-1 font-semibold text-slate-800 leading-relaxed">
+                          {itineraryRoute.map((city, idx) => (
+                            <Fragment key={idx}>
+                              <span>{city}</span>
+                              {idx < itineraryRoute.length - 1 && (
+                                <span className="text-slate-300 font-normal px-0.5">→</span>
+                              )}
+                            </Fragment>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="grid grid-cols-2 gap-2.5 w-full pt-1">
+                  <div className="grid grid-cols-2 gap-2.5 w-full pt-1.5">
                     <a
                       href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
                         `Hi KoiKoi Travel! I'm interested in "${journey.title}". Please share the best tailor-made quote and options.\n\nTour Page: ${pageUrl}`
