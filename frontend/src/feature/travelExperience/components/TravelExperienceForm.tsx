@@ -66,7 +66,7 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
     (initialData?.cities ?? []).map((c) => c.id)
   );
   const [journeyIds, setJourneyIds] = useState<number[]>(
-    (initialData?.journeys ?? []).map((j) => j.id)
+    () => initialData?.featuredJourneyOrder ?? []
   );
   const [filterCountryIds, setFilterCountryIds] = useState<number[]>(
     () =>
@@ -107,6 +107,7 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
       setMoreDescription(initialData.moreDescription || "");
       setFaqs(initialData.faqs || []);
       setCityIds((initialData.cities ?? []).map((c) => c.id));
+      setJourneyIds(initialData.featuredJourneyOrder ?? []);
       setFilterCountryIds(
         Array.from(
           new Set(

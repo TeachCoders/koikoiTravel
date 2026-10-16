@@ -570,7 +570,9 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
             ? [...new Set(idsRaw.map(Number).filter((x) => Number.isInteger(x) && x > 0))]
             : [];
           if (rel.connectOnly) {
-            relationOps[rel.field] = { connect: ids.map((id) => ({ id })) };
+            if (ids.length > 0) {
+              relationOps[rel.field] = { connect: ids.map((id) => ({ id })) };
+            }
           } else {
             relationOps[rel.field] = { set: ids.map((id) => ({ id })) };
           }
