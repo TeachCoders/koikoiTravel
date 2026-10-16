@@ -26,6 +26,7 @@ import {
   SunMoon,
   Timer,
   MapPin,
+  Lock,
 } from "lucide-react";
 import { useEffect, useState, Fragment, useMemo } from "react";
 import dynamic from "next/dynamic";
@@ -626,29 +627,73 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               </ul>
             </div>
           ) : (
-            <div className="rounded-2xl md:rounded-3xl bg-gradient-to-br from-teal-50/50 to-slate-50 border border-teal-200/60 p-5 sm:p-6">
-              <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#2E8B8B] mb-3.5 flex items-center gap-2">
-                <ShieldCheck size={15} className="text-[#2E8B8B]" />
-                Why Book With Confidence
-              </h3>
-              <ul className="space-y-2.5 text-xs sm:text-[13px] font-normal text-slate-700">
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={15} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                  <span>100% Tailor-made with free itinerary consultation</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={15} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                  <span>Transparent quotes with no hidden fees</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={15} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                  <span>Dedicated 24/7 on-ground travel manager</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 size={15} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                  <span>Verified English-speaking guides &amp; licensed chauffeurs</span>
-                </li>
-              </ul>
+            <div className="rounded-2xl md:rounded-3xl bg-white border border-teal-200/80 p-5 sm:p-6 shadow-xs relative overflow-hidden">
+              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#2E8B8B] via-teal-400 to-[#F8904D]" />
+
+              {/* Trust Card Header */}
+              <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-slate-100">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-[#2E8B8B]/10 flex items-center justify-center text-[#2E8B8B] shrink-0 ring-1 ring-[#2E8B8B]/20">
+                    <ShieldCheck size={18} className="text-[#2E8B8B]" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#2E8B8B] block leading-none">
+                      KoiKoi Assurance
+                    </span>
+                    <h3 className="text-sm font-bold text-slate-900 leading-tight mt-0.5">
+                      Why Book With Confidence
+                    </h3>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200/60 text-amber-800 text-[10.5px] font-bold">
+                  <Star size={11} className="fill-amber-400 text-amber-400" />
+                  <span>4.9 / 5</span>
+                </div>
+              </div>
+
+              {/* Trust Points */}
+              <div className="space-y-2">
+                <div className="flex items-start gap-2.5 p-2 rounded-xl bg-slate-50/70 border border-slate-100 transition-colors">
+                  <span className="w-5 h-5 rounded-full bg-teal-500/15 text-[#2E8B8B] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✓</span>
+                  <div className="text-xs leading-snug">
+                    <span className="font-bold text-slate-900 block">100% Tailor-Made &amp; Free Planning</span>
+                    <span className="text-slate-500 font-normal">Custom pace, handpicked stays &amp; zero itinerary fees.</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5 p-2 rounded-xl bg-slate-50/70 border border-slate-100 transition-colors">
+                  <span className="w-5 h-5 rounded-full bg-teal-500/15 text-[#2E8B8B] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✓</span>
+                  <div className="text-xs leading-snug">
+                    <span className="font-bold text-slate-900 block">Transparent Quotes — No Hidden Fees</span>
+                    <span className="text-slate-500 font-normal">Upfront pricing with all taxes, tolls &amp; driver charges included.</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5 p-2 rounded-xl bg-slate-50/70 border border-slate-100 transition-colors">
+                  <span className="w-5 h-5 rounded-full bg-teal-500/15 text-[#2E8B8B] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✓</span>
+                  <div className="text-xs leading-snug">
+                    <span className="font-bold text-slate-900 block">Dedicated 24/7 On-Ground Support</span>
+                    <span className="text-slate-500 font-normal">Direct WhatsApp support with your personal tour manager.</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5 p-2 rounded-xl bg-slate-50/70 border border-slate-100 transition-colors">
+                  <span className="w-5 h-5 rounded-full bg-teal-500/15 text-[#2E8B8B] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✓</span>
+                  <div className="text-xs leading-snug">
+                    <span className="font-bold text-slate-900 block">Verified Chauffeurs &amp; Licensed Guides</span>
+                    <span className="text-slate-500 font-normal">Experienced, background-checked English-speaking experts.</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Trust Footer Seal */}
+              <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                <span className="flex items-center gap-1.5 font-medium text-slate-600">
+                  <Lock size={12} className="text-[#2E8B8B]" />
+                  100% Financial &amp; Trip Protection
+                </span>
+                <span className="font-bold text-[#2E8B8B]">Verified Chauffeurs ✓</span>
+              </div>
             </div>
           )}
 
