@@ -5,6 +5,22 @@ import type { Country } from "@/feature/country/type";
 import type { TravelExperience } from "@/feature/travelExperience/type";
 import type { Season } from "@/feature/season/type";
 
+export function parseJourneyDays(j: { noDays?: number | null; duration?: string | null }): number {
+  if (typeof j?.noDays === "number" && j.noDays > 0) return j.noDays;
+  if (j?.duration) {
+    const match = String(j.duration).match(/(\d+)\s*(?:Day|Night|D)/i);
+    if (match) return parseInt(match[1], 10);
+  }
+  return 999;
+}
+
+export function sortByDaysAscending(a: any, b: any): number {
+  const aDays = parseJourneyDays(a);
+  const bDays = parseJourneyDays(b);
+  if (aDays !== bDays) return aDays - bDays;
+  return (a.title || "").localeCompare(b.title || "");
+}
+
 export function sortByDisplayOrderAndBestSelling(a: Journey, b: Journey): number {
   const aOrder = a.displayOrder ?? 0;
   const bOrder = b.displayOrder ?? 0;
@@ -13,7 +29,7 @@ export function sortByDisplayOrderAndBestSelling(a: Journey, b: Journey): number
   if (bOrder > 0) return 1;
   if (a.isBestSelling && !b.isBestSelling) return -1;
   if (!a.isBestSelling && b.isBestSelling) return 1;
-  return 0;
+  return sortByDaysAscending(a, b);
 }
 
 export function resolveStateJourneys(
@@ -118,21 +134,20 @@ export function resolveTravelExperienceJourneys(
     featuredJourneyOrder?: number[] | null;
   }
 ) {
+  const order = (experience.featuredJourneyOrder || []) as number[];
   const experienceJourneys = (allJourneys || [])
     .filter((j) =>
       (j.travelExperiences || []).some((e: any) => e.slug === experience.slug)
     )
     .sort((a, b) => {
-      const order = experience.featuredJourneyOrder || [];
       const ai = order.indexOf(a.id);
       const bi = order.indexOf(b.id);
       const aRank = ai === -1 ? Number.MAX_SAFE_INTEGER : ai;
       const bRank = bi === -1 ? Number.MAX_SAFE_INTEGER : bi;
       if (aRank !== bRank) return aRank - bRank;
-      return sortByDisplayOrderAndBestSelling(a, b);
+      return sortByDaysAscending(a, b);
     });
 
-  const order = (experience.featuredJourneyOrder || []) as number[];
   let topTours: Journey[] = [];
   if (order.length > 0) {
     topTours = order
@@ -141,7 +156,10 @@ export function resolveTravelExperienceJourneys(
   }
 
   const topIds = new Set(topTours.map((j) => j.id));
-  const otherTours = experienceJourneys.filter((j) => !topIds.has(j.id));
+  const otherTours = experienceJourneys
+    .filter((j) => !topIds.has(j.id))
+    .sort(sortByDaysAscending);
+
   const hasTabs = topTours.length > 0 && otherTours.length > 0;
 
   const allOrderedJourneys = hasTabs ? [...topTours, ...otherTours] : experienceJourneys;

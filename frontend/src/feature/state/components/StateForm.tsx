@@ -22,6 +22,7 @@ import { useGetCurrentUser } from "@/feature/auth/api/useAuth";
 import { useGetCountries } from "@/feature/country/api/useCountry";
 import { errorToast } from "@/components/shared/tost";
 import apiClient from "@/lib/apiClient";
+import { sortByDaysAscending } from "@/feature/journey/destinationJourneys";
 import type { Country } from "@/feature/country/type";
 import type { State } from "@/feature/state/type";
 
@@ -410,7 +411,8 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
                 isActive: "true",
                 limit: 100,
               });
-              return (res.data || []).map((j: any) => {
+              const sorted = [...(res.data || [])].sort(sortByDaysAscending);
+              return sorted.map((j: any) => {
                 const daysLabel = j.duration || (j.noDays ? `${j.noDays} Days` : "");
                 const mainTitle = j.h1Title || j.title;
                 const citiesList = (j.cities || []).map((c: any) => c.title).slice(0, 4).join(", ");
@@ -419,7 +421,7 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
                 return { id: j.id, title: label };
               });
             }}
-            initialOptions={(initialData?.journeys ?? []).map((j: any) => {
+            initialOptions={[...(initialData?.journeys ?? [])].sort(sortByDaysAscending).map((j: any) => {
               const daysLabel = j.duration || (j.noDays ? `${j.noDays} Days` : "");
               const mainTitle = j.h1Title || j.title;
               const citiesList = (j.cities || []).map((c: any) => c.title).slice(0, 4).join(", ");

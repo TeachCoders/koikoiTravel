@@ -22,6 +22,7 @@ import {
 import { useGetCurrentUser } from "@/feature/auth/api/useAuth";
 import apiClient from "@/lib/apiClient";
 import { errorToast } from "@/components/shared/tost";
+import { sortByDaysAscending } from "@/feature/journey/destinationJourneys";
 import type { TravelExperience } from "@/feature/travelExperience/type";
 
 interface TravelExperienceFormProps {
@@ -381,7 +382,8 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
                 travelExperienceSlug: initialData?.slug || formData.slug,
                 limit: 100,
               });
-              return (res.data || []).map((j: any) => {
+              const sorted = [...(res.data || [])].sort(sortByDaysAscending);
+              return sorted.map((j: any) => {
                 const daysLabel = j.duration || (j.noDays ? `${j.noDays} Days` : "");
                 const mainTitle = j.h1Title || j.title;
                 const citiesList = (j.cities || []).map((c: any) => c.title).slice(0, 4).join(", ");
@@ -390,7 +392,7 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
                 return { id: j.id, title: label };
               });
             }}
-            initialOptions={(initialData?.journeys ?? []).map((j: any) => {
+            initialOptions={[...(initialData?.journeys ?? [])].sort(sortByDaysAscending).map((j: any) => {
               const daysLabel = j.duration || (j.noDays ? `${j.noDays} Days` : "");
               const mainTitle = j.h1Title || j.title;
               const citiesList = (j.cities || []).map((c: any) => c.title).slice(0, 4).join(", ");
