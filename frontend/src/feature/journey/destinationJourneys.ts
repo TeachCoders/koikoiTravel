@@ -139,14 +139,6 @@ export function resolveTravelExperienceJourneys(
       .map((id) => experienceJourneys.find((j) => j.id === id))
       .filter((j): j is Journey => Boolean(j));
   }
-  if (topTours.length === 0) {
-    topTours = experienceJourneys.slice(0, 8);
-  } else if (topTours.length >= experienceJourneys.length && experienceJourneys.length > 6) {
-    // If all tours were previously saved in featuredJourneyOrder,
-    // keep top 8 in Top Tour Packages and place remaining into Other Tour Packages
-    // so 2 tabs always display just like on destination pages!
-    topTours = topTours.slice(0, 8);
-  }
 
   const topIds = new Set(topTours.map((j) => j.id));
   const otherTours = experienceJourneys.filter((j) => !topIds.has(j.id));
