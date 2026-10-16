@@ -569,7 +569,11 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
           const ids = Array.isArray(idsRaw)
             ? [...new Set(idsRaw.map(Number).filter((x) => Number.isInteger(x) && x > 0))]
             : [];
-          relationOps[rel.field] = { set: ids.map((id) => ({ id })) };
+          if (rel.connectOnly) {
+            relationOps[rel.field] = { connect: ids.map((id) => ({ id })) };
+          } else {
+            relationOps[rel.field] = { set: ids.map((id) => ({ id })) };
+          }
           if (rel.orderField) relationOps[rel.orderField] = Array.isArray(idsRaw) ? idsRaw : [];
         }
       }

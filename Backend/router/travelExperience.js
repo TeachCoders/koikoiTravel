@@ -72,6 +72,7 @@ export default createCmsRouter({
       field: "journeys",
       inputKey: "journeyIds",
       orderField: "featuredJourneyOrder",
+      connectOnly: true,
       select: journeySelect,
     },
   ],
