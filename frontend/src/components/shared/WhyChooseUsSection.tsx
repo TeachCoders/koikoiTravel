@@ -4,12 +4,42 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Maximize2, X, MapPin } from "lucide-react";
 import { SectionLabel } from "@/components/shared/SectionLabel";
 import { useGuestGallery } from "@/feature/guestGallery/api";
+import { GuestGallery, PaginatedGuestGallery } from "@/feature/guestGallery/type";
 import FallbackImage from "@/components/shared/FallbackImage";
 
 interface WhyChooseUsSectionProps {
   images?: string[];
   hideGallery?: boolean;
+  initialGuestGallery?: PaginatedGuestGallery | null;
 }
+
+const DEFAULT_GUEST_MOMENTS = [
+  {
+    url: "/content/guest-gallery-1791343287975-0.webp",
+    caption: "Sightseeing in India",
+    location: "Agra, India",
+  },
+  {
+    url: "/content/guest-gallery-1791343320739-0.webp",
+    caption: "Maarya",
+    location: "England",
+  },
+  {
+    url: "/content/guest-gallery-1791343362879-0.webp",
+    caption: "Desert Safari & Dunes",
+    location: "Rajasthan, India",
+  },
+  {
+    url: "/content/guest-gallery-1791343426950-0.webp",
+    caption: "Kerala Backwaters & Houseboat",
+    location: "Alleppey, India",
+  },
+  {
+    url: "/content/guest-gallery-1791343475610-0.webp",
+    caption: "Himalayan Vistas",
+    location: "Kashmir, India",
+  },
+];
 
 const REVIEWS = [
   {
@@ -54,24 +84,31 @@ const REVIEWS = [
   },
 ];
 
-export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images = [], hideGallery = false }) => {
-  const { data: apiData } = useGuestGallery(1, 8, true);
-  
-  const dbItems = apiData?.data?.map(item => ({
-    url: item.imageUrl,
-    caption: item.caption || "",
-    location: item.location || ""
-  })) || [];
+export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
+  images = [],
+  hideGallery = false,
+  initialGuestGallery,
+}) => {
+  const { data: apiData } = useGuestGallery(1, 8, true, {
+    initialData: initialGuestGallery || undefined,
+  });
 
-  let galleryItems = images && images.length > 0 
-    ? images.map(url => ({ url, caption: "", location: "" }))
-    : dbItems;
+  const rawItems = apiData?.data ?? initialGuestGallery?.data;
+  const dbItems =
+    rawItems && rawItems.length > 0
+      ? rawItems.map((item) => ({
+          url: item.imageUrl,
+          caption: item.caption || "",
+          location: item.location || "",
+        }))
+      : DEFAULT_GUEST_MOMENTS;
+
+  let galleryItems =
+    images && images.length > 0
+      ? images.map((url) => ({ url, caption: "", location: "" }))
+      : dbItems;
 
   galleryItems = galleryItems.slice(0, 8);
-
-  if (galleryItems.length === 0) {
-    galleryItems = [{ url: "", caption: "", location: "" }];
-  }
   
   const showGallery = !hideGallery && galleryItems.length > 0;
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -235,10 +272,14 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({ images =
                       <div key={idx} className="w-full h-full relative shrink-0 flex-none group/slide overflow-hidden rounded-2xl">
                         <FallbackImage
                           src={item.url || null}
-                          alt={`Traveler Moment ${idx + 1}`}
+                          alt={item.caption || item.location || `Traveler Moment ${idx + 1}`}
                           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/slide:scale-105"
                           fill
                           sizes="(max-width: 1024px) 100vw, 50vw"
+                          priority={idx === 0}
+                          loading={idx <= 1 ? "eager" : "lazy"}
+                          fetchPriority={idx === 0 ? "high" : "auto"}
+                          unoptimized={item.url?.startsWith("/content/")}
                         />
                         
                         {(item.caption || item.location) && (

@@ -108,9 +108,10 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
   return (
     <>
       {!loaded && !isPriority && (
-        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none" aria-hidden="true">
-          <ImageWatermark theme={theme} logo={fallbackSrc} alt={alt} />
-        </div>
+        <div
+          className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none bg-slate-100/80 animate-pulse"
+          aria-hidden="true"
+        />
       )}
       <Image
         src={src}

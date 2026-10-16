@@ -2,7 +2,12 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "@/lib/apiClient";
 import { GuestGallery, PaginatedGuestGallery } from "../type";
 
-export const useGuestGallery = (page = 1, limit = 20, isActive?: boolean) => {
+export const useGuestGallery = (
+  page = 1,
+  limit = 20,
+  isActive?: boolean,
+  options?: Record<string, any>
+) => {
   return useQuery<PaginatedGuestGallery>({
     queryKey: ["guestGallery", page, limit, isActive],
     queryFn: async () => {
@@ -13,6 +18,7 @@ export const useGuestGallery = (page = 1, limit = 20, isActive?: boolean) => {
       const res = await apiClient.get(url);
       return res.data;
     },
+    ...options,
   });
 };
 

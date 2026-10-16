@@ -15,6 +15,7 @@ import type { TravelExperience, PaginatedResponse as ExperiencePage } from "@/fe
 import type { City, PaginatedResponse as CityPage } from "@/feature/city/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import type { Season, PaginatedResponse as SeasonPage } from "@/feature/season/type";
+import type { PaginatedGuestGallery } from "@/feature/guestGallery/type";
 
 export const HomePageClient: React.FC<{
   initialStates?: StatePage<State> | null;
@@ -23,11 +24,13 @@ export const HomePageClient: React.FC<{
   initialCities?: CityPage<City> | null;
   initialJourneys?: JourneyPage<Journey> | null;
   initialSeasons?: SeasonPage<Season> | null;
+  initialGuestGallery?: PaginatedGuestGallery | null;
 }> = ({
   initialStates,
   initialCountries,
   initialExperiences,
   initialJourneys,
+  initialGuestGallery,
 }) => {
   return (
     <div className="flex flex-col min-h-screen">
@@ -42,7 +45,7 @@ export const HomePageClient: React.FC<{
         initialExperiences={initialExperiences}
         initialJourneys={initialJourneys}
       />
-      <WhyChooseUsSection />
+      <WhyChooseUsSection initialGuestGallery={initialGuestGallery} />
       <SeoTextBlock />
       <FaqSection />
       <TrustedPartners />

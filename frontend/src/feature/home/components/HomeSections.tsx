@@ -5,14 +5,23 @@ import type { Country, PaginatedResponse as CountryPage } from "@/feature/countr
 import type { TravelExperience, PaginatedResponse as ExperiencePage } from "@/feature/travelExperience/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import type { Season, PaginatedResponse as SeasonPage } from "@/feature/season/type";
+import type { PaginatedGuestGallery } from "@/feature/guestGallery/type";
 
 export default async function HomeSections() {
-  const [initialStates, initialCountries, initialExperiences, initialJourneys, initialSeasons] = await Promise.all([
+  const [
+    initialStates,
+    initialCountries,
+    initialExperiences,
+    initialJourneys,
+    initialSeasons,
+    initialGuestGallery,
+  ] = await Promise.all([
     fetchPublicJsonCached<StatePage<State>>("/state?limit=100&isActive=true"),
     fetchPublicJsonCached<CountryPage<Country>>("/country?limit=100&isActive=true"),
     fetchPublicJsonCached<ExperiencePage<TravelExperience>>("/holidays?limit=100&isActive=true"),
     fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true"),
     fetchPublicJsonCached<SeasonPage<Season>>("/season?limit=100&isActive=true"),
+    fetchPublicJsonCached<PaginatedGuestGallery>("/guest-gallery?page=1&limit=8&isActive=true"),
   ]);
 
   return (
@@ -22,6 +31,7 @@ export default async function HomeSections() {
       initialExperiences={initialExperiences}
       initialJourneys={initialJourneys}
       initialSeasons={initialSeasons}
+      initialGuestGallery={initialGuestGallery}
     />
   );
 }

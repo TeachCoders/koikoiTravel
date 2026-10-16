@@ -10,7 +10,8 @@ export interface GuestGallery {
 }
 
 export interface PaginatedGuestGallery {
-  status: string;
+  status?: string;
+  success?: boolean;
   data: GuestGallery[];
   pagination: {
     total: number;
