@@ -1,8 +1,9 @@
 "use client";
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { Extension, Node, mergeAttributes } from "@tiptap/core";
+import { buildExperienceLinkRules, autoLinkKeywords } from "@/lib/autoInternalLink";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import TiptapImage from "@tiptap/extension-image";
@@ -253,6 +254,36 @@ export default function RichTextEditor({
       }
     }
   }, [content, editor]);
+
+  const autoLinkRules = useMemo(() => buildExperienceLinkRules(), []);
+
+  const detectedAutoLinks = useMemo(() => {
+    if (!content) return [];
+    const text = content.replace(/<[^>]+>/g, " ");
+    const matches: { term: string; href: string }[] = [];
+    const seenHrefs = new Set<string>();
+
+    for (const rule of autoLinkRules) {
+      if (seenHrefs.has(rule.href)) continue;
+      const escaped = rule.term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regex = new RegExp(`\\b${escaped}\\b`, "i");
+      if (regex.test(text)) {
+        seenHrefs.add(rule.href);
+        matches.push(rule);
+      }
+    }
+    return matches;
+  }, [content, autoLinkRules]);
+
+  const handleEmbedAutoLinks = () => {
+    if (!editor) return;
+    const currentHtml = editor.getHTML();
+    const updated = autoLinkKeywords(currentHtml);
+    if (updated !== currentHtml) {
+      editor.commands.setContent(updated);
+      onChange(updated);
+    }
+  };
 
   const openLinkModal = useCallback(() => {
     if (!editor) return;
@@ -676,6 +707,38 @@ export default function RichTextEditor({
       <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
       <EditorContent editor={editor} className={`rte-editor ${minHeight}`} />
 
+      {detectedAutoLinks.length > 0 && (
+        <div className="border-t border-teal-100 bg-teal-50/70 px-3 py-2 text-xs flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-1.5 min-w-0">
+            <span className="font-bold text-[#1a6b6b] flex items-center gap-1 shrink-0">
+              <Link2 size={13} className="text-[#2E8B8B]" />
+              <span>Live Website Auto-Links ({detectedAutoLinks.length}):</span>
+            </span>
+            <div className="flex flex-wrap items-center gap-1.5">
+              {detectedAutoLinks.map((rule, idx) => (
+                <span
+                  key={idx}
+                  title={`Links to ${rule.href} on live website`}
+                  className="inline-flex items-center gap-1 bg-white border border-teal-200/80 text-teal-900 px-2 py-0.5 rounded text-[11px] font-semibold shadow-2xs"
+                >
+                  <span>{rule.term}</span>
+                  <span className="text-[9.5px] text-teal-600 font-normal">→ {rule.href}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={handleEmbedAutoLinks}
+            className="inline-flex items-center gap-1 bg-[#2E8B8B] hover:bg-[#247070] text-white px-2.5 py-1 rounded text-[11px] font-bold shadow-2xs transition-all shrink-0 cursor-pointer"
+            title="Convert detected auto-links into editable HTML links inside the editor"
+          >
+            <Check size={12} />
+            <span>Embed Links into Editor</span>
+          </button>
+        </div>
+      )}
+
       <BubbleMenu editor={editor} options={{ placement: "top" }} className="relative flex items-center gap-0.5 rounded-xl border border-slate-200 bg-white px-1.5 py-1 shadow-xl">
         {editor.isActive("table") && (
           <>
@@ -960,8 +1023,27 @@ export default function RichTextEditor({
         .rte-editor .tiptap strong { font-weight: 700; color: #0f172a; }
         .rte-editor .tiptap em { font-style: italic; }
         .rte-editor .tiptap u { text-decoration: underline; }
-        .rte-editor .tiptap a { color: #2E8B8B !important; text-decoration: underline !important; text-underline-offset: 3px; font-weight: 600; }
-        .rte-editor .tiptap a strong, .rte-editor .tiptap a b, .rte-editor .tiptap strong a, .rte-editor .tiptap b a { color: #2E8B8B !important; }
+        .rte-editor .tiptap a:not([data-rte-button]) {
+          color: #1a6b6b !important;
+          background-color: #e6f4f4 !important;
+          border-bottom: 2px solid #2E8B8B !important;
+          padding: 1px 6px !important;
+          border-radius: 4px !important;
+          font-weight: 600 !important;
+          text-decoration: none !important;
+          display: inline !important;
+          box-shadow: 0 1px 2px rgba(46, 139, 139, 0.08);
+          transition: background-color 0.15s ease;
+        }
+        .rte-editor .tiptap a:not([data-rte-button]):hover {
+          background-color: #d2eded !important;
+        }
+        .rte-editor .tiptap a:not([data-rte-button]) strong,
+        .rte-editor .tiptap a:not([data-rte-button]) b,
+        .rte-editor .tiptap strong a:not([data-rte-button]),
+        .rte-editor .tiptap b a:not([data-rte-button]) {
+          color: #1a6b6b !important;
+        }
         .rte-editor .tiptap a[data-rte-button] { color: #fff !important; text-decoration: none !important; transition: opacity 0.2s; }
         .rte-editor .tiptap a[data-rte-button]:hover { opacity: 0.9; }
         .rte-editor .tiptap a[data-rte-button].ProseMirror-selectednode { outline: 2px dashed #2E8B8B; outline-offset: 2px; }

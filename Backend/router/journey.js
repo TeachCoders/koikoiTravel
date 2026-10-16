@@ -118,6 +118,14 @@ router.get("/", async (req, res) => {
       if (isNaN(countryId)) return res.status(400).json({ success: false, message: "Invalid countryId" });
       conditions.push({ cities: { some: { state: { countryId } } } });
     }
+    if (req.query.travelExperienceId) {
+      const travelExperienceId = parseInt(req.query.travelExperienceId);
+      if (!isNaN(travelExperienceId)) {
+        conditions.push({ travelExperiences: { some: { id: travelExperienceId } } });
+      }
+    } else if (req.query.travelExperienceSlug) {
+      conditions.push({ travelExperiences: { some: { slug: req.query.travelExperienceSlug } } });
+    }
 
     const where = conditions.length > 0 ? { AND: conditions } : {};
 

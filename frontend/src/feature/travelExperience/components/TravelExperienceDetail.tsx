@@ -256,7 +256,7 @@ function ExperienceContent({
                 : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
             )}
           >
-            <span>Combined Tour Packages</span>
+            <span>Other Tour Packages</span>
             <span
               className={cn(
                 "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",

@@ -366,14 +366,20 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
             </span>
           </label>
           <div className="text-xs text-slate-500 mb-3">
-            In packages ko select karein aur drag karke order (1, 2, 3...) set kar sakte hain. Baki sabhi tours &quot;All Tour Packages&quot; tab mein auto show honge.
+            In packages ko select karein aur drag karke order (1, 2, 3...) set kar sakte hain. Baki sabhi tours &quot;Other Tour Packages&quot; tab mein auto show honge.
           </div>
 
           <AsyncMultiSelect
             selectedIds={journeyIds}
             onChange={setJourneyIds}
             fetchOptions={async (search) => {
-              const res = await getJourneys({ search, isActive: "true", limit: 100 });
+              const res = await getJourneys({
+                search,
+                isActive: "true",
+                travelExperienceId: initialData?.id,
+                travelExperienceSlug: initialData?.slug || formData.slug,
+                limit: 100,
+              });
               return (res.data || []).map((j: any) => {
                 const daysLabel = j.duration || (j.noDays ? `${j.noDays} Days` : "");
                 const mainTitle = j.h1Title || j.title;

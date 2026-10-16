@@ -26,13 +26,13 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
         Plan Your Journey
       </span>
       <h3 className="text-lg sm:text-xl font-bold text-slate-900">
-        Book This <span className="text-[#F8904D]">Tour</span>
+        Create My <span className="text-[#F8904D]">Trip</span>
       </h3>
     </div>
   ) : (
     <div className="mb-8 text-center">
       <span className="inline-block text-[11px] font-bold tracking-[0.25em] uppercase text-[#F8904D] mb-2">
-        Tour Booking
+        Create My Trip
       </span>
       <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
         Plan Your <span className="text-[#F8904D]">Adventure</span>
@@ -205,7 +205,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
                 Submitting…
               </>
             ) : (
-              "Submit Request →"
+              "Create My Trip →"
             )}
           </button>
         </form>
@@ -216,7 +216,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
       <div className="w-full max-w-lg">
         <div className="mb-10 text-center">
           <span className="inline-block text-[11px] font-bold tracking-[0.35em] uppercase text-indigo-500 mb-3">
-            ✦ Tour Booking
+            ✦ Create My Trip
           </span>
           <h1 className="h3 text-slate-900">
             Plan Your<br />
@@ -345,7 +345,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
                   Submitting…
                 </>
               ) : (
-                "Submit Request  →"
+                "Create My Trip →"
               )}
             </button>
           </form>

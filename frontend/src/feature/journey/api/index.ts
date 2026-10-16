@@ -10,6 +10,8 @@ export async function getJourneys(params?: {
   countryId?: number;
   route?: string;
   isActive?: string;
+  travelExperienceId?: number;
+  travelExperienceSlug?: string;
 }): Promise<PaginatedResponse<Journey>> {
   const query = new URLSearchParams();
   if (params?.page) query.set("page", String(params.page));
@@ -20,6 +22,8 @@ export async function getJourneys(params?: {
   if (params?.countryId) query.set("countryId", String(params.countryId));
   if (params?.route) query.set("route", params.route);
   if (params?.isActive) query.set("isActive", params.isActive);
+  if (params?.travelExperienceId) query.set("travelExperienceId", String(params.travelExperienceId));
+  if (params?.travelExperienceSlug) query.set("travelExperienceSlug", params.travelExperienceSlug);
 
   const { data } = await apiClient.get(`/journey?${query.toString()}`);
   return data;
