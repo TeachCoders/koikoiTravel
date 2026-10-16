@@ -5,10 +5,23 @@ import type { Country } from "@/feature/country/type";
 import type { TravelExperience } from "@/feature/travelExperience/type";
 import type { Season } from "@/feature/season/type";
 
-export function parseJourneyDays(j: { noDays?: number | null; duration?: string | null }): number {
+export function parseJourneyDays(j: {
+  noDays?: number | null;
+  duration?: string | null;
+  title?: string | null;
+  slug?: string | null;
+}): number {
   if (typeof j?.noDays === "number" && j.noDays > 0) return j.noDays;
   if (j?.duration) {
     const match = String(j.duration).match(/(\d+)\s*(?:Day|Night|D)/i);
+    if (match) return parseInt(match[1], 10);
+  }
+  if (j?.title) {
+    const match = String(j.title).match(/(\d+)\s*(?:Day|Night|D)/i);
+    if (match) return parseInt(match[1], 10);
+  }
+  if (j?.slug) {
+    const match = String(j.slug).match(/(\d+)-day/i);
     if (match) return parseInt(match[1], 10);
   }
   return 999;
