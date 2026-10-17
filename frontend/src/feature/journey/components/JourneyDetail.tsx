@@ -451,10 +451,39 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     </QuoteModal>
                   </div>
 
-                  {/* Special Group Discounts Offer Strip */}
-                  <div className="flex items-start sm:items-center gap-2 p-2.5 rounded-xl bg-orange-50/80 border border-orange-200/70 text-[#9A3412] text-xs sm:text-[12.5px] font-medium leading-snug">
-                    <span className="text-sm shrink-0 mt-0.5 sm:mt-0">🏷️</span>
-                    <span>Special discounts available for family group, student group, and corporate groups to India.</span>
+                  {/* Special Group Discounts Offer Box */}
+                  <div className="p-3 rounded-2xl bg-gradient-to-br from-orange-50/90 via-amber-50/50 to-white border border-orange-200/90 shadow-2xs">
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <div className="flex items-center gap-1.5">
+                        <span className="flex h-2 w-2 relative">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8904D] opacity-75" />
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F8904D]" />
+                        </span>
+                        <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#D95D16]">
+                          Exclusive Group Savings
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full">
+                        Special Rates
+                      </span>
+                    </div>
+
+                    <p className="text-[12px] sm:text-[12.5px] text-slate-700 leading-relaxed font-normal">
+                      Special tailor-made discounts available for <strong className="text-slate-900 font-bold">Family Holidays</strong>, <strong className="text-slate-900 font-bold">Student Groups</strong>, and <strong className="text-slate-900 font-bold">Corporate Retreats</strong> to India.
+                    </p>
+
+                    <div className="flex flex-wrap items-center gap-1.5 mt-2.5 pt-2 border-t border-orange-100/90 text-[11px] font-medium text-slate-700">
+                      <span className="inline-flex items-center gap-1 bg-white border border-orange-200/60 px-2 py-0.5 rounded-md shadow-2xs">
+                        👨‍👩‍👧‍👦 Family
+                      </span>
+                      <span className="inline-flex items-center gap-1 bg-white border border-orange-200/60 px-2 py-0.5 rounded-md shadow-2xs">
+                        🎓 Students
+                      </span>
+                      <span className="inline-flex items-center gap-1 bg-white border border-orange-200/60 px-2 py-0.5 rounded-md shadow-2xs">
+                        🏢 Corporate
+                      </span>
+                      <span className="text-slate-500 text-[10.5px] ml-auto">Custom Quote</span>
+                    </div>
                   </div>
                 </div>
 

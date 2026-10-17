@@ -256,8 +256,26 @@ export default function TourPackageCard({
           </>
         )}
 
+        {/* Special Group Discounts Offer Text - Above Trust Badging Line */}
+        <div className="mt-auto mb-2.5">
+          <div className="rounded-xl bg-gradient-to-r from-orange-50/90 via-amber-50/60 to-orange-50/70 border border-orange-200/80 p-2 shadow-2xs">
+            <div className="flex items-center justify-between gap-1 mb-1">
+              <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#D95D16]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shrink-0" />
+                Group Tour Savings
+              </span>
+              <span className="text-[9.5px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-1.5 py-0.2 rounded-full">
+                Special Rates
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-700 leading-snug">
+              Special discounts available for <span className="font-semibold text-slate-900">Family</span>, <span className="font-semibold text-slate-900">Student</span> &amp; <span className="font-semibold text-slate-900">Corporate</span> groups to India.
+            </p>
+          </div>
+        </div>
+
         {/* Trust Badging Line (Professional custom tour features) */}
-        <div className="mt-auto pt-2.5 pb-1 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-medium tracking-tight">
+        <div className="pt-2 pb-1 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-medium tracking-tight">
           <span className="inline-flex items-center gap-1 text-slate-700">
             <span className="w-1.5 h-1.5 rounded-full bg-[#2E8B8B]" />
             Private Chauffeur
@@ -266,14 +284,6 @@ export default function TourPackageCard({
           <span className="text-slate-600">100% Tailor-made</span>
           <span className="text-slate-300">•</span>
           <span className="text-[#F8904D] font-semibold">Custom Quote</span>
-        </div>
-
-        {/* Special Group Discounts Offer Text */}
-        <div className="pt-2 pb-0.5">
-          <div className="flex items-start gap-1.5 px-2.5 py-1.5 rounded-lg bg-orange-50/70 border border-orange-200/60 text-[#9A3412] text-[11px] leading-[1.38] font-medium">
-            <span className="shrink-0 text-[#F8904D] font-bold">🏷️</span>
-            <span>Special discounts available for family group, student group, and corporate groups to India.</span>
-          </div>
         </div>
 
         {/* CTA Section */}
