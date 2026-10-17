@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { MessageCircle, Send, X, Phone, User, Smile, ArrowUp, MoreHorizontal, Minus } from "lucide-react";
 import { startChat, sendChatMessage, pollChatMessages, fetchGeo, closeConversationByToken, ChatMessage } from "@/feature/chat/api";
@@ -298,12 +299,19 @@ export const ChatWidget: React.FC = () => {
                 Close chat
               </button>
             )}
-            <div className="flex items-center gap-2 bg-white rounded-full px-4 py-1.5 shadow-sm border border-zinc-100">
-              <div className="relative flex items-center justify-center">
-                <span className="text-[12px] font-bold text-[#d94838] italic pr-1 tracking-tighter">{BRAND.substring(0, 4).toLowerCase()}</span>
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-[#2ba363] border-2 border-white rounded-full"></span>
-              </div>
-              <span className="text-[13px] font-bold text-zinc-800 tracking-tight">{BRAND}</span>
+            <div className="flex items-center gap-2 bg-white rounded-full px-3.5 py-1.5 shadow-sm border border-zinc-100">
+              <Image
+                src="/logo-with-name.png"
+                alt={BRAND}
+                width={110}
+                height={30}
+                className="h-6 w-auto object-contain"
+                priority
+              />
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
             </div>
             <button onClick={() => setOpen(false)} aria-label="Close chat" className="w-8 h-8 flex items-center justify-center rounded-full bg-zinc-200/60 hover:bg-zinc-300 text-zinc-700 transition-colors">
               <Minus className="w-5 h-5" />
