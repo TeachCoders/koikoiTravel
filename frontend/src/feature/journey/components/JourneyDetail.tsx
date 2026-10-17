@@ -30,6 +30,7 @@ import {
   Headphones,
   UserCheck,
   Users,
+  Tag,
 } from "lucide-react";
 import { useEffect, useState, Fragment, useMemo } from "react";
 import dynamic from "next/dynamic";
@@ -452,18 +453,29 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     </QuoteModal>
                   </div>
 
-                  {/* Special Group Discounts Offer Strip */}
-                  <div className="flex items-start sm:items-center gap-3 p-3 rounded-xl bg-orange-50/80 border border-orange-200/70 text-slate-800 text-xs sm:text-[12.5px] leading-snug">
-                    <div className="relative shrink-0 mt-0.5 sm:mt-0">
-                      <span className="w-6 h-6 rounded-lg bg-[#F8904D] text-white flex items-center justify-center shadow-2xs">
-                        <Users size={14} className="stroke-[2.5]" />
-                      </span>
-                      <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8904D] opacity-80" />
-                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#F8904D]" />
-                      </span>
+                  {/* Special Group Discounts Offer Tag Box */}
+                  <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-orange-300/90 bg-gradient-to-r from-orange-50/90 via-amber-50/60 to-orange-50/40 p-3 shadow-xs">
+                    {/* Shimmer Light Sweep Effect */}
+                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent animate-shimmer-sweep pointer-events-none" />
+
+                    <div className="relative z-10">
+                      {/* Row 1: Tag Special Offer */}
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-[#F8904D] to-[#E96A1E] text-white text-[11px] font-extrabold uppercase tracking-wider shadow-xs">
+                          <Tag size={12} className="stroke-[2.6] animate-tag-wiggle" />
+                          <span>Special Offer</span>
+                        </span>
+                        <span className="flex h-2 w-2 relative">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8904D] opacity-80" />
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F8904D]" />
+                        </span>
+                      </div>
+
+                      {/* Row 2: Text below the tag */}
+                      <p className="text-[12px] sm:text-[12.5px] text-slate-700 leading-relaxed font-normal">
+                        Special discounts available for family group, student group, and corporate groups to India.
+                      </p>
                     </div>
-                    <span>Special discounts available for family group, student group, and corporate groups to India.</span>
                   </div>
                 </div>
 

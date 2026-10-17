@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Clock, Star, ArrowRight, Check, Compass, Hotel, Car, Utensils, Ticket, Users } from "lucide-react";
+import { MapPin, Clock, Star, ArrowRight, Check, Compass, Hotel, Car, Utensils, Ticket, Users, Tag } from "lucide-react";
 import type { Journey } from "@/feature/journey/type";
 import { journeyPackageHref, journeyCardTitle } from "@/feature/journey/filterOptions";
 import { travelExperienceIcon } from "@/components/shared/TravelExperiencePills";
@@ -256,19 +256,30 @@ export default function TourPackageCard({
           </>
         )}
 
-        {/* Special Group Discounts Offer Text - Above Trust Badging Line */}
+        {/* Special Group Discounts Offer Tag - Above Trust Badging Line */}
         <div className="mt-auto mb-2.5">
-          <div className="flex items-start sm:items-center gap-2.5 px-2.5 py-1.5 rounded-lg bg-orange-50/70 border border-orange-200/70 text-slate-800 text-[11px] leading-[1.38]">
-            <div className="relative shrink-0 mt-0.5 sm:mt-0">
-              <span className="w-5 h-5 rounded-md bg-[#F8904D] text-white flex items-center justify-center shadow-2xs">
-                <Users size={12} className="stroke-[2.5]" />
-              </span>
-              <span className="absolute -top-1 -right-1 flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8904D] opacity-80" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F8904D]" />
-              </span>
+          <div className="relative overflow-hidden rounded-xl border border-dashed border-orange-300/90 bg-gradient-to-r from-orange-50/90 via-amber-50/60 to-orange-50/40 p-2.5 shadow-2xs">
+            {/* Shimmer Light Sweep Effect */}
+            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent animate-shimmer-sweep pointer-events-none" />
+
+            <div className="relative z-10">
+              {/* Row 1: Tag Special Offer */}
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-gradient-to-r from-[#F8904D] to-[#E96A1E] text-white text-[10px] font-extrabold uppercase tracking-wider shadow-xs">
+                  <Tag size={11} className="stroke-[2.6] animate-tag-wiggle" />
+                  <span>Special Offer</span>
+                </span>
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8904D] opacity-80" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F8904D]" />
+                </span>
+              </div>
+
+              {/* Row 2: Text below the tag */}
+              <p className="text-[11px] text-slate-700 leading-snug">
+                Special discounts available for family group, student group, and corporate groups to India.
+              </p>
             </div>
-            <span>Special discounts available for family group, student group, and corporate groups to India.</span>
           </div>
         </div>
 

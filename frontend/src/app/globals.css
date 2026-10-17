@@ -992,6 +992,42 @@
     }
   }
 
+  @keyframes shimmerSweep {
+    0% {
+      transform: translateX(-100%);
+    }
+    50%, 100% {
+      transform: translateX(200%);
+    }
+  }
+
+  @keyframes tagWiggle {
+    0%, 100% {
+      transform: rotate(0deg);
+    }
+    20% {
+      transform: rotate(-12deg);
+    }
+    40% {
+      transform: rotate(10deg);
+    }
+    60% {
+      transform: rotate(-6deg);
+    }
+    80% {
+      transform: rotate(4deg);
+    }
+  }
+
+  .animate-shimmer-sweep {
+    animation: shimmerSweep 3.5s infinite ease-in-out;
+  }
+
+  .animate-tag-wiggle {
+    animation: tagWiggle 2.5s infinite ease-in-out;
+    transform-origin: top left;
+  }
+
   /* ===== Destination Slider (Swiper) ===== */
 
   .destination-slider {
