@@ -450,6 +450,12 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                       </button>
                     </QuoteModal>
                   </div>
+
+                  {/* Special Group Discounts Offer Strip */}
+                  <div className="flex items-start sm:items-center gap-2 p-2.5 rounded-xl bg-orange-50/80 border border-orange-200/70 text-[#9A3412] text-xs sm:text-[12.5px] font-medium leading-snug">
+                    <span className="text-sm shrink-0 mt-0.5 sm:mt-0">🏷️</span>
+                    <span>Special discounts available for family group, student group, and corporate groups to India.</span>
+                  </div>
                 </div>
 
                 {/* Bottom: 100% Customizable Note followed by Verified Trust Badges */}

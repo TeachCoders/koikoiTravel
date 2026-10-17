@@ -268,6 +268,14 @@ export default function TourPackageCard({
           <span className="text-[#F8904D] font-semibold">Custom Quote</span>
         </div>
 
+        {/* Special Group Discounts Offer Text */}
+        <div className="pt-2 pb-0.5">
+          <div className="flex items-start gap-1.5 px-2.5 py-1.5 rounded-lg bg-orange-50/70 border border-orange-200/60 text-[#9A3412] text-[11px] leading-[1.38] font-medium">
+            <span className="shrink-0 text-[#F8904D] font-bold">🏷️</span>
+            <span>Special discounts available for family group, student group, and corporate groups to India.</span>
+          </div>
+        </div>
+
         {/* CTA Section */}
         <div className="pt-1.5 flex flex-col gap-2">
           {/* Action Buttons Row (Default Minimalist Outline -> Card Hover Active Background) */}
