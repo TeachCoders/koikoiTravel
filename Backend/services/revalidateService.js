@@ -1,4 +1,5 @@
 import { logger } from "../utils/logger.js";
+import { cacheClearAll } from "./redisClient.js";
 
 /**
  * Tell the Next.js frontend to drop its static cache for the paths an edit
@@ -10,7 +11,16 @@ import { logger } from "../utils/logger.js";
  * frontend never blocks a save. The route itself is what enforces
  * authentication, via the shared secret header.
  */
-export const notifyRevalidate = (entity, entityData = {}) => {
+export const notifyRevalidate = async (entity, entityData = {}) => {
+  // IMPORTANT: Clear Redis response cache FIRST so that when Next.js calls
+  // the backend during revalidation, it receives fresh data from Postgres
+  // instead of stale cached data!
+  try {
+    await cacheClearAll();
+  } catch (err) {
+    logger.error(`[Revalidate Error] cacheClearAll failed:`, { message: err.message });
+  }
+
   const url = process.env.FRONTEND_REVALIDATE_URL;
   const secret = process.env.REVALIDATE_SECRET;
 

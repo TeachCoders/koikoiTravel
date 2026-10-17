@@ -125,6 +125,7 @@ export async function POST(request: Request) {
   for (const path of paths) {
     try {
       revalidatePath(path);
+      revalidatePath(path, "page");
     } catch (err) {
       console.error(`[revalidate] Error revalidating ${path}:`, err);
     }
