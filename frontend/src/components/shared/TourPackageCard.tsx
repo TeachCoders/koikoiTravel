@@ -99,19 +99,19 @@ function capitalizeWords(str: string): string {
 }
 
 export function formatRouteText(journey: Partial<Journey>, stateFallback?: string): string {
-  if (journey.route && journey.route.length > 0) {
-    return journey.route
-      .map((c: any) => capitalizeWords(c.h1Title || c.title || c.name || ""))
-      .filter(Boolean)
-      .join(" - ");
-  }
-
-  if (journey.destination) {
+  if (journey.destination && journey.destination.trim()) {
     return journey.destination
       .split(/[-–—,→]/)
       .map((s) => s.trim())
       .filter(Boolean)
       .map((s) => capitalizeWords(s))
+      .join(" - ");
+  }
+
+  if (journey.route && journey.route.length > 0) {
+    return journey.route
+      .map((c: any) => capitalizeWords(c.h1Title || c.title || c.name || ""))
+      .filter(Boolean)
       .join(" - ");
   }
 

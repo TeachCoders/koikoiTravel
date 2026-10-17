@@ -176,10 +176,30 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
     });
   }
 
-  // Extract accurate journey route from day program destinations
+  // Extract accurate journey route:
+  // 1. Explicit destination route label entered in dashboard (e.g. "Leh - Hemis Monastery - Nubra Valley - Pangong Tso - Leh")
+  // 2. Explicit route/cities from journey
+  // 3. Fallback: extract from day program titles
   const itineraryRoute = useMemo(() => {
+    if (journey.destination && journey.destination.trim()) {
+      const explicitParts = journey.destination
+        .split(/[-–—→]/)
+        .map((p) => p.trim())
+        .filter(Boolean);
+      if (explicitParts.length > 0) return explicitParts;
+    }
+
+    if (journey.route && journey.route.length > 0) {
+      const routeCities = journey.route
+        .map((c: any) => (c.h1Title || c.title || "").trim())
+        .filter(Boolean);
+      if (routeCities.length > 0) return routeCities;
+    }
+
     const days = journey.days || [];
-    if (!days.length) return [];
+    if (!days.length) {
+      return (journey.cities || []).map((c: any) => c.h1Title || c.title).filter(Boolean);
+    }
 
     const candidateCities: string[] = [];
     const addCandidate = (cityStr?: string | null) => {
@@ -192,10 +212,6 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
     (journey.cities || []).forEach((c) => addCandidate(c.h1Title || c.title));
     (journey.route || []).forEach((c) => addCandidate(c.h1Title || c.title));
-
-    if (journey.destination) {
-      journey.destination.split(/[-–—,→]/).forEach((p) => addCandidate(p));
-    }
 
     const routeFlow: string[] = [];
     days.forEach((d) => {

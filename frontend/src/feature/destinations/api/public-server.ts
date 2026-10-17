@@ -60,7 +60,11 @@ export async function fetchPublicCached<T>(
 ): Promise<T | null> {
   try {
     const url = `${API_BASE}${path.startsWith("/") ? path : `/${path}`}`;
-    const res = await fetch(url, { next: { revalidate }, ...init });
+    const nextOpts: { revalidate: number; tags?: string[] } = {
+      revalidate,
+      ...((init as any)?.next || {}),
+    };
+    const res = await fetch(url, { ...init, next: nextOpts });
     if (!res.ok) return null;
     const json = await res.json();
     return json?.data ?? json ?? null;
@@ -77,7 +81,11 @@ export async function fetchPublicJsonCached<T>(
 ): Promise<T | null> {
   try {
     const url = `${API_BASE}${path.startsWith("/") ? path : `/${path}`}`;
-    const res = await fetch(url, { next: { revalidate }, ...init });
+    const nextOpts: { revalidate: number; tags?: string[] } = {
+      revalidate,
+      ...((init as any)?.next || {}),
+    };
+    const res = await fetch(url, { ...init, next: nextOpts });
     if (!res.ok) return null;
     return (await res.json()) as T;
   } catch (err) {
@@ -92,5 +100,7 @@ export async function fetchBySlugCached<T>(
   revalidate = 300
 ): Promise<T | null> {
   const slugStr = Array.isArray(slug) ? slug.join("/") : slug;
-  return fetchPublicCached<T>(`${path}/${slugStr}`, undefined, revalidate);
+  const entityKey = path.replace(/^\//, "").split("/")[0] || "entity";
+  const tags = [entityKey, `${entityKey}-${slugStr}`, slugStr, "public-cache"];
+  return fetchPublicCached<T>(`${path}/${slugStr}`, { next: { revalidate, tags } } as any, revalidate);
 }

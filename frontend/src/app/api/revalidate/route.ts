@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 /**
@@ -52,6 +52,21 @@ export async function POST(request: Request) {
   const paths = new Set<string>(LIST_PATHS);
   const { entity, slug, country, state } = payload;
 
+  if (entity) {
+    try {
+      (revalidateTag as any)(entity, { expire: 0 });
+    } catch {}
+  }
+  if (slug) {
+    try {
+      (revalidateTag as any)(slug, { expire: 0 });
+      if (entity) (revalidateTag as any)(`${entity}-${slug}`, { expire: 0 });
+    } catch {}
+  }
+  try {
+    (revalidateTag as any)("public-cache", { expire: 0 });
+  } catch {}
+
   if (entity === "global") {
     try {
       revalidatePath("/", "layout");
@@ -69,6 +84,8 @@ export async function POST(request: Request) {
       case "journey":
       case "tourPackage":
         paths.add(`/tour-packages/${slug}`);
+        if (country) paths.add(`/${country}/tour-packages/${slug}`);
+        paths.add(`/india/tour-packages/${slug}`);
         break;
       case "cmsPage":
         paths.add(`/${slug}`);
