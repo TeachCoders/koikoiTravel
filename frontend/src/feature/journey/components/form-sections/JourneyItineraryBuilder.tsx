@@ -1,6 +1,7 @@
 import React from "react";
 import DayItineraryEditor from "@/components/shared/DayItineraryEditor";
 import ListEditor from "@/components/shared/ListEditor";
+import FaqEditor, { FaqData } from "@/components/shared/FaqEditor";
 import type { DayPlan } from "@/components/shared/DayItineraryEditor";
 
 interface JourneyItineraryBuilderProps {
@@ -17,8 +18,8 @@ interface JourneyItineraryBuilderProps {
   setWhyChooseUs: React.Dispatch<React.SetStateAction<string[]>>;
   bookingPolicyList: string[];
   setBookingPolicyList: React.Dispatch<React.SetStateAction<string[]>>;
-  faqs: { ques: string; ans: string }[];
-  setFaqs: React.Dispatch<React.SetStateAction<{ ques: string; ans: string }[]>>;
+  faqs: FaqData[];
+  setFaqs: any;
 }
 
 export default function JourneyItineraryBuilder({ 
@@ -50,13 +51,7 @@ export default function JourneyItineraryBuilder({
     });
   }, [formData.noDays, setDays]);
 
-  const removeFaq = (index: number) => {
-    setFaqs(faqs.filter((_, i) => i !== index));
-  };
 
-  const updateFaq = (index: number, key: "ques" | "ans", value: string) => {
-    setFaqs(faqs.map((f, i) => i === index ? { ...f, [key]: value } : f));
-  };
 
   const moveDay = (fromIdx: number, toIdx: number) => {
     setDays((prev) => {
@@ -130,49 +125,7 @@ export default function JourneyItineraryBuilder({
         </div>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-6 space-y-4">
-        <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Frequently Asked Questions</h2>
-        
-        <div className="space-y-3">
-          {faqs.map((faq, index) => (
-            <div key={index} className="relative group flex flex-col">
-              <button
-                type="button"
-                onClick={() => removeFaq(index)}
-                className="absolute top-1.5 right-1.5 z-20 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity text-[11px] font-bold px-2 py-1 rounded bg-red-50 hover:bg-red-100"
-              >
-                REMOVE
-              </button>
-              
-              <input
-                value={faq.ques}
-                onChange={(e) => updateFaq(index, "ques", e.target.value)}
-                placeholder="Question (e.g. What is the best time to visit?)"
-                className="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-t-lg bg-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors relative z-10 font-medium text-slate-800 placeholder:text-slate-400"
-              />
-              
-              <textarea
-                value={faq.ans}
-                onChange={(e) => updateFaq(index, "ans", e.target.value)}
-                rows={2}
-                placeholder="Answer..."
-                className="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-b-lg border-t-0 bg-slate-50 focus:bg-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors relative z-0 text-slate-600 placeholder:text-slate-400"
-              />
-            </div>
-          ))}
-          {faqs.length === 0 && (
-            <p className="text-sm text-slate-500 text-center py-3 border border-dashed border-slate-300 rounded-lg">No FAQs added yet.</p>
-          )}
-
-          <button
-            type="button"
-            onClick={() => setFaqs([...faqs, { ques: "", ans: "" }])}
-            className="w-full py-2 border-2 border-dashed border-slate-300 rounded-lg text-sm text-slate-600 font-medium hover:border-brand-400 hover:text-brand-600 transition-colors flex items-center justify-center gap-2"
-          >
-            + Add FAQ
-          </button>
-        </div>
-      </div>
+      <FaqEditor faqs={faqs} setFaqs={setFaqs} />
     </div>
   );
 }
