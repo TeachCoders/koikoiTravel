@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Clock, Star, ArrowRight, Check, Compass, Hotel, Car, Utensils, Ticket } from "lucide-react";
+import { MapPin, Clock, Star, ArrowRight, Check, Compass, Hotel, Car, Utensils, Ticket, Users } from "lucide-react";
 import type { Journey } from "@/feature/journey/type";
 import { journeyPackageHref, journeyCardTitle } from "@/feature/journey/filterOptions";
 import { travelExperienceIcon } from "@/components/shared/TravelExperiencePills";
@@ -258,19 +258,17 @@ export default function TourPackageCard({
 
         {/* Special Group Discounts Offer Text - Above Trust Badging Line */}
         <div className="mt-auto mb-2.5">
-          <div className="rounded-xl bg-gradient-to-r from-orange-50/90 via-amber-50/60 to-orange-50/70 border border-orange-200/80 p-2 shadow-2xs">
-            <div className="flex items-center justify-between gap-1 mb-1">
-              <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#D95D16]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shrink-0" />
-                Group Tour Savings
+          <div className="flex items-start sm:items-center gap-2.5 px-2.5 py-1.5 rounded-lg bg-orange-50/70 border border-orange-200/70 text-slate-800 text-[11px] leading-[1.38]">
+            <div className="relative shrink-0 mt-0.5 sm:mt-0">
+              <span className="w-5 h-5 rounded-md bg-[#F8904D] text-white flex items-center justify-center shadow-2xs">
+                <Users size={12} className="stroke-[2.5]" />
               </span>
-              <span className="text-[9.5px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/70 px-1.5 py-0.2 rounded-full">
-                Special Rates
+              <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8904D] opacity-80" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F8904D]" />
               </span>
             </div>
-            <p className="text-[11px] text-slate-700 leading-snug">
-              Special discounts available for <span className="font-semibold text-slate-900">Family</span>, <span className="font-semibold text-slate-900">Student</span> &amp; <span className="font-semibold text-slate-900">Corporate</span> groups to India.
-            </p>
+            <span>Special discounts available for family group, student group, and corporate groups to India.</span>
           </div>
         </div>
 
