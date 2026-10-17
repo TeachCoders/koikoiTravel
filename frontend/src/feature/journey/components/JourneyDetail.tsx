@@ -157,6 +157,11 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
   const pageH1 = journey.h1Title || journey.title;
   const durationText =
     journey.duration || (journey.noDays > 0 ? `${journey.noDays} Days` : "");
+  const daysCount =
+    typeof journey.noDays === "number" && journey.noDays > 0
+      ? journey.noDays
+      : parseInt((journey.duration || journey.title || journey.slug || "").match(/(\d+)\s*(?:day|days|d\b|-day)/i)?.[1] || "0", 10);
+  const hasSpecialOffer = daysCount >= 8;
   const cleanJourneyTitle = (journey.title || "").split("|")[0].trim();
 
   const breadcrumbNavItems = [
@@ -453,30 +458,32 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                     </QuoteModal>
                   </div>
 
-                  {/* Special Group Discounts Offer Tag Box */}
-                  <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-orange-300/90 bg-gradient-to-r from-orange-50/90 via-amber-50/60 to-orange-50/40 p-3 shadow-xs">
-                    {/* Shimmer Light Sweep Effect */}
-                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent animate-shimmer-sweep pointer-events-none" />
+                  {/* Special Group Discounts Offer Tag Box - Only for 8+ Days Tours */}
+                  {hasSpecialOffer && (
+                    <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-orange-300/90 bg-gradient-to-r from-orange-50/90 via-amber-50/60 to-orange-50/40 p-3 shadow-xs">
+                      {/* Shimmer Light Sweep Effect */}
+                      <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent animate-shimmer-sweep pointer-events-none" />
 
-                    <div className="relative z-10">
-                      {/* Row 1: Tag Special Offer */}
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-[#F8904D] to-[#E96A1E] text-white text-[11px] font-extrabold uppercase tracking-wider shadow-xs">
-                          <Tag size={12} className="stroke-[2.6] animate-tag-wiggle" />
-                          <span>Special Offer</span>
-                        </span>
-                        <span className="flex h-2 w-2 relative">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8904D] opacity-80" />
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F8904D]" />
-                        </span>
+                      <div className="relative z-10">
+                        {/* Row 1: Tag Special Offer */}
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-[#F8904D] to-[#E96A1E] text-white text-[11px] font-extrabold uppercase tracking-wider shadow-xs">
+                            <Tag size={12} className="stroke-[2.6] animate-tag-wiggle" />
+                            <span>Special Offer</span>
+                          </span>
+                          <span className="flex h-2 w-2 relative">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8904D] opacity-80" />
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F8904D]" />
+                          </span>
+                        </div>
+
+                        {/* Row 2: Text below the tag */}
+                        <p className="text-[12px] sm:text-[12.5px] text-slate-700 leading-relaxed font-normal">
+                          Special discounts available for family group, student group, and corporate groups to India.
+                        </p>
                       </div>
-
-                      {/* Row 2: Text below the tag */}
-                      <p className="text-[12px] sm:text-[12.5px] text-slate-700 leading-relaxed font-normal">
-                        Special discounts available for family group, student group, and corporate groups to India.
-                      </p>
                     </div>
-                  </div>
+                  )}
                 </div>
 
                 {/* Bottom: 100% Customizable Note followed by Verified Trust Badges */}
