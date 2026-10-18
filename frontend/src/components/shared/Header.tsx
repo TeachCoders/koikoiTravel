@@ -680,20 +680,6 @@ export const Header: React.FC = () => {
             {/* Language Selector */}
             <LanguageSelector />
 
-            {/* WhatsApp Quick Chat */}
-            <a
-              href={`https://wa.me/919136739178?text=${encodeURIComponent(
-                "Hi KoiKoi Travel, I would like to plan a custom India tour package."
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Chat on WhatsApp"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-full bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200/80 text-xs sm:text-[13px] font-semibold transition-all hover:scale-105 active:scale-95 shadow-xs"
-            >
-              <WhatsAppIcon className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span className="hidden xl:inline">WhatsApp</span>
-            </a>
-
             {/* Build My Trip CTA Button */}
             <QuoteModal>
               <button
