@@ -179,9 +179,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         </div>
 
         {/* Main Heading */}
-        <h1 className="font-luxury text-white text-2xl sm:text-3xl md:text-4xl lg:text-[44px] font-black tracking-tight leading-tight max-w-4xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
+        <h1 className="font-luxury text-white text-xl sm:text-3xl md:text-4xl lg:text-[44px] font-black tracking-tight leading-snug sm:leading-tight max-w-4xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
           <span>Your Journey, Your Trusted</span>
-          <span className="block mt-1 sm:mt-1.5 sm:whitespace-nowrap">
+          <span className="block mt-0.5 sm:mt-1.5 sm:whitespace-nowrap">
             <span className="text-[#F8904D]">Customize Tour Operator</span> — KoiKoi Travel
           </span>
         </h1>
