@@ -17,7 +17,7 @@ import { stripTourSuffix, pickPriorityLinks, type NavChild } from "@/lib/utils";
 import { QuoteModal } from "./QuoteModal";
 import { RequestCallbackModal } from "./RequestCallbackModal";
 import { DestinationTreeCountry, DestinationTreeState } from "./DestinationMegaMenu";
-import TopBar from "./TopBar";
+import LanguageSelector from "./LanguageSelector";
 import HeaderSearchBar from "./HeaderSearchBar";
 
 const DEFAULT_DESTINATION_LINKS: NavChild[] = [
@@ -649,7 +649,6 @@ export const Header: React.FC = () => {
         : "bg-white border-b border-[#f2f2f2]"
         }`}
     >
-      <TopBar isScrolled={isScrolled} />
       <div
         className={`max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 transition-[padding] duration-300 ${
           isScrolled ? "py-1.5 sm:py-2" : "py-2 sm:py-2.5"
@@ -669,7 +668,7 @@ export const Header: React.FC = () => {
             />
           </Link>
 
-          {/* Desktop Search Bar (Centered, matching user screenshot) */}
+          {/* Desktop Search Bar (Centered, matching Travelogy reference) */}
           {!isOfferPage && (
             <div className="hidden md:flex flex-1 justify-center px-2 lg:px-4 max-w-2xl">
               <HeaderSearchBar />
@@ -678,6 +677,9 @@ export const Header: React.FC = () => {
 
           {/* Right Action Buttons */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+            {/* Language Selector */}
+            <LanguageSelector />
+
             {/* WhatsApp Quick Chat */}
             <a
               href={`https://wa.me/919136739178?text=${encodeURIComponent(

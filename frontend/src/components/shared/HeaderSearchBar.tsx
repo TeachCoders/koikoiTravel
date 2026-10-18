@@ -2,60 +2,38 @@
 
 import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import {
-  Search,
-  X,
-  MapPin,
-  Compass,
-  ArrowRight,
-  TrendingUp,
-  Sparkles,
-  Calendar,
-} from "lucide-react";
+import { Search, X, MapPin, Compass, Sparkles } from "lucide-react";
 import { useGetStates } from "@/feature/state/api/useState";
+import { useGetCities } from "@/feature/city/api/useCity";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import { useGetTravelExperiences } from "@/feature/travelExperience/api/useTravelExperience";
 import { FallbackImage } from "./FallbackImage";
 import { stripTourSuffix } from "@/lib/utils";
 
-interface DestinationItem {
-  id: number;
+interface DestinationResult {
+  id: string | number;
   title: string;
-  slug: string;
   kind: "state" | "city";
   thumbImg?: string | null;
-  subtitle?: string;
   href: string;
 }
 
-interface JourneyItem {
+interface JourneyResult {
   id: number;
   title: string;
   slug: string;
   thumbImg?: string | null;
   duration?: string;
-  noDays?: number;
-  destination?: string;
   href: string;
 }
 
-interface ExperienceItem {
+interface ExperienceResult {
   id: number;
   title: string;
   slug: string;
   thumbImg?: string | null;
   href: string;
 }
-
-const POPULAR_DESTINATIONS = [
-  { title: "Rajasthan", href: "/tour-packages/india/rajasthan", img: "/content/destination-rajasthan.webp" },
-  { title: "Kerala", href: "/tour-packages/india/kerala", img: "/content/destination-kerala.webp" },
-  { title: "Kashmir", href: "/tour-packages/india/jammu-and-kashmir", img: "/content/destination-kashmir.webp" },
-  { title: "Golden Triangle", href: "/travel-experiences/golden-triangle", img: "/content/destination-golden-triangle.webp" },
-  { title: "Ladakh", href: "/tour-packages/india/ladakh", img: "/content/destination-ladakh.webp" },
-  { title: "Goa", href: "/tour-packages/india/goa", img: "/content/destination-goa.webp" },
-];
 
 export default function HeaderSearchBar() {
   const router = useRouter();
@@ -65,8 +43,10 @@ export default function HeaderSearchBar() {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Fetch all active data
   const { states = [] } = useGetStates({ limit: 100, isActive: "true" });
-  const { journeys = [] } = useGetJourneys({ limit: 100, isActive: "true" });
+  const { cities = [] } = useGetCities({ limit: 150, isActive: "true" });
+  const { journeys = [] } = useGetJourneys({ limit: 150, isActive: "true" });
   const { travelExperiences = [] } = useGetTravelExperiences({ limit: 100, isActive: "true" });
 
   const q = query.trim().toLowerCase();
@@ -82,110 +62,157 @@ export default function HeaderSearchBar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Prepare all searchable destinations (States & Cities)
-  const allDestinations = useMemo<DestinationItem[]>(() => {
-    const list: DestinationItem[] = [];
+  // Prepare full list of all destinations (States and Cities combined, deduplicated)
+  const allDestinations = useMemo<DestinationResult[]>(() => {
+    const list: DestinationResult[] = [];
+    const seenHrefs = new Set<string>();
 
+    // 1. Add all States
     states.forEach((s) => {
-      if (s.slug === "golden-triangle") return;
+      if (!s.slug || s.slug === "golden-triangle") return;
       const countrySlug = s.country?.slug || "india";
-      list.push({
-        id: s.id,
-        title: s.title,
-        slug: s.slug,
-        kind: "state",
-        thumbImg: s.thumbImg,
-        subtitle: "State in India",
-        href: `/tour-packages/${countrySlug}/${s.slug}`,
-      });
+      const href = `/tour-packages/${countrySlug}/${s.slug}`;
+      if (!seenHrefs.has(href)) {
+        seenHrefs.add(href);
+        list.push({
+          id: `state-${s.id}`,
+          title: stripTourSuffix(s.title || s.h1Title || ""),
+          kind: "state",
+          thumbImg: s.thumbImg,
+          href,
+        });
+      }
 
+      // Also add cities embedded inside state if present
       if (s.cities && Array.isArray(s.cities)) {
         s.cities.forEach((c) => {
           if (!c.title || !c.slug) return;
-          list.push({
-            id: c.id as number,
-            title: stripTourSuffix(c.title),
-            slug: c.slug,
-            kind: "city",
-            thumbImg: c.thumbImg || s.thumbImg,
-            subtitle: `City in ${s.title}`,
-            href: `/tour-packages/${countrySlug}/${s.slug}/${c.slug}`,
-          });
+          const cityHref = `/tour-packages/${countrySlug}/${s.slug}/${c.slug}`;
+          if (!seenHrefs.has(cityHref)) {
+            seenHrefs.add(cityHref);
+            list.push({
+              id: `city-${c.id}`,
+              title: stripTourSuffix(c.title),
+              kind: "city",
+              thumbImg: c.thumbImg || s.thumbImg,
+              href: cityHref,
+            });
+          }
+        });
+      }
+    });
+
+    // 2. Add Cities from useGetCities (ensures 100% of cities are searchable with images)
+    cities.forEach((c) => {
+      if (!c.title || !c.slug) return;
+      const countrySlug = c.state?.country?.slug || "india";
+      const stateSlug = c.state?.slug;
+      if (!stateSlug) return;
+      const cityHref = `/tour-packages/${countrySlug}/${stateSlug}/${c.slug}`;
+      if (!seenHrefs.has(cityHref)) {
+        seenHrefs.add(cityHref);
+        list.push({
+          id: `city-${c.id}`,
+          title: stripTourSuffix(c.title),
+          kind: "city",
+          thumbImg: c.thumbImg || null,
+          href: cityHref,
         });
       }
     });
 
     return list;
-  }, [states]);
+  }, [states, cities]);
 
-  // Filter destinations based on query
-  const matchedDestinations = useMemo(() => {
+  // Filter matched destinations: States first, then Cities (matching query)
+  const matchedDestinations = useMemo<DestinationResult[]>(() => {
     if (!q) return [];
-    return allDestinations
-      .filter((d) => d.title.toLowerCase().includes(q) || (d.subtitle && d.subtitle.toLowerCase().includes(q)))
-      .sort((a, b) => {
-        const aStarts = a.title.toLowerCase().startsWith(q) ? 0 : 1;
-        const bStarts = b.title.toLowerCase().startsWith(q) ? 0 : 1;
-        if (aStarts !== bStarts) return aStarts - bStarts;
-        return a.title.localeCompare(b.title);
-      })
-      .slice(0, 5);
+
+    const statesList: DestinationResult[] = [];
+    const citiesList: DestinationResult[] = [];
+
+    allDestinations.forEach((d) => {
+      const titleLower = d.title.toLowerCase();
+      if (titleLower.includes(q)) {
+        if (d.kind === "state") {
+          statesList.push(d);
+        } else {
+          citiesList.push(d);
+        }
+      }
+    });
+
+    const sortByRelevance = (a: DestinationResult, b: DestinationResult) => {
+      const aStarts = a.title.toLowerCase().startsWith(q) ? 0 : 1;
+      const bStarts = b.title.toLowerCase().startsWith(q) ? 0 : 1;
+      if (aStarts !== bStarts) return aStarts - bStarts;
+      return a.title.localeCompare(b.title);
+    };
+
+    statesList.sort(sortByRelevance);
+    citiesList.sort(sortByRelevance);
+
+    // Return matching states first, then matching cities (max 6 total destinations)
+    return [...statesList, ...citiesList].slice(0, 6);
   }, [allDestinations, q]);
 
-  // Filter tour itineraries / packages based on query
-  const matchedJourneys = useMemo<JourneyItem[]>(() => {
+  // Filter matched tour packages (Tour Itineraries)
+  const matchedJourneys = useMemo<JourneyResult[]>(() => {
     if (!q) return [];
+
     return journeys
       .filter((j) => {
-        const titleMatch = (j.title || "").toLowerCase().includes(q);
-        const h1Match = (j.h1Title || "").toLowerCase().includes(q);
-        const destMatch = (j.destination || "").toLowerCase().includes(q);
-        const kwMatch = (j.seoKeyword || "").toLowerCase().includes(q);
-        return titleMatch || h1Match || destMatch || kwMatch;
+        const title = (j.title || "").toLowerCase();
+        const h1 = (j.h1Title || "").toLowerCase();
+        const dest = (j.destination || "").toLowerCase();
+        const kw = (j.seoKeyword || "").toLowerCase();
+        return title.includes(q) || h1.includes(q) || dest.includes(q) || kw.includes(q);
       })
       .sort((a, b) => {
-        const aStarts = (a.title || "").toLowerCase().startsWith(q) ? 0 : 1;
-        const bStarts = (b.title || "").toLowerCase().startsWith(q) ? 0 : 1;
+        const aTitle = (a.title || "").toLowerCase();
+        const bTitle = (b.title || "").toLowerCase();
+        const aStarts = aTitle.startsWith(q) ? 0 : 1;
+        const bStarts = bTitle.startsWith(q) ? 0 : 1;
         if (aStarts !== bStarts) return aStarts - bStarts;
         return (a.displayOrder || 999) - (b.displayOrder || 999);
       })
-      .slice(0, 7)
+      .slice(0, 8)
       .map((j) => ({
         id: j.id,
         title: j.title || j.h1Title || "Tour Package",
         slug: j.slug,
         thumbImg: j.thumbImg,
         duration: j.duration,
-        noDays: j.noDays,
-        destination: j.destination,
         href: `/tour-packages/${j.slug}`,
       }));
   }, [journeys, q]);
 
-  // Filter travel experiences
-  const matchedExperiences = useMemo<ExperienceItem[]>(() => {
+  // Filter matched travel experiences
+  const matchedExperiences = useMemo<ExperienceResult[]>(() => {
     if (!q) return [];
+
     return travelExperiences
       .filter((e) => (e.title || "").toLowerCase().includes(q))
-      .slice(0, 3)
+      .slice(0, 4)
       .map((e) => ({
         id: e.id,
-        title: e.title,
+        title: stripTourSuffix(e.title || e.h1Title || ""),
         slug: e.slug,
         thumbImg: e.thumbImg,
         href: `/travel-experiences/${e.slug}`,
       }));
   }, [travelExperiences, q]);
 
-  // Flat list of all current suggestions for keyboard navigation
-  const allCurrentSuggestions = useMemo(() => {
+  // Flat list of all current suggestions for arrow-key navigation
+  const flatSuggestions = useMemo(() => {
     return [
-      ...matchedDestinations.map((d) => ({ ...d, type: "destination" as const })),
-      ...matchedJourneys.map((j) => ({ ...j, type: "journey" as const })),
-      ...matchedExperiences.map((e) => ({ ...e, type: "experience" as const })),
+      ...matchedDestinations.map((d) => ({ href: d.href })),
+      ...matchedJourneys.map((j) => ({ href: j.href })),
+      ...matchedExperiences.map((e) => ({ href: e.href })),
     ];
   }, [matchedDestinations, matchedJourneys, matchedExperiences]);
 
+  // Direct navigation handler: clicking any result immediately navigates to its page
   const handleSelect = useCallback(
     (href: string) => {
       setIsOpen(false);
@@ -197,16 +224,20 @@ export default function HeaderSearchBar() {
 
   const handleSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (activeIndex >= 0 && allCurrentSuggestions[activeIndex]) {
-      handleSelect(allCurrentSuggestions[activeIndex].href);
+    if (activeIndex >= 0 && flatSuggestions[activeIndex]) {
+      handleSelect(flatSuggestions[activeIndex].href);
       return;
     }
-    if (matchedDestinations.length > 0 && !matchedJourneys.length) {
+    if (matchedDestinations.length > 0) {
       handleSelect(matchedDestinations[0].href);
       return;
     }
-    if (matchedJourneys.length > 0 && !matchedDestinations.length) {
+    if (matchedJourneys.length > 0) {
       handleSelect(matchedJourneys[0].href);
+      return;
+    }
+    if (matchedExperiences.length > 0) {
+      handleSelect(matchedExperiences[0].href);
       return;
     }
     if (q) {
@@ -218,14 +249,14 @@ export default function HeaderSearchBar() {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      if (!isOpen) {
+      if (!isOpen && q) {
         setIsOpen(true);
         return;
       }
-      setActiveIndex((prev) => (prev < allCurrentSuggestions.length - 1 ? prev + 1 : 0));
+      setActiveIndex((prev) => (prev < flatSuggestions.length - 1 ? prev + 1 : 0));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setActiveIndex((prev) => (prev > 0 ? prev - 1 : allCurrentSuggestions.length - 1));
+      setActiveIndex((prev) => (prev > 0 ? prev - 1 : flatSuggestions.length - 1));
     } else if (e.key === "Enter") {
       e.preventDefault();
       handleSubmit();
@@ -237,25 +268,29 @@ export default function HeaderSearchBar() {
   const handleClear = () => {
     setQuery("");
     setActiveIndex(-1);
+    setIsOpen(false);
     if (inputRef.current) {
       inputRef.current.focus();
     }
   };
 
-  const hasResults = matchedDestinations.length > 0 || matchedJourneys.length > 0 || matchedExperiences.length > 0;
+  const hasResults =
+    matchedDestinations.length > 0 ||
+    matchedJourneys.length > 0 ||
+    matchedExperiences.length > 0;
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-[480px] lg:max-w-[540px]">
-      {/* Search Input Bar */}
+    <div ref={containerRef} className="relative w-full max-w-[500px] lg:max-w-[560px]">
+      {/* Clean Pill Search Bar matching Travelogy reference */}
       <form
         onSubmit={handleSubmit}
-        className={`relative flex items-center bg-white rounded-full border transition-all duration-200 shadow-sm ${
-          isOpen
+        className={`relative flex items-center bg-white rounded-full border transition-all duration-200 ${
+          isOpen && q
             ? "border-[#2E8B8B] ring-2 ring-[#2E8B8B]/15 shadow-md"
-            : "border-slate-300 hover:border-[#2E8B8B]/60"
+            : "border-slate-300 hover:border-slate-400"
         }`}
       >
-        <div className="pl-4 pr-2 text-[#2E8B8B] shrink-0">
+        <div className="pl-3.5 pr-1.5 text-slate-400 shrink-0">
           <Search className="w-4 h-4 md:w-4.5 md:h-4.5" />
         </div>
 
@@ -264,14 +299,19 @@ export default function HeaderSearchBar() {
           type="text"
           value={query}
           onChange={(e) => {
-            setQuery(e.target.value);
-            setIsOpen(true);
+            const val = e.target.value;
+            setQuery(val);
+            setIsOpen(val.trim().length > 0);
             setActiveIndex(-1);
           }}
-          onFocus={() => setIsOpen(true)}
+          onFocus={() => {
+            if (query.trim().length > 0) {
+              setIsOpen(true);
+            }
+          }}
           onKeyDown={handleKeyDown}
-          placeholder="Search destinations, tour packages, places..."
-          aria-label="Search destinations and tour packages"
+          placeholder="Search destinations, tours, places..."
+          aria-label="Search destinations, tours, places"
           className="w-full py-2 md:py-2.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none"
         />
 
@@ -279,7 +319,7 @@ export default function HeaderSearchBar() {
           <button
             type="button"
             onClick={handleClear}
-            className="p-1.5 mr-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors"
+            className="p-1 mr-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors shrink-0"
             aria-label="Clear search input"
           >
             <X className="w-4 h-4" />
@@ -287,34 +327,29 @@ export default function HeaderSearchBar() {
         )}
       </form>
 
-      {/* Autocomplete Dropdown Menu */}
-      {isOpen && (
-        <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.18)] border border-slate-200/90 overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-150">
-          <div className="max-h-[460px] overflow-y-auto divide-y divide-slate-100 scrollbar-thin scrollbar-thumb-slate-200">
-            {/* If user is typing and results exist */}
-            {q && hasResults && (
+      {/* Autocomplete Dropdown: Only shown when user is typing (NO popular grid) */}
+      {isOpen && q && (
+        <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.14)] border border-slate-200 overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-150">
+          <div className="max-h-[440px] overflow-y-auto divide-y divide-slate-100 scrollbar-thin scrollbar-thumb-slate-200">
+            {hasResults ? (
               <>
-                {/* 1. DESTINATIONS GROUP */}
+                {/* 1. DESTINATIONS (States & Cities) */}
                 {matchedDestinations.length > 0 && (
-                  <div className="p-2">
-                    <div className="px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-[#2E8B8B]" />
-                      <span>Destinations</span>
-                    </div>
-                    <div className="space-y-0.5">
-                      {matchedDestinations.map((dest, idx) => {
-                        const isSelected = activeIndex === idx;
-                        return (
-                          <button
-                            key={`dest-${dest.kind}-${dest.id}`}
-                            type="button"
-                            onClick={() => handleSelect(dest.href)}
-                            onMouseEnter={() => setActiveIndex(idx)}
-                            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-colors cursor-pointer ${
-                              isSelected ? "bg-[#2E8B8B]/10 text-[#2E8B8B]" : "hover:bg-slate-50 text-slate-800"
-                            }`}
-                          >
-                            <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-slate-100 border border-slate-200/80">
+                  <div className="py-1">
+                    {matchedDestinations.map((dest, idx) => {
+                      const isSelected = activeIndex === idx;
+                      return (
+                        <button
+                          key={`dest-${dest.id}`}
+                          type="button"
+                          onClick={() => handleSelect(dest.href)}
+                          onMouseEnter={() => setActiveIndex(idx)}
+                          className={`w-full flex items-center gap-3 px-3.5 py-2 transition-colors text-left cursor-pointer ${
+                            isSelected ? "bg-[#2E8B8B]/10 text-[#2E8B8B]" : "hover:bg-slate-50 text-slate-800"
+                          }`}
+                        >
+                          <div className="relative w-10 h-10 rounded-md overflow-hidden shrink-0 bg-slate-100 border border-slate-200/70 flex items-center justify-center">
+                            {dest.thumbImg ? (
                               <FallbackImage
                                 src={dest.thumbImg}
                                 alt={dest.title}
@@ -322,99 +357,90 @@ export default function HeaderSearchBar() {
                                 sizes="40px"
                                 className="object-cover"
                               />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-bold text-slate-900 truncate">{dest.title}</p>
-                              {dest.subtitle && (
-                                <p className="text-xs text-slate-500 truncate">{dest.subtitle}</p>
-                              )}
-                            </div>
-                            <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 shrink-0">
-                              {dest.kind}
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center bg-teal-50 text-[#2E8B8B]">
+                                <MapPin className="w-5 h-5" />
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-[14px] font-medium leading-snug truncate block">
+                              {dest.title}
                             </span>
-                          </button>
-                        );
-                      })}
-                    </div>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
 
-                {/* 2. TOUR ITINERARY GROUP (Matching Image 1) */}
+                {/* 2. TOUR ITINERARY (Matching Travelogy reference) */}
                 {matchedJourneys.length > 0 && (
-                  <div className="p-2">
-                    <div className="px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                      <Compass className="w-3.5 h-3.5 text-[#F8904D]" />
-                      <span>Tour Itinerary</span>
+                  <div className="py-1">
+                    <div className="px-3.5 pt-2.5 pb-1 text-[13px] font-semibold text-slate-500">
+                      Tour Itinerary
                     </div>
-                    <div className="space-y-0.5">
-                      {matchedJourneys.map((journey, idx) => {
-                        const overallIdx = matchedDestinations.length + idx;
-                        const isSelected = activeIndex === overallIdx;
-                        return (
-                          <button
-                            key={`journey-${journey.id}`}
-                            type="button"
-                            onClick={() => handleSelect(journey.href)}
-                            onMouseEnter={() => setActiveIndex(overallIdx)}
-                            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-colors cursor-pointer ${
-                              isSelected ? "bg-[#2E8B8B]/10 text-[#2E8B8B]" : "hover:bg-slate-50 text-slate-800"
-                            }`}
-                          >
-                            <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-slate-100 border border-slate-200/80">
+                    {matchedJourneys.map((j, idx) => {
+                      const overallIdx = matchedDestinations.length + idx;
+                      const isSelected = activeIndex === overallIdx;
+                      return (
+                        <button
+                          key={`journey-${j.id}`}
+                          type="button"
+                          onClick={() => handleSelect(j.href)}
+                          onMouseEnter={() => setActiveIndex(overallIdx)}
+                          className={`w-full flex items-center gap-3 px-3.5 py-2 transition-colors text-left cursor-pointer ${
+                            isSelected ? "bg-[#2E8B8B]/10 text-[#2E8B8B]" : "hover:bg-slate-50 text-slate-800"
+                          }`}
+                        >
+                          <div className="relative w-10 h-10 rounded-md overflow-hidden shrink-0 bg-slate-100 border border-slate-200/70 flex items-center justify-center">
+                            {j.thumbImg ? (
                               <FallbackImage
-                                src={journey.thumbImg}
-                                alt={journey.title}
+                                src={j.thumbImg}
+                                alt={j.title}
                                 fill
                                 sizes="40px"
                                 className="object-cover"
                               />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-semibold text-slate-900 truncate leading-snug">
-                                {journey.title}
-                              </p>
-                              {journey.duration ? (
-                                <p className="text-xs text-[#2E8B8B] font-medium flex items-center gap-1 mt-0.5">
-                                  <Calendar className="w-3 h-3" />
-                                  <span>{journey.duration}</span>
-                                </p>
-                              ) : journey.noDays ? (
-                                <p className="text-xs text-[#2E8B8B] font-medium flex items-center gap-1 mt-0.5">
-                                  <Calendar className="w-3 h-3" />
-                                  <span>{journey.noDays} Days Tour</span>
-                                </p>
-                              ) : null}
-                            </div>
-                            <ArrowRight className="w-4 h-4 text-slate-300 shrink-0 group-hover:text-[#2E8B8B]" />
-                          </button>
-                        );
-                      })}
-                    </div>
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center bg-orange-50 text-[#F8904D]">
+                                <Compass className="w-5 h-5" />
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-[14px] font-medium leading-snug truncate block">
+                              {j.title}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
 
-                {/* 3. EXPERIENCES GROUP */}
+                {/* 3. TRAVEL EXPERIENCES */}
                 {matchedExperiences.length > 0 && (
-                  <div className="p-2">
-                    <div className="px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-[#2E8B8B]" />
-                      <span>Experiences</span>
+                  <div className="py-1">
+                    <div className="px-3.5 pt-2.5 pb-1 text-[13px] font-semibold text-slate-500">
+                      Travel Experiences
                     </div>
-                    <div className="space-y-0.5">
-                      {matchedExperiences.map((exp, idx) => {
-                        const overallIdx = matchedDestinations.length + matchedJourneys.length + idx;
-                        const isSelected = activeIndex === overallIdx;
-                        return (
-                          <button
-                            key={`exp-${exp.id}`}
-                            type="button"
-                            onClick={() => handleSelect(exp.href)}
-                            onMouseEnter={() => setActiveIndex(overallIdx)}
-                            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-colors cursor-pointer ${
-                              isSelected ? "bg-[#2E8B8B]/10 text-[#2E8B8B]" : "hover:bg-slate-50 text-slate-800"
-                            }`}
-                          >
-                            <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-slate-100 border border-slate-200/80">
+                    {matchedExperiences.map((exp, idx) => {
+                      const overallIdx =
+                        matchedDestinations.length + matchedJourneys.length + idx;
+                      const isSelected = activeIndex === overallIdx;
+                      return (
+                        <button
+                          key={`exp-${exp.id}`}
+                          type="button"
+                          onClick={() => handleSelect(exp.href)}
+                          onMouseEnter={() => setActiveIndex(overallIdx)}
+                          className={`w-full flex items-center gap-3 px-3.5 py-2 transition-colors text-left cursor-pointer ${
+                            isSelected ? "bg-[#2E8B8B]/10 text-[#2E8B8B]" : "hover:bg-slate-50 text-slate-800"
+                          }`}
+                        >
+                          <div className="relative w-10 h-10 rounded-md overflow-hidden shrink-0 bg-slate-100 border border-slate-200/70 flex items-center justify-center">
+                            {exp.thumbImg ? (
                               <FallbackImage
                                 src={exp.thumbImg}
                                 alt={exp.title}
@@ -422,73 +448,26 @@ export default function HeaderSearchBar() {
                                 sizes="40px"
                                 className="object-cover"
                               />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-semibold text-slate-900 truncate">{exp.title}</p>
-                              <p className="text-xs text-slate-500">Travel Experience</p>
-                            </div>
-                            <ArrowRight className="w-4 h-4 text-slate-300 shrink-0" />
-                          </button>
-                        );
-                      })}
-                    </div>
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center bg-teal-50 text-[#2E8B8B]">
+                                <Sparkles className="w-5 h-5" />
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-[14px] font-medium leading-snug truncate block">
+                              {exp.title}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
               </>
-            )}
-
-            {/* If user is typing but NO results found */}
-            {q && !hasResults && (
-              <div className="p-6 text-center">
-                <Compass className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-                <p className="text-sm font-bold text-slate-800">No matching places or packages</p>
-                <p className="text-xs text-slate-500 mt-1">
-                  Try searching for &quot;Rajasthan&quot;, &quot;Kerala&quot;, &quot;Agra&quot;, or &quot;Golden Triangle&quot;
-                </p>
-              </div>
-            )}
-
-            {/* Initial state (user focused input before typing) */}
-            {!q && (
-              <div className="p-4">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-                  <TrendingUp className="w-3.5 h-3.5 text-[#F8904D]" />
-                  <span>Popular Destinations</span>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {POPULAR_DESTINATIONS.map((pop) => (
-                    <button
-                      key={pop.title}
-                      type="button"
-                      onClick={() => handleSelect(pop.href)}
-                      className="flex items-center gap-2 p-2 rounded-xl border border-slate-100 hover:border-[#2E8B8B]/40 hover:bg-[#2E8B8B]/5 transition-all text-left group"
-                    >
-                      <div className="relative w-8 h-8 rounded-lg overflow-hidden shrink-0 bg-slate-100">
-                        <Image src={pop.img} alt={pop.title} fill sizes="32px" className="object-cover" />
-                      </div>
-                      <span className="text-xs font-bold text-slate-800 group-hover:text-[#2E8B8B] truncate">
-                        {pop.title}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Footer "View all packages" link */}
-            {q && (
-              <div className="p-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span className="text-slate-500 font-medium">
-                  Showing top results for &ldquo;{query}&rdquo;
-                </span>
-                <button
-                  type="button"
-                  onClick={() => handleSubmit()}
-                  className="font-bold text-[#F8904D] hover:text-[#e07a38] flex items-center gap-1"
-                >
-                  <span>View all packages</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+            ) : (
+              <div className="p-6 text-center text-sm text-slate-500">
+                No matching destinations or tour packages for &ldquo;{query}&rdquo;
               </div>
             )}
           </div>
