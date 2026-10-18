@@ -1,4 +1,5 @@
 import { fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
+import { fetchHeroBannersServer } from "@/feature/heroBanner/api/server";
 import HomePageClient from "./HomePageClient";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
 import type { Country, PaginatedResponse as CountryPage } from "@/feature/country/type";
@@ -15,6 +16,7 @@ export default async function HomeSections() {
     initialJourneys,
     initialSeasons,
     initialGuestGallery,
+    initialHeroBanners,
   ] = await Promise.all([
     fetchPublicJsonCached<StatePage<State>>("/state?limit=100&isActive=true"),
     fetchPublicJsonCached<CountryPage<Country>>("/country?limit=100&isActive=true"),
@@ -22,6 +24,7 @@ export default async function HomeSections() {
     fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true"),
     fetchPublicJsonCached<SeasonPage<Season>>("/season?limit=100&isActive=true"),
     fetchPublicJsonCached<PaginatedGuestGallery>("/guest-gallery?page=1&limit=8&isActive=true"),
+    fetchHeroBannersServer("Home"),
   ]);
 
   return (
@@ -32,6 +35,7 @@ export default async function HomeSections() {
       initialJourneys={initialJourneys}
       initialSeasons={initialSeasons}
       initialGuestGallery={initialGuestGallery}
+      initialHeroBanners={initialHeroBanners}
     />
   );
 }

@@ -126,6 +126,7 @@ const nextConfig: NextConfig = {
       "ayurveda-yoga",
       "quotations",
       "3-days-delhit-agra-jaipur-tirp-golden-triangle",
+      "hero-banners",
     ];
     return [
       ...cdnFolders.map((folder) => ({
