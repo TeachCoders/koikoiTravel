@@ -22,7 +22,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const page = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug.join("/"));
   if (!page) return { title: "Page Not Found | KoiKoi Travel" };
   const seoDescription = truncateMeta(page.seoDescription || page.moreDescription || "");
-  const title = page.seoTitle || page.title;
+  const rawTitle = page.seoTitle || page.title;
+  const title = rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim();
   const canonical = page.canonical || `/${page.slug || slug.join("/")}`;
   const ogImage = absoluteUrl(page.thumbImg);
   return {

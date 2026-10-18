@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const canonical = cmsPage?.canonical || "/guest-gallery";
 
   return {
-    title,
+    title: { absolute: title },
     description,
     keywords: cmsPage?.seoKeyword || undefined,
     alternates: { canonical },

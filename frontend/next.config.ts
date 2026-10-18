@@ -52,6 +52,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/tour-packages/india/goa/pondicherry",
+        destination: "/tour-packages/india/tamil-nadu/pondicherry",
+        permanent: true,
+      },
+      {
         source: "/india-tours/tour-packages/golden-triangle",
         destination: "/travel-experiences/golden-triangle",
         permanent: true,

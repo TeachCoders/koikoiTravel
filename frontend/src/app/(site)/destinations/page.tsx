@@ -202,13 +202,13 @@ const defaultFaqs = [
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Destinations | KoiKoi Travel",
+    title: "Explore India Tour Destinations",
     description:
       "Explore top India tour destinations across Rajasthan, Kerala, Himachal, Kashmir & Uttarakhand with curated holiday packages by KoiKoi Travel.",
     alternates: { canonical: "/destinations" },
     openGraph: {
       type: "website",
-      title: "Destinations | KoiKoi Travel",
+      title: "Explore India Tour Destinations | KoiKoi Travel",
       description:
         "Explore India's best tour destinations — curated holiday packages across states and cities.",
       url: `${SITE_URL}/destinations`,

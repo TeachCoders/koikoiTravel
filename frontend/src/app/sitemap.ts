@@ -36,13 +36,13 @@ function url(path: string, lastModified?: string): MetadataRoute.Sitemap[number]
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [countries, states, cities, experiences, journeys, posts, cmsPages] =
     await Promise.all([
-      fetchAll<SitemapItem>("/country?limit=5000"),
-      fetchAll<SitemapItem>("/state?limit=5000"),
-      fetchAll<SitemapItem>("/city?limit=5000"),
-      fetchAll<SitemapItem>("/holidays?limit=5000"),
+      fetchAll<SitemapItem>("/country?limit=5000&isActive=true"),
+      fetchAll<SitemapItem>("/state?limit=5000&isActive=true"),
+      fetchAll<SitemapItem>("/city?limit=5000&isActive=true"),
+      fetchAll<SitemapItem>("/holidays?limit=5000&isActive=true"),
       fetchAll<SitemapItem>("/journey?limit=5000&isActive=true"),
       fetchAll<SitemapItem>("/blog?limit=5000&isActive=true"),
-      fetchAll<SitemapItem>("/cms?limit=5000"),
+      fetchAll<SitemapItem>("/cms?limit=5000&isActive=true"),
     ]);
 
   const RESERVED_SLUGS = new Set([
