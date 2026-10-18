@@ -16,7 +16,10 @@ import {
   Crop,
   Maximize2,
   Sliders,
+  Link as LinkIcon,
+  Loader2,
 } from "lucide-react";
+import apiClient from "@/lib/apiClient";
 import ImageCropUpload from "@/components/shared/ImageCropUpload";
 import {
   useAllHeroBanners,
@@ -93,6 +96,9 @@ export default function HeroBannersAdminPage() {
     return allBanners.filter((b) => b.entityType === selectedCategoryFilter);
   }, [allBanners, selectedCategoryFilter]);
 
+  const [multiUrlInput, setMultiUrlInput] = useState("");
+  const [multiUrlLoading, setMultiUrlLoading] = useState(false);
+
   const clearMultipleFiles = () => {
     multipleFiles.forEach((item) => {
       if (item.preview && item.preview.startsWith("blob:")) {
@@ -100,6 +106,31 @@ export default function HeroBannersAdminPage() {
       }
     });
     setMultipleFiles([]);
+    setMultiUrlInput("");
+  };
+
+  const handleAddUrlToMultiple = async () => {
+    const trimmed = multiUrlInput.trim();
+    if (!trimmed) return;
+    setMultiUrlLoading(true);
+    try {
+      let file: File;
+      if (trimmed.startsWith("blob:") || trimmed.startsWith("data:")) {
+        const resp = await fetch(trimmed);
+        const blob = await resp.blob();
+        file = new File([blob], `banner-url-${Date.now()}.webp`, { type: blob.type || "image/webp" });
+      } else {
+        const res = await apiClient.get(`/proxy-image?url=${encodeURIComponent(trimmed)}`, { responseType: "blob" });
+        const blob = res.data;
+        file = new File([blob], `banner-url-${Date.now()}.webp`, { type: blob.type || "image/webp" });
+      }
+      handleMultipleFilesSelect([file]);
+      setMultiUrlInput("");
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || "Failed to load image from URL. Try uploading the file directly.");
+    } finally {
+      setMultiUrlLoading(false);
+    }
   };
 
   const handleMultipleFilesSelect = (fileList: FileList | File[]) => {
@@ -797,6 +828,37 @@ export default function HeroBannersAdminPage() {
                       <p className="text-xs text-slate-500 mt-1">
                         Select 2, 5, 10 or more images at once (PNG, JPG, WebP)
                       </p>
+                    </div>
+                  </div>
+
+                  {/* Or Add via Image URL Bar */}
+                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
+                    <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
+                      <LinkIcon size={12} className="text-indigo-600" /> Or Add via Image URL
+                    </span>
+                    <div className="flex gap-2">
+                      <input
+                        type="url"
+                        value={multiUrlInput}
+                        onChange={(e) => setMultiUrlInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            handleAddUrlToMultiple();
+                          }
+                        }}
+                        placeholder="Paste image URL (https://... or blob:...)"
+                        className="flex-1 px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-indigo-400"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleAddUrlToMultiple}
+                        disabled={multiUrlLoading || !multiUrlInput.trim()}
+                        className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-colors shrink-0 shadow-2xs"
+                      >
+                        {multiUrlLoading ? <Loader2 size={13} className="animate-spin" /> : <LinkIcon size={13} />}
+                        <span>{multiUrlLoading ? "Loading..." : "Add to Queue"}</span>
+                      </button>
                     </div>
                   </div>
 

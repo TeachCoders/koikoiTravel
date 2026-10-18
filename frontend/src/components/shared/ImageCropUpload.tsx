@@ -488,10 +488,12 @@ export default function ImageCropUpload({
   }, [targetWidth, targetHeight, outputFormat, quality, onFileSelect, getContainDimensions, customFileName]);
 
   const handleClear = () => { if (preview) URL.revokeObjectURL(preview); setPreview(null); setSrc(null); setCropOpen(false); setUrlInput(""); setCustomFileName(""); onClear?.(); };
-  const handleReCrop = () => { if (preview) { URL.revokeObjectURL(preview); setPreview(null); } fileInputRef.current?.click(); };
+  const handleEditCurrentCrop = () => { if (preview) { setSrc(preview); setCropOpen(true); } };
+  const handleOpenPasteUrl = () => { setPreview(null); setMode("url"); };
+  const handleChangeFile = () => { fileInputRef.current?.click(); };
 
   const [isDragOver, setIsDragOver] = useState(false);
-const [outputSize, setOutputSize] = useState<null | { w: number; h: number }>(null);
+  const [outputSize, setOutputSize] = useState<null | { w: number; h: number }>(null);
   const handleDrop = (e: React.DragEvent) => { e.preventDefault(); setIsDragOver(false); const f = e.dataTransfer.files?.[0]; if (f) handleFile(f); };
 
   const getCursorForEdge = (edge: ResizeEdge): string => {
@@ -509,21 +511,52 @@ const [outputSize, setOutputSize] = useState<null | { w: number; h: number }>(nu
         onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }} />
 
       {preview && !cropOpen && (
-        <div className="relative group rounded-xl overflow-hidden" style={{ boxShadow: shadow ? "0 8px 30px rgba(0,0,0,0.12)" : undefined }}>
-          <img src={preview} alt="Uploaded" className="w-full object-cover" style={{ borderRadius }} />
-          {outputSize && (
-            <div className="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
-              {outputSize.w}×{outputSize.h}px
-            </div>
-          )}
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
-            <button type="button" onClick={handleReCrop}
-              className="bg-white/90 hover:bg-white text-slate-700 rounded-lg px-3 py-2 text-xs font-semibold flex items-center gap-1 shadow-lg">
-              <RotateCcw size={14} /> Re-crop
+        <div className="space-y-2.5">
+          <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-900" style={{ boxShadow: shadow ? "0 8px 30px rgba(0,0,0,0.12)" : undefined }}>
+            <img src={preview} alt="Uploaded" className="w-full object-cover max-h-56" style={{ borderRadius }} />
+            {outputSize && (
+              <div className="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                {outputSize.w}×{outputSize.h}px
+              </div>
+            )}
+          </div>
+
+          {/* Visible Action Bar */}
+          <div className="flex flex-wrap items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-xl">
+            <button
+              type="button"
+              onClick={handleEditCurrentCrop}
+              className="px-3 py-1.5 bg-white hover:bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors border border-slate-200 hover:border-indigo-200 shadow-2xs"
+            >
+              <Crop size={13} />
+              <span>Crop / Resize</span>
             </button>
-            <button type="button" onClick={handleClear}
-              className="bg-red-500/90 hover:bg-red-500 text-white rounded-lg px-3 py-2 text-xs font-semibold flex items-center gap-1 shadow-lg">
-              <X size={14} /> Remove
+
+            <button
+              type="button"
+              onClick={handleChangeFile}
+              className="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors border border-slate-200 shadow-2xs"
+            >
+              <Upload size={13} />
+              <span>Change File</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleOpenPasteUrl}
+              className="px-3 py-1.5 bg-white hover:bg-amber-50 text-amber-800 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors border border-slate-200 hover:border-amber-200 shadow-2xs"
+            >
+              <Link size={13} />
+              <span>Paste New URL</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleClear}
+              className="px-3 py-1.5 bg-white hover:bg-rose-50 text-rose-600 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors border border-slate-200 hover:border-rose-200 shadow-2xs ml-auto"
+            >
+              <X size={13} />
+              <span>Remove</span>
             </button>
           </div>
         </div>
