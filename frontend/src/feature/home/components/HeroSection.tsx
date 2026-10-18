@@ -4,7 +4,6 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
-import HeroSearchBar from "@/components/shared/HeroSearchBar";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import { useHeroBanners } from "@/feature/heroBanner/api";
 import type { HeroFullBanner } from "@/feature/heroBanner/type";
@@ -219,8 +218,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         </div>
 
         <div className="mt-4 sm:mt-5">
-          <HeroSearchBar />
-
           {/* Quick Trending Destination Chips */}
           <div className="mt-3 sm:mt-3.5 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
             <span className="text-white/80 text-[11px] sm:text-xs font-semibold uppercase tracking-wider select-none mr-0.5">

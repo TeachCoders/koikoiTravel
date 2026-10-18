@@ -18,6 +18,7 @@ import { QuoteModal } from "./QuoteModal";
 import { RequestCallbackModal } from "./RequestCallbackModal";
 import { DestinationTreeCountry, DestinationTreeState } from "./DestinationMegaMenu";
 import TopBar from "./TopBar";
+import HeaderSearchBar from "./HeaderSearchBar";
 
 const DEFAULT_DESTINATION_LINKS: NavChild[] = [
   { href: "/tour-packages/india", label: "India" },
@@ -654,7 +655,9 @@ export const Header: React.FC = () => {
           isScrolled ? "py-1.5 sm:py-2" : "py-2 sm:py-2.5"
         }`}
       >
-        <div className="flex items-stretch justify-between gap-4">
+        {/* ===== ROW 1: Logo | Search Bar | Quick Actions ===== */}
+        <div className="flex items-center justify-between gap-3 sm:gap-4 md:gap-6">
+          {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-2 group shrink-0">
             <Image
               src="/logo-with-name.png"
@@ -662,12 +665,74 @@ export const Header: React.FC = () => {
               width={180}
               height={56}
               priority
-              className="h-[48px] sm:h-[52px] md:h-[56px] w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+              className="h-[42px] sm:h-[48px] md:h-[52px] w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
             />
           </Link>
 
+          {/* Desktop Search Bar (Centered, matching user screenshot) */}
           {!isOfferPage && (
-            <nav className="hidden md:flex items-stretch gap-0.5">
+            <div className="hidden md:flex flex-1 justify-center px-2 lg:px-4 max-w-2xl">
+              <HeaderSearchBar />
+            </div>
+          )}
+
+          {/* Right Action Buttons */}
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+            {/* WhatsApp Quick Chat */}
+            <a
+              href={`https://wa.me/919136739178?text=${encodeURIComponent(
+                "Hi KoiKoi Travel, I would like to plan a custom India tour package."
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Chat on WhatsApp"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-full bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200/80 text-xs sm:text-[13px] font-semibold transition-all hover:scale-105 active:scale-95 shadow-xs"
+            >
+              <WhatsAppIcon className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span className="hidden xl:inline">WhatsApp</span>
+            </a>
+
+            {/* Build My Trip CTA Button */}
+            <QuoteModal>
+              <button
+                type="button"
+                className="btn-primary px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold tracking-wide flex items-center gap-1.5 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+              >
+                <span>Build My Trip</span>
+              </button>
+            </QuoteModal>
+
+            {/* Mobile Menu Hamburger Toggle */}
+            {!isOfferPage && (
+              <div className="flex md:hidden items-center ml-0.5">
+                <button
+                  onClick={() => (isMobileMenuOpen ? handleMobileClose() : handleMobileOpen())}
+                  aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                  aria-expanded={isMobileMenuOpen}
+                  className="p-2 rounded-lg text-[#555] hover:bg-[#f5f5f5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1C1C1C]/20"
+                >
+                  {isMobileMenuOpen ? (
+                    <X className="w-6 h-6" />
+                  ) : (
+                    <Menu className="w-6 h-6" />
+                  )}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile Search Bar (Directly below logo on mobile devices) */}
+        {!isOfferPage && (
+          <div className="mt-2.5 pb-1 md:hidden">
+            <HeaderSearchBar />
+          </div>
+        )}
+
+        {/* ===== ROW 2: Desktop Navigation Bar with MegaMenu & Dropdowns ===== */}
+        {!isOfferPage && (
+          <div className="hidden md:flex items-center justify-center border-t border-slate-100/90 mt-2 pt-1.5">
+            <nav className="flex items-center gap-0.5 lg:gap-1.5">
               {navLinks.map((link) => (
                 <div
                   key={link.href}
@@ -680,7 +745,7 @@ export const Header: React.FC = () => {
                       <Link
                         href={link.directHref}
                         onClick={() => setOpenDesktopDropdown(null)}
-                        className={`relative px-3.5 py-2.5 text-[15px] lg:text-[15.5px] font-medium tracking-normal rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                        className={`relative px-3 py-1.5 text-[14px] lg:text-[14.5px] font-medium tracking-normal rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
                           ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
                           : "text-[#444]"
                           }`}
@@ -695,13 +760,13 @@ export const Header: React.FC = () => {
                             openDesktopDropdown === link.href ? null : link.href
                           )
                         }
-                        className={`pr-3 pl-0.5 py-2.5 cursor-pointer transition-colors duration-300 ${openDesktopDropdown === link.href
+                        className={`pr-2.5 pl-0.5 py-1.5 cursor-pointer transition-colors duration-300 ${openDesktopDropdown === link.href
                           ? "text-[#2E8B8B]"
                           : "text-[#888] hover:text-[#2E8B8B]"
                           }`}
                       >
                         <ChevronDown
-                          className={`w-4 h-4 transition-transform duration-300 ${openDesktopDropdown === link.href ? "rotate-180" : ""
+                          className={`w-3.5 h-3.5 transition-transform duration-300 ${openDesktopDropdown === link.href ? "rotate-180" : ""
                             }`}
                         />
                       </button>
@@ -714,21 +779,21 @@ export const Header: React.FC = () => {
                           openDesktopDropdown === link.href ? null : link.href
                         )
                       }
-                      className={`relative px-3.5 py-2.5 text-[15px] lg:text-[15.5px] font-medium tracking-normal rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
+                      className={`relative px-3 py-1.5 text-[14px] lg:text-[14.5px] font-medium tracking-normal rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
                         ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
                         : "text-[#444]"
                         }`}
                     >
                       <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
                       <ChevronDown
-                        className={`w-4 h-4 relative z-10 transition-transform duration-300 ${openDesktopDropdown === link.href ? "rotate-180" : ""
+                        className={`w-3.5 h-3.5 relative z-10 transition-transform duration-300 ${openDesktopDropdown === link.href ? "rotate-180" : ""
                           }`}
                       />
                     </button>
                   ) : (
                     <Link
                       href={link.href}
-                      className={`relative px-3.5 py-2.5 text-[15px] lg:text-[15.5px] font-medium tracking-normal rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                      className={`relative px-3 py-1.5 text-[14px] lg:text-[14.5px] font-medium tracking-normal rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
                         ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
                         : "text-[#444]"
                         }`}
@@ -797,36 +862,8 @@ export const Header: React.FC = () => {
                 </div>
               ))}
             </nav>
-          )}
-
-          <div className="hidden lg:flex items-center gap-3">
-            <QuoteModal>
-              <button
-                type="button"
-                className="btn-primary px-5 py-2.5 text-sm font-semibold tracking-wide flex items-center gap-1.5 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
-              >
-                <span>Build My Trip</span>
-              </button>
-            </QuoteModal>
           </div>
-
-          {!isOfferPage && (
-            <div className="flex md:hidden items-center">
-              <button
-                onClick={() => (isMobileMenuOpen ? handleMobileClose() : handleMobileOpen())}
-                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-                aria-expanded={isMobileMenuOpen}
-                className="p-2 rounded-lg text-[#555] hover:bg-[#f5f5f5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1C1C1C]/20"
-              >
-                {isMobileMenuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
-              </button>
-            </div>
-          )}
-        </div>
+        )}
       </div>
 
       {/* Mobile drawer navigation (slide-in, drill-down) */}
