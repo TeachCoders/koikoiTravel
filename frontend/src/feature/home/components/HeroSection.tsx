@@ -91,7 +91,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
             fetchPriority="high"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
             className="object-cover object-center"
-            quality={80}
+            quality={90}
           />
         </div>
 
@@ -113,14 +113,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
                 loading="lazy"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
                 className="object-cover object-center"
-                quality={80}
+                quality={90}
               />
             </div>
           );
         })}
 
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/35 z-10 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20 z-10 pointer-events-none" />
+        {/* Subtle soft gradient overlay so image colors, quality and sharpness shine through */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent z-10 pointer-events-none" />
       </div>
 
       {/* Navigation arrows (desktop) - only when multiple slides */}
