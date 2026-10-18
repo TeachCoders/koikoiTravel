@@ -651,7 +651,7 @@ export const Header: React.FC = () => {
           }`}
       >
         <div
-          className={`max-w-[1680px] mx-auto px-2.5 sm:px-4 lg:px-6 xl:px-8 transition-[padding] duration-200 ${
+          className={`max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 transition-[padding] duration-200 ${
             isScrolled ? "py-2 sm:py-2.5" : "py-3 sm:py-3.5"
           }`}
         >
