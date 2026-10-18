@@ -343,8 +343,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={state.title} />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/50 to-slate-950/40 z-10 pointer-events-none" />
-            <div className="absolute inset-0 bg-black/20 z-10 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
           </>
         ) : (
           <div className="absolute inset-0">
@@ -356,7 +355,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               className="object-cover object-center"
               theme="dark"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/55 to-slate-950/40 z-10 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
           </div>
         )}
 

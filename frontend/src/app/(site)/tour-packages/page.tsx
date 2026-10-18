@@ -77,7 +77,7 @@ export default async function TourPackagesPage({
 
       {/* ===== HERO BANNER ===== */}
       <section className="relative bg-slate-900 py-12 md:py-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent pointer-events-none" />
         <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 text-center flex flex-col items-center">
           <span className="font-luxury font-black inline-flex items-center gap-1.5 text-[11px] sm:text-xs uppercase tracking-widest text-[#F8904D] mb-3">
             <Sparkles size={14} /> Tailor-Made Holiday Packages

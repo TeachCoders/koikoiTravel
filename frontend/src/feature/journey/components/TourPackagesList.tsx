@@ -163,7 +163,7 @@ export default function TourPackagesList({
             <img src="/logo-with-name.png" alt="KoiKoi Travel" className="w-64 h-auto opacity-10 object-contain grayscale" />
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 pointer-events-none" />
         <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-end pb-10">
           <nav className="flex flex-wrap items-center gap-1.5 text-white/80 text-sm pb-3 font-medium">
             <Link href="/" className="hover:text-white transition-colors">

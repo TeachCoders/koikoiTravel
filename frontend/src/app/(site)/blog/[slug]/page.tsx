@@ -158,9 +158,8 @@ export default async function BlogPostPage({ params }: Props) {
           className="object-cover object-center"
           theme="dark"
         />
-        {/* Strong dark shade over image so text stays readable on any image */}
-        <div className="absolute inset-0 bg-slate-950/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-slate-950/10" />
+        {/* Soft gradient overlay so travel image colors shine through while keeping text readable */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-black/10 pointer-events-none" />
 
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 text-center py-8">
           {(post.categories?.length ? post.categories : post.category ? [post.category] : []).map((cat) => (

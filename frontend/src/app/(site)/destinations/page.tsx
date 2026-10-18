@@ -310,7 +310,7 @@ export default async function DestinationsPage() {
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-[#1c4e4e] via-[#2E8B8B] to-[#F8904D]" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/25 to-black/10 pointer-events-none" />
         </div>
         <div className="relative max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-20 md:py-28">
           <div className="max-w-3xl">
