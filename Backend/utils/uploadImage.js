@@ -173,6 +173,74 @@ export const uploadImage = (folderName = "images") => {
         });
       };
     },
+    array: (fieldName, maxCount = 30) => {
+      return async (req, res, next) => {
+        upload.array(fieldName, maxCount)(req, res, async (err) => {
+          if (err) return next(err);
+          if (!req.files || !req.files.length) return next();
+
+          for (const file of req.files) {
+            if (PROCESSABLE_MIMETYPES.includes(file.mimetype)) {
+              try {
+                const webpBuffer = await sharp(file.buffer || file.path)
+                  .resize({ width: 1920, withoutEnlargement: true })
+                  .webp({ quality: 80 })
+                  .toBuffer();
+
+                const webpPath = file.path.replace(/\.[^.]+$/, ".webp");
+                fs.writeFileSync(webpPath, webpBuffer);
+
+                if (file.path !== webpPath && fs.existsSync(file.path)) {
+                  fs.unlinkSync(file.path);
+                }
+
+                file.path = webpPath;
+                file.filename = path.basename(webpPath);
+                file.mimetype = "image/webp";
+                file.size = webpBuffer.length;
+              } catch (convErr) {
+                logger.error("WebP conversion failed for", { filename: file.filename, message: convErr.message });
+              }
+            }
+          }
+          next();
+        });
+      };
+    },
+    any: () => {
+      return async (req, res, next) => {
+        upload.any()(req, res, async (err) => {
+          if (err) return next(err);
+          if (!req.files || !req.files.length) return next();
+
+          for (const file of req.files) {
+            if (PROCESSABLE_MIMETYPES.includes(file.mimetype)) {
+              try {
+                const webpBuffer = await sharp(file.buffer || file.path)
+                  .resize({ width: 1920, withoutEnlargement: true })
+                  .webp({ quality: 80 })
+                  .toBuffer();
+
+                const webpPath = file.path.replace(/\.[^.]+$/, ".webp");
+                fs.writeFileSync(webpPath, webpBuffer);
+
+                if (file.path !== webpPath && fs.existsSync(file.path)) {
+                  fs.unlinkSync(file.path);
+                }
+
+                file.path = webpPath;
+                file.filename = path.basename(webpPath);
+                file.mimetype = "image/webp";
+                file.size = webpBuffer.length;
+              } catch (convErr) {
+                logger.error("WebP conversion failed for", { filename: file.filename, message: convErr.message });
+              }
+            }
+          }
+          next();
+        });
+      };
+    },
   };
 };
 
