@@ -668,149 +668,150 @@ export const Header: React.FC = () => {
             />
           </Link>
 
-          {/* 2. Compact Search Bar (Next to Logo) */}
+          {/* 2. Navigation Links (Centered) */}
           {!isOfferPage && (
-            <div className="hidden md:flex flex-1 max-w-[260px] lg:max-w-[320px] xl:max-w-[380px]">
-              <HeaderSearchBar />
-            </div>
-          )}
-
-          {/* 3. Navigation Links + Create My Trip Button */}
-          {!isOfferPage && (
-            <div className="hidden md:flex items-center gap-2 lg:gap-3 xl:gap-4 shrink-0">
-              <nav className="flex items-center gap-0.5 lg:gap-1">
-                {navLinks.map((link) => (
-                  <div
-                    key={link.href}
-                    className="relative flex items-center h-full"
-                    onMouseEnter={() => (link.children || link.isDestinationMega) ? (clearMegaMenuCloseTimer(), setOpenDesktopDropdown(link.href)) : null}
-                    onMouseLeave={() => (link.children || link.isDestinationMega) ? scheduleMegaMenuClose() : setOpenDesktopDropdown(null)}
-                  >
-                    {link.directHref ? (
-                      <div className="flex items-center h-full">
-                        <Link
-                          href={link.directHref}
-                          onClick={() => setOpenDesktopDropdown(null)}
-                          className={`relative px-2.5 lg:px-3 py-1.5 text-[13.5px] lg:text-[14px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
-                            ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
-                            : "text-[#333]"
-                            }`}
-                        >
-                          <span className="relative z-10">{link.label}</span>
-                        </Link>
-                        <button
-                          type="button"
-                          aria-label={`Open ${link.label} menu`}
-                          onClick={() =>
-                            setOpenDesktopDropdown(
-                              openDesktopDropdown === link.href ? null : link.href
-                            )
-                          }
-                          className={`pr-2 pl-0.5 py-1.5 cursor-pointer transition-colors duration-200 ${openDesktopDropdown === link.href
-                            ? "text-[#2E8B8B]"
-                            : "text-[#888] hover:text-[#2E8B8B]"
-                            }`}
-                        >
-                          <ChevronDown
-                            className={`w-3.5 h-3.5 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
-                              }`}
-                          />
-                        </button>
-                      </div>
-                    ) : link.children || link.isDestinationMega ? (
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setOpenDesktopDropdown(
-                            openDesktopDropdown === link.href ? null : link.href
-                          )
-                        }
-                        className={`relative px-2.5 lg:px-3 py-1.5 text-[13.5px] lg:text-[14px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
-                          ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
-                          : "text-[#333]"
-                          }`}
-                      >
-                        <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
-                        <ChevronDown
-                          className={`w-3.5 h-3.5 relative z-10 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
-                            }`}
-                        />
-                      </button>
-                    ) : (
+            <nav className="hidden md:flex items-center justify-center gap-0.5 lg:gap-1 flex-1 mx-2 lg:mx-4">
+              {navLinks.map((link) => (
+                <div
+                  key={link.href}
+                  className="relative flex items-center h-full"
+                  onMouseEnter={() => (link.children || link.isDestinationMega) ? (clearMegaMenuCloseTimer(), setOpenDesktopDropdown(link.href)) : null}
+                  onMouseLeave={() => (link.children || link.isDestinationMega) ? scheduleMegaMenuClose() : setOpenDesktopDropdown(null)}
+                >
+                  {link.directHref ? (
+                    <div className="flex items-center h-full">
                       <Link
-                        href={link.href}
+                        href={link.directHref}
+                        onClick={() => setOpenDesktopDropdown(null)}
                         className={`relative px-2.5 lg:px-3 py-1.5 text-[13.5px] lg:text-[14px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
                           ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
                           : "text-[#333]"
                           }`}
                       >
-                        <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
+                        <span className="relative z-10">{link.label}</span>
                       </Link>
-                    )}
-
-                    {link.children && link.dropdownStyle === "mega" && (
-                      <div
-                        onMouseEnter={() => setOpenDesktopDropdown(link.href)}
-                        onMouseLeave={() => setOpenDesktopDropdown(null)}
-                        className={`absolute right-0 top-full pt-2 transition-opacity duration-200 ${openDesktopDropdown === link.href
-                          ? "opacity-100 visible pointer-events-auto"
-                          : "opacity-0 invisible pointer-events-none"
+                      <button
+                        type="button"
+                        aria-label={`Open ${link.label} menu`}
+                        onClick={() =>
+                          setOpenDesktopDropdown(
+                            openDesktopDropdown === link.href ? null : link.href
+                          )
+                        }
+                        className={`pr-2 pl-0.5 py-1.5 cursor-pointer transition-colors duration-200 ${openDesktopDropdown === link.href
+                          ? "text-[#2E8B8B]"
+                          : "text-[#888] hover:text-[#2E8B8B]"
                           }`}
                       >
+                        <ChevronDown
+                          className={`w-3.5 h-3.5 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
+                            }`}
+                        />
+                      </button>
+                    </div>
+                  ) : link.children || link.isDestinationMega ? (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setOpenDesktopDropdown(
+                          openDesktopDropdown === link.href ? null : link.href
+                        )
+                      }
+                      className={`relative px-2.5 lg:px-3 py-1.5 text-[13.5px] lg:text-[14px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
+                        ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
+                        : "text-[#333]"
+                        }`}
+                    >
+                      <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 relative z-10 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
+                          }`}
+                      />
+                    </button>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className={`relative px-2.5 lg:px-3 py-1.5 text-[13.5px] lg:text-[14px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                        ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
+                        : "text-[#333]"
+                        }`}
+                    >
+                      <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
+                    </Link>
+                  )}
+
+                  {link.children && link.dropdownStyle === "mega" && (
+                    <div
+                      onMouseEnter={() => setOpenDesktopDropdown(link.href)}
+                      onMouseLeave={() => setOpenDesktopDropdown(null)}
+                      className={`absolute left-1/2 -translate-x-1/2 top-full pt-2 transition-opacity duration-200 ${openDesktopDropdown === link.href
+                        ? "opacity-100 visible pointer-events-auto"
+                        : "opacity-0 invisible pointer-events-none"
+                        }`}
+                    >
+                      <div
+                        className={`bg-white rounded-2xl border border-slate-200/90 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] p-5 ${link.dropdownColumns === 1 ? "w-[280px]" : "w-[720px] max-w-[85vw]"
+                          }`}
+                      >
+                        <div className="flex items-center justify-between mb-2.5">
+                          <span className="text-[16px] font-bold text-[#2E8B8B] tracking-tight">
+                            {link.dropdownTitle ?? "Popular Tour Packages"}
+                          </span>
+                        </div>
                         <div
-                          className={`bg-white rounded-2xl border border-slate-200/90 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] p-5 ${link.dropdownColumns === 1 ? "w-[280px]" : "w-[720px] max-w-[85vw]"
+                          className={`grid gap-x-6 gap-y-1 ${link.dropdownColumns === 1
+                            ? "grid-cols-1"
+                            : link.dropdownColumns === 2
+                              ? "grid-cols-2"
+                              : "grid-cols-3"
                             }`}
                         >
-                          <div className="flex items-center justify-between mb-2.5">
-                            <span className="text-[16px] font-bold text-[#2E8B8B] tracking-tight">
-                              {link.dropdownTitle ?? "Popular Tour Packages"}
-                            </span>
-                          </div>
-                          <div
-                            className={`grid gap-x-6 gap-y-1 ${link.dropdownColumns === 1
-                              ? "grid-cols-1"
-                              : link.dropdownColumns === 2
-                                ? "grid-cols-2"
-                                : "grid-cols-3"
-                              }`}
-                          >
-                            {link.children.map((child) => (
-                              <Link
-                                key={child.href}
-                                href={child.href}
-                                onClick={() => setOpenDesktopDropdown(null)}
-                                className="px-2.5 py-1.5 -mx-2.5 rounded-lg text-[14px] text-slate-700 hover:text-[#2E8B8B] hover:bg-slate-50 font-medium transition-colors duration-150 truncate block"
-                              >
-                                <span suppressHydrationWarning>{child.label}</span>
-                              </Link>
-                            ))}
-                          </div>
-                          {link.seeAllHref && (
-                            <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between">
-                              <span className="text-[13px] text-slate-500 font-medium">
-                                {link.dropdownSubtext ?? "Explore all destinations worldwide"}
-                              </span>
-                              <Link
-                                href={link.seeAllHref}
-                                onClick={() => setOpenDesktopDropdown(null)}
-                                className="text-[14px] font-bold text-[#F8904D] hover:text-[#e07a38] transition-colors flex items-center gap-1"
-                              >
-                                <span>See All</span>
-                                <span aria-hidden>→</span>
-                              </Link>
-                            </div>
-                          )}
+                          {link.children.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              onClick={() => setOpenDesktopDropdown(null)}
+                              className="px-2.5 py-1.5 -mx-2.5 rounded-lg text-[14px] text-slate-700 hover:text-[#2E8B8B] hover:bg-slate-50 font-medium transition-colors duration-150 truncate block"
+                            >
+                              <span suppressHydrationWarning>{child.label}</span>
+                            </Link>
+                          ))}
                         </div>
+                        {link.seeAllHref && (
+                          <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between">
+                            <span className="text-[13px] text-slate-500 font-medium">
+                              {link.dropdownSubtext ?? "Explore all destinations worldwide"}
+                            </span>
+                            <Link
+                              href={link.seeAllHref}
+                              onClick={() => setOpenDesktopDropdown(null)}
+                              className="text-[14px] font-bold text-[#F8904D] hover:text-[#e07a38] transition-colors flex items-center gap-1"
+                            >
+                              <span>See All</span>
+                              <span aria-hidden>→</span>
+                            </Link>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                ))}
-              </nav>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </nav>
+          )}
 
-              {/* Language Selector */}
+          {/* 3. Right Controls: Search Bar -> Language Selector -> Create My Trip Button */}
+          {!isOfferPage && (
+            <div className="hidden md:flex items-center gap-2 lg:gap-3 shrink-0">
+              {/* Search Bar (Next to Language Selector) */}
+              <div className="w-[160px] lg:w-[210px] xl:w-[260px]">
+                <HeaderSearchBar />
+              </div>
+
+              {/* Language Selector (Next to Create My Trip) */}
               <LanguageSelector />
 
-              {/* Create My Trip CTA Button (Right next to Nav links) */}
+              {/* Create My Trip CTA Button */}
               <QuoteModal>
                 <button
                   type="button"

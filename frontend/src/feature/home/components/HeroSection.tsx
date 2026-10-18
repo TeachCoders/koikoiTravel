@@ -175,8 +175,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         </div>
 
         {/* Main Heading */}
-        <h1 className="font-luxury text-white text-2xl sm:text-3xl md:text-4xl lg:text-[44px] font-black tracking-tight leading-tight max-w-3xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] block">
-          Your Journey, Your Trusted <span className="text-[#F8904D]">Customize Tour Operator</span> — KoiKoi Travel
+        <h1 className="font-luxury text-white text-2xl sm:text-3xl md:text-4xl lg:text-[44px] font-black tracking-tight leading-tight max-w-4xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
+          <span>Your Journey, Your Trusted</span>
+          <span className="block mt-1 sm:mt-1.5 sm:whitespace-nowrap">
+            <span className="text-[#F8904D]">Customize Tour Operator</span> — KoiKoi Travel
+          </span>
         </h1>
 
         {/* Short Subtitle */}
@@ -188,7 +191,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-start gap-2.5 sm:gap-3.5">
           <Link
             href="/destinations"
-            className="px-5 sm:px-6 py-2.5 rounded-full bg-[#2E8B8B] hover:bg-[#257272] text-white font-semibold text-xs sm:text-sm shadow-lg shadow-teal-950/40 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
+            className="px-5 sm:px-6 py-2.5 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-semibold text-xs sm:text-sm shadow-lg shadow-orange-950/30 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
           >
             <span>Explore Destinations</span>
             <ArrowRight className="w-4 h-4" />
