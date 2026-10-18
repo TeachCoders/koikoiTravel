@@ -487,5 +487,47 @@ export const BLOG_FAQS: Record<string, FaqItem[]> = {
       answer: "KoiKoi Travel offers 100% custom flexible itineraries, transparent all-inclusive quotes with no hidden fees, verified private chauffeurs who stay with you throughout the journey, and 24/7 dedicated trip support.",
     },
   ],
+  "complete-honeymoon-guide-to-kashmir": [
+    {
+      question: "How many days are ideal for a Kashmir honeymoon trip?",
+      answer: "A 5-night, 6-day or 6-night, 7-day trip is ideal for couples. This allows 2 nights in Srinagar (including a traditional heritage houseboat on Dal Lake), 1-2 nights in the snowy pine valleys of Gulmarg, and 2 nights relaxing alongside the Lidder River in Pahalgam without feeling rushed.",
+    },
+    {
+      question: "Which season is best for a honeymoon in Kashmir: Summer or Winter?",
+      answer: "Both offer magical romantic experiences. April to October offers lush green valleys, blooming tulip and Mughal gardens, floating lotus flowers on Dal Lake, and pleasant 15°C–25°C weather. December to February brings heavy snowfall, frozen lakes, roaring fire bukharis, and world-class skiing and Gondola cable car rides in Gulmarg.",
+    },
+    {
+      question: "Is Kashmir safe for honeymoon couples and tourists?",
+      answer: "Yes, Kashmir is very welcoming and hospitable for tourists and newlyweds. Millions of domestic and international travelers visit every year without issue. Booking a verified tour package with a private chauffeur and recognized hotels ensures a seamless, worry-free vacation.",
+    },
+    {
+      question: "What is the expected budget for a 6-day Kashmir honeymoon package?",
+      answer: "A comfortable mid-range honeymoon package with verified 3/4-star boutique hotels, one night in a luxury Dal Lake houseboat, private cab transfers, and breakfast & dinner costs around ₹35,000 to ₹55,000 per couple. Luxury packages featuring high-end pine-wood chalets, five-star resorts (like Khyber in Gulmarg), and premium shikaras range from ₹75,000 to ₹1,40,000+ per couple.",
+    },
+    {
+      question: "Is staying in a Dal Lake houseboat recommended for couples, and for how long?",
+      answer: "Yes, a 1-night stay on a heritage Kashmiri houseboat (preferably on Dal Lake or quieter Nigeen Lake) is a signature romantic experience. Handcrafted deodar woodwork, private cedar-wood balconies, and candle-lit Wazwan dinners make it unforgettable. 1 night is usually enough before moving to resorts for better central heating and amenities.",
+    },
+    {
+      question: "How and when should we book the Gulmarg Gondola tickets?",
+      answer: "Gulmarg Gondola tickets (Phase 1 to Kongdoori and Phase 2 to Apharwat Peak) must be booked online well in advance via the official Jammu & Kashmir Cable Car Corporation website (jammukashmircablecar.com). In peak winter and spring seasons, Phase 2 tickets often sell out weeks ahead.",
+    },
+    {
+      question: "How do local union taxis work in Gulmarg and Pahalgam?",
+      answer: "Under local tourist association rules, outside tourist vehicles (including your Srinagar cab) are only permitted to drop you at the main hotel or taxi stand in Gulmarg and Pahalgam. For internal sightseeing (such as Betaab Valley, Aru Valley, and Chandanwari in Pahalgam, or Tangmarg to Gulmarg snow roads in heavy winter), you need to hire authorized local union 4x4 cabs or ponies.",
+    },
+    {
+      question: "What are the most romantic things to do on a Kashmir honeymoon?",
+      answer: "Unmissable romantic moments include: a sunset Shikara ride across Dal Lake with flower vendors, sipping steaming hot Kashmiri saffron Kahwa together, taking the world's highest cable car to Apharwat Peak in Gulmarg, taking a riverside couple walk along the Lidder River in Pahalgam, and posing in traditional Kashmiri Pheran attire.",
+    },
+    {
+      question: "What clothes and footwear should honeymooners pack for Kashmir?",
+      answer: "For summer/spring (April–September), pack light woollens, cardigans, and comfortable walking shoes. For winter (November–March), heavy thermal innerwear, fleece jackets, waterproof down coats, snow boots or sturdy shoes with good traction, gloves, and beanies are essential. Snow boots and long pherans can also be rented locally in Tangmarg.",
+    },
+    {
+      question: "What authentic Kashmiri food and souvenirs should couples buy?",
+      answer: "Couples must savor a traditional Wazwan meal (featuring Rogan Josh, Rista, and Gushtaba) or vegetarian Kashmiri Dum Aloo and Nadru Yakhni, followed by aromatic Saffron Kahwa. For souvenirs, look for certified Kashmiri GI-tagged Pashmina shawls, pure saffron from Pampore, walnut-wood carved keepsakes, hand-knotted silk carpets, and fresh Kashmiri almonds and walnuts.",
+    },
+  ],
 };
 
