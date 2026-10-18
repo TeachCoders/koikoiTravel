@@ -98,10 +98,13 @@ export default function ImageCropUpload({
 
   const handleFile = useCallback((file: File) => {
     if (!file.type.startsWith("image/")) return;
+    onFileSelect(file);
+    const objUrl = URL.createObjectURL(file);
+    setPreview(objUrl);
     const reader = new FileReader();
     reader.onload = (e) => { setSrc(e.target?.result as string); setCropOpen(true); };
     reader.readAsDataURL(file);
-  }, []);
+  }, [onFileSelect]);
 
   const handleUrlLoad = async () => {
     const trimmed = urlInput.trim();
@@ -111,7 +114,14 @@ export default function ImageCropUpload({
     try {
       if (trimmed.startsWith("blob:") || trimmed.startsWith("data:")) {
         // Direct client-side loading for blob/data URLs without proxy
+        try {
+          const resp = await fetch(trimmed);
+          const blob = await resp.blob();
+          const file = new File([blob], "pasted-banner.webp", { type: blob.type || "image/webp" });
+          onFileSelect(file);
+        } catch {}
         setSrc(trimmed);
+        setPreview(trimmed);
         setCropOpen(true);
         setUrlLoading(false);
         return;
@@ -123,7 +133,10 @@ export default function ImageCropUpload({
         setUrlError("URL does not point to an image");
         return;
       }
+      const file = new File([blob], "url-banner.webp", { type: mimeType });
+      onFileSelect(file);
       const objectUrl = URL.createObjectURL(blob);
+      setPreview(objectUrl);
       setSrc(objectUrl);
       setCropOpen(true);
     } catch (err: any) {
@@ -131,8 +144,15 @@ export default function ImageCropUpload({
       try {
         const testImg = new Image();
         testImg.crossOrigin = "anonymous";
-        testImg.onload = () => {
+        testImg.onload = async () => {
+          try {
+            const resp = await fetch(trimmed);
+            const blob = await resp.blob();
+            const file = new File([blob], "url-banner.webp", { type: blob.type || "image/webp" });
+            onFileSelect(file);
+          } catch {}
           setSrc(trimmed);
+          setPreview(trimmed);
           setCropOpen(true);
           setUrlLoading(false);
         };
