@@ -78,7 +78,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
   const activeSlide = slides[safeCurrent];
 
   return (
-    <section className="relative w-full min-h-[420px] sm:min-h-[480px] md:min-h-[560px] py-10 sm:py-14 flex items-center justify-center bg-slate-900 z-20">
+    <section className="relative w-full min-h-[290px] sm:min-h-[380px] md:min-h-[520px] py-6 sm:py-10 md:py-14 flex items-center justify-center bg-slate-900 z-20">
       {/* Background slider with permanent Slide 0 for rock-solid LCP performance */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Base Slide 0: Always in DOM at z-0 with full opacity for instant LCP detection */}
