@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import Image from "next/image";
 import {
   Plus,
@@ -21,6 +21,7 @@ import ImageCropUpload from "@/components/shared/ImageCropUpload";
 import {
   useAllHeroBanners,
   useCreateHeroBanner,
+  useUpdateHeroBanner,
   useDeleteHeroBanner,
 } from "@/feature/heroBanner/api";
 import { useGetCountries } from "@/feature/country/api/useCountry";
@@ -42,9 +43,18 @@ const CATEGORIES: { label: string; value: HeroBannerEntityType }[] = [
   { label: "Destinations", value: "Destinations" },
 ];
 
+export interface MultipleUploadItem {
+  id: string;
+  file: File;
+  preview: string;
+  name: string;
+  size: string;
+}
+
 export default function HeroBannersAdminPage() {
   const { data, isLoading } = useAllHeroBanners();
   const createMutation = useCreateHeroBanner();
+  const updateMutation = useUpdateHeroBanner();
   const deleteMutation = useDeleteHeroBanner();
 
   // Queries for dynamic dropdowns
@@ -56,6 +66,12 @@ export default function HeroBannersAdminPage() {
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>("ALL");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
+
+  // Edit vs Add & Single vs Multiple
+  const [editingBanner, setEditingBanner] = useState<HeroFullBanner | null>(null);
+  const [uploadMode, setUploadMode] = useState<"single" | "multiple">("single");
+  const [multipleFiles, setMultipleFiles] = useState<MultipleUploadItem[]>([]);
+  const multiFileInputRef = useRef<HTMLInputElement>(null);
 
   // Form states
   const [formCategory, setFormCategory] = useState<HeroBannerEntityType>("Home");
@@ -77,8 +93,53 @@ export default function HeroBannersAdminPage() {
     return allBanners.filter((b) => b.entityType === selectedCategoryFilter);
   }, [allBanners, selectedCategoryFilter]);
 
+  const clearMultipleFiles = () => {
+    multipleFiles.forEach((item) => {
+      if (item.preview && item.preview.startsWith("blob:")) {
+        URL.revokeObjectURL(item.preview);
+      }
+    });
+    setMultipleFiles([]);
+  };
+
+  const handleMultipleFilesSelect = (fileList: FileList | File[]) => {
+    const arr = Array.from(fileList);
+    const valid = arr.filter((f) => f.type.startsWith("image/"));
+    if (valid.length === 0) {
+      toast.error("Please select valid image files (JPG, PNG, WebP).");
+      return;
+    }
+    const newItems: MultipleUploadItem[] = valid.map((file) => {
+      const sizeStr =
+        file.size > 1024 * 1024
+          ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
+          : `${Math.round(file.size / 1024)} KB`;
+      return {
+        id: `${file.name}-${Date.now()}-${Math.random()}`,
+        file,
+        preview: URL.createObjectURL(file),
+        name: file.name,
+        size: sizeStr,
+      };
+    });
+    setMultipleFiles((prev) => [...prev, ...newItems]);
+    toast.success(`Added ${newItems.length} image(s) to upload queue`);
+  };
+
+  const removeMultipleItem = (id: string) => {
+    setMultipleFiles((prev) => {
+      const item = prev.find((x) => x.id === id);
+      if (item?.preview && item.preview.startsWith("blob:")) {
+        URL.revokeObjectURL(item.preview);
+      }
+      return prev.filter((x) => x.id !== id);
+    });
+  };
+
   const openAddModal = (bannerToEdit?: HeroFullBanner) => {
     if (bannerToEdit) {
+      setEditingBanner(bannerToEdit);
+      setUploadMode("single");
       setFormCategory(bannerToEdit.entityType as HeroBannerEntityType);
       setSelectedEntityId(bannerToEdit.entityId || 0);
       setSelectedSlug(bannerToEdit.pageSlug || "");
@@ -89,6 +150,8 @@ export default function HeroBannersAdminPage() {
       setSelectedFile(null);
       setPreviewUrl(bannerToEdit.image || null);
     } else {
+      setEditingBanner(null);
+      setUploadMode("single");
       setFormCategory("Home");
       setSelectedEntityId(0);
       setSelectedSlug("");
@@ -99,17 +162,9 @@ export default function HeroBannersAdminPage() {
       setSelectedFile(null);
       if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
       setPreviewUrl(null);
+      clearMultipleFiles();
     }
     setIsModalOpen(true);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-      setPreviewUrl(URL.createObjectURL(file));
-    }
   };
 
   const handleCategoryChange = (cat: HeroBannerEntityType) => {
@@ -121,11 +176,6 @@ export default function HeroBannersAdminPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!selectedFile) {
-      toast.error("Please select a panoramic banner image file.");
-      return;
-    }
-
     if (
       ["Country", "State", "City", "TravelExperience"].includes(formCategory) &&
       !selectedEntityId &&
@@ -135,10 +185,21 @@ export default function HeroBannersAdminPage() {
       return;
     }
 
+    if (uploadMode === "single") {
+      if (!editingBanner && !selectedFile) {
+        toast.error("Please select or crop a panoramic banner image.");
+        return;
+      }
+    } else {
+      if (multipleFiles.length === 0) {
+        toast.error("Please select at least one image file for multiple upload.");
+        return;
+      }
+    }
+
     setIsSubmitting(true);
     try {
       const fd = new FormData();
-      fd.append("image", selectedFile);
       fd.append("entityType", formCategory);
       fd.append("entityId", String(selectedEntityId || 0));
       if (selectedSlug) fd.append("pageSlug", selectedSlug);
@@ -147,14 +208,32 @@ export default function HeroBannersAdminPage() {
       if (altText.trim()) fd.append("altText", altText.trim());
       fd.append("displayOrder", String(displayOrder || 0));
 
-      await createMutation.mutateAsync(fd);
-      toast.success("Hero Full Banner uploaded successfully!");
+      if (editingBanner) {
+        if (selectedFile) {
+          fd.append("image", selectedFile);
+        }
+        await updateMutation.mutateAsync({ id: editingBanner.id, formData: fd });
+        toast.success("Hero Banner updated successfully!");
+      } else if (uploadMode === "multiple") {
+        multipleFiles.forEach((item) => {
+          fd.append("images", item.file);
+        });
+        await createMutation.mutateAsync(fd);
+        toast.success(`${multipleFiles.length} hero banner(s) uploaded successfully!`);
+      } else {
+        if (selectedFile) fd.append("image", selectedFile);
+        await createMutation.mutateAsync(fd);
+        toast.success("Hero Full Banner uploaded successfully!");
+      }
+
       setIsModalOpen(false);
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
       setSelectedFile(null);
       setPreviewUrl(null);
+      clearMultipleFiles();
+      setEditingBanner(null);
     } catch (err: any) {
-      toast.error(err?.response?.data?.message || "Failed to upload banner");
+      toast.error(err?.response?.data?.message || "Failed to save banner");
     } finally {
       setIsSubmitting(false);
     }
@@ -382,18 +461,22 @@ export default function HeroBannersAdminPage() {
         </div>
       )}
 
-      {/* Upload Full Banner Modal */}
+      {/* Upload/Edit Full Banner Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-100 overflow-hidden my-8">
-            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+          <div className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-100 overflow-hidden my-8 max-h-[92vh] flex flex-col">
+            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 shrink-0">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-[#2E8B8B]/10 text-[#2E8B8B] flex items-center justify-center">
                   <Upload size={18} />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-slate-900">Upload Hero Full Banner</h2>
-                  <p className="text-xs text-slate-500">Dedicated high-resolution panoramic banner</p>
+                  <h2 className="text-lg font-bold text-slate-900">
+                    {editingBanner ? `Edit Hero Banner (ID #${editingBanner.id})` : "Upload Hero Full Banner"}
+                  </h2>
+                  <p className="text-xs text-slate-500">
+                    Dedicated high-resolution panoramic banner (1920 × 450 px)
+                  </p>
                 </div>
               </div>
               <button
@@ -404,7 +487,42 @@ export default function HeroBannersAdminPage() {
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-5">
+            <form onSubmit={handleSubmit} className="p-6 space-y-5 overflow-y-auto flex-1">
+              {/* Mode Switcher: Single (with Crop) vs Multiple (Batch) - Only for new banners */}
+              {!editingBanner && (
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    Upload Mode
+                  </label>
+                  <div className="flex items-center p-1 bg-slate-100 rounded-xl">
+                    <button
+                      type="button"
+                      onClick={() => setUploadMode("single")}
+                      className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                        uploadMode === "single"
+                          ? "bg-white text-[#2E8B8B] shadow-xs"
+                          : "text-slate-500 hover:text-slate-800"
+                      }`}
+                    >
+                      <Crop size={14} />
+                      <span>Single Banner (with Crop)</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setUploadMode("multiple")}
+                      className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                        uploadMode === "multiple"
+                          ? "bg-white text-[#2E8B8B] shadow-xs"
+                          : "text-slate-500 hover:text-slate-800"
+                      }`}
+                    >
+                      <Layers size={14} />
+                      <span>Multiple Images (Batch Upload)</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* Category Picker */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
@@ -533,55 +651,152 @@ export default function HeroBannersAdminPage() {
                 </div>
               )}
 
-              {/* Banner Image Upload Area with Integrated Crop & Resize */}
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                  Panoramic Banner Image (1920 × 450 px) <span className="text-rose-500">*</span>
-                </label>
-                <ImageCropUpload
-                  onFileSelect={(file) => {
-                    setSelectedFile(file);
-                    if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
-                    setPreviewUrl(URL.createObjectURL(file));
-                  }}
-                  onClear={() => {
-                    setSelectedFile(null);
-                    if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
-                    setPreviewUrl(null);
-                  }}
-                  maxWidth={1920}
-                  maxHeight={450}
-                  aspectRatioPreset="hero"
-                  label="Upload Panoramic Banner (1920 × 450 px) — Click to Crop & Resize"
-                  initialImage={previewUrl || undefined}
-                />
+              {/* Upload Mode 1: Single Banner with Crop & Resize */}
+              {uploadMode === "single" ? (
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                    Panoramic Banner Image (1920 × 450 px){" "}
+                    {editingBanner ? (
+                      <span className="text-slate-400 font-normal">(Optional — leave unchanged to keep current image)</span>
+                    ) : (
+                      <span className="text-rose-500">*</span>
+                    )}
+                  </label>
+                  <ImageCropUpload
+                    onFileSelect={(file) => {
+                      setSelectedFile(file);
+                      if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+                      setPreviewUrl(URL.createObjectURL(file));
+                    }}
+                    onClear={() => {
+                      setSelectedFile(null);
+                      if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+                      setPreviewUrl(null);
+                    }}
+                    maxWidth={1920}
+                    maxHeight={450}
+                    aspectRatioPreset="hero"
+                    label="Upload Panoramic Banner (1920 × 450 px) — Click to Crop & Resize"
+                    initialImage={previewUrl || undefined}
+                  />
 
-                {/* Live Preview with Text Overlays */}
-                {previewUrl && (
-                  <div className="mt-3">
-                    <p className="text-xs font-bold text-slate-500 mb-1.5 flex items-center gap-1">
-                      <Eye size={13} /> Live Panoramic Ratio (1920×450) Overlay Preview:
-                    </p>
-                    <div className="relative w-full h-36 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200">
-                      <Image
-                        src={previewUrl}
-                        alt="Preview"
-                        fill
-                        unoptimized={previewUrl.startsWith("blob:")}
-                        className="object-cover object-center"
-                      />
-                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-center p-4">
-                        <div>
-                          {subtitle && <p className="text-xs font-bold uppercase text-[#F8904D]">{subtitle}</p>}
-                          <h4 className="text-lg font-black uppercase tracking-wide">
-                            {title || "Sample Overlay Title"}
-                          </h4>
+                  {/* Live Preview with Text Overlays */}
+                  {previewUrl && (
+                    <div className="mt-3">
+                      <p className="text-xs font-bold text-slate-500 mb-1.5 flex items-center gap-1">
+                        <Eye size={13} /> Live Panoramic Ratio (1920×450) Overlay Preview:
+                      </p>
+                      <div className="relative w-full h-36 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200">
+                        <Image
+                          src={previewUrl}
+                          alt="Preview"
+                          fill
+                          unoptimized={previewUrl.startsWith("blob:")}
+                          className="object-cover object-center"
+                        />
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-center p-4">
+                          <div>
+                            {subtitle && <p className="text-xs font-bold uppercase text-[#F8904D]">{subtitle}</p>}
+                            <h4 className="text-lg font-black uppercase tracking-wide">
+                              {title || "Sample Overlay Title"}
+                            </h4>
+                          </div>
                         </div>
                       </div>
                     </div>
+                  )}
+                </div>
+              ) : (
+                /* Upload Mode 2: Multiple Images Batch Upload */
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                      Select Multiple Banner Images <span className="text-rose-500">*</span>
+                    </label>
+                    {multipleFiles.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={clearMultipleFiles}
+                        className="text-xs text-rose-600 hover:text-rose-800 font-semibold"
+                      >
+                        Clear All ({multipleFiles.length})
+                      </button>
+                    )}
                   </div>
-                )}
-              </div>
+
+                  {/* Multi-file drag / click dropzone */}
+                  <div
+                    onClick={() => multiFileInputRef.current?.click()}
+                    className="border-2 border-dashed border-[#2E8B8B]/40 hover:border-[#2E8B8B] bg-[#2E8B8B]/5 hover:bg-[#2E8B8B]/10 rounded-2xl p-6 text-center cursor-pointer transition-colors"
+                  >
+                    <input
+                      ref={multiFileInputRef}
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={(e) => {
+                        if (e.target.files) handleMultipleFilesSelect(e.target.files);
+                        e.target.value = "";
+                      }}
+                      className="hidden"
+                    />
+                    <div className="flex flex-col items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center text-[#2E8B8B] mb-2 border border-[#2E8B8B]/20">
+                        <Upload size={22} />
+                      </div>
+                      <p className="text-sm font-bold text-slate-800">
+                        Click to select multiple images (or drag & drop)
+                      </p>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Select 2, 5, 10 or more images at once (PNG, JPG, WebP)
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Multiple Files List */}
+                  {multipleFiles.length > 0 && (
+                    <div className="space-y-2 pt-1">
+                      <div className="flex items-center justify-between text-xs text-slate-500 px-1 font-semibold">
+                        <span>Selected ({multipleFiles.length} images ready):</span>
+                        <span>Auto-orders starting at #{displayOrder}</span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1">
+                        {multipleFiles.map((item, idx) => (
+                          <div
+                            key={item.id}
+                            className="flex items-center gap-3 p-2 bg-slate-50 rounded-xl border border-slate-200 relative group"
+                          >
+                            <div className="relative w-16 h-10 rounded-lg overflow-hidden shrink-0 bg-slate-200">
+                              <img
+                                src={item.preview}
+                                alt={item.name}
+                                className="w-full h-full object-cover"
+                              />
+                              <span className="absolute bottom-0 right-0 bg-black/75 text-white text-[9px] font-bold px-1 rounded-tl">
+                                #{displayOrder + idx}
+                              </span>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-semibold text-slate-800 truncate" title={item.name}>
+                                {item.name}
+                              </p>
+                              <p className="text-[10px] text-slate-400">{item.size}</p>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeMultipleItem(item.id)}
+                              className="text-slate-400 hover:text-rose-600 p-1 rounded-lg hover:bg-rose-50 transition-colors shrink-0"
+                              title="Remove image"
+                            >
+                              <X size={15} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Optional Text Overlays */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -640,7 +855,7 @@ export default function HeroBannersAdminPage() {
               </div>
 
               {/* Submit Buttons */}
-              <div className="pt-3 border-t border-slate-100 flex justify-end gap-3">
+              <div className="pt-3 border-t border-slate-100 flex justify-end gap-3 shrink-0">
                 <Button
                   type="button"
                   variant="outline"
@@ -655,7 +870,13 @@ export default function HeroBannersAdminPage() {
                   disabled={isSubmitting}
                   className="rounded-xl bg-[#2E8B8B] hover:bg-[#267373] text-white font-semibold px-6 shadow-sm"
                 >
-                  {isSubmitting ? "Uploading..." : "Save & Upload Banner"}
+                  {isSubmitting
+                    ? "Saving..."
+                    : editingBanner
+                    ? "Save Changes"
+                    : uploadMode === "multiple"
+                    ? `Upload All (${multipleFiles.length}) Banners`
+                    : "Save & Upload Banner"}
                 </Button>
               </div>
             </form>

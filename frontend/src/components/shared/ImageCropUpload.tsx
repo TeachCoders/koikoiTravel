@@ -104,11 +104,19 @@ export default function ImageCropUpload({
   }, []);
 
   const handleUrlLoad = async () => {
-    if (!urlInput.trim()) return;
+    const trimmed = urlInput.trim();
+    if (!trimmed) return;
     setUrlLoading(true);
     setUrlError("");
     try {
-      const res = await apiClient.get(`/proxy-image?url=${encodeURIComponent(urlInput.trim())}`, { responseType: "blob" });
+      if (trimmed.startsWith("blob:") || trimmed.startsWith("data:")) {
+        // Direct client-side loading for blob/data URLs without proxy
+        setSrc(trimmed);
+        setCropOpen(true);
+        setUrlLoading(false);
+        return;
+      }
+      const res = await apiClient.get(`/proxy-image?url=${encodeURIComponent(trimmed)}`, { responseType: "blob" });
       const blob = res.data;
       const mimeType = blob.type || "image/webp";
       if (!mimeType.startsWith("image/")) {
@@ -119,11 +127,49 @@ export default function ImageCropUpload({
       setSrc(objectUrl);
       setCropOpen(true);
     } catch (err: any) {
-      setUrlError(err?.response?.data?.message || "Failed to load image from URL");
+      // Fallback: try direct browser load if proxy blocked or failed
+      try {
+        const testImg = new Image();
+        testImg.crossOrigin = "anonymous";
+        testImg.onload = () => {
+          setSrc(trimmed);
+          setCropOpen(true);
+          setUrlLoading(false);
+        };
+        testImg.onerror = () => {
+          setUrlError("Failed to load image from URL. Try uploading the file directly or press Ctrl+V to paste.");
+          setUrlLoading(false);
+        };
+        testImg.src = trimmed;
+      } catch {
+        setUrlError(err?.response?.data?.message || "Failed to load image from URL");
+        setUrlLoading(false);
+      }
     } finally {
       setUrlLoading(false);
     }
   };
+
+  // Direct clipboard paste (Ctrl + V) support
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      if (cropOpen) return;
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.startsWith("image/")) {
+          const file = items[i].getAsFile();
+          if (file) {
+            handleFile(file);
+            e.preventDefault();
+            break;
+          }
+        }
+      }
+    };
+    window.addEventListener("paste", handlePaste);
+    return () => window.removeEventListener("paste", handlePaste);
+  }, [cropOpen, handleFile]);
 
   const getContainDimensions = useCallback((cw: number, ch: number, imgW: number, imgH: number) => {
     const imgRatio = imgW / imgH;

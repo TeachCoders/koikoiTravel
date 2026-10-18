@@ -64,6 +64,24 @@ export const useCreateHeroBanner = () => {
 };
 
 /**
+ * Admin mutation to update an existing hero banner.
+ */
+export const useUpdateHeroBanner = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, formData }: { id: number; formData: FormData }) => {
+      const res = await apiClient.put(`/hero-full-banner/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["heroFullBanners"] });
+    },
+  });
+};
+
+/**
  * Admin mutation to delete a hero banner.
  */
 export const useDeleteHeroBanner = () => {
@@ -78,3 +96,4 @@ export const useDeleteHeroBanner = () => {
     },
   });
 };
+
