@@ -119,7 +119,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
           );
         })}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/30 z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/35 z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20 z-10 pointer-events-none" />
       </div>
 
       {/* Navigation arrows (desktop) - only when multiple slides */}
@@ -165,26 +166,26 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         </div>
       )}
 
-      <div className="relative z-30 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-center">
-        {/* Eyebrow Tag matching reference image */}
+      <div className="relative z-30 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-left">
+        {/* Eyebrow Tag */}
         <div className="mb-2.5 sm:mb-3">
           <span className="text-white/90 text-[11px] sm:text-xs md:text-[13px] font-bold uppercase tracking-[0.2em] px-3.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/20 inline-block drop-shadow-sm select-none">
             Private Journeys Across India
           </span>
         </div>
 
-        {/* Main Heading requested by user */}
-        <h1 className="font-luxury text-white text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-black tracking-tight leading-tight max-w-4xl mx-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] block">
+        {/* Main Heading */}
+        <h1 className="font-luxury text-white text-2xl sm:text-3xl md:text-4xl lg:text-[44px] font-black tracking-tight leading-tight max-w-3xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] block">
           Your Journey, Your Trusted <span className="text-[#F8904D]">Customize Tour Operator</span> — KoiKoi Travel
         </h1>
 
-        {/* Short Subtitle matching reference length */}
-        <p className="text-white/95 text-xs sm:text-sm md:text-base max-w-2xl mx-auto mt-2.5 sm:mt-3 leading-relaxed font-normal drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+        {/* Short Subtitle */}
+        <p className="text-white/95 text-xs sm:text-sm md:text-base max-w-2xl mt-2.5 sm:mt-3 leading-relaxed font-normal drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
           Custom journeys across India and Asia, planned around your interests, pace and travel dates.
         </p>
 
-        {/* Dual Primary Call-to-Actions matching reference image with KoiKoi theme */}
-        <div className="mt-4 sm:mt-5 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5">
+        {/* Dual Primary Call-to-Actions */}
+        <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-start gap-2.5 sm:gap-3.5">
           <Link
             href="/destinations"
             className="px-5 sm:px-6 py-2.5 rounded-full bg-[#2E8B8B] hover:bg-[#257272] text-white font-semibold text-xs sm:text-sm shadow-lg shadow-teal-950/40 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
@@ -201,14 +202,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
               <span>Plan My Trip</span>
             </button>
           </QuoteModal>
-        </div>
-
-        {/* Rating and Experience Badges matching reference image */}
-        <div className="mt-3.5 sm:mt-4 flex items-center justify-center gap-2 text-white text-xs sm:text-[13px] font-semibold drop-shadow-md select-none">
-          <span className="text-amber-400 tracking-wider text-sm">★★★★★</span>
-          <span className="font-bold">4.9/5 Traveller Rating</span>
-          <span className="text-white/40">|</span>
-          <span className="text-white/90">7+ Years Experience</span>
         </div>
       </div>
     </section>
