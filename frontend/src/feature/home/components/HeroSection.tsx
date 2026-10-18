@@ -187,7 +187,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         </h1>
 
         {/* Short Subtitle */}
-        <p className="font-outfit text-white/95 text-xs sm:text-sm md:text-base max-w-2xl mt-2.5 sm:mt-3 leading-relaxed font-normal drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+        <p className="font-outfit text-white/95 text-[15px] sm:text-base md:text-lg lg:text-[19px] max-w-3xl mt-3 sm:mt-4 leading-relaxed font-medium drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
           Handcrafted private journeys across India, thoughtfully tailored to your style and pace.
         </p>
 
