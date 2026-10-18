@@ -17,7 +17,7 @@ import { stripTourSuffix, pickPriorityLinks, type NavChild } from "@/lib/utils";
 import { QuoteModal } from "./QuoteModal";
 import { RequestCallbackModal } from "./RequestCallbackModal";
 import { DestinationTreeCountry, DestinationTreeState } from "./DestinationMegaMenu";
-import LanguageSelector from "./LanguageSelector";
+import TopBar from "./TopBar";
 import HeaderSearchBar from "./HeaderSearchBar";
 
 const DEFAULT_DESTINATION_LINKS: NavChild[] = [
@@ -644,212 +644,214 @@ export const Header: React.FC = () => {
 
   return (
     <header
-      className={`relative sticky top-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ${isScrolled
-        ? "bg-white/95 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.04),0_8px_24px_-12px_rgba(0,0,0,0.08)] border-b border-[#ececec]"
-        : "bg-white border-b border-[#f2f2f2]"
+      className={`relative sticky top-0 z-50 transition-[background-color,border-color,box-shadow] duration-200 ${isScrolled
+        ? "bg-white/98 backdrop-blur-md shadow-xs border-b border-[#ececec]"
+        : "bg-white border-b border-[#f0f0f0]"
         }`}
     >
+      <TopBar isScrolled={isScrolled} />
       <div
-        className={`max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 transition-[padding] duration-300 ${
-          isScrolled ? "py-1.5 sm:py-2" : "py-2 sm:py-2.5"
+        className={`max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 transition-[padding] duration-200 ${
+          isScrolled ? "py-1.5" : "py-2"
         }`}
       >
-        {/* ===== ROW 1: Logo | Search Bar | Quick Actions ===== */}
-        <div className="flex items-center justify-between gap-3 sm:gap-4 md:gap-6">
-          {/* Brand Logo */}
+        {/* ===== Single Compact Row: Logo | Search Bar | Nav Links + Create My Trip ===== */}
+        <div className="flex items-center justify-between gap-3 lg:gap-4 xl:gap-6">
+          {/* 1. Brand Logo */}
           <Link href="/" className="flex items-center gap-2 group shrink-0">
             <Image
               src="/logo-with-name.png"
               alt="KoiKoi Travel"
-              width={180}
-              height={56}
+              width={165}
+              height={48}
               priority
-              className="h-[42px] sm:h-[48px] md:h-[52px] w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+              className="h-[36px] sm:h-[40px] md:h-[44px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
             />
           </Link>
 
-          {/* Desktop Search Bar (Centered, matching Travelogy reference) */}
+          {/* 2. Compact Search Bar (Next to Logo) */}
           {!isOfferPage && (
-            <div className="hidden md:flex flex-1 justify-center px-2 lg:px-4 max-w-2xl">
+            <div className="hidden md:flex flex-1 max-w-[260px] lg:max-w-[320px] xl:max-w-[380px]">
               <HeaderSearchBar />
             </div>
           )}
 
-          {/* Right Action Buttons */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-            {/* Language Selector */}
-            <LanguageSelector />
-
-            {/* Build My Trip CTA Button */}
-            <QuoteModal>
-              <button
-                type="button"
-                className="btn-primary px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold tracking-wide flex items-center gap-1.5 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
-              >
-                <span>Build My Trip</span>
-              </button>
-            </QuoteModal>
-
-            {/* Mobile Menu Hamburger Toggle */}
-            {!isOfferPage && (
-              <div className="flex md:hidden items-center ml-0.5">
-                <button
-                  onClick={() => (isMobileMenuOpen ? handleMobileClose() : handleMobileOpen())}
-                  aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-                  aria-expanded={isMobileMenuOpen}
-                  className="p-2 rounded-lg text-[#555] hover:bg-[#f5f5f5] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1C1C1C]/20"
-                >
-                  {isMobileMenuOpen ? (
-                    <X className="w-6 h-6" />
-                  ) : (
-                    <Menu className="w-6 h-6" />
-                  )}
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Mobile Search Bar (Directly below logo on mobile devices) */}
-        {!isOfferPage && (
-          <div className="mt-2.5 pb-1 md:hidden">
-            <HeaderSearchBar />
-          </div>
-        )}
-
-        {/* ===== ROW 2: Desktop Navigation Bar with MegaMenu & Dropdowns ===== */}
-        {!isOfferPage && (
-          <div className="hidden md:flex items-center justify-center border-t border-slate-100/90 mt-2 pt-1.5">
-            <nav className="flex items-center gap-0.5 lg:gap-1.5">
-              {navLinks.map((link) => (
-                <div
-                  key={link.href}
-                  className={`${link.isDestinationMega ? "" : "relative"} flex items-center h-full`}
-                  onMouseEnter={() => (link.children || link.isDestinationMega) ? (clearMegaMenuCloseTimer(), setOpenDesktopDropdown(link.href)) : null}
-                  onMouseLeave={() => (link.children || link.isDestinationMega) ? scheduleMegaMenuClose() : setOpenDesktopDropdown(null)}
-                >
-                  {link.directHref ? (
-                    <div className="flex items-center h-full">
-                      <Link
-                        href={link.directHref}
-                        onClick={() => setOpenDesktopDropdown(null)}
-                        className={`relative px-3 py-1.5 text-[14px] lg:text-[14.5px] font-medium tracking-normal rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
-                          ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
-                          : "text-[#444]"
-                          }`}
-                      >
-                        <span className="relative z-10">{link.label}</span>
-                      </Link>
+          {/* 3. Navigation Links + Create My Trip Button */}
+          {!isOfferPage && (
+            <div className="hidden md:flex items-center gap-2 lg:gap-3 xl:gap-4 shrink-0">
+              <nav className="flex items-center gap-0.5 lg:gap-1">
+                {navLinks.map((link) => (
+                  <div
+                    key={link.href}
+                    className="relative flex items-center h-full"
+                    onMouseEnter={() => (link.children || link.isDestinationMega) ? (clearMegaMenuCloseTimer(), setOpenDesktopDropdown(link.href)) : null}
+                    onMouseLeave={() => (link.children || link.isDestinationMega) ? scheduleMegaMenuClose() : setOpenDesktopDropdown(null)}
+                  >
+                    {link.directHref ? (
+                      <div className="flex items-center h-full">
+                        <Link
+                          href={link.directHref}
+                          onClick={() => setOpenDesktopDropdown(null)}
+                          className={`relative px-2.5 lg:px-3 py-1.5 text-[13.5px] lg:text-[14px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                            ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
+                            : "text-[#333]"
+                            }`}
+                        >
+                          <span className="relative z-10">{link.label}</span>
+                        </Link>
+                        <button
+                          type="button"
+                          aria-label={`Open ${link.label} menu`}
+                          onClick={() =>
+                            setOpenDesktopDropdown(
+                              openDesktopDropdown === link.href ? null : link.href
+                            )
+                          }
+                          className={`pr-2 pl-0.5 py-1.5 cursor-pointer transition-colors duration-200 ${openDesktopDropdown === link.href
+                            ? "text-[#2E8B8B]"
+                            : "text-[#888] hover:text-[#2E8B8B]"
+                            }`}
+                        >
+                          <ChevronDown
+                            className={`w-3.5 h-3.5 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
+                              }`}
+                          />
+                        </button>
+                      </div>
+                    ) : link.children || link.isDestinationMega ? (
                       <button
                         type="button"
-                        aria-label={`Open ${link.label} menu`}
                         onClick={() =>
                           setOpenDesktopDropdown(
                             openDesktopDropdown === link.href ? null : link.href
                           )
                         }
-                        className={`pr-2.5 pl-0.5 py-1.5 cursor-pointer transition-colors duration-300 ${openDesktopDropdown === link.href
-                          ? "text-[#2E8B8B]"
-                          : "text-[#888] hover:text-[#2E8B8B]"
+                        className={`relative px-2.5 lg:px-3 py-1.5 text-[13.5px] lg:text-[14px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
+                          ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
+                          : "text-[#333]"
                           }`}
                       >
+                        <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
                         <ChevronDown
-                          className={`w-3.5 h-3.5 transition-transform duration-300 ${openDesktopDropdown === link.href ? "rotate-180" : ""
+                          className={`w-3.5 h-3.5 relative z-10 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
                             }`}
                         />
                       </button>
-                    </div>
-                  ) : link.children || link.isDestinationMega ? (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setOpenDesktopDropdown(
-                          openDesktopDropdown === link.href ? null : link.href
-                        )
-                      }
-                      className={`relative px-3 py-1.5 text-[14px] lg:text-[14.5px] font-medium tracking-normal rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
-                        ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
-                        : "text-[#444]"
-                        }`}
-                    >
-                      <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
-                      <ChevronDown
-                        className={`w-3.5 h-3.5 relative z-10 transition-transform duration-300 ${openDesktopDropdown === link.href ? "rotate-180" : ""
-                          }`}
-                      />
-                    </button>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className={`relative px-3 py-1.5 text-[14px] lg:text-[14.5px] font-medium tracking-normal rounded-full transition-all duration-300 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
-                        ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
-                        : "text-[#444]"
-                        }`}
-                    >
-                      <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
-                    </Link>
-                  )}
-
-                  {link.children && link.dropdownStyle === "mega" && (
-                    <div
-                      // Keep dropdown open while mouse is over the dropdown area
-                      onMouseEnter={() => setOpenDesktopDropdown(link.href)}
-                      onMouseLeave={() => setOpenDesktopDropdown(null)}
-                      className={`absolute left-1/2 -translate-x-1/2 top-full transition-opacity duration-200 ${openDesktopDropdown === link.href
-                        ? "opacity-100 visible pointer-events-auto"
-                        : "opacity-0 invisible pointer-events-none"
-                        }`}
-                    >
-                      <div
-                        className={`bg-white rounded-2xl border border-slate-200/90 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] p-6 ${link.dropdownColumns === 1 ? "w-[320px]" : "w-[840px] max-w-[90vw]"
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className={`relative px-2.5 lg:px-3 py-1.5 text-[13.5px] lg:text-[14px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                          ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
+                          : "text-[#333]"
                           }`}
                       >
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-[18px] font-bold text-[#2E8B8B] tracking-tight">
-                            {link.dropdownTitle ?? "Popular Tour Packages"}
-                          </span>
-                        </div>
+                        <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
+                      </Link>
+                    )}
+
+                    {link.children && link.dropdownStyle === "mega" && (
+                      <div
+                        onMouseEnter={() => setOpenDesktopDropdown(link.href)}
+                        onMouseLeave={() => setOpenDesktopDropdown(null)}
+                        className={`absolute right-0 top-full pt-2 transition-opacity duration-200 ${openDesktopDropdown === link.href
+                          ? "opacity-100 visible pointer-events-auto"
+                          : "opacity-0 invisible pointer-events-none"
+                          }`}
+                      >
                         <div
-                          className={`grid gap-x-8 gap-y-1 ${link.dropdownColumns === 1
-                            ? "grid-cols-1"
-                            : link.dropdownColumns === 2
-                              ? "grid-cols-2"
-                              : "grid-cols-3"
+                          className={`bg-white rounded-2xl border border-slate-200/90 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] p-5 ${link.dropdownColumns === 1 ? "w-[280px]" : "w-[720px] max-w-[85vw]"
                             }`}
                         >
-                          {link.children.map((child) => (
-                            <Link
-                              key={child.href}
-                              href={child.href}
-                              onClick={() => setOpenDesktopDropdown(null)}
-                              className="px-2.5 py-1.5 -mx-2.5 rounded-lg text-[15px] text-slate-700 hover:text-[#2E8B8B] hover:bg-slate-50 font-medium transition-colors duration-150 truncate block"
-                            >
-                              <span suppressHydrationWarning>{child.label}</span>
-                            </Link>
-                          ))}
-                        </div>
-                        {link.seeAllHref && (
-                          <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between">
-                            <span className="text-[13.5px] text-slate-500 font-medium">
-                              {link.dropdownSubtext ?? "Explore all destinations worldwide"}
+                          <div className="flex items-center justify-between mb-2.5">
+                            <span className="text-[16px] font-bold text-[#2E8B8B] tracking-tight">
+                              {link.dropdownTitle ?? "Popular Tour Packages"}
                             </span>
-                            <Link
-                              href={link.seeAllHref}
-                              onClick={() => setOpenDesktopDropdown(null)}
-                              className="text-[15px] font-bold text-[#F8904D] hover:text-[#e07a38] transition-colors flex items-center gap-1"
-                            >
-                              <span>See All</span>
-                              <span aria-hidden>→</span>
-                            </Link>
                           </div>
-                        )}
+                          <div
+                            className={`grid gap-x-6 gap-y-1 ${link.dropdownColumns === 1
+                              ? "grid-cols-1"
+                              : link.dropdownColumns === 2
+                                ? "grid-cols-2"
+                                : "grid-cols-3"
+                              }`}
+                          >
+                            {link.children.map((child) => (
+                              <Link
+                                key={child.href}
+                                href={child.href}
+                                onClick={() => setOpenDesktopDropdown(null)}
+                                className="px-2.5 py-1.5 -mx-2.5 rounded-lg text-[14px] text-slate-700 hover:text-[#2E8B8B] hover:bg-slate-50 font-medium transition-colors duration-150 truncate block"
+                              >
+                                <span suppressHydrationWarning>{child.label}</span>
+                              </Link>
+                            ))}
+                          </div>
+                          {link.seeAllHref && (
+                            <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between">
+                              <span className="text-[13px] text-slate-500 font-medium">
+                                {link.dropdownSubtext ?? "Explore all destinations worldwide"}
+                              </span>
+                              <Link
+                                href={link.seeAllHref}
+                                onClick={() => setOpenDesktopDropdown(null)}
+                                className="text-[14px] font-bold text-[#F8904D] hover:text-[#e07a38] transition-colors flex items-center gap-1"
+                              >
+                                <span>See All</span>
+                                <span aria-hidden>→</span>
+                              </Link>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
+                ))}
+              </nav>
 
-                </div>
-              ))}
-            </nav>
+              {/* Create My Trip CTA Button (Right next to Nav links) */}
+              <QuoteModal>
+                <button
+                  type="button"
+                  className="btn-primary px-3.5 lg:px-4 py-2 text-xs lg:text-[13px] font-semibold tracking-wide flex items-center gap-1.5 shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+                >
+                  <span>Create My Trip</span>
+                </button>
+              </QuoteModal>
+            </div>
+          )}
+
+          {/* Mobile Right Controls: Create My Trip + Hamburger Toggle */}
+          <div className="flex md:hidden items-center gap-2">
+            <QuoteModal>
+              <button
+                type="button"
+                className="btn-primary px-3 py-1.5 text-xs font-semibold flex items-center gap-1 shadow-xs cursor-pointer shrink-0"
+              >
+                <span>Create My Trip</span>
+              </button>
+            </QuoteModal>
+
+            {!isOfferPage && (
+              <button
+                onClick={() => (isMobileMenuOpen ? handleMobileClose() : handleMobileOpen())}
+                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMobileMenuOpen}
+                className="p-1.5 rounded-lg text-[#555] hover:bg-[#f5f5f5] transition-colors focus:outline-none"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile Search Bar (Only shown on mobile beneath logo row) */}
+        {!isOfferPage && (
+          <div className="mt-2 pb-1 md:hidden">
+            <HeaderSearchBar />
           </div>
         )}
       </div>
