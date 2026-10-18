@@ -1,6 +1,6 @@
-# KoiKoi Travel — Inbound Tour Operator & Travel Knowledge Directory (llms-full.txt)
+# KoiKoi Travel — Customize Tour Operator & Travel Knowledge Directory (llms-full.txt)
 
-> Official plain-text knowledge directory for KoiKoi Travel (https://koikoitravel.com), an inbound tour operator and travel company specializing in custom private tour packages, verified chauffeur travel, and boutique stays across India. This document provides detailed contextual information on tour packages, private car rentals, destinations, booking policies, and travel tips across India.
+> Official plain-text knowledge directory for KoiKoi Travel (https://koikoitravel.com), a customize tour operator and travel company specializing in custom private tour packages, verified chauffeur travel, and boutique stays across India. This document provides detailed contextual information on tour packages, private car rentals, destinations, booking policies, and travel tips across India.
 
 ---
 

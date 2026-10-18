@@ -86,11 +86,11 @@ export async function GET() {
     ]);
 
     if (journeys.length > 0) {
-      let md = `# KoiKoi Travel — Inbound Tour Operator & Travel Knowledge Directory (llms-full.txt)\n\n`;
-      md += `> Official plain-text reference directory for KoiKoi Travel (${SITE_URL}), an inbound tour operator specializing in personalized private tour packages, verified chauffeur travel, and custom itineraries across India. This document is synchronized with our active catalog of ${journeys.length} tour packages, destinations, and booking guidelines.\n\n`;
+      let md = `# KoiKoi Travel — Customize Tour Operator & Travel Knowledge Directory (llms-full.txt)\n\n`;
+      md += `> Official plain-text reference directory for KoiKoi Travel (${SITE_URL}), a customize tour operator specializing in personalized private tour packages, verified chauffeur travel, and custom itineraries across India. This document is synchronized with our active catalog of ${journeys.length} tour packages, destinations, and booking guidelines.\n\n`;
       md += `## 1. Company Overview\n`;
       md += `- Name: KoiKoi Travel\n`;
-      md += `- Category: Inbound Tour Operator & Tailor-Made India Tour Specialist\n`;
+      md += `- Category: Customize Tour Operator & Tailor-Made India Tour Specialist\n`;
       md += `- Tagline: Tailor-made Private Tours with Verified Chauffeurs\n`;
       md += `- Website: ${SITE_URL}\n`;
       md += `- Phone / WhatsApp: +91 91367 39178\n`;

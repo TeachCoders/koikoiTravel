@@ -15,11 +15,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://koikoitravel.com"),
   title: "India Tour Operator & Tailor-Made Tours | KoiKoi Travel",
   description:
-    "Discover India with KoiKoi Travel, an inbound tour operator offering tailor-made India tours and private holidays across Rajasthan, Kerala, South India and beyond.",
+    "Discover India with KoiKoi Travel, a customize tour operator offering tailor-made India tours and private holidays across Rajasthan, Kerala, South India and beyond.",
   keywords: [
     "India tour operator",
     "Tailor-made India tours",
-    "Inbound tour operator India",
+    "Customize tour operator India",
     "Tailor-made India holidays",
     "Customized India tours",
     "Private India tours",
@@ -37,12 +37,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: "India Tour Operator & Tailor-Made Tours | KoiKoi Travel",
     description:
-      "Discover India with KoiKoi Travel, an inbound tour operator offering tailor-made India tours and private holidays across Rajasthan, Kerala, South India and beyond.",
+      "Discover India with KoiKoi Travel, a customize tour operator offering tailor-made India tours and private holidays across Rajasthan, Kerala, South India and beyond.",
     url: "https://koikoitravel.com",
     siteName: "KoiKoi Travel",
     locale: "en_US",
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "KoiKoi Travel - Inbound Tour Operator & Tailor-Made India Tours" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "KoiKoi Travel - Customize Tour Operator & Tailor-Made India Tours" }],
   },
   other: {
     "geo.region": "IN",

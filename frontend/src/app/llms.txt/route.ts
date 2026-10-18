@@ -81,8 +81,8 @@ export async function GET() {
 
     // If API returned packages, construct full dynamic markdown
     if (journeys.length > 0) {
-      let md = `# KoiKoi Travel — Inbound Tour Operator & Tailor-Made India Travel Specialist\n\n`;
-      md += `> KoiKoi Travel is an inbound tour operator and travel company based in New Delhi, India. We specialize in personalized, tailor-made holiday packages, private verified chauffeur-driven vehicle rentals, handpicked heritage and boutique hotels, and dedicated 24/7 on-ground concierge support across India.\n\n`;
+      let md = `# KoiKoi Travel — Customize Tour Operator & Tailor-Made India Travel Specialist\n\n`;
+      md += `> KoiKoi Travel is a customize tour operator and travel company based in New Delhi, India. We specialize in personalized, tailor-made holiday packages, private verified chauffeur-driven vehicle rentals, handpicked heritage and boutique hotels, and dedicated 24/7 on-ground concierge support across India.\n\n`;
       md += `Atithi Devo Bhava ("Guest is God") guides our approach to hospitality. We assist international travelers, NRIs, couples, and families in exploring India with custom private itineraries, transparent fixed pricing, verified drivers, and zero forced commercial shopping stops.\n\n`;
 
       md += `## Core Services & Planning\n`;

@@ -366,9 +366,9 @@ export const Footer: React.FC = () => {
             <Link href="/terms-and-conditions" className="hover:text-white transition-colors">
               Terms of Service
             </Link>
-            {/* <Link href="/cancellation-and-refund" className="hover:text-white transition-colors">
+            <Link href="/cancellation-and-refund" className="hover:text-white transition-colors">
               Cancellation & Refund
-            </Link> */}
+            </Link>
             <Link href="/guest-gallery" className="hover:text-white transition-colors">
               Guest Gallery
             </Link>

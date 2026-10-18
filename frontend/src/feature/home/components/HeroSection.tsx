@@ -188,7 +188,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         )}
 
         <h1 className="font-luxury text-white text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-black tracking-tight sm:tracking-normal leading-tight max-w-4xl mx-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] block">
-          Tailor-Made India Tours by <span className="text-[#F8904D]">Your Trusted Inbound Tour Operator</span>
+          Tailor-Made India Tours by <span className="text-[#F8904D]">Your Trusted Customize Tour Operator</span>
         </h1>
 
         <p className="text-white/90 text-xs sm:text-sm md:text-base max-w-2xl mx-auto mt-2.5 sm:mt-3 leading-relaxed font-normal drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
