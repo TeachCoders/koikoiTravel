@@ -17,7 +17,7 @@ import { stripTourSuffix, pickPriorityLinks, type NavChild } from "@/lib/utils";
 import { QuoteModal } from "./QuoteModal";
 import { RequestCallbackModal } from "./RequestCallbackModal";
 import { DestinationTreeCountry, DestinationTreeState } from "./DestinationMegaMenu";
-import TopBar from "./TopBar";
+import LanguageSelector from "./LanguageSelector";
 import HeaderSearchBar from "./HeaderSearchBar";
 
 const DEFAULT_DESTINATION_LINKS: NavChild[] = [
@@ -649,7 +649,6 @@ export const Header: React.FC = () => {
         : "bg-white border-b border-[#f0f0f0]"
         }`}
     >
-      <TopBar isScrolled={isScrolled} />
       <div
         className={`max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 transition-[padding] duration-200 ${
           isScrolled ? "py-1.5" : "py-2"
@@ -808,6 +807,9 @@ export const Header: React.FC = () => {
                 ))}
               </nav>
 
+              {/* Language Selector */}
+              <LanguageSelector />
+
               {/* Create My Trip CTA Button (Right next to Nav links) */}
               <QuoteModal>
                 <button
@@ -820,12 +822,14 @@ export const Header: React.FC = () => {
             </div>
           )}
 
-          {/* Mobile Right Controls: Create My Trip + Hamburger Toggle */}
-          <div className="flex md:hidden items-center gap-2">
+          {/* Mobile Right Controls: Language Selector + Create My Trip + Hamburger Toggle */}
+          <div className="flex md:hidden items-center gap-1.5 sm:gap-2">
+            <LanguageSelector />
+
             <QuoteModal>
               <button
                 type="button"
-                className="btn-primary px-3 py-1.5 text-xs font-semibold flex items-center gap-1 shadow-xs cursor-pointer shrink-0"
+                className="btn-primary px-2.5 sm:px-3 py-1.5 text-xs font-semibold flex items-center gap-1 shadow-xs cursor-pointer shrink-0"
               >
                 <span>Create My Trip</span>
               </button>
