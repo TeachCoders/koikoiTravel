@@ -643,17 +643,18 @@ export const Header: React.FC = () => {
   });
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-200 ${isScrolled
-        ? "bg-white/98 backdrop-blur-md shadow-md border-b border-slate-200/80"
-        : "bg-white border-b border-slate-100"
-        }`}
-    >
-      <div
-        className={`max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 transition-[padding] duration-200 ${
-          isScrolled ? "py-1.5" : "py-2"
-        }`}
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-200 ${isScrolled
+          ? "bg-white/98 backdrop-blur-md shadow-md border-b border-slate-200/80"
+          : "bg-white border-b border-slate-100"
+          }`}
       >
+        <div
+          className={`max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 transition-[padding] duration-200 ${
+            isScrolled ? "py-2.5 sm:py-3" : "py-3.5 sm:py-4"
+          }`}
+        >
         {/* ===== Single Compact Row: Logo | Search Bar | Nav Links + Create My Trip ===== */}
         <div className="flex items-center justify-between gap-3 lg:gap-4 xl:gap-6">
           {/* 1. Brand Logo */}
@@ -928,6 +929,12 @@ export const Header: React.FC = () => {
           document.body
         )}
     </header>
+    {/* Spacer to preserve document flow so banner and content are never clipped under fixed header */}
+    <div
+      className={`${isOfferPage ? "h-[76px]" : "h-[120px] md:h-[76px]"} w-full shrink-0 pointer-events-none`}
+      aria-hidden="true"
+    />
+  </>
   );
 };
 
