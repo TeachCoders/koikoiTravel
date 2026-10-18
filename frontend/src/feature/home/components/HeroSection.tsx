@@ -167,12 +167,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         </div>
       )}
 
-      <div className="relative z-30 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-left">
-        {/* Eyebrow Tag */}
+      <div className="relative z-30 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-left font-outfit">
+        {/* Eyebrow Tag matching inner hero section */}
         <div className="mb-2.5 sm:mb-3">
-          <span className="text-white/90 text-[11px] sm:text-xs md:text-[13px] font-bold uppercase tracking-[0.2em] px-3.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/20 inline-block drop-shadow-sm select-none">
-            Private Journeys Across India
-          </span>
+          <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20 shadow-xl">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shadow-[0_0_8px_#F8904D]" />
+            <span className="font-luxury font-bold text-[11px] sm:text-xs md:text-[13px] uppercase tracking-[0.22em] text-white/95 select-none">
+              Private Journeys Across India
+            </span>
+          </div>
         </div>
 
         {/* Main Heading */}
@@ -184,7 +187,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         </h1>
 
         {/* Short Subtitle */}
-        <p className="text-white/95 text-xs sm:text-sm md:text-base max-w-2xl mt-2.5 sm:mt-3 leading-relaxed font-normal drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+        <p className="font-outfit text-white/95 text-xs sm:text-sm md:text-base max-w-2xl mt-2.5 sm:mt-3 leading-relaxed font-normal drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
           Handcrafted private journeys across India, thoughtfully tailored to your style and pace.
         </p>
 
@@ -192,7 +195,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-start gap-2.5 sm:gap-3.5">
           <Link
             href="/destinations"
-            className="px-5 sm:px-6 py-2.5 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-semibold text-xs sm:text-sm shadow-lg shadow-orange-950/30 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
+            className="font-outfit px-5 sm:px-6 py-2.5 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-semibold text-xs sm:text-sm shadow-lg shadow-orange-950/30 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
           >
             <span>Explore Destinations</span>
             <ArrowRight className="w-4 h-4" />
@@ -201,7 +204,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
           <QuoteModal>
             <button
               type="button"
-              className="px-5 sm:px-6 py-2.5 rounded-full bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs sm:text-sm shadow-lg shadow-black/20 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2 cursor-pointer"
+              className="font-outfit px-5 sm:px-6 py-2.5 rounded-full bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs sm:text-sm shadow-lg shadow-black/20 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2 cursor-pointer"
             >
               <span>Plan My Trip</span>
             </button>

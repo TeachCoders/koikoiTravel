@@ -310,9 +310,9 @@ export default function HeaderSearchBar() {
             }
           }}
           onKeyDown={handleKeyDown}
-          placeholder="Search destinations, tours, places..."
-          aria-label="Search destinations, tours, places"
-          className="w-full py-2 md:py-2.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none"
+          placeholder="Search destinations, tours..."
+          aria-label="Search destinations, tours"
+          className="w-full py-1.5 md:py-2 text-xs sm:text-[13px] text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none pr-3"
         />
 
         {query && (

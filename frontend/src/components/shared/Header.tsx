@@ -804,7 +804,7 @@ export const Header: React.FC = () => {
           {!isOfferPage && (
             <div className="hidden md:flex items-center gap-2 lg:gap-3 shrink-0">
               {/* Search Bar (Next to Language Selector) */}
-              <div className="w-[160px] lg:w-[210px] xl:w-[260px]">
+              <div className="w-[210px] lg:w-[270px] xl:w-[320px]">
                 <HeaderSearchBar />
               </div>
 
