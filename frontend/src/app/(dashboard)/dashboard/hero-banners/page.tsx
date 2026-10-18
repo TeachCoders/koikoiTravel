@@ -13,7 +13,11 @@ import {
   AlertCircle,
   Eye,
   ExternalLink,
+  Crop,
+  Maximize2,
+  Sliders,
 } from "lucide-react";
+import ImageCropUpload, { THIRD_PARTY_IMAGE_TOOLS } from "@/components/shared/ImageCropUpload";
 import {
   useAllHeroBanners,
   useCreateHeroBanner,
@@ -73,17 +77,29 @@ export default function HeroBannersAdminPage() {
     return allBanners.filter((b) => b.entityType === selectedCategoryFilter);
   }, [allBanners, selectedCategoryFilter]);
 
-  const openAddModal = () => {
-    setFormCategory("Home");
-    setSelectedEntityId(0);
-    setSelectedSlug("");
-    setTitle("");
-    setSubtitle("");
-    setAltText("");
-    setDisplayOrder(0);
-    setSelectedFile(null);
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setPreviewUrl(null);
+  const openAddModal = (bannerToEdit?: HeroFullBanner) => {
+    if (bannerToEdit) {
+      setFormCategory(bannerToEdit.entityType as HeroBannerEntityType);
+      setSelectedEntityId(bannerToEdit.entityId || 0);
+      setSelectedSlug(bannerToEdit.pageSlug || "");
+      setTitle(bannerToEdit.title || "");
+      setSubtitle(bannerToEdit.subtitle || "");
+      setAltText(bannerToEdit.altText || "");
+      setDisplayOrder(bannerToEdit.displayOrder || 0);
+      setSelectedFile(null);
+      setPreviewUrl(bannerToEdit.image || null);
+    } else {
+      setFormCategory("Home");
+      setSelectedEntityId(0);
+      setSelectedSlug("");
+      setTitle("");
+      setSubtitle("");
+      setAltText("");
+      setDisplayOrder(0);
+      setSelectedFile(null);
+      if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(null);
+    }
     setIsModalOpen(true);
   };
 
@@ -173,12 +189,44 @@ export default function HeroBannersAdminPage() {
         </div>
 
         <Button
-          onClick={openAddModal}
+          onClick={() => openAddModal()}
           className="bg-[#2E8B8B] hover:bg-[#267373] text-white flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold shadow-sm shadow-[#2E8B8B]/20"
         >
           <Plus size={18} />
           <span>Upload Full Banner</span>
         </Button>
+      </div>
+
+      {/* Third-Party & Built-in Crop / Resize Tools Banner */}
+      <div className="bg-gradient-to-r from-amber-50/80 via-orange-50/50 to-amber-50/30 border border-amber-200/90 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-2xs">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0">
+            <Crop size={18} />
+          </div>
+          <div>
+            <h2 className="text-sm font-bold text-slate-900">Crop & Resize Tools (Panoramic 1920 × 450 px)</h2>
+            <p className="text-xs text-slate-600">
+              Hero banners look sharpest at 1920 × 450 px. Crop and resize before upload, or use these free third-party tools:
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          {THIRD_PARTY_IMAGE_TOOLS.map((tool) => (
+            <a
+              key={tool.name}
+              href={tool.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold shadow-2xs transition-colors ${tool.color}`}
+              title={tool.desc}
+            >
+              <span>{tool.icon}</span>
+              <span>{tool.name}</span>
+              <ExternalLink size={10} className="opacity-60" />
+            </a>
+          ))}
+        </div>
       </div>
 
       {/* Category Filter Tabs */}
@@ -297,18 +345,32 @@ export default function HeroBannersAdminPage() {
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+                <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
                   <span className="text-[11px] text-slate-400">ID #{banner.id}</span>
 
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => setDeleteConfirmId(banner.id)}
-                    className="h-8 px-3 text-xs flex items-center gap-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 border border-rose-200"
-                  >
-                    <Trash2 size={13} />
-                    <span>Delete</span>
-                  </Button>
+                  <div className="flex items-center gap-1.5">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => openAddModal(banner)}
+                      className="h-8 px-2.5 text-xs flex items-center gap-1 border-slate-200 text-slate-700 hover:bg-[#2E8B8B]/10 hover:text-[#2E8B8B]"
+                      title="Re-crop or update this banner"
+                    >
+                      <Crop size={12} />
+                      <span>Crop / Resize</span>
+                    </Button>
+
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => setDeleteConfirmId(banner.id)}
+                      className="h-8 px-2.5 text-xs flex items-center gap-1 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 border border-rose-200"
+                    >
+                      <Trash2 size={12} />
+                      <span>Delete</span>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -503,42 +565,42 @@ export default function HeroBannersAdminPage() {
                 </div>
               )}
 
-              {/* Banner Image Upload Area */}
+              {/* Banner Image Upload Area with Integrated Crop & Resize */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                  Panoramic Banner Image <span className="text-rose-500">*</span>
+                  Panoramic Banner Image (1920 × 450 px) <span className="text-rose-500">*</span>
                 </label>
-                <div className="relative border-2 border-dashed border-slate-300 hover:border-[#2E8B8B] rounded-2xl p-4 transition-colors bg-slate-50/50 text-center">
-                  <input
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp,image/avif"
-                    onChange={handleFileChange}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  />
-                  <div className="flex flex-col items-center justify-center py-4">
-                    <div className="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center text-[#2E8B8B] mb-2 border border-slate-100">
-                      <ImageIcon size={24} />
-                    </div>
-                    <p className="text-sm font-semibold text-slate-800">
-                      {selectedFile ? selectedFile.name : "Click or drag banner image here"}
-                    </p>
-                    <p className="text-xs text-slate-400 mt-1">
-                      Recommended: <span className="font-semibold text-slate-600">1920 × 450 px</span> (Panoramic 21:9 or 16:6 aspect ratio). Auto-optimized to WebP.
-                    </p>
-                  </div>
-                </div>
+                <ImageCropUpload
+                  onFileSelect={(file) => {
+                    setSelectedFile(file);
+                    if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+                    setPreviewUrl(URL.createObjectURL(file));
+                  }}
+                  onClear={() => {
+                    setSelectedFile(null);
+                    if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+                    setPreviewUrl(null);
+                  }}
+                  maxWidth={1920}
+                  maxHeight={450}
+                  aspectRatioPreset="hero"
+                  showThirdPartyTools={true}
+                  label="Upload Panoramic Banner (1920 × 450 px) — Click to Crop & Resize"
+                  initialImage={previewUrl || undefined}
+                />
 
-                {/* Live Preview */}
+                {/* Live Preview with Text Overlays */}
                 {previewUrl && (
                   <div className="mt-3">
                     <p className="text-xs font-bold text-slate-500 mb-1.5 flex items-center gap-1">
-                      <Eye size={13} /> Live Panoramic Ratio Preview:
+                      <Eye size={13} /> Live Panoramic Ratio (1920×450) Overlay Preview:
                     </p>
                     <div className="relative w-full h-36 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200">
                       <Image
                         src={previewUrl}
                         alt="Preview"
                         fill
+                        unoptimized={previewUrl.startsWith("blob:")}
                         className="object-cover object-center"
                       />
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-center p-4">

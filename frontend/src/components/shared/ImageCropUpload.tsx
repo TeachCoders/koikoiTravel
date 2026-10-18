@@ -1,14 +1,67 @@
 "use client";
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { X, RotateCcw, Check, Crop, ImageIcon, Link, Upload, Loader2, ZoomIn, ZoomOut } from "lucide-react";
+import {
+  X,
+  RotateCcw,
+  Check,
+  Crop,
+  ImageIcon,
+  Link,
+  Upload,
+  Loader2,
+  ZoomIn,
+  ZoomOut,
+  ExternalLink,
+  Maximize2,
+  Lock,
+  Unlock,
+  Sliders,
+} from "lucide-react";
 import apiClient from "@/lib/apiClient";
 
-interface ImageCropUploadProps {
+export const THIRD_PARTY_IMAGE_TOOLS = [
+  {
+    name: "iLoveIMG Crop",
+    desc: "Free online image cropper with custom pixel/ratio inputs",
+    url: "https://www.iloveimg.com/crop-image",
+    icon: "✂️",
+    badge: "Crop Tool",
+    color: "bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100",
+  },
+  {
+    name: "iLoveIMG Resize",
+    desc: "Resize to exact 1920 × 450 px dimensions",
+    url: "https://www.iloveimg.com/resize-image",
+    icon: "📐",
+    badge: "Resize Tool",
+    color: "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100",
+  },
+  {
+    name: "Google Squoosh",
+    desc: "Compress & resize with live visual comparison",
+    url: "https://squoosh.app",
+    icon: "⚡",
+    badge: "Compress & Resize",
+    color: "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100",
+  },
+  {
+    name: "Photopea",
+    desc: "Full Photoshop editor directly in your browser",
+    url: "https://www.photopea.com",
+    icon: "🎨",
+    badge: "Full Editor",
+    color: "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100",
+  },
+];
+
+export interface ImageCropUploadProps {
   onFileSelect: (file: File) => void;
   onClear?: () => void;
   maxWidth?: number;
   maxHeight?: number;
+  aspectRatioPreset?: "hero" | "21:9" | "16:9" | "free";
+  showThirdPartyTools?: boolean;
   outputFormat?: "image/jpeg" | "image/webp" | "image/png";
   quality?: number;
   borderRadius?: number;
@@ -21,11 +74,19 @@ interface ImageCropUploadProps {
 type ResizeEdge = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw" | "move" | null;
 
 export default function ImageCropUpload({
-  onFileSelect, onClear,
-  maxWidth = 1920, maxHeight = 750,
-  outputFormat = "image/webp", quality = 0.80,
-  borderRadius = 12, shadow = true,
-  className = "", label = "Upload Image", initialImage
+  onFileSelect,
+  onClear,
+  maxWidth = 1920,
+  maxHeight = 750,
+  aspectRatioPreset = "free",
+  showThirdPartyTools = false,
+  outputFormat = "image/webp",
+  quality = 0.80,
+  borderRadius = 12,
+  shadow = true,
+  className = "",
+  label = "Upload Image",
+  initialImage,
 }: ImageCropUploadProps) {
   const [src, setSrc] = useState<string | null>(null);
   const [cropOpen, setCropOpen] = useState(false);
@@ -37,6 +98,22 @@ export default function ImageCropUpload({
   const [urlLoading, setUrlLoading] = useState(false);
   const [urlError, setUrlError] = useState("");
   const [zoomPercent, setZoomPercent] = useState(100);
+
+  // Aspect Ratio & Resize controls
+  const initialRatio =
+    aspectRatioPreset === "hero"
+      ? 1920 / 450
+      : aspectRatioPreset === "21:9"
+      ? 21 / 9
+      : aspectRatioPreset === "16:9"
+      ? 16 / 9
+      : "free";
+
+  const [activePreset, setActivePreset] = useState<"hero" | "21:9" | "16:9" | "free">(aspectRatioPreset);
+  const [selectedRatio, setSelectedRatio] = useState<number | "free">(initialRatio);
+  const [targetWidth, setTargetWidth] = useState<number>(maxWidth);
+  const [targetHeight, setTargetHeight] = useState<number>(maxHeight);
+  const [lockRatio, setLockRatio] = useState<boolean>(true);
 
   useEffect(() => {
     if (initialImage) {
@@ -134,8 +211,16 @@ export default function ImageCropUpload({
       imgOffsetRef.current = { x: 0, y: 0 };
       setZoomPercent(Math.round(initialScale * 100));
 
-      const boxW = cw * 0.8;
-      const boxH = ch * 0.8;
+      let boxW = cw * 0.8;
+      let boxH = ch * 0.8;
+      if (typeof selectedRatio === "number") {
+        boxW = cw * 0.85;
+        boxH = boxW / selectedRatio;
+        if (boxH > ch * 0.85) {
+          boxH = ch * 0.85;
+          boxW = boxH * selectedRatio;
+        }
+      }
       const box = { x: (cw - boxW) / 2, y: (ch - boxH) / 2, w: boxW, h: boxH };
       cropBoxRef.current = box;
       setCropBox(box);
@@ -143,7 +228,51 @@ export default function ImageCropUpload({
       renderCanvas();
     };
     img.src = imgSrc;
-  }, [getContainDimensions, renderCanvas]);
+  }, [getContainDimensions, renderCanvas, selectedRatio]);
+
+  const setPresetRatio = useCallback((preset: "hero" | "21:9" | "16:9" | "free") => {
+    setActivePreset(preset);
+    let ratio: number | "free" = "free";
+    if (preset === "hero") {
+      ratio = 1920 / 450;
+      setTargetWidth(1920);
+      setTargetHeight(450);
+    } else if (preset === "21:9") {
+      ratio = 21 / 9;
+      setTargetWidth(1920);
+      setTargetHeight(Math.round(1920 / (21 / 9)));
+    } else if (preset === "16:9") {
+      ratio = 16 / 9;
+      setTargetWidth(1920);
+      setTargetHeight(1080);
+    }
+    setSelectedRatio(ratio);
+
+    const container = containerRef.current;
+    if (!container) return;
+    const cw = container.clientWidth;
+    const ch = container.clientHeight;
+
+    if (ratio === "free") return;
+
+    let w = cw * 0.85;
+    let h = w / ratio;
+    if (h > ch * 0.85) {
+      h = ch * 0.85;
+      w = h * ratio;
+    }
+    const minSize = 30;
+    w = Math.max(minSize, Math.min(w, cw));
+    h = Math.max(minSize, Math.min(h, ch));
+    const box = {
+      x: Math.max(0, (cw - w) / 2),
+      y: Math.max(0, (ch - h) / 2),
+      w,
+      h,
+    };
+    cropBoxRef.current = box;
+    setCropBox(box);
+  }, []);
 
   useEffect(() => {
     if (src && cropOpen) loadImg(src);
@@ -190,41 +319,77 @@ export default function ImageCropUpload({
 
     let newBox = { ...startBox };
 
-    if (mode === "move") {
-      newBox.x = startBox.x + dx;
-      newBox.y = startBox.y + dy;
-    } else if (mode === "e") {
-      newBox.w = startBox.w + dx;
-    } else if (mode === "w") {
-      newBox.x = startBox.x + dx;
-      newBox.w = startBox.w - dx;
-    } else if (mode === "s") {
-      newBox.h = startBox.h + dy;
-    } else if (mode === "n") {
-      newBox.y = startBox.y + dy;
-      newBox.h = startBox.h - dy;
-    } else if (mode === "se") {
-      newBox.w = startBox.w + dx;
-      newBox.h = startBox.h + dy;
-    } else if (mode === "sw") {
-      newBox.x = startBox.x + dx;
-      newBox.w = startBox.w - dx;
-      newBox.h = startBox.h + dy;
-    } else if (mode === "ne") {
-      newBox.w = startBox.w + dx;
-      newBox.y = startBox.y + dy;
-      newBox.h = startBox.h - dy;
-    } else if (mode === "nw") {
-      newBox.x = startBox.x + dx;
-      newBox.y = startBox.y + dy;
-      newBox.w = startBox.w - dx;
-      newBox.h = startBox.h - dy;
+    if (typeof selectedRatio === "number" && mode !== "move") {
+      if (mode === "e" || mode === "w") {
+        if (mode === "e") newBox.w = startBox.w + dx;
+        if (mode === "w") {
+          newBox.x = startBox.x + dx;
+          newBox.w = startBox.w - dx;
+        }
+        newBox.h = newBox.w / selectedRatio;
+      } else if (mode === "s" || mode === "n") {
+        if (mode === "s") newBox.h = startBox.h + dy;
+        if (mode === "n") {
+          newBox.y = startBox.y + dy;
+          newBox.h = startBox.h - dy;
+        }
+        newBox.w = newBox.h * selectedRatio;
+      } else if (mode === "se") {
+        newBox.w = startBox.w + dx;
+        newBox.h = newBox.w / selectedRatio;
+      } else if (mode === "ne") {
+        newBox.w = startBox.w + dx;
+        const newH = newBox.w / selectedRatio;
+        newBox.y = startBox.y + (startBox.h - newH);
+        newBox.h = newH;
+      } else if (mode === "sw") {
+        newBox.x = startBox.x + dx;
+        newBox.w = startBox.w - dx;
+        newBox.h = newBox.w / selectedRatio;
+      } else if (mode === "nw") {
+        newBox.x = startBox.x + dx;
+        newBox.w = startBox.w - dx;
+        const newH = newBox.w / selectedRatio;
+        newBox.y = startBox.y + (startBox.h - newH);
+        newBox.h = newH;
+      }
+    } else {
+      if (mode === "move") {
+        newBox.x = startBox.x + dx;
+        newBox.y = startBox.y + dy;
+      } else if (mode === "e") {
+        newBox.w = startBox.w + dx;
+      } else if (mode === "w") {
+        newBox.x = startBox.x + dx;
+        newBox.w = startBox.w - dx;
+      } else if (mode === "s") {
+        newBox.h = startBox.h + dy;
+      } else if (mode === "n") {
+        newBox.y = startBox.y + dy;
+        newBox.h = startBox.h - dy;
+      } else if (mode === "se") {
+        newBox.w = startBox.w + dx;
+        newBox.h = startBox.h + dy;
+      } else if (mode === "sw") {
+        newBox.x = startBox.x + dx;
+        newBox.w = startBox.w - dx;
+        newBox.h = startBox.h + dy;
+      } else if (mode === "ne") {
+        newBox.w = startBox.w + dx;
+        newBox.y = startBox.y + dy;
+        newBox.h = startBox.h - dy;
+      } else if (mode === "nw") {
+        newBox.x = startBox.x + dx;
+        newBox.y = startBox.y + dy;
+        newBox.w = startBox.w - dx;
+        newBox.h = startBox.h - dy;
+      }
     }
 
     newBox = clampCropBox(newBox, cw, ch);
     cropBoxRef.current = newBox;
     setCropBox(newBox);
-  }, []);
+  }, [selectedRatio]);
 
   const handleMouseUp = useCallback(() => {
     interactRef.current = null;
@@ -266,19 +431,11 @@ export default function ImageCropUpload({
     const clampedSw = Math.min(sw, img.naturalWidth - clampedSx);
     const clampedSh = Math.min(sh, img.naturalHeight - clampedSy);
 
-    // Determine final output dimensions respecting max constraints and allowing upscale
-    let outW = Math.round(clampedSw);
-    let outH = Math.round(clampedSh);
-    // First, downscale if exceeding max dimensions (existing behavior)
-    if (outW > maxWidth) { outH = Math.round((outH / outW) * maxWidth); outW = maxWidth; }
-    if (outH > maxHeight) { outW = Math.round((outW / outH) * maxHeight); outH = maxHeight; }
-    // Then, upscale if both dimensions are below the max limits to utilize larger size
-    if (outW < maxWidth && outH < maxHeight) {
-      const upScale = Math.min(maxWidth / outW, maxHeight / outH);
-      outW = Math.round(outW * upScale);
-      outH = Math.round(outH * upScale);
-    }
+    // Determine final output dimensions respecting custom target resize or max constraints
+    let outW = targetWidth > 0 ? targetWidth : Math.round(clampedSw);
+    let outH = targetHeight > 0 ? targetHeight : Math.round(clampedSh);
     if (outW <= 0 || outH <= 0) return;
+
     // Store output size for UI display
     setOutputSize({ w: outW, h: outH });
     const outCanvas = document.createElement("canvas");
@@ -300,7 +457,7 @@ export default function ImageCropUpload({
       setUrlInput("");
       onFileSelect(file);
     }, outputFormat, quality);
-  }, [maxWidth, maxHeight, outputFormat, quality, onFileSelect, getContainDimensions, customFileName]);
+  }, [targetWidth, targetHeight, outputFormat, quality, onFileSelect, getContainDimensions, customFileName]);
 
   const handleClear = () => { if (preview) URL.revokeObjectURL(preview); setPreview(null); setSrc(null); setCropOpen(false); setUrlInput(""); setCustomFileName(""); onClear?.(); };
   const handleReCrop = () => { if (preview) { URL.revokeObjectURL(preview); setPreview(null); } fileInputRef.current?.click(); };
@@ -397,12 +554,151 @@ const [outputSize, setOutputSize] = useState<null | { w: number; h: number }>(nu
         </div>
       )}
 
+      {showThirdPartyTools && !cropOpen && (
+        <div className="bg-amber-50/70 border border-amber-200/90 rounded-2xl p-3.5 space-y-2 mb-3">
+          <div className="flex items-center justify-between">
+            <span className="text-amber-800 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5">
+              <ExternalLink size={13} /> Third-Party Free Image Tools (Crop & Resize)
+            </span>
+            <span className="text-[10.5px] text-amber-700 font-medium">Opens in new tab</span>
+          </div>
+          <p className="text-xs text-slate-600">
+            Recommended size: <strong className="text-slate-800 font-bold">{maxWidth} × {maxHeight} px</strong>. You can crop and resize here or use these free online tools:
+          </p>
+          <div className="flex flex-wrap gap-2 pt-0.5">
+            {THIRD_PARTY_IMAGE_TOOLS.map((tool) => (
+              <a
+                key={tool.name}
+                href={tool.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold shadow-2xs transition-colors ${tool.color}`}
+                title={tool.desc}
+              >
+                <span>{tool.icon}</span>
+                <span>{tool.name}</span>
+                <ExternalLink size={10} className="opacity-60" />
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
       {cropOpen && src && (
         <div className="fixed inset-0 z-[100] bg-black/70 flex items-center justify-center p-4" onMouseUp={handleMouseUp}>
-          <div className="bg-white rounded-2xl w-full max-w-[1100px] max-h-[92vh] flex flex-col shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-5 py-3 border-b border-slate-200">
-              <div className="flex items-center gap-2"><Crop size={18} className="text-indigo-600" /><span className="font-bold text-slate-800 text-sm">Crop & Resize</span></div>
-              <span className="text-xs text-slate-400">Drag crop box, scroll to zoom image</span>
+          <div className="bg-white rounded-2xl w-full max-w-[1200px] max-h-[92vh] flex flex-col shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            {/* Modal Header with Presets, Resize, and Third-Party Links */}
+            <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-b border-slate-200 bg-slate-50/90">
+              <div className="flex items-center gap-2">
+                <Crop size={18} className="text-indigo-600" />
+                <span className="font-bold text-slate-800 text-sm">Crop & Resize</span>
+              </div>
+
+              {/* Ratio Presets */}
+              <div className="flex items-center gap-1 bg-slate-200/80 p-1 rounded-xl text-xs font-semibold">
+                <span className="text-[10.5px] text-slate-500 px-1.5 uppercase font-bold tracking-wider hidden sm:inline">Preset:</span>
+                <button
+                  type="button"
+                  onClick={() => setPresetRatio("hero")}
+                  className={`px-2.5 py-1 rounded-lg transition-all text-xs ${
+                    activePreset === "hero" ? "bg-white text-indigo-700 shadow-xs font-bold" : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  Hero (1920×450)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPresetRatio("21:9")}
+                  className={`px-2.5 py-1 rounded-lg transition-all text-xs ${
+                    activePreset === "21:9" ? "bg-white text-indigo-700 shadow-xs font-bold" : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  21:9
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPresetRatio("16:9")}
+                  className={`px-2.5 py-1 rounded-lg transition-all text-xs ${
+                    activePreset === "16:9" ? "bg-white text-indigo-700 shadow-xs font-bold" : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  16:9
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPresetRatio("free")}
+                  className={`px-2.5 py-1 rounded-lg transition-all text-xs ${
+                    activePreset === "free" ? "bg-white text-indigo-700 shadow-xs font-bold" : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  Free
+                </button>
+              </div>
+
+              {/* Resize Input Controls */}
+              <div className="flex items-center gap-1.5 bg-white border border-slate-200 px-2.5 py-1 rounded-xl text-xs">
+                <span className="text-slate-500 font-medium">Resize:</span>
+                <input
+                  type="number"
+                  value={targetWidth}
+                  onChange={(e) => {
+                    const w = parseInt(e.target.value) || 0;
+                    setTargetWidth(w);
+                    if (lockRatio && typeof selectedRatio === "number") {
+                      setTargetHeight(Math.round(w / selectedRatio));
+                    }
+                  }}
+                  className="w-16 px-1.5 py-0.5 border border-slate-300 rounded text-center text-xs font-mono font-semibold"
+                  title="Target Width (px)"
+                />
+                <span className="text-slate-400">×</span>
+                <input
+                  type="number"
+                  value={targetHeight}
+                  onChange={(e) => {
+                    const h = parseInt(e.target.value) || 0;
+                    setTargetHeight(h);
+                    if (lockRatio && typeof selectedRatio === "number") {
+                      setTargetWidth(Math.round(h * selectedRatio));
+                    }
+                  }}
+                  className="w-16 px-1.5 py-0.5 border border-slate-300 rounded text-center text-xs font-mono font-semibold"
+                  title="Target Height (px)"
+                />
+                <span className="text-slate-400 text-[11px]">px</span>
+                <button
+                  type="button"
+                  onClick={() => setLockRatio(!lockRatio)}
+                  title={lockRatio ? "Lock aspect ratio" : "Unlock aspect ratio"}
+                  className={`p-1 rounded transition-colors ${lockRatio ? "text-indigo-600 bg-indigo-50" : "text-slate-400 hover:bg-slate-100"}`}
+                >
+                  {lockRatio ? <Lock size={12} /> : <Unlock size={12} />}
+                </button>
+              </div>
+
+              {/* 3rd-Party Tools Quick Buttons */}
+              <div className="flex items-center gap-1.5">
+                <a
+                  href="https://www.iloveimg.com/crop-image"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-2.5 py-1 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-rose-700 text-xs font-semibold rounded-lg flex items-center gap-1 shadow-2xs transition-colors"
+                  title="Open free iLoveIMG Crop tool in new tab"
+                >
+                  <span>✂️ iLoveIMG</span>
+                  <ExternalLink size={10} />
+                </a>
+                <a
+                  href="https://www.iloveimg.com/resize-image"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-2.5 py-1 bg-white hover:bg-blue-50 border border-slate-200 hover:border-blue-200 text-blue-700 text-xs font-semibold rounded-lg flex items-center gap-1 shadow-2xs transition-colors"
+                  title="Open free iLoveIMG Resize tool in new tab"
+                >
+                  <span>📐 Resize</span>
+                  <ExternalLink size={10} />
+                </a>
+              </div>
             </div>
             <div ref={containerRef}
               className="relative flex-1 overflow-hidden bg-slate-900"
