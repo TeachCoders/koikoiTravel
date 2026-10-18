@@ -605,6 +605,9 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       {/* ===== FAQ SECTION ===== */}
       <FaqSection
         faqs={state.faqs}
+        contextName={state.title}
+        contextSlug={state.slug}
+        entityType="State"
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
       />

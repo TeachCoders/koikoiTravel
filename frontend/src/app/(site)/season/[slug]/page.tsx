@@ -4,8 +4,8 @@ import SeasonDetail from "@/feature/season/components/SeasonDetail";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema, touristDestinationSchema, itemListSchema, faqSchema, graphSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
-import { stripHtml,  truncateMeta } from "@/lib/utils";
-import { HOME_FAQS } from "@/lib/homeFaqs";
+import { truncateMeta } from "@/lib/utils";
+import { getDestinationFaqs } from "@/lib/destinationFaqs";
 import type { Season } from "@/feature/season/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
@@ -69,12 +69,12 @@ export default async function SeasonPage({ params }: Props) {
   const initialJourneys = await fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true");
   const seasonJourneys = resolveSeasonJourneys(initialJourneys?.data, season);
 
-  const seasonFaqs =
-    season.faqs && season.faqs.length > 0
-      ? season.faqs
-          .filter((f) => f?.ques && f?.ans)
-          .map((f) => ({ question: stripHtml(f.ques), answer: stripHtml(f.ans) }))
-      : HOME_FAQS;
+  const seasonFaqs = getDestinationFaqs(
+    season.slug,
+    season.title,
+    "Season",
+    season.faqs
+  );
 
   const schema = graphSchema([
     touristDestinationSchema({

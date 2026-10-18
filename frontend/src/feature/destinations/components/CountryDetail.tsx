@@ -532,6 +532,9 @@ function CountryContent({
       {/* ===== FAQ SECTION ===== */}
       <FaqSection
         faqs={country.faqs}
+        contextName={displayTitle}
+        contextSlug={country.slug}
+        entityType="Country"
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
       />

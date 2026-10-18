@@ -41,13 +41,27 @@ function journeySlugCanonical(slug: string, stored?: string | null): string {
   return base.startsWith("/tour-packages/") ? base : derived;
 }
 
-function resolveFaqItems(faqs?: { ques: string; ans: string }[]): { question: string; answer: string }[] {
+import { getDestinationFaqs } from "@/lib/destinationFaqs";
+
+function resolveFaqItems(
+  faqs?: { ques: string; ans: string }[],
+  contextSlug?: string,
+  contextName?: string,
+  entityType?: string
+): { question: string; answer: string }[] {
   if (faqs && faqs.length > 0) {
-    return faqs
+    const valid = faqs
       .filter((f) => f?.ques && f?.ans)
       .map((f) => ({ question: stripHtml(f.ques), answer: stripHtml(f.ans) }));
+    if (valid.length > 0) return valid;
   }
-  return HOME_FAQS.map((f) => ({ question: f.question, answer: f.answer }));
+  if (contextSlug || contextName) {
+    return getDestinationFaqs(contextSlug, contextName, entityType).map((f) => ({
+      question: f.question,
+      answer: f.answer,
+    }));
+  }
+  return [];
 }
 
 export const revalidate = 300;
@@ -276,7 +290,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
           { name: "Tour Packages", path: "/tour-packages" },
           { name: country.title.replace(/\s*Tour$/i, ""), path: `/tour-packages/${country.slug}` },
         ]),
-        faqSchema(resolveFaqItems(country.faqs)),
+        faqSchema(resolveFaqItems(country.faqs, country.slug, country.title, "Country")),
       ]);
 
       return (
@@ -321,7 +335,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
             : []),
           { name: state.title, path: `/tour-packages/${state.country?.slug}/${state.slug}` },
         ]),
-        faqSchema(resolveFaqItems(state.faqs)),
+        faqSchema(resolveFaqItems(state.faqs, state.slug, state.title, "State")),
       ]);
       return (
         <div className="flex flex-col min-h-screen bg-slate-50 font-sans">
@@ -363,7 +377,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
             : []),
           { name: city.title, path: `/tour-packages/${city.state?.country?.slug}/${city.state?.slug}/${city.slug}` },
         ]),
-        faqSchema(resolveFaqItems(city.faqs)),
+        faqSchema(resolveFaqItems(city.faqs, city.slug, city.title, "City")),
       ]);
       return (
         <div className="flex flex-col min-h-screen bg-slate-50 font-sans">
@@ -378,7 +392,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
     case "journey": {
       const { journey } = resolved;
       const canonical = journeySlugCanonical(journey.slug, journey.canonical);
-      const journeyFaqs = resolveFaqItems(journey.faqs);
+      const journeyFaqs = resolveFaqItems(journey.faqs, journey.slug, journey.title, "Journey");
       const breadcrumbItems: { name: string; path: string }[] = [
         { name: "Home", path: "/" },
         { name: "Tour Packages", path: "/tour-packages" },

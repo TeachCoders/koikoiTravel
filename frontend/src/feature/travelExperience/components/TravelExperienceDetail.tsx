@@ -478,6 +478,9 @@ function ExperienceContent({
             ? (GOLDEN_TRIANGLE_FAQS as any)
             : experience?.faqs
         }
+        contextName={experience.title}
+        contextSlug={experience.slug}
+        entityType="TravelExperience"
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
       />

@@ -6,7 +6,7 @@ import BlogCard from "@/feature/blog/components/BlogCard";
 import BlogSidebar from "@/feature/blog/components/BlogSidebar";
 import RichContent from "@/components/shared/RichContent";
 import JsonLd from "@/components/shared/JsonLd";
-import { articleSchema, breadcrumbSchema, graphSchema } from "@/lib/jsonLd";
+import { articleSchema, breadcrumbSchema, faqSchema, graphSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached, SERVER_API_BASE } from "@/feature/destinations/api/public-server";
 import { stripHtml, absoluteUrl,  truncateMeta } from "@/lib/utils";
 import { formatBlogDate } from "@/lib/dateUtils";
@@ -14,6 +14,8 @@ import type { BlogPost } from "@/feature/blog/type";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import { blogPostParams } from "@/lib/prerender";
+import { BLOG_FAQS } from "@/lib/destinationFaqs";
+import FaqSection from "@/feature/home/components/FaqSection";
 
 export const revalidate = 300;
 
@@ -128,9 +130,23 @@ export default async function BlogPostPage({ params }: Props) {
     { name: post.title, path: `/blog/${post.slug}` },
   ]);
 
+  const rawPostFaqs = (post as any).faqs;
+  const blogFaqs =
+    rawPostFaqs && rawPostFaqs.length > 0
+      ? rawPostFaqs.map((f: any) => ({
+          question: stripHtml(f.ques || f.question || ""),
+          answer: stripHtml(f.ans || f.answer || ""),
+        }))
+      : BLOG_FAQS[post.slug] || [];
+
+  const schemaNodes: any[] = [articleSchemaData, breadcrumbData];
+  if (blogFaqs.length > 0) {
+    schemaNodes.push(faqSchema(blogFaqs));
+  }
+
   return (
     <div className="bg-[#f8f8f8] min-h-screen pb-20 font-sans">
-      <JsonLd data={graphSchema([articleSchemaData, breadcrumbData])} />
+      <JsonLd data={graphSchema(schemaNodes)} />
 
       {/* ===== HERO SECTION ===== */}
       <section className="relative h-[480px] md:h-[560px] overflow-hidden bg-slate-900 flex items-center justify-center">
@@ -201,6 +217,16 @@ export default async function BlogPostPage({ params }: Props) {
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_420px] xl:grid-cols-[minmax(0,1fr)_480px] lg:gap-16">
           <article className="min-w-0 bg-white rounded-3xl px-8 pt-0 pb-8 md:px-14 md:pt-0 md:pb-14 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200/60 prose prose-lg prose-slate max-w-none">
             {post.moreDescription && <RichContent html={post.moreDescription} className="rich-text--legacy" />}
+
+            {blogFaqs.length > 0 && (
+              <div className="not-prose mt-12 pt-8 border-t border-slate-200/80">
+                <FaqSection
+                  faqs={blogFaqs}
+                  heading="Frequently Asked Questions"
+                  subtitle={`Common traveler questions and practical advice for this trip.`}
+                />
+              </div>
+            )}
 
             {/* ===== END OF ARTICLE CONVERSION WIDGET ===== */}
             <div className="not-prose mt-14 pt-10 border-t border-slate-200/80">

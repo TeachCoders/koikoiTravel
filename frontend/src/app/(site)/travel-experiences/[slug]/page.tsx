@@ -11,6 +11,7 @@ import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOp
 import { resolveTravelExperienceJourneys } from "@/feature/journey/destinationJourneys";
 import { travelExperienceParams } from "@/lib/prerender";
 
+import { getDestinationFaqs } from "@/lib/destinationFaqs";
 import { GOLDEN_TRIANGLE_FAQS } from "@/feature/travelExperience/goldenTriangleFaqs";
 
 export const revalidate = 300;
@@ -78,17 +79,13 @@ export default async function TravelExperiencePage({ params }: Props) {
     journeys = await fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true");
     const { allOrderedJourneys } = resolveTravelExperienceJourneys(journeys?.data, data);
     const isGoldenTriangle = slug === "golden-triangle" || data.slug === "golden-triangle";
-    const faqSource = isGoldenTriangle
-      ? GOLDEN_TRIANGLE_FAQS
-      : data.faqs && data.faqs.length > 0
-        ? data.faqs
-        : [];
-    const faqItems =
-      faqSource.length > 0
-        ? faqSource
-            .filter((f) => f?.ques && f?.ans)
-            .map((f) => ({ question: stripHtml(f.ques), answer: stripHtml(f.ans) }))
-        : HOME_FAQS;
+    const rawFaqs = isGoldenTriangle ? (GOLDEN_TRIANGLE_FAQS as any) : data.faqs;
+    const faqItems = getDestinationFaqs(
+      data.slug,
+      data.title,
+      "TravelExperience",
+      rawFaqs
+    );
     schema = graphSchema([
       touristAttractionSchema({
         name: data.h1Title || data.title,

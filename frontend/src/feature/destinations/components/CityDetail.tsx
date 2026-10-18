@@ -440,6 +440,9 @@ function CityContent({
       {/* ===== FAQ SECTION ===== */}
       <FaqSection
         faqs={city.faqs}
+        contextName={city.title}
+        contextSlug={city.slug}
+        entityType="City"
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
       />

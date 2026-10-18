@@ -298,6 +298,9 @@ export default function SeasonDetail({
       {/* ===== FAQ SECTION ===== */}
       <FaqSection
         faqs={initialSeason.faqs}
+        contextName={initialSeason.title}
+        contextSlug={initialSeason.slug}
+        entityType="Season"
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
       />

@@ -5,37 +5,63 @@ import { HelpCircle, ChevronDown, MessageSquare, Sparkles } from "lucide-react";
 import { SectionLabel } from "@/components/shared/SectionLabel";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import { HOME_FAQS } from "@/lib/homeFaqs";
+import { getDestinationFaqs } from "@/lib/destinationFaqs";
 import RichContent from "@/components/shared/RichContent";
 import { autoLinkKeywords } from "@/lib/autoInternalLink";
 
 interface FaqSectionProps {
   faqs?: any[];
+  contextName?: string;
+  contextSlug?: string;
+  entityType?: string;
   heading?: string;
   subtitle?: string;
   sharedLinkedHrefs?: Set<string>;
   excludeHrefs?: string[];
+  isHomePage?: boolean;
 }
 
 export const FaqSection: React.FC<FaqSectionProps> = ({
   faqs,
-  heading = "Frequently Asked Questions",
-  subtitle = "Simple answers about booking, payments, trip plans and help during your holiday.",
+  contextName,
+  contextSlug,
+  entityType,
+  heading,
+  subtitle,
   sharedLinkedHrefs,
   excludeHrefs,
+  isHomePage = false,
 }) => {
   const [openId, setOpenId] = useState<number | string | null>(1);
   const toggleFaq = (id: number | string) => setOpenId(openId === id ? null : id);
   
   const faqData = useMemo(() => {
-    return faqs && faqs.length > 0 
-      ? faqs.map((f: any, i) => ({
-          id: f.id || i + 1,
-          question: f.ques || f.question || "",
-          answer: f.ans || f.answer || "",
-          category: f.category || undefined,
-        }))
-      : HOME_FAQS;
-  }, [faqs]);
+    if (faqs && faqs.length > 0) {
+      return faqs.map((f: any, i) => ({
+        id: f.id || i + 1,
+        question: f.ques || f.question || "",
+        answer: f.ans || f.answer || "",
+        category: f.category || undefined,
+      }));
+    }
+    if (contextSlug || contextName) {
+      return getDestinationFaqs(contextSlug, contextName, entityType).map((f, i) => ({
+        id: i + 1,
+        question: f.question,
+        answer: f.answer,
+        category: undefined,
+      }));
+    }
+    if (isHomePage) {
+      return HOME_FAQS;
+    }
+    return [];
+  }, [faqs, contextSlug, contextName, entityType, isHomePage]);
+
+  const displayHeading = heading || (contextName ? `Frequently Asked Questions about ${contextName}` : "Frequently Asked Questions");
+  const displaySubtitle = subtitle || (contextName ? `Helpful answers to common traveler questions when planning a trip to ${contextName}.` : "Simple answers about booking, payments, trip plans and help during your holiday.");
+
+  if (faqData.length === 0) return null;
 
   // Split into 2 columns for desktop
   const col1 = useMemo(() => faqData.filter((_, i) => i % 2 === 0), [faqData]);
@@ -111,15 +137,15 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
         <div>
           <SectionLabel icon={<HelpCircle className="w-4 h-4" />}>Got Questions?</SectionLabel>
           <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-slate-900 mt-2">
-            {heading === "Frequently Asked Questions" ? (
+            {displayHeading === "Frequently Asked Questions" ? (
               <>
                 Frequently Asked <span className="text-[#F8904D]">Questions</span>
               </>
             ) : (
-              heading
+              displayHeading
             )}
           </h2>
-          <p className="mt-2 text-[15px] text-slate-500 max-w-2xl leading-relaxed">{subtitle}</p>
+          <p className="mt-2 text-[15px] text-slate-500 max-w-2xl leading-relaxed">{displaySubtitle}</p>
         </div>
 
         {/* 2-Column FAQ Layout on Desktop */}
