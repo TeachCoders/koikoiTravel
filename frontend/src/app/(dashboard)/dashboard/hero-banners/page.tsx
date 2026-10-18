@@ -267,13 +267,31 @@ export default function HeroBannersAdminPage() {
           </div>
         </div>
 
-        <Button
-          onClick={() => openAddModal()}
-          className="bg-[#2E8B8B] hover:bg-[#267373] text-white flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold shadow-sm shadow-[#2E8B8B]/20"
-        >
-          <Plus size={18} />
-          <span>Upload Full Banner</span>
-        </Button>
+        <div className="flex flex-wrap items-center gap-2.5">
+          <Button
+            type="button"
+            onClick={() => {
+              openAddModal();
+              setUploadMode("multiple");
+            }}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold shadow-sm shadow-indigo-600/20"
+          >
+            <Layers size={18} />
+            <span>Upload Multiple Images</span>
+          </Button>
+
+          <Button
+            type="button"
+            onClick={() => {
+              openAddModal();
+              setUploadMode("single");
+            }}
+            className="bg-[#2E8B8B] hover:bg-[#267373] text-white flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold shadow-sm shadow-[#2E8B8B]/20"
+          >
+            <Plus size={18} />
+            <span>Single Banner (with Crop)</span>
+          </Button>
+        </div>
       </div>
 
       {/* Category Filter Tabs */}
@@ -400,6 +418,25 @@ export default function HeroBannersAdminPage() {
                       type="button"
                       variant="outline"
                       size="sm"
+                      onClick={() => {
+                        openAddModal();
+                        setUploadMode("multiple");
+                        setFormCategory(banner.entityType as HeroBannerEntityType);
+                        setSelectedEntityId(banner.entityId || 0);
+                        setSelectedSlug(banner.pageSlug || "");
+                        setDisplayOrder((banner.displayOrder || 0) + 1);
+                      }}
+                      className="h-8 px-2 text-xs flex items-center gap-1 border-indigo-200 text-indigo-700 bg-indigo-50/50 hover:bg-indigo-100"
+                      title="Add more images to this page"
+                    >
+                      <Layers size={12} />
+                      <span>+ Add Images</span>
+                    </Button>
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
                       onClick={() => openAddModal(banner)}
                       className="h-8 px-2.5 text-xs flex items-center gap-1 border-slate-200 text-slate-700 hover:bg-[#2E8B8B]/10 hover:text-[#2E8B8B]"
                       title="Re-crop or update this banner"
@@ -472,7 +509,13 @@ export default function HeroBannersAdminPage() {
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-slate-900">
-                    {editingBanner ? `Edit Hero Banner (ID #${editingBanner.id})` : "Upload Hero Full Banner"}
+                    {editingBanner
+                      ? uploadMode === "single"
+                        ? `Edit Hero Banner (ID #${editingBanner.id})`
+                        : `Add Multiple Images to ${formCategory}`
+                      : uploadMode === "single"
+                      ? "Upload Hero Full Banner (Single)"
+                      : "Batch Upload Multiple Banners"}
                   </h2>
                   <p className="text-xs text-slate-500">
                     Dedicated high-resolution panoramic banner (1920 × 450 px)
@@ -488,40 +531,44 @@ export default function HeroBannersAdminPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-5 overflow-y-auto flex-1">
-              {/* Mode Switcher: Single (with Crop) vs Multiple (Batch) - Only for new banners */}
-              {!editingBanner && (
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    Upload Mode
-                  </label>
-                  <div className="flex items-center p-1 bg-slate-100 rounded-xl">
-                    <button
-                      type="button"
-                      onClick={() => setUploadMode("single")}
-                      className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                        uploadMode === "single"
-                          ? "bg-white text-[#2E8B8B] shadow-xs"
-                          : "text-slate-500 hover:text-slate-800"
-                      }`}
-                    >
-                      <Crop size={14} />
-                      <span>Single Banner (with Crop)</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setUploadMode("multiple")}
-                      className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                        uploadMode === "multiple"
-                          ? "bg-white text-[#2E8B8B] shadow-xs"
-                          : "text-slate-500 hover:text-slate-800"
-                      }`}
-                    >
-                      <Layers size={14} />
-                      <span>Multiple Images (Batch Upload)</span>
-                    </button>
-                  </div>
+              {/* Mode Switcher: Single vs Multiple - Always visible */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Choose Mode:
+                </label>
+                <div className="flex items-center p-1 bg-slate-100 rounded-xl">
+                  <button
+                    type="button"
+                    onClick={() => setUploadMode("single")}
+                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                      uploadMode === "single"
+                        ? "bg-white text-[#2E8B8B] shadow-xs"
+                        : "text-slate-500 hover:text-slate-800"
+                    }`}
+                  >
+                    <Crop size={14} />
+                    <span>{editingBanner ? "Edit Single Banner (Crop/Resize)" : "Single Banner (with Crop)"}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setUploadMode("multiple");
+                      if (editingBanner) {
+                        setEditingBanner(null);
+                        setDisplayOrder((displayOrder || 0) + 1);
+                      }
+                    }}
+                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                      uploadMode === "multiple"
+                        ? "bg-white text-indigo-700 shadow-xs"
+                        : "text-slate-500 hover:text-slate-800"
+                    }`}
+                  >
+                    <Layers size={14} />
+                    <span>Multiple Images (Batch Upload)</span>
+                  </button>
                 </div>
-              )}
+              </div>
 
               {/* Category Picker */}
               <div>
