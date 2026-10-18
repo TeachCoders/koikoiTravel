@@ -185,7 +185,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
 
         {/* Short Subtitle */}
         <p className="text-white/95 text-xs sm:text-sm md:text-base max-w-2xl mt-2.5 sm:mt-3 leading-relaxed font-normal drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
-          Custom journeys across India and Asia, planned around your interests, pace and travel dates.
+          Handcrafted private journeys across India, thoughtfully tailored to your style and pace.
         </p>
 
         {/* Dual Primary Call-to-Actions */}
