@@ -35,9 +35,17 @@ export const TravelExperiencesSection: React.FC<{
       (j.travelExperiences || []).some((e: any) => e.id === id)
     ).length;
 
-  const experiences = travelExperiences.filter(
-    (e: any) => !/^test\b/i.test(e.title || "") && tourCount(e.id) > 0
-  );
+  const experiences = travelExperiences
+    .filter((e: any) => !/^test\b/i.test(e.title || "") && tourCount(e.id) > 0)
+    .sort((a: any, b: any) => {
+      const isGT_A = /golden\s*triangle/i.test(a.title || "") || a.slug === "golden-triangle";
+      const isGT_B = /golden\s*triangle/i.test(b.title || "") || b.slug === "golden-triangle";
+      if (isGT_A && !isGT_B) return -1;
+      if (!isGT_A && isGT_B) return 1;
+      const orderA = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999;
+      const orderB = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
+      return orderA - orderB;
+    });
 
   const sliderRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);

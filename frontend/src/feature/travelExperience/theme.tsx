@@ -25,6 +25,100 @@ export interface ExperienceThemeConfig {
   ctaText: string;
 }
 
+// 0. Golden Triangle Circuit Art (Delhi India Gate, Agra Taj Mahal, Jaipur Hawa Mahal)
+function GoldenTriangleArt() {
+  return (
+    <svg viewBox="0 0 240 170" fill="none" className="w-full h-full max-h-[140px]" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gtSky" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#FEF3C7" stopOpacity="0.9" />
+          <stop offset="60%" stopColor="#FED7AA" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="#FDBA74" stopOpacity="0.1" />
+        </linearGradient>
+        <linearGradient id="gtGold" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#F59E0B" />
+          <stop offset="100%" stopColor="#D97706" />
+        </linearGradient>
+        <linearGradient id="delhiStone" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#EA580C" />
+          <stop offset="100%" stopColor="#C2410C" />
+        </linearGradient>
+        <linearGradient id="jaipurPink" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#F43F5E" />
+          <stop offset="100%" stopColor="#BE123C" />
+        </linearGradient>
+        <linearGradient id="agraMarble" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#FFFFFF" />
+          <stop offset="100%" stopColor="#E2E8F0" />
+        </linearGradient>
+      </defs>
+
+      {/* Sun Glow */}
+      <circle cx="120" cy="75" r="56" fill="url(#gtSky)" />
+      
+      {/* Connecting Golden Triangle Geometry (Dotted Circuit) */}
+      <path d="M52 110 L120 48 L188 110 Z" stroke="#F59E0B" strokeWidth="1.5" strokeDasharray="3 3" fill="none" opacity="0.6" />
+
+      {/* Base Platform */}
+      <rect x="20" y="134" width="200" height="4" rx="1" fill="#E2E8F0" />
+
+      {/* 1. DELHI - India Gate (Left) */}
+      <g opacity="0.95">
+        <rect x="36" y="80" width="32" height="54" fill="url(#delhiStone)" rx="1" />
+        <rect x="34" y="77" width="36" height="4" fill="#9A3412" rx="0.5" />
+        <rect x="38" y="73" width="28" height="4" fill="#EA580C" rx="0.5" />
+        <path d="M46 134 L46 102 Q52 96 58 102 L58 134 Z" fill="#7C2D12" />
+        <rect x="40" y="86" width="4" height="20" rx="0.5" fill="#9A3412" />
+        <rect x="60" y="86" width="4" height="20" rx="0.5" fill="#9A3412" />
+      </g>
+
+      {/* 2. AGRA - Taj Mahal Dome & Minarets (Center - Prominent & Majestic) */}
+      <g>
+        {/* Minarets */}
+        <rect x="88" y="70" width="4.5" height="64" fill="url(#agraMarble)" stroke="#94A3B8" strokeWidth="0.6" />
+        <path d="M90.25 58 Q88 64 88 70 L92.5 70 Q92.5 64 90.25 58 Z" fill="#FFFFFF" stroke="#94A3B8" strokeWidth="0.6" />
+        <line x1="90.25" y1="54" x2="90.25" y2="58" stroke="#CA8A04" strokeWidth="1" />
+
+        <rect x="147.5" y="70" width="4.5" height="64" fill="url(#agraMarble)" stroke="#94A3B8" strokeWidth="0.6" />
+        <path d="M149.75 58 Q147.5 64 147.5 70 L152 70 Q152 64 149.75 58 Z" fill="#FFFFFF" stroke="#94A3B8" strokeWidth="0.6" />
+        <line x1="149.75" y1="54" x2="149.75" y2="58" stroke="#CA8A04" strokeWidth="1" />
+
+        {/* Central Facade & Main Dome */}
+        <rect x="98" y="78" width="44" height="56" fill="url(#agraMarble)" stroke="#CBD5E1" strokeWidth="0.8" />
+        <path d="M120 42 C104 55 100 64 100 78 L140 78 C140 64 136 55 120 42 Z" fill="#FFFFFF" stroke="#94A3B8" strokeWidth="0.8" />
+        <line x1="120" y1="34" x2="120" y2="42" stroke="url(#gtGold)" strokeWidth="1.5" strokeLinecap="round" />
+        <circle cx="120" cy="33" r="1.5" fill="#F59E0B" />
+        {/* Arch */}
+        <path d="M110 134 L110 98 Q120 86 130 98 L130 134 Z" fill="#334155" />
+      </g>
+
+      {/* 3. JAIPUR - Hawa Mahal / Palace Jharokha (Right) */}
+      <g opacity="0.95">
+        <path d="M172 80 L188 66 L204 80 L204 134 L172 134 Z" fill="url(#jaipurPink)" />
+        <path d="M188 62 L188 66" stroke="#FDE047" strokeWidth="1.5" />
+        <circle cx="188" cy="61" r="1.2" fill="#FDE047" />
+        {/* Windows / Jharokhas */}
+        <path d="M184 76 Q188 72 192 76 L192 84 L184 84 Z" fill="#FFF" opacity="0.9" />
+        <path d="M176 92 Q180 88 184 92 L184 100 L176 100 Z" fill="#FFF" opacity="0.9" />
+        <path d="M192 92 Q196 88 200 92 L200 100 L192 100 Z" fill="#FFF" opacity="0.9" />
+        <path d="M184 108 Q188 104 192 108 L192 118 L184 118 Z" fill="#FFF" opacity="0.9" />
+        <path d="M182 134 L182 122 Q188 116 194 122 L194 134 Z" fill="#881337" />
+      </g>
+
+      {/* Route Markers Pill at Bottom */}
+      <g transform="translate(48, 142)">
+        <rect x="0" y="0" width="144" height="18" rx="9" fill="#FFFFFF" stroke="#E2E8F0" strokeWidth="1" />
+        <circle cx="18" cy="9" r="3.5" fill="#EA580C" />
+        <text x="25" y="12" fill="#64748B" fontSize="8" fontWeight="600">Delhi</text>
+        <circle cx="68" cy="9" r="3.5" fill="#0D9488" />
+        <text x="75" y="12" fill="#64748B" fontSize="8" fontWeight="600">Agra</text>
+        <circle cx="114" cy="9" r="3.5" fill="#E11D48" />
+        <text x="121" y="12" fill="#64748B" fontSize="8" fontWeight="600">Jaipur</text>
+      </g>
+    </svg>
+  );
+}
+
 // 1. Realistic Taj Mahal Monument (Iconic White Marble Architecture)
 function TajMahalArt() {
   return (
@@ -690,8 +784,20 @@ function CulinaryArt() {
 export function resolveExperienceTheme(title: string): ExperienceThemeConfig {
   const t = title.toLowerCase();
 
-  // 1. Taj Mahal & Golden Triangle
-  if (/taj\s*mahal|taj|golden\s*triangle/.test(t)) {
+  // 0. Golden Triangle (Delhi, Agra, Jaipur)
+  if (/golden\s*triangle/.test(t)) {
+    return {
+      icon: <Compass size={18} className="text-[#F8904D]" />,
+      illustration: <GoldenTriangleArt />,
+      tag: "Delhi • Agra • Jaipur",
+      tagColor: "bg-amber-50 text-amber-700 border-amber-200",
+      bgGradient: "from-amber-50/80 via-orange-50/40 to-white",
+      ctaText: "Explore Golden Triangle",
+    };
+  }
+
+  // 1. Taj Mahal
+  if (/taj\s*mahal|taj/.test(t)) {
     return {
       icon: <Landmark size={18} className="text-[#F8904D]" />,
       illustration: <TajMahalArt />,

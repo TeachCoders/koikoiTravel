@@ -171,7 +171,16 @@ export default function TourPackageCard({
             <span className="inline-flex items-center gap-1 bg-amber-400 text-slate-900 text-[10px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-md pointer-events-auto">
               <Star size={10} fill="currentColor" className="text-slate-900" /> Best Seller
             </span>
-          ) : <span />}
+          ) : (
+            <span />
+          )}
+
+          {hasSpecialOffer && (
+            <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#F8904D] to-[#E96A1E] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-md pointer-events-auto">
+              <Tag size={10.5} className="stroke-[2.5]" />
+              <span>Special Offer</span>
+            </span>
+          )}
         </div>
 
         {/* Bottom Inclusions Bar (MakeMyTrip / OTA Style Overlay with Prominent Icons & Text) */}
@@ -262,37 +271,8 @@ export default function TourPackageCard({
           </>
         )}
 
-        {/* Special Group Discounts Offer Tag - Only for 8+ Days Tours */}
-        {hasSpecialOffer && (
-          <div className="mt-auto mb-2.5">
-            <div className="relative overflow-hidden rounded-xl border border-dashed border-orange-300/90 bg-gradient-to-r from-orange-50/90 via-amber-50/60 to-orange-50/40 p-2.5 shadow-2xs">
-              {/* Shimmer Light Sweep Effect */}
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent animate-shimmer-sweep pointer-events-none" />
-
-              <div className="relative z-10">
-                {/* Row 1: Tag Special Offer */}
-                <div className="flex items-center gap-1.5 mb-1.5">
-                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-gradient-to-r from-[#F8904D] to-[#E96A1E] text-white text-[10px] font-extrabold uppercase tracking-wider shadow-xs">
-                    <Tag size={11} className="stroke-[2.6] animate-tag-wiggle" />
-                    <span>Special Offer</span>
-                  </span>
-                  <span className="flex h-2 w-2 relative">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F8904D] opacity-80" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F8904D]" />
-                  </span>
-                </div>
-
-                {/* Row 2: Text below the tag */}
-                <p className="text-[11px] text-slate-700 leading-snug">
-                  Special discounts available for family group, student group, and corporate groups to India.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Trust Badging Line (Professional custom tour features) */}
-        <div className={`pt-2 pb-1 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-medium tracking-tight ${!hasSpecialOffer ? "mt-auto" : ""}`}>
+        <div className="mt-auto pt-2 pb-1 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-medium tracking-tight">
           <span className="inline-flex items-center gap-1 text-slate-700">
             <span className="w-1.5 h-1.5 rounded-full bg-[#2E8B8B]" />
             Private Chauffeur
