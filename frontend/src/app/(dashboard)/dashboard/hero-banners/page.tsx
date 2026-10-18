@@ -17,7 +17,7 @@ import {
   Maximize2,
   Sliders,
 } from "lucide-react";
-import ImageCropUpload, { THIRD_PARTY_IMAGE_TOOLS } from "@/components/shared/ImageCropUpload";
+import ImageCropUpload from "@/components/shared/ImageCropUpload";
 import {
   useAllHeroBanners,
   useCreateHeroBanner,
@@ -195,38 +195,6 @@ export default function HeroBannersAdminPage() {
           <Plus size={18} />
           <span>Upload Full Banner</span>
         </Button>
-      </div>
-
-      {/* Third-Party & Built-in Crop / Resize Tools Banner */}
-      <div className="bg-gradient-to-r from-amber-50/80 via-orange-50/50 to-amber-50/30 border border-amber-200/90 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-2xs">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0">
-            <Crop size={18} />
-          </div>
-          <div>
-            <h2 className="text-sm font-bold text-slate-900">Crop & Resize Tools (Panoramic 1920 × 450 px)</h2>
-            <p className="text-xs text-slate-600">
-              Hero banners look sharpest at 1920 × 450 px. Crop and resize before upload, or use these free third-party tools:
-            </p>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2 shrink-0">
-          {THIRD_PARTY_IMAGE_TOOLS.map((tool) => (
-            <a
-              key={tool.name}
-              href={tool.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold shadow-2xs transition-colors ${tool.color}`}
-              title={tool.desc}
-            >
-              <span>{tool.icon}</span>
-              <span>{tool.name}</span>
-              <ExternalLink size={10} className="opacity-60" />
-            </a>
-          ))}
-        </div>
       </div>
 
       {/* Category Filter Tabs */}
@@ -584,7 +552,6 @@ export default function HeroBannersAdminPage() {
                   maxWidth={1920}
                   maxHeight={450}
                   aspectRatioPreset="hero"
-                  showThirdPartyTools={true}
                   label="Upload Panoramic Banner (1920 × 450 px) — Click to Crop & Resize"
                   initialImage={previewUrl || undefined}
                 />

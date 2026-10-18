@@ -12,7 +12,6 @@ import {
   Loader2,
   ZoomIn,
   ZoomOut,
-  ExternalLink,
   Maximize2,
   Lock,
   Unlock,
@@ -20,48 +19,12 @@ import {
 } from "lucide-react";
 import apiClient from "@/lib/apiClient";
 
-export const THIRD_PARTY_IMAGE_TOOLS = [
-  {
-    name: "iLoveIMG Crop",
-    desc: "Free online image cropper with custom pixel/ratio inputs",
-    url: "https://www.iloveimg.com/crop-image",
-    icon: "✂️",
-    badge: "Crop Tool",
-    color: "bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100",
-  },
-  {
-    name: "iLoveIMG Resize",
-    desc: "Resize to exact 1920 × 450 px dimensions",
-    url: "https://www.iloveimg.com/resize-image",
-    icon: "📐",
-    badge: "Resize Tool",
-    color: "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100",
-  },
-  {
-    name: "Google Squoosh",
-    desc: "Compress & resize with live visual comparison",
-    url: "https://squoosh.app",
-    icon: "⚡",
-    badge: "Compress & Resize",
-    color: "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100",
-  },
-  {
-    name: "Photopea",
-    desc: "Full Photoshop editor directly in your browser",
-    url: "https://www.photopea.com",
-    icon: "🎨",
-    badge: "Full Editor",
-    color: "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100",
-  },
-];
-
 export interface ImageCropUploadProps {
   onFileSelect: (file: File) => void;
   onClear?: () => void;
   maxWidth?: number;
   maxHeight?: number;
   aspectRatioPreset?: "hero" | "21:9" | "16:9" | "free";
-  showThirdPartyTools?: boolean;
   outputFormat?: "image/jpeg" | "image/webp" | "image/png";
   quality?: number;
   borderRadius?: number;
@@ -79,7 +42,6 @@ export default function ImageCropUpload({
   maxWidth = 1920,
   maxHeight = 750,
   aspectRatioPreset = "free",
-  showThirdPartyTools = false,
   outputFormat = "image/webp",
   quality = 0.80,
   borderRadius = 12,
@@ -554,36 +516,6 @@ const [outputSize, setOutputSize] = useState<null | { w: number; h: number }>(nu
         </div>
       )}
 
-      {showThirdPartyTools && !cropOpen && (
-        <div className="bg-amber-50/70 border border-amber-200/90 rounded-2xl p-3.5 space-y-2 mb-3">
-          <div className="flex items-center justify-between">
-            <span className="text-amber-800 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5">
-              <ExternalLink size={13} /> Third-Party Free Image Tools (Crop & Resize)
-            </span>
-            <span className="text-[10.5px] text-amber-700 font-medium">Opens in new tab</span>
-          </div>
-          <p className="text-xs text-slate-600">
-            Recommended size: <strong className="text-slate-800 font-bold">{maxWidth} × {maxHeight} px</strong>. You can crop and resize here or use these free online tools:
-          </p>
-          <div className="flex flex-wrap gap-2 pt-0.5">
-            {THIRD_PARTY_IMAGE_TOOLS.map((tool) => (
-              <a
-                key={tool.name}
-                href={tool.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold shadow-2xs transition-colors ${tool.color}`}
-                title={tool.desc}
-              >
-                <span>{tool.icon}</span>
-                <span>{tool.name}</span>
-                <ExternalLink size={10} className="opacity-60" />
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
-
       {cropOpen && src && (
         <div className="fixed inset-0 z-[100] bg-black/70 flex items-center justify-center p-4" onMouseUp={handleMouseUp}>
           <div className="bg-white rounded-2xl w-full max-w-[1200px] max-h-[92vh] flex flex-col shadow-2xl" onClick={(e) => e.stopPropagation()}>
@@ -674,30 +606,6 @@ const [outputSize, setOutputSize] = useState<null | { w: number; h: number }>(nu
                 >
                   {lockRatio ? <Lock size={12} /> : <Unlock size={12} />}
                 </button>
-              </div>
-
-              {/* 3rd-Party Tools Quick Buttons */}
-              <div className="flex items-center gap-1.5">
-                <a
-                  href="https://www.iloveimg.com/crop-image"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-2.5 py-1 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-rose-700 text-xs font-semibold rounded-lg flex items-center gap-1 shadow-2xs transition-colors"
-                  title="Open free iLoveIMG Crop tool in new tab"
-                >
-                  <span>✂️ iLoveIMG</span>
-                  <ExternalLink size={10} />
-                </a>
-                <a
-                  href="https://www.iloveimg.com/resize-image"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-2.5 py-1 bg-white hover:bg-blue-50 border border-slate-200 hover:border-blue-200 text-blue-700 text-xs font-semibold rounded-lg flex items-center gap-1 shadow-2xs transition-colors"
-                  title="Open free iLoveIMG Resize tool in new tab"
-                >
-                  <span>📐 Resize</span>
-                  <ExternalLink size={10} />
-                </a>
               </div>
             </div>
             <div ref={containerRef}
