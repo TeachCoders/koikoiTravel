@@ -644,9 +644,9 @@ export const Header: React.FC = () => {
 
   return (
     <header
-      className={`relative sticky top-0 z-50 transition-[background-color,border-color,box-shadow] duration-200 ${isScrolled
-        ? "bg-white/98 backdrop-blur-md shadow-xs border-b border-[#ececec]"
-        : "bg-white border-b border-[#f0f0f0]"
+      className={`sticky top-0 z-50 transition-all duration-200 ${isScrolled
+        ? "bg-white/98 backdrop-blur-md shadow-md border-b border-slate-200/80"
+        : "bg-white border-b border-slate-100"
         }`}
     >
       <div

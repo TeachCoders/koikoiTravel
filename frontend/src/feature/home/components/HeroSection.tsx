@@ -16,18 +16,6 @@ const DEFAULT_SLIDES = [
   { image: "/content/manali-holiday-1.webp", alt: "Manali Himachal holiday package" },
 ];
 
-const TRENDING_CHIPS = [
-  { label: "Golden Triangle", href: "/travel-experiences/golden-triangle" },
-  { label: "Rajasthan", href: "/tour-packages/india/rajasthan" },
-  { label: "Kerala", href: "/tour-packages/india/kerala" },
-  { label: "Ladakh", href: "/tour-packages/india/ladakh" },
-  { label: "Tamilnadu", href: "/tour-packages/india/tamil-nadu" },
-  { label: "Goa", href: "/tour-packages/india/goa" },
-  { label: "Mumbai", href: "/tour-packages/india/maharashtra/mumbai" },
-  { label: "Wildlife", href: "/travel-experiences/wildlife" },
-  { label: "Honeymoon", href: "/travel-experiences/honeymoon" },
-];
-
 interface HeroSectionProps {
   initialHeroBanners?: HeroFullBanner[] | null;
 }
@@ -221,44 +209,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
           <span className="font-bold">4.9/5 Traveller Rating</span>
           <span className="text-white/40">|</span>
           <span className="text-white/90">7+ Years Experience</span>
-        </div>
-
-        <div className="mt-4 sm:mt-5">
-          {/* Quick Trending Destination Chips */}
-          <div className="mt-3 sm:mt-3.5 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
-            <span className="text-white/80 text-[11px] sm:text-xs font-semibold uppercase tracking-wider select-none mr-0.5">
-              Trending:
-            </span>
-            {TRENDING_CHIPS.map((chip) => (
-              <Link
-                key={chip.label}
-                href={chip.href}
-                className="px-3 py-1 rounded-full text-xs font-medium text-white/90 bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 hover:border-[#F8904D] hover:text-[#F8904D] transition-all hover:scale-105 active:scale-95 shadow-sm inline-flex items-center"
-              >
-                {chip.label}
-              </Link>
-            ))}
-          </div>
-
-          {/* Verified Trust Points Above the Fold */}
-          <div className="mt-4 sm:mt-5 pt-3.5 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-white/90 text-[11.5px] sm:text-xs md:text-[12.5px] font-medium">
-            <span className="flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[9px] font-bold">✓</span>
-              100% Tailored Itineraries
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[9px] font-bold">✓</span>
-              Verified Private Chauffeurs
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[9px] font-bold">✓</span>
-              Transparent Fixed Quotes
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[9px] font-bold">✓</span>
-              24/7 Dedicated Support
-            </span>
-          </div>
         </div>
       </div>
     </section>
