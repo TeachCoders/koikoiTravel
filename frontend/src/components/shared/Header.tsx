@@ -651,12 +651,12 @@ export const Header: React.FC = () => {
           }`}
       >
         <div
-          className={`max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 transition-[padding] duration-200 ${
-            isScrolled ? "py-2.5 sm:py-3" : "py-3.5 sm:py-4"
+          className={`max-w-[1680px] mx-auto px-2.5 sm:px-4 lg:px-6 xl:px-8 transition-[padding] duration-200 ${
+            isScrolled ? "py-2 sm:py-2.5" : "py-3 sm:py-3.5"
           }`}
         >
         {/* ===== Single Compact Row: Logo | Search Bar | Nav Links + Create My Trip ===== */}
-        <div className="flex items-center justify-between gap-3 lg:gap-4 xl:gap-6">
+        <div className="flex items-center justify-between gap-1.5 lg:gap-2.5 xl:gap-4">
           {/* 1. Brand Logo */}
           <Link href="/" className="flex items-center gap-2 group shrink-0">
             <Image
@@ -665,13 +665,13 @@ export const Header: React.FC = () => {
               width={165}
               height={48}
               priority
-              className="h-[36px] sm:h-[40px] md:h-[44px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+              className="h-[34px] sm:h-[38px] md:h-[42px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
             />
           </Link>
 
           {/* 2. Navigation Links (Centered) */}
           {!isOfferPage && (
-            <nav className="hidden md:flex items-center justify-center gap-0.5 lg:gap-1 flex-1 mx-2 lg:mx-4">
+            <nav className="hidden md:flex items-center justify-center gap-0.5 lg:gap-1 flex-1 mx-1 lg:mx-2 xl:mx-3 shrink-0">
               {navLinks.map((link) => (
                 <div
                   key={link.href}
@@ -684,7 +684,7 @@ export const Header: React.FC = () => {
                       <Link
                         href={link.directHref}
                         onClick={() => setOpenDesktopDropdown(null)}
-                        className={`relative px-2.5 lg:px-3 py-1.5 text-[13.5px] lg:text-[14px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                        className={`relative whitespace-nowrap px-2 xl:px-2.5 py-1.5 text-[12.5px] xl:text-[13.5px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
                           ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
                           : "text-[#333]"
                           }`}
@@ -699,13 +699,13 @@ export const Header: React.FC = () => {
                             openDesktopDropdown === link.href ? null : link.href
                           )
                         }
-                        className={`pr-2 pl-0.5 py-1.5 cursor-pointer transition-colors duration-200 ${openDesktopDropdown === link.href
+                        className={`pr-1.5 pl-0.5 py-1.5 cursor-pointer transition-colors duration-200 ${openDesktopDropdown === link.href
                           ? "text-[#2E8B8B]"
                           : "text-[#888] hover:text-[#2E8B8B]"
                           }`}
                       >
                         <ChevronDown
-                          className={`w-3.5 h-3.5 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
+                          className={`w-3 h-3 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
                             }`}
                         />
                       </button>
@@ -718,21 +718,21 @@ export const Header: React.FC = () => {
                           openDesktopDropdown === link.href ? null : link.href
                         )
                       }
-                      className={`relative px-2.5 lg:px-3 py-1.5 text-[13.5px] lg:text-[14px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
+                      className={`relative whitespace-nowrap px-2 xl:px-2.5 py-1.5 text-[12.5px] xl:text-[13.5px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
                         ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
                         : "text-[#333]"
                         }`}
                     >
                       <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
                       <ChevronDown
-                        className={`w-3.5 h-3.5 relative z-10 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
+                        className={`w-3 h-3 relative z-10 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
                           }`}
                       />
                     </button>
                   ) : (
                     <Link
                       href={link.href}
-                      className={`relative px-2.5 lg:px-3 py-1.5 text-[13.5px] lg:text-[14px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                      className={`relative whitespace-nowrap px-2 xl:px-2.5 py-1.5 text-[12.5px] xl:text-[13.5px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
                         ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
                         : "text-[#333]"
                         }`}
@@ -803,9 +803,9 @@ export const Header: React.FC = () => {
 
           {/* 3. Right Controls: Search Bar -> Language Selector -> Create My Trip Button */}
           {!isOfferPage && (
-            <div className="hidden md:flex items-center gap-2 lg:gap-3 shrink-0">
+            <div className="hidden md:flex items-center gap-1.5 lg:gap-2 xl:gap-2.5 shrink-0">
               {/* Search Bar (Next to Language Selector) */}
-              <div className="w-[210px] lg:w-[270px] xl:w-[320px]">
+              <div className="w-[130px] md:w-[150px] lg:w-[175px] xl:w-[220px] 2xl:w-[260px]">
                 <HeaderSearchBar />
               </div>
 
@@ -816,7 +816,7 @@ export const Header: React.FC = () => {
               <QuoteModal>
                 <button
                   type="button"
-                  className="btn-primary px-3.5 lg:px-4 py-2 text-xs lg:text-[13px] font-semibold tracking-wide flex items-center gap-1.5 shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+                  className="btn-primary px-2.5 lg:px-3.5 py-1.5 lg:py-2 text-xs lg:text-[13px] font-semibold tracking-wide flex items-center gap-1 shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
                 >
                   <span>Create My Trip</span>
                 </button>
