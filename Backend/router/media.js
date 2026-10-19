@@ -12,10 +12,14 @@ const router = Router();
 const HIDDEN_FOLDERS = ["documents", "user"];
 
 const toRelativePath = (url) => {
+  if (!url || typeof url !== "string") return null;
   try {
-    return new URL(url).pathname.replace(/^\//, "");
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      return new URL(url).pathname.replace(/^\//, "");
+    }
+    return url.replace(/^\//, "");
   } catch {
-    return null;
+    return url.replace(/^\//, "");
   }
 };
 
@@ -205,9 +209,9 @@ router.get("/usage-summary", requireSalesOrAdmin, async (req, res) => {
         UNION ALL
         SELECT img as url, 'Hero Banner' as type, coalesce("bannerTitle", "entityType") as title, '/' as link FROM "Banner", unnest(images) as img WHERE img IS NOT NULL
         UNION ALL
-        SELECT img as url, 'Landing Page Banner' as type, title, '/offers/' || slug as link FROM "AdLandingPage", unnest("bannerImages") as img WHERE img IS NOT NULL
+        SELECT img as url, 'Landing Page Banner' as type, title, '/offers/' || slug as link FROM ad_landing_pages, unnest("bannerImages") as img WHERE img IS NOT NULL
         UNION ALL
-        SELECT img as url, 'Landing Page' as type, title, '/offers/' || slug as link FROM "AdLandingPage", unnest("whyChooseImages") as img WHERE img IS NOT NULL
+        SELECT img as url, 'Landing Page' as type, title, '/offers/' || slug as link FROM ad_landing_pages, unnest("whyChooseImages") as img WHERE img IS NOT NULL
         UNION ALL
         SELECT "imageUrl" as url, 'Guest Gallery' as type, coalesce(caption, 'Guest Photo') as title, '/guest-gallery' as link FROM guest_gallery WHERE "imageUrl" IS NOT NULL
       ) all_usages
@@ -216,7 +220,21 @@ router.get("/usage-summary", requireSalesOrAdmin, async (req, res) => {
 
     const usageMap = {};
     for (const r of rows) {
-      if (r.url) usageMap[r.url] = r.usages || [];
+      if (r.url) {
+        const u = r.url.trim();
+        usageMap[u] = r.usages || [];
+        const withSlash = u.startsWith("/") ? u : `/${u}`;
+        const withoutSlash = u.replace(/^\//, "");
+        usageMap[withSlash] = r.usages || [];
+        usageMap[withoutSlash] = r.usages || [];
+        try {
+          if (u.startsWith("http")) {
+            const p = new URL(u).pathname;
+            usageMap[p] = r.usages || [];
+            usageMap[p.replace(/^\//, "")] = r.usages || [];
+          }
+        } catch {}
+      }
     }
 
     return res.json({ success: true, data: usageMap });
@@ -254,8 +272,8 @@ router.post("/swap", requireSalesOrAdmin, async (req, res) => {
       prisma.$executeRaw`UPDATE hero_full_banners SET "mobileImage" = ${nUrl} WHERE "mobileImage" = ${oUrl}`,
       prisma.$executeRaw`UPDATE guest_gallery SET "imageUrl" = ${nUrl} WHERE "imageUrl" = ${oUrl}`,
       prisma.$executeRaw`UPDATE "Banner" SET images = array_replace(images, ${oUrl}, ${nUrl}) WHERE ${oUrl} = ANY(images)`,
-      prisma.$executeRaw`UPDATE "AdLandingPage" SET "bannerImages" = array_replace("bannerImages", ${oUrl}, ${nUrl}) WHERE ${oUrl} = ANY("bannerImages")`,
-      prisma.$executeRaw`UPDATE "AdLandingPage" SET "whyChooseImages" = array_replace("whyChooseImages", ${oUrl}, ${nUrl}) WHERE ${oUrl} = ANY("whyChooseImages")`,
+      prisma.$executeRaw`UPDATE ad_landing_pages SET "bannerImages" = array_replace("bannerImages", ${oUrl}, ${nUrl}) WHERE ${oUrl} = ANY("bannerImages")`,
+      prisma.$executeRaw`UPDATE ad_landing_pages SET "whyChooseImages" = array_replace("whyChooseImages", ${oUrl}, ${nUrl}) WHERE ${oUrl} = ANY("whyChooseImages")`,
     ]);
 
     if (deleteOld) {

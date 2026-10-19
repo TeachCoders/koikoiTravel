@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import Image from "next/image";
 import {
   Search,
@@ -145,16 +145,34 @@ export default function MediaManagerPage() {
     fetchUsage();
   }, []);
 
+  // Normalizing helper to find usages regardless of URL prefix/slash
+  const getUsages = useCallback((url?: string): UsageItem[] => {
+    if (!url) return [];
+    if (usageMap[url]) return usageMap[url];
+    const withSlash = url.startsWith("/") ? url : `/${url}`;
+    if (usageMap[withSlash]) return usageMap[withSlash];
+    const withoutSlash = url.replace(/^\//, "");
+    if (usageMap[withoutSlash]) return usageMap[withoutSlash];
+    try {
+      if (url.startsWith("http")) {
+        const pathOnly = new URL(url).pathname;
+        if (usageMap[pathOnly]) return usageMap[pathOnly];
+        if (usageMap[pathOnly.replace(/^\//, "")]) return usageMap[pathOnly.replace(/^\//, "")];
+      }
+    } catch {}
+    return [];
+  }, [usageMap]);
+
   // Total unused count
   const unusedCount = useMemo(() => {
-    return items.filter((item) => !usageMap[item.url] || usageMap[item.url].length === 0).length;
-  }, [items, usageMap]);
+    return items.filter((item) => getUsages(item.url).length === 0).length;
+  }, [items, getUsages]);
 
   // Filter items based on activeTab, search, pinned, and unused status
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
       if (showPinnedOnly && !item.isPinned) return false;
-      if (showUnusedOnly && (usageMap[item.url]?.length || 0) > 0) return false;
+      if (showUnusedOnly && getUsages(item.url).length > 0) return false;
 
       const q = search.trim().toLowerCase();
       if (q) {
@@ -202,7 +220,7 @@ export default function MediaManagerPage() {
 
       return true;
     });
-  }, [items, activeTab, search, showPinnedOnly]);
+  }, [items, activeTab, search, showPinnedOnly, showUnusedOnly, getUsages]);
 
   // Star / Pin Toggle
   const handleTogglePin = async (item: MediaItem) => {
@@ -234,7 +252,7 @@ export default function MediaManagerPage() {
 
   // Delete Item with Usage Warning
   const handleDelete = async (item: MediaItem) => {
-    const usages = usageMap[item.url] || [];
+    const usages = getUsages(item.url);
     const warning =
       usages.length > 0
         ? `WARNING: This image is actively used in ${usages.length} place(s) (e.g. ${usages[0].type}: "${usages[0].title}")!\n\nDeleting it may cause broken images on the website.\n\nAre you sure you want to delete "${item.label || item.filename}"?`
@@ -288,7 +306,7 @@ export default function MediaManagerPage() {
   // Delete All Unused Images
   const handleDeleteAllUnused = () => {
     const unusedItemIds = items
-      .filter((i) => (usageMap[i.url] || []).length === 0)
+      .filter((i) => getUsages(i.url).length === 0)
       .map((i) => i.id);
 
     if (unusedItemIds.length === 0) {
@@ -523,7 +541,7 @@ export default function MediaManagerPage() {
 
                   {/* Usage Badge (Top Left) */}
                   {(() => {
-                    const usages = usageMap[item.url] || [];
+                    const usages = getUsages(item.url);
                     const isUsed = usages.length > 0;
                     return (
                       <button
@@ -791,7 +809,7 @@ export default function MediaManagerPage() {
                   </span>
                 ) : null}
                 <span className="text-[11px] text-slate-400">
-                  {(usageMap[previewItem.url] || []).length} usages
+                  {getUsages(previewItem.url).length} usages
                 </span>
               </div>
 
@@ -877,7 +895,7 @@ export default function MediaManagerPage() {
             {/* Content List */}
             <div className="p-6 overflow-y-auto space-y-4 flex-1">
               {(() => {
-                const usages = usageMap[selectedUsageItem.url] || [];
+                const usages = getUsages(selectedUsageItem.url);
                 if (usages.length === 0) {
                   return (
                     <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-100 text-center space-y-3">
@@ -960,7 +978,7 @@ export default function MediaManagerPage() {
               >
                 Close
               </button>
-              {(usageMap[selectedUsageItem.url]?.length || 0) > 0 && (
+              {getUsages(selectedUsageItem.url).length > 0 && (
                 <button
                   type="button"
                   onClick={() => {
@@ -1037,7 +1055,7 @@ export default function MediaManagerPage() {
                   {swapSourceItem.label || swapSourceItem.filename}
                 </p>
                 <span className="text-[10px] text-slate-500 mt-1">
-                  Used in {(usageMap[swapSourceItem.url] || []).length} {((usageMap[swapSourceItem.url] || []).length === 1) ? "place" : "places"}
+                  Used in {getUsages(swapSourceItem.url).length} {getUsages(swapSourceItem.url).length === 1 ? "place" : "places"}
                 </span>
               </div>
 
