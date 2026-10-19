@@ -7,7 +7,6 @@ import type { Journey, PaginatedResponse } from "@/feature/journey/type";
 import FilterBar from "@/components/shared/FilterBar";
 import TourPackageCard from "@/components/shared/TourPackageCard";
 import Pagination from "@/components/shared/Pagination";
-import ExploreCategoryTabs, { type CategoryOption } from "@/components/shared/ExploreCategoryTabs";
 import {
   travelExperienceOptions,
   durationOptions,
@@ -44,14 +43,6 @@ export default function PackagesExplorer({
   const [selectedSeasons, setSelectedSeasons] = useState<string[]>([]);
   const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>(initialSearch);
-
-  const [categoryTab, setCategoryTab] = useState<"destination" | "theme">("destination");
-  const [selectedDestinationPill, setSelectedDestinationPill] = useState<string | null>(
-    initialStates[0] || (initialExperiences.some((e) => /golden\s*triangle/i.test(e)) ? "golden-triangle" : null)
-  );
-  const [selectedThemePill, setSelectedThemePill] = useState<string | null>(
-    initialExperiences.find((e) => !/golden\s*triangle/i.test(e)) || null
-  );
 
   const countries = useMemo(() => {
     const set = new Set<string>();
@@ -215,95 +206,6 @@ export default function PackagesExplorer({
     return list;
   }, [journeys, selectedCountries, selectedStates, selectedCities, selectedExperiences, selectedSeasons, selectedDurations, searchQuery]);
 
-  const popularDestinationOptions = useMemo<CategoryOption[]>(() => {
-    const list: CategoryOption[] = [];
-
-    // 1. Golden Triangle
-    const gtCount = journeys.filter(
-      (j) =>
-        (j.travelExperiences ?? []).some(
-          (e) => /golden\s*triangle/i.test(e.title || "") || e.slug === "golden-triangle-tour-india"
-        ) ||
-        j.title?.toLowerCase().includes("golden triangle") ||
-        ((j.cities ?? []).some((c) => /delhi/i.test(c.title)) &&
-          (j.cities ?? []).some((c) => /agra/i.test(c.title)))
-    ).length;
-    if (gtCount > 0) {
-      list.push({
-        label: "Golden Triangle",
-        value: "golden-triangle",
-        count: gtCount,
-      });
-    }
-
-    // 2. States with tours
-    for (const opt of stateOptions) {
-      if (opt.count > 0 && opt.value !== "Delhi NCR") {
-        list.push({
-          label: opt.label,
-          value: opt.value,
-          count: opt.count,
-        });
-      }
-    }
-
-    // 3. Delhi NCR
-    const delhiOpt = stateOptions.find((o) => o.value === "Delhi NCR");
-    if (delhiOpt && delhiOpt.count > 0) {
-      list.push({
-        label: "Delhi NCR",
-        value: "Delhi NCR",
-        count: delhiOpt.count,
-      });
-    }
-
-    // Sort by count descending, keeping Golden Triangle at front
-    return list.sort((a, b) => {
-      if (a.value === "golden-triangle") return -1;
-      if (b.value === "golden-triangle") return 1;
-      return (b.count || 0) - (a.count || 0);
-    });
-  }, [journeys, stateOptions]);
-
-  const popularThemeOptions = useMemo<CategoryOption[]>(() => {
-    return travelExperienceOptions(journeys)
-      .filter((opt) => opt.count > 0 && !/golden\s*triangle/i.test(opt.label))
-      .map((opt) => ({
-        label: opt.label,
-        value: opt.value,
-        count: opt.count,
-      }));
-  }, [journeys]);
-
-  const handleSelectDestination = (val: string | null) => {
-    setSelectedDestinationPill(val);
-    if (!val) {
-      setSelectedStates([]);
-      setSelectedExperiences((prev) => prev.filter((e) => !/golden\s*triangle/i.test(e)));
-    } else if (val === "golden-triangle") {
-      setSelectedStates([]);
-      setSelectedExperiences((prev) => {
-        const withoutGT = prev.filter((e) => !/golden\s*triangle/i.test(e));
-        return [...withoutGT, "Golden Triangle Tours India"];
-      });
-    } else {
-      setSelectedStates([val]);
-      setSelectedExperiences((prev) => prev.filter((e) => !/golden\s*triangle/i.test(e)));
-    }
-  };
-
-  const handleSelectTheme = (val: string | null) => {
-    setSelectedThemePill(val);
-    if (!val) {
-      setSelectedExperiences((prev) => prev.filter((e) => /golden\s*triangle/i.test(e)));
-    } else {
-      setSelectedExperiences((prev) => {
-        const gtOnly = prev.filter((e) => /golden\s*triangle/i.test(e));
-        return [...gtOnly, val];
-      });
-    }
-  };
-
   const clearAll = () => {
     setSelectedCountries([]);
     setSelectedStates([]);
@@ -312,8 +214,6 @@ export default function PackagesExplorer({
     setSelectedSeasons([]);
     setSelectedDurations([]);
     setSearchQuery("");
-    setSelectedDestinationPill(null);
-    setSelectedThemePill(null);
   };
 
   const activeFilterCount =
@@ -349,19 +249,6 @@ export default function PackagesExplorer({
 
   return (
     <div id="packages-top">
-      {/* ===== 2 CATEGORY TABS: BY DESTINATION & BY THEME/ACTIVITY ===== */}
-      <ExploreCategoryTabs
-        destinations={popularDestinationOptions}
-        themes={popularThemeOptions}
-        activeTab={categoryTab}
-        onTabChange={setCategoryTab}
-        selectedDestination={selectedDestinationPill}
-        onSelectDestination={handleSelectDestination}
-        selectedTheme={selectedThemePill}
-        onSelectTheme={handleSelectTheme}
-        totalToursCount={journeys.length}
-      />
-
       <FilterBar
         sections={[
           {
