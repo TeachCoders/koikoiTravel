@@ -23,6 +23,7 @@ import {
   AlertTriangle,
   CheckCircle2,
   X,
+  Eye,
 } from "lucide-react";
 import apiClient from "@/lib/apiClient";
 import { successToast, errorToast } from "@/components/shared/tost";
@@ -448,8 +449,8 @@ export default function MediaManagerPage() {
                         }}
                         title={
                           isUsed
-                            ? `Used in ${usages.length} place(s). Click to see where.`
-                            : "Not used in any page. Click to inspect & delete."
+                            ? `Used in ${usages.length} place(s). Click to view usages.`
+                            : "Not used on any page. Click to inspect & delete."
                         }
                         className={`absolute top-2 left-2 z-10 px-2.5 py-1 rounded-full text-[10px] font-bold shadow-md backdrop-blur-md flex items-center gap-1.5 transition-transform active:scale-95 cursor-pointer ${
                           isUsed
@@ -457,12 +458,8 @@ export default function MediaManagerPage() {
                             : "bg-slate-800/85 hover:bg-slate-900 text-slate-200"
                         }`}
                       >
-                        <span
-                          className={`w-1.5 h-1.5 rounded-full ${
-                            isUsed ? "bg-white animate-pulse" : "bg-slate-400"
-                          }`}
-                        />
-                        {isUsed ? `${usages.length} Used` : "Unused"}
+                        <Eye size={11} className="shrink-0" />
+                        <span>{isUsed ? `${usages.length} Used` : "Unused"}</span>
                       </button>
                     );
                   })()}
@@ -599,7 +596,7 @@ export default function MediaManagerPage() {
         </div>
       )}
 
-      {/* ── 1. Image Usage Inspector Modal ("Kaha Lagi Hai?") ── */}
+      {/* ── 1. Image Usage Inspector Modal ("Where Used?") ── */}
       {selectedUsageItem && (
         <div
           className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
@@ -649,10 +646,10 @@ export default function MediaManagerPage() {
                       </div>
                       <div>
                         <h4 className="font-bold text-emerald-900 text-sm">
-                          Ye Image Kahi Bhi Use Nahi Ho Rahi Hai (Unused)
+                          This image is not used anywhere (Unused)
                         </h4>
                         <p className="text-xs text-emerald-700 mt-1 max-w-md mx-auto">
-                          Ye photo kisi bhi Tour Package, City, State, Banner ya Blog me link nahi hai. Aap ise bina kisi dar ke delete kar sakte hain.
+                          This photo is not linked to any Tour Package, City, State, Banner, or Blog post. You can safely delete it without affecting any live pages.
                         </p>
                       </div>
                       <button
@@ -674,7 +671,7 @@ export default function MediaManagerPage() {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                        Active Usages ({usages.length} Jagah Linked Hai)
+                        Active Usages ({usages.length} {usages.length === 1 ? "Place" : "Places"} Linked)
                       </span>
                       <span className="text-[11px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">
                         Live on Website
@@ -700,10 +697,10 @@ export default function MediaManagerPage() {
                               href={u.link}
                               target="_blank"
                               rel="noreferrer"
-                              className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold text-[#2E8B8B] hover:text-[#236b6b] bg-white border border-slate-200 rounded-lg hover:border-[#2E8B8B] shadow-2xs transition-all shrink-0"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-white border border-indigo-200 rounded-xl hover:border-indigo-400 shadow-2xs transition-all shrink-0"
                             >
-                              <span>View</span>
-                              <ExternalLink size={11} />
+                              <span>View Live Page</span>
+                              <ExternalLink size={12} />
                             </a>
                           )}
                         </div>
@@ -737,7 +734,7 @@ export default function MediaManagerPage() {
                   className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-xs transition-colors cursor-pointer"
                 >
                   <ArrowLeftRight size={13} />
-                  <span>Is Photo Ko Dusri Photo Se Badlo (Swap Everywhere)</span>
+                  <span>Swap With Another Photo Everywhere</span>
                 </button>
               )}
             </div>
@@ -745,7 +742,7 @@ export default function MediaManagerPage() {
         </div>
       )}
 
-      {/* ── 2. Swap Image Modal ("Badal Do / Swap Everywhere") ── */}
+      {/* ── 2. Swap Image Modal ("Swap Everywhere") ── */}
       {swapSourceItem && (
         <div
           className="fixed inset-0 z-[210] bg-black/70 backdrop-blur-xs flex items-center justify-center p-4"
@@ -768,7 +765,7 @@ export default function MediaManagerPage() {
                     Swap / Replace Image Everywhere
                   </h3>
                   <p className="text-[11px] text-slate-500">
-                    Jaha-jaha purani photo lagi hai, waha nayi photo lag jayegi (Zero broken links)
+                    Replaces all occurrences across the entire website with zero broken links
                   </p>
                 </div>
               </div>
@@ -787,7 +784,7 @@ export default function MediaManagerPage() {
               {/* Old Photo (Source) */}
               <div className="p-3.5 rounded-2xl border-2 border-rose-200 bg-rose-50/30 flex flex-col items-center text-center">
                 <span className="text-[10px] font-bold text-rose-700 uppercase tracking-wider mb-2">
-                  Purani Photo (Replace Hogi)
+                  Current Photo (To Replace)
                 </span>
                 <div className="w-24 h-24 rounded-xl overflow-hidden bg-slate-200 border border-slate-300 mb-2">
                   <img
@@ -800,7 +797,7 @@ export default function MediaManagerPage() {
                   {swapSourceItem.label || swapSourceItem.filename}
                 </p>
                 <span className="text-[10px] text-slate-500 mt-1">
-                  {(usageMap[swapSourceItem.url] || []).length} jagah use ho rahi hai
+                  Used in {(usageMap[swapSourceItem.url] || []).length} {((usageMap[swapSourceItem.url] || []).length === 1) ? "place" : "places"}
                 </span>
               </div>
 
@@ -813,7 +810,7 @@ export default function MediaManagerPage() {
                 }`}
               >
                 <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider mb-2">
-                  Nayi Photo (Isse Badlenge)
+                  Replacement Photo (New)
                 </span>
                 {swapTargetItem ? (
                   <>
@@ -832,17 +829,17 @@ export default function MediaManagerPage() {
                       onClick={() => setSwapTargetItem(null)}
                       className="text-[10px] font-semibold text-rose-600 hover:underline mt-1 cursor-pointer"
                     >
-                      Change Photo
+                      Change Selection
                     </button>
                   </>
                 ) : (
                   <div className="flex-1 flex flex-col items-center justify-center p-2 text-slate-400">
                     <Sparkles size={24} className="mb-2 text-indigo-400" />
                     <p className="text-xs font-medium text-slate-600">
-                      Niche se achhi photo select karein
+                      Select replacement photo below
                     </p>
                     <p className="text-[10px] text-slate-400 mt-0.5">
-                      Click any photo below
+                      Click any photo from the library
                     </p>
                   </div>
                 )}
@@ -853,7 +850,7 @@ export default function MediaManagerPage() {
             <div className="p-5 overflow-y-auto space-y-3 flex-1 bg-slate-50/50">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                  Nayi Photo Chunein (Select Replacement):
+                  Select Replacement Photo:
                 </span>
                 <div className="relative w-48 sm:w-60">
                   <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -920,7 +917,7 @@ export default function MediaManagerPage() {
                   onChange={(e) => setSwapDeleteOld(e.target.checked)}
                   className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4 cursor-pointer"
                 />
-                <span>Purani photo ko swap karne ke baad delete kar do</span>
+                <span>Permanently delete old image from library after swapping</span>
               </label>
 
               <div className="flex items-center gap-2 self-end sm:self-center">
