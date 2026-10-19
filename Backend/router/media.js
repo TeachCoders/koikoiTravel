@@ -117,4 +117,93 @@ router.delete("/:id", requireSalesOrAdmin, async (req, res) => {
   }
 });
 
+// Usage Summary — maps all image URLs to where they are used across the website
+router.get("/usage-summary", requireSalesOrAdmin, async (req, res) => {
+  try {
+    const rows = await prisma.$queryRaw`
+      SELECT url, count(*)::int as count, json_agg(json_build_object('type', type, 'title', title, 'link', link)) as usages
+      FROM (
+        SELECT "thumbImg" as url, 'City' as type, title, '/india/' || slug as link FROM "City" WHERE "thumbImg" IS NOT NULL
+        UNION ALL
+        SELECT "thumbImg" as url, 'State' as type, title, '/destinations/' || slug as link FROM "State" WHERE "thumbImg" IS NOT NULL
+        UNION ALL
+        SELECT "thumbImg" as url, 'Tour Package' as type, title, '/tour-packages/' || slug as link FROM "Journey" WHERE "thumbImg" IS NOT NULL
+        UNION ALL
+        SELECT jd.image as url, 'Itinerary Day' as type, j.title || ' (' || jd.day || ')' as title, '/tour-packages/' || j.slug as link 
+        FROM "JourneyDay" jd JOIN "Journey" j ON jd."journeyId" = j.id WHERE jd.image IS NOT NULL
+        UNION ALL
+        SELECT "thumbImg" as url, 'Travel Experience' as type, title, '/travel-experiences/' || slug as link FROM "TravelExperience" WHERE "thumbImg" IS NOT NULL
+        UNION ALL
+        SELECT "thumbImg" as url, 'Season' as type, title, '/season/' || slug as link FROM "Month" WHERE "thumbImg" IS NOT NULL
+        UNION ALL
+        SELECT "thumbImg" as url, 'Blog Post' as type, title, '/blog/' || slug as link FROM "BlogPost" WHERE "thumbImg" IS NOT NULL
+        UNION ALL
+        SELECT "thumbImg" as url, 'CMS Page' as type, title, '/' || slug as link FROM "CmsPage" WHERE "thumbImg" IS NOT NULL
+        UNION ALL
+        SELECT image as url, 'Hero Banner' as type, coalesce(title, 'Banner: ' || "entityType") as title, coalesce('/' || "pageSlug", '/') as link FROM hero_full_banners WHERE image IS NOT NULL
+        UNION ALL
+        SELECT img as url, 'Hero Banner' as type, coalesce("bannerTitle", "entityType") as title, '/' as link FROM "Banner", unnest(images) as img WHERE img IS NOT NULL
+        UNION ALL
+        SELECT "imageUrl" as url, 'Guest Gallery' as type, coalesce(caption, 'Guest Photo') as title, '/guest-gallery' as link FROM guest_gallery WHERE "imageUrl" IS NOT NULL
+      ) all_usages
+      GROUP BY url;
+    `;
+
+    const usageMap = {};
+    for (const r of rows) {
+      if (r.url) usageMap[r.url] = r.usages || [];
+    }
+
+    return res.json({ success: true, data: usageMap });
+  } catch (error) {
+    logger.error("Usage summary error:", { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, message: "Failed to fetch media usage summary" });
+  }
+});
+
+// Swap Media — replaces all occurrences of oldUrl with newUrl across all models
+router.post("/swap", requireSalesOrAdmin, async (req, res) => {
+  try {
+    const { oldUrl, newUrl, deleteOld } = req.body;
+    if (!oldUrl || !newUrl || typeof oldUrl !== "string" || typeof newUrl !== "string") {
+      return res.status(400).json({ success: false, message: "Valid oldUrl and newUrl are required" });
+    }
+    if (oldUrl.trim() === newUrl.trim()) {
+      return res.status(400).json({ success: false, message: "oldUrl and newUrl cannot be the same" });
+    }
+
+    const oUrl = oldUrl.trim();
+    const nUrl = newUrl.trim();
+
+    await prisma.$transaction([
+      prisma.$executeRaw`UPDATE "City" SET "thumbImg" = ${nUrl} WHERE "thumbImg" = ${oUrl}`,
+      prisma.$executeRaw`UPDATE "State" SET "thumbImg" = ${nUrl} WHERE "thumbImg" = ${oUrl}`,
+      prisma.$executeRaw`UPDATE "Journey" SET "thumbImg" = ${nUrl} WHERE "thumbImg" = ${oUrl}`,
+      prisma.$executeRaw`UPDATE "JourneyDay" SET "image" = ${nUrl} WHERE "image" = ${oUrl}`,
+      prisma.$executeRaw`UPDATE "TravelExperience" SET "thumbImg" = ${nUrl} WHERE "thumbImg" = ${oUrl}`,
+      prisma.$executeRaw`UPDATE "Month" SET "thumbImg" = ${nUrl} WHERE "thumbImg" = ${oUrl}`,
+      prisma.$executeRaw`UPDATE "BlogPost" SET "thumbImg" = ${nUrl} WHERE "thumbImg" = ${oUrl}`,
+      prisma.$executeRaw`UPDATE "CmsPage" SET "thumbImg" = ${nUrl} WHERE "thumbImg" = ${oUrl}`,
+      prisma.$executeRaw`UPDATE hero_full_banners SET "image" = ${nUrl} WHERE "image" = ${oUrl}`,
+      prisma.$executeRaw`UPDATE hero_full_banners SET "mobileImage" = ${nUrl} WHERE "mobileImage" = ${oUrl}`,
+      prisma.$executeRaw`UPDATE guest_gallery SET "imageUrl" = ${nUrl} WHERE "imageUrl" = ${oUrl}`,
+      prisma.$executeRaw`UPDATE "Banner" SET images = array_replace(images, ${oUrl}, ${nUrl}) WHERE ${oUrl} = ANY(images)`,
+    ]);
+
+    if (deleteOld) {
+      const oldMedia = await prisma.media.findFirst({ where: { url: oUrl } });
+      if (oldMedia) {
+        const relPath = toRelativePath(oldMedia.url);
+        if (relPath) deleteMediaFile(relPath);
+        await prisma.media.delete({ where: { id: oldMedia.id } });
+      }
+    }
+
+    return res.json({ success: true, message: `Successfully swapped image to "${nUrl}"` });
+  } catch (error) {
+    logger.error("Media swap error:", { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, message: "Failed to swap image" });
+  }
+});
+
 export default router;

@@ -19,6 +19,10 @@ import {
   Layers,
   ArrowUpDown,
   FileImage,
+  ArrowLeftRight,
+  AlertTriangle,
+  CheckCircle2,
+  X,
 } from "lucide-react";
 import apiClient from "@/lib/apiClient";
 import { successToast, errorToast } from "@/components/shared/tost";
@@ -38,6 +42,12 @@ interface MediaItem {
   isPinned: boolean;
   sortOrder: number;
   createdAt?: string;
+}
+
+export interface UsageItem {
+  type: string;
+  title: string;
+  link: string;
 }
 
 interface CategoryFilter {
@@ -63,6 +73,19 @@ export default function MediaManagerPage() {
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState<string>("all");
   const [showPinnedOnly, setShowPinnedOnly] = useState(false);
+  const [showUnusedOnly, setShowUnusedOnly] = useState(false);
+
+  // Usage tracking map
+  const [usageMap, setUsageMap] = useState<Record<string, UsageItem[]>>({});
+  const [usageLoading, setUsageLoading] = useState(false);
+  const [selectedUsageItem, setSelectedUsageItem] = useState<MediaItem | null>(null);
+
+  // Swap Modal states
+  const [swapSourceItem, setSwapSourceItem] = useState<MediaItem | null>(null);
+  const [swapTargetItem, setSwapTargetItem] = useState<MediaItem | null>(null);
+  const [swapSearch, setSwapSearch] = useState("");
+  const [swapDeleteOld, setSwapDeleteOld] = useState(false);
+  const [isSwapping, setIsSwapping] = useState(false);
 
   // Edit Label Inline
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -89,14 +112,35 @@ export default function MediaManagerPage() {
     }
   };
 
+  const fetchUsage = async () => {
+    setUsageLoading(true);
+    try {
+      const res = await apiClient.get("/media/usage-summary");
+      if (res.data?.success) {
+        setUsageMap(res.data.data || {});
+      }
+    } catch (err) {
+      console.error("Failed to load media usage:", err);
+    } finally {
+      setUsageLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchMedia();
+    fetchUsage();
   }, []);
 
-  // Filter items based on activeTab, search, and pinned status
+  // Total unused count
+  const unusedCount = useMemo(() => {
+    return items.filter((item) => !usageMap[item.url] || usageMap[item.url].length === 0).length;
+  }, [items, usageMap]);
+
+  // Filter items based on activeTab, search, pinned, and unused status
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
       if (showPinnedOnly && !item.isPinned) return false;
+      if (showUnusedOnly && (usageMap[item.url]?.length || 0) > 0) return false;
 
       const q = search.trim().toLowerCase();
       if (q) {
@@ -174,21 +218,56 @@ export default function MediaManagerPage() {
     }
   };
 
-  // Delete Item
+  // Delete Item with Usage Warning
   const handleDelete = async (item: MediaItem) => {
-    if (
-      !window.confirm(
-        `Are you sure you want to delete "${item.label || item.filename}"?\n\nThis will remove the file from disk and database.`
-      )
-    )
-      return;
+    const usages = usageMap[item.url] || [];
+    const warning =
+      usages.length > 0
+        ? `WARNING: This image is actively used in ${usages.length} place(s) (e.g. ${usages[0].type}: "${usages[0].title}")!\n\nDeleting it may cause broken images on the website.\n\nAre you sure you want to delete "${item.label || item.filename}"?`
+        : `Delete "${item.label || item.filename}"?\n\nThis image is unused. The file will be removed from disk and database.`;
+
+    if (!window.confirm(warning)) return;
 
     try {
       await apiClient.delete(`/media/${item.id}`);
       setItems((prev) => prev.filter((i) => i.id !== item.id));
       successToast("Image deleted");
+      fetchUsage();
     } catch {
       errorToast("Failed to delete image");
+    }
+  };
+
+  // Swap / Replace image everywhere
+  const handleSwapSubmit = async () => {
+    if (!swapSourceItem || !swapTargetItem) return;
+    if (swapSourceItem.url === swapTargetItem.url) {
+      errorToast("Both images are identical, please choose a different image");
+      return;
+    }
+
+    setIsSwapping(true);
+    try {
+      const res = await apiClient.post("/media/swap", {
+        oldUrl: swapSourceItem.url,
+        newUrl: swapTargetItem.url,
+        deleteOld: swapDeleteOld,
+      });
+
+      if (res.data?.success) {
+        successToast("Image swapped successfully everywhere!");
+        setSwapSourceItem(null);
+        setSwapTargetItem(null);
+        setSelectedUsageItem(null);
+        fetchMedia();
+        fetchUsage();
+      } else {
+        errorToast(res.data?.message || "Failed to swap image");
+      }
+    } catch (err: any) {
+      errorToast(err.response?.data?.message || "Failed to swap image");
+    } finally {
+      setIsSwapping(false);
     }
   };
 
@@ -298,6 +377,21 @@ export default function MediaManagerPage() {
             <Star size={14} className={showPinnedOnly ? "fill-white" : ""} />
             Starred Only
           </button>
+
+          <button
+            type="button"
+            onClick={() => setShowUnusedOnly(!showUnusedOnly)}
+            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl text-xs font-semibold border transition-all ${
+              showUnusedOnly
+                ? "bg-rose-500 border-rose-600 text-white shadow-xs"
+                : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
+            }`}
+            title="Filter images that are not used in any page"
+          >
+            <span className={`w-2 h-2 rounded-full ${showUnusedOnly ? "bg-white" : "bg-slate-400"}`} />
+            Unused Only ({unusedCount})
+          </button>
+
           <span className="text-xs text-slate-400 font-mono px-2">
             {filteredItems.length} images shown
           </span>
@@ -341,11 +435,43 @@ export default function MediaManagerPage() {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
 
+                  {/* Usage Badge (Top Left) */}
+                  {(() => {
+                    const usages = usageMap[item.url] || [];
+                    const isUsed = usages.length > 0;
+                    return (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedUsageItem(item);
+                        }}
+                        title={
+                          isUsed
+                            ? `Used in ${usages.length} place(s). Click to see where.`
+                            : "Not used in any page. Click to inspect & delete."
+                        }
+                        className={`absolute top-2 left-2 z-10 px-2.5 py-1 rounded-full text-[10px] font-bold shadow-md backdrop-blur-md flex items-center gap-1.5 transition-transform active:scale-95 cursor-pointer ${
+                          isUsed
+                            ? "bg-emerald-600/90 hover:bg-emerald-700 text-white"
+                            : "bg-slate-800/85 hover:bg-slate-900 text-slate-200"
+                        }`}
+                      >
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${
+                            isUsed ? "bg-white animate-pulse" : "bg-slate-400"
+                          }`}
+                        />
+                        {isUsed ? `${usages.length} Used` : "Unused"}
+                      </button>
+                    );
+                  })()}
+
                   {/* Star / Pin Button */}
                   <button
                     type="button"
                     onClick={() => handleTogglePin(item)}
-                    className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 backdrop-blur-xs text-slate-400 hover:text-amber-500 shadow-xs transition-colors"
+                    className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 backdrop-blur-xs text-slate-400 hover:text-amber-500 shadow-xs transition-colors z-10"
                   >
                     <Star
                       size={14}
@@ -354,7 +480,7 @@ export default function MediaManagerPage() {
                   </button>
 
                   {/* Hover Action Overlay */}
-                  <div className="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-center justify-around opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-center justify-around opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity z-10">
                     <button
                       type="button"
                       onClick={() => handleOpenReplace(item)}
@@ -362,6 +488,19 @@ export default function MediaManagerPage() {
                       className="p-1.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white shadow-xs transition-colors"
                     >
                       <Crop size={15} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSwapSourceItem(item);
+                        setSwapTargetItem(null);
+                        setSwapSearch("");
+                        setSwapDeleteOld(false);
+                      }}
+                      title="Swap / Replace with another photo everywhere"
+                      className="p-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition-colors"
+                    >
+                      <ArrowLeftRight size={15} />
                     </button>
                     <button
                       type="button"
@@ -425,22 +564,390 @@ export default function MediaManagerPage() {
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono gap-1">
+                  <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono gap-1 pt-1 border-t border-slate-100">
                     <span className="truncate text-[10px] text-slate-400 font-mono flex-1" title={item.filename}>
                       {item.filename}
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => handleOpenReplace(item)}
-                      className="text-[#D4561A] hover:underline font-bold font-sans text-[11px] shrink-0"
-                    >
-                      Replace
-                    </button>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSwapSourceItem(item);
+                          setSwapTargetItem(null);
+                          setSwapSearch("");
+                          setSwapDeleteOld(false);
+                        }}
+                        title="Swap everywhere with another photo"
+                        className="text-indigo-600 hover:text-indigo-800 hover:underline font-bold font-sans text-[11px]"
+                      >
+                        Swap
+                      </button>
+                      <span className="text-slate-300">|</span>
+                      <button
+                        type="button"
+                        onClick={() => handleOpenReplace(item)}
+                        className="text-[#D4561A] hover:underline font-bold font-sans text-[11px]"
+                      >
+                        Replace
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* ── 1. Image Usage Inspector Modal ("Kaha Lagi Hai?") ── */}
+      {selectedUsageItem && (
+        <div
+          className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
+          onClick={() => setSelectedUsageItem(null)}
+        >
+          <div
+            className="bg-white rounded-3xl max-w-xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+              <div className="flex items-center gap-3">
+                <div className="w-14 h-14 rounded-2xl overflow-hidden bg-slate-200 border border-slate-300 shrink-0">
+                  <img
+                    src={selectedUsageItem.url}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-slate-900 text-sm sm:text-base leading-tight">
+                    {selectedUsageItem.label || selectedUsageItem.filename}
+                  </h3>
+                  <p className="text-[11px] text-slate-400 font-mono mt-0.5 truncate max-w-xs sm:max-w-md">
+                    {selectedUsageItem.url}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedUsageItem(null)}
+                className="p-1.5 rounded-xl hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Content List */}
+            <div className="p-6 overflow-y-auto space-y-4 flex-1">
+              {(() => {
+                const usages = usageMap[selectedUsageItem.url] || [];
+                if (usages.length === 0) {
+                  return (
+                    <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-100 text-center space-y-3">
+                      <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+                        <CheckCircle2 size={24} />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-emerald-900 text-sm">
+                          Ye Image Kahi Bhi Use Nahi Ho Rahi Hai (Unused)
+                        </h4>
+                        <p className="text-xs text-emerald-700 mt-1 max-w-md mx-auto">
+                          Ye photo kisi bhi Tour Package, City, State, Banner ya Blog me link nahi hai. Aap ise bina kisi dar ke delete kar sakte hain.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const item = selectedUsageItem;
+                          setSelectedUsageItem(null);
+                          handleDelete(item);
+                        }}
+                        className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
+                      >
+                        Delete This Unused Image
+                      </button>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                        Active Usages ({usages.length} Jagah Linked Hai)
+                      </span>
+                      <span className="text-[11px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">
+                        Live on Website
+                      </span>
+                    </div>
+
+                    <div className="divide-y divide-slate-100 border border-slate-100 rounded-2xl overflow-hidden bg-slate-50/50">
+                      {usages.map((u, i) => (
+                        <div
+                          key={i}
+                          className="p-3.5 flex items-center justify-between gap-3 hover:bg-white transition-colors"
+                        >
+                          <div className="min-w-0">
+                            <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded mb-1">
+                              {u.type}
+                            </span>
+                            <p className="text-xs font-semibold text-slate-800 truncate">
+                              {u.title}
+                            </p>
+                          </div>
+                          {u.link && (
+                            <a
+                              href={u.link}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold text-[#2E8B8B] hover:text-[#236b6b] bg-white border border-slate-200 rounded-lg hover:border-[#2E8B8B] shadow-2xs transition-all shrink-0"
+                            >
+                              <span>View</span>
+                              <ExternalLink size={11} />
+                            </a>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* Footer Actions */}
+            <div className="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between gap-2">
+              <button
+                type="button"
+                onClick={() => setSelectedUsageItem(null)}
+                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 bg-white border border-slate-200 rounded-xl hover:bg-slate-100 transition-colors"
+              >
+                Close
+              </button>
+              {(usageMap[selectedUsageItem.url]?.length || 0) > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const item = selectedUsageItem;
+                    setSelectedUsageItem(null);
+                    setSwapSourceItem(item);
+                    setSwapTargetItem(null);
+                    setSwapSearch("");
+                    setSwapDeleteOld(false);
+                  }}
+                  className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-xs transition-colors cursor-pointer"
+                >
+                  <ArrowLeftRight size={13} />
+                  <span>Is Photo Ko Dusri Photo Se Badlo (Swap Everywhere)</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── 2. Swap Image Modal ("Badal Do / Swap Everywhere") ── */}
+      {swapSourceItem && (
+        <div
+          className="fixed inset-0 z-[210] bg-black/70 backdrop-blur-xs flex items-center justify-center p-4"
+          onClick={() => {
+            if (!isSwapping) setSwapSourceItem(null);
+          }}
+        >
+          <div
+            className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+              <div className="flex items-center gap-2 text-slate-800">
+                <div className="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center">
+                  <ArrowLeftRight size={16} />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-sm sm:text-base leading-tight text-slate-900">
+                    Swap / Replace Image Everywhere
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    Jaha-jaha purani photo lagi hai, waha nayi photo lag jayegi (Zero broken links)
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                disabled={isSwapping}
+                onClick={() => setSwapSourceItem(null)}
+                className="p-1.5 rounded-xl hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition-colors disabled:opacity-50"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Comparison Box */}
+            <div className="p-5 border-b border-slate-100 bg-white grid grid-cols-2 gap-4">
+              {/* Old Photo (Source) */}
+              <div className="p-3.5 rounded-2xl border-2 border-rose-200 bg-rose-50/30 flex flex-col items-center text-center">
+                <span className="text-[10px] font-bold text-rose-700 uppercase tracking-wider mb-2">
+                  Purani Photo (Replace Hogi)
+                </span>
+                <div className="w-24 h-24 rounded-xl overflow-hidden bg-slate-200 border border-slate-300 mb-2">
+                  <img
+                    src={swapSourceItem.url}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <p className="text-xs font-bold text-slate-800 truncate max-w-full">
+                  {swapSourceItem.label || swapSourceItem.filename}
+                </p>
+                <span className="text-[10px] text-slate-500 mt-1">
+                  {(usageMap[swapSourceItem.url] || []).length} jagah use ho rahi hai
+                </span>
+              </div>
+
+              {/* New Photo (Target) */}
+              <div
+                className={`p-3.5 rounded-2xl border-2 flex flex-col items-center text-center transition-all ${
+                  swapTargetItem
+                    ? "border-emerald-500 bg-emerald-50/40"
+                    : "border-dashed border-slate-300 bg-slate-50"
+                }`}
+              >
+                <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider mb-2">
+                  Nayi Photo (Isse Badlenge)
+                </span>
+                {swapTargetItem ? (
+                  <>
+                    <div className="w-24 h-24 rounded-xl overflow-hidden bg-slate-200 border border-emerald-400 mb-2">
+                      <img
+                        src={swapTargetItem.url}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <p className="text-xs font-bold text-slate-800 truncate max-w-full">
+                      {swapTargetItem.label || swapTargetItem.filename}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setSwapTargetItem(null)}
+                      className="text-[10px] font-semibold text-rose-600 hover:underline mt-1 cursor-pointer"
+                    >
+                      Change Photo
+                    </button>
+                  </>
+                ) : (
+                  <div className="flex-1 flex flex-col items-center justify-center p-2 text-slate-400">
+                    <Sparkles size={24} className="mb-2 text-indigo-400" />
+                    <p className="text-xs font-medium text-slate-600">
+                      Niche se achhi photo select karein
+                    </p>
+                    <p className="text-[10px] text-slate-400 mt-0.5">
+                      Click any photo below
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Selection Grid from Media Library */}
+            <div className="p-5 overflow-y-auto space-y-3 flex-1 bg-slate-50/50">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                  Nayi Photo Chunein (Select Replacement):
+                </span>
+                <div className="relative w-48 sm:w-60">
+                  <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="text"
+                    value={swapSearch}
+                    onChange={(e) => setSwapSearch(e.target.value)}
+                    placeholder="Search replacement..."
+                    className="w-full pl-7 pr-2.5 py-1 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 max-h-56 overflow-y-auto p-1">
+                {items
+                  .filter((i) => i.id !== swapSourceItem.id)
+                  .filter((i) => {
+                    if (!swapSearch.trim()) return true;
+                    const q = swapSearch.toLowerCase();
+                    return (
+                      (i.label || "").toLowerCase().includes(q) ||
+                      (i.filename || "").toLowerCase().includes(q)
+                    );
+                  })
+                  .slice(0, 36)
+                  .map((cand) => {
+                    const isChosen = swapTargetItem?.id === cand.id;
+                    return (
+                      <button
+                        key={cand.id}
+                        type="button"
+                        onClick={() => setSwapTargetItem(cand)}
+                        className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
+                          isChosen
+                            ? "border-emerald-600 ring-2 ring-emerald-500/30 scale-95"
+                            : "border-slate-200 hover:border-indigo-400"
+                        }`}
+                      >
+                        <img
+                          src={cand.url}
+                          alt=""
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                        {isChosen && (
+                          <div className="absolute inset-0 bg-emerald-600/30 flex items-center justify-center">
+                            <div className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center">
+                              <Check size={12} strokeWidth={3} />
+                            </div>
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+              </div>
+            </div>
+
+            {/* Footer with Checkbox and Confirm Button */}
+            <div className="p-4 border-t border-slate-100 bg-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <label className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={swapDeleteOld}
+                  onChange={(e) => setSwapDeleteOld(e.target.checked)}
+                  className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4 cursor-pointer"
+                />
+                <span>Purani photo ko swap karne ke baad delete kar do</span>
+              </label>
+
+              <div className="flex items-center gap-2 self-end sm:self-center">
+                <button
+                  type="button"
+                  disabled={isSwapping}
+                  onClick={() => setSwapSourceItem(null)}
+                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  disabled={!swapTargetItem || isSwapping}
+                  onClick={handleSwapSubmit}
+                  className="flex items-center gap-1.5 px-5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed rounded-xl shadow-xs transition-colors cursor-pointer"
+                >
+                  {isSwapping ? (
+                    <RefreshCw size={13} className="animate-spin" />
+                  ) : (
+                    <ArrowLeftRight size={13} />
+                  )}
+                  <span>{isSwapping ? "Swapping Everywhere..." : "Confirm & Swap Everywhere"}</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
