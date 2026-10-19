@@ -66,9 +66,10 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
   const [cityIds, setCityIds] = useState<number[]>(
     (initialData?.cities ?? []).map((c) => c.id)
   );
-  const [journeyIds, setJourneyIds] = useState<number[]>(
-    () => initialData?.featuredJourneyOrder ?? []
-  );
+  const [journeyIds, setJourneyIds] = useState<number[]>(() => {
+    const validSet = new Set((initialData?.journeys ?? []).map((j) => j.id));
+    return (initialData?.featuredJourneyOrder ?? []).filter((id) => validSet.has(id));
+  });
   const [filterCountryIds, setFilterCountryIds] = useState<number[]>(
     () =>
       Array.from(
@@ -108,7 +109,8 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
       setMoreDescription(initialData.moreDescription || "");
       setFaqs(initialData.faqs || []);
       setCityIds((initialData.cities ?? []).map((c) => c.id));
-      setJourneyIds(initialData.featuredJourneyOrder ?? []);
+      const validSet = new Set((initialData.journeys ?? []).map((j) => j.id));
+      setJourneyIds((initialData.featuredJourneyOrder ?? []).filter((id) => validSet.has(id)));
       setFilterCountryIds(
         Array.from(
           new Set(

@@ -47,6 +47,35 @@ const CASCADE = {
   },
 };
 
+function getRelationTargetModel(rel) {
+  if (rel.targetModel) return rel.targetModel;
+  const f = rel.field;
+  if (f === "cities") return "city";
+  if (f === "journeys") return "journey";
+  if (f === "states") return "state";
+  if (f === "countries") return "country";
+  if (f === "months") return "month";
+  if (f === "seasons") return "season";
+  if (f.endsWith("ies")) return f.slice(0, -3) + "y";
+  if (f.endsWith("s")) return f.slice(0, -1);
+  return f;
+}
+
+async function filterExistingIds(targetModel, ids) {
+  if (!Array.isArray(ids) || ids.length === 0) return [];
+  if (!prisma[targetModel]) return ids;
+  try {
+    const existing = await prisma[targetModel].findMany({
+      where: { id: { in: ids } },
+      select: { id: true },
+    });
+    const existingSet = new Set(existing.map((x) => x.id));
+    return ids.filter((id) => existingSet.has(id));
+  } catch {
+    return ids;
+  }
+}
+
 function createCmsRouter({ modelName, entityType, schema, searchFields, parentField, childInclude, parentInclude, extraFilters, tourCountWhere, listSelect, relations = [], createDefaults }) {
   const router = express.Router();
 
@@ -487,9 +516,14 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
 
       const relationOps = {};
       for (const rel of relations) {
-        const idsRaw = rest[rel.inputKey];
+        let idsRaw = rest[rel.inputKey];
         if (Array.isArray(idsRaw)) {
-          const ids = [...new Set(idsRaw.map(Number).filter((x) => Number.isInteger(x) && x > 0))];
+          let ids = [...new Set(idsRaw.map(Number).filter((x) => Number.isInteger(x) && x > 0))];
+          const targetModel = getRelationTargetModel(rel);
+          if (prisma[targetModel] && ids.length > 0) {
+            ids = await filterExistingIds(targetModel, ids);
+            idsRaw = idsRaw.filter((id) => ids.includes(Number(id)));
+          }
           if (ids.length > 0) relationOps[rel.field] = { connect: ids.map((id) => ({ id })) };
           if (rel.orderField) relationOps[rel.orderField] = idsRaw;
         }
@@ -565,10 +599,17 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       const relationOps = {};
       for (const rel of relations) {
         if (rest[rel.inputKey] !== undefined) {
-          const idsRaw = rest[rel.inputKey];
-          const ids = Array.isArray(idsRaw)
+          let idsRaw = rest[rel.inputKey];
+          let ids = Array.isArray(idsRaw)
             ? [...new Set(idsRaw.map(Number).filter((x) => Number.isInteger(x) && x > 0))]
             : [];
+          const targetModel = getRelationTargetModel(rel);
+          if (prisma[targetModel] && ids.length > 0) {
+            ids = await filterExistingIds(targetModel, ids);
+            if (Array.isArray(idsRaw)) {
+              idsRaw = idsRaw.filter((id) => ids.includes(Number(id)));
+            }
+          }
           if (rel.connectOnly) {
             if (ids.length > 0) {
               relationOps[rel.field] = { connect: ids.map((id) => ({ id })) };
