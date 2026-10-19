@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { X, Search, Upload, Grid3X3, Check, Loader2, ImageIcon, Pencil, Star, Trash2, Save, Plus } from "lucide-react";
 import apiClient from "@/lib/apiClient";
 import { successToast, errorToast } from "@/components/shared/tost";
+import MediaCropReplaceModal, { MediaCropItem } from "@/components/shared/MediaCropReplaceModal";
 
 interface MediaItem {
   id: number;
@@ -76,12 +77,12 @@ export default function MediaLibrary({
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const replaceInputRef = useRef<HTMLInputElement>(null);
-  const [replaceTarget, setReplaceTarget] = useState<{ folder: string; filename: string } | null>(null);
-  const [replacing, setReplacing] = useState(false);
-  // Active mode — also drives the thumb/banner category filter (default banner)
-  const [activeMode, setActiveMode] = useState<"thumb" | "banner">(
-    modeSwitch?.defaultMode ?? "banner"
+  const [cropTarget, setCropTarget] = useState<MediaCropItem | null>(null);
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+
+  // Active mode — category filter
+  const [activeMode, setActiveMode] = useState<string>(
+    modeSwitch?.defaultMode ?? "all"
   );
 
   const isDualMode = !!modeSwitch;
@@ -97,12 +98,37 @@ export default function MediaLibrary({
       if (!label.includes(q) && !file.includes(q) && !alt.includes(q)) return false;
     }
     const file = item.filename.toLowerCase();
-    const isThumb = item.category === "thumb" || file.includes("thumb");
-    // Banner mode used to require category "banner", which hid anything whose
-    // category was never set that way, so older uploads could not be reached at
-    // all. It now shows everything that is not a thumb. Thumb mode stays
-    // strict, because a full width banner is the wrong size for a thumbnail.
-    if (activeMode === "thumb" ? !isThumb : isThumb) return false;
+    const cat = (item.category || "").toLowerCase();
+
+    if (activeMode === "all") return true;
+
+    if (activeMode === "destination") {
+      return (
+        cat === "destination" ||
+        file.includes("destination") ||
+        file.includes("holiday") ||
+        file.includes("state") ||
+        file.includes("city")
+      );
+    }
+    if (activeMode === "banner") {
+      return cat === "banner" || file.includes("banner") || file.includes("hero");
+    }
+    if (activeMode === "thumb") {
+      return (
+        cat === "thumb" ||
+        (file.includes("thumb") && !file.includes("banner")) ||
+        file.includes("tour") ||
+        file.includes("package")
+      );
+    }
+    if (activeMode === "gallery") {
+      return file.includes("gallery") || file.includes("itinerary") || file.includes("day");
+    }
+    if (activeMode === "blog") {
+      return cat === "blog" || file.includes("blog") || file.includes("news");
+    }
+
     return true;
   });
 
@@ -238,32 +264,15 @@ export default function MediaLibrary({
   };
 
   const handleReplaceClick = (item: MediaItem) => {
-    if (replacing) return;
-    if (!window.confirm(`Replace "${displayName(item)}"?\n\nThe current image will be deleted and the new image saved with the same file name, so the URL stays the same.`)) return;
-    setReplaceTarget({ folder: item.folder || "content", filename: item.filename });
-    replaceInputRef.current?.click();
-  };
-
-  const handleReplaceFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    const target = replaceTarget;
-    if (fileInputRef.current) fileInputRef.current.value = "";
-    if (replaceInputRef.current) replaceInputRef.current.value = "";
-    if (!file || !target) return;
-    setReplacing(true);
-    try {
-      const fd = new FormData();
-      fd.append("path", `${target.folder}/${target.filename}`);
-      fd.append("file", file);
-      await apiClient.post("/media/replace", fd);
-      successToast(`"${target.filename}" replaced`);
-      fetchMedia();
-    } catch {
-      errorToast("Failed to replace image");
-    } finally {
-      setReplacing(false);
-      setReplaceTarget(null);
-    }
+    setCropTarget({
+      id: item.id,
+      filename: item.filename,
+      folder: item.folder,
+      url: item.url,
+      label: displayName(item),
+      category: item.category,
+    });
+    setCropModalOpen(true);
   };
 
   if (!open) return null;
@@ -329,11 +338,15 @@ export default function MediaLibrary({
 
           <select
             value={activeMode}
-            onChange={(e) => setActiveMode(e.target.value as "thumb" | "banner")}
+            onChange={(e) => setActiveMode(e.target.value)}
             className="px-3 py-1.5 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary bg-white text-slate-700 cursor-pointer"
           >
-            <option value="banner">Banner</option>
-            <option value="thumb">Thumbnail</option>
+            <option value="all">All Media</option>
+            <option value="destination">Destinations (1:1)</option>
+            <option value="banner">Hero Banners (21:9)</option>
+            <option value="thumb">Tour Packages (3:2)</option>
+            <option value="gallery">Gallery / Itinerary (3:2)</option>
+            <option value="blog">Blogs (16:10)</option>
           </select>
 
           <button
@@ -377,7 +390,6 @@ export default function MediaLibrary({
         )}
 
         {/* ── Image Grid ── */}
-        <input ref={replaceInputRef} type="file" accept="image/*" className="hidden" onChange={handleReplaceFile} />
         <div className="flex-1 overflow-y-auto p-5">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-16 text-slate-400">
@@ -485,14 +497,11 @@ export default function MediaLibrary({
                       </button>
                       <button
                         type="button"
-                        disabled={replacing}
                         onClick={(e) => { e.stopPropagation(); handleReplaceClick(item); }}
-                        title="Replace image (same file name)"
+                        title="Replace & Crop image (same file name)"
                         className="p-1.5 bg-white/80 backdrop-blur-sm text-slate-700 rounded-lg hover:bg-white hover:text-brand-primary hover:shadow-md transition-all"
                       >
-                        {replacing && replaceTarget?.filename === item.filename
-                          ? <Loader2 size={11} className="animate-spin" />
-                          : <Upload size={11} />}
+                        <Upload size={11} />
                       </button>
                       <button
                         type="button"
@@ -542,6 +551,33 @@ export default function MediaLibrary({
           </div>
         )}
       </div>
+
+      <MediaCropReplaceModal
+        open={cropModalOpen}
+        item={cropTarget}
+        onClose={() => {
+          setCropModalOpen(false);
+          setCropTarget(null);
+        }}
+        onSuccess={() => {
+          setCropModalOpen(false);
+          setCropTarget(null);
+          fetchMedia();
+        }}
+        defaultPresetKey={
+          activeMode === "destination"
+            ? "destination"
+            : activeMode === "banner"
+            ? "hero"
+            : activeMode === "thumb"
+            ? "tour_card"
+            : activeMode === "gallery"
+            ? "tour_detail"
+            : activeMode === "blog"
+            ? "blog"
+            : undefined
+        }
+      />
     </div>
   );
 }

@@ -78,7 +78,7 @@ router.patch("/:id", requireSalesOrAdmin, async (req, res) => {
     }
 
     const allowed = {};
-    for (const key of ["isPinned", "sortOrder", "label", "altText", "caption"]) {
+    for (const key of ["isPinned", "sortOrder", "label", "altText", "caption", "category"]) {
       if (req.body[key] !== undefined) allowed[key] = req.body[key];
     }
     if (Object.keys(allowed).length === 0) {
