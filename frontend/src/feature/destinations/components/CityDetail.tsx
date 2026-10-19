@@ -22,6 +22,7 @@ import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
+import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
 import FilterBar from "@/components/shared/FilterBar";
 import {
   travelExperienceOptions,
@@ -286,55 +287,53 @@ function CityContent({
             <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
               {hasKnowMoreText && (
                 <div className={hasSidebar ? "lg:col-span-2" : "w-full"}>
-                  <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                    Know More
-                  </span>
-                  <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 mb-6">
-                    Everything About {city.h1Title || city.title}
-                  </h2>
-
-                  {hasSeoDesc && (
-                    <RichContent
-                      html={city.seoDescription!}
-                      sharedLinkedHrefs={pageLinkedHrefs}
-                      excludeHrefs={excludeHrefs}
-                    />
-                  )}
-
-                  {hasAttractions && (
-                    <div className="mt-8">
-                      <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
-                        <Compass size={18} className="text-[#2E8B8B]" /> Top Attractions
-                      </h3>
+                  <TravelGuideCollapsible
+                    title={`Everything About ${city.h1Title || city.title}`}
+                    subtitle={`Essential travel guide, top attractions, weather, local tips & culture for ${city.h1Title || city.title}.`}
+                  >
+                    {hasSeoDesc && (
                       <RichContent
-                        html={city.attractions!}
+                        html={city.seoDescription!}
                         sharedLinkedHrefs={pageLinkedHrefs}
                         excludeHrefs={excludeHrefs}
                       />
-                    </div>
-                  )}
+                    )}
 
-                  {hasWeather && (
-                    <div className="mt-8">
-                      <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
-                        <CloudSun size={18} className="text-[#F5B041]" /> Weather & Best Time
-                      </h3>
+                    {hasAttractions && (
+                      <div className="mt-8">
+                        <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
+                          <Compass size={18} className="text-[#2E8B8B]" /> Top Attractions
+                        </h3>
+                        <RichContent
+                          html={city.attractions!}
+                          sharedLinkedHrefs={pageLinkedHrefs}
+                          excludeHrefs={excludeHrefs}
+                        />
+                      </div>
+                    )}
+
+                    {hasWeather && (
+                      <div className="mt-8">
+                        <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
+                          <CloudSun size={18} className="text-[#F5B041]" /> Weather & Best Time
+                        </h3>
+                        <RichContent
+                          html={city.weather!}
+                          sharedLinkedHrefs={pageLinkedHrefs}
+                          excludeHrefs={excludeHrefs}
+                        />
+                      </div>
+                    )}
+
+                    {hasMoreDesc && (
                       <RichContent
-                        html={city.weather!}
+                        html={city.moreDescription!}
                         sharedLinkedHrefs={pageLinkedHrefs}
                         excludeHrefs={excludeHrefs}
+                        className="mt-8"
                       />
-                    </div>
-                  )}
-
-                  {hasMoreDesc && (
-                    <RichContent
-                      html={city.moreDescription!}
-                      sharedLinkedHrefs={pageLinkedHrefs}
-                      excludeHrefs={excludeHrefs}
-                      className="mt-8"
-                    />
-                  )}
+                    )}
+                  </TravelGuideCollapsible>
                 </div>
               )}
 

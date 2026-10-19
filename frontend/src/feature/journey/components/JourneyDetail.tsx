@@ -45,6 +45,7 @@ import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
 import { linkKeywords, buildExperienceLinkRules, type AutoLinkRule } from "@/lib/autoInternalLink";
 import { cn, stripHtml } from "@/lib/utils";
 import FaqSection from "@/feature/home/components/FaqSection";
+import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
 
 const JourneyLightbox = dynamic(() => import("./JourneyLightbox"), { ssr: false });
 const QuoteModal = dynamic(() => import("@/components/shared/QuoteModal").then((m) => m.QuoteModal), { ssr: false });
@@ -741,19 +742,17 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
       {journey.moreDescription && (
         <section id="more" className="bg-slate-50/80 border-t border-slate-200/80 py-10 md:py-14">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-            <div className="max-w-4xl">
-              <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                Trip Guide
-              </span>
-              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-4">
-                Essential <span className="text-[#F8904D]">Trip Guide</span>
-              </h2>
+            <TravelGuideCollapsible
+              title={`Essential Trip Guide: ${journey.title}`}
+              subtitle="Detailed day-by-day insights, local tips, what to pack, and cultural etiquette for this journey."
+              badge="Trip Guide & Travel Tips"
+            >
               <RichContent
                 html={linkedMoreDesc}
                 autoLink={false}
                 className="rich-text-plain-links text-[15px] sm:text-base text-slate-600 leading-[1.8]"
               />
-            </div>
+            </TravelGuideCollapsible>
           </div>
         </section>
       )}

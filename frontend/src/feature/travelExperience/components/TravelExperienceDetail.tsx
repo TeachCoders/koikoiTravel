@@ -20,6 +20,7 @@ import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
 import TourPackageCard from "@/components/shared/TourPackageCard";
+import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
 import FilterBar from "@/components/shared/FilterBar";
 import {
   travelExperienceOptions,
@@ -466,20 +467,21 @@ function ExperienceContent({
 
       {/* ===== ARTICLE / TRAVEL GUIDE (FULL WIDTH) - FOOTER SE PEHLE ===== */}
       {experience.moreDescription && (
-        <section id="more" className="bg-[#f8f8f8] border-t border-slate-200/60 py-16 md:py-20 relative overflow-hidden">
+        <section id="more" className="bg-[#f8f8f8] border-t border-slate-200/60 py-10 md:py-14 relative overflow-hidden">
           {/* Subtle India Travel Doodle Background */}
           <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23D4561A' stroke-width='0.8'%3E%3Crect x='0' y='0' width='200' height='200' fill='none'/%3E%3Cpath d='M90 60 L100 20 L110 60 M85 62 L80 75 L120 75 L115 62 M75 75 L75 90 L125 90 L125 75 M100 20 L100 14 M96 38 L100 25 L104 38 M80 90 L80 120 L120 120 L120 90 M85 120 L85 125 L115 125 L115 120 M100 90 L100 120'/%3E%3Ccircle cx='100' cy='72' r='4'/%3E%3Cpath d='M60 155 Q60 145 65 140 Q60 135 55 140 Q60 145 60 155 M52 160 L60 155 L68 160 M50 168 L52 160 L48 170 M68 160 L72 168 L64 170 M55 140 L48 135 M65 140 L72 135 M55 150 L52 155 M65 150 L68 155 M60 155 L60 168 M55 168 L65 168'/%3E%3Ccircle cx='60' cy='135' r='5'/%3E%3Ccircle cx='40' cy='40' r='15'/%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3Ccircle cx='40' cy='40' r='5'/%3E%3Cpath d='M40 25 L40 15 M40 55 L40 65 M25 40 L15 40 M55 40 L65 40'/%3E%3Ccircle cx='160' cy='160' r='12'/%3E%3Ccircle cx='160' cy='160' r='7'/%3E%3Ccircle cx='160' cy='160' r='3'/%3E%3Cpath d='M160 148 L160 140 M160 172 L160 180 M148 160 L140 160 M172 160 L180 160'/%3E%3C/g%3E%3C/svg%3E")`
           }} />
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
-            <div className="w-full">
-              <span className="accent-label">Know More</span>
-
+            <TravelGuideCollapsible
+              title={`Everything About ${experience.h1Title || experience.title}`}
+              subtitle={`Complete guide to ${experience.h1Title || experience.title} in India — highlights, best time to visit & travel tips.`}
+            >
               <RichContent
                 html={experience.moreDescription}
                 excludeHrefs={excludeHrefs}
               />
-            </div>
+            </TravelGuideCollapsible>
           </div>
         </section>
       )}

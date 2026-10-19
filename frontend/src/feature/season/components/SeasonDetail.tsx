@@ -9,6 +9,7 @@ import HeroSlider from "@/components/shared/HeroSlider";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
+import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
 import FilterBar from "@/components/shared/FilterBar";
 import FaqSection from "@/feature/home/components/FaqSection";
 import { stripHtml } from "@/lib/utils";
@@ -204,25 +205,27 @@ export default function SeasonDetail({
             <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
               {hasKnowMoreText && (
                 <div className={hasSidebar ? "lg:col-span-2" : "w-full"}>
-                  <span className="accent-label">Know More</span>
-                  <h2 className="h3 text-[#1C1C1C] mt-2 mb-8">Everything About {initialSeason.title}</h2>
+                  <TravelGuideCollapsible
+                    title={`Everything About ${initialSeason.title}`}
+                    subtitle={`Essential travel guide, best places to visit, climate & seasonal tour tips for ${initialSeason.title}.`}
+                  >
+                    {hasSeoDesc && (
+                      <RichContent
+                        html={initialSeason.seoDescription!}
+                        sharedLinkedHrefs={pageLinkedHrefs}
+                        excludeHrefs={excludeHrefs}
+                      />
+                    )}
 
-                  {hasSeoDesc && (
-                    <RichContent
-                      html={initialSeason.seoDescription!}
-                      sharedLinkedHrefs={pageLinkedHrefs}
-                      excludeHrefs={excludeHrefs}
-                    />
-                  )}
-
-                  {hasMoreDesc && (
-                    <RichContent
-                      html={initialSeason.moreDescription!}
-                      sharedLinkedHrefs={pageLinkedHrefs}
-                      excludeHrefs={excludeHrefs}
-                      className={hasSeoDesc ? "mt-8" : ""}
-                    />
-                  )}
+                    {hasMoreDesc && (
+                      <RichContent
+                        html={initialSeason.moreDescription!}
+                        sharedLinkedHrefs={pageLinkedHrefs}
+                        excludeHrefs={excludeHrefs}
+                        className={hasSeoDesc ? "mt-8" : ""}
+                      />
+                    )}
+                  </TravelGuideCollapsible>
                 </div>
               )}
 

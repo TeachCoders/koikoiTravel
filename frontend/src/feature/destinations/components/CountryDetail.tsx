@@ -26,6 +26,7 @@ import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
+import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
 import FilterBar from "@/components/shared/FilterBar";
 import { formatToursH1, stripHtml } from "@/lib/utils";
 import {
@@ -426,29 +427,27 @@ function CountryContent({
             <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
               {hasKnowMoreText && (
                 <div className={hasSidebar ? "lg:col-span-2" : "w-full"}>
-                  <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                    Know More
-                  </span>
-                  <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 mb-6">
-                    Everything About {displayTitle}
-                  </h2>
+                  <TravelGuideCollapsible
+                    title={`Everything About ${displayTitle}`}
+                    subtitle={`Essential travel guide, heritage, culture, seasons & expert trip tips for ${displayTitle}.`}
+                  >
+                    {hasSeoDesc && (
+                      <RichContent
+                        html={country.seoDescription!}
+                        sharedLinkedHrefs={pageLinkedHrefs}
+                        excludeHrefs={excludeHrefs}
+                      />
+                    )}
 
-                  {hasSeoDesc && (
-                    <RichContent
-                      html={country.seoDescription!}
-                      sharedLinkedHrefs={pageLinkedHrefs}
-                      excludeHrefs={excludeHrefs}
-                    />
-                  )}
-
-                  {hasMoreDesc && (
-                    <RichContent
-                      html={country.moreDescription!}
-                      sharedLinkedHrefs={pageLinkedHrefs}
-                      excludeHrefs={excludeHrefs}
-                      className={hasSeoDesc ? "mt-8" : ""}
-                    />
-                  )}
+                    {hasMoreDesc && (
+                      <RichContent
+                        html={country.moreDescription!}
+                        sharedLinkedHrefs={pageLinkedHrefs}
+                        excludeHrefs={excludeHrefs}
+                        className={hasSeoDesc ? "mt-8" : ""}
+                      />
+                    )}
+                  </TravelGuideCollapsible>
                 </div>
               )}
 

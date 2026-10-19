@@ -41,6 +41,7 @@ import type { Journey, PaginatedResponse } from "@/feature/journey/type";
 import CityCard from "./CityCard";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
+import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
 
 export default function StateDetail({
   slug,
@@ -618,29 +619,27 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
             <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
               {hasKnowMoreText && (
                 <div className={hasSidebar ? "lg:col-span-2" : "w-full"}>
-                  <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                    Know More
-                  </span>
-                  <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 mb-6">
-                    Everything About {state.title}
-                  </h2>
+                  <TravelGuideCollapsible
+                    title={`Everything About ${state.title}`}
+                    subtitle={`Essential travel guide, top places to visit, culture, food & insider tips for ${state.title}.`}
+                  >
+                    {hasSeoDesc && (
+                      <RichContent
+                        html={state.seoDescription!}
+                        sharedLinkedHrefs={pageLinkedHrefs}
+                        excludeHrefs={excludeHrefs}
+                      />
+                    )}
 
-                  {hasSeoDesc && (
-                    <RichContent
-                      html={state.seoDescription!}
-                      sharedLinkedHrefs={pageLinkedHrefs}
-                      excludeHrefs={excludeHrefs}
-                    />
-                  )}
-
-                  {hasMoreDesc && (
-                    <RichContent
-                      html={state.moreDescription!}
-                      sharedLinkedHrefs={pageLinkedHrefs}
-                      excludeHrefs={excludeHrefs}
-                      className={hasSeoDesc ? "mt-8" : ""}
-                    />
-                  )}
+                    {hasMoreDesc && (
+                      <RichContent
+                        html={state.moreDescription!}
+                        sharedLinkedHrefs={pageLinkedHrefs}
+                        excludeHrefs={excludeHrefs}
+                        className={hasSeoDesc ? "mt-8" : ""}
+                      />
+                    )}
+                  </TravelGuideCollapsible>
                 </div>
               )}
 
