@@ -15,6 +15,8 @@ import {
   Loader2,
   AlertCircle,
   FileImage,
+  Search,
+  Image as ImageIcon,
 } from "lucide-react";
 import apiClient from "@/lib/apiClient";
 import { successToast, errorToast } from "@/components/shared/tost";
@@ -134,10 +136,17 @@ export default function MediaCropReplaceModal({
   onSuccess,
   defaultPresetKey,
 }: MediaCropReplaceModalProps) {
-  const [mode, setMode] = useState<"file" | "url" | "ai">("file");
+  const [mode, setMode] = useState<"file" | "url" | "stock" | "ai">("stock");
   const [urlInput, setUrlInput] = useState("");
   const [urlLoading, setUrlLoading] = useState(false);
   const [urlError, setUrlError] = useState("");
+
+  // Stock Photo Search State
+  const [stockQuery, setStockQuery] = useState("");
+  const [stockLoading, setStockLoading] = useState(false);
+  const [stockResults, setStockResults] = useState<
+    { title: string; url: string; thumbUrl: string; width: number; height: number }[]
+  >([]);
 
   // AI Prompt State
   const [aiPrompt, setAiPrompt] = useState("");
@@ -198,6 +207,47 @@ export default function MediaCropReplaceModal({
     }
   }, [item, open, defaultPresetKey]);
 
+  const handleStockSearch = async (queryText?: string) => {
+    const q = (queryText !== undefined ? queryText : stockQuery).trim();
+    if (!q) return;
+    setStockLoading(true);
+    try {
+      const res = await apiClient.get(`/media/stock-search?q=${encodeURIComponent(q)}&limit=16`);
+      if (res.data?.success && Array.isArray(res.data.data)) {
+        setStockResults(res.data.data);
+      }
+    } catch (e: any) {
+      console.error("Stock search error:", e);
+      errorToast("Failed to search travel photos");
+    } finally {
+      setStockLoading(false);
+    }
+  };
+
+  const handleSelectStockPhoto = async (photoUrl: string) => {
+    setUrlLoading(true);
+    try {
+      const res = await apiClient.get(`/proxy-image?url=${encodeURIComponent(photoUrl)}`, {
+        responseType: "blob",
+      });
+      const blob = res.data;
+      const objectUrl = URL.createObjectURL(blob);
+      setRawImageSrc(objectUrl);
+      setZoom(1);
+      setPan({ x: 0, y: 0 });
+      setRotation(0);
+      successToast("Authentic photo loaded! Drag to position in crop frame below.");
+    } catch (err: any) {
+      console.error("Error loading stock photo:", err);
+      setRawImageSrc(photoUrl);
+      setZoom(1);
+      setPan({ x: 0, y: 0 });
+      setRotation(0);
+    } finally {
+      setUrlLoading(false);
+    }
+  };
+
   // Reset when modal closes or item changes
   useEffect(() => {
     if (open && item) {
@@ -208,12 +258,19 @@ export default function MediaCropReplaceModal({
         .replace(/\s+/g, " ")
         .trim();
       setAiPrompt(cleaned ? `${cleaned} scenic travel photography` : "");
+      setStockQuery(cleaned || "");
       setAiSeed(null);
+      if (cleaned) {
+        handleStockSearch(cleaned);
+      }
     } else if (!open) {
       setRawImageSrc(null);
       setUrlInput("");
       setUrlError("");
       setAiPrompt("");
+      setStockQuery("");
+      setStockResults([]);
+      setStockLoading(false);
       setAiSeed(null);
       setAiLoading(false);
       setZoom(1);
@@ -221,7 +278,7 @@ export default function MediaCropReplaceModal({
       setPan({ x: 0, y: 0 });
       setCompressedSize(null);
       setSaving(false);
-      setMode("file");
+      setMode("stock");
     }
   }, [open, item]);
 
@@ -542,48 +599,184 @@ export default function MediaCropReplaceModal({
             </p>
           </div>
 
-          {/* 2. Choose Mode: File Upload vs Paste URL vs Generate with AI */}
+          {/* 2. Choose Mode: Real Photos vs File Upload vs AI vs URL */}
           <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 pb-3">
             <button
               type="button"
+              onClick={() => {
+                setMode("stock");
+                if (stockResults.length === 0 && stockQuery) {
+                  handleStockSearch(stockQuery);
+                }
+              }}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                mode === "stock"
+                  ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-xs shadow-emerald-500/20"
+                  : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200"
+              }`}
+            >
+              <FileImage size={15} />
+              <span>📸 Real HD Photos</span>
+            </button>
+            <button
+              type="button"
               onClick={() => setMode("file")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                 mode === "file"
                   ? "bg-slate-900 text-white shadow-xs"
                   : "bg-slate-100 text-slate-600 hover:bg-slate-200"
               }`}
             >
               <Upload size={15} />
-              Upload From Device
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode("url")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                mode === "url"
-                  ? "bg-slate-900 text-white shadow-xs"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-              }`}
-            >
-              <LinkIcon size={15} />
-              Paste Image URL
+              <span>Upload From Device</span>
             </button>
             <button
               type="button"
               onClick={() => setMode("ai")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                 mode === "ai"
                   ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-xs shadow-purple-500/20"
                   : "bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200"
               }`}
             >
               <Sparkles size={15} />
-              Generate with AI
+              <span>Generate with AI</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("url")}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                mode === "url"
+                  ? "bg-slate-900 text-white shadow-xs"
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+              }`}
+            >
+              <LinkIcon size={15} />
+              <span>Paste URL</span>
             </button>
           </div>
 
           {/* Mode Inputs */}
-          {mode === "ai" ? (
+          {mode === "stock" ? (
+            <div className="p-4 rounded-2xl bg-gradient-to-br from-emerald-500/5 via-teal-500/5 to-slate-50 border border-emerald-200/80 space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+                    <ImageIcon size={14} />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-800">
+                      Authentic Real Monument & Travel Photos
+                    </h4>
+                    <p className="text-[11px] text-slate-500">
+                      Real 4K/8K photography from verified archives — auto-crops to {activePreset.label} ({activePreset.dims})
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Search Bar */}
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="text"
+                    value={stockQuery}
+                    onChange={(e) => setStockQuery(e.target.value)}
+                    placeholder="Search monument or city (e.g. Agra Fort, Taj Mahal, Jaipur, Manali)..."
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleStockSearch();
+                      }
+                    }}
+                    className="w-full bg-white border border-emerald-200 rounded-xl pl-9 pr-3.5 py-2 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-xs"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleStockSearch()}
+                  disabled={stockLoading || !stockQuery.trim()}
+                  className="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-sm flex items-center gap-1.5 disabled:opacity-50 shrink-0 cursor-pointer"
+                >
+                  {stockLoading ? (
+                    <>
+                      <Loader2 size={15} className="animate-spin" />
+                      <span>Searching...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Search size={15} />
+                      <span>Search Photos</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* 1-Click Monument Presets */}
+              <div>
+                <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block mb-1">
+                  ⚡ 1-Click Popular Places:
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {POPULAR_DESTINATION_PROMPTS.map((item) => (
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={() => {
+                        const name = item.label.replace(/^[^\w]+/, "").trim();
+                        setStockQuery(name);
+                        handleStockSearch(name);
+                      }}
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-200/90 shadow-2xs transition-all cursor-pointer hover:border-emerald-400"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Results Grid */}
+              {stockLoading ? (
+                <div className="py-10 flex flex-col items-center justify-center text-emerald-600 gap-2">
+                  <Loader2 size={24} className="animate-spin" />
+                  <span className="text-xs font-semibold">Searching real HD travel photography...</span>
+                </div>
+              ) : stockResults.length > 0 ? (
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-[11px] text-slate-500">
+                    <span>Found {stockResults.length} real photographs (Click to crop & apply):</span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 max-h-56 overflow-y-auto p-1 border border-emerald-100 rounded-xl bg-white/60">
+                    {stockResults.map((photo, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => handleSelectStockPhoto(photo.url)}
+                        className="group relative rounded-xl overflow-hidden border border-slate-200 hover:border-emerald-500 hover:ring-2 hover:ring-emerald-500/30 cursor-pointer transition-all bg-slate-100 aspect-video"
+                      >
+                        <img
+                          src={photo.thumbUrl}
+                          alt={photo.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2 text-white">
+                          <p className="text-[10px] font-bold line-clamp-1 leading-tight">{photo.title}</p>
+                          <span className="text-[9px] text-emerald-300 font-mono">
+                            {photo.width} × {photo.height}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : stockQuery ? (
+                <p className="text-xs text-slate-400 text-center py-4">
+                  No photos found for "{stockQuery}". Try typing just the place name like "Agra Fort", "Taj Mahal", "Manali".
+                </p>
+              ) : null}
+            </div>
+          ) : mode === "ai" ? (
             <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-500/5 via-indigo-500/5 to-slate-50 border border-purple-200/80 space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">

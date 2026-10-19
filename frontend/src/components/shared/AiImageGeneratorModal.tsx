@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Sparkles,
   RefreshCw,
@@ -13,6 +13,10 @@ import {
   Trash2,
   AlertCircle,
   ImageIcon,
+  Search,
+  FileImage,
+  Camera,
+  Loader2,
 } from "lucide-react";
 import apiClient from "@/lib/apiClient";
 import { errorToast, successToast } from "@/components/shared/tost";
@@ -74,6 +78,17 @@ export default function AiImageGeneratorModal({
   onBatchSaved,
 }: AiImageGeneratorModalProps) {
   const [selectedCategoryKey, setSelectedCategoryKey] = useState<string>(defaultCategory);
+  const [activeTab, setActiveTab] = useState<"stock" | "ai">("stock");
+
+  // Stock Photo Search State
+  const [stockQuery, setStockQuery] = useState("Agra Red Fort");
+  const [stockLoading, setStockLoading] = useState(false);
+  const [stockResults, setStockResults] = useState<
+    { title: string; url: string; thumbUrl: string; width: number; height: number }[]
+  >([]);
+  const [savingStockUrl, setSavingStockUrl] = useState<string | null>(null);
+
+  // AI Prompt State
   const [prompt, setPrompt] = useState("");
   const [imageName, setImageName] = useState("");
 
@@ -88,10 +103,67 @@ export default function AiImageGeneratorModal({
   const [saving, setSaving] = useState(false);
   const [savedList, setSavedList] = useState<AiSavedImage[]>([]);
 
-  if (!open) return null;
-
   const currentPreset =
     CATEGORY_PRESETS.find((p) => p.key === selectedCategoryKey) || CATEGORY_PRESETS[0];
+
+  useEffect(() => {
+    if (open) {
+      handleStockSearch("Agra Red Fort");
+    }
+  }, [open]);
+
+  const handleStockSearch = async (queryText?: string) => {
+    const q = (queryText !== undefined ? queryText : stockQuery).trim();
+    if (!q) return;
+    setStockLoading(true);
+    try {
+      const res = await apiClient.get(`/media/stock-search?q=${encodeURIComponent(q)}&limit=16`);
+      if (res.data?.success && Array.isArray(res.data.data)) {
+        setStockResults(res.data.data);
+      }
+    } catch (e: any) {
+      console.error("Stock search error:", e);
+      errorToast("Failed to search travel photos");
+    } finally {
+      setStockLoading(false);
+    }
+  };
+
+  const handleSaveStockToLibrary = async (photo: { title: string; url: string }) => {
+    setSavingStockUrl(photo.url);
+    try {
+      const res = await apiClient.post("/media/stock-save", {
+        url: photo.url,
+        label: photo.title || imageName || "Travel Photo",
+        category: selectedCategoryKey,
+        width: currentPreset.w,
+        height: currentPreset.h,
+      });
+
+      if (res.data?.success && res.data.media) {
+        successToast(`"${photo.title}" auto-cropped & saved as WebP (${currentPreset.dims})!`);
+        const item: AiSavedImage = {
+          id: res.data.media.id,
+          url: res.data.media.url,
+          filename: res.data.media.filename,
+          label: res.data.media.label,
+          category: res.data.media.category || selectedCategoryKey,
+          width: currentPreset.w,
+          height: currentPreset.h,
+          fileSize: res.data.media.fileSize,
+        };
+        setSavedList((prev) => [item, ...prev]);
+        if (onImageSaved) onImageSaved(item);
+      }
+    } catch (err: any) {
+      console.error("Stock save error:", err);
+      errorToast(err?.response?.data?.message || "Failed to save stock photo");
+    } finally {
+      setSavingStockUrl(null);
+    }
+  };
+
+  if (!open) return null;
 
   const handleAddEnhancer = (tag: string) => {
     const cleanTag = tag.replace(/^[^\w\s]+\s*/, "");
@@ -293,96 +365,259 @@ export default function AiImageGeneratorModal({
             </div>
           </div>
 
-          {/* 2. Prompt & Name Input */}
-          <div className="space-y-3 bg-slate-50/70 p-4 rounded-2xl border border-slate-200">
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                  <Sparkles size={13} className="text-purple-600" />
-                  <span>2. Describe the Image (AI Prompt)</span>
-                </label>
-                <span className="text-[11px] text-slate-400">
-                  Target size: <strong className="text-slate-700 font-mono">{currentPreset.dims}</strong>
-                </span>
+          {/* 2. Choose Mode: Real HD Monument Photos vs AI Studio */}
+          <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
+            <button
+              type="button"
+              onClick={() => setActiveTab("stock")}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                activeTab === "stock"
+                  ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-500/20"
+                  : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200"
+              }`}
+            >
+              <FileImage size={16} />
+              <span>📸 Real HD Monument Photos (Verified Real)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab("ai")}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                activeTab === "ai"
+                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/20"
+                  : "bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200"
+              }`}
+            >
+              <Sparkles size={16} />
+              <span>✨ AI Generator Studio</span>
+            </button>
+          </div>
+
+          {/* Mode 1: Real HD Photos Search */}
+          {activeTab === "stock" ? (
+            <div className="space-y-4 bg-emerald-50/40 p-4 rounded-2xl border border-emerald-200">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                    <ImageIcon size={15} className="text-emerald-600" />
+                    <span>Search Real 4K/8K Tourism Photography</span>
+                  </h4>
+                  <p className="text-[11px] text-slate-500">
+                    Auto-crops & optimizes to {currentPreset.label} ({currentPreset.dims})
+                  </p>
+                </div>
               </div>
-              <textarea
-                rows={2}
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                placeholder="e.g. Cinematic ultra-wide panoramic sunset view of Kashmir Dal Lake with deluxe wooden shikara boats and snow peaks in background"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-200 transition-all resize-none shadow-2xs"
-              />
-            </div>
 
-            {/* 1-Click Popular Monument Presets */}
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-[10px] font-bold text-purple-700 uppercase tracking-wider mr-1">
-                ⚡ 1-Click Presets:
-              </span>
-              {POPULAR_DESTINATION_PROMPTS.map((item) => (
+              {/* Search Bar */}
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="text"
+                    value={stockQuery}
+                    onChange={(e) => setStockQuery(e.target.value)}
+                    placeholder="Search monument or city (e.g. Agra Fort, Taj Mahal, Jaipur, Manali)..."
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleStockSearch();
+                      }
+                    }}
+                    className="w-full bg-white border border-emerald-200 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-xs"
+                  />
+                </div>
                 <button
-                  key={item.label}
                   type="button"
-                  onClick={() => {
-                    setPrompt(item.prompt);
-                    if (!imageName) setImageName(item.label.replace(/^[^\w]+/, "").trim());
-                  }}
-                  className="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 border border-purple-200/90 text-[11px] font-semibold text-purple-800 transition-colors cursor-pointer shadow-2xs"
+                  onClick={() => handleStockSearch()}
+                  disabled={stockLoading || !stockQuery.trim()}
+                  className="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-sm flex items-center gap-1.5 disabled:opacity-50 shrink-0 cursor-pointer"
                 >
-                  {item.label}
+                  {stockLoading ? (
+                    <>
+                      <Loader2 size={15} className="animate-spin" />
+                      <span>Searching...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Search size={15} />
+                      <span>Search Photos</span>
+                    </>
+                  )}
                 </button>
-              ))}
-            </div>
+              </div>
 
-            {/* Quick Style Enhancer Pills */}
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mr-1">
-                Add Style:
-              </span>
-              {QUICK_ENHANCERS.map((enhancer) => (
-                <button
-                  key={enhancer}
-                  type="button"
-                  onClick={() => handleAddEnhancer(enhancer)}
-                  className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-purple-300 hover:bg-purple-50/50 text-[11px] text-slate-600 transition-colors cursor-pointer shadow-2xs"
-                >
-                  {enhancer}
-                </button>
-              ))}
-            </div>
+              {/* 1-Click Popular Places */}
+              <div>
+                <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block mb-1">
+                  ⚡ 1-Click Popular Places:
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {POPULAR_DESTINATION_PROMPTS.map((item) => (
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={() => {
+                        const name = item.label.replace(/^[^\w]+/, "").trim();
+                        setStockQuery(name);
+                        handleStockSearch(name);
+                      }}
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-200 shadow-2xs transition-all cursor-pointer hover:border-emerald-400"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-            {/* Image Name (Label) */}
-            <div className="pt-2 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center gap-3">
-              <div className="flex-1">
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Image Title / Label (Required to save):
-                </label>
-                <input
-                  type="text"
-                  value={imageName}
-                  onChange={(e) => setImageName(e.target.value)}
-                  placeholder="e.g. Kashmir Dal Lake Sunset Banner"
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs text-slate-800 focus:outline-none focus:border-purple-600 shadow-2xs"
+              {/* Photo Results Grid */}
+              {stockLoading ? (
+                <div className="py-12 flex flex-col items-center justify-center text-emerald-700 gap-2">
+                  <Loader2 size={26} className="animate-spin" />
+                  <span className="text-xs font-semibold">Searching real HD travel photography...</span>
+                </div>
+              ) : stockResults.length > 0 ? (
+                <div className="space-y-2">
+                  <span className="text-[11px] font-semibold text-slate-600">
+                    Found {stockResults.length} real photographs — Click "Save & Use" to auto-fit to {currentPreset.dims}:
+                  </span>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-h-72 overflow-y-auto p-1.5 bg-white/70 border border-emerald-100 rounded-2xl">
+                    {stockResults.map((photo, idx) => (
+                      <div
+                        key={idx}
+                        className="group relative rounded-xl overflow-hidden border border-slate-200 bg-slate-100 aspect-video flex flex-col justify-end"
+                      >
+                        <img
+                          src={photo.thumbUrl}
+                          alt={photo.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-2.5 text-white">
+                          <p className="text-[10px] font-bold line-clamp-1 leading-tight">{photo.title}</p>
+                          <span className="text-[9px] text-emerald-300 font-mono mb-1.5">
+                            {photo.width} × {photo.height}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => handleSaveStockToLibrary(photo)}
+                            disabled={savingStockUrl === photo.url}
+                            className="w-full py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-extrabold flex items-center justify-center gap-1 shadow-sm transition-colors cursor-pointer"
+                          >
+                            {savingStockUrl === photo.url ? (
+                              <>
+                                <Loader2 size={11} className="animate-spin" />
+                                <span>Saving...</span>
+                              </>
+                            ) : (
+                              <>
+                                <Plus size={12} />
+                                <span>Save & Use</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <p className="text-xs text-slate-400 text-center py-6">
+                  No photos found for "{stockQuery}". Try typing city or monument name like "Agra Fort", "Taj Mahal".
+                </p>
+              )}
+            </div>
+          ) : (
+            /* Mode 2: AI Prompt Studio */
+            <div className="space-y-3 bg-slate-50/70 p-4 rounded-2xl border border-slate-200">
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                    <Sparkles size={13} className="text-purple-600" />
+                    <span>Describe the Image (AI Prompt)</span>
+                  </label>
+                  <span className="text-[11px] text-slate-400">
+                    Target size: <strong className="text-slate-700 font-mono">{currentPreset.dims}</strong>
+                  </span>
+                </div>
+                <textarea
+                  rows={2}
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  placeholder="e.g. Cinematic ultra-wide panoramic sunset view of Kashmir Dal Lake with deluxe wooden shikara boats and snow peaks in background"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-200 transition-all resize-none shadow-2xs"
                 />
               </div>
 
-              <div className="self-end sm:self-center pt-2 sm:pt-4">
-                <button
-                  type="button"
-                  disabled={generating || !prompt.trim()}
-                  onClick={() => handleGenerate()}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white text-xs font-bold shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer whitespace-nowrap"
-                >
-                  {generating ? (
-                    <RefreshCw size={14} className="animate-spin" />
-                  ) : (
-                    <Sparkles size={14} />
-                  )}
-                  <span>{generating ? "Generating AI Image..." : "Create / Generate"}</span>
-                </button>
+              {/* 1-Click Popular Monument Presets */}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="text-[10px] font-bold text-purple-700 uppercase tracking-wider mr-1">
+                  ⚡ 1-Click Presets:
+                </span>
+                {POPULAR_DESTINATION_PROMPTS.map((item) => (
+                  <button
+                    key={item.label}
+                    type="button"
+                    onClick={() => {
+                      setPrompt(item.prompt);
+                      if (!imageName) setImageName(item.label.replace(/^[^\w]+/, "").trim());
+                    }}
+                    className="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 border border-purple-200/90 text-[11px] font-semibold text-purple-800 transition-colors cursor-pointer shadow-2xs"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Quick Style Enhancer Pills */}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mr-1">
+                  Add Style:
+                </span>
+                {QUICK_ENHANCERS.map((enhancer) => (
+                  <button
+                    key={enhancer}
+                    type="button"
+                    onClick={() => handleAddEnhancer(enhancer)}
+                    className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-purple-300 hover:bg-purple-50/50 text-[11px] text-slate-600 transition-colors cursor-pointer shadow-2xs"
+                  >
+                    {enhancer}
+                  </button>
+                ))}
+              </div>
+
+              {/* Image Name (Label) */}
+              <div className="pt-2 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center gap-3">
+                <div className="flex-1">
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Image Title / Label (Required to save):
+                  </label>
+                  <input
+                    type="text"
+                    value={imageName}
+                    onChange={(e) => setImageName(e.target.value)}
+                    placeholder="e.g. Kashmir Dal Lake Sunset Banner"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs text-slate-800 focus:outline-none focus:border-purple-600 shadow-2xs"
+                  />
+                </div>
+
+                <div className="self-end sm:self-center pt-2 sm:pt-4">
+                  <button
+                    type="button"
+                    disabled={generating || !prompt.trim()}
+                    onClick={() => handleGenerate()}
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white text-xs font-bold shadow-md disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer whitespace-nowrap"
+                  >
+                    {generating ? (
+                      <RefreshCw size={14} className="animate-spin" />
+                    ) : (
+                      <Sparkles size={14} />
+                    )}
+                    <span>{generating ? "Generating AI Image..." : "Create / Generate"}</span>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* 3. Generated Image Preview Box */}
           {previewData ? (

@@ -293,6 +293,130 @@ router.post("/swap", requireSalesOrAdmin, async (req, res) => {
   }
 });
 
+// Search Authentic Real Travel & Monument Photos from Wikimedia Commons
+router.get("/stock-search", requireSalesOrAdmin, async (req, res) => {
+  try {
+    const q = (req.query.q || "").toString().trim();
+    if (!q) return res.json({ success: true, data: [] });
+
+    const cleanQuery = q.replace(/\b(image|photo|photos|pic|picture|wallpapers?)\b/gi, "").trim();
+    const encoded = encodeURIComponent(cleanQuery);
+    const limit = Math.min(Number(req.query.limit) || 16, 24);
+
+    const wikiUrl = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${encoded}&gsrnamespace=6&gsrlimit=${limit}&prop=imageinfo&iiprop=url|size|mime&iiurlwidth=500&format=json`;
+
+    const fetchRes = await fetch(wikiUrl, {
+      headers: { "User-Agent": "KoiKoiTravel/1.0 (info@koikoitravel.com)" },
+    });
+
+    if (!fetchRes.ok) {
+      return res.status(502).json({ success: false, message: "Wikimedia search failed" });
+    }
+
+    const data = await fetchRes.json();
+    const pages = data?.query?.pages || {};
+    const results = [];
+
+    for (const pid of Object.keys(pages)) {
+      const page = pages[pid];
+      const info = page?.imageinfo?.[0];
+      if (!info) continue;
+
+      const mime = (info.mime || "").toLowerCase();
+      if (!["image/jpeg", "image/png", "image/webp"].includes(mime)) continue;
+
+      const origUrl = info.url;
+      const thumbUrl = info.thumburl || origUrl;
+      const width = info.width || 0;
+      const height = info.height || 0;
+
+      // Filter out tiny icons or non-photos
+      if (width < 600 || height < 300) continue;
+
+      const title = (page.title || "")
+        .replace(/^File:/i, "")
+        .replace(/\.[^/.]+$/, "")
+        .replace(/[-_]+/g, " ");
+
+      results.push({
+        title,
+        url: origUrl,
+        thumbUrl,
+        width,
+        height,
+      });
+    }
+
+    return res.json({ success: true, data: results });
+  } catch (err) {
+    logger.error("Stock search error:", { error: err.message, stack: err.stack });
+    return res.status(500).json({ success: false, message: "Failed to search travel photos" });
+  }
+});
+
+// Save permanent stock photo — downloads high-res original, crops strictly to target dims with Sharp, saves to Media DB
+router.post("/stock-save", requireSalesOrAdmin, async (req, res) => {
+  try {
+    const { url, label = "Travel Photo", category = "banner", width: reqW, height: reqH } = req.body;
+    if (!url) return res.status(400).json({ success: false, message: "URL is required" });
+
+    let targetW = 1920;
+    let targetH = 450;
+    const cat = (category || "").toLowerCase();
+    if (cat === "banner" || cat === "hero") { targetW = 1920; targetH = 450; }
+    else if (cat === "destination") { targetW = 600; targetH = 600; }
+    else if (cat === "tour" || cat === "thumb") { targetW = 600; targetH = 400; }
+    else if (cat === "gallery") { targetW = 1200; targetH = 800; }
+    else if (cat === "guest_gallery") { targetW = 800; targetH = 600; }
+    else if (cat === "blog") { targetW = 800; targetH = 500; }
+    if (reqW && Number(reqW) > 0) targetW = Number(reqW);
+    if (reqH && Number(reqH) > 0) targetH = Number(reqH);
+
+    const fetchRes = await fetch(url, {
+      headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
+    });
+    if (!fetchRes.ok) return res.status(502).json({ success: false, message: "Failed to download photo" });
+
+    const rawBuffer = Buffer.from(await fetchRes.arrayBuffer());
+    const webpBuffer = await sharp(rawBuffer)
+      .resize(targetW, targetH, { fit: "cover", position: "center" })
+      .webp({ quality: 85 })
+      .toBuffer();
+
+    const cleanLabel = (label || "Travel Photo").trim().slice(0, 80);
+    const slugBase = cleanLabel.toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]+/g, "").slice(0, 40) || "photo";
+    const filename = `${Date.now()}-${slugBase}.webp`;
+    const saveDir = path.join(process.cwd(), "public", "content");
+    if (!fs.existsSync(saveDir)) fs.mkdirSync(saveDir, { recursive: true });
+
+    const filePath = path.join(saveDir, filename);
+    fs.writeFileSync(filePath, webpBuffer);
+
+    const mediaUrl = `/content/${filename}`;
+    const media = await prisma.media.create({
+      data: {
+        filename,
+        url: mediaUrl,
+        folder: "content",
+        originalName: `${slugBase}.webp`,
+        label: cleanLabel,
+        altText: cleanLabel,
+        category: cat,
+      },
+    });
+
+    return res.json({
+      success: true,
+      url: mediaUrl,
+      media: { ...media, fileSize: webpBuffer.length },
+      message: `"${cleanLabel}" saved successfully (${targetW}×${targetH})`,
+    });
+  } catch (error) {
+    logger.error("Stock save error:", { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, message: "Failed to save stock photo" });
+  }
+});
+
 function cleanTravelPrompt(text) {
   if (!text) return "";
   let p = text.trim();
@@ -356,17 +480,45 @@ router.post("/ai-generate", requireSalesOrAdmin, async (req, res) => {
     const enrichedPrompt = `${cleanedPrompt}, 8k travel photography, photorealistic, cinematic natural lighting, ultra-high resolution, masterpiece, professional Indian tourism photo, sharp focus, no watermark, no text, no blur`;
     const encodedPrompt = encodeURIComponent(enrichedPrompt);
 
-    const aiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${targetW}&height=${targetH}&model=flux&nologo=true&seed=${seed}`;
+    const aiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${targetW}&height=${targetH}&nologo=true&seed=${seed}`;
 
-    const fetchResponse = await fetch(aiUrl, {
+    let fetchResponse = await fetch(aiUrl, {
       headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
     });
 
-    if (!fetchResponse.ok) {
-      return res.status(502).json({ success: false, message: `AI Image provider responded with ${fetchResponse.status}` });
+    let rawBuffer = null;
+
+    if (fetchResponse.ok) {
+      rawBuffer = Buffer.from(await fetchResponse.arrayBuffer());
+    } else {
+      // Fallback: If AI provider fails or returns 402/502, fetch a real authentic high-res travel photo from Wikimedia!
+      const searchTerms = cleanedPrompt
+        .replace(/\b(8k|travel|photography|photorealistic|cinematic|natural|lighting|ultra-high|resolution|masterpiece|professional|indian|tourism|photo|sharp|focus|no|watermark|text|blur|exterior|view|panoramic|wide\s+angle)\b/gi, "")
+        .trim();
+      const wikiUrl = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(searchTerms || "India tourism landscape")}&gsrnamespace=6&gsrlimit=5&prop=imageinfo&iiprop=url|size|mime&format=json`;
+      const wikiRes = await fetch(wikiUrl, { headers: { "User-Agent": "KoiKoiTravel/1.0 (info@koikoitravel.com)" } });
+      if (wikiRes.ok) {
+        const wikiData = await wikiRes.json();
+        const pages = wikiData?.query?.pages || {};
+        for (const pid of Object.keys(pages)) {
+          const info = pages[pid]?.imageinfo?.[0];
+          if (info?.url && ["image/jpeg", "image/png", "image/webp"].includes((info.mime || "").toLowerCase())) {
+            const imgRes = await fetch(info.url, { headers: { "User-Agent": "KoiKoiTravel/1.0 (info@koikoitravel.com)" } });
+            if (imgRes.ok) {
+              rawBuffer = Buffer.from(await imgRes.arrayBuffer());
+              break;
+            }
+          }
+        }
+      }
     }
 
-    const rawBuffer = Buffer.from(await fetchResponse.arrayBuffer());
+    if (!rawBuffer) {
+      return res.status(502).json({
+        success: false,
+        message: "Image generation provider is busy. Please use the '📸 Real HD Photos' tab for instant real photographs.",
+      });
+    }
 
     // Convert & resize strictly to target dimensions as high-quality WebP
     const webpBuffer = await sharp(rawBuffer)
