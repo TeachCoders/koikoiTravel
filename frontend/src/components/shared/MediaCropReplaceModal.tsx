@@ -90,36 +90,16 @@ const RATIO_PRESETS: AspectRatioOption[] = [
   },
 ];
 
-const QUICK_ENHANCERS = [
-  "🌅 Golden Hour Sunrise",
-  "🏔️ Snowy Mountains",
-  "🛕 Ancient Heritage",
-  "🛶 Serene Backwaters",
-  "🌿 Lush Green Nature",
-  "🏖️ Tropical Beach",
-  "🌆 Night Cityscape",
+const POPULAR_DESTINATIONS = [
+  "Agra Red Fort",
+  "Taj Mahal",
+  "Jaipur Hawa Mahal",
+  "Kerala Backwaters",
+  "Himalayas",
+  "Varanasi Ganga Ghat",
+  "Goa Beach",
+  "Udaipur Lake Palace",
 ];
-
-const POPULAR_DESTINATION_PROMPTS = [
-  { label: "🏰 Agra Red Fort", prompt: "Agra Red Fort panoramic exterior wide angle view, massive red sandstone walls and Amar Singh gate, Indian heritage architecture, sunny day" },
-  { label: "🕌 Taj Mahal", prompt: "Majestic Taj Mahal at sunrise with morning mist, reflection in water pool, golden morning sunlight" },
-  { label: "🏰 Jaipur Hawa Mahal", prompt: "Jaipur Hawa Mahal Palace of Winds street view, pink sandstone architecture, sunny daylight" },
-  { label: "🛶 Kerala Backwaters", prompt: "Kerala backwaters traditional wooden houseboat cruising calm palm-lined river, lush green nature" },
-  { label: "🏔️ Himalayas Mountain", prompt: "Snow covered Himalayan mountain peaks, pine forest valley, crisp morning sunlight" },
-  { label: "🛕 Varanasi Ganga Ghat", prompt: "Varanasi Ganga Ghat evening aarti ceremony with glowing oil lamps and boats on holy river" },
-  { label: "🏖️ Goa Beach", prompt: "Goa tropical beach at sunset, golden waves on sand, coconut palm trees silhouette" },
-  { label: "🏰 Udaipur Lake Palace", prompt: "Udaipur Lake Palace floating on calm blue Lake Pichola, Aravalli hills in background" },
-];
-
-function getAiDimensions(preset: AspectRatioOption) {
-  if (preset.key === "hero") return { w: 1920, h: 450, cat: "banner" };
-  if (preset.key === "destination") return { w: 600, h: 600, cat: "destination" };
-  if (preset.key === "tour_card") return { w: 600, h: 400, cat: "tour" };
-  if (preset.key === "gallery") return { w: 1200, h: 800, cat: "gallery" };
-  if (preset.key === "blog") return { w: 800, h: 500, cat: "blog" };
-  if (preset.key === "guest_gallery") return { w: 800, h: 600, cat: "guest_gallery" };
-  return { w: 1200, h: 800, cat: "tour" };
-}
 
 interface MediaCropReplaceModalProps {
   item: MediaCropItem | null;
@@ -136,7 +116,7 @@ export default function MediaCropReplaceModal({
   onSuccess,
   defaultPresetKey,
 }: MediaCropReplaceModalProps) {
-  const [mode, setMode] = useState<"file" | "url" | "stock" | "ai">("stock");
+  const [mode, setMode] = useState<"stock" | "file" | "url">("stock");
   const [urlInput, setUrlInput] = useState("");
   const [urlLoading, setUrlLoading] = useState(false);
   const [urlError, setUrlError] = useState("");
@@ -147,11 +127,6 @@ export default function MediaCropReplaceModal({
   const [stockResults, setStockResults] = useState<
     { title: string; url: string; thumbUrl: string; width: number; height: number }[]
   >([]);
-
-  // AI Prompt State
-  const [aiPrompt, setAiPrompt] = useState("");
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiSeed, setAiSeed] = useState<number | null>(null);
 
   const [rawImageSrc, setRawImageSrc] = useState<string | null>(null);
   const [activePreset, setActivePreset] = useState<AspectRatioOption>(RATIO_PRESETS[0]);
@@ -257,9 +232,7 @@ export default function MediaCropReplaceModal({
         .replace(/\b\d+\b/g, "")
         .replace(/\s+/g, " ")
         .trim();
-      setAiPrompt(cleaned ? `${cleaned} scenic travel photography` : "");
       setStockQuery(cleaned || "");
-      setAiSeed(null);
       if (cleaned) {
         handleStockSearch(cleaned);
       }
@@ -267,12 +240,9 @@ export default function MediaCropReplaceModal({
       setRawImageSrc(null);
       setUrlInput("");
       setUrlError("");
-      setAiPrompt("");
       setStockQuery("");
       setStockResults([]);
       setStockLoading(false);
-      setAiSeed(null);
-      setAiLoading(false);
       setZoom(1);
       setRotation(0);
       setPan({ x: 0, y: 0 });
@@ -281,50 +251,6 @@ export default function MediaCropReplaceModal({
       setMode("stock");
     }
   }, [open, item]);
-
-  // Handle AI generation preview
-  const handleGenerateAi = async (isRegenerate: boolean = false) => {
-    if (!aiPrompt.trim()) {
-      errorToast("Please enter a prompt to generate an image");
-      return;
-    }
-    setAiLoading(true);
-    try {
-      const { w, h, cat } = getAiDimensions(activePreset);
-      const seed = isRegenerate
-        ? Math.floor(Math.random() * 999999)
-        : (aiSeed ?? Math.floor(Math.random() * 999999));
-      setAiSeed(seed);
-
-      const res = await apiClient.post("/media/ai-generate", {
-        prompt: aiPrompt.trim(),
-        category: cat,
-        width: w,
-        height: h,
-        seed,
-        save: false,
-      });
-
-      if (res.data?.previewUrl) {
-        setRawImageSrc(res.data.previewUrl);
-        setZoom(1);
-        setPan({ x: 0, y: 0 });
-        setRotation(0);
-        successToast(
-          isRegenerate
-            ? "New AI variation generated! Check preview below."
-            : "AI Image generated! Adjust crop below or click 'Replace & Update Image'."
-        );
-      } else {
-        errorToast("No preview received from AI generator");
-      }
-    } catch (err: any) {
-      console.error("AI Generation error:", err);
-      errorToast(err?.response?.data?.message || "Failed to generate AI image. Please try again.");
-    } finally {
-      setAiLoading(false);
-    }
-  };
 
   // Handle local file select
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -632,18 +558,6 @@ export default function MediaCropReplaceModal({
             </button>
             <button
               type="button"
-              onClick={() => setMode("ai")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
-                mode === "ai"
-                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-xs shadow-purple-500/20"
-                  : "bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200"
-              }`}
-            >
-              <Sparkles size={15} />
-              <span>Generate with AI</span>
-            </button>
-            <button
-              type="button"
               onClick={() => setMode("url")}
               className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                 mode === "url"
@@ -719,18 +633,17 @@ export default function MediaCropReplaceModal({
                   ⚡ 1-Click Popular Places:
                 </span>
                 <div className="flex flex-wrap gap-1.5">
-                  {POPULAR_DESTINATION_PROMPTS.map((item) => (
+                  {POPULAR_DESTINATIONS.map((name) => (
                     <button
-                      key={item.label}
+                      key={name}
                       type="button"
                       onClick={() => {
-                        const name = item.label.replace(/^[^\w]+/, "").trim();
                         setStockQuery(name);
                         handleStockSearch(name);
                       }}
                       className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-200/90 shadow-2xs transition-all cursor-pointer hover:border-emerald-400"
                     >
-                      {item.label}
+                      {name}
                     </button>
                   ))}
                 </div>
@@ -775,118 +688,6 @@ export default function MediaCropReplaceModal({
                   No photos found for "{stockQuery}". Try typing just the place name like "Agra Fort", "Taj Mahal", "Manali".
                 </p>
               ) : null}
-            </div>
-          ) : mode === "ai" ? (
-            <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-500/5 via-indigo-500/5 to-slate-50 border border-purple-200/80 space-y-3">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-purple-600 text-white flex items-center justify-center shadow-xs">
-                    <Sparkles size={14} />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-slate-800">
-                      AI Image Generator
-                    </h4>
-                    <p className="text-[11px] text-slate-500">
-                      Auto-sized to {activePreset.label} ({activePreset.dims})
-                    </p>
-                  </div>
-                </div>
-
-                {rawImageSrc && (
-                  <button
-                    type="button"
-                    onClick={() => handleGenerateAi(true)}
-                    disabled={aiLoading}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-purple-200 text-purple-700 hover:bg-purple-50 shadow-xs disabled:opacity-50 cursor-pointer"
-                  >
-                    <RotateCcw size={13} className={aiLoading ? "animate-spin" : ""} />
-                    <span>Regenerate Variation</span>
-                  </button>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                  Prompt (Describe what you want to generate):
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={aiPrompt}
-                    onChange={(e) => setAiPrompt(e.target.value)}
-                    placeholder="e.g. Majestic Taj Mahal at sunrise with morning mist, reflection pool"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        handleGenerateAi(false);
-                      }
-                    }}
-                    className="flex-1 bg-white border border-purple-200 rounded-xl px-3.5 py-2 text-xs sm:text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 shadow-xs"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleGenerateAi(false)}
-                    disabled={aiLoading || !aiPrompt.trim()}
-                    className="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-sm flex items-center gap-1.5 disabled:opacity-50 shrink-0 cursor-pointer"
-                  >
-                    {aiLoading ? (
-                      <>
-                        <Loader2 size={15} className="animate-spin" />
-                        <span>Generating...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles size={15} />
-                        <span>Generate</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* 1-Click Monument Presets */}
-              <div>
-                <span className="text-[10px] font-bold text-purple-700 uppercase tracking-wider block mb-1">
-                  ⚡ 1-Click Popular Monument Presets (Click to autofill prompt):
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {POPULAR_DESTINATION_PROMPTS.map((item) => (
-                    <button
-                      key={item.label}
-                      type="button"
-                      onClick={() => setAiPrompt(item.prompt)}
-                      className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-white hover:bg-purple-50 text-purple-800 border border-purple-200/90 shadow-2xs transition-all cursor-pointer hover:border-purple-400"
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Quick Prompt Enhancers */}
-              <div>
-                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
-                  Quick Travel Tags:
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {QUICK_ENHANCERS.map((enhancer) => (
-                    <button
-                      key={enhancer}
-                      type="button"
-                      onClick={() => {
-                        const tag = enhancer.split(" ").slice(1).join(" ");
-                        if (!aiPrompt.toLowerCase().includes(tag.toLowerCase())) {
-                          setAiPrompt((prev) => (prev ? `${prev}, ${tag}` : tag));
-                        }
-                      }}
-                      className="px-2 py-0.5 rounded-md text-[11px] bg-white hover:bg-purple-100 text-slate-700 hover:text-purple-800 border border-purple-200/60 transition-colors cursor-pointer"
-                    >
-                      {enhancer}
-                    </button>
-                  ))}
-                </div>
-              </div>
             </div>
           ) : mode === "file" ? (
             <div>
