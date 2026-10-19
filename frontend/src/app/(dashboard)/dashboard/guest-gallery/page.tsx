@@ -63,7 +63,8 @@ export default function GuestGalleryAdmin() {
       if (pendingFiles.length > 0) {
         for (let i = 0; i < pendingFiles.length; i++) {
           const fd = new FormData();
-          fd.append("category", "gallery");
+          fd.append("folder", "guest-gallery");
+          fd.append("category", "guest_gallery");
           fd.append("filename", `guest-gallery-${Date.now()}-${i}`);
           fd.append("label", `Guest Gallery ${i}`);
           fd.append("file", pendingFiles[i]);

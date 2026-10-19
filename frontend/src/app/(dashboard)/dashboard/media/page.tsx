@@ -53,6 +53,7 @@ const CATEGORY_TABS: CategoryFilter[] = [
   { key: "hero", label: "Hero Banners", dims: "1920 × 450 px", badge: "21:9 Ultra-wide" },
   { key: "tour", label: "Tour Cards", dims: "600 × 400 px", badge: "3:2 Landscape" },
   { key: "gallery", label: "Tour Gallery", dims: "1200 × 800 px", badge: "3:2 HD" },
+  { key: "guest_gallery", label: "Guest Gallery", dims: "800 × 600 px", badge: "4:3 Photos" },
   { key: "blog", label: "Blog Images", dims: "800 × 500 px", badge: "16:10" },
 ];
 
@@ -131,7 +132,11 @@ export default function MediaManagerPage() {
         );
       }
       if (activeTab === "gallery") {
+        if (cat === "guest_gallery" || (item.folder || "").includes("guest") || fn.includes("guest")) return false;
         return fn.includes("gallery") || fn.includes("itinerary") || fn.includes("day");
+      }
+      if (activeTab === "guest_gallery") {
+        return cat === "guest_gallery" || (item.folder || "").includes("guest") || fn.includes("guest");
       }
       if (activeTab === "blog") {
         return cat === "blog" || fn.includes("blog") || fn.includes("news");
@@ -449,6 +454,21 @@ export default function MediaManagerPage() {
             setCropTarget(null);
           }}
           onSuccess={fetchMedia}
+          defaultPresetKey={
+            activeTab === "destination"
+              ? "destination"
+              : activeTab === "hero"
+              ? "hero"
+              : activeTab === "tour"
+              ? "tour_card"
+              : activeTab === "gallery"
+              ? "gallery"
+              : activeTab === "guest_gallery"
+              ? "guest_gallery"
+              : activeTab === "blog"
+              ? "blog"
+              : undefined
+          }
         />
       )}
     </div>

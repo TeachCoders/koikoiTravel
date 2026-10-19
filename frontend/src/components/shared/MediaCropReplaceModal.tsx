@@ -73,6 +73,13 @@ const RATIO_PRESETS: AspectRatioOption[] = [
     desc: "16:10 — Blog Cards & Article Thumbnails",
   },
   {
+    key: "guest_gallery",
+    label: "Guest Gallery",
+    ratio: 4 / 3, // ~1.333
+    dims: "800 × 600 px",
+    desc: "4:3 Standard — Guest Photo Gallery & Reviews",
+  },
+  {
     key: "free",
     label: "Freeform",
     ratio: "free",
@@ -132,6 +139,15 @@ export default function MediaCropReplaceModal({
 
     const name = (item.filename || "").toLowerCase();
     const cat = (item.category || "").toLowerCase();
+    const folder = (item.folder || "").toLowerCase();
+
+    if (cat === "guest_gallery" || folder.includes("guest") || name.includes("guest")) {
+      const guestPreset = RATIO_PRESETS.find((p) => p.key === "guest_gallery");
+      if (guestPreset) {
+        setActivePreset(guestPreset);
+        return;
+      }
+    }
 
     if (cat === "banner" || name.includes("banner") || name.includes("hero")) {
       setActivePreset(RATIO_PRESETS[1]); // Hero
@@ -671,3 +687,4 @@ export default function MediaCropReplaceModal({
     </div>
   );
 }
+

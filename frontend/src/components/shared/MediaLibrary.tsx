@@ -123,7 +123,11 @@ export default function MediaLibrary({
       );
     }
     if (activeMode === "gallery") {
+      if (cat === "guest_gallery" || (item.folder || "").includes("guest") || file.includes("guest")) return false;
       return file.includes("gallery") || file.includes("itinerary") || file.includes("day");
+    }
+    if (activeMode === "guest_gallery") {
+      return cat === "guest_gallery" || (item.folder || "").includes("guest") || file.includes("guest");
     }
     if (activeMode === "blog") {
       return cat === "blog" || file.includes("blog") || file.includes("news");
@@ -345,7 +349,8 @@ export default function MediaLibrary({
             <option value="destination">Destinations (1:1)</option>
             <option value="banner">Hero Banners (21:9)</option>
             <option value="thumb">Tour Packages (3:2)</option>
-            <option value="gallery">Gallery / Itinerary (3:2)</option>
+            <option value="gallery">Tour Gallery (3:2)</option>
+            <option value="guest_gallery">Guest Gallery (4:3)</option>
             <option value="blog">Blogs (16:10)</option>
           </select>
 
@@ -572,7 +577,9 @@ export default function MediaLibrary({
             : activeMode === "thumb"
             ? "tour_card"
             : activeMode === "gallery"
-            ? "tour_detail"
+            ? "gallery"
+            : activeMode === "guest_gallery"
+            ? "guest_gallery"
             : activeMode === "blog"
             ? "blog"
             : undefined
