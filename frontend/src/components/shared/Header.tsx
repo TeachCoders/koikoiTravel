@@ -658,14 +658,14 @@ export const Header: React.FC = () => {
         {/* ===== Single Compact Row: Logo | Search Bar | Nav Links + Create My Trip ===== */}
         <div className="flex items-center justify-between gap-1.5 lg:gap-2.5 xl:gap-4">
           {/* 1. Brand Logo */}
-          <Link href="/" className="flex items-center gap-2 group shrink-0">
+          <Link href="/" className="flex items-center gap-2 shrink-0">
             <Image
               src="/logo-with-name.png"
               alt="KoiKoi Travel"
               width={685}
               height={222}
               priority
-              className="w-[125px] sm:w-[140px] md:w-[155px] lg:w-[168px] xl:w-[175px] h-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+              className="w-[125px] sm:w-[140px] md:w-[155px] lg:w-[168px] xl:w-[175px] h-auto object-contain"
             />
           </Link>
 
