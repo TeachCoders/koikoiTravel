@@ -363,7 +363,7 @@ function ExperienceContent({
       <ToursSection
         id="experience-tours"
         isLoading={journeysLoading}
-        h1Title={formatToursH1(experience.title)}
+        h1Title={formatToursH1(experience.h1Title || experience.title)}
         overView={experience.overView ?? undefined}
         emptyLabel={`No tours found for ${h1Title} yet`}
         showCount={16}
@@ -512,6 +512,10 @@ function ExploreDestinationsSection({ experience }: { experience: TravelExperien
   if (!Array.isArray(cities) || cities.length === 0) return null;
 
   const h1Title = experience.h1Title || experience.title;
+  const cleanExperienceTitle =
+    (experience.title || experience.h1Title || "")
+      .replace(/\s+(?:tours?|tour packages)\s*(?:in\s+)?india$/i, "")
+      .trim() || h1Title;
   const countries = Array.from(
     new Set(
       cities
@@ -530,7 +534,7 @@ function ExploreDestinationsSection({ experience }: { experience: TravelExperien
         <div className="mb-8">
           <span className="accent-label">Explore More</span>
           <h2 className="h3 text-[#1C1C1C] mt-1">
-            Explore More {h1Title} Destinations{countries.length > 0 ? ` in ${countries.join(", ")}` : ""}
+            Explore More {cleanExperienceTitle} Destinations{countries.length > 0 ? ` in ${countries.join(", ")}` : ""}
           </h2>
         </div>
 
