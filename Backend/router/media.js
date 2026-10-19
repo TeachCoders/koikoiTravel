@@ -134,6 +134,46 @@ router.delete("/:id", requireSalesOrAdmin, async (req, res) => {
   }
 });
 
+// Batch delete media — removes multiple files from disk and DB records
+router.post("/batch-delete", requireSalesOrAdmin, async (req, res) => {
+  try {
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ success: false, message: "Valid array of media IDs is required" });
+    }
+
+    const numericIds = ids.map((id) => Number(id)).filter((id) => Number.isInteger(id) && id > 0);
+    if (numericIds.length === 0) {
+      return res.status(400).json({ success: false, message: "No valid numeric IDs provided" });
+    }
+
+    const mediaList = await prisma.media.findMany({
+      where: { id: { in: numericIds } },
+      select: { id: true, url: true },
+    });
+
+    for (const item of mediaList) {
+      const relPath = toRelativePath(item.url);
+      if (relPath) {
+        deleteMediaFile(relPath);
+      }
+    }
+
+    const deleteResult = await prisma.media.deleteMany({
+      where: { id: { in: numericIds } },
+    });
+
+    return res.json({
+      success: true,
+      message: `Successfully deleted ${deleteResult.count} media item(s)`,
+      count: deleteResult.count,
+    });
+  } catch (error) {
+    logger.error("Media batch delete error:", { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, message: "Failed to batch delete media" });
+  }
+});
+
 // Usage Summary — maps all image URLs to where they are used across the website
 router.get("/usage-summary", requireSalesOrAdmin, async (req, res) => {
   try {

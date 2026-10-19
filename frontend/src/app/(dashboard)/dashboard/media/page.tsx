@@ -85,6 +85,8 @@ export default function MediaManagerPage() {
   const [dimensions, setDimensions] = useState<Record<number, string>>({});
   const [showPinnedOnly, setShowPinnedOnly] = useState(false);
   const [showUnusedOnly, setShowUnusedOnly] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const [isBatchDeleting, setIsBatchDeleting] = useState(false);
 
   // Usage tracking map
   const [usageMap, setUsageMap] = useState<Record<string, UsageItem[]>>({});
@@ -243,11 +245,58 @@ export default function MediaManagerPage() {
     try {
       await apiClient.delete(`/media/${item.id}`);
       setItems((prev) => prev.filter((i) => i.id !== item.id));
+      setSelectedIds((prev) => {
+        const next = new Set(prev);
+        next.delete(item.id);
+        return next;
+      });
       successToast("Image deleted");
       fetchUsage();
     } catch {
       errorToast("Failed to delete image");
     }
+  };
+
+  // Batch Delete Media Items
+  const handleBatchDelete = async (customIds?: number[]) => {
+    const ids = customIds || Array.from(selectedIds);
+    if (ids.length === 0) return;
+
+    const count = ids.length;
+    if (!window.confirm(`Permanently delete ${count} image(s) from server disk and database?\n\nThis will free up server space immediately. This action cannot be undone.`)) {
+      return;
+    }
+
+    setIsBatchDeleting(true);
+    try {
+      const res = await apiClient.post("/media/batch-delete", { ids });
+      if (res.data?.success) {
+        successToast(res.data.message || `Deleted ${count} images successfully`);
+        setSelectedIds(new Set());
+        fetchMedia();
+        fetchUsage();
+      } else {
+        errorToast(res.data?.message || "Failed to batch delete images");
+      }
+    } catch (err: any) {
+      errorToast(err.response?.data?.message || "Failed to batch delete images");
+    } finally {
+      setIsBatchDeleting(false);
+    }
+  };
+
+  // Delete All Unused Images
+  const handleDeleteAllUnused = () => {
+    const unusedItemIds = items
+      .filter((i) => (usageMap[i.url] || []).length === 0)
+      .map((i) => i.id);
+
+    if (unusedItemIds.length === 0) {
+      errorToast("No unused images to delete");
+      return;
+    }
+
+    handleBatchDelete(unusedItemIds);
   };
 
   // Swap / Replace image everywhere
@@ -364,7 +413,32 @@ export default function MediaManagerPage() {
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2 self-start lg:self-center">
+        <div className="flex flex-wrap items-center gap-2 self-start lg:self-center">
+          {showUnusedOnly && unusedCount > 0 && (
+            <button
+              type="button"
+              disabled={isBatchDeleting}
+              onClick={handleDeleteAllUnused}
+              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+              title="Permanently delete all unused images from server disk and database"
+            >
+              {isBatchDeleting ? <RefreshCw size={13} className="animate-spin" /> : <Trash2 size={13} />}
+              <span>Delete All Unused ({unusedCount})</span>
+            </button>
+          )}
+
+          {selectedIds.size > 0 && (
+            <button
+              type="button"
+              disabled={isBatchDeleting}
+              onClick={() => handleBatchDelete()}
+              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+            >
+              {isBatchDeleting ? <RefreshCw size={13} className="animate-spin" /> : <Trash2 size={13} />}
+              <span>Delete Selected ({selectedIds.size})</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={() => setShowPinnedOnly(!showPinnedOnly)}
@@ -475,20 +549,43 @@ export default function MediaManagerPage() {
                     );
                   })()}
 
-                  {/* Star / Pin Button */}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleTogglePin(item);
-                    }}
-                    className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 backdrop-blur-xs text-slate-400 hover:text-amber-500 shadow-xs transition-colors z-10"
-                  >
-                    <Star
-                      size={14}
-                      className={item.isPinned ? "fill-amber-500 text-amber-500" : ""}
-                    />
-                  </button>
+                  {/* Top-Right: Selection Checkbox & Star Button */}
+                  <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedIds((prev) => {
+                          const next = new Set(prev);
+                          if (next.has(item.id)) next.delete(item.id);
+                          else next.add(item.id);
+                          return next;
+                        });
+                      }}
+                      className={`w-6 h-6 rounded-lg border flex items-center justify-center backdrop-blur-xs transition-all shadow-xs cursor-pointer ${
+                        selectedIds.has(item.id)
+                          ? "bg-indigo-600 border-indigo-600 text-white opacity-100"
+                          : "bg-white/90 border-slate-300 text-transparent hover:text-slate-400 opacity-80 sm:opacity-0 group-hover:opacity-100"
+                      }`}
+                      title={selectedIds.has(item.id) ? "Deselect" : "Select for batch action"}
+                    >
+                      <Check size={12} strokeWidth={3} className={selectedIds.has(item.id) ? "block" : "hidden"} />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleTogglePin(item);
+                      }}
+                      className="p-1 rounded-lg bg-white/90 backdrop-blur-xs text-slate-400 hover:text-amber-500 shadow-xs transition-colors cursor-pointer"
+                    >
+                      <Star
+                        size={14}
+                        className={item.isPinned ? "fill-amber-500 text-amber-500" : ""}
+                      />
+                    </button>
+                  </div>
 
                   {/* Size & Dimension Badge (Bottom Right of Image) */}
                   <div className="absolute bottom-2 right-2 z-10 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-xs text-[10px] font-mono text-white font-medium shadow-xs pointer-events-none flex items-center gap-1">
@@ -605,6 +702,31 @@ export default function MediaManagerPage() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* ── Floating Batch Actions Bar ── */}
+      {selectedIds.size > 0 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[150] bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-4 border border-slate-700 animate-in fade-in slide-in-from-bottom-4">
+          <span className="text-xs font-bold text-slate-200">
+            {selectedIds.size} image(s) selected
+          </span>
+          <button
+            type="button"
+            disabled={isBatchDeleting}
+            onClick={() => handleBatchDelete()}
+            className="flex items-center gap-1.5 px-4 py-2 bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-xs transition-colors cursor-pointer"
+          >
+            {isBatchDeleting ? <RefreshCw size={13} className="animate-spin" /> : <Trash2 size={13} />}
+            <span>Delete Selected</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedIds(new Set())}
+            className="text-xs text-slate-400 hover:text-white transition-colors cursor-pointer underline"
+          >
+            Clear
+          </button>
         </div>
       )}
 
