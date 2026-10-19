@@ -55,8 +55,19 @@ export function journeyMatchesDuration(j: Journey, selected: string[]) {
 
 export function journeyMatchesExperiences(j: Journey, selected: string[]) {
   if (selected.length === 0) return true;
-  const titles = new Set((j.travelExperiences ?? []).map((e) => e.title));
-  return selected.some((t) => titles.has(t));
+  const titles = (j.travelExperiences ?? []).map((e) => (e.title || "").toLowerCase());
+  return selected.some((t) => {
+    const tLower = t.toLowerCase();
+    if (/golden\s*triangle/i.test(tLower)) {
+      return (
+        titles.some((title) => /golden\s*triangle/i.test(title)) ||
+        j.title?.toLowerCase().includes("golden triangle") ||
+        ((j.cities ?? []).some((c) => /delhi/i.test(c.title)) &&
+          (j.cities ?? []).some((c) => /agra/i.test(c.title)))
+      );
+    }
+    return titles.some((title) => title === tLower || title.includes(tLower));
+  });
 }
 
 export function cityOptions(

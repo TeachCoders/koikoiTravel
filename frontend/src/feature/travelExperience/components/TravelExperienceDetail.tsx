@@ -35,6 +35,7 @@ import {
 } from "@/feature/journey/filterOptions";
 import { cn, formatToursH1 } from "@/lib/utils";
 import { resolveTravelExperienceJourneys } from "@/feature/journey/destinationJourneys";
+import ExploreCategoryTabs, { type CategoryOption } from "@/components/shared/ExploreCategoryTabs";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 import { GOLDEN_TRIANGLE_FAQS } from "../goldenTriangleFaqs";
@@ -104,13 +105,17 @@ function ExperienceContent({
       : otherTours
     : experienceJourneys;
 
+  const [categoryTab, setCategoryTab] = useState<"destination" | "theme">("destination");
+  const [expSelected, setExpSelected] = useState<string[]>([]);
   const [durSelected, setDurSelected] = useState<string[]>([]);
   const [citySelected, setCitySelected] = useState<string[]>([]);
   const [seasonSelected, setSeasonSelected] = useState<string[]>([]);
 
-  const activeFilterCount = durSelected.length + citySelected.length + seasonSelected.length;
+  const activeFilterCount =
+    expSelected.length + durSelected.length + citySelected.length + seasonSelected.length;
 
   const clearFilters = () => {
+    setExpSelected([]);
     setDurSelected([]);
     setCitySelected([]);
     setSeasonSelected([]);
@@ -120,34 +125,67 @@ function ExperienceContent({
     if (activeFilterCount === 0) return topTours;
     return topTours.filter(
       (j) =>
+        journeyMatchesExperiences(j, expSelected) &&
         journeyMatchesDuration(j, durSelected) &&
         journeyMatchesCities(j, citySelected) &&
         journeyMatchesSeasons(j, seasonSelected)
     );
-  }, [topTours, activeFilterCount, durSelected, citySelected, seasonSelected]);
+  }, [topTours, activeFilterCount, expSelected, durSelected, citySelected, seasonSelected]);
 
   const filteredOtherTours = useMemo(() => {
     if (activeFilterCount === 0) return otherTours;
     return otherTours.filter(
       (j) =>
+        journeyMatchesExperiences(j, expSelected) &&
         journeyMatchesDuration(j, durSelected) &&
         journeyMatchesCities(j, citySelected) &&
         journeyMatchesSeasons(j, seasonSelected)
     );
-  }, [otherTours, activeFilterCount, durSelected, citySelected, seasonSelected]);
+  }, [otherTours, activeFilterCount, expSelected, durSelected, citySelected, seasonSelected]);
 
   const filteredJourneys = useMemo(() => {
     if (!hasTabs) {
       if (activeFilterCount === 0) return experienceJourneys;
       return experienceJourneys.filter(
         (j) =>
+          journeyMatchesExperiences(j, expSelected) &&
           journeyMatchesDuration(j, durSelected) &&
           journeyMatchesCities(j, citySelected) &&
           journeyMatchesSeasons(j, seasonSelected)
       );
     }
     return activeTab === "top-tours" ? filteredTopTours : filteredOtherTours;
-  }, [hasTabs, activeTab, filteredTopTours, filteredOtherTours, experienceJourneys, activeFilterCount, durSelected, citySelected, seasonSelected]);
+  }, [hasTabs, activeTab, filteredTopTours, filteredOtherTours, experienceJourneys, activeFilterCount, expSelected, durSelected, citySelected, seasonSelected]);
+
+  const destinationOptionsList = useMemo<CategoryOption[]>(() => {
+    return cityOptions(currentTabJourneys).map((c) => ({
+      label: c.label,
+      value: c.value,
+      count: c.count,
+    }));
+  }, [currentTabJourneys]);
+
+  const themeOptionsList = useMemo<CategoryOption[]>(() => {
+    return travelExperienceOptions(currentTabJourneys)
+      .filter(
+        (e) =>
+          e.value !== experience.title &&
+          !e.value.toLowerCase().includes((experience.slug || "").replace(/-/g, " "))
+      )
+      .map((e) => ({
+        label: e.label,
+        value: e.value,
+        count: e.count,
+      }));
+  }, [currentTabJourneys, experience.title, experience.slug]);
+
+  const handleSelectDestinationPill = (val: string | null) => {
+    setCitySelected(val ? [val] : []);
+  };
+
+  const handleSelectThemePill = (val: string | null) => {
+    setExpSelected(val ? [val] : []);
+  };
 
   const { data: heroBannersData } = useHeroBanners("TravelExperience", {
     slug: experience.slug,
@@ -189,14 +227,18 @@ function ExperienceContent({
           selected: citySelected,
           onChange: setCitySelected,
         },
-        // {
-        //   id: "season",
-        //   title: "Best Season / Month",
-        //   icon: <Sun size={14} />,
-        //   options: seasonOptions(currentTabJourneys),
-        //   selected: seasonSelected,
-        //   onChange: setSeasonSelected,
-        // },
+        {
+          id: "experience",
+          title: "Theme & Activity",
+          icon: <Sparkles size={14} />,
+          options: themeOptionsList.map((t) => ({
+            label: t.label,
+            value: t.value,
+            count: t.count || 0,
+          })),
+          selected: expSelected,
+          onChange: setExpSelected,
+        },
         {
           id: "duration",
           title: "Duration",
@@ -269,6 +311,22 @@ function ExperienceContent({
             </span>
           </button>
         </div>
+      )}
+
+      {/* ===== 2 CATEGORY TABS: BY DESTINATION & BY THEME/ACTIVITY ===== */}
+      {(destinationOptionsList.length > 1 || themeOptionsList.length > 0) && (
+        <ExploreCategoryTabs
+          destinations={destinationOptionsList}
+          themes={themeOptionsList}
+          activeTab={categoryTab}
+          onTabChange={setCategoryTab}
+          selectedDestination={citySelected[0] || null}
+          onSelectDestination={handleSelectDestinationPill}
+          selectedTheme={expSelected[0] || null}
+          onSelectTheme={handleSelectThemePill}
+          totalToursCount={currentTabJourneys.length}
+          className="mb-0"
+        />
       )}
 
       {/* Sleek Trust & Inclusions Strip */}

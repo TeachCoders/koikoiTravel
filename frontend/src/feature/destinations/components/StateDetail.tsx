@@ -36,6 +36,7 @@ import {
 } from "@/feature/journey/filterOptions";
 import { cn, stripHtml, formatToursH1 } from "@/lib/utils";
 import { resolveStateJourneys } from "@/feature/journey/destinationJourneys";
+import ExploreCategoryTabs, { type CategoryOption } from "@/components/shared/ExploreCategoryTabs";
 import type { State } from "@/feature/state/type";
 import type { Journey, PaginatedResponse } from "@/feature/journey/type";
 import CityCard from "./CityCard";
@@ -232,61 +233,99 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
   const { swiperRef: citiesSwiperRef, slidePrev, slideNext, canScroll } = useSliderControl();
 
-  const tourTabs = hasBothCategories ? (
-    <div className="flex items-center gap-2 sm:gap-3 p-1.5 bg-slate-200/70 rounded-2xl w-fit max-w-full overflow-x-auto mb-6 border border-slate-300/60 shadow-xs">
-      <button
-        type="button"
-        onClick={() => {
-          setActiveTab("state-only");
-          clearFilters();
-        }}
-        className={cn(
-          "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
-          activeTab === "state-only"
-            ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
-            : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
-        )}
-      >
-        <span>Top Tour Packages</span>
-        <span
-          className={cn(
-            "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
-            activeTab === "state-only"
-              ? "bg-white text-[#2E8B8B]"
-              : "bg-slate-300 text-slate-800"
-          )}
-        >
-          {featuredJourneys.length}
-        </span>
-      </button>
+  const [categoryTab, setCategoryTab] = useState<"destination" | "theme">("destination");
 
-      <button
-        type="button"
-        onClick={() => {
-          setActiveTab("with-other");
-          clearFilters();
-        }}
-        className={cn(
-          "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
-          activeTab === "with-other"
-            ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
-            : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
-        )}
-      >
-        <span>Combined City Packages</span>
-        <span
-          className={cn(
-            "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
-            activeTab === "with-other"
-              ? "bg-white text-[#2E8B8B]"
-              : "bg-slate-300 text-slate-800"
-          )}
-        >
-          {otherJourneys.length}
-        </span>
-      </button>
+  const destinationOptionsList = useMemo<CategoryOption[]>(() => {
+    return cityOptions(currentTabJourneys).map((c) => ({
+      label: c.label,
+      value: c.value,
+      count: c.count,
+    }));
+  }, [currentTabJourneys]);
+
+  const themeOptionsList = useMemo<CategoryOption[]>(() => {
+    return travelExperienceOptions(currentTabJourneys).map((e) => ({
+      label: e.label,
+      value: e.value,
+      count: e.count,
+    }));
+  }, [currentTabJourneys]);
+
+  const tourTabs = (
+    <div className="flex flex-col gap-4 mb-6">
+      {hasBothCategories && (
+        <div className="flex items-center gap-2 sm:gap-3 p-1.5 bg-slate-200/70 rounded-2xl w-fit max-w-full overflow-x-auto border border-slate-300/60 shadow-xs">
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab("state-only");
+              clearFilters();
+            }}
+            className={cn(
+              "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
+              activeTab === "state-only"
+                ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
+                : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
+            )}
+          >
+            <span>Top Tour Packages</span>
+            <span
+              className={cn(
+                "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
+                activeTab === "state-only"
+                  ? "bg-white text-[#2E8B8B]"
+                  : "bg-slate-300 text-slate-800"
+              )}
+            >
+              {featuredJourneys.length}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab("with-other");
+              clearFilters();
+            }}
+            className={cn(
+              "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
+              activeTab === "with-other"
+                ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
+                : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
+            )}
+          >
+            <span>Combined City Packages</span>
+            <span
+              className={cn(
+                "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
+                activeTab === "with-other"
+                  ? "bg-white text-[#2E8B8B]"
+                  : "bg-slate-300 text-slate-800"
+              )}
+            >
+              {otherJourneys.length}
+            </span>
+          </button>
+        </div>
+      )}
+
+      {/* ===== 2 CATEGORY TABS: BY DESTINATION & BY THEME/ACTIVITY ===== */}
+      {(destinationOptionsList.length > 1 || themeOptionsList.length > 0) && (
+        <ExploreCategoryTabs
+          destinations={destinationOptionsList}
+          themes={themeOptionsList}
+          activeTab={categoryTab}
+          onTabChange={setCategoryTab}
+          selectedDestination={citySelected[0] || null}
+          onSelectDestination={(val) => setCitySelected(val ? [val] : [])}
+          selectedTheme={expSelected[0] || null}
+          onSelectTheme={(val) => setExpSelected(val ? [val] : [])}
+          totalToursCount={currentTabJourneys.length}
+          className="mb-0"
+        />
+      )}
     </div>
-  ) : null;
+  );
 
   const filterBar = (
     <FilterBar
