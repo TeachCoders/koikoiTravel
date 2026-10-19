@@ -86,7 +86,7 @@ function ExperienceContent({
     },
     initialJourneys ?? undefined
   );
-  const [activeTab, setActiveTab] = useState<"top-tours" | "all-tours">("top-tours");
+  const [activeTab, setActiveTab] = useState<"by-experience" | "by-destination">("by-experience");
 
   const {
     experienceJourneys,
@@ -99,7 +99,7 @@ function ExperienceContent({
   );
 
   const currentTabJourneys = hasTabs
-    ? activeTab === "top-tours"
+    ? activeTab === "by-experience"
       ? topTours
       : otherTours
     : experienceJourneys;
@@ -146,7 +146,7 @@ function ExperienceContent({
           journeyMatchesSeasons(j, seasonSelected)
       );
     }
-    return activeTab === "top-tours" ? filteredTopTours : filteredOtherTours;
+    return activeTab === "by-experience" ? filteredTopTours : filteredOtherTours;
   }, [hasTabs, activeTab, filteredTopTours, filteredOtherTours, experienceJourneys, activeFilterCount, durSelected, citySelected, seasonSelected]);
 
   const { data: heroBannersData } = useHeroBanners("TravelExperience", {
@@ -218,21 +218,21 @@ function ExperienceContent({
       <button
         type="button"
         onClick={() => {
-          setActiveTab("top-tours");
+          setActiveTab("by-experience");
           clearFilters();
         }}
         className={cn(
           "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
-          activeTab === "top-tours"
+          activeTab === "by-experience"
             ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
             : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
         )}
       >
-        <span>Top Tour Packages</span>
+        <span>By Experience</span>
         <span
           className={cn(
             "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
-            activeTab === "top-tours"
+            activeTab === "by-experience"
               ? "bg-white text-[#2E8B8B]"
               : "bg-slate-300 text-slate-800"
           )}
@@ -244,21 +244,21 @@ function ExperienceContent({
       <button
         type="button"
         onClick={() => {
-          setActiveTab("all-tours");
+          setActiveTab("by-destination");
           clearFilters();
         }}
         className={cn(
           "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
-          activeTab === "all-tours"
+          activeTab === "by-destination"
             ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
             : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
         )}
       >
-        <span>Other Tour Packages</span>
+        <span>By Destination</span>
         <span
           className={cn(
             "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
-            activeTab === "all-tours"
+            activeTab === "by-destination"
               ? "bg-white text-[#2E8B8B]"
               : "bg-slate-300 text-slate-800"
           )}
@@ -348,11 +348,11 @@ function ExperienceContent({
       >
         {hasTabs ? (
           <>
-            {/* Tab 1 Panel: Top Tours - SSR rendered in HTML */}
+            {/* Tab 1 Panel: By Experience - SSR rendered in HTML */}
             <div
-              className={activeTab === "top-tours" ? "block" : "hidden"}
+              className={activeTab === "by-experience" ? "block" : "hidden"}
               role="tabpanel"
-              aria-hidden={activeTab !== "top-tours"}
+              aria-hidden={activeTab !== "by-experience"}
             >
               {filteredTopTours.length === 0 ? (
                 <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
@@ -379,11 +379,11 @@ function ExperienceContent({
               )}
             </div>
 
-            {/* Tab 2 Panel: All Tours - SSR rendered in HTML */}
+            {/* Tab 2 Panel: By Destination - SSR rendered in HTML */}
             <div
-              className={activeTab === "all-tours" ? "block" : "hidden"}
+              className={activeTab === "by-destination" ? "block" : "hidden"}
               role="tabpanel"
-              aria-hidden={activeTab !== "all-tours"}
+              aria-hidden={activeTab !== "by-destination"}
             >
               {filteredOtherTours.length === 0 ? (
                 <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
