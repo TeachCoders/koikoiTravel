@@ -54,7 +54,7 @@ const DEFAULT_TOUR_LINKS: NavChild[] = [
 
 const DEFAULT_EXPERIENCE_LINKS: NavChild[] = [
   { href: "/travel-experiences/nature", label: "Nature" },
-  { href: "/travel-experiences/golden-triangle", label: "Golden Triangle (Delhi, Agra, Jaipur)" },
+  { href: "/travel-experiences/golden-triangle-tour-india", label: "Golden Triangle Tours India" },
   { href: "/travel-experiences/desert-safari", label: "Desert Safari" },
   { href: "/travel-experiences/wildlife", label: "Wildlife" },
   { href: "/travel-experiences/honeymoon", label: "Honeymoon" },
@@ -329,8 +329,8 @@ export const Header: React.FC = () => {
 
     states.forEach(state => {
       if (!state.country) return;
-      // Golden Triangle is an Experience (/travel-experiences/golden-triangle), not a State
-      if (state.slug === "golden-triangle") return;
+      // Golden Triangle is an Experience (/travel-experiences/golden-triangle-tour-india), not a State
+      if (state.slug === "golden-triangle" || state.slug === "golden-triangle-tour-india") return;
 
       if (!countryMap.has(state.country.id)) {
         countryMap.set(state.country.id, {

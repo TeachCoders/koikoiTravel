@@ -111,7 +111,7 @@ async function fetchDestinations() {
     (c) => !/^test\b/i.test(c.title || "")
   );
   const states = (statesRes?.data || []).filter(
-    (s) => !/^test\b/i.test(s.title || "") && s.slug !== "golden-triangle"
+    (s) => !/^test\b/i.test(s.title || "") && s.slug !== "golden-triangle" && s.slug !== "golden-triangle-tour-india"
   );
   const journeys = (journeysRes?.data || []).filter(
     (j) => !/^test\b/i.test(j.title || "")

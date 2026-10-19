@@ -473,7 +473,7 @@ function ExperienceContent({
       {/* ===== FAQ SECTION ===== */}
       <FaqSection
         faqs={
-          experience.slug === "golden-triangle"
+          experience.slug === "golden-triangle" || experience.slug === "golden-triangle-tour-india"
             ? (GOLDEN_TRIANGLE_FAQS as any)
             : experience?.faqs
         }

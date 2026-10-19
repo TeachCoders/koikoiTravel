@@ -33,7 +33,7 @@ const TOP_DESTINATIONS = [
 const TRAVEL_THEMES = [
   { label: "Nature & Eco Tours", href: "/travel-experiences/nature" },
   { label: "Desert Safari & Camping", href: "/travel-experiences/desert-safari" },
-  { label: "Golden Triangle Tours", href: "/travel-experiences/golden-triangle" },
+  { label: "Golden Triangle Tours India", href: "/travel-experiences/golden-triangle-tour-india" },
   { label: "Wildlife & Tiger Safari", href: "/travel-experiences/wildlife" },
   { label: "Ayurveda & Yoga Retreats", href: "/travel-experiences/ayurveda-yoga" },
   { label: "Honeymoon & Romantic", href: "/travel-experiences/honeymoon" },

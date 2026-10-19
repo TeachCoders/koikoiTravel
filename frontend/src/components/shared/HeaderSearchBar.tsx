@@ -69,7 +69,7 @@ export default function HeaderSearchBar() {
 
     // 1. Add all States
     states.forEach((s) => {
-      if (!s.slug || s.slug === "golden-triangle") return;
+      if (!s.slug || s.slug === "golden-triangle" || s.slug === "golden-triangle-tour-india") return;
       const countrySlug = s.country?.slug || "india";
       const href = `/tour-packages/${countrySlug}/${s.slug}`;
       if (!seenHrefs.has(href)) {

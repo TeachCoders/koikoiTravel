@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import TravelExperienceDetail from "@/feature/travelExperience/components/TravelExperienceDetail";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema, touristAttractionSchema, itemListSchema, faqSchema, graphSchema } from "@/lib/jsonLd";
@@ -24,10 +25,13 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  if (slug === "golden-triangle") {
+    redirect("/travel-experiences/golden-triangle-tour-india");
+  }
   const data = await fetchBySlugCached<TravelExperience>("/holidays/by-slug", slug);
   if (!data) return { title: "Travel Experience Not Found | KoiKoi Travel" };
 
-  const isGoldenTriangle = slug === "golden-triangle" || data.slug === "golden-triangle";
+  const isGoldenTriangle = slug === "golden-triangle-tour-india" || slug === "golden-triangle" || data.slug === "golden-triangle-tour-india" || data.slug === "golden-triangle";
   const title = isGoldenTriangle
     ? "Golden Triangle Tour Packages (Delhi Agra Jaipur) | Private Car & Chauffeur"
     : data.seoTitle || data.title;
@@ -71,6 +75,9 @@ function canonicalFor(
 
 export default async function TravelExperiencePage({ params }: Props) {
   const { slug } = await params;
+  if (slug === "golden-triangle") {
+    redirect("/travel-experiences/golden-triangle-tour-india");
+  }
   const data = await fetchBySlugCached<TravelExperience>("/holidays/by-slug", slug);
 
   let schema = null;
@@ -78,7 +85,7 @@ export default async function TravelExperiencePage({ params }: Props) {
   if (data) {
     journeys = await fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true");
     const { allOrderedJourneys } = resolveTravelExperienceJourneys(journeys?.data, data);
-    const isGoldenTriangle = slug === "golden-triangle" || data.slug === "golden-triangle";
+    const isGoldenTriangle = slug === "golden-triangle-tour-india" || slug === "golden-triangle" || data.slug === "golden-triangle-tour-india" || data.slug === "golden-triangle";
     const rawFaqs = isGoldenTriangle ? (GOLDEN_TRIANGLE_FAQS as any) : data.faqs;
     const faqItems = getDestinationFaqs(
       data.slug,

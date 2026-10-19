@@ -83,7 +83,7 @@ export const PopularDestinations: React.FC<{
   // Left Column items (Inbound / Iconic circuit destinations)
   const leftItems = useMemo<DestinationItem[]>(() => {
     return states
-      .filter((s) => (s.displayOrder ?? 0) > 0 && s.slug !== "golden-triangle" && (s.tourCount ?? (s.journeys?.length || 0)) > 0)
+      .filter((s) => (s.displayOrder ?? 0) > 0 && s.slug !== "golden-triangle" && s.slug !== "golden-triangle-tour-india" && (s.tourCount ?? (s.journeys?.length || 0)) > 0)
       .map((s) => {
         const tours = s.tourCount ?? (s.journeys?.length || 0);
         const countrySlug = s.country?.slug || "india";
@@ -106,7 +106,7 @@ export const PopularDestinations: React.FC<{
       states.filter((s) => (s.displayOrder ?? 0) > 0).map((s) => s.id)
     );
     return states
-      .filter((s) => (s.domesticDisplayOrder ?? 0) > 0 && !leftStateIds.has(s.id) && s.slug !== "golden-triangle" && (s.tourCount ?? (s.journeys?.length || 0)) > 0)
+      .filter((s) => (s.domesticDisplayOrder ?? 0) > 0 && !leftStateIds.has(s.id) && s.slug !== "golden-triangle" && s.slug !== "golden-triangle-tour-india" && (s.tourCount ?? (s.journeys?.length || 0)) > 0)
       .map((s) => {
         const tours = s.tourCount ?? (s.journeys?.length || 0);
         const countrySlug = s.country?.slug || "india";

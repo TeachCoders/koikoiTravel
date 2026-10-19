@@ -38,8 +38,8 @@ export const TravelExperiencesSection: React.FC<{
   const experiences = travelExperiences
     .filter((e: any) => !/^test\b/i.test(e.title || "") && tourCount(e.id) > 0)
     .sort((a: any, b: any) => {
-      const isGT_A = /golden\s*triangle/i.test(a.title || "") || a.slug === "golden-triangle";
-      const isGT_B = /golden\s*triangle/i.test(b.title || "") || b.slug === "golden-triangle";
+      const isGT_A = /golden\s*triangle/i.test(a.title || "") || a.slug === "golden-triangle" || a.slug === "golden-triangle-tour-india";
+      const isGT_B = /golden\s*triangle/i.test(b.title || "") || b.slug === "golden-triangle" || b.slug === "golden-triangle-tour-india";
       if (isGT_A && !isGT_B) return -1;
       if (!isGT_A && isGT_B) return 1;
       const orderA = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999;
