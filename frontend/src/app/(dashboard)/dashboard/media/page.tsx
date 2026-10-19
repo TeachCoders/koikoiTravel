@@ -77,6 +77,18 @@ function formatBytes(bytes?: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function slugify(text: string) {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "");
+}
+
 export default function MediaManagerPage() {
   const [items, setItems] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -109,9 +121,14 @@ export default function MediaManagerPage() {
   const [cropTarget, setCropTarget] = useState<MediaCropItem | null>(null);
   const [cropModalOpen, setCropModalOpen] = useState(false);
 
-  // Upload New Modal / State
+  // Upload New Modal / State (Image Name is strictly mandatory)
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [uploadPreviewUrl, setUploadPreviewUrl] = useState<string | null>(null);
+  const [uploadName, setUploadName] = useState("");
+  const [uploadCategory, setUploadCategory] = useState("tour");
+  const [uploadSubmitting, setUploadSubmitting] = useState(false);
   const uploadFileInputRef = useRef<HTMLInputElement>(null);
-  const [uploading, setUploading] = useState(false);
 
   const fetchMedia = async () => {
     setLoading(true);
@@ -369,6 +386,62 @@ export default function MediaManagerPage() {
     setCropModalOpen(true);
   };
 
+  // Upload Modal Handlers (Image Name is strictly mandatory)
+  const handleSelectUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadFile(file);
+    setUploadPreviewUrl(URL.createObjectURL(file));
+    if (!uploadName.trim()) {
+      const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+      setUploadName(cleanName);
+    }
+  };
+
+  const handleUploadSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!uploadFile) {
+      errorToast("Please select an image file to upload");
+      return;
+    }
+    const trimmed = uploadName.trim();
+    if (!trimmed) {
+      errorToast("Image name is required before uploading");
+      return;
+    }
+
+    setUploadSubmitting(true);
+    try {
+      const fd = new FormData();
+      const slugName = slugify(trimmed) || `image-${Date.now()}`;
+      fd.append("file", uploadFile);
+      fd.append("label", trimmed);
+      fd.append("filename", slugName);
+      fd.append("category", uploadCategory);
+      fd.append("requireLabel", "true");
+
+      const res = await apiClient.post("/upload", fd, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (res.data?.success) {
+        successToast(`Image "${trimmed}" uploaded successfully`);
+        setUploadModalOpen(false);
+        setUploadFile(null);
+        setUploadPreviewUrl(null);
+        setUploadName("");
+        fetchMedia();
+        fetchUsage();
+      } else {
+        errorToast(res.data?.message || "Failed to upload image");
+      }
+    } catch (err: any) {
+      errorToast(err.response?.data?.message || "Failed to upload image");
+    } finally {
+      setUploadSubmitting(false);
+    }
+  };
+
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       {/* ── Page Header ── */}
@@ -387,6 +460,19 @@ export default function MediaManagerPage() {
         </div>
 
         <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => {
+              setUploadFile(null);
+              setUploadPreviewUrl(null);
+              setUploadName("");
+              setUploadModalOpen(true);
+            }}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#D4561A] hover:bg-[#b84510] text-white text-xs sm:text-sm font-bold shadow-md transition-all active:scale-95 cursor-pointer"
+          >
+            <Upload size={16} />
+            <span>Upload Image</span>
+          </button>
           <button
             type="button"
             onClick={fetchMedia}
@@ -716,6 +802,35 @@ export default function MediaManagerPage() {
                       {item.filename}
                     </span>
                   </div>
+
+                  {/* Quick Action Footer with prominent Original View */}
+                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setPreviewItem(item)}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-bold transition-all shadow-2xs active:scale-95 cursor-pointer"
+                      title="View original image in popup"
+                    >
+                      <Eye size={13} className="text-[#2E8B8B]" />
+                      <span>Original View</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleOpenReplace(item)}
+                      className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
+                      title="Crop & Replace Image"
+                    >
+                      <Crop size={13} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(item)}
+                      className="p-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors cursor-pointer"
+                      title="Delete Image"
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
                 </div>
               </div>
             );
@@ -761,6 +876,14 @@ export default function MediaManagerPage() {
             {/* Header */}
             <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
               <div className="min-w-0 pr-3">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-[#2E8B8B]/10 text-[#2E8B8B] uppercase tracking-wider">
+                    Original Image View
+                  </span>
+                  <span className="text-[10px] text-slate-500 font-medium hidden sm:inline">
+                    (Full Resolution Uncropped)
+                  </span>
+                </div>
                 <h3 className="font-extrabold text-slate-900 text-sm sm:text-base leading-tight truncate">
                   {previewItem.label || previewItem.filename}
                 </h3>
@@ -773,10 +896,11 @@ export default function MediaManagerPage() {
                   href={previewItem.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 transition-colors"
-                  title="Open original file in new tab"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold transition-colors"
+                  title="Open raw file in new tab"
                 >
-                  <ExternalLink size={16} />
+                  <ExternalLink size={14} />
+                  <span className="hidden sm:inline">Open In Tab</span>
                 </a>
                 <button
                   type="button"
@@ -1232,6 +1356,178 @@ export default function MediaManagerPage() {
               : undefined
           }
         />
+      )}
+
+      {/* ── Upload New Image Modal (Image Name / Label is strictly required) ── */}
+      {uploadModalOpen && (
+        <div
+          className="fixed inset-0 z-[230] bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
+          onClick={() => {
+            if (!uploadSubmitting) setUploadModalOpen(false);
+          }}
+        >
+          <div
+            className="bg-white rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-orange-100 text-[#D4561A] flex items-center justify-center">
+                  <Upload size={18} />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
+                    Upload New Image
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    Image name is required before upload can proceed
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                disabled={uploadSubmitting}
+                onClick={() => setUploadModalOpen(false)}
+                className="p-1.5 rounded-xl hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleUploadSubmit} className="p-6 space-y-4">
+              {/* File Dropzone / Picker */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  Select Image File <span className="text-rose-500">*</span>
+                </label>
+                <input
+                  ref={uploadFileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleSelectUploadFile}
+                  className="hidden"
+                />
+                {uploadPreviewUrl ? (
+                  <div className="relative rounded-2xl border border-slate-200 bg-slate-50 p-3 flex items-center gap-3">
+                    <img
+                      src={uploadPreviewUrl}
+                      alt="Preview"
+                      className="w-16 h-16 rounded-xl object-cover border border-slate-200 bg-white"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-bold text-slate-800 truncate">
+                        {uploadFile?.name}
+                      </p>
+                      <p className="text-[11px] text-slate-500 font-mono mt-0.5">
+                        {uploadFile ? formatBytes(uploadFile.size) : ""}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => uploadFileInputRef.current?.click()}
+                        className="text-[11px] font-bold text-[#D4561A] hover:underline mt-1 block cursor-pointer"
+                      >
+                        Change file
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => uploadFileInputRef.current?.click()}
+                    className="w-full border-2 border-dashed border-slate-300 hover:border-[#D4561A] rounded-2xl p-6 text-center bg-slate-50/60 hover:bg-orange-50/20 transition-all cursor-pointer flex flex-col items-center justify-center gap-2 group"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-orange-100 text-[#D4561A] flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <FileImage size={20} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-800">
+                        Click to choose an image file
+                      </p>
+                      <p className="text-[11px] text-slate-400 mt-0.5">
+                        Supports WebP, PNG, JPG, JPEG (auto-converts to WebP)
+                      </p>
+                    </div>
+                  </button>
+                )}
+              </div>
+
+              {/* Image Name / Label (STRICTLY REQUIRED) */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-xs font-bold text-slate-700">
+                    Image Name / Title <span className="text-rose-500">* (Required)</span>
+                  </label>
+                  <span className="text-[10px] font-semibold text-rose-500">
+                    Cannot be empty
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  required
+                  value={uploadName}
+                  onChange={(e) => setUploadName(e.target.value)}
+                  placeholder="e.g. Golden Triangle Tour Taj Mahal Banner"
+                  className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm text-slate-800 focus:outline-none transition-all ${
+                    !uploadName.trim() && uploadFile
+                      ? "border-rose-400 bg-rose-50/30 focus:border-rose-500 ring-1 ring-rose-200"
+                      : "border-slate-200 bg-slate-50 focus:border-[#2E8B8B] focus:bg-white"
+                  }`}
+                />
+                {!uploadName.trim() && (
+                  <p className="text-[11px] text-rose-600 mt-1 font-medium flex items-center gap-1">
+                    <AlertTriangle size={12} className="shrink-0" />
+                    Please provide an image name. Upload without a name is not allowed.
+                  </p>
+                )}
+              </div>
+
+              {/* Category */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  Category
+                </label>
+                <select
+                  value={uploadCategory}
+                  onChange={(e) => setUploadCategory(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#2E8B8B] cursor-pointer"
+                >
+                  <option value="tour">Tour Cards (Thumbnails) — 600 × 400 px</option>
+                  <option value="banner">Hero Banners — 1920 × 450 px</option>
+                  <option value="destination">Destination Cards — 600 × 600 px</option>
+                  <option value="gallery">Tour Gallery — 1200 × 800 px</option>
+                  <option value="guest_gallery">Guest Gallery — 800 × 600 px</option>
+                  <option value="blog">Blog Images — 800 × 500 px</option>
+                </select>
+              </div>
+
+              {/* Actions */}
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
+                <button
+                  type="button"
+                  disabled={uploadSubmitting}
+                  onClick={() => setUploadModalOpen(false)}
+                  className="px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={uploadSubmitting || !uploadFile || !uploadName.trim()}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-[#D4561A] hover:bg-[#b84510] disabled:opacity-40 disabled:cursor-not-allowed shadow-md transition-all active:scale-95 cursor-pointer"
+                >
+                  {uploadSubmitting ? (
+                    <RefreshCw size={14} className="animate-spin" />
+                  ) : (
+                    <Upload size={14} />
+                  )}
+                  <span>{uploadSubmitting ? "Uploading..." : "Upload Image"}</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );

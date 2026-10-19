@@ -324,6 +324,13 @@ app.post(
   async (req, res) => {
     try {
       if (!req.file) return res.status(400).json({ success: false, message: "No file uploaded" });
+
+      const label = (req.body?.label || "").trim();
+      if (req.body?.requireLabel === "true" && !label) {
+        if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
+        return res.status(400).json({ success: false, message: "Image name/label is required" });
+      }
+
       const relativePath = path.relative(path.join(process.cwd(), "public"), req.file.path);
       const url = req.file.publicUrl || `/${relativePath.replace(/\\/g, "/")}`;
 
@@ -335,7 +342,7 @@ app.post(
           url,
           folder,
           originalName: req.file.originalname,
-          label: req.body?.label || filename,
+          label: label || filename,
           altText: req.body?.altText || null,
           category: req.body?.category || null,
         },
