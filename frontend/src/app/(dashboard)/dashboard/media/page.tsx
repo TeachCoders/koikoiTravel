@@ -420,12 +420,14 @@ export default function MediaManagerPage() {
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
-                    <span className="truncate max-w-[100px]">{item.filename}</span>
+                  <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono gap-1">
+                    <span className="truncate text-[10px] text-slate-400 font-mono flex-1" title={item.filename}>
+                      {item.filename}
+                    </span>
                     <button
                       type="button"
                       onClick={() => handleOpenReplace(item)}
-                      className="text-[#D4561A] hover:underline font-bold font-sans text-[11px]"
+                      className="text-[#D4561A] hover:underline font-bold font-sans text-[11px] shrink-0"
                     >
                       Replace
                     </button>
@@ -452,3 +454,4 @@ export default function MediaManagerPage() {
     </div>
   );
 }
+
