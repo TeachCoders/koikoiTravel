@@ -293,6 +293,25 @@ router.post("/swap", requireSalesOrAdmin, async (req, res) => {
   }
 });
 
+function cleanTravelPrompt(text) {
+  if (!text) return "";
+  let p = text.trim();
+  // Fix common spelling mistakes & typos
+  p = p.replace(/\bred\s+for\b/gi, "Red Fort");
+  p = p.replace(/\bred\s+fort\b/gi, "Red Fort");
+  p = p.replace(/\bagra\s+fort\b/gi, "Agra Red Fort");
+  p = p.replace(/\bdelhi\s+fort\b/gi, "Delhi Red Fort");
+  p = p.replace(/\bviiew\b|\bveiw\b/gi, "view");
+  p = p.replace(/\biamge\b|\bimge\b|\bimag\b/gi, "photo");
+  p = p.replace(/\bouter\b/gi, "exterior wide angle architecture view");
+  p = p.replace(/\bfull\s+view\b/gi, "panoramic landscape view");
+  p = p.replace(/\btaj\b(?!\s*mahal)/gi, "Taj Mahal");
+  p = p.replace(/\bhawa\s+mahal\b/gi, "Hawa Mahal Jaipur");
+  p = p.replace(/\bamber\s+fort\b/gi, "Amber Fort Jaipur");
+  p = p.replace(/\bkerla\b/gi, "Kerala");
+  return p.replace(/\s+/g, " ").trim();
+}
+
 // AI Image Generation Endpoint — creates exact size WebP banner/image using AI prompt
 router.post("/ai-generate", requireSalesOrAdmin, async (req, res) => {
   try {
@@ -331,8 +350,10 @@ router.post("/ai-generate", requireSalesOrAdmin, async (req, res) => {
 
     const seed = reqSeed !== undefined ? Number(reqSeed) : Math.floor(Math.random() * 999999);
 
+    const cleanedPrompt = cleanTravelPrompt(prompt);
+
     // Enrich prompt with photorealistic travel quality enhancers
-    const enrichedPrompt = `${prompt.trim()}, 8k travel photography, photorealistic, cinematic natural lighting, ultra-high resolution, masterpiece, professional Indian tourism photo, sharp focus, no watermark, no text, no blur`;
+    const enrichedPrompt = `${cleanedPrompt}, 8k travel photography, photorealistic, cinematic natural lighting, ultra-high resolution, masterpiece, professional Indian tourism photo, sharp focus, no watermark, no text, no blur`;
     const encodedPrompt = encodeURIComponent(enrichedPrompt);
 
     const aiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${targetW}&height=${targetH}&model=flux&nologo=true&seed=${seed}`;

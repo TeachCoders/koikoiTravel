@@ -55,6 +55,17 @@ const QUICK_ENHANCERS = [
   "🌆 Night Cityscape",
 ];
 
+const POPULAR_DESTINATION_PROMPTS = [
+  { label: "🏰 Agra Red Fort", prompt: "Agra Red Fort panoramic exterior wide angle view, massive red sandstone walls and Amar Singh gate, Indian heritage architecture, sunny day" },
+  { label: "🕌 Taj Mahal", prompt: "Majestic Taj Mahal at sunrise with morning mist, reflection in water pool, golden morning sunlight" },
+  { label: "🏰 Jaipur Hawa Mahal", prompt: "Jaipur Hawa Mahal Palace of Winds street view, pink sandstone architecture, sunny daylight" },
+  { label: "🛶 Kerala Backwaters", prompt: "Kerala backwaters traditional wooden houseboat cruising calm palm-lined river, lush green nature" },
+  { label: "🏔️ Himalayas Mountain", prompt: "Snow covered Himalayan mountain peaks, pine forest valley, crisp morning sunlight" },
+  { label: "🛕 Varanasi Ganga Ghat", prompt: "Varanasi Ganga Ghat evening aarti ceremony with glowing oil lamps and boats on holy river" },
+  { label: "🏖️ Goa Beach", prompt: "Goa tropical beach at sunset, golden waves on sand, coconut palm trees silhouette" },
+  { label: "🏰 Udaipur Lake Palace", prompt: "Udaipur Lake Palace floating on calm blue Lake Pichola, Aravalli hills in background" },
+];
+
 export default function AiImageGeneratorModal({
   open,
   onClose,
@@ -301,6 +312,26 @@ export default function AiImageGeneratorModal({
                 placeholder="e.g. Cinematic ultra-wide panoramic sunset view of Kashmir Dal Lake with deluxe wooden shikara boats and snow peaks in background"
                 className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-200 transition-all resize-none shadow-2xs"
               />
+            </div>
+
+            {/* 1-Click Popular Monument Presets */}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-[10px] font-bold text-purple-700 uppercase tracking-wider mr-1">
+                ⚡ 1-Click Presets:
+              </span>
+              {POPULAR_DESTINATION_PROMPTS.map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => {
+                    setPrompt(item.prompt);
+                    if (!imageName) setImageName(item.label.replace(/^[^\w]+/, "").trim());
+                  }}
+                  className="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 border border-purple-200/90 text-[11px] font-semibold text-purple-800 transition-colors cursor-pointer shadow-2xs"
+                >
+                  {item.label}
+                </button>
+              ))}
             </div>
 
             {/* Quick Style Enhancer Pills */}

@@ -98,6 +98,17 @@ const QUICK_ENHANCERS = [
   "🌆 Night Cityscape",
 ];
 
+const POPULAR_DESTINATION_PROMPTS = [
+  { label: "🏰 Agra Red Fort", prompt: "Agra Red Fort panoramic exterior wide angle view, massive red sandstone walls and Amar Singh gate, Indian heritage architecture, sunny day" },
+  { label: "🕌 Taj Mahal", prompt: "Majestic Taj Mahal at sunrise with morning mist, reflection in water pool, golden morning sunlight" },
+  { label: "🏰 Jaipur Hawa Mahal", prompt: "Jaipur Hawa Mahal Palace of Winds street view, pink sandstone architecture, sunny daylight" },
+  { label: "🛶 Kerala Backwaters", prompt: "Kerala backwaters traditional wooden houseboat cruising calm palm-lined river, lush green nature" },
+  { label: "🏔️ Himalayas Mountain", prompt: "Snow covered Himalayan mountain peaks, pine forest valley, crisp morning sunlight" },
+  { label: "🛕 Varanasi Ganga Ghat", prompt: "Varanasi Ganga Ghat evening aarti ceremony with glowing oil lamps and boats on holy river" },
+  { label: "🏖️ Goa Beach", prompt: "Goa tropical beach at sunset, golden waves on sand, coconut palm trees silhouette" },
+  { label: "🏰 Udaipur Lake Palace", prompt: "Udaipur Lake Palace floating on calm blue Lake Pichola, Aravalli hills in background" },
+];
+
 function getAiDimensions(preset: AspectRatioOption) {
   if (preset.key === "hero") return { w: 1920, h: 450, cat: "banner" };
   if (preset.key === "destination") return { w: 600, h: 600, cat: "destination" };
@@ -638,6 +649,25 @@ export default function MediaCropReplaceModal({
                       </>
                     )}
                   </button>
+                </div>
+              </div>
+
+              {/* 1-Click Monument Presets */}
+              <div>
+                <span className="text-[10px] font-bold text-purple-700 uppercase tracking-wider block mb-1">
+                  ⚡ 1-Click Popular Monument Presets (Click to autofill prompt):
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {POPULAR_DESTINATION_PROMPTS.map((item) => (
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={() => setAiPrompt(item.prompt)}
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-white hover:bg-purple-50 text-purple-800 border border-purple-200/90 shadow-2xs transition-all cursor-pointer hover:border-purple-400"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
                 </div>
               </div>
 
