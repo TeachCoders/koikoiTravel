@@ -205,7 +205,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
                 Submitting…
               </>
             ) : (
-              "Create My Trip →"
+              "Submit"
             )}
           </button>
         </form>
@@ -345,7 +345,7 @@ export default function TourBookingForm({ embedded = false, hideHeader = false, 
                   Submitting…
                 </>
               ) : (
-                "Create My Trip →"
+                "Submit"
               )}
             </button>
           </form>
