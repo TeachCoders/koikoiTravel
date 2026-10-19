@@ -88,6 +88,26 @@ const RATIO_PRESETS: AspectRatioOption[] = [
   },
 ];
 
+const QUICK_ENHANCERS = [
+  "🌅 Golden Hour Sunrise",
+  "🏔️ Snowy Mountains",
+  "🛕 Ancient Heritage",
+  "🛶 Serene Backwaters",
+  "🌿 Lush Green Nature",
+  "🏖️ Tropical Beach",
+  "🌆 Night Cityscape",
+];
+
+function getAiDimensions(preset: AspectRatioOption) {
+  if (preset.key === "hero") return { w: 1920, h: 450, cat: "banner" };
+  if (preset.key === "destination") return { w: 600, h: 600, cat: "destination" };
+  if (preset.key === "tour_card") return { w: 600, h: 400, cat: "tour" };
+  if (preset.key === "gallery") return { w: 1200, h: 800, cat: "gallery" };
+  if (preset.key === "blog") return { w: 800, h: 500, cat: "blog" };
+  if (preset.key === "guest_gallery") return { w: 800, h: 600, cat: "guest_gallery" };
+  return { w: 1200, h: 800, cat: "tour" };
+}
+
 interface MediaCropReplaceModalProps {
   item: MediaCropItem | null;
   open: boolean;
@@ -103,10 +123,15 @@ export default function MediaCropReplaceModal({
   onSuccess,
   defaultPresetKey,
 }: MediaCropReplaceModalProps) {
-  const [mode, setMode] = useState<"file" | "url">("file");
+  const [mode, setMode] = useState<"file" | "url" | "ai">("file");
   const [urlInput, setUrlInput] = useState("");
   const [urlLoading, setUrlLoading] = useState(false);
   const [urlError, setUrlError] = useState("");
+
+  // AI Prompt State
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiSeed, setAiSeed] = useState<number | null>(null);
 
   const [rawImageSrc, setRawImageSrc] = useState<string | null>(null);
   const [activePreset, setActivePreset] = useState<AspectRatioOption>(RATIO_PRESETS[0]);
@@ -164,17 +189,74 @@ export default function MediaCropReplaceModal({
 
   // Reset when modal closes or item changes
   useEffect(() => {
-    if (!open) {
+    if (open && item) {
+      const cleaned = (item.label || item.filename)
+        .replace(/\.[^/.]+$/, "")
+        .replace(/[-_]+/g, " ")
+        .replace(/\b\d+\b/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+      setAiPrompt(cleaned ? `${cleaned} scenic travel photography` : "");
+      setAiSeed(null);
+    } else if (!open) {
       setRawImageSrc(null);
       setUrlInput("");
       setUrlError("");
+      setAiPrompt("");
+      setAiSeed(null);
+      setAiLoading(false);
       setZoom(1);
       setRotation(0);
       setPan({ x: 0, y: 0 });
       setCompressedSize(null);
       setSaving(false);
+      setMode("file");
     }
-  }, [open]);
+  }, [open, item]);
+
+  // Handle AI generation preview
+  const handleGenerateAi = async (isRegenerate: boolean = false) => {
+    if (!aiPrompt.trim()) {
+      errorToast("Please enter a prompt to generate an image");
+      return;
+    }
+    setAiLoading(true);
+    try {
+      const { w, h, cat } = getAiDimensions(activePreset);
+      const seed = isRegenerate
+        ? Math.floor(Math.random() * 999999)
+        : (aiSeed ?? Math.floor(Math.random() * 999999));
+      setAiSeed(seed);
+
+      const res = await apiClient.post("/media/ai-generate", {
+        prompt: aiPrompt.trim(),
+        category: cat,
+        width: w,
+        height: h,
+        seed,
+        save: false,
+      });
+
+      if (res.data?.previewUrl) {
+        setRawImageSrc(res.data.previewUrl);
+        setZoom(1);
+        setPan({ x: 0, y: 0 });
+        setRotation(0);
+        successToast(
+          isRegenerate
+            ? "New AI variation generated! Check preview below."
+            : "AI Image generated! Adjust crop below or click 'Replace & Update Image'."
+        );
+      } else {
+        errorToast("No preview received from AI generator");
+      }
+    } catch (err: any) {
+      console.error("AI Generation error:", err);
+      errorToast(err?.response?.data?.message || "Failed to generate AI image. Please try again.");
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   // Handle local file select
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -449,8 +531,8 @@ export default function MediaCropReplaceModal({
             </p>
           </div>
 
-          {/* 2. Choose Mode: File Upload vs Paste URL */}
-          <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+          {/* 2. Choose Mode: File Upload vs Paste URL vs Generate with AI */}
+          <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 pb-3">
             <button
               type="button"
               onClick={() => setMode("file")}
@@ -475,10 +557,115 @@ export default function MediaCropReplaceModal({
               <LinkIcon size={15} />
               Paste Image URL
             </button>
+            <button
+              type="button"
+              onClick={() => setMode("ai")}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                mode === "ai"
+                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-xs shadow-purple-500/20"
+                  : "bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200"
+              }`}
+            >
+              <Sparkles size={15} />
+              Generate with AI
+            </button>
           </div>
 
           {/* Mode Inputs */}
-          {mode === "file" ? (
+          {mode === "ai" ? (
+            <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-500/5 via-indigo-500/5 to-slate-50 border border-purple-200/80 space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-purple-600 text-white flex items-center justify-center shadow-xs">
+                    <Sparkles size={14} />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-800">
+                      AI Image Generator
+                    </h4>
+                    <p className="text-[11px] text-slate-500">
+                      Auto-sized to {activePreset.label} ({activePreset.dims})
+                    </p>
+                  </div>
+                </div>
+
+                {rawImageSrc && (
+                  <button
+                    type="button"
+                    onClick={() => handleGenerateAi(true)}
+                    disabled={aiLoading}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-purple-200 text-purple-700 hover:bg-purple-50 shadow-xs disabled:opacity-50 cursor-pointer"
+                  >
+                    <RotateCcw size={13} className={aiLoading ? "animate-spin" : ""} />
+                    <span>Regenerate Variation</span>
+                  </button>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                  Prompt (Describe what you want to generate):
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={aiPrompt}
+                    onChange={(e) => setAiPrompt(e.target.value)}
+                    placeholder="e.g. Majestic Taj Mahal at sunrise with morning mist, reflection pool"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleGenerateAi(false);
+                      }
+                    }}
+                    className="flex-1 bg-white border border-purple-200 rounded-xl px-3.5 py-2 text-xs sm:text-sm focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 shadow-xs"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleGenerateAi(false)}
+                    disabled={aiLoading || !aiPrompt.trim()}
+                    className="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-sm flex items-center gap-1.5 disabled:opacity-50 shrink-0 cursor-pointer"
+                  >
+                    {aiLoading ? (
+                      <>
+                        <Loader2 size={15} className="animate-spin" />
+                        <span>Generating...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles size={15} />
+                        <span>Generate</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Quick Prompt Enhancers */}
+              <div>
+                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
+                  Quick Travel Tags:
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {QUICK_ENHANCERS.map((enhancer) => (
+                    <button
+                      key={enhancer}
+                      type="button"
+                      onClick={() => {
+                        const tag = enhancer.split(" ").slice(1).join(" ");
+                        if (!aiPrompt.toLowerCase().includes(tag.toLowerCase())) {
+                          setAiPrompt((prev) => (prev ? `${prev}, ${tag}` : tag));
+                        }
+                      }}
+                      className="px-2 py-0.5 rounded-md text-[11px] bg-white hover:bg-purple-100 text-slate-700 hover:text-purple-800 border border-purple-200/60 transition-colors cursor-pointer"
+                    >
+                      {enhancer}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : mode === "file" ? (
             <div>
               <input
                 ref={fileInputRef}
