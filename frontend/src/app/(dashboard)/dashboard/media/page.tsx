@@ -30,6 +30,7 @@ import {
 import apiClient from "@/lib/apiClient";
 import { successToast, errorToast } from "@/components/shared/tost";
 import MediaCropReplaceModal, { MediaCropItem } from "@/components/shared/MediaCropReplaceModal";
+import AiImageGeneratorModal from "@/components/shared/AiImageGeneratorModal";
 import EmptyState from "@/components/shared/EmptyState";
 
 interface MediaItem {
@@ -128,6 +129,7 @@ export default function MediaManagerPage() {
   const [uploadName, setUploadName] = useState("");
   const [uploadCategory, setUploadCategory] = useState("tour");
   const [uploadSubmitting, setUploadSubmitting] = useState(false);
+  const [aiModalOpen, setAiModalOpen] = useState(false);
   const uploadFileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchMedia = async () => {
@@ -460,6 +462,14 @@ export default function MediaManagerPage() {
         </div>
 
         <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => setAiModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white text-xs sm:text-sm font-bold shadow-md transition-all active:scale-95 cursor-pointer"
+          >
+            <Sparkles size={16} />
+            <span>Generate with AI</span>
+          </button>
           <button
             type="button"
             onClick={() => {
@@ -1529,6 +1539,21 @@ export default function MediaManagerPage() {
           </div>
         </div>
       )}
+
+      {/* ── AI Image & Banner Generator Modal ── */}
+      <AiImageGeneratorModal
+        open={aiModalOpen}
+        onClose={() => setAiModalOpen(false)}
+        defaultCategory={activeTab === "hero" ? "banner" : activeTab}
+        onImageSaved={() => {
+          fetchMedia();
+          fetchUsage();
+        }}
+        onBatchSaved={() => {
+          fetchMedia();
+          fetchUsage();
+        }}
+      />
     </div>
   );
 }

@@ -18,9 +18,11 @@ import {
   Sliders,
   Link as LinkIcon,
   Loader2,
+  Sparkles,
 } from "lucide-react";
 import apiClient from "@/lib/apiClient";
 import ImageCropUpload from "@/components/shared/ImageCropUpload";
+import AiImageGeneratorModal, { AiSavedImage } from "@/components/shared/AiImageGeneratorModal";
 import {
   useAllHeroBanners,
   useCreateHeroBanner,
@@ -88,6 +90,7 @@ export default function HeroBannersAdminPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [aiModalOpen, setAiModalOpen] = useState<boolean>(false);
 
   const allBanners: HeroFullBanner[] = data?.data || [];
 
@@ -98,6 +101,41 @@ export default function HeroBannersAdminPage() {
 
   const [multiUrlInput, setMultiUrlInput] = useState("");
   const [multiUrlLoading, setMultiUrlLoading] = useState(false);
+
+  const handleAiBatchSaved = async (images: AiSavedImage[]) => {
+    if (!images || images.length === 0) return;
+    toast.success(`${images.length} AI Banner(s) saved! Loading into banner form...`);
+    try {
+      const files: File[] = [];
+      for (const img of images) {
+        const fullUrl = img.url.startsWith("http")
+          ? img.url
+          : `${process.env.NEXT_PUBLIC_API_URL || ""}${img.url}`;
+        const res = await fetch(fullUrl);
+        const blob = await res.blob();
+        const file = new File([blob], img.filename || `ai-banner-${Date.now()}.webp`, {
+          type: blob.type || "image/webp",
+        });
+        files.push(file);
+      }
+      if (files.length > 1) {
+        setUploadMode("multiple");
+        handleMultipleFilesSelect(files);
+        setIsModalOpen(true);
+      } else if (files.length === 1) {
+        const file = files[0];
+        setSelectedFile(file);
+        setPreviewUrl(URL.createObjectURL(file));
+        if (!title) setTitle(images[0].label || "");
+        if (!altText) setAltText(images[0].label || "");
+        setUploadMode("single");
+        setIsModalOpen(true);
+      }
+    } catch (e) {
+      console.error("Error loading saved AI images into banner form:", e);
+      toast.success("AI Banners saved to Media Library!");
+    }
+  };
 
   const clearMultipleFiles = () => {
     multipleFiles.forEach((item) => {
@@ -299,6 +337,15 @@ export default function HeroBannersAdminPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5">
+          <Button
+            type="button"
+            onClick={() => setAiModalOpen(true)}
+            className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold shadow-sm shadow-purple-600/20"
+          >
+            <Sparkles size={18} />
+            <span>✨ Generate with AI</span>
+          </Button>
+
           <Button
             type="button"
             onClick={() => {
@@ -732,14 +779,24 @@ export default function HeroBannersAdminPage() {
               {/* Upload Mode 1: Single Banner with Crop & Resize */}
               {uploadMode === "single" ? (
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                    Panoramic Banner Image (1920 × 450 px){" "}
-                    {editingBanner ? (
-                      <span className="text-slate-400 font-normal">(Optional — leave unchanged to keep current image)</span>
-                    ) : (
-                      <span className="text-rose-500">*</span>
-                    )}
-                  </label>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                      Panoramic Banner Image (1920 × 450 px){" "}
+                      {editingBanner ? (
+                        <span className="text-slate-400 font-normal">(Optional — leave unchanged to keep current image)</span>
+                      ) : (
+                        <span className="text-rose-500">*</span>
+                      )}
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setAiModalOpen(true)}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-600 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 px-2.5 py-1 rounded-lg transition-colors border border-purple-200"
+                    >
+                      <Sparkles size={13} />
+                      Generate with AI
+                    </button>
+                  </div>
                   <ImageCropUpload
                     onFileSelect={(file) => {
                       setSelectedFile(file);
@@ -992,6 +1049,14 @@ export default function HeroBannersAdminPage() {
           </div>
         </div>
       )}
+
+      {/* AI Banner Generator Studio Modal */}
+      <AiImageGeneratorModal
+        open={aiModalOpen}
+        onClose={() => setAiModalOpen(false)}
+        defaultCategory="banner"
+        onBatchSaved={handleAiBatchSaved}
+      />
     </div>
   );
 }

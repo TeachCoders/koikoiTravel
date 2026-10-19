@@ -1,6 +1,7 @@
 import { Router } from "express";
 import fs from "fs";
 import path from "path";
+import sharp from "sharp";
 import { prisma } from "../utils/prismaConnection.js";
 import { requireSalesOrAdmin } from "../middleware/requireSalesOrAdmin.js";
 import { deleteMediaFile } from "../utils/uploadImage.js";
@@ -289,6 +290,123 @@ router.post("/swap", requireSalesOrAdmin, async (req, res) => {
   } catch (error) {
     logger.error("Media swap error:", { error: error.message, stack: error.stack });
     return res.status(500).json({ success: false, message: "Failed to swap image" });
+  }
+});
+
+// AI Image Generation Endpoint — creates exact size WebP banner/image using AI prompt
+router.post("/ai-generate", requireSalesOrAdmin, async (req, res) => {
+  try {
+    const { prompt, category = "banner", width: reqW, height: reqH, label: reqLabel, seed: reqSeed, save = true } = req.body;
+    if (!prompt || typeof prompt !== "string" || !prompt.trim()) {
+      return res.status(400).json({ success: false, message: "A descriptive prompt is required" });
+    }
+
+    // Determine dimensions by category
+    let targetW = 1920;
+    let targetH = 450;
+    const cat = (category || "").toLowerCase();
+
+    if (cat === "banner" || cat === "hero") {
+      targetW = 1920;
+      targetH = 450;
+    } else if (cat === "destination") {
+      targetW = 600;
+      targetH = 600;
+    } else if (cat === "tour" || cat === "thumb") {
+      targetW = 600;
+      targetH = 400;
+    } else if (cat === "gallery") {
+      targetW = 1200;
+      targetH = 800;
+    } else if (cat === "guest_gallery") {
+      targetW = 800;
+      targetH = 600;
+    } else if (cat === "blog") {
+      targetW = 800;
+      targetH = 500;
+    }
+
+    if (reqW && Number(reqW) > 0) targetW = Number(reqW);
+    if (reqH && Number(reqH) > 0) targetH = Number(reqH);
+
+    const seed = reqSeed !== undefined ? Number(reqSeed) : Math.floor(Math.random() * 999999);
+
+    // Enrich prompt with photorealistic travel quality enhancers
+    const enrichedPrompt = `${prompt.trim()}, 8k travel photography, photorealistic, cinematic natural lighting, ultra-high resolution, masterpiece, professional Indian tourism photo, sharp focus, no watermark, no text, no blur`;
+    const encodedPrompt = encodeURIComponent(enrichedPrompt);
+
+    const aiUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${targetW}&height=${targetH}&model=flux&nologo=true&seed=${seed}`;
+
+    const fetchResponse = await fetch(aiUrl, {
+      headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
+    });
+
+    if (!fetchResponse.ok) {
+      return res.status(502).json({ success: false, message: `AI Image provider responded with ${fetchResponse.status}` });
+    }
+
+    const rawBuffer = Buffer.from(await fetchResponse.arrayBuffer());
+
+    // Convert & resize strictly to target dimensions as high-quality WebP
+    const webpBuffer = await sharp(rawBuffer)
+      .resize(targetW, targetH, { fit: "cover", position: "center" })
+      .webp({ quality: 85 })
+      .toBuffer();
+
+    // If preview only (not saving yet)
+    if (!save) {
+      const base64Img = `data:image/webp;base64,${webpBuffer.toString("base64")}`;
+      return res.json({
+        success: true,
+        previewUrl: base64Img,
+        seed,
+        width: targetW,
+        height: targetH,
+        size: webpBuffer.length,
+      });
+    }
+
+    // Save permanently to server disk & register in Media database
+    const label = (reqLabel || prompt).trim().slice(0, 80);
+    const slugBase = label
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w-]+/g, "")
+      .slice(0, 40) || "ai-banner";
+
+    const timestamp = Date.now();
+    const filename = `${timestamp}-${slugBase}.webp`;
+    const saveDir = path.join(process.cwd(), "public", "content");
+    if (!fs.existsSync(saveDir)) {
+      fs.mkdirSync(saveDir, { recursive: true });
+    }
+
+    const filePath = path.join(saveDir, filename);
+    fs.writeFileSync(filePath, webpBuffer);
+
+    const url = `/content/${filename}`;
+    const media = await prisma.media.create({
+      data: {
+        filename,
+        url,
+        folder: "content",
+        originalName: `${slugBase}.webp`,
+        label: label,
+        altText: label,
+        category: cat,
+      },
+    });
+
+    return res.json({
+      success: true,
+      message: `AI Image "${label}" generated and saved successfully (${targetW}×${targetH})`,
+      url,
+      media: { ...media, fileSize: webpBuffer.length },
+      seed,
+    });
+  } catch (error) {
+    logger.error("AI Image Generation error:", { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, message: "Failed to generate AI image" });
   }
 });
 
