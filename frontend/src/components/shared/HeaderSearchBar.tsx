@@ -284,10 +284,10 @@ export default function HeaderSearchBar() {
       {/* Clean Pill Search Bar matching Travelogy reference */}
       <form
         onSubmit={handleSubmit}
-        className={`relative flex items-center bg-white rounded-full border transition-all duration-200 h-10 sm:h-11 md:h-11 shadow-xs ${
+        className={`relative flex items-center rounded-full border transition-all duration-200 h-10 sm:h-11 md:h-11 shadow-xs ${
           isOpen && q
-            ? "border-[#2E8B8B] ring-2 ring-[#2E8B8B]/15 shadow-md"
-            : "border-slate-300 hover:border-slate-400"
+            ? "bg-white border-[#2E8B8B] ring-2 ring-[#2E8B8B]/15 shadow-md"
+            : "bg-slate-50 hover:bg-slate-100/80 border-slate-200 hover:border-slate-300"
         }`}
       >
         <div className="pl-3.5 pr-2 text-slate-400 shrink-0">
@@ -344,11 +344,11 @@ export default function HeaderSearchBar() {
                           type="button"
                           onClick={() => handleSelect(dest.href)}
                           onMouseEnter={() => setActiveIndex(idx)}
-                          className={`w-full flex items-center gap-3 px-3.5 py-2 transition-colors text-left cursor-pointer ${
+                          className={`w-full flex items-start gap-3 px-3.5 py-2.5 transition-colors text-left cursor-pointer ${
                             isSelected ? "bg-[#2E8B8B]/10 text-[#2E8B8B]" : "hover:bg-slate-50 text-slate-800"
                           }`}
                         >
-                          <div className="relative w-10 h-10 rounded-md overflow-hidden shrink-0 bg-slate-100 border border-slate-200/70 flex items-center justify-center">
+                          <div className="relative w-10 h-10 rounded-md overflow-hidden shrink-0 bg-slate-100 border border-slate-200/70 flex items-center justify-center mt-0.5">
                             {dest.thumbImg ? (
                               <FallbackImage
                                 src={dest.thumbImg}
@@ -364,7 +364,7 @@ export default function HeaderSearchBar() {
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[14px] font-medium leading-snug truncate block">
+                            <span className="text-[14px] font-medium leading-snug break-words whitespace-normal block">
                               {dest.title}
                             </span>
                           </div>
@@ -389,11 +389,11 @@ export default function HeaderSearchBar() {
                           type="button"
                           onClick={() => handleSelect(j.href)}
                           onMouseEnter={() => setActiveIndex(overallIdx)}
-                          className={`w-full flex items-center gap-3 px-3.5 py-2 transition-colors text-left cursor-pointer ${
+                          className={`w-full flex items-start gap-3 px-3.5 py-2.5 transition-colors text-left cursor-pointer ${
                             isSelected ? "bg-[#2E8B8B]/10 text-[#2E8B8B]" : "hover:bg-slate-50 text-slate-800"
                           }`}
                         >
-                          <div className="relative w-10 h-10 rounded-md overflow-hidden shrink-0 bg-slate-100 border border-slate-200/70 flex items-center justify-center">
+                          <div className="relative w-10 h-10 rounded-md overflow-hidden shrink-0 bg-slate-100 border border-slate-200/70 flex items-center justify-center mt-0.5">
                             {j.thumbImg ? (
                               <FallbackImage
                                 src={j.thumbImg}
@@ -409,7 +409,7 @@ export default function HeaderSearchBar() {
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[14px] font-medium leading-snug truncate block">
+                            <span className="text-[14px] font-medium leading-snug break-words whitespace-normal block">
                               {j.title}
                             </span>
                           </div>
@@ -435,11 +435,11 @@ export default function HeaderSearchBar() {
                           type="button"
                           onClick={() => handleSelect(exp.href)}
                           onMouseEnter={() => setActiveIndex(overallIdx)}
-                          className={`w-full flex items-center gap-3 px-3.5 py-2 transition-colors text-left cursor-pointer ${
+                          className={`w-full flex items-start gap-3 px-3.5 py-2.5 transition-colors text-left cursor-pointer ${
                             isSelected ? "bg-[#2E8B8B]/10 text-[#2E8B8B]" : "hover:bg-slate-50 text-slate-800"
                           }`}
                         >
-                          <div className="relative w-10 h-10 rounded-md overflow-hidden shrink-0 bg-slate-100 border border-slate-200/70 flex items-center justify-center">
+                          <div className="relative w-10 h-10 rounded-md overflow-hidden shrink-0 bg-slate-100 border border-slate-200/70 flex items-center justify-center mt-0.5">
                             {exp.thumbImg ? (
                               <FallbackImage
                                 src={exp.thumbImg}
@@ -455,7 +455,7 @@ export default function HeaderSearchBar() {
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[14px] font-medium leading-snug truncate block">
+                            <span className="text-[14px] font-medium leading-snug break-words whitespace-normal block">
                               {exp.title}
                             </span>
                           </div>
