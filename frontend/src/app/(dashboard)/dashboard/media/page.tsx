@@ -24,6 +24,8 @@ import {
   CheckCircle2,
   X,
   Eye,
+  ChevronDown,
+  Maximize2,
 } from "lucide-react";
 import apiClient from "@/lib/apiClient";
 import { successToast, errorToast } from "@/components/shared/tost";
@@ -43,6 +45,7 @@ interface MediaItem {
   isPinned: boolean;
   sortOrder: number;
   createdAt?: string;
+  fileSize?: number;
 }
 
 export interface UsageItem {
@@ -59,20 +62,27 @@ interface CategoryFilter {
 }
 
 const CATEGORY_TABS: CategoryFilter[] = [
-  { key: "all", label: "All Images", dims: "Library", badge: "Total" },
-  { key: "destination", label: "Destination Cards", dims: "600 × 600 px", badge: "1:1 Square" },
+  { key: "tour", label: "Tour Cards (Thumbnails)", dims: "600 × 400 px", badge: "3:2 Landscape" },
   { key: "hero", label: "Hero Banners", dims: "1920 × 450 px", badge: "21:9 Ultra-wide" },
-  { key: "tour", label: "Tour Cards", dims: "600 × 400 px", badge: "3:2 Landscape" },
+  { key: "destination", label: "Destination Cards", dims: "600 × 600 px", badge: "1:1 Square" },
   { key: "gallery", label: "Tour Gallery", dims: "1200 × 800 px", badge: "3:2 HD" },
   { key: "guest_gallery", label: "Guest Gallery", dims: "800 × 600 px", badge: "4:3 Photos" },
   { key: "blog", label: "Blog Images", dims: "800 × 500 px", badge: "16:10" },
 ];
 
+function formatBytes(bytes?: number) {
+  if (!bytes || bytes <= 0) return "";
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 export default function MediaManagerPage() {
   const [items, setItems] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [activeTab, setActiveTab] = useState<string>("all");
+  const [activeTab, setActiveTab] = useState<string>("tour");
+  const [dimensions, setDimensions] = useState<Record<number, string>>({});
   const [showPinnedOnly, setShowPinnedOnly] = useState(false);
   const [showUnusedOnly, setShowUnusedOnly] = useState(false);
 
@@ -80,6 +90,7 @@ export default function MediaManagerPage() {
   const [usageMap, setUsageMap] = useState<Record<string, UsageItem[]>>({});
   const [usageLoading, setUsageLoading] = useState(false);
   const [selectedUsageItem, setSelectedUsageItem] = useState<MediaItem | null>(null);
+  const [previewItem, setPreviewItem] = useState<MediaItem | null>(null);
 
   // Swap Modal states
   const [swapSourceItem, setSwapSourceItem] = useState<MediaItem | null>(null);
@@ -320,74 +331,62 @@ export default function MediaManagerPage() {
         </div>
       </div>
 
-      {/* ── Category Tabs with Exact Dimensions ── */}
-      <div className="bg-white p-2.5 rounded-2xl border border-slate-200/80 shadow-xs overflow-x-auto scrollbar-none">
-        <div className="flex items-center gap-2 min-w-max">
-          {CATEGORY_TABS.map((tab) => {
-            const isActive = activeTab === tab.key;
-            return (
-              <button
-                key={tab.key}
-                type="button"
-                onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
-                  isActive
-                    ? "bg-[#2E8B8B] text-white shadow-sm"
-                    : "bg-slate-50 text-slate-700 hover:bg-slate-100/80 border border-slate-200/60"
-                }`}
-              >
-                <span>{tab.label}</span>
-                <span
-                  className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-full ${
-                    isActive
-                      ? "bg-white/20 text-white"
-                      : "bg-amber-100 text-[#D4561A]"
-                  }`}
-                >
-                  {tab.dims}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      {/* ── Category Select Dropdown & Filter Toolbar ── */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
+          {/* Category Dropdown (Selectbox) */}
+          <div className="relative min-w-[270px]">
+            <select
+              value={activeTab}
+              onChange={(e) => setActiveTab(e.target.value)}
+              className="w-full appearance-none bg-slate-50 hover:bg-slate-100 text-slate-800 text-xs sm:text-sm font-bold pl-3.5 pr-9 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#2E8B8B] cursor-pointer transition-all shadow-2xs"
+            >
+              {CATEGORY_TABS.map((tab) => (
+                <option key={tab.key} value={tab.key}>
+                  {tab.label} — {tab.dims} ({tab.badge})
+                </option>
+              ))}
+            </select>
+            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+          </div>
 
-      {/* ── Search Bar & Filter Strip ── */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-        <div className="relative flex-1 max-w-md">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by label, filename, or tour name..."
-            className="w-full bg-white border border-slate-200 rounded-2xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#2E8B8B] focus:ring-2 focus:ring-[#2E8B8B]/15 shadow-xs"
-          />
+          {/* Search Bar */}
+          <div className="relative flex-1">
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by label or filename..."
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#2E8B8B] shadow-2xs"
+            />
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 self-end sm:self-center">
+        {/* Action Controls */}
+        <div className="flex items-center gap-2 self-start lg:self-center">
           <button
             type="button"
             onClick={() => setShowPinnedOnly(!showPinnedOnly)}
-            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl text-xs font-semibold border transition-all ${
+            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold border transition-all ${
               showPinnedOnly
                 ? "bg-amber-500 border-amber-600 text-white shadow-xs"
                 : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
             }`}
           >
             <Star size={14} className={showPinnedOnly ? "fill-white" : ""} />
-            Starred Only
+            Starred
           </button>
 
           <button
             type="button"
             onClick={() => setShowUnusedOnly(!showUnusedOnly)}
-            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl text-xs font-semibold border transition-all ${
+            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold border transition-all ${
               showUnusedOnly
                 ? "bg-rose-500 border-rose-600 text-white shadow-xs"
                 : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
             }`}
-            title="Filter images that are not used in any page"
+            title="Filter images that are not used on any page"
           >
             <span className={`w-2 h-2 rounded-full ${showUnusedOnly ? "bg-white" : "bg-slate-400"}`} />
             Unused Only ({unusedCount})
@@ -428,11 +427,23 @@ export default function MediaManagerPage() {
                 className="group bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
               >
                 {/* Image Container with Actions Overlay */}
-                <div className="relative aspect-square w-full bg-slate-100 overflow-hidden">
+                <div
+                  className="relative aspect-square w-full bg-slate-100 overflow-hidden cursor-pointer"
+                  onClick={() => setPreviewItem(item)}
+                >
                   <img
                     src={item.url}
                     alt={item.label || item.filename}
                     loading="lazy"
+                    onLoad={(e) => {
+                      const img = e.currentTarget;
+                      if (img.naturalWidth && img.naturalHeight) {
+                        setDimensions((prev) => ({
+                          ...prev,
+                          [item.id]: `${img.naturalWidth}×${img.naturalHeight}`,
+                        }));
+                      }
+                    }}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
 
@@ -467,7 +478,10 @@ export default function MediaManagerPage() {
                   {/* Star / Pin Button */}
                   <button
                     type="button"
-                    onClick={() => handleTogglePin(item)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleTogglePin(item);
+                    }}
                     className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 backdrop-blur-xs text-slate-400 hover:text-amber-500 shadow-xs transition-colors z-10"
                   >
                     <Star
@@ -476,8 +490,25 @@ export default function MediaManagerPage() {
                     />
                   </button>
 
+                  {/* Size & Dimension Badge (Bottom Right of Image) */}
+                  <div className="absolute bottom-2 right-2 z-10 px-2 py-0.5 rounded-md bg-black/75 backdrop-blur-xs text-[10px] font-mono text-white font-medium shadow-xs pointer-events-none flex items-center gap-1">
+                    <span>{dimensions[item.id] || "..."}</span>
+                    {item.fileSize ? <span className="text-slate-300">• {formatBytes(item.fileSize)}</span> : null}
+                  </div>
+
                   {/* Hover Action Overlay */}
-                  <div className="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-center justify-around opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                  <div
+                    className="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/85 via-black/45 to-transparent flex items-center justify-around opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setPreviewItem(item)}
+                      title="Preview Full Image"
+                      className="p-1.5 rounded-lg bg-white/90 hover:bg-white text-slate-800 shadow-xs transition-colors"
+                    >
+                      <Maximize2 size={15} />
+                    </button>
                     <button
                       type="button"
                       onClick={() => handleOpenReplace(item)}
@@ -561,38 +592,125 @@ export default function MediaManagerPage() {
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono gap-1 pt-1 border-t border-slate-100">
-                    <span className="truncate text-[10px] text-slate-400 font-mono flex-1" title={item.filename}>
+                  <div className="flex items-center justify-between text-[11px] text-slate-500 font-mono gap-1 pt-1 border-t border-slate-100">
+                    <span className="truncate text-[10px] text-slate-600 font-semibold">
+                      {dimensions[item.id] ? `${dimensions[item.id]} px` : ""}
+                      {item.fileSize ? ` • ${formatBytes(item.fileSize)}` : ""}
+                    </span>
+                    <span className="truncate text-[10px] text-slate-400 font-mono text-right max-w-[120px]" title={item.filename}>
                       {item.filename}
                     </span>
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setSwapSourceItem(item);
-                          setSwapTargetItem(null);
-                          setSwapSearch("");
-                          setSwapDeleteOld(false);
-                        }}
-                        title="Swap everywhere with another photo"
-                        className="text-indigo-600 hover:text-indigo-800 hover:underline font-bold font-sans text-[11px]"
-                      >
-                        Swap
-                      </button>
-                      <span className="text-slate-300">|</span>
-                      <button
-                        type="button"
-                        onClick={() => handleOpenReplace(item)}
-                        className="text-[#D4561A] hover:underline font-bold font-sans text-[11px]"
-                      >
-                        Replace
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* ── 0. Full Image Preview Lightbox Modal ── */}
+      {previewItem && (
+        <div
+          className="fixed inset-0 z-[220] bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-150"
+          onClick={() => setPreviewItem(null)}
+        >
+          <div
+            className="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+              <div className="min-w-0 pr-3">
+                <h3 className="font-extrabold text-slate-900 text-sm sm:text-base leading-tight truncate">
+                  {previewItem.label || previewItem.filename}
+                </h3>
+                <p className="text-[11px] text-slate-400 font-mono mt-0.5 truncate">
+                  {previewItem.filename}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={previewItem.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 transition-colors"
+                  title="Open original file in new tab"
+                >
+                  <ExternalLink size={16} />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setPreviewItem(null)}
+                  className="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            </div>
+
+            {/* Image Preview Body */}
+            <div className="flex-1 bg-slate-950 flex items-center justify-center p-4 sm:p-8 overflow-hidden min-h-[300px] max-h-[65vh]">
+              <img
+                src={previewItem.url}
+                alt={previewItem.label || previewItem.filename}
+                className="max-h-full max-w-full object-contain rounded-xl shadow-2xl"
+              />
+            </div>
+
+            {/* Footer with Metadata & Actions */}
+            <div className="p-4 sm:p-5 border-t border-slate-100 bg-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex items-center gap-3 text-xs font-mono text-slate-600">
+                <span className="px-2.5 py-1 rounded-lg bg-slate-100 font-semibold text-slate-700">
+                  {dimensions[previewItem.id] ? `${dimensions[previewItem.id]} px` : "Original size"}
+                </span>
+                {previewItem.fileSize ? (
+                  <span className="px-2.5 py-1 rounded-lg bg-slate-100 font-semibold text-slate-700">
+                    {formatBytes(previewItem.fileSize)}
+                  </span>
+                ) : null}
+                <span className="text-[11px] text-slate-400">
+                  {(usageMap[previewItem.url] || []).length} usages
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleCopyUrl(previewItem.url)}
+                  className="px-3.5 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
+                >
+                  Copy URL
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const item = previewItem;
+                    setPreviewItem(null);
+                    setSwapSourceItem(item);
+                    setSwapTargetItem(null);
+                    setSwapSearch("");
+                    setSwapDeleteOld(false);
+                  }}
+                  className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-xs transition-colors cursor-pointer"
+                >
+                  <ArrowLeftRight size={13} />
+                  <span>Swap</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const item = previewItem;
+                    setPreviewItem(null);
+                    handleOpenReplace(item);
+                  }}
+                  className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-[#D4561A] hover:bg-[#b84814] rounded-xl shadow-xs transition-colors cursor-pointer"
+                >
+                  <Crop size={13} />
+                  <span>Replace & Crop</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

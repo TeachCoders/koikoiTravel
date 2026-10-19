@@ -1,4 +1,6 @@
 import { Router } from "express";
+import fs from "fs";
+import path from "path";
 import { prisma } from "../utils/prismaConnection.js";
 import { requireSalesOrAdmin } from "../middleware/requireSalesOrAdmin.js";
 import { deleteMediaFile } from "../utils/uploadImage.js";
@@ -17,6 +19,21 @@ const toRelativePath = (url) => {
   }
 };
 
+const attachFileSize = (mediaList) => {
+  return mediaList.map((m) => {
+    try {
+      const rel = toRelativePath(m.url);
+      if (rel) {
+        const fullPath = path.join("public", rel);
+        if (fs.existsSync(fullPath)) {
+          return { ...m, fileSize: fs.statSync(fullPath).size };
+        }
+      }
+    } catch {}
+    return m;
+  });
+};
+
 // List media — pinned first, then sortOrder, then newest.
 // Hidden folders (documents/, user/) are excluded from the library.
 router.get("/", requireSalesOrAdmin, async (req, res) => {
@@ -29,7 +46,7 @@ router.get("/", requireSalesOrAdmin, async (req, res) => {
         { createdAt: "desc" },
       ],
     });
-    return res.json({ success: true, data: media });
+    return res.json({ success: true, data: attachFileSize(media) });
   } catch (error) {
     logger.error("Media list error:", { error: error.message, stack: error.stack });
     return res.status(500).json({ success: false, message: "Failed to list media" });
@@ -57,7 +74,7 @@ router.get("/search", requireSalesOrAdmin, async (req, res) => {
         { createdAt: "desc" },
       ],
     });
-    return res.json({ success: true, data: media });
+    return res.json({ success: true, data: attachFileSize(media) });
   } catch (error) {
     logger.error("Media search error:", { error: error.message, stack: error.stack });
     return res.status(500).json({ success: false, message: "Failed to search media" });
@@ -127,6 +144,8 @@ router.get("/usage-summary", requireSalesOrAdmin, async (req, res) => {
         UNION ALL
         SELECT "thumbImg" as url, 'State' as type, title, '/destinations/' || slug as link FROM "State" WHERE "thumbImg" IS NOT NULL
         UNION ALL
+        SELECT "thumbImg" as url, 'Country' as type, title, '/india' as link FROM country WHERE "thumbImg" IS NOT NULL
+        UNION ALL
         SELECT "thumbImg" as url, 'Tour Package' as type, title, '/tour-packages/' || slug as link FROM "Journey" WHERE "thumbImg" IS NOT NULL
         UNION ALL
         SELECT jd.image as url, 'Itinerary Day' as type, j.title || ' (' || jd.day || ')' as title, '/tour-packages/' || j.slug as link 
@@ -142,7 +161,13 @@ router.get("/usage-summary", requireSalesOrAdmin, async (req, res) => {
         UNION ALL
         SELECT image as url, 'Hero Banner' as type, coalesce(title, 'Banner: ' || "entityType") as title, coalesce('/' || "pageSlug", '/') as link FROM hero_full_banners WHERE image IS NOT NULL
         UNION ALL
+        SELECT "mobileImage" as url, 'Hero Banner (Mobile)' as type, coalesce(title, 'Banner: ' || "entityType") as title, coalesce('/' || "pageSlug", '/') as link FROM hero_full_banners WHERE "mobileImage" IS NOT NULL
+        UNION ALL
         SELECT img as url, 'Hero Banner' as type, coalesce("bannerTitle", "entityType") as title, '/' as link FROM "Banner", unnest(images) as img WHERE img IS NOT NULL
+        UNION ALL
+        SELECT img as url, 'Landing Page Banner' as type, title, '/offers/' || slug as link FROM "AdLandingPage", unnest("bannerImages") as img WHERE img IS NOT NULL
+        UNION ALL
+        SELECT img as url, 'Landing Page' as type, title, '/offers/' || slug as link FROM "AdLandingPage", unnest("whyChooseImages") as img WHERE img IS NOT NULL
         UNION ALL
         SELECT "imageUrl" as url, 'Guest Gallery' as type, coalesce(caption, 'Guest Photo') as title, '/guest-gallery' as link FROM guest_gallery WHERE "imageUrl" IS NOT NULL
       ) all_usages
@@ -178,6 +203,7 @@ router.post("/swap", requireSalesOrAdmin, async (req, res) => {
     await prisma.$transaction([
       prisma.$executeRaw`UPDATE "City" SET "thumbImg" = ${nUrl} WHERE "thumbImg" = ${oUrl}`,
       prisma.$executeRaw`UPDATE "State" SET "thumbImg" = ${nUrl} WHERE "thumbImg" = ${oUrl}`,
+      prisma.$executeRaw`UPDATE country SET "thumbImg" = ${nUrl} WHERE "thumbImg" = ${oUrl}`,
       prisma.$executeRaw`UPDATE "Journey" SET "thumbImg" = ${nUrl} WHERE "thumbImg" = ${oUrl}`,
       prisma.$executeRaw`UPDATE "JourneyDay" SET "image" = ${nUrl} WHERE "image" = ${oUrl}`,
       prisma.$executeRaw`UPDATE "TravelExperience" SET "thumbImg" = ${nUrl} WHERE "thumbImg" = ${oUrl}`,
@@ -188,6 +214,8 @@ router.post("/swap", requireSalesOrAdmin, async (req, res) => {
       prisma.$executeRaw`UPDATE hero_full_banners SET "mobileImage" = ${nUrl} WHERE "mobileImage" = ${oUrl}`,
       prisma.$executeRaw`UPDATE guest_gallery SET "imageUrl" = ${nUrl} WHERE "imageUrl" = ${oUrl}`,
       prisma.$executeRaw`UPDATE "Banner" SET images = array_replace(images, ${oUrl}, ${nUrl}) WHERE ${oUrl} = ANY(images)`,
+      prisma.$executeRaw`UPDATE "AdLandingPage" SET "bannerImages" = array_replace("bannerImages", ${oUrl}, ${nUrl}) WHERE ${oUrl} = ANY("bannerImages")`,
+      prisma.$executeRaw`UPDATE "AdLandingPage" SET "whyChooseImages" = array_replace("whyChooseImages", ${oUrl}, ${nUrl}) WHERE ${oUrl} = ANY("whyChooseImages")`,
     ]);
 
     if (deleteOld) {
