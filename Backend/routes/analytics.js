@@ -266,20 +266,27 @@ router.get('/replay-sessions', requireSuperAdmin, async (req, res) => {
       };
     });
 
+    const countries = [...new Set(rows.map(x => x.country || 'Unknown'))].sort((a, b) => a.localeCompare(b));
+    const country = typeof req.query.country === 'string' && req.query.country.trim() ? req.query.country.trim() : 'all';
+
+    const byCountry = country === 'all'
+      ? rows
+      : rows.filter(x => (x.country || 'Unknown').toLowerCase() === country.toLowerCase());
+
     const totals = {
-      all: rows.length,
-      humans: rows.filter(x => !x.isBot).length,
-      bots: rows.filter(x => x.isBot).length,
+      all: byCountry.length,
+      humans: byCountry.filter(x => !x.isBot).length,
+      bots: byCountry.filter(x => x.isBot).length,
     };
 
-    const filtered = kind === 'all' ? rows
-      : kind === 'bots' ? rows.filter(x => x.isBot)
-      : rows.filter(x => !x.isBot);
+    const filtered = kind === 'all' ? byCountry
+      : kind === 'bots' ? byCountry.filter(x => x.isBot)
+      : byCountry.filter(x => !x.isBot);
     const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
     const clampedPage = Math.min(page, totalPages);
     const paged = filtered.slice((clampedPage - 1) * pageSize, clampedPage * pageSize);
 
-    res.json({ sessions: paged, totals, page: clampedPage, pageSize, totalPages });
+    res.json({ sessions: paged, totals, page: clampedPage, pageSize, totalPages, countries });
   } catch (err) {
     console.error('[ANALYTICS] replay-sessions error', err);
     res.status(500).json({ error: 'internal error' });

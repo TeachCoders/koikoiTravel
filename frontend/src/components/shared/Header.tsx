@@ -662,10 +662,10 @@ export const Header: React.FC = () => {
             <Image
               src="/logo-with-name.png"
               alt="KoiKoi Travel"
-              width={165}
-              height={48}
+              width={685}
+              height={222}
               priority
-              className="h-[34px] sm:h-[38px] md:h-[42px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+              className="w-[125px] sm:w-[140px] md:w-[155px] lg:w-[168px] xl:w-[175px] h-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
             />
           </Link>
 

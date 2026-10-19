@@ -39,6 +39,7 @@ import {
   LineChart,
   Images,
   Sparkles,
+  X,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -184,7 +185,18 @@ export default function Layout({ children }: LayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setMounted(true);
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setIsSidebarOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setIsSidebarOpen(false);
+    }
+  }, [path]);
 
   const normalizedRole = (user?.role ?? "").toLowerCase().replace(/[\s-]+/g, "_");
   const isSuperAdmin = normalizedRole.includes("super") && normalizedRole.includes("admin");
@@ -433,20 +445,44 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Mobile Drawer Backdrop */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 lg:hidden cursor-pointer"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
       <div className="flex">
         {/* Sidebar */}
-        <aside className={`min-h-screen flex flex-col transition-all duration-300 overflow-hidden ${isSidebarOpen ? "w-[260px]" : "w-0"}`} style={{ background: "linear-gradient(180deg, #1C1C1C 0%, #111111 100%)" }}>
+        <aside
+          className={`min-h-screen flex flex-col transition-all duration-300 z-50 fixed lg:static inset-y-0 left-0 ${
+            isSidebarOpen
+              ? "w-[270px] translate-x-0 shadow-2xl lg:shadow-none"
+              : "-translate-x-full lg:translate-x-0 lg:w-0 overflow-hidden pointer-events-none lg:pointer-events-auto"
+          }`}
+          style={{ background: "linear-gradient(180deg, #1C1C1C 0%, #111111 100%)" }}
+        >
 
           {/* Logo Area */}
           <div className="px-5 py-5 border-b shrink-0" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #F8904D, #b66a39)" }}>
-                <LayoutDashboard size={17} className="text-white" />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #F8904D, #b66a39)" }}>
+                  <LayoutDashboard size={17} className="text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-extrabold text-white leading-tight tracking-tight">KoiKoi Travel</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#2E8B8B" }}>Admin Panel</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-extrabold text-white leading-tight tracking-tight">KoiKoi Travel</p>
-                <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#2E8B8B" }}>Admin Panel</p>
-              </div>
+              <button
+                type="button"
+                onClick={() => setIsSidebarOpen(false)}
+                className="lg:hidden p-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/10 cursor-pointer"
+                aria-label="Close sidebar"
+              >
+                <X size={18} />
+              </button>
             </div>
           </div>
 
@@ -553,32 +589,32 @@ export default function Layout({ children }: LayoutProps) {
         {/* Main Content */}
         <main className="flex-1 flex flex-col min-w-0 bg-[#F8FAFC] min-h-screen">
           {/* Top Header */}
-          <header className="h-[72px] bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-20">
-            <div className="flex items-center gap-5">
-              <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 hover:bg-slate-100 rounded-xl text-slate-500 transition-colors">
+          <header className="h-[64px] sm:h-[72px] bg-white border-b border-slate-200 flex items-center justify-between px-3 sm:px-6 sticky top-0 z-20">
+            <div className="flex items-center gap-2.5 sm:gap-5">
+              <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 hover:bg-slate-100 rounded-xl text-slate-500 transition-colors cursor-pointer">
                 <Menu size={22} />
               </button>
-              <div className="relative h-10 w-44 flex items-center">
+              <div className="relative h-8 sm:h-10 w-32 sm:w-44 flex items-center">
                 <Image src="/logo-with-name.png" alt="Logo" fill className="object-contain object-left" />
               </div>
             </div>
             {user && (
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-2.5 sm:gap-5">
                 <NotificationBell />
-                <div className="h-8 w-px bg-slate-200"></div>
+                <div className="h-6 sm:h-8 w-px bg-slate-200"></div>
                 <div className="relative">
                   <button
                     onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                    className="flex items-center gap-3 hover:bg-slate-50 p-1.5 pr-3 rounded-full transition-colors text-left border border-transparent hover:border-slate-200"
+                    className="flex items-center gap-2 sm:gap-3 hover:bg-slate-50 p-1 sm:p-1.5 pr-2 sm:pr-3 rounded-full transition-colors text-left border border-transparent hover:border-slate-200 cursor-pointer"
                   >
-                    <div className="w-9 h-9 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold text-sm uppercase shadow-sm">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold text-xs sm:text-sm uppercase shadow-sm">
                       {user.name.charAt(0)}
                     </div>
                     <div className="hidden sm:block">
                       <p className="text-sm font-bold text-slate-700 leading-tight">{user.name.split(" ")[0]}</p>
                       <p className="text-[11px] font-semibold text-slate-400 capitalize">{user.role}</p>
                     </div>
-                    <ChevronDown size={14} className="text-slate-400 ml-1" />
+                    <ChevronDown size={14} className="text-slate-400 ml-0.5 sm:ml-1" />
                   </button>
 
                   {isProfileDropdownOpen && (
@@ -618,7 +654,7 @@ export default function Layout({ children }: LayoutProps) {
             )}
           </header>
 
-          <div className="flex-1 p-6 overflow-auto">
+          <div className="flex-1 p-3 sm:p-5 md:p-6 overflow-auto">
             {children}
           </div>
         </main>

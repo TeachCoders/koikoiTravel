@@ -93,6 +93,7 @@ export interface ReplaySessionsPage {
   page: number;
   pageSize: number;
   totalPages: number;
+  countries?: string[];
 }
 
 export interface ActivityLogItem {
@@ -120,6 +121,7 @@ export async function getReplaySessions(params?: {
   page?: number;
   pageSize?: number;
   kind?: "all" | "humans" | "bots";
+  country?: string;
   range?: DateRange;
 }): Promise<ReplaySessionsPage> {
   const res = await apiClient.get<ReplaySessionsPage>("/analytics/replay-sessions", {
@@ -127,10 +129,11 @@ export async function getReplaySessions(params?: {
       page: params?.page ?? 1,
       pageSize: params?.pageSize ?? 20,
       kind: params?.kind ?? "all",
+      country: params?.country ?? "all",
       ...(params?.range ? dateRangeParams(params.range) : {}),
     },
   });
-  return res.data ?? { sessions: [], totals: { all: 0, humans: 0, bots: 0 }, page: 1, pageSize: 20, totalPages: 1 };
+  return res.data ?? { sessions: [], totals: { all: 0, humans: 0, bots: 0 }, page: 1, pageSize: 20, totalPages: 1, countries: [] };
 }
 
 export async function getReplay(sessionId: string): Promise<ReplayData> {

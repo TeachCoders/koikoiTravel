@@ -40,23 +40,26 @@ export const useReplaySessions = (opts?: {
   page?: number;
   pageSize?: number;
   kind?: "all" | "humans" | "bots";
+  country?: string;
   range?: DateRange;
   enabled?: boolean;
 }) => {
   const page = opts?.page ?? 1;
   const pageSize = opts?.pageSize ?? 20;
   const kind = opts?.kind ?? "all";
+  const country = opts?.country ?? "all";
   const range = opts?.range;
   const enabled = opts?.enabled ?? true;
   const query = useQuery({
-    queryKey: ["replay-sessions", page, pageSize, kind, range?.from ?? "all", range?.to ?? "all"],
-    queryFn: () => getReplaySessions({ page, pageSize, kind, range }),
+    queryKey: ["replay-sessions", page, pageSize, kind, country, range?.from ?? "all", range?.to ?? "all"],
+    queryFn: () => getReplaySessions({ page, pageSize, kind, country, range }),
     enabled,
     staleTime: 30 * 1000,
   });
   return {
     sessions: query.data?.sessions ?? [],
     totals: query.data?.totals ?? { all: 0, humans: 0, bots: 0 },
+    countries: query.data?.countries ?? [],
     page: query.data?.page ?? page,
     pageSize,
     totalPages: query.data?.totalPages ?? 1,

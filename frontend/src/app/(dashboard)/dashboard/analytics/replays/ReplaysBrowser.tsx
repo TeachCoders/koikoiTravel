@@ -135,9 +135,15 @@ function DataManagementCard() {
 export default function ReplaysBrowser() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [kind, setKind] = useState<"all" | "humans" | "bots">("all");
+  const [selectedCountry, setSelectedCountry] = useState<string>("all");
   const [page, setPage] = useState(1);
   const { range } = useAnalyticsRange();
-  const { sessions, totals, page: currentPage, totalPages, isLoading, error } = useReplaySessions({ page, kind, range });
+  const { sessions, totals, countries, page: currentPage, totalPages, isLoading, error } = useReplaySessions({
+    page,
+    kind,
+    country: selectedCountry,
+    range,
+  });
   const { replay, isLoading: replayLoading } = useReplay(selectedId);
   const deleteReplay = useDeleteReplay();
 
@@ -147,34 +153,62 @@ export default function ReplaysBrowser() {
     setSelectedId(null);
   };
 
+  const handleCountryChange = (c: string) => {
+    setSelectedCountry(c);
+    setPage(1);
+    setSelectedId(null);
+  };
+
   return (
     <div className="space-y-6">
       <DataManagementCard />
 
       {!isLoading && !error && (
-        <div className="flex flex-wrap items-center gap-2">
-          {(
-            [
-              ["all", `All (${totals.all})`],
-              ["humans", `Humans (${totals.humans})`],
-              ["bots", `Bots (${totals.bots})`],
-            ] as const
-          ).map(([key, label]) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => switchKind(key)}
-              className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
-                kind === key
-                  ? "bg-slate-800 text-white shadow-sm"
-                  : key === "bots"
-                    ? "border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100"
-                    : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
-              }`}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            {(
+              [
+                ["all", `All (${totals.all})`],
+                ["humans", `Humans (${totals.humans})`],
+                ["bots", `Bots (${totals.bots})`],
+              ] as const
+            ).map(([key, label]) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => switchKind(key)}
+                className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
+                  kind === key
+                    ? "bg-slate-800 text-white shadow-sm"
+                    : key === "bots"
+                      ? "border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100"
+                      : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {/* Country Selector Filter */}
+          <div className="flex items-center gap-2">
+            <label htmlFor="country-filter" className="text-xs font-medium text-slate-600">
+              Country:
+            </label>
+            <select
+              id="country-filter"
+              value={selectedCountry}
+              onChange={(e) => handleCountryChange(e.target.value)}
+              className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-xs focus:border-[#F8904D] focus:outline-none focus:ring-1 focus:ring-[#F8904D] cursor-pointer"
             >
-              {label}
-            </button>
-          ))}
+              <option value="all">🌍 All Countries ({countries?.length || 0})</option>
+              {(countries || []).map((c) => (
+                <option key={c} value={c}>
+                  {countryFlag(c)} {countryLabel(c)}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       )}
 
