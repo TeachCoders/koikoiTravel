@@ -816,7 +816,7 @@ export const Header: React.FC = () => {
               <QuoteModal>
                 <button
                   type="button"
-                  className="btn-primary px-2.5 lg:px-3.5 py-1.5 lg:py-2 text-xs lg:text-[13px] font-semibold tracking-wide flex items-center gap-1 shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+                  className="btn-primary px-2.5 lg:px-3.5 h-10 sm:h-11 md:h-11 text-xs lg:text-[13px] font-semibold tracking-wide flex items-center justify-center gap-1 shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
                 >
                   <span>Create My Trip</span>
                 </button>
@@ -831,7 +831,7 @@ export const Header: React.FC = () => {
             <QuoteModal>
               <button
                 type="button"
-                className="btn-primary px-2.5 sm:px-3 py-1.5 text-xs font-semibold flex items-center gap-1 shadow-xs cursor-pointer shrink-0"
+                className="btn-primary px-2.5 sm:px-3 h-10 sm:h-11 text-xs font-semibold flex items-center justify-center gap-1 shadow-xs cursor-pointer shrink-0"
               >
                 <span>Create My Trip</span>
               </button>

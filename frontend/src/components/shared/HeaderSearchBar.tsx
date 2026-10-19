@@ -284,14 +284,14 @@ export default function HeaderSearchBar() {
       {/* Clean Pill Search Bar matching Travelogy reference */}
       <form
         onSubmit={handleSubmit}
-        className={`relative flex items-center bg-white rounded-full border transition-all duration-200 ${
+        className={`relative flex items-center bg-white rounded-full border transition-all duration-200 h-10 sm:h-11 md:h-11 shadow-xs ${
           isOpen && q
             ? "border-[#2E8B8B] ring-2 ring-[#2E8B8B]/15 shadow-md"
             : "border-slate-300 hover:border-slate-400"
         }`}
       >
-        <div className="pl-3.5 pr-1.5 text-slate-400 shrink-0">
-          <Search className="w-4 h-4 md:w-4.5 md:h-4.5" />
+        <div className="pl-3.5 pr-2 text-slate-400 shrink-0">
+          <Search className="w-4.5 h-4.5" />
         </div>
 
         <input
@@ -312,7 +312,7 @@ export default function HeaderSearchBar() {
           onKeyDown={handleKeyDown}
           placeholder="Search destinations, tours..."
           aria-label="Search destinations, tours"
-          className="w-full py-1.5 md:py-2 text-xs sm:text-[13px] text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none pr-3"
+          className="w-full h-full py-2 md:py-2.5 text-xs sm:text-[13px] md:text-sm text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none pr-3"
         />
 
         {query && (
