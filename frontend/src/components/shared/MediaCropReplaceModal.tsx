@@ -137,6 +137,7 @@ export default function MediaCropReplaceModal({
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [naturalSize, setNaturalSize] = useState<{ w: number; h: number } | null>(null);
 
   const [saving, setSaving] = useState(false);
   const [compressedSize, setCompressedSize] = useState<string | null>(null);
@@ -144,6 +145,7 @@ export default function MediaCropReplaceModal({
   const imageRef = useRef<HTMLImageElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const frameRef = useRef<HTMLDivElement | null>(null);
 
   // Auto-detect best preset from filename/category
   useEffect(() => {
@@ -246,6 +248,7 @@ export default function MediaCropReplaceModal({
       setZoom(1);
       setRotation(0);
       setPan({ x: 0, y: 0 });
+      setNaturalSize(null);
       setCompressedSize(null);
       setSaving(false);
       setMode("stock");
@@ -325,16 +328,57 @@ export default function MediaCropReplaceModal({
     setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      setIsDragging(true);
+      setDragStart({
+        x: e.touches[0].clientX - pan.x,
+        y: e.touches[0].clientY - pan.y,
+      });
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || e.touches.length !== 1) return;
     setPan({
-      x: e.clientX - dragStart.x,
-      y: e.clientY - dragStart.y,
+      x: e.touches[0].clientX - dragStart.x,
+      y: e.touches[0].clientY - dragStart.y,
     });
   };
 
-  const handleMouseUp = () => {
+  const handleTouchEnd = () => {
     setIsDragging(false);
+  };
+
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleWindowMouseMove = (e: MouseEvent) => {
+      setPan({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y,
+      });
+    };
+
+    const handleWindowMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    window.addEventListener("mousemove", handleWindowMouseMove);
+    window.addEventListener("mouseup", handleWindowMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleWindowMouseMove);
+      window.removeEventListener("mouseup", handleWindowMouseUp);
+    };
+  }, [isDragging, dragStart]);
+
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.05 : 0.05;
+    setZoom((prev) => {
+      const next = Math.min(3, Math.max(0.2, prev + delta));
+      return parseFloat(next.toFixed(2));
+    });
   };
 
   // Export cropped and WebP-compressed image blob
@@ -350,7 +394,7 @@ export default function MediaCropReplaceModal({
     let targetW = 600;
     let targetH = 600;
 
-    if (activePreset.ratio === 1) {
+    if (activePreset.ratio === 1 || activePreset.key === "destination") {
       targetW = 600;
       targetH = 600;
     } else if (activePreset.key === "hero") {
@@ -365,34 +409,47 @@ export default function MediaCropReplaceModal({
     } else if (activePreset.key === "blog") {
       targetW = 800;
       targetH = 500;
+    } else if (activePreset.key === "guest_gallery") {
+      targetW = 800;
+      targetH = 600;
     } else {
       // Freeform: keep original aspect ratio within max 1200
-      const imgRatio = (img.naturalWidth || 1) / (img.naturalHeight || 1);
-      targetW = Math.min(img.naturalWidth || 1200, 1200);
+      const naturalW = img.naturalWidth || 1200;
+      const naturalH = img.naturalHeight || 800;
+      const imgRatio = naturalW / naturalH;
+      targetW = Math.min(naturalW, 1200);
       targetH = Math.round(targetW / imgRatio);
     }
 
-    canvas.width = targetW;
-    canvas.height = targetH;
+    canvas.width = Math.round(targetW);
+    canvas.height = Math.round(targetH);
 
     // Smooth scaling
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
 
-    // Clear and draw with pan/zoom/rotation
-    ctx.save();
-    ctx.translate(targetW / 2, targetH / 2);
-    ctx.rotate((rotation * Math.PI) / 180);
+    // Frame scale factor between preview DOM element and export canvas
+    const frameEl = frameRef.current;
+    const frameW = frameEl?.clientWidth || 600;
+    const scaleFactor = targetW / frameW;
 
-    // Compute cover scale
-    const scale = zoom * Math.max(targetW / img.naturalWidth, targetH / img.naturalHeight);
-    const drawW = img.naturalWidth * scale;
-    const drawH = img.naturalHeight * scale;
+    const naturalW = img.naturalWidth || targetW;
+    const naturalH = img.naturalHeight || targetH;
+    const drawW = targetW * zoom;
+    const drawH = (targetW * (naturalH / naturalW)) * zoom;
+
+    const canvasCenterX = targetW / 2 + (pan.x * scaleFactor);
+    const canvasCenterY = targetH / 2 + (pan.y * scaleFactor);
+
+    ctx.clearRect(0, 0, targetW, targetH);
+    ctx.save();
+    ctx.translate(canvasCenterX, canvasCenterY);
+    ctx.rotate((rotation * Math.PI) / 180);
 
     ctx.drawImage(
       img,
-      -drawW / 2 + (pan.x * (targetW / 360)),
-      -drawH / 2 + (pan.y * (targetH / 360)),
+      -drawW / 2,
+      -drawH / 2,
       drawW,
       drawH
     );
@@ -750,9 +807,14 @@ export default function MediaCropReplaceModal({
           {rawImageSrc ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between text-xs text-slate-500">
-                <span className="font-semibold text-slate-700">
-                  Crop & Position (Drag to pan image inside frame):
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-slate-700">
+                    Crop & Position (Drag to pan image inside frame):
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-teal-100 text-teal-800 border border-teal-200">
+                    ↔ Full-Width Default
+                  </span>
+                </div>
                 <div className="flex items-center gap-3">
                   <button
                     type="button"
@@ -761,7 +823,7 @@ export default function MediaCropReplaceModal({
                       setPan({ x: 0, y: 0 });
                       setRotation(0);
                     }}
-                    className="flex items-center gap-1 text-slate-600 hover:text-slate-900"
+                    className="flex items-center gap-1 text-slate-600 hover:text-slate-900 cursor-pointer font-medium"
                   >
                     <RotateCcw size={13} /> Reset
                   </button>
@@ -771,19 +833,28 @@ export default function MediaCropReplaceModal({
               {/* Viewport Frame with selected aspect ratio */}
               <div className="flex justify-center bg-slate-900 rounded-2xl p-4 overflow-hidden select-none">
                 <div
-                  className="relative overflow-hidden bg-black/40 border-2 border-dashed border-teal-400/80 shadow-2xl cursor-grab active:cursor-grabbing flex items-center justify-center max-h-[360px]"
+                  ref={frameRef}
+                  className="relative overflow-hidden bg-black/60 border-2 border-dashed border-teal-400/90 shadow-2xl cursor-grab active:cursor-grabbing flex items-center justify-center max-h-[360px]"
                   style={{
-                    width: activePreset.ratio === "free" ? "100%" : "100%",
-                    maxWidth: activePreset.ratio === 1 ? "300px" : activePreset.key === "hero" ? "100%" : "480px",
+                    width: "100%",
+                    maxWidth:
+                      activePreset.ratio === 1
+                        ? "320px"
+                        : activePreset.key === "hero"
+                        ? "100%"
+                        : "500px",
                     aspectRatio:
                       activePreset.ratio === "free"
-                        ? "auto"
+                        ? naturalSize
+                          ? `${naturalSize.w} / ${naturalSize.h}`
+                          : "auto"
                         : `${activePreset.ratio}`,
                   }}
                   onMouseDown={handleMouseDown}
-                  onMouseMove={handleMouseMove}
-                  onMouseUp={handleMouseUp}
-                  onMouseLeave={handleMouseUp}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                  onWheel={handleWheel}
                 >
                   <img
                     ref={imageRef}
@@ -791,38 +862,102 @@ export default function MediaCropReplaceModal({
                     alt="Preview"
                     crossOrigin="anonymous"
                     draggable={false}
-                    className="max-w-none transition-transform pointer-events-none"
+                    onLoad={(e) => {
+                      const imgEl = e.currentTarget;
+                      setNaturalSize({ w: imgEl.naturalWidth, h: imgEl.naturalHeight });
+                    }}
+                    className="select-none pointer-events-none shrink-0"
                     style={{
+                      width: "100%",
+                      height: "auto",
+                      maxWidth: "none",
+                      maxHeight: "none",
                       transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom}) rotate(${rotation}deg)`,
+                      transformOrigin: "center center",
+                      transition: isDragging ? "none" : "transform 0.08s ease-out",
                     }}
                   />
                 </div>
               </div>
 
               {/* Zoom & Rotation Controls */}
-              <div className="flex flex-wrap items-center justify-between gap-4 p-3 bg-slate-50 rounded-xl text-xs">
-                <div className="flex items-center gap-3 flex-1 min-w-[200px]">
-                  <ZoomOut size={16} className="text-slate-400" />
+              <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-slate-50 rounded-xl text-xs border border-slate-200">
+                <div className="flex items-center gap-2 flex-1 min-w-[220px]">
+                  <button
+                    type="button"
+                    onClick={() => setZoom((z) => Math.max(0.2, parseFloat((z - 0.05).toFixed(2))))}
+                    className="p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-slate-200 transition-colors cursor-pointer"
+                    title="Zoom Out"
+                  >
+                    <ZoomOut size={16} />
+                  </button>
                   <input
                     type="range"
-                    min="0.5"
+                    min="0.2"
                     max="3"
-                    step="0.05"
+                    step="0.02"
                     value={zoom}
                     onChange={(e) => setZoom(parseFloat(e.target.value))}
-                    className="flex-1 accent-[#2E8B8B]"
+                    className="flex-1 accent-[#2E8B8B] cursor-pointer"
                   />
-                  <ZoomIn size={16} className="text-slate-400" />
-                  <span className="font-mono text-slate-700 w-10 text-right">
+                  <button
+                    type="button"
+                    onClick={() => setZoom((z) => Math.min(3, parseFloat((z + 0.05).toFixed(2))))}
+                    className="p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-slate-200 transition-colors cursor-pointer"
+                    title="Zoom In"
+                  >
+                    <ZoomIn size={16} />
+                  </button>
+                  <span className="font-mono text-slate-700 w-14 text-right font-bold">
                     {Math.round(zoom * 100)}%
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setZoom(1);
+                      setPan({ x: 0, y: 0 });
+                    }}
+                    className={`px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                      zoom === 1 && pan.x === 0 && pan.y === 0
+                        ? "border-[#2E8B8B] bg-teal-50 text-[#2E8B8B] ring-1 ring-[#2E8B8B]/30"
+                        : "border-slate-300 hover:bg-white text-slate-700 shadow-2xs"
+                    }`}
+                    title="Fit full width of image to frame (100% width)"
+                  >
+                    <Maximize2 size={13} className="text-[#2E8B8B]" />
+                    <span>Full Width</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!imageRef.current) return;
+                      const imgEl = imageRef.current;
+                      const naturalW = imgEl.naturalWidth || 1;
+                      const naturalH = imgEl.naturalHeight || 1;
+                      const imgRatio = naturalW / naturalH;
+                      const targetRatio =
+                        typeof activePreset.ratio === "number"
+                          ? activePreset.ratio
+                          : naturalW / naturalH;
+                      const coverZoom = Math.max(1, targetRatio / imgRatio);
+                      setZoom(parseFloat(coverZoom.toFixed(2)));
+                      setPan({ x: 0, y: 0 });
+                    }}
+                    className="px-3 py-1.5 rounded-lg border border-slate-300 hover:bg-white text-slate-700 text-xs font-medium flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer"
+                    title="Fill entire frame without empty space"
+                  >
+                    <Crop size={13} className="text-slate-500" />
+                    <span>Fill Frame</span>
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => setRotation((prev) => (prev + 90) % 360)}
-                    className="px-3 py-1.5 rounded-lg border border-slate-300 hover:bg-white text-slate-700 font-medium"
+                    className="px-3 py-1.5 rounded-lg border border-slate-300 hover:bg-white text-slate-700 text-xs font-medium flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer"
                   >
                     ↻ Rotate 90°
                   </button>
