@@ -1021,7 +1021,7 @@ export default function MediaCropReplaceModal({
             <div className="p-4 rounded-2xl border border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row items-center gap-4">
               <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-slate-200 shrink-0 border border-slate-300">
                 <img
-                  src={item.url}
+                  src={`${item.url}?v=${Date.now()}`}
                   alt={item.label || item.filename}
                   className="w-full h-full object-cover"
                 />

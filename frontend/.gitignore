@@ -60,3 +60,8 @@ Thumbs.db
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# backend symlinks / uploads
+/public/content
+/public/hero-banners
+/public/guest-gallery

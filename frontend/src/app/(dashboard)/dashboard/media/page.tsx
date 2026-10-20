@@ -1350,11 +1350,17 @@ export default function MediaManagerPage() {
             const now = Date.now();
             setCacheBuster(now);
             if (cropTarget) {
+              const iso = new Date(now).toISOString();
               setItems((prev) =>
                 prev.map((m) =>
-                  m.id === cropTarget.id ? { ...m, updatedAt: new Date().toISOString() } : m
+                  m.id === cropTarget.id ? { ...m, updatedAt: iso } : m
                 )
               );
+              setDimensions((prev) => {
+                const next = { ...prev };
+                delete next[cropTarget.id];
+                return next;
+              });
             }
             fetchMedia();
           }}

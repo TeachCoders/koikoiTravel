@@ -51,6 +51,7 @@ import aiPromptRouter from "./router/aiPrompt.js";
 import aiGeneratorRouter from "./router/aiGenerator.js";
 import { scheduleAnalyticsRetention } from "./utils/analyticsRetention.js";
 import { cacheGet, clearCacheOnWrite } from "./services/httpCache.js";
+import { notifyRevalidate } from "./services/revalidateService.js";
 import * as Sentry from "@sentry/node";
 
 const isProduction = process.env.NODE_ENV === "production";
@@ -230,11 +231,12 @@ app.use((req, res, next) => {
 
 app.use(
   express.static("public", {
-    maxAge: process.env.NODE_ENV === "production" ? "30d" : 0,
-    immutable: process.env.NODE_ENV === "production",
+    maxAge: "5m",
+    etag: true,
+    lastModified: true,
     setHeaders: (res, filePath) => {
       if (/\.(webp|jpg|jpeg|png|gif|svg|avif|ico)$/i.test(filePath)) {
-        res.setHeader("Cache-Control", "public, max-age=2592000, immutable");
+        res.setHeader("Cache-Control", "public, max-age=300, must-revalidate");
       }
     },
   })
@@ -397,16 +399,29 @@ app.post("/media/replace", requireSalesOrAdmin, upload.single("file"), async (re
     try {
       const cacheDir = "/var/cache/nginx/next_images";
       if (fs.existsSync(cacheDir)) {
-        const entries = fs.readdirSync(cacheDir);
-        for (const entry of entries) {
-          const subPath = path.join(cacheDir, entry);
-          if (fs.existsSync(subPath) && fs.statSync(subPath).isDirectory()) {
-            fs.rmSync(subPath, { recursive: true, force: true });
-          }
-        }
+        fs.rmSync(cacheDir, { recursive: true, force: true });
+        fs.mkdirSync(cacheDir, { recursive: true });
       }
     } catch (cacheErr) {
       console.warn("Could not clear nginx cache:", cacheErr);
+    }
+
+    // Clear Next.js image cache if present
+    try {
+      const nextCacheDir = path.resolve(process.cwd(), "../frontend/.next/cache/images");
+      if (fs.existsSync(nextCacheDir)) {
+        fs.rmSync(nextCacheDir, { recursive: true, force: true });
+        fs.mkdirSync(nextCacheDir, { recursive: true });
+      }
+    } catch (cacheErr) {
+      console.warn("Could not clear nextjs cache:", cacheErr);
+    }
+
+    // Notify Next.js to purge marketing ISR / static cache
+    try {
+      await notifyRevalidate("media");
+    } catch (revErr) {
+      console.warn("Could not notify revalidate:", revErr);
     }
 
     return res.json({ success: true, url, timestamp: Date.now() });

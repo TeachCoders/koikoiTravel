@@ -18,6 +18,7 @@ interface MediaItem {
   category: string | null;
   isPinned: boolean;
   sortOrder: number;
+  updatedAt?: string | null;
 }
 
 // When both thumb and banner callbacks are needed, pass modeSwitch
@@ -79,6 +80,13 @@ export default function MediaLibrary({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [cropTarget, setCropTarget] = useState<MediaCropItem | null>(null);
   const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [cacheBuster, setCacheBuster] = useState(Date.now());
+
+  const getMediaUrl = (item: MediaItem) => {
+    if (!item?.url) return "";
+    const ts = item.updatedAt ? new Date(item.updatedAt).getTime() : cacheBuster;
+    return `${item.url}?v=${ts}`;
+  };
 
   // Active mode — category filter
   const [activeMode, setActiveMode] = useState<string>(
@@ -427,7 +435,7 @@ export default function MediaLibrary({
                   >
                     <div className="relative w-full aspect-square bg-slate-50 overflow-hidden">
                       <img
-                        src={item.url}
+                        src={getMediaUrl(item)}
                         alt={displayName(item)}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         loading="lazy"
@@ -565,6 +573,15 @@ export default function MediaLibrary({
           setCropTarget(null);
         }}
         onSuccess={() => {
+          const now = Date.now();
+          setCacheBuster(now);
+          if (cropTarget) {
+            setItems((prev) =>
+              prev.map((m) =>
+                m.id === cropTarget.id ? { ...m, updatedAt: new Date(now).toISOString() } : m
+              )
+            );
+          }
           setCropModalOpen(false);
           setCropTarget(null);
           fetchMedia();
