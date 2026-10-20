@@ -383,7 +383,33 @@ app.post("/media/replace", requireSalesOrAdmin, upload.single("file"), async (re
 
     let url = `/${relPath.replace(/\\/g, "/")}`;
 
-    return res.json({ success: true, url });
+    // Update database timestamp so cache-busting works immediately
+    try {
+      await prisma.media.updateMany({
+        where: { url },
+        data: { updatedAt: new Date() },
+      });
+    } catch (dbErr) {
+      console.warn("Could not update media DB timestamp:", dbErr);
+    }
+
+    // Clear Nginx image cache if present
+    try {
+      const cacheDir = "/var/cache/nginx/next_images";
+      if (fs.existsSync(cacheDir)) {
+        const entries = fs.readdirSync(cacheDir);
+        for (const entry of entries) {
+          const subPath = path.join(cacheDir, entry);
+          if (fs.existsSync(subPath) && fs.statSync(subPath).isDirectory()) {
+            fs.rmSync(subPath, { recursive: true, force: true });
+          }
+        }
+      }
+    } catch (cacheErr) {
+      console.warn("Could not clear nginx cache:", cacheErr);
+    }
+
+    return res.json({ success: true, url, timestamp: Date.now() });
   } catch (error) {
     console.error("Media replace error:", error);
     return res.status(500).json({ success: false, message: "Failed to replace file" });
@@ -443,8 +469,19 @@ app.get("/proxy-image", requireSalesOrAdmin, async (req, res) => {
     let currentUrl = parsedUrl.href;
     let response;
     for (let i = 0; i < 5; i++) {
+      const origin = `${parsedUrl.protocol}//${parsedUrl.hostname}`;
       response = await fetch(currentUrl, {
-        headers: { "User-Agent": "Mozilla/5.0" },
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+          "Accept":
+            "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.9",
+          "Referer": origin,
+          "Sec-Fetch-Dest": "image",
+          "Sec-Fetch-Mode": "no-cors",
+          "Sec-Fetch-Site": "cross-site",
+        },
         signal: AbortSignal.timeout(15000),
         redirect: "manual",
       });

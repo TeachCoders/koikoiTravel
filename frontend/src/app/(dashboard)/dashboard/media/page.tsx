@@ -120,6 +120,13 @@ export default function MediaManagerPage() {
   // Crop / Replace Modal
   const [cropTarget, setCropTarget] = useState<MediaCropItem | null>(null);
   const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [cacheBuster, setCacheBuster] = useState(Date.now());
+
+  const getMediaUrl = (item: { url: string; updatedAt?: string } | null) => {
+    if (!item?.url) return "";
+    const ts = item.updatedAt ? new Date(item.updatedAt).getTime() : cacheBuster;
+    return `${item.url}?v=${ts}`;
+  };
 
   // Upload New Modal / State (Image Name is strictly mandatory)
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
@@ -610,7 +617,7 @@ export default function MediaManagerPage() {
                   onClick={() => setPreviewItem(item)}
                 >
                   <img
-                    src={item.url}
+                    src={getMediaUrl(item)}
                     alt={item.label || item.filename}
                     loading="lazy"
                     onLoad={(e) => {
@@ -915,7 +922,7 @@ export default function MediaManagerPage() {
             {/* Image Preview Body */}
             <div className="flex-1 bg-slate-950 flex items-center justify-center p-4 sm:p-8 overflow-hidden min-h-[300px] max-h-[65vh]">
               <img
-                src={previewItem.url}
+                src={getMediaUrl(previewItem)}
                 alt={previewItem.label || previewItem.filename}
                 className="max-h-full max-w-full object-contain rounded-xl shadow-2xl"
               />
@@ -1339,7 +1346,18 @@ export default function MediaManagerPage() {
             setCropModalOpen(false);
             setCropTarget(null);
           }}
-          onSuccess={fetchMedia}
+          onSuccess={() => {
+            const now = Date.now();
+            setCacheBuster(now);
+            if (cropTarget) {
+              setItems((prev) =>
+                prev.map((m) =>
+                  m.id === cropTarget.id ? { ...m, updatedAt: new Date().toISOString() } : m
+                )
+              );
+            }
+            fetchMedia();
+          }}
           defaultPresetKey={
             activeTab === "destination"
               ? "destination"

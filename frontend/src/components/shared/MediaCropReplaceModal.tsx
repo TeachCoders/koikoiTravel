@@ -225,6 +225,47 @@ export default function MediaCropReplaceModal({
     }
   };
 
+  // Support Ctrl+V paste from clipboard (e.g. right-click "Copy Image" on any web page)
+  useEffect(() => {
+    if (!open) return;
+
+    const handlePaste = (e: ClipboardEvent) => {
+      const target = e.target as HTMLElement;
+      // If typing in a regular text/url input, let standard text paste happen
+      if (
+        target &&
+        (target.tagName === "INPUT" || target.tagName === "TEXTAREA") &&
+        (target as HTMLInputElement).type !== "file" &&
+        e.clipboardData?.getData("text/plain")
+      ) {
+        return;
+      }
+
+      const items = e.clipboardData?.items;
+      if (!items) return;
+
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.startsWith("image/")) {
+          const file = items[i].getAsFile();
+          if (file) {
+            e.preventDefault();
+            const objectUrl = URL.createObjectURL(file);
+            setRawImageSrc(objectUrl);
+            setZoom(1);
+            setPan({ x: 0, y: 0 });
+            setRotation(0);
+            setUrlError("");
+            successToast("Photo pasted from clipboard! Auto-fitted to Full Width.");
+            return;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("paste", handlePaste);
+    return () => window.removeEventListener("paste", handlePaste);
+  }, [open]);
+
   // Reset when modal closes or item changes
   useEffect(() => {
     if (open && item) {
@@ -300,21 +341,15 @@ export default function MediaCropReplaceModal({
         setPan({ x: 0, y: 0 });
         setUrlLoading(false);
         return;
-      } catch {
-        // Fallback: direct browser image load
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = () => {
-          setRawImageSrc(trimmed);
-          setUrlLoading(false);
-          setZoom(1);
-          setPan({ x: 0, y: 0 });
-        };
-        img.onerror = () => {
-          setUrlError("Unable to load image from URL. Cross-origin restrictions may apply.");
-          setUrlLoading(false);
-        };
-        img.src = trimmed;
+      } catch (proxyErr) {
+        console.warn("Proxy load failed:", proxyErr);
+        // External host (e.g. Vecteezy / Cloudflare) blocked direct server download.
+        // We do NOT load cross-origin unproxied because it taints canvas and blocks saving.
+        setUrlError(
+          "⚠️ This website blocks direct URL downloads. Quick 1-second fix: Right-Click the photo in your browser → 'Copy Image', then press Ctrl+V right here (or download and upload it)."
+        );
+        setUrlLoading(false);
+        return;
       }
     } catch (err: any) {
       setUrlError(err?.message || "Failed to load image from URL");
@@ -455,18 +490,24 @@ export default function MediaCropReplaceModal({
     );
     ctx.restore();
 
-    return new Promise((resolve) => {
-      canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            const kb = Math.round(blob.size / 1024);
-            setCompressedSize(`${kb} KB`);
-          }
-          resolve(blob);
-        },
-        "image/webp",
-        0.82 // 82% quality WebP compression
-      );
+    return new Promise((resolve, reject) => {
+      try {
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const kb = Math.round(blob.size / 1024);
+              setCompressedSize(`${kb} KB`);
+              resolve(blob);
+            } else {
+              reject(new Error("Canvas export failed: The image is protected by cross-origin restrictions. Please paste via Ctrl+V or upload the file."));
+            }
+          },
+          "image/webp",
+          0.82 // 82% quality WebP compression
+        );
+      } catch (err) {
+        reject(err);
+      }
     });
   }, [rawImageSrc, activePreset, zoom, pan, rotation]);
 
@@ -795,11 +836,22 @@ export default function MediaCropReplaceModal({
                 </button>
               </div>
               {urlError && (
-                <p className="text-xs text-rose-500 flex items-center gap-1">
-                  <AlertCircle size={14} />
-                  {urlError}
-                </p>
+                <div className="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-2">
+                  <AlertCircle size={16} className="text-amber-600 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold">{urlError}</p>
+                    <p className="mt-1 text-[11px] text-amber-700">
+                      💡 Simply right-click on the image in your other tab, click <strong>"Copy Image"</strong>, and press <strong>Ctrl+V</strong> in this modal!
+                    </p>
+                  </div>
+                </div>
               )}
+              <p className="text-[11.5px] text-slate-500 flex items-center gap-1.5 pt-1">
+                <Sparkles size={13} className="text-teal-600 shrink-0" />
+                <span>
+                  Tip: You can also copy any photo from any website (Right-Click → <strong>"Copy Image"</strong>) and press <strong>Ctrl+V</strong> to paste!
+                </span>
+              </p>
             </div>
           )}
 
