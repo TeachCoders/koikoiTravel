@@ -309,9 +309,9 @@ function ExperienceContent({
           </div>
         )}
 
-        <div className="relative z-20 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-center items-center py-8 text-center">
+        <div className="relative z-20 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-center items-center py-8 text-center pointer-events-none">
           {heroTag && (
-            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20 mb-3 sm:mb-4 shadow-xl">
+            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20 mb-3 sm:mb-4 shadow-xl pointer-events-auto">
               <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shadow-[0_0_8px_#F8904D]" />
               <span className="font-luxury font-bold text-xs sm:text-sm uppercase tracking-[0.22em] text-white/95">
                 {heroTag}

@@ -156,14 +156,19 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
   const lightboxSlides = heroImages.map((src) => ({ src, alt: journey.title }));
 
   const pageH1 = journey.h1Title || journey.title;
+  const cleanJourneyTitle = (journey.title || "").split("|")[0].trim();
   const durationText =
-    journey.duration || (journey.noDays > 0 ? `${journey.noDays} Days` : "");
+    journey.duration ||
+    (journey.noDays > 0
+      ? journey.noDays === 1
+        ? (/\bsame\s*day\b/i.test(cleanJourneyTitle) ? "Same Day" : "1 Day")
+        : `${journey.noDays} Days`
+      : "");
   const daysCount =
     typeof journey.noDays === "number" && journey.noDays > 0
       ? journey.noDays
       : parseInt((journey.duration || journey.title || journey.slug || "").match(/(\d+)\s*(?:day|days|d\b|-day)/i)?.[1] || "0", 10);
   const hasSpecialOffer = daysCount >= 8;
-  const cleanJourneyTitle = (journey.title || "").split("|")[0].trim();
 
   const breadcrumbNavItems = [
     { label: "Home", href: "/" },
@@ -412,7 +417,9 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                       <span className="font-bold text-slate-900 text-sm">
                         {journey.duration ||
                           (journey.noDays > 0
-                            ? `${journey.noDays > 1 ? `${journey.noDays - 1} Nights / ` : ""}${journey.noDays} Days`
+                            ? journey.noDays === 1
+                              ? (/\bsame\s*day\b/i.test(cleanJourneyTitle) ? "Same Day" : "1 Day")
+                              : `${journey.noDays > 1 ? `${journey.noDays - 1} Nights / ` : ""}${journey.noDays} Days`
                             : "—")}
                       </span>
                     </div>

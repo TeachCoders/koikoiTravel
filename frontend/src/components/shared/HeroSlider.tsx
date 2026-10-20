@@ -34,10 +34,10 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
   if (validImages.length === 0) return null;
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* Slide track */}
       <div
-        className="absolute inset-0 flex transition-transform duration-700 ease-in-out"
+        className="absolute inset-0 flex transition-transform duration-700 ease-in-out pointer-events-none"
         style={{
           width: `${validImages.length * 100}%`,
           transform: `translateX(-${(current * 100) / validImages.length}%)`,
@@ -46,7 +46,7 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
         {validImages.map((img, i) => (
           <div
             key={i}
-            className="relative h-full shrink-0 bg-slate-200"
+            className="relative h-full shrink-0 bg-slate-200 pointer-events-none"
             style={{ width: `${100 / validImages.length}%` }}
           >
             <SlideImage src={img} alt={alt} priority={i === 0} preload={i === 1} />
@@ -56,14 +56,14 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
 
       {/* Dot pagination — same style as HeroSection */}
       {validImages.length > 1 && (
-        <div className="absolute bottom-2.5 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center">
+        <div className="absolute bottom-2.5 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center pointer-events-auto">
           {validImages.map((_, i) => (
             <button
               key={i}
               type="button"
               onClick={() => setCurrent(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className="p-2 sm:p-2.5 flex items-center justify-center cursor-pointer focus:outline-none"
+              className="p-2 sm:p-2.5 flex items-center justify-center cursor-pointer focus:outline-none pointer-events-auto"
             >
               <span
                 className={`block rounded-full transition-all duration-300 ${

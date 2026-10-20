@@ -9,8 +9,15 @@ export function journeyCardTitle(journey: {
   h1Title?: string | null;
   noDays?: number | null;
 }): string {
-  const baseTitle = (journey.h1Title || journey.title || "").split("|")[0].trim();
-  if (journey.noDays && journey.noDays > 0 && !/^\d+\s*(day|days|night|nights)/i.test(baseTitle)) {
+  let baseTitle = (journey.h1Title || journey.title || "").split("|")[0].trim();
+  baseTitle = baseTitle.replace(/^\d+\s*(day|days)\s*-\s*(?=same\s*day)/i, "");
+
+  if (
+    journey.noDays &&
+    journey.noDays > 0 &&
+    !/^\d+\s*(day|days|night|nights)/i.test(baseTitle) &&
+    !/\bsame\s*day\b/i.test(baseTitle)
+  ) {
     return `${journey.noDays} ${journey.noDays === 1 ? "Day" : "Days"} - ${baseTitle}`;
   }
   return baseTitle;
