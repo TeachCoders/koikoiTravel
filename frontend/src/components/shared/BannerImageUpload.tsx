@@ -24,6 +24,13 @@ export default function BannerImageUpload({
   const [cropOpen, setCropOpen] = useState(false);
   const [cropSrc, setCropSrc] = useState<string | null>(null);
   const [cropBox, setCropBox] = useState({ x: 0, y: 0, w: 0, h: 0 });
+  const RATIO_PRESETS = {
+    hero: { label: "Hero (1920×450)", ratio: 1920 / 450, outW: 1920, outH: 450 },
+    wide: { label: "Wide (16:9)", ratio: 16 / 9, outW: 1920, outH: 1080 },
+    free: { label: "Freeform", ratio: null, outW: 1920, outH: null },
+  } as const;
+  type RatioKey = keyof typeof RATIO_PRESETS;
+  const [cropRatio, setCropRatio] = useState<RatioKey>("hero");
   const [mediaOpen, setMediaOpen] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragType, setDragType] = useState<string | null>(null);
@@ -107,30 +114,113 @@ export default function BannerImageUpload({
     }
   }, []);
 
-  const loadImgForCrop = useCallback((src: string) => {
+  const computeCropBox = useCallback((img: HTMLImageElement, ratioKey: RatioKey) => {
+    const container = containerRef.current;
+    if (!container) return { x: 0, y: 0, w: 0, h: 0 };
+    const cw = container.clientWidth;
+    const ch = container.clientHeight;
+    const imgRatio = img.naturalWidth / img.naturalHeight;
+    const contRatio = cw / ch;
+    let drawW: number, drawH: number, drawX: number, drawY: number;
+    if (contRatio > imgRatio) {
+      drawH = ch;
+      drawW = ch * imgRatio;
+      drawX = (cw - drawW) / 2;
+      drawY = 0;
+    } else {
+      drawW = cw;
+      drawH = cw / imgRatio;
+      drawX = 0;
+      drawY = (ch - drawH) / 2;
+    }
+
+    const targetRatio = RATIO_PRESETS[ratioKey].ratio;
+    if (!targetRatio) {
+      return { x: drawX, y: drawY, w: drawW, h: drawH };
+    }
+
+    let w: number, h: number;
+    if (imgRatio >= targetRatio) {
+      h = drawH;
+      w = drawH * targetRatio;
+    } else {
+      // Standard taller photos (3:2, 4:3, etc.): span full width
+      w = drawW;
+      h = drawW / targetRatio;
+    }
+
+    const x = drawX + Math.max(0, (drawW - w) / 2);
+    const y = drawY + Math.max(0, (drawH - h) / 2);
+    return { x, y, w, h };
+  }, []);
+
+  const loadImgForCrop = useCallback((src: string, targetKey: RatioKey = "hero") => {
     const img = new Image();
     img.onload = () => {
       imgRef.current = img;
       setImgNatural({ w: img.naturalWidth, h: img.naturalHeight });
-      const container = containerRef.current;
-      if (!container) return;
-      const cw = container.clientWidth;
-      const ch = container.clientHeight;
-      const imgRatio = img.naturalWidth / img.naturalHeight;
-      const contRatio = cw / ch;
-      let drawW: number, drawH: number, drawX: number, drawY: number;
-      if (contRatio > imgRatio) { drawH = ch; drawW = ch * imgRatio; drawX = (cw - drawW) / 2; drawY = 0; }
-      else { drawW = cw; drawH = cw / imgRatio; drawX = 0; drawY = (ch - drawH) / 2; }
-      
-      const newCrop = { x: drawX, y: drawY, w: drawW, h: drawH };
+      const newCrop = computeCropBox(img, targetKey);
       setCropBox(newCrop);
       drawCanvas(img, newCrop);
     };
     img.src = src;
-  }, [drawCanvas]);
+  }, [drawCanvas, computeCropBox]);
+
+  const switchRatio = (newKey: RatioKey) => {
+    setCropRatio(newKey);
+    if (imgRef.current) {
+      const newBox = computeCropBox(imgRef.current, newKey);
+      setCropBox(newBox);
+      drawCanvas(imgRef.current, newBox);
+    }
+  };
+
+  const handleFullWidth = () => {
+    if (!imgRef.current || !containerRef.current) return;
+    const cw = containerRef.current.clientWidth;
+    const ch = containerRef.current.clientHeight;
+    const img = imgRef.current;
+    const imgRatio = img.naturalWidth / img.naturalHeight;
+    const contRatio = cw / ch;
+    let drawW: number, drawH: number, drawX: number, drawY: number;
+    if (contRatio > imgRatio) { drawH = ch; drawW = ch * imgRatio; drawX = (cw - drawW) / 2; drawY = 0; }
+    else { drawW = cw; drawH = cw / imgRatio; drawX = 0; drawY = (ch - drawH) / 2; }
+
+    const targetRatio = RATIO_PRESETS[cropRatio].ratio || (1920 / 450);
+    const w = drawW;
+    const h = Math.min(drawH, w / targetRatio);
+    const x = drawX;
+    const y = drawY + Math.max(0, (drawH - h) / 2);
+    const newBox = { x, y, w, h };
+    setCropBox(newBox);
+    drawCanvas(img, newBox);
+  };
+
+  const handleCenter = () => {
+    if (!imgRef.current || !containerRef.current) return;
+    const cw = containerRef.current.clientWidth;
+    const ch = containerRef.current.clientHeight;
+    const img = imgRef.current;
+    const imgRatio = img.naturalWidth / img.naturalHeight;
+    const contRatio = cw / ch;
+    let drawW: number, drawH: number, drawX: number, drawY: number;
+    if (contRatio > imgRatio) { drawH = ch; drawW = ch * imgRatio; drawX = (cw - drawW) / 2; drawY = 0; }
+    else { drawW = cw; drawH = cw / imgRatio; drawX = 0; drawY = (ch - drawH) / 2; }
+
+    setCropBox((prev) => {
+      const x = Math.max(drawX, Math.min(drawX + drawW - prev.w, drawX + (drawW - prev.w) / 2));
+      const y = Math.max(drawY, Math.min(drawY + drawH - prev.h, drawY + (drawH - prev.h) / 2));
+      const newBox = { ...prev, x, y };
+      if (imgRef.current) drawCanvas(imgRef.current, newBox);
+      return newBox;
+    });
+  };
 
   useEffect(() => {
-    if (cropSrc && cropOpen) loadImgForCrop(cropSrc);
+    if (cropSrc && cropOpen) {
+      setCropRatio("hero");
+      loadImgForCrop(cropSrc, "hero");
+    }
   }, [cropSrc, cropOpen, loadImgForCrop]);
 
   const handleFileSelect = useCallback((file: File) => {
@@ -168,30 +258,79 @@ export default function BannerImageUpload({
     const dy = e.clientY - dragStart.y;
     const cw = containerRef.current.clientWidth;
     const ch = containerRef.current.clientHeight;
+    const img = imgRef.current;
+    const imgRatio = img.naturalWidth / img.naturalHeight;
+    const contRatio = cw / ch;
+    let drawW: number, drawH: number, drawX: number, drawY: number;
+    if (contRatio > imgRatio) { drawH = ch; drawW = ch * imgRatio; drawX = (cw - drawW) / 2; drawY = 0; }
+    else { drawW = cw; drawH = cw / imgRatio; drawX = 0; drawY = (ch - drawH) / 2; }
+
+    const targetRatio = RATIO_PRESETS[cropRatio].ratio;
+
     setCropBox((prev) => {
       let { x, y, w, h } = prev;
       if (dragType === "move") {
-        x = Math.max(0, Math.min(cw - w, x + dx));
-        y = Math.max(0, Math.min(ch - h, y + dy));
-      } else if (dragType === "se") {
-        w = Math.max(40, Math.min(cw - x, w + dx));
-        h = Math.max(40, Math.min(ch - y, h + dy));
-      } else if (dragType === "sw") {
-        const nw = Math.max(40, Math.min(x + w, w - dx)); x += w - nw; w = nw;
-        h = Math.max(40, Math.min(ch - y, h + dy));
-      } else if (dragType === "ne") {
-        w = Math.max(40, Math.min(cw - x, w + dx));
-        const nh = Math.max(40, Math.min(y + h, h - dy)); y += h - nh; h = nh;
-      } else if (dragType === "nw") {
-        const nw2 = Math.max(40, Math.min(x + w, w - dx));
-        const nh2 = Math.max(40, Math.min(y + h, h - dy));
-        x += w - nw2; y += h - nh2; w = nw2; h = nh2;
+        x = Math.max(drawX, Math.min(drawX + drawW - w, x + dx));
+        y = Math.max(drawY, Math.min(drawY + drawH - h, y + dy));
+      } else if (targetRatio) {
+        if (dragType === "se") {
+          let newW = Math.max(80, Math.min(drawX + drawW - x, w + dx));
+          let newH = newW / targetRatio;
+          if (y + newH > drawY + drawH) {
+            newH = drawY + drawH - y;
+            newW = newH * targetRatio;
+          }
+          w = newW; h = newH;
+        } else if (dragType === "sw") {
+          let newW = Math.max(80, Math.min(x + w - drawX, w - dx));
+          let newH = newW / targetRatio;
+          if (y + newH > drawY + drawH) {
+            newH = drawY + drawH - y;
+            newW = newH * targetRatio;
+          }
+          x += w - newW;
+          w = newW; h = newH;
+        } else if (dragType === "ne") {
+          let newW = Math.max(80, Math.min(drawX + drawW - x, w + dx));
+          let newH = newW / targetRatio;
+          if (y + h - newH < drawY) {
+            newH = y + h - drawY;
+            newW = newH * targetRatio;
+          }
+          y += h - newH;
+          w = newW; h = newH;
+        } else if (dragType === "nw") {
+          let newW = Math.max(80, Math.min(x + w - drawX, w - dx));
+          let newH = newW / targetRatio;
+          if (y + h - newH < drawY) {
+            newH = y + h - drawY;
+            newW = newH * targetRatio;
+          }
+          x += w - newW;
+          y += h - newH;
+          w = newW; h = newH;
+        }
+      } else {
+        if (dragType === "se") {
+          w = Math.max(40, Math.min(drawX + drawW - x, w + dx));
+          h = Math.max(40, Math.min(drawY + drawH - y, h + dy));
+        } else if (dragType === "sw") {
+          const nw = Math.max(40, Math.min(x + w - drawX, w - dx)); x += w - nw; w = nw;
+          h = Math.max(40, Math.min(drawY + drawH - y, h + dy));
+        } else if (dragType === "ne") {
+          w = Math.max(40, Math.min(drawX + drawW - x, w + dx));
+          const nh = Math.max(40, Math.min(y + h - drawY, h - dy)); y += h - nh; h = nh;
+        } else if (dragType === "nw") {
+          const nw2 = Math.max(40, Math.min(x + w - drawX, w - dx));
+          const nh2 = Math.max(40, Math.min(y + h - drawY, h - dy));
+          x += w - nw2; y += h - nh2; w = nw2; h = nh2;
+        }
       }
       return { x, y, w, h };
     });
     setDragStart({ x: e.clientX, y: e.clientY });
     requestAnimationFrame(() => { if (imgRef.current) drawCanvas(imgRef.current, cropBox); });
-  }, [isDragging, dragType, dragStart, cropBox, drawCanvas]);
+  }, [isDragging, dragType, dragStart, cropBox, drawCanvas, cropRatio]);
 
   const handleMouseUp = useCallback(() => { setIsDragging(false); setDragType(null); }, []);
 
@@ -212,18 +351,32 @@ export default function BannerImageUpload({
 
     const scaleX = img.naturalWidth / drawW;
     const scaleY = img.naturalHeight / drawH;
-    const sx = (cropBox.x - drawX) * scaleX;
-    const sy = (cropBox.y - drawY) * scaleY;
-    const sw = cropBox.w * scaleX;
-    const sh = cropBox.h * scaleY;
+    const sx = Math.max(0, (cropBox.x - drawX) * scaleX);
+    const sy = Math.max(0, (cropBox.y - drawY) * scaleY);
+    const sw = Math.min(img.naturalWidth - sx, cropBox.w * scaleX);
+    const sh = Math.min(img.naturalHeight - sy, cropBox.h * scaleY);
 
-    let outW = Math.round(sw), outH = Math.round(sh);
-    if (outW > 1920) { outH = Math.round((outH / outW) * 1920); outW = 1920; }
-    if (outH > 750) { outW = Math.round((outW / outH) * 750); outH = 750; }
+    let outW = 1920;
+    let outH = 450;
+    if (cropRatio === "hero") {
+      outW = 1920;
+      outH = 450;
+    } else if (cropRatio === "wide") {
+      outW = 1920;
+      outH = 1080;
+    } else {
+      outW = Math.round(sw);
+      outH = Math.round(sh);
+      if (outW > 1920) { outH = Math.round((outH / outW) * 1920); outW = 1920; }
+      if (outH > 1080) { outW = Math.round((outW / outH) * 1080); outH = 1080; }
+    }
 
     const outCanvas = document.createElement("canvas");
     outCanvas.width = outW; outCanvas.height = outH;
-    outCanvas.getContext("2d")!.drawImage(img, sx, sy, sw, sh, 0, 0, outW, outH);
+    const ctx = outCanvas.getContext("2d")!;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, outW, outH);
 
     outCanvas.toBlob((blob) => {
       if (!blob) return;
@@ -240,8 +393,8 @@ export default function BannerImageUpload({
       if (fileQueueRef.current.length > 0) {
         setTimeout(() => processNextInQueue(), 100);
       }
-    }, "image/webp", 0.80);
-  }, [cropBox, pendingFiles, onFilesSelect, processNextInQueue, customFileName]);
+    }, "image/webp", 0.85);
+  }, [cropBox, pendingFiles, onFilesSelect, processNextInQueue, customFileName, cropRatio]);
 
   const buildItems = () => [
     ...value.map((url) => ({ kind: "existing" as const, url })),
@@ -430,17 +583,80 @@ export default function BannerImageUpload({
       )}
 
       {cropOpen && cropSrc && (
-        <div className="fixed inset-0 z-[100] bg-black/70 flex items-center justify-center p-4" onMouseUp={handleMouseUp}>
-          <div className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-5 py-3 border-b border-brand-neutral-border">
+        <div className="fixed inset-0 z-[100] bg-black/70 flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-150" onMouseUp={handleMouseUp}>
+          <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            {/* Modal Header */}
+            <div className="flex flex-wrap items-center justify-between gap-2.5 px-5 py-3 border-b border-brand-neutral-border bg-slate-50/90">
               <div className="flex items-center gap-2">
-                <Crop size={18} className="text-brand-primary" />
-                <span className="font-bold text-brand-neutral-dark text-sm">Crop & Resize Banner</span>
+                <div className="w-8 h-8 rounded-lg bg-orange-100 text-[#F8904D] flex items-center justify-center">
+                  <Crop size={16} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900 text-sm leading-tight">Crop & Resize Banner</h3>
+                  <p className="text-[11px] text-slate-400">Position & crop for panoramic hero display</p>
+                </div>
               </div>
-              <span className="text-xs text-slate-400">Drag corners to resize, drag center to move</span>
+
+              {/* Aspect Ratio Selector Pills */}
+              <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-2xs">
+                <button
+                  type="button"
+                  onClick={() => switchRatio("hero")}
+                  className={`px-3 py-1 text-xs font-bold rounded-lg transition-all ${
+                    cropRatio === "hero"
+                      ? "bg-brand-primary text-white shadow-xs"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
+                >
+                  Hero (1920×450)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => switchRatio("wide")}
+                  className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
+                    cropRatio === "wide"
+                      ? "bg-brand-primary text-white shadow-xs"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
+                >
+                  Wide (16:9)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => switchRatio("free")}
+                  className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
+                    cropRatio === "free"
+                      ? "bg-brand-primary text-white shadow-xs"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
+                >
+                  Freeform
+                </button>
+              </div>
+
+              {/* Quick Adjustment Buttons */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={handleFullWidth}
+                  className="px-2.5 py-1 text-xs font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                  title="Span across full width of photo"
+                >
+                  ↔ Full Width
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCenter}
+                  className="px-2.5 py-1 text-xs font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                  title="Center crop box"
+                >
+                  ⛶ Center
+                </button>
+              </div>
             </div>
 
-            <div ref={containerRef} className="relative flex-1 min-h-[300px] max-h-[60vh] overflow-hidden cursor-crosshair bg-slate-900"
+            {/* Canvas Crop Area */}
+            <div ref={containerRef} className="relative flex-1 min-h-[320px] max-h-[62vh] overflow-hidden cursor-crosshair bg-slate-950"
               onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
               <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
               {cropBox.w > 0 && (
@@ -456,8 +672,15 @@ export default function BannerImageUpload({
               )}
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-t border-brand-neutral-border bg-brand-neutral-light rounded-b-2xl">
-              <p className="text-xs text-slate-400">{imgNatural.w} × {imgNatural.h}px</p>
+            {/* Modal Footer */}
+            <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-t border-brand-neutral-border bg-slate-50/80 rounded-b-2xl">
+              <div className="flex items-center gap-2.5 text-xs text-slate-500">
+                <span className="font-mono text-slate-600">{imgNatural.w} × {imgNatural.h}px</span>
+                <span className="text-slate-300">|</span>
+                <span className="font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                  Target: {cropRatio === "hero" ? "1920 × 450 px (Panoramic Hero)" : cropRatio === "wide" ? "1920 × 1080 px (16:9)" : "Custom Selection"}
+                </span>
+              </div>
               <div className="flex items-center gap-2">
                 <input
                   type="text"
@@ -468,9 +691,9 @@ export default function BannerImageUpload({
                   className="px-3 py-1.5 text-xs border border-slate-300 rounded-lg bg-white w-36 sm:w-48 focus:outline-none focus:border-brand-primary"
                 />
                 <button type="button" onClick={() => { setCropOpen(false); setCropSrc(null); fileQueueRef.current = []; }}
-                  className="px-4 py-2 rounded-lg text-sm font-semibold text-brand-neutral bg-slate-200 hover:bg-slate-300">Cancel</button>
+                  className="px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 bg-slate-200 hover:bg-slate-300 transition-colors">Cancel</button>
                 <button type="button" onClick={handleApplyCrop}
-                  className="btn-primary px-4 py-2 text-sm flex items-center gap-1 shadow">
+                  className="btn-primary px-5 py-2 text-sm flex items-center gap-1.5 shadow-md">
                   <ImageIconLucide size={16} /> Apply & Upload
                 </button>
               </div>
