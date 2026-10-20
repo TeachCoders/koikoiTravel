@@ -395,12 +395,14 @@ app.post("/media/replace", requireSalesOrAdmin, upload.single("file"), async (re
       console.warn("Could not update media DB timestamp:", dbErr);
     }
 
-    // Clear Nginx image cache if present
+    // Clear Nginx image cache if present (keep directory & ownership intact)
     try {
       const cacheDir = "/var/cache/nginx/next_images";
       if (fs.existsSync(cacheDir)) {
-        fs.rmSync(cacheDir, { recursive: true, force: true });
-        fs.mkdirSync(cacheDir, { recursive: true });
+        const entries = fs.readdirSync(cacheDir);
+        for (const entry of entries) {
+          fs.rmSync(path.join(cacheDir, entry), { recursive: true, force: true });
+        }
       }
     } catch (cacheErr) {
       console.warn("Could not clear nginx cache:", cacheErr);

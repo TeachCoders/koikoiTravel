@@ -5,10 +5,43 @@ import { prisma } from "../utils/prismaConnection.js";
 import { requireSalesOrAdmin } from "../middleware/requireSalesOrAdmin.js";
 import { uploadImage } from "../utils/uploadImage.js";
 import { logger } from "../utils/logger.js";
+import { notifyRevalidate } from "../services/revalidateService.js";
 
 const router = Router();
 
 const bannerUpload = uploadImage("hero-banners");
+
+const purgeImageCachesAndRevalidate = async (slug) => {
+  try {
+    const cacheDir = "/var/cache/nginx/next_images";
+    if (fs.existsSync(cacheDir)) {
+      const entries = fs.readdirSync(cacheDir);
+      for (const entry of entries) {
+        fs.rmSync(path.join(cacheDir, entry), { recursive: true, force: true });
+      }
+    }
+  } catch (err) {
+    logger.warn("Could not clear nginx cache:", err);
+  }
+
+  try {
+    const nextCacheDir = path.resolve(process.cwd(), "../frontend/.next/cache/images");
+    if (fs.existsSync(nextCacheDir)) {
+      const entries = fs.readdirSync(nextCacheDir);
+      for (const entry of entries) {
+        fs.rmSync(path.join(nextCacheDir, entry), { recursive: true, force: true });
+      }
+    }
+  } catch (err) {
+    logger.warn("Could not clear nextjs image cache:", err);
+  }
+
+  try {
+    await notifyRevalidate("hero-banner", { slug });
+  } catch (err) {
+    logger.warn("Could not notify revalidate:", err);
+  }
+};
 
 /**
  * GET /hero-full-banner
@@ -109,6 +142,8 @@ router.post("/", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => {
       createdBanners.push(banner);
     }
 
+    await purgeImageCachesAndRevalidate(pageSlug || null);
+
     return res.status(201).json({
       success: true,
       message: `${createdBanners.length} hero banner(s) uploaded successfully`,
@@ -181,6 +216,8 @@ router.put("/:id", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => 
       data: updateData,
     });
 
+    await purgeImageCachesAndRevalidate(updated.pageSlug || existing.pageSlug || null);
+
     return res.json({ success: true, message: "Hero banner updated successfully", data: updated });
   } catch (error) {
     logger.error("Error updating hero banner:", { error: error.message, stack: error.stack });
@@ -217,6 +254,8 @@ router.delete("/:id", requireSalesOrAdmin, async (req, res) => {
     }
 
     await prisma.heroFullBanner.delete({ where: { id } });
+
+    await purgeImageCachesAndRevalidate(existing.pageSlug || null);
 
     return res.json({ success: true, message: "Hero banner deleted successfully" });
   } catch (error) {
