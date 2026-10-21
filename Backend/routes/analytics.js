@@ -75,39 +75,40 @@ function parseUserAgent(ua = '') {
 function detectSessionBot(userAgent = '', ip = '', userId = null) {
   // 1. Any logged-in user is ALWAYS human
   if (userId && Number(userId) > 0) {
-    return { isBot: false, botSource: null };
+    return { classification: 'human', botSource: null };
   }
 
   const ua = String(userAgent || '').toLowerCase();
   if (!ua) {
-    return { isBot: true, botSource: 'empty_ua' };
+    return { classification: 'unknown', botSource: null };
   }
 
   // 2. Search engine crawlers (Googlebot, Bingbot, Yandex, etc.)
   if (/googlebot|bingbot|yandexbot|yandex\/|duckduckbot|baiduspider|slurp|googleother|adsbot-google|mediapartners-google|page-speed-insights|lighthouse/i.test(ua)) {
-    return { isBot: true, botSource: 'search_crawler' };
+    return { classification: 'bot', botSource: 'search_crawler' };
   }
 
   // 3. AI crawlers / scrapers
   if (/gptbot|claudebot|bytespider|perplexity|anthropic|openai|cohere|ai2bot|chatgpt/i.test(ua)) {
-    return { isBot: true, botSource: 'ai_crawler' };
+    return { classification: 'bot', botSource: 'ai_crawler' };
   }
 
   // 4. Automated developer tools / scrapers / monitors
   // Strict matching with word boundaries so normal mobile browsers / devices never match
   if (/\b(crawler|spider|scraper|scrapy|headlesschrome|phantomjs|uptimerobot|pingdom|gtmetrix|screaming frog|ahrefsbot|semrushbot|majestic|archive\.org_bot|facebookexternalhit|linkedinbot|twitterbot|slackbot|curl\/|wget\/|python-requests|go-http-client|node-fetch|okhttp|postmanruntime|newrelic|datadog)\b/i.test(ua)) {
-    return { isBot: true, botSource: 'other_bot' };
+    return { classification: 'bot', botSource: 'other_bot' };
   }
 
-  // 5. Exact Googlebot render farm IP range (66.249.64.0/19)
+  // 5. Googlebot render farm IP range (66.249.64.0/19)
   if (ip) {
     const p = ip.split('.').map(Number);
-    if (p.length === 4 && p[0] === 66 && p[1] === 249) {
-      return { isBot: true, botSource: 'search_crawler' };
+    if (p.length === 4 && p.every(octet => Number.isInteger(octet) && octet >= 0 && octet <= 255)
+      && p[0] === 66 && p[1] === 249 && p[2] >= 64 && p[2] <= 95) {
+      return { classification: 'bot', botSource: 'search_crawler' };
     }
   }
 
-  return { isBot: false, botSource: null };
+  return { classification: 'unknown', botSource: null };
 }
 
 /* ─────────────────────────────────────────────
@@ -184,16 +185,16 @@ router.post('/replay', replayLimiter, async (req, res) => {
 /**
  * GET /analytics/replay-sessions  (super admin)
  * Sessions that have recorded replays, newest first.
- * Query: ?page=1&pageSize=20&kind=all|humans|bots
- * Response: { sessions, totals: { all, humans, bots }, page, pageSize, totalPages }
- * Each session is tagged isBot/botSource so crawler & cloud traffic can be
- * filtered out while browsing.
+ * Query: ?page=1&pageSize=20&kind=all|humans|bots|unknown
+ * Response: { sessions, totals: { all, humans, bots, unknown }, page, pageSize, totalPages }
+ * Each session is tagged with a conservative classification and botSource so
+ * confirmed bots can be separated from known users and uncertain visitors.
  */
 router.get('/replay-sessions', requireSuperAdmin, async (req, res) => {
   try {
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);
     const pageSize = Math.min(50, Math.max(1, parseInt(req.query.pageSize, 10) || 20));
-    const kind = ['all', 'humans', 'bots'].includes(req.query.kind) ? req.query.kind : 'all';
+    const kind = ['all', 'humans', 'bots', 'unknown'].includes(req.query.kind) ? req.query.kind : 'all';
     const range = parseDateRange(req, 30);
 
     const groups = await prisma.replayEvent.groupBy({
@@ -248,10 +249,17 @@ router.get('/replay-sessions', requireSuperAdmin, async (req, res) => {
       const ua = s?.userAgent || '';
       const ip = s?.ipAddress || '';
       const isHumanUser = Boolean(s?.userId && Number(s.userId) > 0);
-      const bot = isHumanUser ? { isBot: false, botSource: null } : detectSessionBot(ua, ip, s?.userId);
-      const effectiveBot = isHumanUser ? { isBot: false, botSource: null } : bot.isBot ? bot : isMultiUa(ip, s) ? { isBot: true, botSource: 'multi_ua' } : bot;
+      const detected = detectSessionBot(ua, ip, s?.userId);
+      const classification = detected.classification === 'unknown' && isMultiUa(ip, s)
+        ? 'bot'
+        : detected.classification;
+      const botSource = classification === 'bot' && detected.classification !== 'bot'
+        ? 'multi_ua'
+        : detected.botSource;
       return {
-        ...effectiveBot,
+        classification,
+        isBot: classification === 'bot',
+        botSource,
         sessionId: r.sessionId,
         visitorId: s?.visitorId || null,
         country: s?.country || 'Unknown',
@@ -275,13 +283,15 @@ router.get('/replay-sessions', requireSuperAdmin, async (req, res) => {
 
     const totals = {
       all: byCountry.length,
-      humans: byCountry.filter(x => !x.isBot).length,
+      humans: byCountry.filter(x => x.classification === 'human').length,
       bots: byCountry.filter(x => x.isBot).length,
+      unknown: byCountry.filter(x => x.classification === 'unknown').length,
     };
 
     const filtered = kind === 'all' ? byCountry
       : kind === 'bots' ? byCountry.filter(x => x.isBot)
-      : byCountry.filter(x => !x.isBot);
+      : kind === 'humans' ? byCountry.filter(x => x.classification === 'human')
+      : byCountry.filter(x => x.classification === 'unknown');
     const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
     const clampedPage = Math.min(page, totalPages);
     const paged = filtered.slice((clampedPage - 1) * pageSize, clampedPage * pageSize);
@@ -639,4 +649,3 @@ router.post('/data/delete-all', requireSuperAdmin, async (req, res) => {
 });
 
 export default router;
-

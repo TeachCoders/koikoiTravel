@@ -78,6 +78,7 @@ export interface ReplaySessionInfo {
   visitorId: string | null;
   country: string | null;
   deviceType: string | null;
+  classification: "human" | "bot" | "unknown";
   isBot: boolean;
   botSource: "search_crawler" | "ai_crawler" | "other_bot" | "cloud_ip" | "multi_ua" | null;
   user: { id: number; name: string; email: string } | null;
@@ -89,7 +90,7 @@ export interface ReplaySessionInfo {
 
 export interface ReplaySessionsPage {
   sessions: ReplaySessionInfo[];
-  totals: { all: number; humans: number; bots: number };
+  totals: { all: number; humans: number; bots: number; unknown: number };
   page: number;
   pageSize: number;
   totalPages: number;
@@ -120,7 +121,7 @@ export interface ReplayData {
 export async function getReplaySessions(params?: {
   page?: number;
   pageSize?: number;
-  kind?: "all" | "humans" | "bots";
+  kind?: "all" | "humans" | "bots" | "unknown";
   country?: string;
   range?: DateRange;
 }): Promise<ReplaySessionsPage> {
@@ -133,7 +134,7 @@ export async function getReplaySessions(params?: {
       ...(params?.range ? dateRangeParams(params.range) : {}),
     },
   });
-  return res.data ?? { sessions: [], totals: { all: 0, humans: 0, bots: 0 }, page: 1, pageSize: 20, totalPages: 1, countries: [] };
+  return res.data ?? { sessions: [], totals: { all: 0, humans: 0, bots: 0, unknown: 0 }, page: 1, pageSize: 20, totalPages: 1, countries: [] };
 }
 
 export async function getReplay(sessionId: string): Promise<ReplayData> {

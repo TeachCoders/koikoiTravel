@@ -39,7 +39,7 @@ export const useResolveNotFound = () => {
 export const useReplaySessions = (opts?: {
   page?: number;
   pageSize?: number;
-  kind?: "all" | "humans" | "bots";
+  kind?: "all" | "humans" | "bots" | "unknown";
   country?: string;
   range?: DateRange;
   enabled?: boolean;
@@ -58,7 +58,7 @@ export const useReplaySessions = (opts?: {
   });
   return {
     sessions: query.data?.sessions ?? [],
-    totals: query.data?.totals ?? { all: 0, humans: 0, bots: 0 },
+    totals: query.data?.totals ?? { all: 0, humans: 0, bots: 0, unknown: 0 },
     countries: query.data?.countries ?? [],
     page: query.data?.page ?? page,
     pageSize,

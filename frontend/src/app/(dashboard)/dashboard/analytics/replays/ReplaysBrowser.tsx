@@ -134,7 +134,7 @@ function DataManagementCard() {
 
 export default function ReplaysBrowser() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [kind, setKind] = useState<"all" | "humans" | "bots">("all");
+  const [kind, setKind] = useState<"all" | "humans" | "bots" | "unknown">("all");
   const [selectedCountry, setSelectedCountry] = useState<string>("all");
   const [page, setPage] = useState(1);
   const { range } = useAnalyticsRange();
@@ -147,7 +147,7 @@ export default function ReplaysBrowser() {
   const { replay, isLoading: replayLoading } = useReplay(selectedId);
   const deleteReplay = useDeleteReplay();
 
-  const switchKind = (next: "all" | "humans" | "bots") => {
+  const switchKind = (next: "all" | "humans" | "bots" | "unknown") => {
     setKind(next);
     setPage(1);
     setSelectedId(null);
@@ -171,6 +171,7 @@ export default function ReplaysBrowser() {
                 ["all", `All (${totals.all})`],
                 ["humans", `Humans (${totals.humans})`],
                 ["bots", `Bots (${totals.bots})`],
+                ["unknown", `Unknown (${totals.unknown})`],
               ] as const
             ).map(([key, label]) => (
               <button
@@ -182,7 +183,9 @@ export default function ReplaysBrowser() {
                     ? "bg-slate-800 text-white shadow-sm"
                     : key === "bots"
                       ? "border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100"
-                      : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                      : key === "unknown"
+                        ? "border border-slate-200 bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
                 }`}
               >
                 {label}
@@ -272,16 +275,23 @@ export default function ReplaysBrowser() {
                           </span>
                         </td>
                         <td className="whitespace-nowrap px-5 py-2.5">
-                          {s.isBot ? (
+                          {s.classification === "bot" ? (
                             <span
                               title={BOT_LABEL[s.botSource || "other_bot"]}
                               className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-bold text-amber-700"
                             >
                               🤖 Bot
                             </span>
-                          ) : (
+                          ) : s.classification === "human" ? (
                             <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-bold text-emerald-700">
                               Human
+                            </span>
+                          ) : (
+                            <span
+                              title="No clear signal confirms this visitor is a person or an automated bot."
+                              className="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-bold text-slate-600"
+                            >
+                              Unknown
                             </span>
                           )}
                         </td>
