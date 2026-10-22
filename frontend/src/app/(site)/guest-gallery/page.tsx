@@ -95,13 +95,13 @@ export default async function GuestGalleryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 pb-20">
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
       {/* SSR Structured Data */}
       <JsonLd data={breadcrumbs} />
       <JsonLd data={gallerySchema} />
 
-      {/* ── Hero Banner Section with Backdrop ── */}
-      <section className="relative overflow-hidden bg-slate-900 text-white min-h-[320px] sm:min-h-[380px] flex items-center">
+      {/* ── Hero Banner Section (Centered layout matching Tour Packages) ── */}
+      <section className="relative bg-slate-900 py-12 md:py-16 overflow-hidden">
         {/* Background Image with Fallback */}
         <div className="absolute inset-0">
           <FallbackImage
@@ -109,59 +109,73 @@ export default async function GuestGalleryPage() {
             alt="KoiKoi Travel Guest Gallery"
             fill
             priority
-            className="object-cover object-center scale-105"
+            className="object-cover object-center scale-105 opacity-40"
           />
-          {/* Multi-layered cinematic gradient overlays */}
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/75 to-slate-950/50" />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-transparent to-slate-950/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/80 pointer-events-none" />
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-10 py-12 sm:py-16 md:py-20 w-full">
-          {/* Breadcrumb nav */}
-          <nav className="flex items-center gap-2 text-xs sm:text-sm text-slate-300/80 mb-4">
-            <Link href="/" className="hover:text-white transition-colors">
-              Home
-            </Link>
-            <ChevronRight size={13} className="text-slate-400" />
-            <span className="text-[#FFD9A8] font-semibold">Guest Gallery</span>
-          </nav>
+        <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 text-center flex flex-col items-center">
+          <span className="font-luxury font-black inline-flex items-center gap-1.5 text-[11px] sm:text-xs uppercase tracking-widest text-[#F8904D] mb-3">
+            <Camera size={14} /> Authentic Travel Memories
+          </span>
+          <h1 className="font-luxury text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-wide drop-shadow-md">
+            {displayTitle}
+          </h1>
+          <p className="mt-3 text-white/85 text-sm sm:text-base max-w-2xl leading-relaxed">
+            Real holiday memories and travel moments shared by our guests across India.
+          </p>
 
-          <div className="max-w-3xl space-y-3">
-            {/* H1 Title */}
-            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight drop-shadow-lg">
-              {displayTitle}
-            </h1>
-
-            {/* Subtitle */}
-            <p className="text-slate-200/90 text-sm sm:text-base leading-relaxed max-w-2xl font-normal drop-shadow-sm">
-              Real holiday memories and travel moments shared by our guests across India.
-            </p>
-
-            {/* Quick Action Button */}
-            <div className="pt-2 flex flex-wrap items-center gap-3">
-              <QuoteModal>
-                <button
-                  type="button"
-                  className="px-6 py-2.5 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95 inline-flex items-center gap-2 cursor-pointer"
-                >
-                  <Compass size={15} />
-                  <span>Plan Your Journey</span>
-                </button>
-              </QuoteModal>
-            </div>
+          <div className="mt-6">
+            <QuoteModal>
+              <button
+                type="button"
+                className="btn-primary px-7 py-3 text-sm font-semibold tracking-wide flex items-center gap-2 cursor-pointer shadow-md active:scale-95 transition-all"
+              >
+                <Compass size={15} />
+                <span>Plan Your Journey</span>
+              </button>
+            </QuoteModal>
           </div>
         </div>
       </section>
 
-      {/* ── Main Content Area ── */}
-      <div id="gallery-grid" className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 py-8 sm:py-12 space-y-8">
-        {/* Client Gallery Grid & Lightbox (uses CMS page content from dashboard) */}
-        <GuestGalleryClient
-          initialItems={galleryItems}
-          cmsTitle={rawDisplay && rawDisplay.toLowerCase() !== "guest-gallery" ? rawDisplay : undefined}
-          cmsDescription={cmsPage?.moreDescription || cmsPage?.seoDescription}
-        />
+      {/* ── BREADCRUMB (BELOW HERO - Consistent with Tour Packages & Destinations) ── */}
+      <nav aria-label="Breadcrumb" className="border-b border-slate-100 bg-slate-50/60">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 py-3 flex items-center gap-1.5 text-xs sm:text-[13px] text-slate-500 font-medium">
+          <Link href="/" className="hover:text-[#F8904D] transition-colors">
+            Home
+          </Link>
+          <ChevronRight size={13} className="text-slate-300 shrink-0" />
+          <span className="text-slate-900 font-semibold">Guest Gallery</span>
+        </div>
+      </nav>
+
+      {/* ── SEO & CMS EDITORIAL CONTENT (Pure white section matching Tour Packages) ── */}
+      {(cmsPage?.moreDescription || cmsPage?.seoDescription) && (
+        <section className="bg-white border-b border-slate-100 py-8 sm:py-10 md:py-12">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+            <div className="text-center max-w-4xl mx-auto space-y-4">
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#F8904D]">
+                <Camera size={13} /> Why Travellers Trust KoiKoi Travel
+              </span>
+              <h2 className="font-heading text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight leading-tight">
+                Simple, Honest Memories from <span className="text-[#F8904D]">Our Travellers</span>
+              </h2>
+              <div
+                className="mt-6 w-full space-y-4 text-sm sm:text-[15px] leading-relaxed text-slate-600 font-normal prose prose-slate max-w-none text-left sm:text-justify [&>p]:leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html: cmsPage?.moreDescription || cmsPage?.seoDescription || "",
+                }}
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── MAIN GALLERY GRID (Clean grid layout) ── */}
+      <div id="gallery-grid" className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 py-8 sm:py-12">
+        <GuestGalleryClient initialItems={galleryItems} />
       </div>
     </div>
   );

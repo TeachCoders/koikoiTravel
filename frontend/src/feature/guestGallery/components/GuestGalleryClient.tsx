@@ -16,14 +16,10 @@ import { QuoteModal } from "@/components/shared/QuoteModal";
 
 interface GuestGalleryClientProps {
   initialItems: GuestGallery[];
-  cmsTitle?: string | null;
-  cmsDescription?: string | null;
 }
 
 export default function GuestGalleryClient({
   initialItems,
-  cmsTitle,
-  cmsDescription,
 }: GuestGalleryClientProps) {
   const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null);
 
@@ -76,21 +72,6 @@ export default function GuestGalleryClient({
 
   return (
     <div className="space-y-6 sm:space-y-8">
-      {/* ── Intro Description (Managed from Dashboard CMS - Clean layout without white card box) ── */}
-      {cmsDescription ? (
-        <div className="border-l-4 border-[#F8904D] pl-4 sm:pl-5 py-1">
-          {cmsTitle && (
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-1.5 tracking-tight">
-              {cmsTitle}
-            </h2>
-          )}
-          <div
-            className="text-[15px] sm:text-base leading-relaxed text-slate-600 prose prose-slate max-w-none [&>p]:leading-relaxed [&>p]:m-0"
-            dangerouslySetInnerHTML={{ __html: cmsDescription }}
-          />
-        </div>
-      ) : null}
-
       {/* ── Photo Grid ── */}
       {initialItems.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">

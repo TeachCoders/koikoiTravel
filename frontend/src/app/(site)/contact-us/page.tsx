@@ -63,7 +63,7 @@ export default async function ContactUsPage() {
   const cmsDescription = cmsPage?.moreDescription || cmsPage?.seoDescription;
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] font-sans text-slate-800 pb-16">
+    <div className="min-h-screen bg-white font-sans text-slate-800 pb-16">
       {/* SEO Structured Data */}
       <JsonLd
         data={graphSchema([
@@ -111,7 +111,7 @@ export default async function ContactUsPage() {
       <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-10 md:py-14 space-y-12">
         {/* Dynamic CMS Page Overview (managed via /dashboard/cms-page) */}
         {cmsDescription && (
-          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-xs">
+          <div className="prose prose-lg max-w-none text-slate-700">
             <RichContent html={cmsDescription} />
           </div>
         )}
