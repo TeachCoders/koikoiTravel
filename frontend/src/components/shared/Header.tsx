@@ -735,7 +735,7 @@ export const Header: React.FC = () => {
               {navLinks.map((link) => (
                 <div
                   key={link.href}
-                  className="relative flex items-center h-full"
+                  className={`${link.isDestinationMega ? "" : "relative"} flex items-center h-full` }
                   onMouseEnter={() => (link.children || link.isDestinationMega) ? (clearMegaMenuCloseTimer(), setOpenDesktopDropdown(link.href)) : null}
                   onMouseLeave={() => (link.children || link.isDestinationMega) ? scheduleMegaMenuClose() : setOpenDesktopDropdown(null)}
                 >
