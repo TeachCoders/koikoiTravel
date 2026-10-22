@@ -2,7 +2,21 @@ import type { MetadataRoute } from "next";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 
 export default function robots(): MetadataRoute.Robots {
-  const disallowed = ["/dashboard", "/dashboard/*", "/profile", "/profile/*", "/auth", "/auth/*"];
+  const disallowed = [
+    "/dashboard",
+    "/dashboard/*",
+    "/profile",
+    "/profile/*",
+    "/auth",
+    "/auth/*",
+    "/api/*",
+    "/_next/static/media/*",
+    "/*.woff2$",
+    "/*.woff$",
+    "/*.ttf$",
+    "/*.eot$",
+    "/favicon.ico*",
+  ];
   const allowed = ["/", "/llms.txt", "/llms-full.txt"];
 
   return {

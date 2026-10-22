@@ -889,9 +889,16 @@ export const Header: React.FC = () => {
                 <Link
                   href="/"
                   onClick={handleMobileClose}
-                  className="text-[19px] font-extrabold tracking-tight text-[#1C1C1C]"
+                  className="flex items-center gap-2"
                 >
-                  KoiKoi Travel<span className="text-[#2E8B8B]"> Holidays</span>
+                  <Image
+                    src="/logo-with-name.png"
+                    alt="KoiKoi Travel"
+                    width={180}
+                    height={40}
+                    className="h-8 w-auto object-contain"
+                    priority
+                  />
                 </Link>
                 <button
                   onClick={handleMobileClose}
