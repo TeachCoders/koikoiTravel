@@ -80,16 +80,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Append valid state-experience combinations (strictly minimum 3 packages, excluding Golden Triangle)
   const expStateCombos = new Map<string, { expSlug: string; stateSlug: string; count: number; updatedAt?: string }>();
   journeys.forEach((j: any) => {
+    const statesInJourney = new Set<string>();
+    (j.states || []).forEach((st: any) => st?.slug && statesInJourney.add(st.slug));
+    (j.cities || []).forEach((c: any) => c?.state?.slug && statesInJourney.add(c.state.slug));
+
     (j.travelExperiences || []).forEach((exp: any) => {
       if (!exp.slug || exp.slug === "golden-triangle-tour-india" || exp.slug === "golden-triangle") return;
-      (j.states || []).forEach((st: any) => {
-        if (!st.slug) return;
-        const key = `${exp.slug}___${st.slug}`;
+      statesInJourney.forEach((stateSlug) => {
+        const key = `${exp.slug}___${stateSlug}`;
         const item = expStateCombos.get(key);
         if (item) {
           item.count += 1;
         } else {
-          expStateCombos.set(key, { expSlug: exp.slug, stateSlug: st.slug, count: 1, updatedAt: j.updatedAt });
+          expStateCombos.set(key, { expSlug: exp.slug, stateSlug, count: 1, updatedAt: j.updatedAt });
         }
       });
     });
