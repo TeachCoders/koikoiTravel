@@ -439,6 +439,24 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         </div>
                       </div>
                     )}
+
+                    {/* Experience Theme Tags */}
+                    {journey.travelExperiences && journey.travelExperiences.length > 0 && (
+                      <div className="flex items-center gap-2 flex-wrap pt-0.5">
+                        <span className="text-slate-400 font-bold uppercase text-[10.5px] tracking-wider w-16 shrink-0">Theme:</span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {journey.travelExperiences.map((exp: any) => (
+                            <Link
+                              key={exp.id || exp.slug}
+                              href={`/travel-experiences/${exp.slug}`}
+                              className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#F8904D]/10 text-[#F8904D] hover:bg-[#F8904D] hover:text-white transition-colors"
+                            >
+                              {exp.title}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Action Buttons */}

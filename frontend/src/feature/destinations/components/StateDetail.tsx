@@ -12,6 +12,7 @@ import {
   Sun,
   BadgeCheck,
   ChevronDown,
+  ArrowRight,
 } from "lucide-react";
 import { useStateBySlug } from "@/feature/state/api/useState";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
@@ -599,6 +600,70 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           </div>
         </section>
       )}
+
+      {/* ===== SECTION 3.5: POPULAR EXPERIENCES IN STATE (Min 3 packages rule) ===== */}
+      {(() => {
+        const expMap = new Map<string, { exp: any; count: number }>();
+        for (const j of stateJourneys) {
+          for (const e of (j.travelExperiences || [])) {
+            if (!e.slug || e.slug === "golden-triangle-tour-india" || e.slug === "golden-triangle") continue;
+            const existing = expMap.get(e.slug);
+            if (existing) {
+              existing.count += 1;
+            } else {
+              expMap.set(e.slug, { exp: e, count: 1 });
+            }
+          }
+        }
+        const validStateExps = Array.from(expMap.values())
+          .filter((item) => item.count >= 3)
+          .sort((a, b) => b.count - a.count);
+
+        if (validStateExps.length === 0) return null;
+
+        return (
+          <section className="w-full bg-slate-50/80 py-8 sm:py-10 border-b border-slate-200/60">
+            <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+              <div className="mb-6">
+                <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1">
+                  Curated Travel Themes
+                </span>
+                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
+                  Popular Experiences in {cleanStateName}
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                  Explore handcrafted theme-based holiday packages across {cleanStateName}.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                {validStateExps.map(({ exp, count }) => (
+                  <Link
+                    key={exp.slug}
+                    href={`/travel-experiences/${exp.slug}/${state.slug}`}
+                    className="group bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-[#F8904D]/60 hover:-translate-y-0.5 transition-all flex flex-col justify-between"
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#F8904D]/10 text-[#F8904D]">
+                          <Sparkles size={11} /> {count} Packages
+                        </span>
+                      </div>
+                      <h3 className="text-base font-bold text-slate-900 group-hover:text-[#F8904D] transition-colors">
+                        {exp.title} in {cleanStateName}
+                      </h3>
+                    </div>
+                    <div className="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-600 group-hover:text-slate-900">
+                      <span>Explore Tours</span>
+                      <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform text-[#F8904D]" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
 
 
 

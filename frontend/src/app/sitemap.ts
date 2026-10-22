@@ -76,6 +76,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   });
   experiences.forEach((e: SitemapItem) => entries.push(url(`/travel-experiences/${e.slug}`, e.updatedAt)));
+
+  // Append valid state-experience combinations (strictly minimum 3 packages, excluding Golden Triangle)
+  const expStateCombos = new Map<string, { expSlug: string; stateSlug: string; count: number; updatedAt?: string }>();
+  journeys.forEach((j: any) => {
+    (j.travelExperiences || []).forEach((exp: any) => {
+      if (!exp.slug || exp.slug === "golden-triangle-tour-india" || exp.slug === "golden-triangle") return;
+      (j.states || []).forEach((st: any) => {
+        if (!st.slug) return;
+        const key = `${exp.slug}___${st.slug}`;
+        const item = expStateCombos.get(key);
+        if (item) {
+          item.count += 1;
+        } else {
+          expStateCombos.set(key, { expSlug: exp.slug, stateSlug: st.slug, count: 1, updatedAt: j.updatedAt });
+        }
+      });
+    });
+  });
+
+  expStateCombos.forEach((val) => {
+    if (val.count >= 3) {
+      entries.push(url(`/travel-experiences/${val.expSlug}/${val.stateSlug}`, val.updatedAt));
+    }
+  });
   journeys.forEach((j: SitemapItem) => {
     entries.push(url(`/tour-packages/${j.slug}`, j.updatedAt));
   });

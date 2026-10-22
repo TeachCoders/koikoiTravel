@@ -451,6 +451,73 @@ function ExperienceContent({
       {/* ===== OTHER TRAVEL EXPERIENCES ===== */}
       <OtherExperiencesSection currentSlug={experience.slug} />
 
+      {/* ===== SECTION: TOP DESTINATIONS FOR THIS EXPERIENCE (Min 3 packages rule) ===== */}
+      {(() => {
+        if (experience.slug === "golden-triangle-tour-india" || experience.slug === "golden-triangle") {
+          return null;
+        }
+        const stateCounts = new Map<string, { state: any; count: number }>();
+        for (const j of (experienceJourneys || [])) {
+          for (const s of (j.states || [])) {
+            if (!s.slug) continue;
+            const existing = stateCounts.get(s.slug);
+            if (existing) {
+              existing.count += 1;
+            } else {
+              stateCounts.set(s.slug, { state: s, count: 1 });
+            }
+          }
+        }
+        const validStates = Array.from(stateCounts.values())
+          .filter((item) => item.count >= 3)
+          .sort((a, b) => b.count - a.count);
+
+        if (validStates.length === 0) return null;
+
+        return (
+          <section className="w-full bg-slate-50/80 py-8 sm:py-10 border-b border-slate-200/60">
+            <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
+              <div className="mb-6">
+                <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1">
+                  Top Destinations
+                </span>
+                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
+                  Top Destinations for {cleanExpTitle}
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                  Discover premier {cleanExpTitle.toLowerCase()} packages by state.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                {validStates.map(({ state, count }) => (
+                  <Link
+                    key={state.slug}
+                    href={`/travel-experiences/${experience.slug}/${state.slug}`}
+                    className="group bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-[#F8904D]/60 hover:-translate-y-0.5 transition-all flex flex-col justify-between"
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#F8904D]/10 text-[#F8904D]">
+                          <Sparkles size={11} /> {count} Packages
+                        </span>
+                      </div>
+                      <h3 className="text-base font-bold text-slate-900 group-hover:text-[#F8904D] transition-colors">
+                        {cleanExpTitle} in {state.title}
+                      </h3>
+                    </div>
+                    <div className="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-600 group-hover:text-slate-900">
+                      <span>Explore Tours</span>
+                      <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform text-[#F8904D]" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
+
       {/* ===== FAQ SECTION ===== */}
       <FaqSection
         faqs={

@@ -69,6 +69,12 @@ export interface Journey {
       country?: { id: number; title: string; slug: string; h1Title?: string | null };
     };
   }[];
+  states?: {
+    id: number;
+    title: string;
+    slug: string;
+    h1Title?: string | null;
+  }[];
   months?: { id: number; title: string; slug: string; season?: string | null }[];
   travelExperiences?: { id: number; title: string; slug: string }[];
   days?: JourneyDay[];
