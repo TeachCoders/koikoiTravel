@@ -75,29 +75,21 @@ export default function GuestGalleryClient({
   }, [activePhotoIndex, handlePrevPhoto, handleNextPhoto]);
 
   return (
-    <div className="space-y-8">
-      {/* ── Intro Description Card (Managed from Dashboard CMS) ── */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 md:p-10 border border-slate-200/90 shadow-xs">
-        {cmsTitle && (
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3 tracking-tight">
-            {cmsTitle}
-          </h2>
-        )}
-        {cmsDescription ? (
+    <div className="space-y-6 sm:space-y-8">
+      {/* ── Intro Description (Managed from Dashboard CMS - Clean layout without white card box) ── */}
+      {cmsDescription ? (
+        <div className="border-l-4 border-[#F8904D] pl-4 sm:pl-5 py-1">
+          {cmsTitle && (
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-1.5 tracking-tight">
+              {cmsTitle}
+            </h2>
+          )}
           <div
-            className="text-[15.5px] leading-relaxed text-slate-600 prose prose-slate max-w-none"
+            className="text-[15px] sm:text-base leading-relaxed text-slate-600 prose prose-slate max-w-none [&>p]:leading-relaxed [&>p]:m-0"
             dangerouslySetInnerHTML={{ __html: cmsDescription }}
           />
-        ) : (
-          <p className="text-[15.5px] leading-relaxed text-slate-600">
-            These are real photos from our happy guests. Every picture is a real
-            holiday moment — a family trip, a honeymoon, a short drive, or a big
-            adventure. Nothing is stock. Nothing is staged. If you love a place you
-            see here, just tell us — we can plan the same trip for you with KoiKoi
-            Travel.
-          </p>
-        )}
-      </div>
+        </div>
+      ) : null}
 
       {/* ── Photo Grid ── */}
       {initialItems.length > 0 ? (
