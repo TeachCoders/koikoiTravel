@@ -7,276 +7,17 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
-import { useGetStates } from "@/feature/state/api/useState";
-import { useGetJourneys } from "@/feature/journey/api/useJourney";
-import { useGetTravelExperiences } from "@/feature/travelExperience/api/useTravelExperience";
-import type { State } from "@/feature/state/type";
-import type { Journey } from "@/feature/journey/type";
-import type { TravelExperience } from "@/feature/travelExperience/type";
-import { stripTourSuffix, pickPriorityLinks, type NavChild } from "@/lib/utils";
+import type { NavChild } from "@/lib/utils";
 import { QuoteModal } from "./QuoteModal";
 import { RequestCallbackModal } from "./RequestCallbackModal";
-import DestinationMegaMenu, { DestinationTreeCountry, DestinationTreeState } from "./DestinationMegaMenu";
+import DestinationMegaMenu, { DestinationTreeCountry } from "./DestinationMegaMenu";
 import LanguageSelector from "./LanguageSelector";
 import HeaderSearchBar from "./HeaderSearchBar";
-
-const STATE_POPULARITY_PRIORITY: Record<string, number> = {
-  "rajasthan": 1,
-  "kerala": 2,
-  "uttar-pradesh": 3,
-  "delhi": 4,
-  "jammu-and-kashmir": 5,
-  "ladakh": 6,
-  "himachal-pradesh": 7,
-  "uttarakhand": 8,
-  "goa": 9,
-  "madhya-pradesh": 10,
-  "maharashtra": 11,
-  "punjab": 12,
-};
-
-const DEFAULT_DESTINATION_LINKS: NavChild[] = [
-  { href: "/tour-packages/india", label: "India" },
-  { href: "/tour-packages/india/kerala", label: "Kerala" },
-  { href: "/tour-packages/india/rajasthan", label: "Rajasthan" },
-  { href: "/tour-packages/india/jammu-and-kashmir", label: "Jammu And Kashmir" },
-  { href: "/tour-packages/india/himachal-pradesh", label: "Himachal Pradesh" },
-  { href: "/tour-packages/india/uttarakhand", label: "Uttarakhand" },
-  { href: "/tour-packages/india/ladakh", label: "Ladakh" },
-  { href: "/tour-packages/india/goa", label: "Goa" },
-  { href: "/tour-packages/india/golden-triangle", label: "Golden Triangle" },
-  { href: "/tour-packages/india/uttar-pradesh", label: "Uttar Pradesh" },
-  { href: "/tour-packages/india/madhya-pradesh", label: "Madhya Pradesh" },
-  { href: "/tour-packages/india/maharashtra", label: "Maharashtra" },
-  { href: "/tour-packages/india/punjab", label: "Punjab" },
-  { href: "/tour-packages/india/delhi", label: "Delhi" },
-];
-
-const DEFAULT_TOUR_LINKS: NavChild[] = [
-  { href: "/tour-packages/3-days-delhi-agra-weekend-tour", label: "3 Days Delhi Agra Weekend Tour" },
-  { href: "/tour-packages/8-days-rajasthan-wildlife-tour", label: "8 Days Rajasthan Wildlife Tour" },
-  { href: "/tour-packages/8-days-kerala-hills-backwaters-beaches-tour", label: "8 Days Kerala Hills & Backwaters" },
-  { href: "/tour-packages/16-days-rajasthan-itinerary-with-agra-and-delhi", label: "16 Days Rajasthan with Agra & Delhi" },
-  { href: "/tour-packages/india/golden-triangle", label: "Golden Triangle Tour" },
-  { href: "/tour-packages/india/kerala", label: "Kerala Tour Packages" },
-  { href: "/tour-packages/india/rajasthan", label: "Rajasthan Tour Packages" },
-  { href: "/tour-packages/india/jammu-and-kashmir", label: "Kashmir Tour Packages" },
-  { href: "/tour-packages/india/himachal-pradesh", label: "Himachal Tour Packages" },
-  { href: "/tour-packages/india/uttarakhand", label: "Uttarakhand Tour Packages" },
-  { href: "/tour-packages/india/ladakh", label: "Ladakh Tour Packages" },
-  { href: "/tour-packages/india/goa", label: "Goa Holiday Packages" },
-];
-
-const DEFAULT_EXPERIENCE_LINKS: NavChild[] = [
-  { href: "/travel-experiences/golden-triangle-tour-india", label: "Golden Triangle Tours" },
-  { href: "/travel-experiences/taj-mahal", label: "Taj Mahal Day & Short Tours" },
-  { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & Wellness Retreats" },
-  { href: "/travel-experiences/wildlife", label: "Wildlife & Tiger Safaris" },
-  { href: "/travel-experiences/spiritual", label: "Spiritual & Ganges Tours" },
-  { href: "/travel-experiences/heritage-and-culture", label: "Heritage, Forts & Palaces" },
-  { href: "/travel-experiences/hill-station", label: "Hill Stations & Mountain Escapes" },
-  { href: "/travel-experiences/weekend-tours-in-india", label: "Weekend Tours in India" },
-];
-
-function buildDefaultDestinationTree(): DestinationTreeCountry[] {
-  return [
-    {
-      id: 1,
-      title: "India",
-      slug: "india",
-      href: "/tour-packages/india",
-      states: [
-        {
-          id: 2,
-          title: "Rajasthan",
-          slug: "rajasthan",
-          href: "/tour-packages/india/rajasthan",
-          displayOrder: 1,
-          cities: [
-            { id: 201, title: "Jaipur", slug: "jaipur", href: "/tour-packages/india/rajasthan/jaipur" },
-            { id: 202, title: "Udaipur", slug: "udaipur", href: "/tour-packages/india/rajasthan/udaipur" },
-            { id: 203, title: "Jodhpur", slug: "jodhpur", href: "/tour-packages/india/rajasthan/jodhpur" },
-            { id: 204, title: "Jaisalmer", slug: "jaisalmer", href: "/tour-packages/india/rajasthan/jaisalmer" },
-            { id: 205, title: "Pushkar", slug: "pushkar", href: "/tour-packages/india/rajasthan/pushkar" },
-            { id: 206, title: "Bikaner", slug: "bikaner", href: "/tour-packages/india/rajasthan/bikaner" },
-            { id: 207, title: "Mount Abu", slug: "mount-abu", href: "/tour-packages/india/rajasthan/mount-abu" },
-            { id: 208, title: "Ranakpur", slug: "ranakpur", href: "/tour-packages/india/rajasthan/ranakpur" },
-            { id: 209, title: "Neemrana", slug: "neemrana", href: "/tour-packages/india/rajasthan/neemrana" },
-            { id: 210, title: "Chittorgarh", slug: "chittorgarh", href: "/tour-packages/india/rajasthan/chittorgarh" },
-            { id: 211, title: "Sariska", slug: "sariska", href: "/tour-packages/india/rajasthan/sariska" },
-            { id: 212, title: "Bharatpur", slug: "bharatpur", href: "/tour-packages/india/rajasthan/bharatpur" },
-            { id: 213, title: "Mandawa", slug: "mandawa", href: "/tour-packages/india/rajasthan/mandawa" },
-            { id: 214, title: "Alwar", slug: "alwar", href: "/tour-packages/india/rajasthan/alwar" },
-            { id: 215, title: "Bundi", slug: "bundi", href: "/tour-packages/india/rajasthan/bundi" },
-            { id: 216, title: "Ajmer", slug: "ajmer", href: "/tour-packages/india/rajasthan/ajmer" },
-          ],
-          experiences: [
-            { id: 1, title: "Heritage & Culture Tours", slug: "heritage-and-culture", href: "/travel-experiences/heritage-and-culture/rajasthan", count: 7 },
-            { id: 2, title: "Wildlife & Safari Tours", slug: "wildlife", href: "/travel-experiences/wildlife/rajasthan", count: 3 },
-            { id: 3, title: "Desert Safari & Camping", slug: "desert-safari", href: "/travel-experiences/desert-safari/rajasthan", count: 3 },
-            { id: 4, title: "Nature & Fort Trails", slug: "nature", href: "/travel-experiences/nature/rajasthan", count: 3 },
-          ],
-        },
-        {
-          id: 1,
-          title: "Kerala",
-          slug: "kerala",
-          href: "/tour-packages/india/kerala",
-          displayOrder: 2,
-          cities: [
-            { id: 101, title: "Munnar", slug: "munnar", href: "/tour-packages/india/kerala/munnar" },
-            { id: 102, title: "Alleppey", slug: "alleppey", href: "/tour-packages/india/kerala/alleppey" },
-            { id: 103, title: "Kochi", slug: "kochi", href: "/tour-packages/india/kerala/kochi" },
-            { id: 104, title: "Kovalam", slug: "kovalam", href: "/tour-packages/india/kerala/kovalam" },
-            { id: 105, title: "Thekkady", slug: "thekkady", href: "/tour-packages/india/kerala/thekkady" },
-            { id: 106, title: "Kumarakom", slug: "kumarakom", href: "/tour-packages/india/kerala/kumarakom" },
-          ],
-          experiences: [
-            { id: 5, title: "Nature & Hills Holidays", slug: "nature", href: "/travel-experiences/nature/kerala", count: 4 },
-            { id: 6, title: "Ayurveda & Wellness Retreats", slug: "ayurveda-yoga", href: "/travel-experiences/ayurveda-yoga/kerala", count: 3 },
-            { id: 7, title: "Beach & Backwater Cruises", slug: "beach-lake", href: "/travel-experiences/beach-lake/kerala", count: 3 },
-          ],
-        },
-        {
-          id: 7,
-          title: "Uttar Pradesh",
-          slug: "uttar-pradesh",
-          href: "/tour-packages/india/uttar-pradesh",
-          displayOrder: 3,
-          cities: [
-            { id: 701, title: "Agra", slug: "agra", href: "/tour-packages/india/uttar-pradesh/agra" },
-            { id: 702, title: "Varanasi", slug: "varanasi", href: "/tour-packages/india/uttar-pradesh/varanasi" },
-            { id: 703, title: "Lucknow", slug: "lucknow", href: "/tour-packages/india/uttar-pradesh/lucknow" },
-            { id: 704, title: "Mathura", slug: "mathura", href: "/tour-packages/india/uttar-pradesh/mathura" },
-          ],
-          experiences: [
-            { id: 8, title: "Heritage & Monument Tours", slug: "heritage-and-culture", href: "/travel-experiences/heritage-and-culture/uttar-pradesh", count: 5 },
-            { id: 9, title: "Spiritual & Ganges Itineraries", slug: "spiritual", href: "/travel-experiences/spiritual/uttar-pradesh", count: 3 },
-          ],
-        },
-        {
-          id: 12,
-          title: "Delhi",
-          slug: "delhi",
-          href: "/tour-packages/india/delhi",
-          displayOrder: 4,
-          cities: [
-            { id: 1202, title: "New Delhi", slug: "new-delhi", href: "/tour-packages/india/delhi/new-delhi" },
-            { id: 1201, title: "Gurugram", slug: "gurugram", href: "/tour-packages/india/delhi/gurugram" },
-          ],
-        },
-        {
-          id: 3,
-          title: "Jammu And Kashmir",
-          slug: "jammu-and-kashmir",
-          href: "/tour-packages/india/jammu-and-kashmir",
-          displayOrder: 5,
-          cities: [
-            { id: 301, title: "Srinagar", slug: "srinagar", href: "/tour-packages/india/jammu-and-kashmir/srinagar" },
-            { id: 302, title: "Gulmarg", slug: "gulmarg", href: "/tour-packages/india/jammu-and-kashmir/gulmarg" },
-            { id: 303, title: "Pahalgam", slug: "pahalgam", href: "/tour-packages/india/jammu-and-kashmir/pahalgam" },
-            { id: 304, title: "Sonamarg", slug: "sonamarg", href: "/tour-packages/india/jammu-and-kashmir/sonamarg" },
-            { id: 305, title: "Patnitop", slug: "patnitop", href: "/tour-packages/india/jammu-and-kashmir/patnitop" },
-          ],
-        },
-        {
-          id: 5,
-          title: "Ladakh",
-          slug: "ladakh",
-          href: "/tour-packages/india/ladakh",
-          displayOrder: 6,
-          cities: [
-            { id: 501, title: "Leh", slug: "leh", href: "/tour-packages/india/ladakh/leh" },
-            { id: 502, title: "Nubra Valley", slug: "nubra-valley", href: "/tour-packages/india/ladakh/nubra-valley" },
-            { id: 503, title: "Pangong Tso", slug: "pangong-tso", href: "/tour-packages/india/ladakh/pangong-tso" },
-            { id: 504, title: "Kargil", slug: "kargil", href: "/tour-packages/india/ladakh/kargil" },
-            { id: 505, title: "Hanle", slug: "hanle", href: "/tour-packages/india/ladakh/hanle" },
-            { id: 506, title: "Alchi Monastery", slug: "alchi-monastery", href: "/tour-packages/india/ladakh/alchi-monastery" },
-            { id: 507, title: "Hemis Monastery", slug: "hemis-monastery", href: "/tour-packages/india/ladakh/hemis-monastery" },
-            { id: 508, title: "Magnetic Hill", slug: "magnetic-hill", href: "/tour-packages/india/ladakh/magnetic-hill" },
-          ],
-        },
-        {
-          id: 4,
-          title: "Himachal Pradesh",
-          slug: "himachal-pradesh",
-          href: "/tour-packages/india/himachal-pradesh",
-          displayOrder: 7,
-          cities: [
-            { id: 401, title: "Shimla", slug: "shimla", href: "/tour-packages/india/himachal-pradesh/shimla" },
-            { id: 402, title: "Manali", slug: "manali", href: "/tour-packages/india/himachal-pradesh/manali" },
-            { id: 403, title: "Dharamshala", slug: "dharamshala", href: "/tour-packages/india/himachal-pradesh/dharamshala" },
-            { id: 404, title: "Kufri", slug: "kufri", href: "/tour-packages/india/himachal-pradesh/kufri" },
-            { id: 405, title: "Kasauli", slug: "kasauli", href: "/tour-packages/india/himachal-pradesh/kasauli" },
-            { id: 406, title: "Rohtang Pass", slug: "rohtang-pass", href: "/tour-packages/india/himachal-pradesh/rohtang-pass" },
-            { id: 407, title: "Sarchu", slug: "sarchu", href: "/tour-packages/india/himachal-pradesh/sarchu" },
-          ],
-        },
-        {
-          id: 6,
-          title: "Uttarakhand",
-          slug: "uttarakhand",
-          href: "/tour-packages/india/uttarakhand",
-          displayOrder: 8,
-          cities: [
-            { id: 601, title: "Rishikesh", slug: "rishikesh", href: "/tour-packages/india/uttarakhand/rishikesh" },
-            { id: 602, title: "Nainital", slug: "nainital", href: "/tour-packages/india/uttarakhand/nainital" },
-            { id: 603, title: "Mussoorie", slug: "mussoorie", href: "/tour-packages/india/uttarakhand/mussoorie" },
-            { id: 604, title: "Auli", slug: "auli", href: "/tour-packages/india/uttarakhand/auli" },
-            { id: 605, title: "Jim Corbett National Park", slug: "jim-corbett-national-park", href: "/tour-packages/india/uttarakhand/jim-corbett-national-park" },
-          ],
-        },
-        {
-          id: 8,
-          title: "Goa",
-          slug: "goa",
-          href: "/tour-packages/india/goa",
-          displayOrder: 9,
-          cities: [
-            { id: 801, title: "North Goa", slug: "north-goa", href: "/tour-packages/india/goa/north-goa" },
-            { id: 802, title: "South Goa", slug: "south-goa", href: "/tour-packages/india/goa/south-goa" },
-          ],
-        },
-        {
-          id: 9,
-          title: "Madhya Pradesh",
-          slug: "madhya-pradesh",
-          href: "/tour-packages/india/madhya-pradesh",
-          displayOrder: 10,
-          cities: [
-            { id: 901, title: "Khajuraho", slug: "khajuraho", href: "/tour-packages/india/madhya-pradesh/khajuraho" },
-            { id: 902, title: "Bandhavgarh", slug: "bandhavgarh", href: "/tour-packages/india/madhya-pradesh/bandhavgarh" },
-            { id: 903, title: "Kanha National Park", slug: "kanha-national-park", href: "/tour-packages/india/madhya-pradesh/kanha-national-park" },
-          ],
-        },
-        {
-          id: 10,
-          title: "Maharashtra",
-          slug: "maharashtra",
-          href: "/tour-packages/india/maharashtra",
-          displayOrder: 11,
-          cities: [
-            { id: 1001, title: "Mumbai", slug: "mumbai", href: "/tour-packages/india/maharashtra/mumbai" },
-            { id: 1002, title: "Tadoba", slug: "tadoba", href: "/tour-packages/india/maharashtra/tadoba" },
-            { id: 1003, title: "Pench", slug: "pench", href: "/tour-packages/india/maharashtra/pench" },
-            { id: 1004, title: "Nashik", slug: "nashik", href: "/tour-packages/india/maharashtra/nashik" },
-            { id: 1005, title: "Nagpur", slug: "nagpur", href: "/tour-packages/india/maharashtra/nagpur" },
-          ],
-        },
-        {
-          id: 11,
-          title: "Punjab",
-          slug: "punjab",
-          href: "/tour-packages/india/punjab",
-          displayOrder: 12,
-          cities: [
-            { id: 1101, title: "Amritsar", slug: "amritsar", href: "/tour-packages/india/punjab/amritsar" },
-          ],
-        },
-      ],
-    },
-  ];
-}
+import {
+  STATIC_DESTINATION_TREE,
+  getActiveTravelStyles,
+  getActiveAboutItems,
+} from "@/config/navigationConfig";
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
@@ -341,146 +82,7 @@ export const Header: React.FC = () => {
     };
   }, [isMobileMenuOpen]);
 
-  const { states } = useGetStates({ limit: 100, isActive: "true" });
-  const { journeys } = useGetJourneys({ limit: 100, isActive: "true" });
-  const { travelExperiences } = useGetTravelExperiences({
-    limit: 100,
-    isActive: "true",
-  });
-
-  const destinationTree = useMemo(() => {
-    if (!states || states.length === 0) return [];
-
-    const countryMap = new Map<number, DestinationTreeCountry>();
-
-    // Precompute state experiences with count >= 3
-    const stateExpMap = new Map<string, { id: number; title: string; slug: string; href: string; count: number }[]>();
-    
-    (states || []).forEach(state => {
-      const stateSlug = state.slug.toLowerCase();
-      const sJourneys = (journeys || []).filter(j => {
-        const inStates = (j.states || []).some(s => s.slug?.toLowerCase() === stateSlug);
-        const inCities = (j.cities || []).some(c => (c.state?.slug?.toLowerCase() === stateSlug) || (c.slug && state.cities?.some(sc => sc.slug === c.slug)));
-        return inStates || inCities;
-      });
-
-      const expCounts = new Map<string, { id: number; title: string; slug: string; href: string; count: number }>();
-      sJourneys.forEach(j => {
-        (j.travelExperiences || []).forEach(e => {
-          if (!e.slug || e.slug === "golden-triangle" || e.slug === "golden-triangle-tour-india") return;
-          const ex = expCounts.get(e.slug);
-          if (ex) {
-            ex.count += 1;
-          } else {
-            expCounts.set(e.slug, {
-              id: e.id,
-              title: stripTourSuffix(e.title),
-              slug: e.slug,
-              href: `/travel-experiences/${e.slug}/${state.slug}`,
-              count: 1
-            });
-          }
-        });
-      });
-
-      const validExps = Array.from(expCounts.values())
-        .filter(item => item.count >= 3)
-        .sort((a, b) => b.count - a.count);
-
-      stateExpMap.set(stateSlug, validExps);
-    });
-
-    states.forEach(state => {
-      if (!state.country) return;
-      // Golden Triangle is an Experience (/travel-experiences/golden-triangle-tour-india), not a State
-      if (state.slug === "golden-triangle" || state.slug === "golden-triangle-tour-india") return;
-
-      if (!countryMap.has(state.country.id)) {
-        countryMap.set(state.country.id, {
-          id: state.country.id,
-          title: state.country.title,
-          slug: state.country.slug,
-          href: `/tour-packages/${state.country.slug}`,
-          states: []
-        });
-      }
-
-      const countryEntry = countryMap.get(state.country.id)!;
-
-      const sortedCities = [...(state.cities || [])]
-        .sort((a, b) => {
-          const aOrder = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999;
-          const bOrder = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
-          return aOrder - bOrder;
-        })
-        .map(city => ({
-          id: city.id as number,
-          title: stripTourSuffix(city.title || ""),
-          slug: city.slug || "",
-          href: `/tour-packages/${state.country!.slug}/${state.slug}/${city.slug}`
-        }));
-
-      const statePriority = STATE_POPULARITY_PRIORITY[state.slug.toLowerCase()] ?? (state.displayOrder && state.displayOrder > 0 ? state.displayOrder + 20 : 999);
-
-      countryEntry.states.push({
-        id: state.id,
-        title: stripTourSuffix(state.h1Title || state.title || ""),
-        slug: state.slug,
-        href: `/tour-packages/${state.country.slug}/${state.slug}`,
-        displayOrder: statePriority,
-        cities: sortedCities,
-        experiences: stateExpMap.get(state.slug.toLowerCase()) || []
-      });
-    });
-
-    const result = Array.from(countryMap.values())
-      .filter((country) => country.states.length > 0)
-      .map((country) => {
-        country.states.sort((a, b) => a.displayOrder - b.displayOrder);
-        return country;
-      });
-
-    result.sort((a, b) => {
-      if (a.slug.toLowerCase() === 'india') return -1;
-      if (b.slug.toLowerCase() === 'india') return 1;
-      return a.title.localeCompare(b.title);
-    });
-
-    return result;
-  }, [states, journeys]);
-
-  const tourLinks = useMemo(() => {
-    const links = pickPriorityLinks<Journey>(
-      journeys,
-      (j) => j.displayOrder ?? 0,
-      (j) => {
-        return {
-          href: `/tour-packages/${j.slug}`,
-          label: stripTourSuffix(j.title || j.h1Title),
-        };
-      }
-    );
-    return links.length > 0 ? links : DEFAULT_TOUR_LINKS;
-  }, [journeys]);
-
-  const experienceLinks = useMemo(
-    () => [
-      { href: "/travel-experiences/golden-triangle-tour-india", label: "Golden Triangle Tours" },
-      { href: "/travel-experiences/taj-mahal", label: "Taj Mahal Day & Short Tours" },
-      { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & Wellness Retreats" },
-      { href: "/travel-experiences/wildlife", label: "Wildlife & Tiger Safaris" },
-      { href: "/travel-experiences/spiritual", label: "Spiritual & Ganges Tours" },
-      { href: "/travel-experiences/heritage-and-culture", label: "Heritage, Forts & Palaces" },
-      { href: "/travel-experiences/hill-station", label: "Hill Stations & Mountain Escapes" },
-      { href: "/travel-experiences/weekend-tours-in-india", label: "Weekend Tours in India" },
-    ],
-    []
-  );
-
-  const safeDestinationTree = useMemo<DestinationTreeCountry[]>(
-    () => (destinationTree.length > 0 ? destinationTree : buildDefaultDestinationTree()),
-    [destinationTree]
-  );
+  const safeDestinationTree = STATIC_DESTINATION_TREE;
 
   const destinationLinks = useMemo<NavChild[]>(() => {
     const links: NavChild[] = [];
@@ -489,8 +91,11 @@ export const Header: React.FC = () => {
         links.push({ href: state.href, label: state.title })
       )
     );
-    return links.length > 0 ? links.slice(0, 16) : DEFAULT_DESTINATION_LINKS;
+    return links.slice(0, 16);
   }, [safeDestinationTree]);
+
+  const travelStyleLinks = useMemo<NavChild[]>(() => getActiveTravelStyles(), []);
+  const aboutLinks = useMemo<NavChild[]>(() => getActiveAboutItems(), []);
 
   type NavLink = {
     href: string;
@@ -517,33 +122,27 @@ export const Header: React.FC = () => {
         children: [{ href: "/destinations", label: "All Destinations" }, ...destinationLinks],
         seeAllHref: "/destinations",
         dropdownTitle: "Top Destinations",
-        dropdownSubtext: "Explore all destinations worldwide",
       },
       {
         href: "/travel-experiences",
         label: "Travel Styles",
         directHref: "/travel-experiences",
-        children: experienceLinks,
+        children: travelStyleLinks,
         dropdownStyle: "mega",
         dropdownColumns: 1,
         seeAllHref: "/travel-experiences",
         dropdownTitle: "Curated Travel Styles",
-        dropdownSubtext: "Handcrafted theme journeys across India",
       },
       {
         href: "/about-company",
         label: "About Company",
-        children: [
-          { href: "/about-us", label: "About Us" },
-          { href: "/guest-gallery", label: "Guest Gallery" },
-          { href: "/contact-us", label: "Contact Us" },
-        ],
+        children: aboutLinks,
         dropdownStyle: "mega",
         dropdownColumns: 1,
         dropdownTitle: "About Company",
       },
     ],
-    [safeDestinationTree, destinationLinks, experienceLinks]
+    [safeDestinationTree, destinationLinks, travelStyleLinks, aboutLinks]
   );
 
   useEffect(() => {
@@ -852,10 +451,16 @@ export const Header: React.FC = () => {
                           ))}
                         </div>
                         {link.seeAllHref && (
-                          <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between">
-                            <span className="text-[13px] text-slate-500 font-medium">
-                              {link.dropdownSubtext ?? "Explore all destinations worldwide"}
-                            </span>
+                          <div
+                            className={`mt-3.5 pt-3 border-t border-slate-100 flex items-center ${
+                              link.dropdownSubtext ? "justify-between" : "justify-end"
+                            }`}
+                          >
+                            {link.dropdownSubtext && (
+                              <span className="text-[13px] text-slate-500 font-medium">
+                                {link.dropdownSubtext}
+                              </span>
+                            )}
                             <Link
                               href={link.seeAllHref}
                               onClick={() => setOpenDesktopDropdown(null)}
