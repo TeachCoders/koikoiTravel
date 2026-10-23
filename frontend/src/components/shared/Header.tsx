@@ -69,12 +69,13 @@ const DEFAULT_TOUR_LINKS: NavChild[] = [
 
 const DEFAULT_EXPERIENCE_LINKS: NavChild[] = [
   { href: "/travel-experiences/golden-triangle-tour-india", label: "Golden Triangle Tours" },
+  { href: "/travel-experiences/taj-mahal", label: "Taj Mahal Day & Short Tours" },
+  { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & Wellness Retreats" },
   { href: "/travel-experiences/wildlife", label: "Wildlife & Tiger Safaris" },
+  { href: "/travel-experiences/spiritual", label: "Spiritual & Ganges Tours" },
   { href: "/travel-experiences/heritage-and-culture", label: "Heritage, Forts & Palaces" },
   { href: "/travel-experiences/hill-station", label: "Hill Stations & Mountain Escapes" },
-  { href: "/travel-experiences/spiritual", label: "Spiritual & Ganges Tours" },
-  { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & Wellness Retreats" },
-  { href: "/travel-experiences/taj-mahal", label: "Taj Mahal Day & Short Tours" },
+  { href: "/travel-experiences/weekend-tours-in-india", label: "Weekend Tours in India" },
 ];
 
 function buildDefaultDestinationTree(): DestinationTreeCountry[] {
@@ -465,12 +466,13 @@ export const Header: React.FC = () => {
   const experienceLinks = useMemo(
     () => [
       { href: "/travel-experiences/golden-triangle-tour-india", label: "Golden Triangle Tours" },
+      { href: "/travel-experiences/taj-mahal", label: "Taj Mahal Day & Short Tours" },
+      { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & Wellness Retreats" },
       { href: "/travel-experiences/wildlife", label: "Wildlife & Tiger Safaris" },
+      { href: "/travel-experiences/spiritual", label: "Spiritual & Ganges Tours" },
       { href: "/travel-experiences/heritage-and-culture", label: "Heritage, Forts & Palaces" },
       { href: "/travel-experiences/hill-station", label: "Hill Stations & Mountain Escapes" },
-      { href: "/travel-experiences/spiritual", label: "Spiritual & Ganges Tours" },
-      { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & Wellness Retreats" },
-      { href: "/travel-experiences/taj-mahal", label: "Taj Mahal Day & Short Tours" },
+      { href: "/travel-experiences/weekend-tours-in-india", label: "Weekend Tours in India" },
     ],
     []
   );
