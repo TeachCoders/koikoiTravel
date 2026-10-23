@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { useCountryBySlug } from "@/feature/country/api/useCountry";
 import { useGetStates } from "@/feature/state/api/useState";
+import { useGetCities } from "@/feature/city/api/useCity";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import DestinationSlider, { useSliderControl } from "@/components/shared/DestinationSlider";
 import HeroSlider from "@/components/shared/HeroSlider";
@@ -114,6 +115,7 @@ interface CitySpotlight {
   image: string;
   href: string;
   highlight: string;
+  tourCount?: number;
 }
 
 const TOP_CITIES_SPOTLIGHT: CitySpotlight[] = [
@@ -345,6 +347,12 @@ function CountryContent({
     initialStates
   );
 
+  const { cities: dbCities, isLoading: citiesLoading } = useGetCities({
+    countryId: country.id,
+    limit: 100,
+    isActive: "true",
+  });
+
   const { journeys, isLoading: journeysLoading } = useGetJourneys(
     { limit: 100, isActive: "true" },
     initialJourneys
@@ -507,9 +515,48 @@ function CountryContent({
   );
 
   const displayedCitiesSpotlight = useMemo(() => {
+    // 100% Dynamic from Database (City table)
+    if (dbCities && dbCities.length > 0) {
+      const sorted = [...dbCities].sort((a, b) => {
+        const aTours = a.tourCount || 0;
+        const bTours = b.tourCount || 0;
+        if (bTours !== aTours) return bTours - aTours;
+        return (a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999) - (b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999);
+      });
+
+      const mapped = sorted.map((c) => {
+        const stateSlug = c.state?.slug || "";
+        let region = "all";
+        if (["rajasthan"].includes(stateSlug)) region = "rajasthan";
+        else if (["kerala", "tamil-nadu", "karnataka", "goa"].includes(stateSlug)) region = "kerala";
+        else if (["himachal-pradesh", "uttarakhand", "jammu-and-kashmir", "ladakh", "punjab"].includes(stateSlug)) region = "himalayas";
+        else if (["delhi", "uttar-pradesh"].includes(stateSlug)) region = "golden-triangle";
+
+        const href = c.state?.slug ? `/tour-packages/india/${c.state.slug}/${c.slug}` : `/tour-packages/india/${c.slug}`;
+        const tag = c.banner?.bannerTag || c.h1Title || c.state?.title || "Heritage City";
+        const image = c.thumbImg || c.banner?.images?.[0] || "/content/jaipur-holiday-1.webp";
+        const highlight = c.attractions || c.famousFor?.replace(/<[^>]+>/g, "").slice(0, 90) || `${c.title} private sightseeing & heritage tours`;
+
+        return {
+          id: c.id,
+          name: c.title,
+          state: c.state?.title || "",
+          region,
+          tag,
+          image,
+          href,
+          highlight,
+          tourCount: c.tourCount || 0,
+        };
+      });
+
+      if (cityTab === "all") return mapped.slice(0, 18);
+      return mapped.filter((c) => c.region === cityTab).slice(0, 18);
+    }
+
     if (cityTab === "all") return TOP_CITIES_SPOTLIGHT;
     return TOP_CITIES_SPOTLIGHT.filter((c) => c.region === cityTab);
-  }, [cityTab]);
+  }, [dbCities, cityTab]);
 
   return (
     <div className="bg-white">
@@ -793,7 +840,9 @@ function CountryContent({
                     </p>
                     <div className="mt-2.5 flex items-center justify-between text-[11px] font-semibold text-white/90 pt-2 border-t border-white/15">
                       <span>{city.state}</span>
-                      <ChevronRight size={13} className="text-[#F8904D] group-hover:translate-x-1 transition-transform" />
+                      <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full text-white/95">
+                        {(city.tourCount ?? 0) > 0 ? `${city.tourCount} Tours` : "Explore"}
+                      </span>
                     </div>
                   </div>
                 </Link>

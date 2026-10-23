@@ -374,18 +374,9 @@ export const Header: React.FC = () => {
             </div>
           )}
 
-          {/* Mobile Right Controls: Language Selector + Create My Trip + Hamburger Toggle */}
+          {/* Mobile Right Controls: Language Selector + Hamburger Toggle */}
           <div className="flex md:hidden items-center gap-1.5 sm:gap-2">
             <LanguageSelector />
-
-            <QuoteModal>
-              <button
-                type="button"
-                className="btn-primary px-2.5 sm:px-3 h-10 sm:h-11 text-xs font-semibold flex items-center justify-center gap-1 shadow-xs cursor-pointer shrink-0"
-              >
-                <span>Create My Trip</span>
-              </button>
-            </QuoteModal>
 
             {!isOfferPage && (
               <button
@@ -404,9 +395,9 @@ export const Header: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Search Bar (Only shown on mobile beneath logo row) */}
-        {!isOfferPage && (
-          <div className="mt-2 pb-1 md:hidden">
+        {/* Mobile Search Bar (Only shown on top, automatically hides when scrolled) */}
+        {!isOfferPage && !isScrolled && (
+          <div className="mt-2 pb-1 md:hidden transition-all duration-200">
             <HeaderSearchBar />
           </div>
         )}
