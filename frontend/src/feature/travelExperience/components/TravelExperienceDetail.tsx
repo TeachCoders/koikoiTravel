@@ -180,8 +180,12 @@ function ExperienceContent({
     />
   );
 
-  const heroImages =
-    customHeroBanners.length > 0
+  const isGoldenTriangle =
+    experience.slug === "golden-triangle-tour-india" || experience.slug === "golden-triangle";
+
+  const heroImages = isGoldenTriangle
+    ? ["/banners/golden-triangle-comic-banner.webp"]
+    : customHeroBanners.length > 0
       ? customHeroBanners.map((b) => b.image)
       : experience.banner?.images?.length
         ? experience.banner.images
@@ -194,7 +198,13 @@ function ExperienceContent({
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={h1Title} />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
+            <div
+              className={`absolute inset-0 z-10 pointer-events-none ${
+                isGoldenTriangle
+                  ? "bg-gradient-to-t from-black/40 via-transparent to-black/25"
+                  : "bg-gradient-to-t from-black/55 via-black/20 to-black/10"
+              }`}
+            />
           </>
         ) : (
           <div className="absolute inset-0">
