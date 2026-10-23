@@ -10,11 +10,10 @@ import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
 import type { NavChild } from "@/lib/utils";
 import { QuoteModal } from "./QuoteModal";
 import { RequestCallbackModal } from "./RequestCallbackModal";
-import DestinationMegaMenu, { DestinationTreeCountry } from "./DestinationMegaMenu";
 import LanguageSelector from "./LanguageSelector";
 import HeaderSearchBar from "./HeaderSearchBar";
 import {
-  STATIC_DESTINATION_TREE,
+  getActiveIndiaTours,
   getActiveTravelStyles,
   getActiveAboutItems,
 } from "@/config/navigationConfig";
@@ -28,8 +27,6 @@ export const Header: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const [openDesktopDropdown, setOpenDesktopDropdown] = useState<string | null>(null);
   const [openMenuKey, setOpenMenuKey] = useState<string | null>(null);
-  const [expandedCountries, setExpandedCountries] = useState<Record<number, boolean>>({});
-  const [expandedStates, setExpandedStates] = useState<Record<number, boolean>>({});
   const megaMenuCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const clearMegaMenuCloseTimer = useCallback(() => {
@@ -48,8 +45,6 @@ export const Header: React.FC = () => {
 
   const handleMobileOpen = useCallback(() => {
     setOpenMenuKey(null);
-    setExpandedCountries({});
-    setExpandedStates({});
     setIsMobileMenuOpen(true);
   }, []);
 
@@ -59,14 +54,6 @@ export const Header: React.FC = () => {
 
   const toggleMenu = useCallback((key: string) => {
     setOpenMenuKey((prev) => (prev === key ? null : key));
-  }, []);
-
-  const toggleCountryExpanded = useCallback((id: number) => {
-    setExpandedCountries((prev) => ({ ...prev, [id]: !prev[id] }));
-  }, []);
-
-  const toggleStateExpanded = useCallback((id: number) => {
-    setExpandedStates((prev) => ({ ...prev, [id]: !prev[id] }));
   }, []);
 
   useEffect(() => {
@@ -82,26 +69,13 @@ export const Header: React.FC = () => {
     };
   }, [isMobileMenuOpen]);
 
-  const safeDestinationTree = STATIC_DESTINATION_TREE;
-
-  const destinationLinks = useMemo<NavChild[]>(() => {
-    const links: NavChild[] = [];
-    safeDestinationTree.forEach((country) =>
-      country.states.forEach((state) =>
-        links.push({ href: state.href, label: state.title })
-      )
-    );
-    return links.slice(0, 16);
-  }, [safeDestinationTree]);
-
+  const indiaTourLinks = useMemo<NavChild[]>(() => getActiveIndiaTours(), []);
   const travelStyleLinks = useMemo<NavChild[]>(() => getActiveTravelStyles(), []);
   const aboutLinks = useMemo<NavChild[]>(() => getActiveAboutItems(), []);
 
   type NavLink = {
     href: string;
     label: string;
-    isDestinationMega?: boolean;
-    tree?: DestinationTreeCountry[];
     children?: NavChild[];
     dropdownStyle?: string;
     dropdownColumns?: number;
@@ -117,9 +91,9 @@ export const Header: React.FC = () => {
         href: "/destinations",
         label: "India Tours",
         directHref: "/destinations",
-        isDestinationMega: true,
-        tree: safeDestinationTree,
-        children: [{ href: "/destinations", label: "All Destinations" }, ...destinationLinks],
+        children: indiaTourLinks,
+        dropdownStyle: "mega",
+        dropdownColumns: 1,
         seeAllHref: "/destinations",
         dropdownTitle: "India Tours",
       },
@@ -131,7 +105,7 @@ export const Header: React.FC = () => {
         dropdownStyle: "mega",
         dropdownColumns: 1,
         seeAllHref: "/travel-experiences",
-        dropdownTitle: "Curated Travel Styles",
+        dropdownTitle: "Travel Styles",
       },
       {
         href: "/about-company",
@@ -142,7 +116,7 @@ export const Header: React.FC = () => {
         dropdownTitle: "About Company",
       },
     ],
-    [safeDestinationTree, destinationLinks, travelStyleLinks, aboutLinks]
+    [indiaTourLinks, travelStyleLinks, aboutLinks]
   );
 
   useEffect(() => {
@@ -152,13 +126,12 @@ export const Header: React.FC = () => {
   }, []);
 
   const renderMobileAccordion = navLinks.map((link) => {
-    const isDrill = link.isDestinationMega && link.tree && link.tree.length > 0;
     const hasChildren = link.children && link.children.length > 0;
     const isOpen = openMenuKey === link.href;
 
     return (
       <div key={link.href} className="border-b border-[#f2f2f2] last:border-0">
-        {!isDrill && !hasChildren ? (
+        {!hasChildren ? (
           <Link
             href={link.href}
             onClick={handleMobileClose}
@@ -188,112 +161,25 @@ export const Header: React.FC = () => {
         >
           <div className="overflow-hidden">
             <div className="pb-3">
-            {isDrill ? (
-              safeDestinationTree.map((country) => {
-                const isCountryOpen = !!expandedCountries[country.id];
-                return (
-                  <div key={country.id}>
-                    <button
-                      type="button"
-                      onClick={() => toggleCountryExpanded(country.id)}
-                      aria-expanded={isCountryOpen}
-                      className="flex w-full items-center justify-between px-4 py-2.5 text-[15px] font-semibold text-[#1C1C1C] transition-colors hover:bg-[#f6f7f8]"
-                    >
-                      <span>{country.title}</span>
-                      <ChevronDown
-                        className={`h-4 w-4 text-[#999] transition-transform duration-300 ${isCountryOpen ? "rotate-180" : ""}`}
-                      />
-                    </button>
-                    <div
-                      className={`grid transition-all duration-300 ease-in-out ${isCountryOpen
-                        ? "grid-rows-[1fr] opacity-100"
-                        : "grid-rows-[0fr] opacity-0"
-                        }`}
-                    >
-                      <div className="overflow-hidden">
-                        <div>
-                        <Link
-                          href={country.href}
-                          onClick={handleMobileClose}
-                          className="flex items-center gap-1 px-4 py-2 text-[14px] font-bold text-[#F8904D]"
-                        >
-                          View all {country.title} tours <span aria-hidden>→</span>
-                        </Link>
-                        {country.states.map((state) => {
-                          const isStateOpen = !!expandedStates[state.id];
-                          return (
-                            <div key={state.id}>
-                              <button
-                                type="button"
-                                onClick={() => toggleStateExpanded(state.id)}
-                                aria-expanded={isStateOpen}
-                                className="flex w-full items-center justify-between px-6 py-2.5 text-[15px] font-semibold text-[#2E8B8B] transition-colors hover:bg-[#f6f7f8]"
-                              >
-                                <span>{state.title}</span>
-                                <ChevronDown
-                                  className={`h-4 w-4 text-[#999] transition-transform duration-300 ${isStateOpen ? "rotate-180" : ""}`}
-                                />
-                              </button>
-                              <div
-                              className={`grid transition-all duration-300 ease-in-out ${isStateOpen
-                                ? "grid-rows-[1fr] opacity-100"
-                                : "grid-rows-[0fr] opacity-0"
-                                }`}
-                            >
-                              <div className="overflow-hidden">
-                                <div className="flex flex-col">
-                                  {state.cities.map((city) => (
-                                    <Link
-                                      key={city.id}
-                                      href={city.href}
-                                      onClick={handleMobileClose}
-                                      className="px-8 py-2 text-[14px] text-[#444] transition-colors hover:bg-[#f6f7f8] hover:text-[#2E8B8B]"
-                                    >
-                                      {city.title}
-                                    </Link>
-                                  ))}
-                                  <Link
-                                    href={state.href}
-                                    onClick={handleMobileClose}
-                                    className="flex items-center gap-1 px-6 py-2 text-[14px] font-bold text-[#F8904D]"
-                                  >
-                                    View all {state.title} tours <span aria-hidden>→</span>
-                                  </Link>
-                                </div>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <>
-                {link.children?.map((child) => (
-                  <Link
-                    key={child.href}
-                    href={child.href}
-                    onClick={handleMobileClose}
-                    className="block px-4 py-2.5 text-[15px] font-medium text-[#444] transition-colors hover:bg-[#f6f7f8] hover:text-[#1C1C1C]"
-                  >
-                    <span suppressHydrationWarning>{child.label}</span>
-                  </Link>
-                ))}
-                {link.seeAllHref && (
-                  <Link
-                    href={link.seeAllHref}
-                    onClick={handleMobileClose}
-                    className="flex items-center gap-1 px-4 py-2.5 text-[14px] font-bold text-[#F8904D]"
-                  >
-                    See All <span aria-hidden>→</span>
-                  </Link>
-                )}
-              </>
-            )}
+              {link.children?.map((child) => (
+                <Link
+                  key={child.href}
+                  href={child.href}
+                  onClick={handleMobileClose}
+                  className="block px-4 py-2.5 text-[15px] font-medium text-[#444] transition-colors hover:bg-[#f6f7f8] hover:text-[#1C1C1C]"
+                >
+                  <span suppressHydrationWarning>{child.label}</span>
+                </Link>
+              ))}
+              {link.seeAllHref && (
+                <Link
+                  href={link.seeAllHref}
+                  onClick={handleMobileClose}
+                  className="flex items-center gap-1 px-4 py-2.5 text-[14px] font-bold text-[#F8904D]"
+                >
+                  See All <span aria-hidden>→</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -334,9 +220,9 @@ export const Header: React.FC = () => {
               {navLinks.map((link) => (
                 <div
                   key={link.href}
-                  className={`${link.isDestinationMega ? "" : "relative"} flex items-center h-full` }
-                  onMouseEnter={() => (link.children || link.isDestinationMega) ? (clearMegaMenuCloseTimer(), setOpenDesktopDropdown(link.href)) : null}
-                  onMouseLeave={() => (link.children || link.isDestinationMega) ? scheduleMegaMenuClose() : setOpenDesktopDropdown(null)}
+                  className="relative flex items-center h-full"
+                  onMouseEnter={() => link.children ? (clearMegaMenuCloseTimer(), setOpenDesktopDropdown(link.href)) : null}
+                  onMouseLeave={() => link.children ? scheduleMegaMenuClose() : setOpenDesktopDropdown(null)}
                 >
                   {link.directHref ? (
                     <div className="flex items-center h-full">
@@ -369,7 +255,7 @@ export const Header: React.FC = () => {
                         />
                       </button>
                     </div>
-                  ) : link.children || link.isDestinationMega ? (
+                  ) : link.children ? (
                     <button
                       type="button"
                       onClick={() =>
@@ -400,20 +286,7 @@ export const Header: React.FC = () => {
                     </Link>
                   )}
 
-                  {link.isDestinationMega && link.tree && link.tree.length > 0 && (
-                    <DestinationMegaMenu
-                      tree={link.tree as DestinationTreeCountry[]}
-                      isOpen={openDesktopDropdown === link.href}
-                      onMouseEnter={() => {
-                        clearMegaMenuCloseTimer();
-                        setOpenDesktopDropdown(link.href);
-                      }}
-                      onMouseLeave={() => scheduleMegaMenuClose()}
-                      onClose={() => setOpenDesktopDropdown(null)}
-                    />
-                  )}
-
-                  {link.children && link.dropdownStyle === "mega" && !link.isDestinationMega && (
+                  {link.children && (
                     <div
                       onMouseEnter={() => setOpenDesktopDropdown(link.href)}
                       onMouseLeave={() => setOpenDesktopDropdown(null)}

@@ -16,7 +16,22 @@ export interface NavItemConfig {
 }
 
 // ============================================================================
-// 1. TRAVEL STYLES (Single-Column Clean Dropdown)
+// 1. INDIA TOURS (Single-Column Clean Dropdown: Golden Triangle, Rajasthan, Kerala)
+// ============================================================================
+export const STATIC_INDIA_TOURS: NavItemConfig[] = [
+  { label: "Golden Triangle Tours", href: "/tour-packages/india/golden-triangle", enabled: true },
+  { label: "Rajasthan Tours", href: "/tour-packages/india/rajasthan", enabled: true },
+  { label: "Kerala Tours", href: "/tour-packages/india/kerala", enabled: true },
+];
+
+export const getActiveIndiaTours = (): { label: string; href: string }[] =>
+  STATIC_INDIA_TOURS.filter((item) => item.enabled !== false).map(({ label, href }) => ({
+    label,
+    href,
+  }));
+
+// ============================================================================
+// 2. TRAVEL STYLES (Single-Column Clean Dropdown)
 // ============================================================================
 // Sequence: Golden Triangle -> Taj Mahal -> Ayurveda -> Wildlife -> Spiritual -> Hill Station -> Weekend
 export const STATIC_TRAVEL_STYLES: NavItemConfig[] = [
