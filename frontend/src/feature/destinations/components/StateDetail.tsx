@@ -123,8 +123,11 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   });
   const customHeroBanners = heroBannersData?.data || [];
 
-  const heroImages =
-    customHeroBanners.length > 0
+  const isRajasthan = state.slug === "rajasthan";
+
+  const heroImages = isRajasthan
+    ? ["/banners/rajasthan-comic-banner.webp"]
+    : customHeroBanners.length > 0
       ? customHeroBanners.map((b) => b.image)
       : state.banner?.images?.length
         ? state.banner.images
@@ -251,7 +254,13 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={state.title} />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
+            <div
+              className={`absolute inset-0 z-10 pointer-events-none ${
+                isRajasthan
+                  ? "bg-gradient-to-t from-black/40 via-transparent to-black/25"
+                  : "bg-gradient-to-t from-black/55 via-black/20 to-black/10"
+              }`}
+            />
           </>
         ) : (
           <div className="absolute inset-0">
