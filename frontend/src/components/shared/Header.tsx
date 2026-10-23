@@ -68,18 +68,13 @@ const DEFAULT_TOUR_LINKS: NavChild[] = [
 ];
 
 const DEFAULT_EXPERIENCE_LINKS: NavChild[] = [
-  { href: "/travel-experiences/nature", label: "Nature" },
-  { href: "/travel-experiences/golden-triangle-tour-india", label: "Golden Triangle Tours India" },
-  { href: "/travel-experiences/desert-safari", label: "Desert Safari" },
-  { href: "/travel-experiences/wildlife", label: "Wildlife" },
-  { href: "/travel-experiences/honeymoon", label: "Honeymoon" },
-  { href: "/travel-experiences/hill-station", label: "Hill Station" },
-  { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & yoga" },
-  { href: "/travel-experiences/beach-lake", label: "Beach & Lakes" },
-  { href: "/travel-experiences/heritage-and-culture", label: "Heritage & Culture" },
-  { href: "/travel-experiences/spiritual", label: "Spiritual" },
-  { href: "/travel-experiences/family", label: "Family" },
-  { href: "/travel-experiences/weekend-tours-in-india", label: "Weekend" },
+  { href: "/travel-experiences/golden-triangle-tour-india", label: "Golden Triangle Tours" },
+  { href: "/travel-experiences/wildlife", label: "Wildlife & Tiger Safaris" },
+  { href: "/travel-experiences/heritage-and-culture", label: "Heritage, Forts & Palaces" },
+  { href: "/travel-experiences/hill-station", label: "Hill Stations & Mountain Escapes" },
+  { href: "/travel-experiences/spiritual", label: "Spiritual & Ganges Tours" },
+  { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & Wellness Retreats" },
+  { href: "/travel-experiences/taj-mahal", label: "Taj Mahal Day & Short Tours" },
 ];
 
 function buildDefaultDestinationTree(): DestinationTreeCountry[] {
@@ -468,15 +463,16 @@ export const Header: React.FC = () => {
   }, [journeys]);
 
   const experienceLinks = useMemo(
-    () => {
-      const links = pickPriorityLinks<TravelExperience>(
-        travelExperiences,
-        (e) => e.displayOrder ?? 0,
-        (e) => ({ href: `/travel-experiences/${e.slug}`, label: stripTourSuffix(e.title || e.h1Title) })
-      );
-      return links.length > 0 ? links : DEFAULT_EXPERIENCE_LINKS;
-    },
-    [travelExperiences]
+    () => [
+      { href: "/travel-experiences/golden-triangle-tour-india", label: "Golden Triangle Tours" },
+      { href: "/travel-experiences/wildlife", label: "Wildlife & Tiger Safaris" },
+      { href: "/travel-experiences/heritage-and-culture", label: "Heritage, Forts & Palaces" },
+      { href: "/travel-experiences/hill-station", label: "Hill Stations & Mountain Escapes" },
+      { href: "/travel-experiences/spiritual", label: "Spiritual & Ganges Tours" },
+      { href: "/travel-experiences/ayurveda-yoga", label: "Ayurveda & Wellness Retreats" },
+      { href: "/travel-experiences/taj-mahal", label: "Taj Mahal Day & Short Tours" },
+    ],
+    []
   );
 
   const safeDestinationTree = useMemo<DestinationTreeCountry[]>(
@@ -523,12 +519,14 @@ export const Header: React.FC = () => {
       },
       {
         href: "/travel-experiences",
-        label: "Experiences",
+        label: "Travel Styles",
+        directHref: "/travel-experiences",
         children: experienceLinks,
         dropdownStyle: "mega",
+        dropdownColumns: 1,
         seeAllHref: "/travel-experiences",
-        dropdownTitle: "Top Experiences",
-        dropdownSubtext: "Explore all experiences",
+        dropdownTitle: "Curated Travel Styles",
+        dropdownSubtext: "Handcrafted theme journeys across India",
       },
       {
         href: "/about-company",
@@ -824,7 +822,7 @@ export const Header: React.FC = () => {
                         }`}
                     >
                       <div
-                        className={`bg-white rounded-2xl border border-slate-200/90 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] p-5 ${link.dropdownColumns === 1 ? "w-[280px]" : "w-[720px] max-w-[85vw]"
+                        className={`bg-white rounded-2xl border border-slate-200/90 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] p-5 ${link.dropdownColumns === 1 ? "w-[340px]" : "w-[720px] max-w-[85vw]"
                           }`}
                       >
                         <div className="flex items-center justify-between mb-2.5">
