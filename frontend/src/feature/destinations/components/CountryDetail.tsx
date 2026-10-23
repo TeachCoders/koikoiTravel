@@ -577,7 +577,7 @@ function CountryContent({
               alt={displayTitle}
               fill
               priority
-              className="object-cover object-center"
+              className="object-fit object-center"
               theme="dark"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-black/35 z-10 pointer-events-none" />
@@ -722,6 +722,8 @@ function CountryContent({
                       src={region.image}
                       alt={region.title}
                       fill
+                      loading="lazy"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 380px"
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
@@ -824,6 +826,8 @@ function CountryContent({
                     src={city.image}
                     alt={city.name}
                     fill
+                    loading="lazy"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 220px"
                     className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-90"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent z-10" />

@@ -44,7 +44,10 @@ const FRONTEND_STATIC_FILES = new Set([
 
 function shouldBeUnoptimized(src?: string | null): boolean {
   if (!src || typeof src !== "string") return true;
-  if (/\.(svg|gif)$/i.test(src)) return true;
+  // All pre-optimized .webp, .svg, and .gif files load directly from Nginx/browser cache
+  // This eliminates Next.js server CPU bottlenecks and prevents 404 timeouts
+  if (/\.(svg|gif|webp)$/i.test(src)) return true;
+  if (src.startsWith("/banners/")) return true;
   if (src.startsWith("/")) {
     return false;
   }
@@ -116,11 +119,7 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
       <Image
         src={src}
         alt={alt}
-        className={`${className} ${
-          isPriority
-            ? "opacity-100"
-            : `transition-opacity duration-150 ease-out ${loaded ? "opacity-100" : "opacity-0"}`
-        }`}
+        className={className}
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
         unoptimized={unoptimized ?? shouldBeUnoptimized(src)}
