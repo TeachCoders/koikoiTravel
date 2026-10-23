@@ -95,7 +95,6 @@ export const Header: React.FC = () => {
         dropdownStyle: "mega",
         dropdownColumns: 1,
         seeAllHref: "/destinations",
-        dropdownTitle: "India Tours",
       },
       {
         href: "/travel-experiences",
@@ -105,7 +104,6 @@ export const Header: React.FC = () => {
         dropdownStyle: "mega",
         dropdownColumns: 1,
         seeAllHref: "/travel-experiences",
-        dropdownTitle: "Travel Styles",
       },
       {
         href: "/about-company",
@@ -113,7 +111,6 @@ export const Header: React.FC = () => {
         children: aboutLinks,
         dropdownStyle: "mega",
         dropdownColumns: 1,
-        dropdownTitle: "About Company",
       },
     ],
     [indiaTourLinks, travelStyleLinks, aboutLinks]
@@ -299,11 +296,13 @@ export const Header: React.FC = () => {
                         className={`bg-white rounded-2xl border border-slate-200/90 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] p-5 ${link.dropdownColumns === 1 ? "w-[340px]" : "w-[720px] max-w-[85vw]"
                           }`}
                       >
-                        <div className="flex items-center justify-between mb-2.5">
-                          <span className="text-[16px] font-bold text-[#2E8B8B] tracking-tight">
-                            {link.dropdownTitle ?? "Popular Tour Packages"}
-                          </span>
-                        </div>
+                        {link.dropdownTitle && (
+                          <div className="flex items-center justify-between mb-2.5">
+                            <span className="text-[16px] font-bold text-[#2E8B8B] tracking-tight">
+                              {link.dropdownTitle}
+                            </span>
+                          </div>
+                        )}
                         <div
                           className={`grid gap-x-6 gap-y-1 ${link.dropdownColumns === 1
                             ? "grid-cols-1"
