@@ -18,8 +18,11 @@ const QUICK_LINKS = [
 ];
 
 const TOP_DESTINATIONS = [
-  { label: "Kerala Tour Packages", href: "/tour-packages/india/kerala" },
+  { label: "Golden Triangle Tours", href: "/tour-packages/india/golden-triangle" },
   { label: "Rajasthan Royal Heritage", href: "/tour-packages/india/rajasthan" },
+  { label: "Kerala Tour Packages", href: "/tour-packages/india/kerala" },
+  { label: "Agra & Uttar Pradesh Tours", href: "/tour-packages/india/uttar-pradesh" },
+  { label: "Delhi Capital City Tours", href: "/tour-packages/india/delhi" },
   { label: "Kashmir Holiday Packages", href: "/tour-packages/india/jammu-and-kashmir" },
   { label: "Himachal Pradesh Tours", href: "/tour-packages/india/himachal-pradesh" },
   { label: "Goa Beach Escapes", href: "/tour-packages/india/goa" },
@@ -27,7 +30,7 @@ const TOP_DESTINATIONS = [
   { label: "Ladakh Adventure Tours", href: "/tour-packages/india/ladakh" },
   { label: "Madhya Pradesh Wildlife", href: "/tour-packages/india/madhya-pradesh" },
   { label: "Maharashtra Tours", href: "/tour-packages/india/maharashtra" },
-  { label: "Golden Triangle Tours", href: "/tour-packages/india/golden-triangle" },
+  { label: "Punjab Heritage Tours", href: "/tour-packages/india/punjab" },
 ];
 
 const TRAVEL_THEMES = [

@@ -53,7 +53,12 @@ export const getActiveAboutItems = (): { label: string; href: string }[] =>
   }));
 
 // ============================================================================
-// 3. DESTINATIONS MEGA MENU STATIC TREE (Country -> Popular States -> Iconic Cities + Themes)
+// 3. DESTINATIONS MEGA MENU STATIC TREE (Country -> Core Inbound Pillars)
+// ============================================================================
+// Core focus for Inbound Foreign Tourists:
+// 1. Golden Triangle (Delhi - Agra - Jaipur)
+// 2. Rajasthan (Royal Palaces, Desert & Forts)
+// 3. Kerala (Backwaters, Ayurveda & Hills)
 // ============================================================================
 export const STATIC_DESTINATION_TREE: DestinationTreeCountry[] = [
   {
@@ -62,13 +67,34 @@ export const STATIC_DESTINATION_TREE: DestinationTreeCountry[] = [
     slug: "india",
     href: "/tour-packages/india",
     states: [
-      // 1. RAJASTHAN (Top Foreign Tourist Destination)
+      // 1. GOLDEN TRIANGLE (#1 Circuit for Foreign Tourists)
+      {
+        id: 99,
+        title: "Golden Triangle",
+        slug: "golden-triangle",
+        href: "/tour-packages/india/golden-triangle",
+        displayOrder: 1,
+        cities: [
+          { id: 9901, title: "Delhi", slug: "delhi", href: "/tour-packages/india/delhi" },
+          { id: 9902, title: "Agra (Taj Mahal)", slug: "agra", href: "/tour-packages/india/uttar-pradesh/agra" },
+          { id: 9903, title: "Jaipur (Pink City)", slug: "jaipur", href: "/tour-packages/india/rajasthan/jaipur" },
+          { id: 9904, title: "Fatehpur Sikri", slug: "fatehpur-sikri", href: "/tour-packages/india/uttar-pradesh/fatehpur-sikri" },
+          { id: 9905, title: "Ranthambore (Tiger Safari)", slug: "ranthambore", href: "/tour-packages/india/rajasthan" },
+        ],
+        experiences: [
+          { id: 991, title: "Golden Triangle Tours (15 Packages)", slug: "golden-triangle-tour-india", href: "/travel-experiences/golden-triangle-tour-india", count: 15 },
+          { id: 992, title: "Taj Mahal Day & Short Tours", slug: "taj-mahal", href: "/travel-experiences/taj-mahal", count: 12 },
+          { id: 993, title: "Golden Triangle with Wildlife", slug: "wildlife", href: "/travel-experiences/wildlife", count: 6 },
+        ],
+      },
+
+      // 2. RAJASTHAN (Top Foreign Tourist Destination)
       {
         id: 2,
         title: "Rajasthan",
         slug: "rajasthan",
         href: "/tour-packages/india/rajasthan",
-        displayOrder: 1,
+        displayOrder: 2,
         cities: [
           { id: 201, title: "Jaipur", slug: "jaipur", href: "/tour-packages/india/rajasthan/jaipur" },
           { id: 202, title: "Udaipur", slug: "udaipur", href: "/tour-packages/india/rajasthan/udaipur" },
@@ -94,13 +120,13 @@ export const STATIC_DESTINATION_TREE: DestinationTreeCountry[] = [
         ],
       },
 
-      // 2. KERALA
+      // 3. KERALA
       {
         id: 1,
         title: "Kerala",
         slug: "kerala",
         href: "/tour-packages/india/kerala",
-        displayOrder: 2,
+        displayOrder: 3,
         cities: [
           { id: 101, title: "Munnar", slug: "munnar", href: "/tour-packages/india/kerala/munnar" },
           { id: 102, title: "Alleppey", slug: "alleppey", href: "/tour-packages/india/kerala/alleppey" },
@@ -113,162 +139,6 @@ export const STATIC_DESTINATION_TREE: DestinationTreeCountry[] = [
           { id: 5, title: "Nature & Hills Holidays", slug: "nature", href: "/travel-experiences/nature/kerala", count: 4 },
           { id: 6, title: "Ayurveda & Wellness Retreats", slug: "ayurveda-yoga", href: "/travel-experiences/ayurveda-yoga/kerala", count: 3 },
           { id: 7, title: "Beach & Backwater Cruises", slug: "beach-lake", href: "/travel-experiences/beach-lake/kerala", count: 3 },
-        ],
-      },
-
-      // 3. UTTAR PRADESH
-      {
-        id: 7,
-        title: "Uttar Pradesh",
-        slug: "uttar-pradesh",
-        href: "/tour-packages/india/uttar-pradesh",
-        displayOrder: 3,
-        cities: [
-          { id: 701, title: "Agra", slug: "agra", href: "/tour-packages/india/uttar-pradesh/agra" },
-          { id: 702, title: "Varanasi", slug: "varanasi", href: "/tour-packages/india/uttar-pradesh/varanasi" },
-          { id: 703, title: "Lucknow", slug: "lucknow", href: "/tour-packages/india/uttar-pradesh/lucknow" },
-          { id: 704, title: "Mathura", slug: "mathura", href: "/tour-packages/india/uttar-pradesh/mathura" },
-        ],
-        experiences: [
-          { id: 8, title: "Taj Mahal & Monument Tours", slug: "taj-mahal", href: "/travel-experiences/taj-mahal", count: 12 },
-          { id: 9, title: "Spiritual & Ganges Itineraries", slug: "spiritual", href: "/travel-experiences/spiritual", count: 3 },
-        ],
-      },
-
-      // 4. DELHI
-      {
-        id: 12,
-        title: "Delhi",
-        slug: "delhi",
-        href: "/tour-packages/india/delhi",
-        displayOrder: 4,
-        cities: [
-          { id: 1202, title: "New Delhi", slug: "new-delhi", href: "/tour-packages/india/delhi/new-delhi" },
-          { id: 1201, title: "Gurugram", slug: "gurugram", href: "/tour-packages/india/delhi/gurugram" },
-        ],
-      },
-
-      // 5. JAMMU & KASHMIR
-      {
-        id: 3,
-        title: "Jammu And Kashmir",
-        slug: "jammu-and-kashmir",
-        href: "/tour-packages/india/jammu-and-kashmir",
-        displayOrder: 5,
-        cities: [
-          { id: 301, title: "Srinagar", slug: "srinagar", href: "/tour-packages/india/jammu-and-kashmir/srinagar" },
-          { id: 302, title: "Gulmarg", slug: "gulmarg", href: "/tour-packages/india/jammu-and-kashmir/gulmarg" },
-          { id: 303, title: "Pahalgam", slug: "pahalgam", href: "/tour-packages/india/jammu-and-kashmir/pahalgam" },
-          { id: 304, title: "Sonamarg", slug: "sonamarg", href: "/tour-packages/india/jammu-and-kashmir/sonamarg" },
-          { id: 305, title: "Patnitop", slug: "patnitop", href: "/tour-packages/india/jammu-and-kashmir/patnitop" },
-        ],
-      },
-
-      // 6. LADAKH
-      {
-        id: 5,
-        title: "Ladakh",
-        slug: "ladakh",
-        href: "/tour-packages/india/ladakh",
-        displayOrder: 6,
-        cities: [
-          { id: 501, title: "Leh", slug: "leh", href: "/tour-packages/india/ladakh/leh" },
-          { id: 502, title: "Nubra Valley", slug: "nubra-valley", href: "/tour-packages/india/ladakh/nubra-valley" },
-          { id: 503, title: "Pangong Tso", slug: "pangong-tso", href: "/tour-packages/india/ladakh/pangong-tso" },
-          { id: 504, title: "Kargil", slug: "kargil", href: "/tour-packages/india/ladakh/kargil" },
-          { id: 505, title: "Hanle", slug: "hanle", href: "/tour-packages/india/ladakh/hanle" },
-          { id: 506, title: "Alchi Monastery", slug: "alchi-monastery", href: "/tour-packages/india/ladakh/alchi-monastery" },
-          { id: 507, title: "Hemis Monastery", slug: "hemis-monastery", href: "/tour-packages/india/ladakh/hemis-monastery" },
-          { id: 508, title: "Magnetic Hill", slug: "magnetic-hill", href: "/tour-packages/india/ladakh/magnetic-hill" },
-        ],
-      },
-
-      // 7. HIMACHAL PRADESH
-      {
-        id: 4,
-        title: "Himachal Pradesh",
-        slug: "himachal-pradesh",
-        href: "/tour-packages/india/himachal-pradesh",
-        displayOrder: 7,
-        cities: [
-          { id: 401, title: "Shimla", slug: "shimla", href: "/tour-packages/india/himachal-pradesh/shimla" },
-          { id: 402, title: "Manali", slug: "manali", href: "/tour-packages/india/himachal-pradesh/manali" },
-          { id: 403, title: "Dharamshala", slug: "dharamshala", href: "/tour-packages/india/himachal-pradesh/dharamshala" },
-          { id: 404, title: "Kufri", slug: "kufri", href: "/tour-packages/india/himachal-pradesh/kufri" },
-          { id: 405, title: "Kasauli", slug: "kasauli", href: "/tour-packages/india/himachal-pradesh/kasauli" },
-          { id: 406, title: "Rohtang Pass", slug: "rohtang-pass", href: "/tour-packages/india/himachal-pradesh/rohtang-pass" },
-          { id: 407, title: "Sarchu", slug: "sarchu", href: "/tour-packages/india/himachal-pradesh/sarchu" },
-        ],
-      },
-
-      // 8. UTTARAKHAND
-      {
-        id: 6,
-        title: "Uttarakhand",
-        slug: "uttarakhand",
-        href: "/tour-packages/india/uttarakhand",
-        displayOrder: 8,
-        cities: [
-          { id: 601, title: "Rishikesh", slug: "rishikesh", href: "/tour-packages/india/uttarakhand/rishikesh" },
-          { id: 602, title: "Nainital", slug: "nainital", href: "/tour-packages/india/uttarakhand/nainital" },
-          { id: 603, title: "Mussoorie", slug: "mussoorie", href: "/tour-packages/india/uttarakhand/mussoorie" },
-          { id: 604, title: "Auli", slug: "auli", href: "/tour-packages/india/uttarakhand/auli" },
-          { id: 605, title: "Jim Corbett National Park", slug: "jim-corbett-national-park", href: "/tour-packages/india/uttarakhand/jim-corbett-national-park" },
-        ],
-      },
-
-      // 9. GOA
-      {
-        id: 8,
-        title: "Goa",
-        slug: "goa",
-        href: "/tour-packages/india/goa",
-        displayOrder: 9,
-        cities: [
-          { id: 801, title: "North Goa", slug: "north-goa", href: "/tour-packages/india/goa/north-goa" },
-          { id: 802, title: "South Goa", slug: "south-goa", href: "/tour-packages/india/goa/south-goa" },
-        ],
-      },
-
-      // 10. MADHYA PRADESH
-      {
-        id: 9,
-        title: "Madhya Pradesh",
-        slug: "madhya-pradesh",
-        href: "/tour-packages/india/madhya-pradesh",
-        displayOrder: 10,
-        cities: [
-          { id: 901, title: "Khajuraho", slug: "khajuraho", href: "/tour-packages/india/madhya-pradesh/khajuraho" },
-          { id: 902, title: "Bandhavgarh", slug: "bandhavgarh", href: "/tour-packages/india/madhya-pradesh/bandhavgarh" },
-          { id: 903, title: "Kanha National Park", slug: "kanha-national-park", href: "/tour-packages/india/madhya-pradesh/kanha-national-park" },
-        ],
-      },
-
-      // 11. MAHARASHTRA
-      {
-        id: 10,
-        title: "Maharashtra",
-        slug: "maharashtra",
-        href: "/tour-packages/india/maharashtra",
-        displayOrder: 11,
-        cities: [
-          { id: 1001, title: "Mumbai", slug: "mumbai", href: "/tour-packages/india/maharashtra/mumbai" },
-          { id: 1002, title: "Tadoba", slug: "tadoba", href: "/tour-packages/india/maharashtra/tadoba" },
-          { id: 1003, title: "Pench", slug: "pench", href: "/tour-packages/india/maharashtra/pench" },
-          { id: 1004, title: "Nashik", slug: "nashik", href: "/tour-packages/india/maharashtra/nashik" },
-          { id: 1005, title: "Nagpur", slug: "nagpur", href: "/tour-packages/india/maharashtra/nagpur" },
-        ],
-      },
-
-      // 12. PUNJAB
-      {
-        id: 11,
-        title: "Punjab",
-        slug: "punjab",
-        href: "/tour-packages/india/punjab",
-        displayOrder: 12,
-        cities: [
-          { id: 1101, title: "Amritsar", slug: "amritsar", href: "/tour-packages/india/punjab/amritsar" },
         ],
       },
     ],

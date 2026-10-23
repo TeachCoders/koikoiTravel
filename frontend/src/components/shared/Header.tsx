@@ -115,13 +115,13 @@ export const Header: React.FC = () => {
     () => [
       {
         href: "/destinations",
-        label: "Destinations",
+        label: "India Tours",
         directHref: "/destinations",
         isDestinationMega: true,
         tree: safeDestinationTree,
         children: [{ href: "/destinations", label: "All Destinations" }, ...destinationLinks],
         seeAllHref: "/destinations",
-        dropdownTitle: "Top Destinations",
+        dropdownTitle: "India Tours",
       },
       {
         href: "/travel-experiences",
