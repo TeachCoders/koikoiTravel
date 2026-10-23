@@ -96,23 +96,11 @@ function ExperienceContent({
     },
     initialJourneys ?? undefined
   );
-  const [activeTab, setActiveTab] = useState<"top-tours" | "other-tours">("top-tours");
 
-  const {
-    experienceJourneys,
-    topTours,
-    otherTours,
-    hasTabs,
-  } = useMemo(
+  const { experienceJourneys } = useMemo(
     () => resolveTravelExperienceJourneys(journeys, experience),
     [journeys, experience]
   );
-
-  const currentTabJourneys = hasTabs
-    ? activeTab === "top-tours"
-      ? topTours
-      : otherTours
-    : experienceJourneys;
 
   const [durSelected, setDurSelected] = useState<string[]>([]);
   const [citySelected, setCitySelected] = useState<string[]>([]);
@@ -126,38 +114,15 @@ function ExperienceContent({
     setSeasonSelected([]);
   };
 
-  const filteredTopTours = useMemo(() => {
-    if (activeFilterCount === 0) return topTours;
-    return topTours.filter(
-      (j) =>
-        journeyMatchesDuration(j, durSelected) &&
-        journeyMatchesCities(j, citySelected) &&
-        journeyMatchesSeasons(j, seasonSelected)
-    );
-  }, [topTours, activeFilterCount, durSelected, citySelected, seasonSelected]);
-
-  const filteredOtherTours = useMemo(() => {
-    if (activeFilterCount === 0) return otherTours;
-    return otherTours.filter(
-      (j) =>
-        journeyMatchesDuration(j, durSelected) &&
-        journeyMatchesCities(j, citySelected) &&
-        journeyMatchesSeasons(j, seasonSelected)
-    );
-  }, [otherTours, activeFilterCount, durSelected, citySelected, seasonSelected]);
-
   const filteredJourneys = useMemo(() => {
-    if (!hasTabs) {
-      if (activeFilterCount === 0) return experienceJourneys;
-      return experienceJourneys.filter(
-        (j) =>
-          journeyMatchesDuration(j, durSelected) &&
-          journeyMatchesCities(j, citySelected) &&
-          journeyMatchesSeasons(j, seasonSelected)
-      );
-    }
-    return activeTab === "top-tours" ? filteredTopTours : filteredOtherTours;
-  }, [hasTabs, activeTab, filteredTopTours, filteredOtherTours, experienceJourneys, activeFilterCount, durSelected, citySelected, seasonSelected]);
+    if (activeFilterCount === 0) return experienceJourneys;
+    return experienceJourneys.filter(
+      (j) =>
+        journeyMatchesDuration(j, durSelected) &&
+        journeyMatchesCities(j, citySelected) &&
+        journeyMatchesSeasons(j, seasonSelected)
+    );
+  }, [experienceJourneys, activeFilterCount, durSelected, citySelected, seasonSelected]);
 
   const { data: heroBannersData } = useHeroBanners("TravelExperience", {
     slug: experience.slug,
@@ -195,23 +160,15 @@ function ExperienceContent({
           id: "city",
           title: "Destination",
           icon: <MapPin size={14} />,
-          options: cityOptions(currentTabJourneys),
+          options: cityOptions(experienceJourneys),
           selected: citySelected,
           onChange: setCitySelected,
         },
-        // {
-        //   id: "season",
-        //   title: "Best Season / Month",
-        //   icon: <Sun size={14} />,
-        //   options: seasonOptions(currentTabJourneys),
-        //   selected: seasonSelected,
-        //   onChange: setSeasonSelected,
-        // },
         {
           id: "duration",
           title: "Duration",
           icon: <CalendarDays size={14} />,
-          options: durationOptions(currentTabJourneys),
+          options: durationOptions(experienceJourneys),
           selected: durSelected,
           onChange: setDurSelected,
         },
@@ -219,65 +176,9 @@ function ExperienceContent({
       activeCount={activeFilterCount}
       onClearAll={clearFilters}
       resultCount={filteredJourneys.length}
-      totalCount={currentTabJourneys.length}
+      totalCount={experienceJourneys.length}
     />
   );
-
-  const tourTabs = hasTabs ? (
-    <div className="flex items-center gap-2 sm:gap-3 p-1.5 bg-slate-200/70 rounded-2xl w-fit max-w-full overflow-x-auto mb-6 border border-slate-300/60 shadow-xs">
-      <button
-        type="button"
-        onClick={() => {
-          setActiveTab("top-tours");
-          clearFilters();
-        }}
-        className={cn(
-          "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
-          activeTab === "top-tours"
-            ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
-            : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
-        )}
-      >
-        <span>Top {cleanExpTitle} Tours</span>
-        <span
-          className={cn(
-            "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
-            activeTab === "top-tours"
-              ? "bg-white text-[#2E8B8B]"
-              : "bg-slate-300 text-slate-800"
-          )}
-        >
-          {topTours.length}
-        </span>
-      </button>
-
-      <button
-        type="button"
-        onClick={() => {
-          setActiveTab("other-tours");
-          clearFilters();
-        }}
-        className={cn(
-          "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
-          activeTab === "other-tours"
-            ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
-            : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
-        )}
-      >
-        <span>Other {cleanExpTitle} Tours</span>
-        <span
-          className={cn(
-            "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
-            activeTab === "other-tours"
-              ? "bg-white text-[#2E8B8B]"
-              : "bg-slate-300 text-slate-800"
-          )}
-        >
-          {otherTours.length}
-        </span>
-      </button>
-    </div>
-  ) : null;
 
   const heroImages =
     customHeroBanners.length > 0
@@ -348,79 +249,14 @@ function ExperienceContent({
         overView={experience.overView ?? undefined}
         emptyLabel={`No tours found for ${h1Title} yet`}
         showCount={16}
-        tabs={tourTabs}
-        filterBar={currentTabJourneys.length >= 8 ? filterBar : undefined}
+        filterBar={experienceJourneys.length >= 8 ? filterBar : undefined}
         onClearFilters={clearFilters}
         contextName={h1Title}
         basePath={`/travel-experiences/${experience.slug}`}
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
       >
-        {hasTabs ? (
-          <>
-            {/* Tab 1 Panel: Top Tours - SSR rendered in HTML */}
-            <div
-              className={activeTab === "top-tours" ? "block" : "hidden"}
-              role="tabpanel"
-              aria-hidden={activeTab !== "top-tours"}
-            >
-              {filteredTopTours.length === 0 ? (
-                <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
-                  <p className="text-slate-500">
-                    {activeFilterCount > 0
-                      ? "No tours match your filters"
-                      : `No tours found for ${h1Title} yet`}
-                  </p>
-                  {activeFilterCount > 0 && (
-                    <button
-                      onClick={clearFilters}
-                      className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
-                    >
-                      Clear all filters
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-                  {filteredTopTours.map((j) => (
-                    <TourPackageCard key={j.id} journey={j} contextName={h1Title} variant="default" />
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Tab 2 Panel: Other Tours - SSR rendered in HTML */}
-            <div
-              className={activeTab === "other-tours" ? "block" : "hidden"}
-              role="tabpanel"
-              aria-hidden={activeTab !== "other-tours"}
-            >
-              {filteredOtherTours.length === 0 ? (
-                <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
-                  <p className="text-slate-500">
-                    {activeFilterCount > 0
-                      ? "No tours match your filters"
-                      : `No tours found for ${h1Title} yet`}
-                  </p>
-                  {activeFilterCount > 0 && (
-                    <button
-                      onClick={clearFilters}
-                      className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
-                    >
-                      Clear all filters
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-                  {filteredOtherTours.map((j) => (
-                    <TourPackageCard key={j.id} journey={j} contextName={h1Title} variant="default" />
-                  ))}
-                </div>
-              )}
-            </div>
-          </>
-        ) : filteredJourneys.length === 0 ? (
+        {filteredJourneys.length === 0 ? (
           <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
             <p className="text-slate-500">
               {activeFilterCount > 0

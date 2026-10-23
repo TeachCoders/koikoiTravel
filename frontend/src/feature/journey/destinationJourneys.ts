@@ -73,34 +73,24 @@ export function resolveStateJourneys(
   const stateJourneys = [...baseList].sort(sortByDisplayOrderAndBestSelling);
 
   const order = (state.featuredJourneyOrder || []) as number[];
-  let featuredJourneys: Journey[] = [];
+  let selectedJourneys: Journey[] = [];
   if (order.length > 0) {
-    featuredJourneys = order
-      .map((id) => stateJourneys.find((j) => j.id === id))
+    selectedJourneys = order
+      .map((id) => (allJourneys || []).find((j) => j.id === id) || stateJourneys.find((j) => j.id === id))
       .filter((j): j is Journey => Boolean(j));
-  }
-  if (featuredJourneys.length === 0) {
-    if (embeddedJourneys.length > 0) {
-      featuredJourneys = embeddedJourneys;
-    } else {
-      featuredJourneys = stateJourneys.slice(0, 10);
-    }
+  } else if (embeddedJourneys.length > 0) {
+    selectedJourneys = embeddedJourneys;
   }
 
-  const topIds = new Set(featuredJourneys.map((j) => j.id));
-  const otherJourneys = stateJourneys.filter((j) => !topIds.has(j.id));
-  const hasBothCategories = featuredJourneys.length > 0 && otherJourneys.length > 0;
-
-  const allOrderedJourneys = hasBothCategories
-    ? [...featuredJourneys, ...otherJourneys]
-    : stateJourneys;
+  // Strictly show the curated/selected packages. Fall back to state journeys only if none selected.
+  const finalJourneys = selectedJourneys.length > 0 ? selectedJourneys : stateJourneys;
 
   return {
-    stateJourneys,
-    featuredJourneys,
-    otherJourneys,
-    hasBothCategories,
-    allOrderedJourneys,
+    stateJourneys: finalJourneys,
+    featuredJourneys: finalJourneys,
+    otherJourneys: [],
+    hasBothCategories: false,
+    allOrderedJourneys: finalJourneys,
   };
 }
 
@@ -110,25 +100,27 @@ export function resolveCityJourneys(
     id?: number;
     slug?: string;
     journeys?: Journey[];
+    featuredJourneyOrder?: number[] | null;
   }
 ): Journey[] {
   const embeddedJourneys = (city.journeys ?? []) as Journey[];
+  const order = (city.featuredJourneyOrder || []) as number[];
   const allCityJourneys = (allJourneys || []).filter(
     (j) => j.cities?.some((c) => c.id === city.id) || j.cityIds?.includes(city.id || 0)
   );
-  const embeddedIds = new Set(embeddedJourneys.map((j) => j.id));
-  const remainingJourneys = allCityJourneys
-    .filter((j) => !embeddedIds.has(j.id))
-    .sort(sortByDisplayOrderAndBestSelling);
 
-  const cityJourneys =
-    embeddedJourneys.length > 0
-      ? [...embeddedJourneys, ...remainingJourneys]
-      : (allCityJourneys.length > 0 ? allCityJourneys : embeddedJourneys).sort(
-          sortByDisplayOrderAndBestSelling
-        );
+  let selectedJourneys: Journey[] = [];
+  if (order.length > 0) {
+    selectedJourneys = order
+      .map((id) => (allJourneys || []).find((j) => j.id === id) || allCityJourneys.find((j) => j.id === id))
+      .filter((j): j is Journey => Boolean(j));
+  } else if (embeddedJourneys.length > 0) {
+    selectedJourneys = embeddedJourneys;
+  }
 
-  return cityJourneys;
+  return selectedJourneys.length > 0
+    ? selectedJourneys
+    : allCityJourneys.sort(sortByDisplayOrderAndBestSelling);
 }
 
 export function resolveCountryJourneys(
@@ -148,41 +140,28 @@ export function resolveTravelExperienceJourneys(
   }
 ) {
   const order = (experience.featuredJourneyOrder || []) as number[];
-  const experienceJourneys = (allJourneys || [])
+  const taggedJourneys = (allJourneys || [])
     .filter((j) =>
       (j.travelExperiences || []).some((e: any) => e.slug === experience.slug)
     )
-    .sort((a, b) => {
-      const ai = order.indexOf(a.id);
-      const bi = order.indexOf(b.id);
-      const aRank = ai === -1 ? Number.MAX_SAFE_INTEGER : ai;
-      const bRank = bi === -1 ? Number.MAX_SAFE_INTEGER : bi;
-      if (aRank !== bRank) return aRank - bRank;
-      return sortByDaysAscending(a, b);
-    });
+    .sort(sortByDaysAscending);
 
-  let topTours: Journey[] = [];
+  let selectedTours: Journey[] = [];
   if (order.length > 0) {
-    topTours = order
-      .map((id) => experienceJourneys.find((j) => j.id === id))
+    selectedTours = order
+      .map((id) => (allJourneys || []).find((j) => j.id === id) || taggedJourneys.find((j) => j.id === id))
       .filter((j): j is Journey => Boolean(j));
   }
 
-  const topIds = new Set(topTours.map((j) => j.id));
-  const otherTours = experienceJourneys
-    .filter((j) => !topIds.has(j.id))
-    .sort(sortByDaysAscending);
-
-  const hasTabs = topTours.length > 0 && otherTours.length > 0;
-
-  const allOrderedJourneys = hasTabs ? [...topTours, ...otherTours] : experienceJourneys;
+  // Strictly show the curated/selected packages. Fall back to tagged journeys only if none selected.
+  const finalJourneys = selectedTours.length > 0 ? selectedTours : taggedJourneys;
 
   return {
-    experienceJourneys,
-    topTours,
-    otherTours,
-    hasTabs,
-    allOrderedJourneys,
+    experienceJourneys: finalJourneys,
+    topTours: finalJourneys,
+    otherTours: [],
+    hasTabs: false,
+    allOrderedJourneys: finalJourneys,
   };
 }
 

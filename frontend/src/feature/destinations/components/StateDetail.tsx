@@ -84,24 +84,11 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     { enabled: true }
   );
 
-  // Tab state: "by-destination" | "by-experience"
-  const [activeTab, setActiveTab] = useState<"by-destination" | "by-experience">("by-destination");
-
   // Resolved journeys using canonical destination resolver
-  const {
-    stateJourneys,
-    featuredJourneys,
-    otherJourneys,
-    hasBothCategories,
-  } = useMemo(
+  const { stateJourneys } = useMemo(
     () => resolveStateJourneys(journeys.length > 0 ? journeys : embeddedJourneys, state),
     [journeys, embeddedJourneys, state]
   );
-
-  const currentTabJourneys = useMemo(() => {
-    if (!hasBothCategories) return stateJourneys;
-    return activeTab === "by-destination" ? featuredJourneys : otherJourneys;
-  }, [hasBothCategories, activeTab, stateJourneys, featuredJourneys, otherJourneys]);
 
   // Filters for Tour Packages
   const [expSelected, setExpSelected] = useState<string[]>([]);
@@ -119,41 +106,16 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     setSeasonSelected([]);
   };
 
-  const filteredFeaturedJourneys = useMemo(() => {
-    if (activeFilterCount === 0) return featuredJourneys;
-    return featuredJourneys.filter(
-      (j) =>
-        journeyMatchesExperiences(j, expSelected) &&
-        journeyMatchesDuration(j, durSelected) &&
-        journeyMatchesCities(j, citySelected) &&
-        journeyMatchesSeasons(j, seasonSelected)
-    );
-  }, [featuredJourneys, activeFilterCount, expSelected, durSelected, citySelected, seasonSelected]);
-
-  const filteredOtherJourneys = useMemo(() => {
-    if (activeFilterCount === 0) return otherJourneys;
-    return otherJourneys.filter(
-      (j) =>
-        journeyMatchesExperiences(j, expSelected) &&
-        journeyMatchesDuration(j, durSelected) &&
-        journeyMatchesCities(j, citySelected) &&
-        journeyMatchesSeasons(j, seasonSelected)
-    );
-  }, [otherJourneys, activeFilterCount, expSelected, durSelected, citySelected, seasonSelected]);
-
   const filteredCurrentJourneys = useMemo(() => {
-    if (!hasBothCategories) {
-      if (activeFilterCount === 0) return stateJourneys;
-      return stateJourneys.filter(
-        (j) =>
-          journeyMatchesExperiences(j, expSelected) &&
-          journeyMatchesDuration(j, durSelected) &&
-          journeyMatchesCities(j, citySelected) &&
-          journeyMatchesSeasons(j, seasonSelected)
-      );
-    }
-    return activeTab === "by-destination" ? filteredFeaturedJourneys : filteredOtherJourneys;
-  }, [hasBothCategories, activeTab, filteredFeaturedJourneys, filteredOtherJourneys, stateJourneys, activeFilterCount, expSelected, durSelected, citySelected, seasonSelected]);
+    if (activeFilterCount === 0) return stateJourneys;
+    return stateJourneys.filter(
+      (j) =>
+        journeyMatchesExperiences(j, expSelected) &&
+        journeyMatchesDuration(j, durSelected) &&
+        journeyMatchesCities(j, citySelected) &&
+        journeyMatchesSeasons(j, seasonSelected)
+    );
+  }, [stateJourneys, activeFilterCount, expSelected, durSelected, citySelected, seasonSelected]);
 
   const { data: heroBannersData } = useHeroBanners("State", {
     slug: state.slug,
@@ -234,62 +196,6 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
   const { swiperRef: citiesSwiperRef, slidePrev, slideNext, canScroll } = useSliderControl();
 
-  const tourTabs = hasBothCategories ? (
-    <div className="flex items-center gap-2 sm:gap-3 p-1.5 bg-slate-200/70 rounded-2xl w-fit max-w-full overflow-x-auto mb-6 border border-slate-300/60 shadow-xs">
-      <button
-        type="button"
-        onClick={() => {
-          setActiveTab("by-destination");
-          clearFilters();
-        }}
-        className={cn(
-          "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
-          activeTab === "by-destination"
-            ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
-            : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
-        )}
-      >
-        <span>By Destination</span>
-        <span
-          className={cn(
-            "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
-            activeTab === "by-destination"
-              ? "bg-white text-[#2E8B8B]"
-              : "bg-slate-300 text-slate-800"
-          )}
-        >
-          {featuredJourneys.length}
-        </span>
-      </button>
-
-      <button
-        type="button"
-        onClick={() => {
-          setActiveTab("by-experience");
-          clearFilters();
-        }}
-        className={cn(
-          "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
-          activeTab === "by-experience"
-            ? "bg-[#2E8B8B] text-white shadow-md shadow-[#2E8B8B]/25"
-            : "text-slate-700 hover:text-slate-950 hover:bg-white/70"
-        )}
-      >
-        <span>By Experience</span>
-        <span
-          className={cn(
-            "px-2 py-0.5 rounded-full text-[11px] font-extrabold tabular-nums",
-            activeTab === "by-experience"
-              ? "bg-white text-[#2E8B8B]"
-              : "bg-slate-300 text-slate-800"
-          )}
-        >
-          {otherJourneys.length}
-        </span>
-      </button>
-    </div>
-  ) : null;
-
   const filterBar = (
     <FilterBar
       sections={[
@@ -297,7 +203,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           id: "city",
           title: "Destination",
           icon: <MapPin size={14} />,
-          options: cityOptions(currentTabJourneys),
+          options: cityOptions(stateJourneys),
           selected: citySelected,
           onChange: setCitySelected,
         },
@@ -305,7 +211,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           id: "experience",
           title: "Travel Experience",
           icon: <Sparkles size={14} />,
-          options: travelExperienceOptions(currentTabJourneys),
+          options: travelExperienceOptions(stateJourneys),
           selected: expSelected,
           onChange: setExpSelected,
         },
@@ -313,7 +219,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           id: "duration",
           title: "Duration",
           icon: <CalendarDays size={14} />,
-          options: durationOptions(currentTabJourneys),
+          options: durationOptions(stateJourneys),
           selected: durSelected,
           onChange: setDurSelected,
         },
@@ -321,7 +227,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       activeCount={activeFilterCount}
       onClearAll={clearFilters}
       resultCount={filteredCurrentJourneys.length}
-      totalCount={currentTabJourneys.length}
+      totalCount={stateJourneys.length}
     />
   );
 
@@ -403,97 +309,24 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         </div>
       </nav>
 
-      {/* ===== SECTION 2: TOUR PACKAGES IN STATE (WITH TABS) ===== */}
+      {/* ===== SECTION 2: TOUR PACKAGES IN STATE ===== */}
       {stateJourneys.length > 0 && (
         <ToursSection
           id="top-tours"
           basePath={basePath}
-          isLoading={journeysLoading && currentTabJourneys.length === 0}
-          accentLabel={activeTab === "by-experience" && hasBothCategories ? "Experience & Combined Circuits" : "State Itineraries"}
-          h1Title={
-            activeTab === "by-experience" && hasBothCategories
-              ? `${cleanStateName} Experience & Combined Packages`
-              : formatToursH1(state.h1Title || state.title)
-          }
-          tabs={tourTabs}
+          isLoading={journeysLoading && stateJourneys.length === 0}
+          accentLabel="State Itineraries"
+          h1Title={formatToursH1(state.h1Title || state.title)}
           overView={state.overView ?? undefined}
-          emptyLabel={`No tour packages found matching your criteria in ${
-            activeTab === "by-experience" && hasBothCategories
-              ? `${cleanStateName} Experience & Combined Packages`
-              : cleanStateName
-          }`}
-          filterBar={currentTabJourneys.length >= 8 ? filterBar : undefined}
+          emptyLabel={`No tour packages found matching your criteria in ${cleanStateName}`}
+          filterBar={stateJourneys.length >= 8 ? filterBar : undefined}
           onClearFilters={clearFilters}
           sectionClassName="py-8 sm:py-10 md:py-12 bg-[#f8f8f8] border-b border-slate-200/80 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]"
           cardVariant="default"
           sharedLinkedHrefs={pageLinkedHrefs}
           excludeHrefs={excludeHrefs}
         >
-          {hasBothCategories ? (
-            <>
-              {/* Tab 1: By Destination - SSR rendered in HTML */}
-              <div
-                className={activeTab === "by-destination" ? "block" : "hidden"}
-                role="tabpanel"
-                aria-hidden={activeTab !== "by-destination"}
-              >
-                {filteredFeaturedJourneys.length === 0 ? (
-                  <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
-                    <p className="text-slate-500">
-                      {activeFilterCount > 0
-                        ? "No tour packages match your filters"
-                        : `No tour packages found yet in ${cleanStateName}`}
-                    </p>
-                    {activeFilterCount > 0 && (
-                      <button
-                        onClick={clearFilters}
-                        className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
-                      >
-                        Clear all filters
-                      </button>
-                    )}
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-                    {filteredFeaturedJourneys.map((j) => (
-                      <TourPackageCard key={j.id} journey={j} variant="default" />
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Tab 2: By Experience - SSR rendered in HTML */}
-              <div
-                className={activeTab === "by-experience" ? "block" : "hidden"}
-                role="tabpanel"
-                aria-hidden={activeTab !== "by-experience"}
-              >
-                {filteredOtherJourneys.length === 0 ? (
-                  <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
-                    <p className="text-slate-500">
-                      {activeFilterCount > 0
-                        ? "No tour packages match your filters"
-                        : `No tour packages found in ${cleanStateName} Combined City Packages`}
-                    </p>
-                    {activeFilterCount > 0 && (
-                      <button
-                        onClick={clearFilters}
-                        className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
-                      >
-                        Clear all filters
-                      </button>
-                    )}
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-                    {filteredOtherJourneys.map((j) => (
-                      <TourPackageCard key={j.id} journey={j} variant="default" />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </>
-          ) : filteredCurrentJourneys.length === 0 ? (
+          {filteredCurrentJourneys.length === 0 ? (
             <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
               <p className="text-slate-500">
                 {activeFilterCount > 0
