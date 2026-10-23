@@ -180,16 +180,16 @@ function ExperienceContent({
     />
   );
 
-  const isGoldenTriangle =
-    experience.slug === "golden-triangle-tour-india" || experience.slug === "golden-triangle";
-
-  const heroImages = isGoldenTriangle
-    ? ["/banners/golden-triangle-comic-banner.webp"]
-    : customHeroBanners.length > 0
+  const heroImages =
+    customHeroBanners.length > 0
       ? customHeroBanners.map((b) => b.image)
       : experience.banner?.images?.length
         ? experience.banner.images
         : [];
+
+  const isIllustratedBanner =
+    heroImages.some((img: string) => img.includes("comic") || img.includes("banner")) ||
+    heroImages.length === 1;
 
   return (
     <div>
@@ -200,7 +200,7 @@ function ExperienceContent({
             <HeroSlider images={heroImages} alt={h1Title} />
             <div
               className={`absolute inset-0 z-10 pointer-events-none ${
-                isGoldenTriangle
+                isIllustratedBanner
                   ? "bg-gradient-to-t from-black/40 via-transparent to-black/25"
                   : "bg-gradient-to-t from-black/55 via-black/20 to-black/10"
               }`}

@@ -123,20 +123,18 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   });
   const customHeroBanners = heroBannersData?.data || [];
 
-  const isRajasthan = state.slug === "rajasthan";
-  const isKerala = state.slug === "kerala";
+  const heroImages =
+    customHeroBanners.length > 0
+      ? customHeroBanners.map((b) => b.image)
+      : state.banner?.images?.length
+        ? state.banner.images
+        : state.thumbImg
+          ? [state.thumbImg]
+          : [];
 
-  const heroImages = isRajasthan
-    ? ["/banners/rajasthan-comic-banner.webp"]
-    : isKerala
-      ? ["/banners/kerala-comic-banner.webp"]
-      : customHeroBanners.length > 0
-        ? customHeroBanners.map((b) => b.image)
-        : state.banner?.images?.length
-          ? state.banner.images
-          : state.thumbImg
-            ? [state.thumbImg]
-            : [];
+  const isIllustratedBanner =
+    heroImages.some((img: string) => img.includes("comic") || img.includes("banner")) ||
+    heroImages.length === 1;
 
   const heroTitle =
     customHeroBanners[0]?.title ||
@@ -259,7 +257,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
             <HeroSlider images={heroImages} alt={state.title} />
             <div
               className={`absolute inset-0 z-10 pointer-events-none ${
-                isRajasthan || isKerala
+                isIllustratedBanner
                   ? "bg-gradient-to-t from-black/40 via-transparent to-black/25"
                   : "bg-gradient-to-t from-black/55 via-black/20 to-black/10"
               }`}
