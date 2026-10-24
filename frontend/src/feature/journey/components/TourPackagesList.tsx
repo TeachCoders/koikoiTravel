@@ -5,6 +5,7 @@ import React, { useMemo, useState } from "react";
 import { MapPin, ChevronRight, Sparkles, CalendarDays, Sun } from "lucide-react";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import TourPackageCard from "@/components/shared/TourPackageCard";
+import { QuoteModal } from "@/components/shared/QuoteModal";
 import Pagination from "@/components/shared/Pagination";
 import FilterBar from "@/components/shared/FilterBar";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
@@ -249,6 +250,16 @@ export default function TourPackagesList({
               {paginatedJourneys.map((j) => (
                 <TourPackageCard key={j.id} journey={j} />
               ))}
+            </div>
+
+            {/* Custom DMC Pricing & Trust Note */}
+            <div className="mt-8 pt-4 text-center text-xs sm:text-[13.5px] text-slate-600 font-normal">
+              Prices depend on your dates, group size and hotel level, so every trip is quoted for you.{" "}
+              <QuoteModal>
+                <button type="button" className="text-[#F8904D] font-semibold hover:underline cursor-pointer">
+                  Ask for your quote
+                </button>
+              </QuoteModal>
             </div>
             {totalPages > 1 && (
               <Pagination

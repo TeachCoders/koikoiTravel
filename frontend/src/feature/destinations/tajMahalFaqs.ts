@@ -56,3 +56,4 @@ export const TAJ_MAHAL_FAQS: ExperienceFaqItem[] = [
     ans: "KoiKoi Travel provides 100% private, tailor-made journeys with verified chauffeurs, handpicked 4-star and 5-star heritage hotels, licensed historians, transparent pricing, and 24/7 dedicated on-trip concierge assistance.",
   },
 ];
+

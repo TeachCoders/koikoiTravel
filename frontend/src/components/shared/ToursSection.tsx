@@ -3,6 +3,7 @@
 import { MapPin } from "lucide-react";
 import RichContent from "@/components/shared/RichContent";
 import TourPackageCard from "@/components/shared/TourPackageCard";
+import { QuoteModal } from "@/components/shared/QuoteModal";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
 import type { Journey } from "@/feature/journey/type";
 
@@ -113,6 +114,16 @@ export default function ToursSection({
               {journeys.map((j) => (
                 <TourPackageCard key={j.id} journey={j} contextName={contextName} variant={cardVariant} />
               ))}
+            </div>
+
+            {/* Custom DMC Pricing & Trust Note */}
+            <div className="mt-8 pt-4 text-center text-xs sm:text-[13.5px] text-slate-600 font-normal">
+              Prices depend on your dates, group size and hotel level, so every trip is quoted for you.{" "}
+              <QuoteModal>
+                <button type="button" className="text-[#F8904D] font-semibold hover:underline cursor-pointer">
+                  Ask for your quote
+                </button>
+              </QuoteModal>
             </div>
           </div>
         )}

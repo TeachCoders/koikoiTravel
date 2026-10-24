@@ -46,6 +46,7 @@ import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
 import { GOLDEN_TRIANGLE_FAQS } from "@/feature/travelExperience/goldenTriangleFaqs";
 import { SOUTH_INDIA_FAQS } from "../southIndiaFaqs";
 import { TAJ_MAHAL_FAQS } from "../tajMahalFaqs";
+import { QuoteModal } from "@/components/shared/QuoteModal";
 
 export default function StateDetail({
   slug,
@@ -57,17 +58,18 @@ export default function StateDetail({
   initialJourneys?: PaginatedResponse<Journey> | null;
 }) {
   const { state, isLoading } = useStateBySlug(slug, initialState);
+  const activeState = state || initialState;
 
-  if (isLoading) {
+  if (!activeState && isLoading) {
     return (
       <div className="max-w-[1600px] mx-auto px-6 py-12">
         <DestinationsSkeleton />
       </div>
     );
   }
-  if (!state) return notFound();
+  if (!activeState) return notFound();
 
-  return <StateContent state={state} initialJourneys={initialJourneys} />;
+  return <StateContent state={activeState} initialJourneys={initialJourneys} />;
 }
 
 function StateContent({ state, initialJourneys }: { state: State; initialJourneys?: PaginatedResponse<Journey> | null }) {
@@ -141,8 +143,8 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
   const heroTitle =
     customHeroBanners[0]?.title ||
-    state.h1Title ||
     state.banner?.bannerTitle ||
+    state.h1Title ||
     state.title;
 
   const heroTag =
@@ -383,17 +385,29 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               )}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-              {filteredCurrentJourneys.map((j) => (
-                <TourPackageCard key={j.id} journey={j} variant="default" />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+                {filteredCurrentJourneys.map((j) => (
+                  <TourPackageCard key={j.id} journey={j} variant="default" />
+                ))}
+              </div>
+
+              {/* Custom DMC Pricing & Trust Note */}
+              <div className="mt-8 pt-4 text-center text-xs sm:text-[13.5px] text-slate-600 font-normal">
+                Prices depend on your dates, group size and hotel level, so every trip is quoted for you.{" "}
+                <QuoteModal>
+                  <button type="button" className="text-[#F8904D] font-semibold hover:underline cursor-pointer">
+                    Ask for your quote
+                  </button>
+                </QuoteModal>
+              </div>
+            </>
           )}
         </ToursSection>
       )}
 
       {/* ===== SECTION 3: CITIES / TOP DESTINATIONS IN STATE ===== */}
-      {displayedCities.length > 0 && (
+      {displayedCities.length > 0 && state.slug !== "golden-triangle" && (
         <section id="cities" className="w-full bg-white py-8 sm:py-10 md:py-12 border-b border-slate-200/60">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className="flex items-end justify-between mb-6 sm:mb-8 flex-wrap gap-4">

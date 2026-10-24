@@ -39,6 +39,7 @@ import { resolveTravelExperienceJourneys } from "@/feature/journey/destinationJo
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 import { GOLDEN_TRIANGLE_FAQS } from "../goldenTriangleFaqs";
+import { QuoteModal } from "@/components/shared/QuoteModal";
 import type { TravelExperience, TravelExperienceCity } from "@/feature/travelExperience/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 
@@ -283,11 +284,23 @@ function ExperienceContent({
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-            {filteredJourneys.map((j) => (
-              <TourPackageCard key={j.id} journey={j} contextName={h1Title} variant="default" />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+              {filteredJourneys.map((j) => (
+                <TourPackageCard key={j.id} journey={j} contextName={h1Title} variant="default" />
+              ))}
+            </div>
+
+            {/* Custom DMC Pricing & Trust Note */}
+            <div className="mt-8 pt-4 text-center text-xs sm:text-[13.5px] text-slate-600 font-normal">
+              Prices depend on your dates, group size and hotel level, so every trip is quoted for you.{" "}
+              <QuoteModal>
+                <button type="button" className="text-[#F8904D] font-semibold hover:underline cursor-pointer">
+                  Ask for your quote
+                </button>
+              </QuoteModal>
+            </div>
+          </>
         )}
       </ToursSection>
 
