@@ -10,10 +10,10 @@ import { useHeroBanners } from "@/feature/heroBanner/api";
 import type { HeroFullBanner } from "@/feature/heroBanner/type";
 
 const DEFAULT_SLIDES = [
+  { image: "/hero-banners/incredaible-india.webp", alt: "Incredible India Private Journeys - KoiKoi Travel" },
   { image: "/content/rajasthan-tours-holiday-1.webp", alt: "Rajasthan royal heritage tour" },
   { image: "/content/srinagar-holiday-1.webp", alt: "Srinagar Kashmir mountain holiday" },
   { image: "/content/jaipur-holiday-1.webp", alt: "Jaipur cultural heritage tour" },
-  { image: "/content/manali-holiday-1.webp", alt: "Manali Himachal holiday package" },
 ];
 
 interface HeroSectionProps {
@@ -78,7 +78,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
   const activeSlide = slides[safeCurrent];
 
   return (
-    <section className="relative w-full min-h-[220px] sm:min-h-[340px] md:min-h-[520px] py-4 sm:py-10 md:py-16 flex items-center justify-center bg-slate-900 z-20">
+    <section className="relative w-full min-h-[220px] sm:min-h-[340px] md:min-h-[520px] py-4 sm:py-10 md:py-16 flex items-center justify-center bg-[#1c2226] z-20">
       {/* Background slider with permanent Slide 0 for rock-solid LCP performance */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Base Slide 0: Always in DOM at z-0 with full opacity for instant LCP detection */}

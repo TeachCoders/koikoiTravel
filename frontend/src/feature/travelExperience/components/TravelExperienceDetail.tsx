@@ -125,6 +125,26 @@ function ExperienceContent({
     );
   }, [experienceJourneys, activeFilterCount, durSelected, citySelected, seasonSelected]);
 
+  const { travelExperiences: allExperiences } = useGetTravelExperiences({ isActive: "true" });
+  const otherExpsCount = (allExperiences || []).filter(
+    (e: any) =>
+      e.slug !== experience.slug &&
+      e.slug !== "taj-mahal" &&
+      e.slug !== "golden-triangle" &&
+      e.slug !== "golden-triangle-tour-india" &&
+      !/taj\s*mahal/i.test(e.title || "") &&
+      !/golden\s*triangle/i.test(e.title || "")
+  ).length;
+
+  const hasCities = Array.isArray(experience?.cities) && experience.cities.length > 0;
+  const otherExpBgClass = hasCities ? "bg-section-tint" : "bg-white";
+  const hasOtherExps = otherExpsCount > 0;
+  const lastSectionBeforeFaq = hasOtherExps
+    ? (hasCities ? "tint" : "white")
+    : (hasCities ? "white" : "tint");
+  const faqBgType: "white" | "pattern" = lastSectionBeforeFaq === "white" ? "pattern" : "white";
+  const guideBgClass = faqBgType === "pattern" ? "bg-white" : "bg-section-tint";
+
   const { data: heroBannersData } = useHeroBanners("TravelExperience", {
     slug: experience.slug,
     entityId: experience.id,
@@ -308,7 +328,7 @@ function ExperienceContent({
       <ExploreDestinationsSection experience={experience} />
 
       {/* ===== OTHER TRAVEL EXPERIENCES ===== */}
-      <OtherExperiencesSection currentSlug={experience.slug} />
+      <OtherExperiencesSection currentSlug={experience.slug} bgClass={otherExpBgClass} />
 
 
       {/* ===== FAQ SECTION ===== */}
@@ -323,11 +343,12 @@ function ExperienceContent({
         entityType="TravelExperience"
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
+        bgType={faqBgType}
       />
 
       {/* ===== ARTICLE / TRAVEL GUIDE (FULL WIDTH) - FOOTER SE PEHLE ===== */}
       {experience.moreDescription && (
-        <section id="more" className="bg-section-tint border-y border-section-border py-10 md:py-14 relative">
+        <section id="more" className={`${guideBgClass} border-y border-section-border py-10 md:py-14 relative`}>
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
             <TravelGuideCollapsible
               title={`Everything About ${experience.h1Title || experience.title}`}
@@ -390,9 +411,9 @@ function ExploreDestinationsSection({ experience }: { experience: TravelExperien
                   src={city.thumbImg || experience.thumbImg}
                   alt={city.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-75"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 via-30% to-transparent" />
                 <div className="relative z-10">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-[#F5B041] mb-1 block">
                     {city?.state?.title || "Destination"}
@@ -410,14 +431,28 @@ function ExploreDestinationsSection({ experience }: { experience: TravelExperien
   );
 }
 
-function OtherExperiencesSection({ currentSlug }: { currentSlug: string }) {
+function OtherExperiencesSection({
+  currentSlug,
+  bgClass = "bg-section-tint",
+}: {
+  currentSlug: string;
+  bgClass?: string;
+}) {
   const { travelExperiences } = useGetTravelExperiences({ isActive: "true" });
-  const otherExps = (travelExperiences || []).filter((e: any) => e.slug !== currentSlug);
+  const otherExps = (travelExperiences || []).filter(
+    (e: any) =>
+      e.slug !== currentSlug &&
+      e.slug !== "taj-mahal" &&
+      e.slug !== "golden-triangle" &&
+      e.slug !== "golden-triangle-tour-india" &&
+      !/taj\s*mahal/i.test(e.title || "") &&
+      !/golden\s*triangle/i.test(e.title || "")
+  );
 
   if (otherExps.length === 0) return null;
 
   return (
-    <section className="bg-section-tint py-16 border-y border-section-border relative">
+    <section className={`${bgClass} py-16 border-y border-section-border relative`}>
       <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
         <div className="flex items-end justify-between mb-8">
           <div>
@@ -444,9 +479,9 @@ function OtherExperiencesSection({ currentSlug }: { currentSlug: string }) {
                 src={exp.thumbImg || exp.banner?.images?.[0] || exp.image}
                 alt={exp.title}
                 fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-75"
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 via-30% to-transparent" />
               <div className="relative z-10">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-[#F5B041] mb-1 block">
                   Experience

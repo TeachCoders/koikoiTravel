@@ -122,7 +122,13 @@ export default async function TravelExperiencesPage() {
   ]);
 
   const real = experiences.filter(
-    (e: any) => !/^test\b/i.test(e.title || "")
+    (e: any) =>
+      !/^test\b/i.test(e.title || "") &&
+      e.slug !== "taj-mahal" &&
+      e.slug !== "golden-triangle" &&
+      e.slug !== "golden-triangle-tour-india" &&
+      !/taj\s*mahal/i.test(e.title || "") &&
+      !/golden\s*triangle/i.test(e.title || "")
   );
 
   const tourCount = (id: number) =>

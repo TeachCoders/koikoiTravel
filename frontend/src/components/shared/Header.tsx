@@ -94,13 +94,13 @@ export const Header: React.FC = () => {
   const navLinks: NavLink[] = useMemo(
     () => [
       {
-        href: "/destinations",
+        href: "/tour-packages/india",
         label: "India Tours",
-        directHref: "/destinations",
+        directHref: "/tour-packages/india",
         children: indiaTourLinks,
         dropdownStyle: "mega",
         dropdownColumns: 1,
-        seeAllHref: "/destinations",
+        seeAllHref: "/tour-packages/india",
       },
       {
         href: "/travel-experiences",
@@ -112,11 +112,22 @@ export const Header: React.FC = () => {
         seeAllHref: "/travel-experiences",
       },
       {
-        href: "/about-company",
-        label: "About Company",
+        href: "/guest-gallery",
+        label: "Guest Gallery",
+        directHref: "/guest-gallery",
+      },
+      {
+        href: "/about-us",
+        label: "About Us",
+        directHref: "/about-us",
         children: aboutLinks,
         dropdownStyle: "mega",
         dropdownColumns: 1,
+      },
+      {
+        href: "/contact-us",
+        label: "Contact",
+        directHref: "/contact-us",
       },
     ],
     [indiaTourLinks, travelStyleLinks, aboutLinks]
@@ -227,7 +238,7 @@ export const Header: React.FC = () => {
                   onMouseEnter={() => link.children ? (clearMegaMenuCloseTimer(), setOpenDesktopDropdown(link.href)) : null}
                   onMouseLeave={() => link.children ? scheduleMegaMenuClose() : setOpenDesktopDropdown(null)}
                 >
-                  {link.directHref ? (
+                  {link.directHref && link.children && link.children.length > 0 ? (
                     <div className="flex items-center h-full">
                       <Link
                         href={link.directHref}
@@ -258,7 +269,7 @@ export const Header: React.FC = () => {
                         />
                       </button>
                     </div>
-                  ) : link.children ? (
+                  ) : link.children && link.children.length > 0 ? (
                     <button
                       type="button"
                       onClick={() =>
@@ -279,7 +290,7 @@ export const Header: React.FC = () => {
                     </button>
                   ) : (
                     <Link
-                      href={link.href}
+                      href={link.directHref || link.href}
                       className={`relative whitespace-nowrap px-2 xl:px-2.5 py-1.5 text-[12.5px] xl:text-[13.5px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
                         ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
                         : "text-[#333]"

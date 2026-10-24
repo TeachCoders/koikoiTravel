@@ -185,7 +185,11 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       ? undefined
       : stateJourneys.find((j) => j.cities?.some((c) => c.id === cityId) || j.cityIds?.includes(cityId))?.thumbImg;
 
+  const isTajMahal = state.slug === "taj-mahal" || state.slug?.includes("taj-mahal");
+  const isGoldenTriangle = state.slug === "golden-triangle" || state.slug?.includes("golden-triangle");
+
   const displayedCities = useMemo(() => {
+    if (isTajMahal || isGoldenTriangle) return [];
     let citiesList = [...stateCities];
     const isCircuit = state.slug === "golden-triangle" || state.slug === "taj-mahal" || state.slug === "south-india" || state.slug?.includes("golden-triangle") || state.slug?.includes("taj-mahal") || state.slug?.includes("south-india");
     if (citiesList.length === 0 && isCircuit) {
@@ -226,6 +230,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   }, [stateCities, stateJourneys, state.slug]);
 
   const cityCount = displayedCities.length ?? 0;
+  const showCitiesSection = displayedCities.length > 0 && !isGoldenTriangle && !isTajMahal;
 
   const cleanStateName = (state.h1Title || state.title)
     .replace(/\s*Tours?(\s*Packages?)?$/i, "")
@@ -407,7 +412,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       )}
 
       {/* ===== SECTION 3: CITIES / TOP DESTINATIONS IN STATE ===== */}
-      {displayedCities.length > 0 && state.slug !== "golden-triangle" && (
+      {showCitiesSection && (
         <section id="cities" className="w-full bg-white py-8 sm:py-10 md:py-12 border-b border-slate-200/60">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className="flex items-end justify-between mb-6 sm:mb-8 flex-wrap gap-4">
@@ -509,7 +514,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         entityType="State"
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
-        bgType={displayedCities.length > 0 && state.slug !== "golden-triangle" ? "pattern" : "white"}
+        bgType={showCitiesSection ? "pattern" : "white"}
       />
 
       {/* ===== TRAVEL GUIDE (100% DB DRIVEN - STRICT 2-BG ALTERNATION, NO SIDEBAR) ===== */}
@@ -517,7 +522,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         <section
           id="more"
           className={`w-full relative border-y border-section-border py-10 sm:py-12 md:py-14 ${
-            displayedCities.length > 0 && state.slug !== "golden-triangle" ? "bg-white" : "bg-section-tint"
+            showCitiesSection ? "bg-white" : "bg-section-tint"
           }`}
         >
           <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-10 relative z-10">
