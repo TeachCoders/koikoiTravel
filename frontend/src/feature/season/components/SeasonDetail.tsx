@@ -201,7 +201,7 @@ export default function SeasonDetail({
 
       {/* ===== MORE DESCRIPTION (ALL INFO) ===== */}
       {showMoreSection && (
-        <section id="more" className="bg-white border-y border-slate-200/60 py-16 md:py-20">
+        <section id="more" className="bg-white border-y border-[#eee7de] py-16 md:py-20">
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
             <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
               {hasKnowMoreText && (
@@ -331,13 +331,10 @@ function OtherSeasonsSection({
 
   return (
     <section
-      className={`py-16 border-t border-slate-200/80 ${
-        isPattern
-          ? "bg-[#f8f8f8] relative overflow-hidden shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]"
-          : "bg-white"
+      className={`py-16 border-y border-[#eee7de] ${
+        isPattern ? "bg-[#faf8f5]" : "bg-white"
       }`}
     >
-      {isPattern && <DoodleBackground opacity="opacity-[0.07]" />}
       <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
         <div className="flex items-end justify-between mb-8">
           <div>

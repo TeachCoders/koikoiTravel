@@ -363,7 +363,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           emptyLabel={`No tour packages found matching your criteria in ${cleanStateName}`}
           filterBar={stateJourneys.length >= 8 ? filterBar : undefined}
           onClearFilters={clearFilters}
-          sectionClassName="py-8 sm:py-10 md:py-12 bg-[#f8f8f8] border-b border-slate-200/80 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]"
+          sectionClassName="py-8 sm:py-10 md:py-12 bg-[#faf8f5] border-y border-[#eee7de]"
           cardVariant="default"
           sharedLinkedHrefs={pageLinkedHrefs}
           excludeHrefs={excludeHrefs}
@@ -516,11 +516,10 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       {showMoreSection && (
         <section
           id="more"
-          className={`w-full relative border-t border-slate-200/60 py-10 sm:py-12 md:py-14 overflow-hidden ${
-            displayedCities.length > 0 && state.slug !== "golden-triangle" ? "bg-white" : "bg-[#f8f8f8]"
+          className={`w-full relative border-y border-[#eee7de] py-10 sm:py-12 md:py-14 ${
+            displayedCities.length > 0 && state.slug !== "golden-triangle" ? "bg-white" : "bg-[#faf8f5]"
           }`}
         >
-          {!(displayedCities.length > 0 && state.slug !== "golden-triangle") && <DoodleBackground />}
           <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-10 relative z-10">
             {/* Header */}
             <div className="mb-8">

@@ -138,13 +138,12 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
   return (
     <section
       id="faq"
-      className={`py-8 sm:py-10 md:py-12 relative border-t border-slate-200/70 overflow-hidden ${
-        isPattern ? "bg-[#f8f8f8]" : "bg-white"
+      className={`py-8 sm:py-10 md:py-12 relative border-t border-[#eee7de] ${
+        isPattern ? "bg-[#faf8f5]" : "bg-white"
       }`}
       itemScope
       itemType="https://schema.org/FAQPage"
     >
-      {isPattern && <DoodleBackground />}
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 space-y-6 sm:space-y-8 relative z-10">
         {/* Section Header */}
         <div>

@@ -7,8 +7,7 @@ import DoodleBackground from "@/components/shared/DoodleBackground";
 
 export default function SeoTextBlock() {
   return (
-    <section className="bg-[#f8f8f8] border-t border-slate-200/70 py-8 sm:py-10 md:py-12 relative overflow-hidden">
-      <DoodleBackground />
+    <section className="bg-[#faf8f5] border-y border-[#eee7de] py-8 sm:py-10 md:py-12 relative">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 relative z-10">
 
         <div>
