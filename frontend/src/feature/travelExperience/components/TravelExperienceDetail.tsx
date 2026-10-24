@@ -136,7 +136,12 @@ function ExperienceContent({
       !/golden\s*triangle/i.test(e.title || "")
   ).length;
 
-  const hasCities = Array.isArray(experience?.cities) && experience.cities.length > 0;
+  const hasCities = (experience?.cities || []).filter(
+    (c: any) =>
+      c.isActive !== false &&
+      c.showOnSite !== false &&
+      (c._count?.journeys ?? c.journeys?.length ?? 0) >= 4
+  ).length > 0;
   const otherExpBgClass = hasCities ? "bg-section-tint" : "bg-white";
   const hasOtherExps = otherExpsCount > 0;
   const lastSectionBeforeFaq = hasOtherExps
@@ -367,7 +372,12 @@ function ExperienceContent({
 }
 
 function ExploreDestinationsSection({ experience }: { experience: TravelExperience }) {
-  const cities = experience?.cities || [];
+  const cities = (experience?.cities || []).filter(
+    (c: any) =>
+      c.isActive !== false &&
+      c.showOnSite !== false &&
+      (c._count?.journeys ?? c.journeys?.length ?? 0) >= 4
+  );
   if (!Array.isArray(cities) || cities.length === 0) return null;
 
   const h1Title = experience.h1Title || experience.title;

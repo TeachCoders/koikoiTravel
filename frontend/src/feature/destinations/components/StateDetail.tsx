@@ -219,11 +219,18 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       citiesList = extracted;
     }
 
-    return citiesList.sort((a, b) => {
+    // Only show cities that have at least 4 active tour packages
+    const qualifiedCities = citiesList.filter(
+      (c) =>
+        c.isActive !== false &&
+        c.showOnSite !== false &&
+        journeyCountFor(c.id) >= 4
+    );
+
+    return qualifiedCities.sort((a, b) => {
       const aCount = journeyCountFor(a.id);
       const bCount = journeyCountFor(b.id);
-      if (aCount > 0 && bCount === 0) return -1;
-      if (aCount === 0 && bCount > 0) return 1;
+      if (aCount !== bCount) return bCount - aCount;
       const aOrder = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999;
       const bOrder = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
       return aOrder - bOrder;
