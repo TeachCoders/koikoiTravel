@@ -78,7 +78,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
   const activeSlide = slides[safeCurrent];
 
   return (
-    <section className="relative w-full min-h-[360px] sm:min-h-[420px] md:min-h-[520px] py-8 sm:py-12 md:py-16 flex items-center justify-center bg-slate-900 z-20">
+    <section className="relative w-full min-h-[240px] sm:min-h-[340px] md:min-h-[520px] py-5 sm:py-10 md:py-16 flex items-center justify-center bg-slate-900 z-20">
       {/* Background slider with permanent Slide 0 for rock-solid LCP performance */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Base Slide 0: Always in DOM at z-0 with full opacity for instant LCP detection */}
@@ -179,7 +179,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         </div>
 
         {/* Main Heading */}
-        <h1 className="font-luxury text-white text-[38px] leading-[1.1] sm:text-4xl md:text-5xl lg:text-[52px] font-black tracking-tight max-w-4xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
+        <div className="font-luxury text-white text-[26px] leading-[1.15] sm:text-3xl md:text-5xl lg:text-[52px] font-black tracking-tight max-w-4xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
           <span>Making every Journey</span>
           <span className="block mt-0.5 sm:mt-1.5 sm:whitespace-nowrap">
             <span className="text-[#F8904D]">Memorable</span> — KoiKoi Travel

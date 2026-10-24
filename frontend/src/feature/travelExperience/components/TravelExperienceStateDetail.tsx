@@ -51,7 +51,7 @@ export default function TravelExperienceStateDetail({
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
       {/* ===== HERO ===== */}
-      <section className="relative w-full h-[56vw] min-h-[360px] max-h-[520px] md:h-[480px] md:max-h-none overflow-hidden bg-slate-900">
+      <section className="relative w-full h-[36vw] min-h-[234px] max-h-[520px] md:h-[480px] md:max-h-none overflow-hidden bg-slate-900">
         <div className="absolute inset-0">
           <FallbackImage
             src={heroImage}

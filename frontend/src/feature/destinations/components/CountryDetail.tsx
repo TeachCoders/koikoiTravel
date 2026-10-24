@@ -563,7 +563,7 @@ function CountryContent({
       {/* ====================================================================== */}
       {/* 1. AUDLEY-STYLE EDITORIAL HERO BANNER                                  */}
       {/* ====================================================================== */}
-      <section className="relative w-full h-[56vw] min-h-[360px] max-h-[520px] md:h-[520px] lg:h-[560px] md:max-h-none overflow-hidden bg-slate-900">
+      <section className="relative w-full h-[36vw] min-h-[234px] max-h-[560px] md:h-[520px] lg:h-[560px] md:max-h-none overflow-hidden bg-slate-900">
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={displayTitle} />
