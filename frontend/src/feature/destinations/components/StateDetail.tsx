@@ -163,6 +163,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     .filter(
       (c) =>
         c.isActive !== false &&
+        c.showOnSite !== false &&
         c.slug !== state.slug &&
         (c.title ?? "").trim().toLowerCase() !== (state.title ?? "").trim().toLowerCase()
     )

@@ -21,9 +21,11 @@ export default function CityCard({
     : stateSlug;
   const country = countrySlug ?? city.state?.country?.slug ?? "india";
   
-  // Only make clickable if active tour packages exist (> 0)
+  // Only make clickable if city has at least 4 tour packages, is active, and passes SEO rules
   const isSelf = city.slug === actualStateSlug;
-  const href = journeys > 0
+  const hasSeo = Boolean(city.seoDescription || city.overView || city.moreDescription);
+  const isEnabled = journeys >= 4 && hasSeo && city.isActive !== false && city.showOnSite !== false;
+  const href = isEnabled
     ? (isSelf
         ? `/tour-packages/${country}/${actualStateSlug}`
         : `/tour-packages/${country}/${actualStateSlug}/${city.slug}`)

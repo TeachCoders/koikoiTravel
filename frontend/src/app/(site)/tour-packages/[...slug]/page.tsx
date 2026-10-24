@@ -114,10 +114,21 @@ async function resolveSlug(slug: string[]): Promise<Resolved> {
       city.state?.slug === stateSlug &&
       city.state?.country?.slug === countrySlug
     ) {
+      // If city is disabled from dashboard, redirect to parent state page so Google gets 0 404s
+      if (city.isActive === false || city.showOnSite === false) {
+        redirect(`/tour-packages/${countrySlug}/${stateSlug}`);
+      }
       return { type: "city", city };
     }
     const cms = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug.join("/"));
     if (cms) return { type: "cms", cms };
+
+    // SEO Safety Fallback: If missing or inactive city under an existing state, redirect to state tour packages
+    const state = await fetchBySlugCached<State>("/state/by-slug", stateSlug);
+    if (state && (state.country?.slug === countrySlug || countrySlug === "india")) {
+      redirect(`/tour-packages/${countrySlug}/${stateSlug}`);
+    }
+
     return { type: "notfound" };
   }
 
