@@ -243,9 +243,9 @@ export const Header: React.FC = () => {
                       <Link
                         href={link.directHref}
                         onClick={() => setOpenDesktopDropdown(null)}
-                        className={`relative whitespace-nowrap px-2 xl:px-2.5 py-1.5 text-[12.5px] xl:text-[13.5px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                        className={`relative whitespace-nowrap px-2.5 xl:px-3 py-1.5 text-[14px] xl:text-[15px] font-semibold tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
                           ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
-                          : "text-[#333]"
+                          : "text-[#222]"
                           }`}
                       >
                         <span className="relative z-10">{link.label}</span>
@@ -258,13 +258,13 @@ export const Header: React.FC = () => {
                             openDesktopDropdown === link.href ? null : link.href
                           )
                         }
-                        className={`pr-1.5 pl-0.5 py-1.5 cursor-pointer transition-colors duration-200 ${openDesktopDropdown === link.href
+                        className={`pr-2 pl-0.5 py-1.5 cursor-pointer transition-colors duration-200 ${openDesktopDropdown === link.href
                           ? "text-[#2E8B8B]"
-                          : "text-[#888] hover:text-[#2E8B8B]"
+                          : "text-[#666] hover:text-[#2E8B8B]"
                           }`}
                       >
                         <ChevronDown
-                          className={`w-3 h-3 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
+                          className={`w-3.5 h-3.5 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
                             }`}
                         />
                       </button>
@@ -277,23 +277,23 @@ export const Header: React.FC = () => {
                           openDesktopDropdown === link.href ? null : link.href
                         )
                       }
-                      className={`relative whitespace-nowrap px-2 xl:px-2.5 py-1.5 text-[12.5px] xl:text-[13.5px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
+                      className={`relative whitespace-nowrap px-2.5 xl:px-3 py-1.5 text-[14px] xl:text-[15px] font-semibold tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1.5 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
                         ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
-                        : "text-[#333]"
+                        : "text-[#222]"
                         }`}
                     >
                       <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
                       <ChevronDown
-                        className={`w-3 h-3 relative z-10 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
+                        className={`w-3.5 h-3.5 relative z-10 transition-transform duration-200 ${openDesktopDropdown === link.href ? "rotate-180" : ""
                           }`}
                       />
                     </button>
                   ) : (
                     <Link
                       href={link.directHref || link.href}
-                      className={`relative whitespace-nowrap px-2 xl:px-2.5 py-1.5 text-[12.5px] xl:text-[13.5px] font-medium tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                      className={`relative whitespace-nowrap px-2.5 xl:px-3 py-1.5 text-[14px] xl:text-[15px] font-semibold tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
                         ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
-                        : "text-[#333]"
+                        : "text-[#222]"
                         }`}
                     >
                       <span className="relative z-10" suppressHydrationWarning>{link.label}</span>
@@ -383,7 +383,7 @@ export const Header: React.FC = () => {
               <QuoteModal>
                 <button
                   type="button"
-                  className="btn-primary px-2.5 lg:px-3.5 h-10 sm:h-11 md:h-11 text-xs lg:text-[13px] font-semibold tracking-wide flex items-center justify-center gap-1 shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+                  className="btn-primary px-3.5 lg:px-4.5 h-10 sm:h-11 md:h-11 text-[13.5px] lg:text-[14.5px] font-bold tracking-normal flex items-center justify-center gap-1 shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
                 >
                   <span>Create My Trip</span>
                 </button>
