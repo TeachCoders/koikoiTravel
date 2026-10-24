@@ -1,5 +1,6 @@
 import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
+import TripQuoteSection from "@/components/shared/TripQuoteSection";
 import UserActivityTracker from "@/components/shared/UserActivityTracker";
 import { ReactNode } from "react";
 
@@ -12,6 +13,7 @@ export default function Layout({ children }: LayoutProps) {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-1">{children}</main>
+      <TripQuoteSection />
       <Footer />
       <UserActivityTracker />
     </div>

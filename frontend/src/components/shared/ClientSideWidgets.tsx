@@ -53,7 +53,6 @@ export default function ClientSideWidgets() {
 
   return (
     <>
-      {shouldLoadChat && <ChatWidgetWrapper />}
       <WhatsAppWidget />
       <UserActivityTracker />
       <ReplayRecorder />

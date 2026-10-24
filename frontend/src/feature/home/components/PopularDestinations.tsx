@@ -1,46 +1,38 @@
 "use client";
 
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import Link from "next/link";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { SectionLabel } from "@/components/shared/SectionLabel";
 import DestinationCard from "@/components/shared/DestinationCard";
 import { useGetStates } from "@/feature/state/api/useState";
-import { useGetCountries } from "@/feature/country/api/useCountry";
 import { useGetTravelExperiences } from "@/feature/travelExperience/api/useTravelExperience";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
-import type { Country, PaginatedResponse as CountryPage } from "@/feature/country/type";
 import type { TravelExperience, PaginatedResponse as ExperiencePage } from "@/feature/travelExperience/type";
 
 interface DestinationItem {
   id: string | number;
-  countryId?: number;
   title: string;
   image?: string;
-  subtitle?: string;
+  eyebrow?: string;
+  description?: string;
+  region?: string;
+  tourCountText?: string;
   href: string;
   displayOrder: number;
 }
 
 export const PopularDestinations: React.FC<{
   initialStates?: StatePage<State> | null;
-  initialCountries?: CountryPage<Country> | null;
+  initialCountries?: any;
   initialExperiences?: ExperiencePage<TravelExperience> | null;
-}> = ({ initialStates, initialCountries, initialExperiences }) => {
+}> = ({ initialStates, initialExperiences }) => {
   const { states, isLoading: statesLoading } = useGetStates(
     {
       limit: 100,
       isActive: "true",
     },
     initialStates
-  );
-
-  const { countries, isLoading: countriesLoading } = useGetCountries(
-    {
-      limit: 100,
-      isActive: "true",
-    },
-    initialCountries
   );
 
   const { travelExperiences, isLoading: experiencesLoading } = useGetTravelExperiences(
@@ -51,108 +43,96 @@ export const PopularDestinations: React.FC<{
     initialExperiences
   );
 
-  // Available countries
-  const availableCountries = useMemo(() => {
-    return countries.map((c) => ({
-      id: String(c.id),
-      slug: c.slug,
-      name: c.title.replace(/\s*Tour$/i, "").trim(),
-    }));
-  }, [countries]);
+  // Top 5 Curated Destinations requested for Home Page:
+  // Taj Mahal, Golden Triangle, Rajasthan, Kerala, South India
+  const destinations = useMemo<DestinationItem[]>(() => {
+    const list: DestinationItem[] = [];
 
-  // Find India country or default to first country
-  const defaultCountryId = useMemo(() => {
-    const india = availableCountries.find(
-      (c) => c.slug.toLowerCase() === "india" || c.name.toLowerCase() === "india"
+    // 1. Taj Mahal
+    const tajState = states.find((s) => s.slug === "taj-mahal");
+    const tajExp = travelExperiences.find((e) => e.slug === "taj-mahal");
+    const tajTours = tajState?.tourCount ?? tajExp?.tourCount ?? 12;
+    list.push({
+      id: "dest-taj-mahal",
+      title: "Taj Mahal",
+      image: tajState?.thumbImg || tajExp?.thumbImg || "/banners/taj-mahal-comic-banner.webp",
+      eyebrow: tajState?.banner?.bannerTag || tajExp?.banner?.bannerTag || "HOME OF TAJ MAHAL, INDIA",
+      description: "Agra & Taj Mahal private sightseeing & heritage tours",
+      region: "Uttar Pradesh",
+      tourCountText: `${tajTours} Tours`,
+      href: "/tour-packages/india/taj-mahal",
+      displayOrder: 1,
+    });
+
+    // 2. Golden Triangle
+    const gtExp = travelExperiences.find(
+      (e) => e.slug === "golden-triangle-tour-india" || e.slug === "golden-triangle"
     );
-    return india ? india.id : availableCountries[0]?.id || null;
-  }, [availableCountries]);
-
-  const [selectedCountryId, setSelectedCountryId] = useState<string | null>(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const activeCountryId = selectedCountryId ?? defaultCountryId;
-
-  // Default to India when countries are loaded
-  useEffect(() => {
-    if (defaultCountryId && !selectedCountryId) {
-      setSelectedCountryId(defaultCountryId);
-    }
-  }, [defaultCountryId, selectedCountryId]);
-
-  // Left Column items (Inbound / Iconic circuit destinations)
-  const leftItems = useMemo<DestinationItem[]>(() => {
-    return states
-      .filter((s) => (s.displayOrder ?? 0) > 0 && s.slug !== "golden-triangle" && s.slug !== "golden-triangle-tour-india" && (s.tourCount ?? (s.journeys?.length || 0)) > 0)
-      .map((s) => {
-        const tours = s.tourCount ?? (s.journeys?.length || 0);
-        const countrySlug = s.country?.slug || "india";
-        return {
-          id: `left-state-${s.id}`,
-          countryId: s.countryId || s.country?.id,
-          title: s.title,
-          image: s.thumbImg || s.banner?.images?.[0],
-          subtitle: `${tours}+ tours`,
-          href: `/tour-packages/${countrySlug}/${s.slug}`,
-          displayOrder: s.displayOrder ?? 999,
-        };
-      })
-      .sort((a, b) => a.displayOrder - b.displayOrder);
-  }, [states]);
-
-  // Right Column items (Domestic / Regional destinations) - exclude any state already in leftItems
-  const rightItems = useMemo<DestinationItem[]>(() => {
-    const leftStateIds = new Set(
-      states.filter((s) => (s.displayOrder ?? 0) > 0).map((s) => s.id)
+    const gtState = states.find(
+      (s) => s.slug === "golden-triangle" || s.slug === "golden-triangle-tour-india"
     );
-    return states
-      .filter((s) => (s.domesticDisplayOrder ?? 0) > 0 && !leftStateIds.has(s.id) && s.slug !== "golden-triangle" && s.slug !== "golden-triangle-tour-india" && (s.tourCount ?? (s.journeys?.length || 0)) > 0)
-      .map((s) => {
-        const tours = s.tourCount ?? (s.journeys?.length || 0);
-        const countrySlug = s.country?.slug || "india";
-        return {
-          id: `right-state-${s.id}`,
-          countryId: s.countryId || s.country?.id,
-          title: s.title,
-          image: s.thumbImg || s.banner?.images?.[0],
-          subtitle: `${tours}+ tours`,
-          href: `/tour-packages/${countrySlug}/${s.slug}`,
-          displayOrder: s.domesticDisplayOrder ?? 999,
-        };
-      })
-      .sort((a, b) => a.displayOrder - b.displayOrder);
-  }, [states]);
+    const gtTours = gtExp?.tourCount ?? gtState?.tourCount ?? 15;
+    list.push({
+      id: "dest-golden-triangle",
+      title: "Golden Triangle",
+      image: gtExp?.thumbImg || gtState?.thumbImg || "/golden-triangle/trip/golden-triangle.webp",
+      eyebrow: gtExp?.banner?.bannerTag || gtState?.banner?.bannerTag || "ICONIC HERITAGE CIRCUIT",
+      description: "Delhi, Agra & Jaipur private sightseeing & heritage tours",
+      region: "North India",
+      tourCountText: `${gtTours} Tours`,
+      href: "/tour-packages/india/golden-triangle",
+      displayOrder: 2,
+    });
 
-  // Filter items by selected country
-  const filteredLeftItems = useMemo(() => {
-    if (!activeCountryId || activeCountryId === "all") return leftItems;
-    return leftItems.filter(
-      (i) => !i.countryId || String(i.countryId) === String(activeCountryId)
-    );
-  }, [leftItems, activeCountryId]);
+    // 3. Rajasthan
+    const rajState = states.find((s) => s.slug === "rajasthan");
+    const rajTours = rajState?.tourCount ?? 32;
+    list.push({
+      id: "dest-rajasthan",
+      title: "Rajasthan",
+      image: rajState?.thumbImg || rajState?.banner?.images?.[0] || "/india/trip/rajasthan-thumb.webp",
+      eyebrow: rajState?.banner?.bannerTag || "LAND OF KINGS & PALACES",
+      description: "Jaipur, Udaipur & desert forts private heritage tours",
+      region: "Royal India",
+      tourCountText: `${rajTours} Tours`,
+      href: "/tour-packages/india/rajasthan",
+      displayOrder: 3,
+    });
 
-  const filteredRightItems = useMemo(() => {
-    if (!activeCountryId || activeCountryId === "all") return rightItems;
-    return rightItems.filter(
-      (i) => !i.countryId || String(i.countryId) === String(activeCountryId)
-    );
-  }, [rightItems, activeCountryId]);
+    // 4. Kerala
+    const keralaState = states.find((s) => s.slug === "kerala");
+    const keralaTours = keralaState?.tourCount ?? 15;
+    list.push({
+      id: "dest-kerala",
+      title: "Kerala",
+      image: keralaState?.thumbImg || keralaState?.banner?.images?.[0] || "/content/kerala-holiday-1.webp",
+      eyebrow: keralaState?.banner?.bannerTag || "GOD'S OWN COUNTRY",
+      description: "Alleppey, Munnar & tropical backwaters private tours",
+      region: "South India",
+      tourCountText: `${keralaTours} Tours`,
+      href: "/tour-packages/india/kerala",
+      displayOrder: 4,
+    });
 
-  const isLoading = statesLoading || countriesLoading || experiencesLoading;
+    // 5. South India
+    const southState = states.find((s) => s.slug === "south-india");
+    const southTours = southState?.tourCount ?? 10;
+    list.push({
+      id: "dest-south-india",
+      title: "South India",
+      image: southState?.thumbImg || southState?.banner?.images?.[0] || "/india/holiday/mahablipuram-temple-1.webp",
+      eyebrow: southState?.banner?.bannerTag || "TEMPLES & TROPICAL COASTS",
+      description: "Mahabalipuram, Madurai & temple heritage tours",
+      region: "Dravidian Heritage",
+      tourCountText: `${southTours} Tours`,
+      href: "/tour-packages/india/south-india",
+      displayOrder: 5,
+    });
 
-  // Combined destinations: Top row has leftItems (Inbound), bottom rows have rightItems (Domestic)
-  const allDestinations = useMemo(() => {
-    return [...filteredLeftItems, ...filteredRightItems];
-  }, [filteredLeftItems, filteredRightItems]);
+    return list;
+  }, [states, travelExperiences]);
 
-  const activeCountryObj = availableCountries.find(
-    (c) => c.id === activeCountryId
-  );
-  const activeCountryName = activeCountryObj
-    ? activeCountryObj.name
-    : activeCountryId === "all"
-    ? "All Destinations"
-    : "India";
+  const isLoading = statesLoading || experiencesLoading;
 
   return (
     <section
@@ -160,10 +140,10 @@ export const PopularDestinations: React.FC<{
       className="py-8 sm:py-10 md:py-12 bg-white relative border-y border-section-border z-10"
     >
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-6 sm:mb-8 gap-6 relative z-30">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 gap-4 relative z-30">
           <div>
             <SectionLabel>Popular Destinations</SectionLabel>
-            <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5">
+            <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
               Where Will Your India Journey <span className="text-[#F8904D]">Take You?</span>
             </h2>
             <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
@@ -171,123 +151,39 @@ export const PopularDestinations: React.FC<{
             </p>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="shrink-0">
             <Link
               href="/destinations"
-              className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-section-border text-slate-800 text-sm font-semibold hover:border-[#2E8B8B] hover:text-[#2E8B8B] transition-all shadow-xs"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-section-border text-slate-800 text-sm font-semibold hover:border-[#2E8B8B] hover:text-[#2E8B8B] transition-all shadow-xs"
             >
               <span>All destinations</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
-
-            {!isLoading && availableCountries.length > 0 && (
-              <div className="relative inline-block shrink-0">
-                <button
-                  type="button"
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className={`flex items-center justify-between gap-3 bg-white border px-5 py-2.5 rounded-full text-sm font-medium shadow-sm outline-none transition-all min-w-[170px] ${
-                    isDropdownOpen
-                      ? "border-[#F8904D] ring-2 ring-[#F8904D]/20"
-                      : "border-slate-200 hover:bg-slate-50 hover:border-slate-300"
-                  }`}
-                >
-                  <span className="truncate text-slate-800 font-medium">
-                    {activeCountryName}
-                  </span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-slate-500 transition-transform duration-300 ${
-                      isDropdownOpen ? "rotate-180 text-[#F8904D]" : ""
-                    }`}
-                  />
-                </button>
-
-                {/* Custom Dropdown Menu */}
-                {isDropdownOpen && (
-                  <>
-                    <div
-                      className="fixed inset-0 z-40"
-                      onClick={() => setIsDropdownOpen(false)}
-                    />
-                    <div className="absolute right-0 mt-2 w-full lg:w-[220px] bg-white rounded-2xl shadow-xl border border-slate-100 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-                      <div className="max-h-[300px] overflow-y-auto py-2 custom-scrollbar">
-                        {availableCountries.length > 1 && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedCountryId("all");
-                              setIsDropdownOpen(false);
-                            }}
-                            className={`w-full text-left px-5 py-2.5 text-sm font-medium transition-colors ${
-                              selectedCountryId === "all"
-                                ? "bg-orange-50 text-[#F8904D]"
-                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                            }`}
-                          >
-                            All Destinations
-                          </button>
-                        )}
-                        {availableCountries.map((c) => (
-                          <button
-                            key={c.id}
-                            type="button"
-                            onClick={() => {
-                              setSelectedCountryId(c.id);
-                              setIsDropdownOpen(false);
-                            }}
-                            className={`w-full text-left px-5 py-2.5 text-sm font-medium transition-colors ${
-                              selectedCountryId === c.id
-                                ? "bg-orange-50 text-[#F8904D]"
-                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                            }`}
-                          >
-                            {c.name}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
           </div>
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="h-[175px] sm:h-[185px] rounded-2xl bg-slate-100 animate-pulse" />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="h-[310px] sm:h-[340px] md:h-[365px] rounded-2xl sm:rounded-3xl bg-slate-100 animate-pulse" />
             ))}
           </div>
-        ) : allDestinations.length === 0 ? (
+        ) : destinations.length === 0 ? (
           <p className="text-center text-slate-400 py-16">No destinations found.</p>
         ) : (
-          <div className="space-y-8">
-            <div
-              key={selectedCountryId || "all"}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 animate-in fade-in duration-500"
-            >
-              {allDestinations.map((item) => (
-                <DestinationCard
-                  key={item.id}
-                  title={item.title}
-                  image={item.image}
-                  subtitle={item.subtitle}
-                  href={item.href}
-                />
-              ))}
-            </div>
-
-            {allDestinations.length > 12 && (
-              <div className="flex justify-center pt-2">
-                <Link
-                  href="/tour-packages"
-                  className="group inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-slate-900 text-white text-sm font-medium hover:bg-[#F8904D] transition-all shadow-sm"
-                >
-                  <span>View All Destinations</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            )}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5 animate-in fade-in duration-500">
+            {destinations.map((item) => (
+              <DestinationCard
+                key={item.id}
+                title={item.title}
+                image={item.image}
+                eyebrow={item.eyebrow}
+                description={item.description}
+                region={item.region}
+                tourCountText={item.tourCountText}
+                href={item.href}
+              />
+            ))}
           </div>
         )}
       </div>
@@ -296,4 +192,3 @@ export const PopularDestinations: React.FC<{
 };
 
 export default PopularDestinations;
-
