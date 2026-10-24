@@ -42,7 +42,6 @@ import type { Journey, PaginatedResponse } from "@/feature/journey/type";
 import CityCard from "./CityCard";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
-import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
 import { GOLDEN_TRIANGLE_FAQS } from "@/feature/travelExperience/goldenTriangleFaqs";
 import { SOUTH_INDIA_FAQS } from "../southIndiaFaqs";
 import { TAJ_MAHAL_FAQS } from "../tajMahalFaqs";
@@ -511,58 +510,70 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         excludeHrefs={excludeHrefs}
       />
 
-      {/* ===== ARTICLE / MORE DESCRIPTION (100% DB DRIVEN - MERGED SINGLE SECTION, NO SIDEBAR) ===== */}
+      {/* ===== TRAVEL GUIDE (100% DB DRIVEN - MERGED SINGLE SECTION, NO SIDEBAR) ===== */}
       {showMoreSection && (
-        <section id="more" className="bg-white border-t border-slate-200/60 py-8 sm:py-10 md:py-12">
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-            <TravelGuideCollapsible
-              title={`Everything About ${state.title}`}
-              subtitle={`Essential travel guide, top places to visit, culture, food & insider tips for ${state.title}.`}
-            >
-              {/* Merged Common DB Fields (No sidebar, No nested card clutter) */}
-              {(hasFamousFor || facts.length > 0) && (
-                <div className="mb-8 pb-6 border-b border-slate-200/80 space-y-4">
-                  {/* Famous For pills from DB */}
-                  {hasFamousFor && (
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-xs font-bold uppercase tracking-wider text-[#2E8B8B] mr-1">
-                        Famous For:
-                      </span>
-                      {stripHtml(state.famousFor!)
-                        .split(",")
-                        .map((item, i) => (
-                          <span
-                            key={i}
-                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs sm:text-[13px] font-medium bg-[#2E8B8B]/10 text-slate-800 border border-[#2E8B8B]/20"
-                          >
-                            <BadgeCheck size={14} className="text-[#2E8B8B]" />
-                            {item.trim()}
-                          </span>
-                        ))}
-                    </div>
-                  )}
+        <section id="more" className="w-full bg-white border-t border-slate-200/60 py-10 sm:py-12 md:py-14">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-10">
+            {/* Header */}
+            <div className="mb-8">
+              <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+                TRAVEL GUIDE
+              </span>
+              <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold tracking-tight text-slate-900">
+                Everything About {state.title}
+              </h2>
+              <p className="text-sm sm:text-base text-slate-600 mt-1.5 leading-relaxed">
+                Essential travel guide, top places to visit, culture, food & insider tips for {state.title}.
+              </p>
+            </div>
 
-                  {/* Quick Facts from DB */}
-                  {facts.length > 0 && (
-                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-[13.5px] text-slate-600 pt-1">
-                      {facts.map((f) => (
-                        <div key={f.label} className="flex items-center gap-1.5">
-                          <span className="text-slate-400 font-normal">{f.label}:</span>
-                          <span className="font-semibold text-slate-800 capitalize">{f.value}</span>
-                        </div>
+            {/* Merged Common DB Fields (Famous For & Quick Facts) */}
+            {(hasFamousFor || facts.length > 0) && (
+              <div className="mb-8 pb-6 border-b border-slate-200/80 space-y-4">
+                {/* Famous For pills from DB */}
+                {hasFamousFor && (
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#2E8B8B] mr-1">
+                      Famous For:
+                    </span>
+                    {stripHtml(state.famousFor!)
+                      .split(",")
+                      .map((item, i) => (
+                        <span
+                          key={i}
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs sm:text-[13px] font-medium bg-[#2E8B8B]/10 text-slate-800 border border-[#2E8B8B]/20"
+                        >
+                          <BadgeCheck size={14} className="text-[#2E8B8B]" />
+                          {item.trim()}
+                        </span>
                       ))}
-                    </div>
-                  )}
-                </div>
-              )}
+                  </div>
+                )}
 
-              {/* 100% DB Rich Content */}
+                {/* Quick Facts from DB */}
+                {facts.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-[13.5px] text-slate-600 pt-1">
+                    {facts.map((f) => (
+                      <div key={f.label} className="flex items-center gap-1.5">
+                        <span className="text-slate-400 font-normal">{f.label}:</span>
+                        <span className="font-semibold text-slate-800 capitalize">{f.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 100% DB Rich Content */}
+            <div className="max-w-none">
               {hasSeoDesc && (
-                <RichContent
-                  html={state.seoDescription!}
-                  sharedLinkedHrefs={pageLinkedHrefs}
-                  excludeHrefs={excludeHrefs}
-                />
+                <div className="text-base sm:text-[17px] text-slate-700 leading-relaxed font-normal mb-8 pb-6 border-b border-slate-100">
+                  <RichContent
+                    html={state.seoDescription!}
+                    sharedLinkedHrefs={pageLinkedHrefs}
+                    excludeHrefs={excludeHrefs}
+                  />
+                </div>
               )}
 
               {hasMoreDesc && (
@@ -570,10 +581,9 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                   html={state.moreDescription!}
                   sharedLinkedHrefs={pageLinkedHrefs}
                   excludeHrefs={excludeHrefs}
-                  className={hasSeoDesc ? "mt-8" : ""}
                 />
               )}
-            </TravelGuideCollapsible>
+            </div>
           </div>
         </section>
       )}
