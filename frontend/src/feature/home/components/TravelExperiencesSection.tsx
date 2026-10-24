@@ -37,7 +37,7 @@ export const TravelExperiencesSection: React.FC<{
     ).length;
 
   const experiences = travelExperiences
-    .filter((e: any) => !/^test\b/i.test(e.title || "") && tourCount(e.id) > 0)
+    .filter((e: any) => !/^test\b/i.test(e.title || "") && tourCount(e.id) > 0 && e.slug !== "taj-mahal" && !/taj\s*mahal/i.test(e.title || ""))
     .sort((a: any, b: any) => {
       const isGT_A = /golden\s*triangle/i.test(a.title || "") || a.slug === "golden-triangle" || a.slug === "golden-triangle-tour-india";
       const isGT_B = /golden\s*triangle/i.test(b.title || "") || b.slug === "golden-triangle" || b.slug === "golden-triangle-tour-india";
