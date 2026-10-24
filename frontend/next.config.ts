@@ -62,6 +62,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/travel-experiences/:expSlug/:stateSlug",
+        destination: "/tour-packages/india/:stateSlug",
+        permanent: true,
+      },
+      {
         source: "/tour-packages/india/tamil-nadu",
         destination: "/tour-packages/india/south-india",
         permanent: true,
