@@ -35,13 +35,33 @@ interface ExperienceResult {
   href: string;
 }
 
-export default function HeaderSearchBar() {
+interface HeaderSearchBarProps {
+  autoFocus?: boolean;
+  onClose?: () => void;
+  className?: string;
+  placeholder?: string;
+  isMobileModal?: boolean;
+}
+
+export default function HeaderSearchBar({
+  autoFocus = false,
+  onClose,
+  className = "",
+  placeholder = "Search destinations, tours...",
+  isMobileModal = false,
+}: HeaderSearchBarProps = {}) {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (autoFocus && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [autoFocus]);
 
   // Fetch all active data
   const { states = [] } = useGetStates({ limit: 100, isActive: "true" });
@@ -217,9 +237,10 @@ export default function HeaderSearchBar() {
     (href: string) => {
       setIsOpen(false);
       setQuery("");
+      if (onClose) onClose();
       router.push(href);
     },
-    [router]
+    [router, onClose]
   );
 
   const handleSubmit = (e?: React.FormEvent) => {
@@ -242,6 +263,7 @@ export default function HeaderSearchBar() {
     }
     if (q) {
       setIsOpen(false);
+      if (onClose) onClose();
       router.push(`/tour-packages?search=${encodeURIComponent(query.trim())}`);
     }
   };
@@ -280,11 +302,13 @@ export default function HeaderSearchBar() {
     matchedExperiences.length > 0;
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-[500px] lg:max-w-[560px]">
+    <div ref={containerRef} className={`relative w-full ${className || "max-w-[500px] lg:max-w-[560px]"}`}>
       {/* Clean Pill Search Bar matching Travelogy reference */}
       <form
         onSubmit={handleSubmit}
-        className={`relative flex items-center rounded-full border transition-all duration-200 h-10 sm:h-11 md:h-11 shadow-xs ${
+        className={`relative flex items-center rounded-full border transition-all duration-200 ${
+          isMobileModal ? "h-11 bg-white border-slate-300" : "h-10 sm:h-11 md:h-11"
+        } shadow-xs ${
           isOpen && q
             ? "bg-white border-[#2E8B8B] ring-2 ring-[#2E8B8B]/15 shadow-md"
             : "bg-slate-50 hover:bg-slate-100/80 border-slate-200 hover:border-slate-300"
@@ -310,7 +334,7 @@ export default function HeaderSearchBar() {
             }
           }}
           onKeyDown={handleKeyDown}
-          placeholder="Search destinations, tours..."
+          placeholder={placeholder}
           aria-label="Search destinations, tours"
           className="w-full h-full py-2 md:py-2.5 text-xs sm:text-[13px] md:text-sm text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none pr-3"
         />

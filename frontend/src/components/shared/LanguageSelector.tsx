@@ -171,7 +171,7 @@ export default function LanguageSelector() {
         onClick={() => setIsOpen((prev) => !prev)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        className="flex items-center gap-1.5 px-2.5 sm:px-3 h-10 sm:h-11 md:h-11 rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs sm:text-[13px] font-semibold transition-all shadow-xs cursor-pointer"
+        className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 h-9 sm:h-10 md:h-11 rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs sm:text-[13px] font-semibold transition-all shadow-xs cursor-pointer"
         aria-label="Select language"
       >
         <span className="text-sm sm:text-base leading-none" suppressHydrationWarning>{currentLangObj.flag}</span>

@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Search } from "lucide-react";
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
 import type { NavChild } from "@/lib/utils";
 import { QuoteModal } from "./QuoteModal";
@@ -24,6 +24,7 @@ export const Header: React.FC = () => {
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [openDesktopDropdown, setOpenDesktopDropdown] = useState<string | null>(null);
   const [openMenuKey, setOpenMenuKey] = useState<string | null>(null);
@@ -61,13 +62,18 @@ export const Header: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!isMobileMenuOpen) return;
+    setIsMobileMenuOpen(false);
+    setIsMobileSearchOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen && !isMobileSearchOpen) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = prev;
     };
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuOpen, isMobileSearchOpen]);
 
   const indiaTourLinks = useMemo<NavChild[]>(() => getActiveIndiaTours(), []);
   const travelStyleLinks = useMemo<NavChild[]>(() => getActiveTravelStyles(), []);
@@ -374,8 +380,19 @@ export const Header: React.FC = () => {
             </div>
           )}
 
-          {/* Mobile Right Controls: Language Selector + Hamburger Toggle */}
-          <div className="flex md:hidden items-center gap-1.5 sm:gap-2">
+          {/* Mobile Right Controls: Search Icon -> Language Selector -> Hamburger Toggle */}
+          <div className="flex md:hidden items-center gap-1 sm:gap-1.5">
+            {!isOfferPage && (
+              <button
+                type="button"
+                onClick={() => setIsMobileSearchOpen(true)}
+                aria-label="Search destinations and tours"
+                className="w-9 h-9 flex items-center justify-center rounded-full text-slate-700 hover:text-[#2E8B8B] hover:bg-slate-100 transition-colors cursor-pointer"
+              >
+                <Search className="w-5 h-5 text-slate-700" />
+              </button>
+            )}
+
             <LanguageSelector />
 
             {!isOfferPage && (
@@ -383,7 +400,7 @@ export const Header: React.FC = () => {
                 onClick={() => (isMobileMenuOpen ? handleMobileClose() : handleMobileOpen())}
                 aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isMobileMenuOpen}
-                className="p-1.5 rounded-lg text-[#555] hover:bg-[#f5f5f5] transition-colors focus:outline-none"
+                className="w-9 h-9 flex items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 transition-colors focus:outline-none cursor-pointer"
               >
                 {isMobileMenuOpen ? (
                   <X className="w-6 h-6" />
@@ -394,14 +411,51 @@ export const Header: React.FC = () => {
             )}
           </div>
         </div>
-
-        {/* Mobile Search Bar (Only shown on top, automatically hides when scrolled) */}
-        {!isOfferPage && !isScrolled && (
-          <div className="mt-2 pb-1 md:hidden transition-all duration-200">
-            <HeaderSearchBar />
-          </div>
-        )}
       </div>
+
+      {/* Mobile Search Modal/Overlay (Clean slide-down from top with instant live search) */}
+      {!isOfferPage &&
+        isMobileSearchOpen &&
+        typeof document !== "undefined" &&
+        mounted &&
+        createPortal(
+          <>
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 z-[75] bg-black/60 backdrop-blur-xs transition-opacity duration-200 md:hidden"
+              onClick={() => setIsMobileSearchOpen(false)}
+              aria-hidden="true"
+            />
+
+            {/* Slide-down search drawer at top */}
+            <div
+              className="fixed top-0 left-0 right-0 z-[80] bg-white border-b border-slate-200 shadow-2xl p-3 sm:p-4 md:hidden animate-in slide-in-from-top-3 duration-200"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Search destinations"
+            >
+              <div className="flex items-center gap-2">
+                <div className="flex-1 min-w-0">
+                  <HeaderSearchBar
+                    autoFocus
+                    isMobileModal
+                    onClose={() => setIsMobileSearchOpen(false)}
+                    placeholder="Search destinations, tours, styles..."
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsMobileSearchOpen(false)}
+                  aria-label="Close search"
+                  className="px-3 py-2 text-slate-600 hover:text-slate-900 text-[13px] font-semibold rounded-lg hover:bg-slate-100 transition-colors shrink-0"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </>,
+          document.body
+        )}
 
       {/* Mobile drawer navigation (slide-in, drill-down) */}
       {!isOfferPage &&
@@ -450,6 +504,14 @@ export const Header: React.FC = () => {
                 </button>
               </div>
 
+              {/* Search inside mobile menu drawer */}
+              <div className="px-3 py-2.5 border-b border-slate-100 bg-slate-50/70">
+                <HeaderSearchBar
+                  onClose={handleMobileClose}
+                  placeholder="Search destinations or tours..."
+                />
+              </div>
+
               {/* Accordion menu */}
               <div className="flex-1 overflow-y-auto px-3 py-3">
                 <div className="space-y-2">{renderMobileAccordion}</div>
@@ -479,7 +541,7 @@ export const Header: React.FC = () => {
     </header>
     {/* Spacer to preserve document flow so banner and content are never clipped under fixed header */}
     <div
-      className={`${isOfferPage ? "h-[76px]" : "h-[120px] md:h-[76px]"} w-full shrink-0 pointer-events-none`}
+      className={`${isOfferPage ? "h-[56px]" : "h-[54px] sm:h-[60px] md:h-[72px]"} w-full shrink-0 pointer-events-none`}
       aria-hidden="true"
     />
   </>
