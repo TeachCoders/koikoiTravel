@@ -15,7 +15,7 @@ export default function CityCard({
   fallbackImage?: string;
 }) {
   const journeys = city._count?.journeys ?? city.journeys?.length ?? journeyCount ?? 0;
-  const isCircuit = stateSlug === "golden-triangle" || stateSlug === "taj-mahal" || stateSlug.includes("golden-triangle") || stateSlug.includes("taj-mahal");
+  const isCircuit = stateSlug === "golden-triangle" || stateSlug === "taj-mahal" || stateSlug === "south-india" || stateSlug.includes("golden-triangle") || stateSlug.includes("taj-mahal") || stateSlug.includes("south-india");
   const actualStateSlug = (city.state?.slug && isCircuit)
     ? city.state.slug
     : stateSlug;

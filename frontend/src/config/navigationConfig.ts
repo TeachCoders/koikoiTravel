@@ -23,6 +23,7 @@ export const STATIC_INDIA_TOURS: NavItemConfig[] = [
   { label: "Taj Mahal Day & Short Tours", href: "/tour-packages/india/taj-mahal", enabled: true },
   { label: "Rajasthan Tours", href: "/tour-packages/india/rajasthan", enabled: true },
   { label: "Kerala Tours", href: "/tour-packages/india/kerala", enabled: true },
+  { label: "South India Tours", href: "/tour-packages/india/south-india", enabled: true },
 ];
 
 export const getActiveIndiaTours = (): { label: string; href: string }[] =>
@@ -153,6 +154,31 @@ export const STATIC_DESTINATION_TREE: DestinationTreeCountry[] = [
           { id: 5, title: "Nature & Hills Holidays", slug: "nature", href: "/travel-experiences/nature/kerala", count: 4 },
           { id: 6, title: "Ayurveda & Wellness Retreats", slug: "ayurveda-yoga", href: "/travel-experiences/ayurveda-yoga/kerala", count: 3 },
           { id: 7, title: "Beach & Backwater Cruises", slug: "beach-lake", href: "/travel-experiences/beach-lake/kerala", count: 3 },
+        ],
+      },
+
+      // 4. SOUTH INDIA (Temples, Heritage & Western Ghats)
+      {
+        id: 4,
+        title: "South India",
+        slug: "south-india",
+        href: "/tour-packages/india/south-india",
+        displayOrder: 4,
+        cities: [
+          { id: 401, title: "Hampi (UNESCO)", slug: "hampi", href: "/tour-packages/india/karnataka/hampi" },
+          { id: 402, title: "Mysore Palace", slug: "mysore", href: "/tour-packages/india/karnataka/mysore" },
+          { id: 403, title: "Madurai Meenakshi", slug: "madurai", href: "/tour-packages/india/tamil-nadu/madurai" },
+          { id: 404, title: "Pondicherry", slug: "pondicherry", href: "/tour-packages/india/tamil-nadu/pondicherry" },
+          { id: 405, title: "Mahabalipuram", slug: "mahabalipuram", href: "/tour-packages/india/tamil-nadu/mahabalipuram" },
+          { id: 406, title: "Thanjavur", slug: "thanjavur", href: "/tour-packages/india/tamil-nadu/thanjavur" },
+          { id: 407, title: "Coorg (Coffee Hills)", slug: "coorg", href: "/tour-packages/india/karnataka/coorg" },
+          { id: 408, title: "Ooty", slug: "ooty", href: "/tour-packages/india/tamil-nadu/ooty" },
+          { id: 409, title: "Bangalore", slug: "bangalore", href: "/tour-packages/india/karnataka/bangalore" },
+          { id: 410, title: "Chennai", slug: "chennai", href: "/tour-packages/india/tamil-nadu/chennai" },
+        ],
+        experiences: [
+          { id: 41, title: "South India Temple Circuits (10 Packages)", slug: "spiritual", href: "/tour-packages/india/south-india", count: 10 },
+          { id: 42, title: "Heritage & Living Culture", slug: "heritage-and-culture", href: "/tour-packages/india/south-india", count: 8 },
         ],
       },
     ],

@@ -14,6 +14,10 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
     href: "/tour-packages/india/taj-mahal",
   },
   {
+    terms: ["South India Tours", "South India Tour", "South India Tour Packages", "South India Packages", "South India Holiday", "South India"],
+    href: "/tour-packages/india/south-india",
+  },
+  {
     terms: ["Honeymoon Packages", "Honeymoon Tour", "Honeymoon Tours", "Honeymoon"],
     href: "/travel-experiences/honeymoon",
   },
@@ -101,11 +105,11 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
   },
   {
     terms: ["Karnataka Tour Packages", "Karnataka Tours", "Karnataka"],
-    href: "/tour-packages/india/karnataka",
+    href: "/tour-packages/india/south-india",
   },
   {
     terms: ["Tamil Nadu Tour Packages", "Tamil Nadu Tours", "Tamil Nadu"],
-    href: "/tour-packages/india/tamil-nadu",
+    href: "/tour-packages/india/south-india",
   },
   {
     terms: ["Punjab Tour Packages", "Punjab Tours", "Punjab"],

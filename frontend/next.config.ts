@@ -62,6 +62,16 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/tour-packages/india/tamil-nadu",
+        destination: "/tour-packages/india/south-india",
+        permanent: true,
+      },
+      {
+        source: "/tour-packages/india/karnataka",
+        destination: "/tour-packages/india/south-india",
+        permanent: true,
+      },
+      {
         source: "/india-tours/tour-packages/golden-triangle",
         destination: "/tour-packages/india/golden-triangle",
         permanent: true,

@@ -92,6 +92,17 @@ const ICONIC_REGIONS = [
     highlights: ["Overnight Private Houseboat", "Munnar Mist-Clad Tea Hills", "Ayurvedic Rejuvenation"],
   },
   {
+    id: "south-india",
+    title: "South India Temples & Heritage",
+    tag: "Cholas & Vijayanagara",
+    route: "Chennai • Mahabalipuram • Pondicherry • Madurai • Hampi • Mysore",
+    description: "Towering granite temple gopurams, French colonial boulevards of Pondicherry, UNESCO boulder ruins of Hampi, and royal Mysore palaces.",
+    image: "/india/holiday/mahablipuram-temple-1.webp",
+    fallbackImage: "/india/holiday/hampi-temple-banner.webp",
+    href: "/tour-packages/india/south-india",
+    highlights: ["Meenakshi Amman Temple Madurai", "UNESCO Monuments of Mahabalipuram", "Hampi Boulder Empires"],
+  },
+  {
     id: "himalayas-spiritual",
     title: "Himalayas & Sacred Ganges",
     tag: "Spiritual & Mountain Trails",

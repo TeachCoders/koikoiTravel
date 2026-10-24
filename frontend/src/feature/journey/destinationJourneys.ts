@@ -60,12 +60,16 @@ export function resolveStateJourneys(
   const matching = list.filter((j) =>
     embeddedJourneys.some((ej) => ej.id === j.id) ||
     (j as any).states?.some((s: any) => s.id === state.id || s.slug === state.slug) ||
-    ((state.slug === "golden-triangle" || state.slug === "taj-mahal") && (
-      (j as any).travelExperiences?.some((e: any) => e.slug?.includes("golden-triangle") || e.slug?.includes("taj")) ||
+    ((state.slug === "golden-triangle" || state.slug === "taj-mahal" || state.slug === "south-india") && (
+      (j as any).travelExperiences?.some((e: any) => e.slug?.includes("golden-triangle") || e.slug?.includes("taj") || e.slug?.includes("south")) ||
+      (j as any).states?.some((s: any) => s.slug === "tamil-nadu" || s.slug === "karnataka" || s.slug === "south-india") ||
       (j.title || "").toLowerCase().includes("golden triangle") ||
       (j.title || "").toLowerCase().includes("taj mahal") ||
+      (j.title || "").toLowerCase().includes("south india") ||
+      (j.title || "").toLowerCase().includes("karnataka") ||
       (j.slug || "").includes("golden-triangle") ||
-      (j.slug || "").includes("taj-mahal")
+      (j.slug || "").includes("taj-mahal") ||
+      (j.slug || "").includes("south-india")
     )) ||
     j.cities?.some(
       (c) =>

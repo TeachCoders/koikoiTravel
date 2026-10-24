@@ -44,6 +44,7 @@ import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
 import { GOLDEN_TRIANGLE_FAQS } from "@/feature/travelExperience/goldenTriangleFaqs";
+import { SOUTH_INDIA_FAQS } from "../southIndiaFaqs";
 
 export default function StateDetail({
   slug,
@@ -183,7 +184,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
   const displayedCities = useMemo(() => {
     let citiesList = [...stateCities];
-    const isCircuit = state.slug === "golden-triangle" || state.slug === "taj-mahal" || state.slug?.includes("golden-triangle") || state.slug?.includes("taj-mahal");
+    const isCircuit = state.slug === "golden-triangle" || state.slug === "taj-mahal" || state.slug === "south-india" || state.slug?.includes("golden-triangle") || state.slug?.includes("taj-mahal") || state.slug?.includes("south-india");
     if (citiesList.length === 0 && isCircuit) {
       const seen = new Set<string>();
       const extracted: any[] = [];
@@ -196,6 +197,8 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       }
       const priority = state.slug === "taj-mahal"
         ? ["agra", "delhi", "fatehpur-sikri", "jaipur"]
+        : state.slug === "south-india"
+        ? ["mahabalipuram", "pondicherry", "madurai", "thanjavur", "hampi", "mysore", "mysuru", "coorg", "ooty", "bangalore", "chennai", "nagarhole", "bandipur", "kodaikanal", "rameshwaram", "badami"]
         : ["delhi", "agra", "jaipur", "fatehpur-sikri", "ranthambore"];
       extracted.sort((a, b) => {
         const aIdx = priority.indexOf(a.slug);
@@ -538,7 +541,15 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
       {/* ===== FAQ SECTION ===== */}
       <FaqSection
-        faqs={state.faqs?.length ? state.faqs : (state.slug === "golden-triangle" ? (GOLDEN_TRIANGLE_FAQS as any) : undefined)}
+        faqs={
+          state.faqs?.length
+            ? state.faqs
+            : state.slug === "golden-triangle"
+            ? (GOLDEN_TRIANGLE_FAQS as any)
+            : state.slug === "south-india"
+            ? (SOUTH_INDIA_FAQS as any)
+            : undefined
+        }
         contextName={state.title}
         contextSlug={state.slug}
         entityType="State"
