@@ -19,7 +19,7 @@ export interface NavItemConfig {
 // 1. INDIA TOURS (Single-Column Clean Dropdown: Golden Triangle, Rajasthan, Kerala)
 // ============================================================================
 export const STATIC_INDIA_TOURS: NavItemConfig[] = [
-  { label: "Golden Triangle Tours", href: "/tour-packages/india/golden-triangle-tour-india", enabled: true },
+  { label: "Golden Triangle Tours", href: "/travel-experiences/golden-triangle-tour-india", enabled: true },
   { label: "Rajasthan Tours", href: "/tour-packages/india/rajasthan", enabled: true },
   { label: "Kerala Tours", href: "/tour-packages/india/kerala", enabled: true },
 ];
