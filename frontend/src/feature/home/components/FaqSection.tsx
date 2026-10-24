@@ -8,6 +8,7 @@ import { HOME_FAQS } from "@/lib/homeFaqs";
 import { getDestinationFaqs } from "@/lib/destinationFaqs";
 import RichContent from "@/components/shared/RichContent";
 import { autoLinkKeywords } from "@/lib/autoInternalLink";
+import DoodleBackground from "@/components/shared/DoodleBackground";
 
 interface FaqSectionProps {
   faqs?: any[];
@@ -19,6 +20,7 @@ interface FaqSectionProps {
   sharedLinkedHrefs?: Set<string>;
   excludeHrefs?: string[];
   isHomePage?: boolean;
+  bgType?: "white" | "pattern";
 }
 
 export const FaqSection: React.FC<FaqSectionProps> = ({
@@ -31,6 +33,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
   sharedLinkedHrefs,
   excludeHrefs,
   isHomePage = false,
+  bgType = "white",
 }) => {
   const [openId, setOpenId] = useState<number | string | null>(1);
   const toggleFaq = (id: number | string) => setOpenId(openId === id ? null : id);
@@ -130,9 +133,19 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
     );
   };
 
+  const isPattern = bgType === "pattern";
+
   return (
-    <section id="faq" className="py-8 sm:py-10 md:py-12 bg-white relative border-t border-slate-200/70" itemScope itemType="https://schema.org/FAQPage">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 space-y-6 sm:space-y-8">
+    <section
+      id="faq"
+      className={`py-8 sm:py-10 md:py-12 relative border-t border-slate-200/70 overflow-hidden ${
+        isPattern ? "bg-[#f8f8f8]" : "bg-white"
+      }`}
+      itemScope
+      itemType="https://schema.org/FAQPage"
+    >
+      {isPattern && <DoodleBackground />}
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 space-y-6 sm:space-y-8 relative z-10">
         {/* Section Header */}
         <div>
           <SectionLabel icon={<HelpCircle className="w-4 h-4" />}>Got Questions?</SectionLabel>

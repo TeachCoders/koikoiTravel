@@ -3,11 +3,13 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { SectionLabel } from "@/components/shared/SectionLabel";
+import DoodleBackground from "@/components/shared/DoodleBackground";
 
 export default function SeoTextBlock() {
   return (
-    <section className="bg-[#f8f8f8] border-t border-slate-100 py-8 sm:py-10 md:py-12">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+    <section className="bg-[#f8f8f8] border-t border-slate-200/70 py-8 sm:py-10 md:py-12 relative overflow-hidden">
+      <DoodleBackground />
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 relative z-10">
 
         <div>
           <SectionLabel icon={<BookOpen className="w-4 h-4" />}>Our Story</SectionLabel>

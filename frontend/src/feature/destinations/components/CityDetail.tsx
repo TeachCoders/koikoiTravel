@@ -282,7 +282,7 @@ function CityContent({
 
       {/* ===== KNOW MORE (ALL INFO) ===== */}
       {showMoreSection && (
-        <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-8 sm:py-10 md:py-12">
+        <section id="more" className="bg-white border-y border-slate-200/60 py-8 sm:py-10 md:py-12">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
             <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
               {hasKnowMoreText && (
@@ -443,6 +443,7 @@ function CityContent({
         entityType="City"
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
+        bgType="pattern"
       />
     </div>
   );

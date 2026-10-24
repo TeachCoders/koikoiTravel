@@ -27,6 +27,7 @@ import type { Season } from "@/feature/season/type";
 import type { Journey, PaginatedResponse } from "@/feature/journey/type";
 import { useGetSeasons } from "@/feature/season/api/useSeason";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
+import DoodleBackground from "@/components/shared/DoodleBackground";
 
 export default function SeasonDetail({
   slug,
@@ -200,7 +201,7 @@ export default function SeasonDetail({
 
       {/* ===== MORE DESCRIPTION (ALL INFO) ===== */}
       {showMoreSection && (
-        <section id="more" className="bg-[#f8f8f8] border-y border-slate-200/60 py-16 md:py-20">
+        <section id="more" className="bg-white border-y border-slate-200/60 py-16 md:py-20">
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
             <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
               {hasKnowMoreText && (
@@ -295,7 +296,10 @@ export default function SeasonDetail({
       )}
 
       {/* ===== OTHER SEASONS ===== */}
-      <OtherSeasonsSection currentSlug={initialSeason.slug} />
+      <OtherSeasonsSection
+        currentSlug={initialSeason.slug}
+        bgType={showMoreSection ? "pattern" : "white"}
+      />
 
       {/* ===== FAQ SECTION ===== */}
       <FaqSection
@@ -305,20 +309,36 @@ export default function SeasonDetail({
         entityType="Season"
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
+        bgType={showMoreSection ? "white" : "pattern"}
       />
     </div>
   );
 }
 
-function OtherSeasonsSection({ currentSlug }: { currentSlug: string }) {
+function OtherSeasonsSection({
+  currentSlug,
+  bgType = "pattern",
+}: {
+  currentSlug: string;
+  bgType?: "white" | "pattern";
+}) {
   const { seasons } = useGetSeasons({ isActive: "true" });
   const otherSeasons = (seasons || []).filter((s: any) => s.slug !== currentSlug);
 
   if (otherSeasons.length === 0) return null;
 
+  const isPattern = bgType === "pattern";
+
   return (
-    <section className="bg-white py-16 border-t border-slate-200/80">
-      <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
+    <section
+      className={`py-16 border-t border-slate-200/80 ${
+        isPattern
+          ? "bg-[#f8f8f8] relative overflow-hidden shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]"
+          : "bg-white"
+      }`}
+    >
+      {isPattern && <DoodleBackground opacity="opacity-[0.07]" />}
+      <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
         <div className="flex items-end justify-between mb-8">
           <div>
             <span className="accent-label">Seasonal Circuits</span>

@@ -10,6 +10,7 @@ import { resolveExperienceTheme } from "@/feature/travelExperience/theme";
 import { stripHtml } from "@/lib/utils";
 import type { TravelExperience, PaginatedResponse as ExperiencePage } from "@/feature/travelExperience/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
+import DoodleBackground from "@/components/shared/DoodleBackground";
 
 export const TravelExperiencesSection: React.FC<{
   initialExperiences?: ExperiencePage<TravelExperience> | null;
@@ -82,8 +83,9 @@ export const TravelExperiencesSection: React.FC<{
   };
 
   return (
-    <section id="experiences" className="py-8 sm:py-10 md:py-12 bg-white relative border-t border-slate-100 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+    <section id="experiences" className="py-8 sm:py-10 md:py-12 bg-[#f8f8f8] relative overflow-hidden border-t border-slate-200/70 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)]">
+      <DoodleBackground />
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 relative z-10">
         {/* Header with Title & Arrow Slider Controls */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6 sm:mb-8">
           <div>

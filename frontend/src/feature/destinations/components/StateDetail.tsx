@@ -42,6 +42,7 @@ import type { Journey, PaginatedResponse } from "@/feature/journey/type";
 import CityCard from "./CityCard";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
+import DoodleBackground from "@/components/shared/DoodleBackground";
 import { GOLDEN_TRIANGLE_FAQS } from "@/feature/travelExperience/goldenTriangleFaqs";
 import { SOUTH_INDIA_FAQS } from "../southIndiaFaqs";
 import { TAJ_MAHAL_FAQS } from "../tajMahalFaqs";
@@ -490,7 +491,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
 
 
-      {/* ===== FAQ SECTION ===== */}
+      {/* ===== FAQ SECTION (STRICT 2-BG ALTERNATION) ===== */}
       <FaqSection
         faqs={
           state.faqs?.length
@@ -508,12 +509,19 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         entityType="State"
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
+        bgType={displayedCities.length > 0 && state.slug !== "golden-triangle" ? "pattern" : "white"}
       />
 
-      {/* ===== TRAVEL GUIDE (100% DB DRIVEN - MERGED SINGLE SECTION, NO SIDEBAR) ===== */}
+      {/* ===== TRAVEL GUIDE (100% DB DRIVEN - STRICT 2-BG ALTERNATION, NO SIDEBAR) ===== */}
       {showMoreSection && (
-        <section id="more" className="w-full bg-white border-t border-slate-200/60 py-10 sm:py-12 md:py-14">
-          <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-10">
+        <section
+          id="more"
+          className={`w-full relative border-t border-slate-200/60 py-10 sm:py-12 md:py-14 overflow-hidden ${
+            displayedCities.length > 0 && state.slug !== "golden-triangle" ? "bg-white" : "bg-[#f8f8f8]"
+          }`}
+        >
+          {!(displayedCities.length > 0 && state.slug !== "golden-triangle") && <DoodleBackground />}
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-10 relative z-10">
             {/* Header */}
             <div className="mb-8">
               <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">

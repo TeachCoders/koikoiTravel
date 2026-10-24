@@ -53,6 +53,7 @@ import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journe
 import StateCard from "./StateCard";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
+import DoodleBackground from "@/components/shared/DoodleBackground";
 
 // ============================================================================
 // AUDLEY TRAVEL BENCHMARK DATA: ICONIC REGIONS / CIRCUITS
@@ -708,8 +709,9 @@ function CountryContent({
       {/* 4. AUDLEY PILLAR 1: EXPLORE INDIA BY REGION & ICONIC CIRCUITS          */}
       {/* ====================================================================== */}
       {isIndia && (
-        <section id="circuits" className="py-14 sm:py-20 bg-slate-50 border-b border-slate-200/70">
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10">
+        <section id="circuits" className="py-14 sm:py-20 bg-[#f8f8f8] relative overflow-hidden border-b border-slate-200/70">
+          <DoodleBackground />
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
               <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#F8904D]">
                 <Compass size={14} /> Iconic Inbound Circuits
@@ -889,7 +891,7 @@ function CountryContent({
       {/* 7. AUDLEY PILLAR 3: WHEN TO VISIT INDIA (SEASONAL PLANNING GUIDE)      */}
       {/* ====================================================================== */}
       {isIndia && (
-        <section id="timing" className="py-14 sm:py-20 bg-slate-50 border-y border-slate-200/70">
+        <section id="timing" className="py-14 sm:py-20 bg-white border-y border-slate-200/70">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10">
             <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
               <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#F8904D]">
@@ -959,16 +961,17 @@ function CountryContent({
       {/* 8. AUDLEY PILLAR 4: THE KOIKOI BESPOKE DIFFERENCE                      */}
       {/* ====================================================================== */}
       {isIndia && (
-        <section id="difference" className="py-14 sm:py-20 bg-[#1C1C1C] text-white">
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10">
+        <section id="difference" className="py-14 sm:py-20 bg-[#f8f8f8] text-slate-900 relative overflow-hidden border-b border-slate-200/70">
+          <DoodleBackground />
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
               <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#F8904D]">
                 <ShieldCheck size={14} /> Bespoke Luxury Travel
               </span>
-              <h2 className="text-2xl sm:text-4xl font-luxury font-black text-white mt-2 uppercase">
+              <h2 className="text-2xl sm:text-4xl font-luxury font-black text-slate-900 mt-2 uppercase">
                 The KoiKoi Travel Difference
               </h2>
-              <p className="text-white/75 text-sm sm:text-base mt-2">
+              <p className="text-slate-600 text-sm sm:text-base mt-2">
                 Why international travelers from the US, UK, Europe, and Australia choose KoiKoi Travel for their private journeys across India.
               </p>
             </div>
@@ -977,15 +980,15 @@ function CountryContent({
               {BESPOKE_PILLARS.map((pillar, idx) => (
                 <div
                   key={idx}
-                  className="rounded-2xl bg-white/5 border border-white/10 p-6 sm:p-7 hover:bg-white/10 transition-colors"
+                  className="rounded-2xl bg-white border border-slate-200/80 p-6 sm:p-7 shadow-xs hover:shadow-md transition-shadow"
                 >
                   <div className="w-12 h-12 rounded-xl bg-[#F8904D]/15 border border-[#F8904D]/30 flex items-center justify-center text-[#F8904D] mb-5">
                     <pillar.icon size={22} />
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2 leading-snug">
+                  <h3 className="text-lg font-bold text-slate-900 mb-2 leading-snug">
                     {pillar.title}
                   </h3>
-                  <p className="text-xs text-white/70 leading-relaxed">
+                  <p className="text-xs text-slate-600 leading-relaxed">
                     {pillar.description}
                   </p>
                 </div>
@@ -1090,8 +1093,9 @@ function CountryContent({
       {/* 10. TRAVEL GUIDE & ESSENTIAL FACTS (SEO VALUE PRESERVED)               */}
       {/* ====================================================================== */}
       {showMoreSection && (
-        <section id="guide" className="bg-[#f8f8f8] border-b border-slate-200/60 py-10 sm:py-14">
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10">
+        <section id="guide" className="bg-[#f8f8f8] relative overflow-hidden border-b border-slate-200/60 py-10 sm:py-14">
+          <DoodleBackground />
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 relative z-10">
             <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
               {hasKnowMoreText && (
                 <div className={hasSidebar ? "lg:col-span-2" : "w-full"}>
