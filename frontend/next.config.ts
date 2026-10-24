@@ -57,6 +57,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/travel-experiences/taj-mahal",
+        destination: "/tour-packages/india/taj-mahal",
+        permanent: true,
+      },
+      {
         source: "/india-tours/tour-packages/golden-triangle",
         destination: "/tour-packages/india/golden-triangle",
         permanent: true,

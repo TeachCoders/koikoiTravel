@@ -60,10 +60,12 @@ export function resolveStateJourneys(
   const matching = list.filter((j) =>
     embeddedJourneys.some((ej) => ej.id === j.id) ||
     (j as any).states?.some((s: any) => s.id === state.id || s.slug === state.slug) ||
-    (state.slug === "golden-triangle" && (
-      (j as any).travelExperiences?.some((e: any) => e.slug?.includes("golden-triangle")) ||
+    ((state.slug === "golden-triangle" || state.slug === "taj-mahal") && (
+      (j as any).travelExperiences?.some((e: any) => e.slug?.includes("golden-triangle") || e.slug?.includes("taj")) ||
       (j.title || "").toLowerCase().includes("golden triangle") ||
-      (j.slug || "").includes("golden-triangle")
+      (j.title || "").toLowerCase().includes("taj mahal") ||
+      (j.slug || "").includes("golden-triangle") ||
+      (j.slug || "").includes("taj-mahal")
     )) ||
     j.cities?.some(
       (c) =>

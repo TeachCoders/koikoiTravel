@@ -11,7 +11,7 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
   },
   {
     terms: ["Taj Mahal Tour", "Taj Mahal Tours", "Taj Mahal"],
-    href: "/travel-experiences/taj-mahal",
+    href: "/tour-packages/india/taj-mahal",
   },
   {
     terms: ["Honeymoon Packages", "Honeymoon Tour", "Honeymoon Tours", "Honeymoon"],

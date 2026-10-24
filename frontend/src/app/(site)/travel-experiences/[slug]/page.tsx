@@ -28,6 +28,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (slug === "golden-triangle" || slug === "golden-triangle-tour-india") {
     redirect("/tour-packages/india/golden-triangle");
   }
+  if (slug === "taj-mahal") {
+    redirect("/tour-packages/india/taj-mahal");
+  }
   const data = await fetchBySlugCached<TravelExperience>("/holidays/by-slug", slug);
   if (!data) return { title: "Travel Experience Not Found | KoiKoi Travel" };
 
@@ -77,6 +80,9 @@ export default async function TravelExperiencePage({ params }: Props) {
   const { slug } = await params;
   if (slug === "golden-triangle" || slug === "golden-triangle-tour-india") {
     redirect("/tour-packages/india/golden-triangle");
+  }
+  if (slug === "taj-mahal") {
+    redirect("/tour-packages/india/taj-mahal");
   }
   const data = await fetchBySlugCached<TravelExperience>("/holidays/by-slug", slug);
 

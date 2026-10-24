@@ -183,7 +183,8 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
   const displayedCities = useMemo(() => {
     let citiesList = [...stateCities];
-    if (citiesList.length === 0 && (state.slug === "golden-triangle" || state.slug?.includes("golden-triangle"))) {
+    const isCircuit = state.slug === "golden-triangle" || state.slug === "taj-mahal" || state.slug?.includes("golden-triangle") || state.slug?.includes("taj-mahal");
+    if (citiesList.length === 0 && isCircuit) {
       const seen = new Set<string>();
       const extracted: any[] = [];
       for (const j of stateJourneys) {
@@ -193,7 +194,9 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           extracted.push(c);
         }
       }
-      const priority = ["delhi", "agra", "jaipur", "fatehpur-sikri", "ranthambore"];
+      const priority = state.slug === "taj-mahal"
+        ? ["agra", "delhi", "fatehpur-sikri", "jaipur"]
+        : ["delhi", "agra", "jaipur", "fatehpur-sikri", "ranthambore"];
       extracted.sort((a, b) => {
         const aIdx = priority.indexOf(a.slug);
         const bIdx = priority.indexOf(b.slug);
