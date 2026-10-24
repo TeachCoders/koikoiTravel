@@ -251,7 +251,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   return (
     <div>
       {/* ===== HERO ===== */}
-      <section className="relative w-full h-[140px] sm:h-[380px] md:h-[520px] overflow-hidden bg-slate-200">
+      <section className="relative w-full h-[140px] sm:h-[140px] md:h-[520px] overflow-hidden bg-slate-200">
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={state.title} />
@@ -280,14 +280,13 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         <div className="relative z-20 max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 h-full flex flex-col justify-center items-center py-6 sm:py-8 text-center pointer-events-none">
           {heroTag && (
             <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20 mb-3 sm:mb-4 shadow-xl pointer-events-auto">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shadow-[0_0_8px_#F8904D]" />
-              <span className="font-luxury font-bold text-xs sm:text-sm uppercase tracking-[0.22em] text-white/95">
+                <span className="font-luxury font-normal text-xs sm:text-sm uppercase tracking-[0.1] md:tracking-[0.22em] text-white/95">
                 {heroTag}
               </span>
             </div>
           )}
 
-          <div className="font-luxury  text-xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+          <div className="font-luxury  text-xl sm:text-xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
             {heroTitle}
           </div>
         </div>
