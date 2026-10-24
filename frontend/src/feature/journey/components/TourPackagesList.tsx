@@ -253,10 +253,10 @@ export default function TourPackagesList({
             </div>
 
             {/* Custom DMC Pricing & Trust Note */}
-            <div className="mt-8 pt-4 text-center text-xs sm:text-[13.5px] text-slate-600 font-normal">
+            <div className="mt-8 pt-4 text-left text-sm sm:text-base md:text-[17px] text-slate-700 font-medium leading-relaxed">
               Prices depend on your dates, group size and hotel level, so every trip is quoted for you.{" "}
               <QuoteModal>
-                <button type="button" className="text-[#F8904D] font-semibold hover:underline cursor-pointer">
+                <button type="button" className="text-[#F8904D] hover:text-[#d85511] font-semibold hover:underline cursor-pointer">
                   Ask for your quote
                 </button>
               </QuoteModal>
