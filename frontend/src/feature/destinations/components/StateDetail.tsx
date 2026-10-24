@@ -142,14 +142,14 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     heroImages.length === 1;
 
   const heroTitle =
-    customHeroBanners[0]?.title ||
     state.banner?.bannerTitle ||
+    customHeroBanners[0]?.title ||
     state.h1Title ||
     state.title;
 
   const heroTag =
-    customHeroBanners[0]?.subtitle ||
     state.banner?.bannerTag ||
+    customHeroBanners[0]?.subtitle ||
     "";
   const pageH1 = state.h1Title;
 
