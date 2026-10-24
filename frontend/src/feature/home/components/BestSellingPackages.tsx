@@ -34,7 +34,7 @@ export const BestSellingPackages: React.FC<{
   }, [journeys]);
 
   return (
-    <section id="packages" className="py-8 sm:py-10 md:py-12 bg-[#faf8f5] border-y border-[#eee7de]">
+    <section id="packages" className="py-8 sm:py-10 md:py-12 bg-section-tint border-y border-section-border">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 relative z-10">
         <div className="mb-6 sm:mb-8">
           <SectionLabel>Featured Itineraries</SectionLabel>

@@ -709,7 +709,7 @@ function CountryContent({
       {/* 4. AUDLEY PILLAR 1: EXPLORE INDIA BY REGION & ICONIC CIRCUITS          */}
       {/* ====================================================================== */}
       {isIndia && (
-        <section id="circuits" className="py-14 sm:py-20 bg-[#faf8f5] relative border-y border-[#eee7de]">
+        <section id="circuits" className="py-14 sm:py-20 bg-section-tint relative border-y border-section-border">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
               <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#F8904D]">
@@ -960,7 +960,7 @@ function CountryContent({
       {/* 8. AUDLEY PILLAR 4: THE KOIKOI BESPOKE DIFFERENCE                      */}
       {/* ====================================================================== */}
       {isIndia && (
-        <section id="difference" className="py-14 sm:py-20 bg-[#faf8f5] text-slate-900 relative border-y border-[#eee7de]">
+        <section id="difference" className="py-14 sm:py-20 bg-section-tint text-slate-900 relative border-y border-section-border">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
               <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#F8904D]">
@@ -1091,7 +1091,7 @@ function CountryContent({
       {/* 10. TRAVEL GUIDE & ESSENTIAL FACTS (SEO VALUE PRESERVED)               */}
       {/* ====================================================================== */}
       {showMoreSection && (
-        <section id="guide" className="bg-[#faf8f5] relative border-y border-[#eee7de] py-10 sm:py-14">
+        <section id="guide" className="bg-section-tint relative border-y border-section-border py-10 sm:py-14">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 relative z-10">
             <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
               {hasKnowMoreText && (

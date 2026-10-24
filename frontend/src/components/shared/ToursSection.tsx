@@ -38,7 +38,7 @@ export default function ToursSection({
   filterBar,
   onClearFilters,
   contextName,
-  sectionClassName = "py-8 sm:py-10 md:py-12 bg-[#faf8f5] border-y border-[#eee7de]",
+  sectionClassName = "py-8 sm:py-10 md:py-12 bg-section-tint border-y border-section-border",
   id = "tours",
   cardVariant = "default",
   tabs,

@@ -83,9 +83,14 @@
   --color-brand-neutral-dark: #1e293b;
   --color-brand-neutral-border: #e2e8f0;
   --color-brand-neutral-muted: #94a3b8;
+
+  --color-section-tint: var(--section-tint);
+  --color-section-border: var(--section-border);
 }
 
 :root {
+  --section-tint: #faf8f5;
+  --section-border: #eee7de;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -123,6 +128,8 @@
 }
 
 .dark {
+  --section-tint: #18181b;
+  --section-border: rgba(255, 255, 255, 0.1);
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -325,6 +332,17 @@
 
   .bg-section-teal {
     @apply bg-[#f8f8f8];
+  }
+
+  /* ===== Global Alternating Section Classes ===== */
+  .section-tint {
+    background-color: var(--section-tint);
+    border-color: var(--section-border);
+  }
+
+  .section-white {
+    background-color: #ffffff;
+    border-color: var(--section-border);
   }
 
   /* ===== Accent / Label Utilities ===== */

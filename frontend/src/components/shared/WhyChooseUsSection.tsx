@@ -145,7 +145,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
   const currentReview = REVIEWS[reviewIndex];
 
   return (
-    <section className="py-8 sm:py-10 md:py-12 bg-white border-t border-slate-100 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)] overflow-hidden">
+    <section className="py-8 sm:py-10 md:py-12 bg-white border-y border-section-border overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         
         <div className={`grid grid-cols-1 ${showGallery ? "lg:grid-cols-2 gap-8 lg:gap-12" : "gap-8"} items-center`}>

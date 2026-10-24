@@ -157,7 +157,7 @@ export const PopularDestinations: React.FC<{
   return (
     <section
       id="destinations"
-      className="py-8 sm:py-10 md:py-12 bg-white relative border-t border-slate-100 shadow-[inset_0_15px_20px_-15px_rgba(0,0,0,0.06)] z-10"
+      className="py-8 sm:py-10 md:py-12 bg-white relative border-y border-section-border z-10"
     >
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-6 sm:mb-8 gap-6 relative z-30">

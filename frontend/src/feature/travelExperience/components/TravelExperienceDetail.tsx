@@ -327,7 +327,7 @@ function ExperienceContent({
 
       {/* ===== ARTICLE / TRAVEL GUIDE (FULL WIDTH) - FOOTER SE PEHLE ===== */}
       {experience.moreDescription && (
-        <section id="more" className="bg-[#faf8f5] border-y border-[#eee7de] py-10 md:py-14 relative">
+        <section id="more" className="bg-section-tint border-y border-section-border py-10 md:py-14 relative">
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
             <TravelGuideCollapsible
               title={`Everything About ${experience.h1Title || experience.title}`}
@@ -417,7 +417,7 @@ function OtherExperiencesSection({ currentSlug }: { currentSlug: string }) {
   if (otherExps.length === 0) return null;
 
   return (
-    <section className="bg-[#faf8f5] py-16 border-y border-[#eee7de] relative">
+    <section className="bg-section-tint py-16 border-y border-section-border relative">
       <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
         <div className="flex items-end justify-between mb-8">
           <div>
