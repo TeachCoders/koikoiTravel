@@ -43,6 +43,7 @@ import CityCard from "./CityCard";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
+import DestinationTravelGuide from "@/components/shared/DestinationTravelGuide";
 import { GOLDEN_TRIANGLE_FAQS } from "@/feature/travelExperience/goldenTriangleFaqs";
 import { SOUTH_INDIA_FAQS } from "../southIndiaFaqs";
 import { TAJ_MAHAL_FAQS } from "../tajMahalFaqs";
@@ -511,134 +512,12 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         excludeHrefs={excludeHrefs}
       />
 
-      {/* ===== ARTICLE / MORE DESCRIPTION (ALL INFO) AT BOTTOM WITH WHITE BACKGROUND ===== */}
-      {showMoreSection && (
-        <section id="more" className="bg-white border-t border-slate-200/60 py-8 sm:py-10 md:py-12">
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-            <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
-              {hasKnowMoreText && (
-                <div className={hasSidebar ? "lg:col-span-2" : "w-full"}>
-                  <TravelGuideCollapsible
-                    title={`Everything About ${state.title}`}
-                    subtitle={`Essential travel guide, top places to visit, culture, food & insider tips for ${state.title}.`}
-                  >
-                    {hasSeoDesc && (
-                      <RichContent
-                        html={state.seoDescription!}
-                        sharedLinkedHrefs={pageLinkedHrefs}
-                        excludeHrefs={excludeHrefs}
-                      />
-                    )}
-
-                    {hasMoreDesc && (
-                      <RichContent
-                        html={state.moreDescription!}
-                        sharedLinkedHrefs={pageLinkedHrefs}
-                        excludeHrefs={excludeHrefs}
-                        className={hasSeoDesc ? "mt-8" : ""}
-                      />
-                    )}
-                  </TravelGuideCollapsible>
-                </div>
-              )}
-
-              {hasSidebar && (
-                <aside className={`space-y-6 lg:sticky lg:top-28 z-10 self-start ${!hasKnowMoreText ? "max-w-xl mx-auto w-full" : ""}`}>
-              {facts.length > 0 && (
-                <div className="rounded-2xl border border-slate-200/70 bg-slate-50/70 p-6 shadow-sm relative overflow-hidden">
-                  <h3 className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#2E8B8B] mb-4">
-                    Quick Facts
-                  </h3>
-                  <dl className="flex flex-col divide-y divide-slate-200/70">
-                    {facts.map((f) => (
-                      <div key={f.label} className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
-                        <dt className="text-[14px] text-slate-600 font-medium flex items-center gap-2">
-                          {f.label}
-                        </dt>
-                        <dd className="text-[14.5px] font-semibold text-slate-900 text-right capitalize">{f.value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-              )}
-
-              {state.famousFor && (
-                <div className="rounded-2xl bg-gradient-to-br from-[#2E8B8B]/10 via-transparent to-[#2E8B8B]/5 border border-[#2E8B8B]/20 p-6 shadow-sm relative overflow-hidden">
-                  <Sparkles className="absolute -top-4 -right-4 w-24 h-24 text-[#2E8B8B]/10 rotate-12" />
-                  <div className="w-full flex items-center justify-between gap-3 text-left relative z-10">
-                    <h3 className="flex items-center gap-2 text-base font-semibold text-slate-900">
-                      <Sparkles size={16} className="text-[#F8904D]" />
-                      Famous For
-                    </h3>
-                  </div>
-                  <ul className="mt-4 space-y-2.5 relative z-10">
-                    {stripHtml(state.famousFor)
-                      .split(",")
-                      .map((item, i) => (
-                        <li key={i} className="flex items-start gap-2.5 text-[14px] text-slate-700 font-medium leading-relaxed">
-                          <BadgeCheck size={16} className="shrink-0 mt-[3px] text-[#2E8B8B]" />
-                          {item.trim()}
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              )}
-
-              {stateJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0 && (
-                <div className="rounded-2xl border border-slate-200/70 bg-slate-50/70 p-6 shadow-sm">
-                  <h3 className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#2E8B8B] mb-4 flex items-center justify-between">
-                    Top 10 Tour Packages
-                    <span className="text-[11px] font-semibold text-[#F8904D] bg-[#F8904D]/10 px-2 py-0.5 rounded-full">
-                      {Math.min(
-                        10,
-                        stateJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length
-                      )}
-                    </span>
-                  </h3>
-                  <ol className="mt-2 space-y-1">
-                    {[...stateJourneys]
-                      .filter((j) => (j.displayOrder ?? 0) > 0)
-                      .sort(
-                        (a, b) =>
-                          (a.displayOrder ?? Number.MAX_SAFE_INTEGER) -
-                          (b.displayOrder ?? Number.MAX_SAFE_INTEGER)
-                      )
-                      .slice(0, 10)
-                      .map((j, i) => (
-                        <li key={j.id}>
-                          <Link
-                            href={journeyPackageHref(j)}
-                            className="flex items-start gap-3 p-2.5 -mx-2.5 rounded-xl hover:bg-white transition-colors group"
-                          >
-                            <span className="mt-[2px] w-[26px] h-[26px] shrink-0 rounded-full bg-slate-200 text-[#1C1C1C] text-[12px] font-semibold flex items-center justify-center group-hover:bg-[#2E8B8B] group-hover:text-white transition-colors shadow-sm">
-                              {i + 1}
-                            </span>
-                            <div className="flex-1 min-w-0">
-                              <span className="text-[14.5px] font-medium text-[#333] leading-snug group-hover:text-[#2E8B8B] transition-colors block truncate">
-                                {j.title.split("|")[0].trim()}
-                              </span>
-                              <div className="flex items-center gap-2 mt-0.5 text-[12px] font-medium text-slate-500">
-                                <span>{j.duration || (j.noDays > 0 ? `${j.noDays} Days` : "")}</span>
-                                {j.destination && (
-                                  <>
-                                    <span>•</span>
-                                    <span className="truncate max-w-[140px]">{j.destination}</span>
-                                  </>
-                                )}
-                              </div>
-                            </div>
-                          </Link>
-                        </li>
-                      ))}
-                  </ol>
-                </div>
-              )}
-            </aside>
-            )}
-          </div>
-        </div>
-      </section>
-      )}
+      {/* ===== LUXURY DMC TRAVEL GUIDE SECTION (AUDLEY TRAVEL STYLE - NO SIDEBAR) ===== */}
+      <DestinationTravelGuide
+        state={state}
+        pageLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
+      />
     </div>
   );
 }
