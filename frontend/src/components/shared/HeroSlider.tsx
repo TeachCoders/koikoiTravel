@@ -157,7 +157,7 @@ function SlideImage({
       quality={90}
       sizes="100vw"
       theme="light"
-     // className="object-cover object-center"
+      className="object-cover object-center"
     />
   );
 }
