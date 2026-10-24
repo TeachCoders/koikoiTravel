@@ -45,6 +45,7 @@ import FaqSection from "@/feature/home/components/FaqSection";
 import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
 import { GOLDEN_TRIANGLE_FAQS } from "@/feature/travelExperience/goldenTriangleFaqs";
 import { SOUTH_INDIA_FAQS } from "../southIndiaFaqs";
+import { TAJ_MAHAL_FAQS } from "../tajMahalFaqs";
 
 export default function StateDetail({
   slug,
@@ -548,6 +549,8 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
             ? (GOLDEN_TRIANGLE_FAQS as any)
             : state.slug === "south-india"
             ? (SOUTH_INDIA_FAQS as any)
+            : state.slug === "taj-mahal"
+            ? (TAJ_MAHAL_FAQS as any)
             : undefined
         }
         contextName={state.title}

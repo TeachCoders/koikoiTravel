@@ -360,6 +360,50 @@ export const CURATED_DESTINATION_FAQS: Record<string, FaqItem[]> = {
       answer: "KoiKoi Travel provides tailor-made spring itineraries with private air-conditioned vehicles, verified chauffeurs, handpicked boutique hotels, and dedicated 24/7 on-trip assistance customized to your personal pace and budget.",
     },
   ],
+
+  // ===== TAJ MAHAL =====
+  "taj-mahal": [
+    {
+      question: "When is the Taj Mahal closed to visitors?",
+      answer: "The Taj Mahal is closed to all general visitors every Friday. It remains open on all other days of the week from 30 minutes before sunrise to 30 minutes before sunset.",
+    },
+    {
+      question: "What is the best time of day to visit the Taj Mahal?",
+      answer: "Sunrise is by far the finest time. The morning dawn casts a magical soft pink and golden hue across the white Makrana marble, queues are minimal, and the atmosphere in the symmetrical Charbagh gardens is quiet and serene.",
+    },
+    {
+      question: "Can I do a same-day Taj Mahal trip from Delhi comfortably?",
+      answer: "Yes, Agra is easily accessible from Delhi for a day tour. The Gatimaan Express takes just 1 hour 40 minutes from Hazrat Nizamuddin station, while private chauffeur drives via the smooth Yamuna Expressway take around 3.5 hours.",
+    },
+    {
+      question: "Are monument entry tickets and guided tours included?",
+      answer: "Yes. With KoiKoi Travel, your monument admission tickets with mausoleum interior access are pre-booked to bypass long counter queues. You are accompanied by a certified, licensed English-speaking heritage guide.",
+    },
+    {
+      question: "Can we visit Agra Fort and Mehtab Bagh on the same trip?",
+      answer: "Yes, most of our Taj Mahal packages include Agra Fort (the grand red-sandstone imperial residence of the Mughals) and Mehtab Bagh (the Moonlight Garden across the Yamuna River), which offers the most famous sunset reflection view of the Taj Mahal.",
+    },
+    {
+      question: "What is the best time of year to visit the Taj Mahal?",
+      answer: "October to March is the ideal travel window with pleasant daytime temperatures between 15°C and 28°C.",
+    },
+    {
+      question: "What items are prohibited inside the Taj Mahal complex?",
+      answer: "Prohibited items include tripods, camera drones, large backpacks, food items, tobacco, and lighters. Small personal bags, smartphones, and handheld cameras are allowed.",
+    },
+    {
+      question: "Can the Taj Mahal tour be combined with Jaipur and Delhi?",
+      answer: "Yes! Agra is the pivotal anchor of India's iconic Golden Triangle circuit. You can easily extend your Taj Mahal tour to Jaipur (the Pink City) stopping en route at Fatehpur Sikri and Chand Baori stepwell.",
+    },
+    {
+      question: "What local Agra food and crafts should we not miss?",
+      answer: "Agra is world-renowned for Agra Petha (authentic pumpkin sweet from Panchi Petha) and rich Mughlai cuisine. In crafts, Agra's artisan families still create authentic Pietra Dura (semi-precious stone inlay on marble).",
+    },
+    {
+      question: "Why book your Taj Mahal tour with KoiKoi Travel?",
+      answer: "KoiKoi Travel provides 100% private, tailor-made journeys with verified chauffeurs, handpicked 4-star and 5-star heritage hotels, licensed historians, transparent pricing, and 24/7 dedicated on-trip concierge assistance.",
+    },
+  ],
 };
 
 /**
