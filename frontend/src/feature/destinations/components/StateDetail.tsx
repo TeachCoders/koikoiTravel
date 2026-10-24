@@ -530,23 +530,24 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
             {/* Merged Common DB Fields (Famous For & Quick Facts) */}
             {(hasFamousFor || facts.length > 0) && (
               <div className="mb-8 pb-6 border-b border-slate-200/80 space-y-4">
-                {/* Famous For pills from DB */}
+                {/* Famous For with icon and normal bullets from DB */}
                 {hasFamousFor && (
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#2E8B8B] mr-1">
-                      Famous For:
-                    </span>
-                    {stripHtml(state.famousFor!)
-                      .split(",")
-                      .map((item, i) => (
-                        <span
-                          key={i}
-                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs sm:text-[13px] font-medium bg-[#2E8B8B]/10 text-slate-800 border border-[#2E8B8B]/20"
-                        >
-                          <BadgeCheck size={14} className="text-[#2E8B8B]" />
-                          {item.trim()}
-                        </span>
-                      ))}
+                  <div className="space-y-2.5">
+                    <div className="flex items-center gap-2">
+                      <Sparkles size={17} className="text-[#F8904D]" />
+                      <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900">
+                        Famous For
+                      </h3>
+                    </div>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-2 list-disc list-inside text-sm sm:text-[14.5px] text-slate-700 font-medium">
+                      {stripHtml(state.famousFor!)
+                        .split(",")
+                        .map((item, i) => (
+                          <li key={i} className="marker:text-[#2E8B8B]">
+                            <span>{item.trim()}</span>
+                          </li>
+                        ))}
+                    </ul>
                   </div>
                 )}
 
