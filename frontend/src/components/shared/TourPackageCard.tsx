@@ -186,23 +186,6 @@ export default function TourPackageCard({
             );
           })()}
         </div>
-
-        {/* Bottom Left Photo Caption */}
-        {(() => {
-          const photoLoc =
-            journey.cities?.[0]?.title ||
-            journey.destination?.split(/[-–—,·]/)[0]?.trim() ||
-            state ||
-            "";
-          if (!photoLoc) return null;
-          return (
-            <div className="absolute bottom-3 left-3 pointer-events-none">
-              <span className="bg-black/45 text-white/95 text-[10.5px] font-medium px-2 py-0.5 rounded backdrop-blur-xs shadow-xs">
-                Photo: {photoLoc}
-              </span>
-            </div>
-          );
-        })()}
       </Link>
 
       {/* Content Container */}
