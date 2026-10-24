@@ -43,7 +43,6 @@ import CityCard from "./CityCard";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
-import DestinationTravelGuide from "@/components/shared/DestinationTravelGuide";
 import { GOLDEN_TRIANGLE_FAQS } from "@/feature/travelExperience/goldenTriangleFaqs";
 import { SOUTH_INDIA_FAQS } from "../southIndiaFaqs";
 import { TAJ_MAHAL_FAQS } from "../tajMahalFaqs";
@@ -512,12 +511,72 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         excludeHrefs={excludeHrefs}
       />
 
-      {/* ===== LUXURY DMC TRAVEL GUIDE SECTION (AUDLEY TRAVEL STYLE - NO SIDEBAR) ===== */}
-      <DestinationTravelGuide
-        state={state}
-        pageLinkedHrefs={pageLinkedHrefs}
-        excludeHrefs={excludeHrefs}
-      />
+      {/* ===== ARTICLE / MORE DESCRIPTION (100% DB DRIVEN - MERGED SINGLE SECTION, NO SIDEBAR) ===== */}
+      {showMoreSection && (
+        <section id="more" className="bg-white border-t border-slate-200/60 py-8 sm:py-10 md:py-12">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+            <TravelGuideCollapsible
+              title={`Everything About ${state.title}`}
+              subtitle={`Essential travel guide, top places to visit, culture, food & insider tips for ${state.title}.`}
+            >
+              {/* Merged Common DB Fields (No sidebar, No nested card clutter) */}
+              {(hasFamousFor || facts.length > 0) && (
+                <div className="mb-8 pb-6 border-b border-slate-200/80 space-y-4">
+                  {/* Famous For pills from DB */}
+                  {hasFamousFor && (
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-xs font-bold uppercase tracking-wider text-[#2E8B8B] mr-1">
+                        Famous For:
+                      </span>
+                      {stripHtml(state.famousFor!)
+                        .split(",")
+                        .map((item, i) => (
+                          <span
+                            key={i}
+                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs sm:text-[13px] font-medium bg-[#2E8B8B]/10 text-slate-800 border border-[#2E8B8B]/20"
+                          >
+                            <BadgeCheck size={14} className="text-[#2E8B8B]" />
+                            {item.trim()}
+                          </span>
+                        ))}
+                    </div>
+                  )}
+
+                  {/* Quick Facts from DB */}
+                  {facts.length > 0 && (
+                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-[13.5px] text-slate-600 pt-1">
+                      {facts.map((f) => (
+                        <div key={f.label} className="flex items-center gap-1.5">
+                          <span className="text-slate-400 font-normal">{f.label}:</span>
+                          <span className="font-semibold text-slate-800 capitalize">{f.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* 100% DB Rich Content */}
+              {hasSeoDesc && (
+                <RichContent
+                  html={state.seoDescription!}
+                  sharedLinkedHrefs={pageLinkedHrefs}
+                  excludeHrefs={excludeHrefs}
+                />
+              )}
+
+              {hasMoreDesc && (
+                <RichContent
+                  html={state.moreDescription!}
+                  sharedLinkedHrefs={pageLinkedHrefs}
+                  excludeHrefs={excludeHrefs}
+                  className={hasSeoDesc ? "mt-8" : ""}
+                />
+              )}
+            </TravelGuideCollapsible>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
