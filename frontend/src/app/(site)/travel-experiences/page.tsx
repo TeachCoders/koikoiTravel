@@ -229,9 +229,9 @@ export default async function TravelExperiencesPage() {
           <span className="font-luxury font-black inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#F5B041] mb-3">
             <Sparkles size={14} /> Curated Travel Themes
           </span>
-          <h1 className="font-luxury text-3xl sm:text-4xl md:text-[46px] font-black text-white tracking-wide leading-tight">
+          <div className="font-luxury text-2xl sm:text-4xl md:text-[46px] font-black text-white tracking-wide leading-tight">
             Hand-Crafted Travel Experiences
-          </h1>
+          </div>
           <p className="mt-4 text-white/85 text-base md:text-lg max-w-2xl leading-relaxed">
             From romantic honeymoons to soulful heritage trails and rejuvenating wellness retreats — choose your dream theme and let us design your custom itinerary.
           </p>

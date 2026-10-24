@@ -82,9 +82,9 @@ export default async function TourPackagesPage({
           <span className="font-luxury font-black inline-flex items-center gap-1.5 text-[11px] sm:text-xs uppercase tracking-widest text-[#F8904D] mb-3">
             <Sparkles size={14} /> Tailor-Made Holiday Packages
           </span>
-          <h1 className="font-luxury text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-wide drop-shadow-md">
+          <div className="font-luxury text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-wide drop-shadow-md">
             Tour Packages
-          </h1>
+          </div>
           <p className="mt-3 text-white/80 text-sm sm:text-base max-w-2xl leading-relaxed">
             {cities.length > 0 || experiences.length > 0
               ? "Results filtered by your search — refine using the filters below."

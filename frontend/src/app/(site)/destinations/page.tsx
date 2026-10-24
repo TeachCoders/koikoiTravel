@@ -317,9 +317,9 @@ export default async function DestinationsPage() {
             <span className="font-luxury font-black accent-label inline-flex items-center gap-1.5 !text-[#FFD9A8] uppercase tracking-widest">
               <Globe2 size={12} /> Hand-Crafted Holiday Destinations
             </span>
-            <h1 className="font-luxury text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-wide mt-4 leading-tight drop-shadow-lg">
+            <div className="font-luxury text-2xl sm:text-4xl md:text-6xl font-black text-white tracking-wide mt-3 sm:mt-4 leading-tight drop-shadow-lg">
               Explore Destinations
-            </h1>
+            </div>
             <p className="mt-5 text-white/90 text-base md:text-lg leading-relaxed max-w-2xl">
               From royal forts and misty Himalayan trails to golden beaches and
               serene backwaters — discover hand-picked holiday destinations,

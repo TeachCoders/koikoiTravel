@@ -64,19 +64,19 @@ export default function TravelExperienceStateDetail({
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/50 to-slate-950/70 pointer-events-none" />
         </div>
 
-        <div className="relative z-20 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-center items-center py-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20 mb-3 sm:mb-4 shadow-xl">
+        <div className="relative z-20 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-center items-center py-4 sm:py-6 md:py-8 text-center">
+          <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20 mb-2 sm:mb-4 shadow-xl">
             <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shadow-[0_0_8px_#F8904D]" />
             <span className="font-luxury font-bold text-xs sm:text-sm uppercase tracking-[0.22em] text-[#FFD9A8]">
               {cleanStateTitle} • Handcrafted Themes
             </span>
           </div>
 
-          <h1 className="font-luxury text-[42px] leading-[1.1] sm:text-5xl md:text-6xl font-black uppercase text-white tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
+          <div className="font-luxury text-2xl sm:text-4xl md:text-6xl font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
             {pageTitle}
-          </h1>
+          </div>
 
-          <p className="mt-4 text-white/90 text-sm sm:text-base max-w-2xl leading-relaxed font-normal drop-shadow-sm">
+          <p className="hidden sm:block mt-3 sm:mt-4 text-white/90 text-sm sm:text-base max-w-2xl leading-relaxed font-normal drop-shadow-sm">
             Handpicked {cleanExpTitle.toLowerCase()} itineraries in {cleanStateTitle} with private AC chauffeur, verified local guides, and bespoke stays.
           </p>
         </div>

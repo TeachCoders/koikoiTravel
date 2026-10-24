@@ -91,9 +91,9 @@ export const AllDestinations: React.FC<AllDestinationsProps> = ({
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/90 text-sm font-semibold mb-6 border border-white/20 backdrop-blur-md">
             <Globe2 className="w-4 h-4" /> Explore the World
           </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-6">
+          <div className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-4 sm:mb-6">
             Find Your Next <span className="text-[#F8904D]">Adventure</span>
-          </h1>
+          </div>
           <p className="text-lg text-white/70 max-w-2xl mx-auto mb-10 font-medium">
             Discover curated tour packages across {totals.countries} countries, {totals.states} states, and {totals.cities} cities.
           </p>

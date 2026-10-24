@@ -585,25 +585,25 @@ function CountryContent({
         )}
 
         {/* Hero Content (Centered Audley Travel Style) */}
-        <div className="relative z-20 max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 h-full flex flex-col justify-center items-center py-6 sm:py-8 text-center">
+        <div className="relative z-20 max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 h-full flex flex-col justify-center items-center py-4 sm:py-6 md:py-8 text-center">
           {heroTag && (
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-950/70 backdrop-blur-md border border-white/25 mb-3 sm:mb-4 shadow-xl">
-              <span className="w-2 h-2 rounded-full bg-[#F8904D] shadow-[0_0_10px_#F8904D]" />
-              <span className="font-luxury font-bold text-xs sm:text-[13px] uppercase tracking-[0.24em] text-white">
+            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/70 backdrop-blur-md border border-white/25 mb-2 sm:mb-4 shadow-xl">
+              <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-[#F8904D] shadow-[0_0_10px_#F8904D]" />
+              <span className="font-luxury font-bold text-[11px] sm:text-[13px] uppercase tracking-[0.2em] sm:tracking-[0.24em] text-white">
                 {heroTag}
               </span>
             </div>
           )}
 
-          <h1 className="font-luxury text-[42px] leading-[1.1] sm:text-5xl md:text-6xl lg:text-[62px] font-black uppercase text-white tracking-wide drop-shadow-[0_4px_28px_rgba(0,0,0,0.95)] max-w-5xl">
+          <div className="font-luxury text-2xl sm:text-4xl md:text-5xl lg:text-[62px] font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_28px_rgba(0,0,0,0.95)] max-w-5xl">
             {heroTitle}
-          </h1>
+          </div>
 
-          <p className="mt-3 sm:mt-4 text-white/95 text-sm sm:text-base md:text-lg max-w-3xl font-medium leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
+          <p className="hidden sm:block mt-3 sm:mt-4 text-white/95 text-sm sm:text-base md:text-lg max-w-3xl font-medium leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
             Handcrafted private journeys across royal palaces, sacred rivers, tranquil backwaters and wild tiger sanctuaries. Tailored 100% to your pace.
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-3 sm:mt-6 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
             <QuoteModal>
               <button
                 type="button"

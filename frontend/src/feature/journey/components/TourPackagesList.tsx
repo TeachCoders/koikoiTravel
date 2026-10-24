@@ -176,9 +176,9 @@ export default function TourPackagesList({
             <ChevronRight size={14} />
             <span className="text-white/95">Tour Packages</span>
           </nav>
-          <h1 className="font-heading text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+          <div className="font-heading text-2xl md:text-4xl font-extrabold text-white tracking-tight">
             {title} Tour Packages
-          </h1>
+          </div>
           <p className="mt-2 text-white/80 text-sm sm:text-base max-w-2xl">
             All-inclusive holiday itineraries across {title} with private cabs, star hotels, and
             verified local guides.

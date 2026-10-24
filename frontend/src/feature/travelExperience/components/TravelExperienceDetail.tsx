@@ -220,9 +220,9 @@ function ExperienceContent({
           </div>
         )}
 
-        <div className="relative z-20 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-center items-center py-8 text-center pointer-events-none">
+        <div className="relative z-20 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-center items-center py-4 sm:py-6 md:py-8 text-center pointer-events-none">
           {heroTag && (
-            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20 mb-3 sm:mb-4 shadow-xl pointer-events-auto">
+            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20 mb-2 sm:mb-4 shadow-xl pointer-events-auto">
               <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shadow-[0_0_8px_#F8904D]" />
               <span className="font-luxury font-bold text-xs sm:text-sm uppercase tracking-[0.22em] text-white/95">
                 {heroTag}
@@ -230,7 +230,7 @@ function ExperienceContent({
             </div>
           )}
 
-          <div className="font-luxury text-[42px] leading-[1.1] sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+          <div className="font-luxury text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
             {heroTitle}
           </div>
         </div>
