@@ -6,6 +6,7 @@ import SeoTextBlock from "./TravelYourWaySection";
 import BestSellingPackages from "./BestSellingPackages";
 import PopularDestinations from "./PopularDestinations";
 import TravelExperiencesSection from "./TravelExperiencesSection";
+import HowItWorksSection from "./HowItWorksSection";
 import WhyChooseUsSection from "@/components/shared/WhyChooseUsSection";
 import FaqSection from "./FaqSection";
 import TrustedPartners from "./TrustedPartners";
@@ -48,9 +49,10 @@ export const HomePageClient: React.FC<{
         initialExperiences={initialExperiences}
         initialJourneys={initialJourneys}
       />
+      <HowItWorksSection />
       <WhyChooseUsSection initialGuestGallery={initialGuestGallery} />
       <SeoTextBlock />
-      <FaqSection />
+      <FaqSection bgType="pattern" />
       <TrustedPartners />
     </div>
   );

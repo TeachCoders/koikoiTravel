@@ -145,12 +145,12 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
   const currentReview = REVIEWS[reviewIndex];
 
   return (
-    <section className="py-8 sm:py-10 md:py-12 bg-white border-y border-section-border overflow-hidden">
+    <section className="py-10 sm:py-14 bg-section-tint border-y border-section-border overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
         
         <div className={`grid grid-cols-1 ${showGallery ? "lg:grid-cols-2 gap-8 lg:gap-12" : "gap-8"} items-center`}>
           
-          {/* Left Column: Seamless Borderless Reviews & Trusted Traveler Proof */}
+          {/* Left Column: Reviews & Trusted Traveler Proof */}
           <div className="flex flex-col justify-center">
             <SectionLabel>The KoiKoi Advantage</SectionLabel>
             <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5 mb-2">
@@ -160,8 +160,8 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
               Unlike generic travel booking engines, KoiKoi Travel provides dedicated private local tour managers, 100% custom itineraries, and courteous reliable chauffeurs.
             </p>
 
-            {/* Seamless Borderless Review (No Card Box, No Border) */}
-            <div className="mb-5 pt-1" suppressHydrationWarning>
+            {/* Verified Review Card */}
+            <div className="mb-5 p-5 sm:p-6 bg-white rounded-2xl border border-section-border shadow-xs" suppressHydrationWarning>
               {/* Star Rating & Trip Tag */}
               <div className="flex items-center gap-3 mb-2.5">
                 <div className="flex items-center gap-1 text-amber-500">
@@ -169,19 +169,19 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
                     <span key={i} className="text-base">★</span>
                   ))}
                 </div>
-                <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700" suppressHydrationWarning>
+                <span className="text-[11.5px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700" suppressHydrationWarning>
                   {currentReview.tripName}
                 </span>
               </div>
 
               {/* Review Comment Quote */}
-              <p className="text-slate-700 text-sm sm:text-[15px] leading-relaxed italic mb-3.5 min-h-[60px] font-normal" suppressHydrationWarning>
-                "{currentReview.comment}"
+              <p className="text-slate-700 text-sm sm:text-[14.5px] leading-relaxed italic mb-3.5 min-h-[56px] font-normal" suppressHydrationWarning>
+                &ldquo;{currentReview.comment}&rdquo;
               </p>
 
               {/* Reviewer Details & Normal Indicator Dots */}
-              <div className="flex items-center justify-between gap-4 pt-1">
-                <div className="flex items-center gap-3">
+              <div className="flex items-center justify-between gap-4 pt-1 border-t border-slate-100">
+                <div className="flex items-center gap-3 pt-2">
                   <div className="w-9 h-9 rounded-full bg-slate-900 text-[#F8904D] border border-slate-700 font-bold flex items-center justify-center text-xs shadow-xs" suppressHydrationWarning>
                     {currentReview.name.split(" ")[0]?.[0]}
                     {currentReview.name.split(" ")[1]?.[0] || ""}
@@ -195,13 +195,13 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
                 </div>
 
                 {/* Normal Dots Navigation */}
-                <div className="flex items-center -mx-1">
+                <div className="flex items-center -mx-1 pt-2">
                   {REVIEWS.map((_, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => setReviewIndex(idx)}
-                      className="p-2 sm:p-2.5 flex items-center justify-center cursor-pointer focus:outline-none"
+                      className="p-1.5 sm:p-2 flex items-center justify-center cursor-pointer focus:outline-none"
                       aria-label={`Go to review ${idx + 1}`}
                     >
                       <span
@@ -216,7 +216,7 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
             </div>
 
             {/* Quick Trust Highlights */}
-            <div className="grid grid-cols-2 gap-2.5 pt-3.5 border-t border-slate-100">
+            <div className="grid grid-cols-2 gap-2.5 pt-2">
               <div className="flex items-center gap-2 text-xs sm:text-[13px] font-normal text-slate-700">
                 <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
                 <span>100% Tailored Private Trips</span>

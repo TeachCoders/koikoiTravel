@@ -2,90 +2,82 @@
 
 import React from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { FallbackImage } from "@/components/shared/FallbackImage";
+import { SectionLabel } from "@/components/shared/SectionLabel";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 
 const STEPS = [
   {
-    num: "01",
-    title: "Tell Us Your Ideas",
-    description: "Share your destinations, dates, special group size and budget.",
+    num: "1",
+    title: "Tell Us Your Plan",
+    description:
+      "Share where you want to go, your dates and how many are travelling. Rough ideas are completely fine — our destination specialists guide you.",
   },
   {
-    num: "02",
-    title: "Get Your Custom Itinerary",
-    description: "Our local experts create a personalized journey for you.",
+    num: "2",
+    title: "Get Your Custom Plan",
+    description:
+      "We send a personalised itinerary with transparent pricing. Change the route, hotels or pace as many times as you like until it feels right.",
   },
   {
-    num: "03",
-    title: "Travel With Confidence",
-    description: "We arrange the important details and support you throughout your trip.",
+    num: "3",
+    title: "Travel With 24/7 Support",
+    description:
+      "Your private car, driver and licensed guides are arranged. Our dedicated team is with you on WhatsApp around the clock during your trip.",
   },
 ];
 
 export const HowItWorksSection: React.FC = () => {
   return (
-    <section className="py-12 sm:py-16 bg-[#FAFBFB] border-b border-slate-100 overflow-hidden">
+    <section id="how-it-works" className="py-12 sm:py-16 bg-white border-y border-section-border relative">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          
-          {/* Left Column: Traveler Image */}
-          <div className="lg:col-span-5">
-            <div className="relative aspect-[4/3] sm:aspect-[16/11] rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200">
-              <FallbackImage
-                src="/content/rajasthan-tours-holiday-1.webp"
-                alt="Traveler exploring India"
-                fill
-                sizes="(max-width: 1024px) 100vw, 40vw"
-                className="object-cover"
-              />
+        {/* Header */}
+        <div className="mb-8 sm:mb-10 text-left">
+          <SectionLabel icon={<Sparkles className="w-3.5 h-3.5" />}>Simple Process</SectionLabel>
+          <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5">
+            How It <span className="text-[#F8904D]">Works</span>
+          </h2>
+          <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
+            Planning your dream India vacation should not feel like work. Three simple steps and you are set.
+          </p>
+        </div>
+
+        {/* 3 Step Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          {STEPS.map((step, idx) => (
+            <div
+              key={idx}
+              className="bg-section-tint border border-section-border rounded-2xl p-6 sm:p-7 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                {/* Number Badge */}
+                <span className="w-10 h-10 rounded-full bg-[#F8904D] text-white font-bold text-base flex items-center justify-center mb-5 shadow-sm shadow-[#F8904D]/30">
+                  {step.num}
+                </span>
+                <h3 className="font-bold text-slate-900 text-base sm:text-lg mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-slate-600 text-xs sm:text-[13.5px] leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
             </div>
-          </div>
+          ))}
+        </div>
 
-          {/* Right Column: 3 Steps */}
-          <div className="lg:col-span-7">
-            <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#F8904D] mb-2">
-              <Sparkles className="w-3.5 h-3.5" /> How It Works
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-8">
-              How Does KoiKoi Travel Make Trip Planning Easy?
-            </h2>
-
-            {/* 3 Horizontal Steps */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-              {STEPS.map((step, idx) => (
-                <div key={idx} className="flex flex-col items-start relative">
-                  <span className="w-8 h-8 rounded-full bg-[#F8904D] text-white font-bold text-xs flex items-center justify-center mb-3 shrink-0 shadow-sm shadow-[#F8904D]/30">
-                    {step.num}
-                  </span>
-                  <h3 className="font-bold text-slate-900 text-sm sm:text-base leading-snug">
-                    {step.title}
-                  </h3>
-                  <p className="text-slate-500 text-xs mt-1.5 leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Action button & script text */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 pt-4 border-t border-slate-200/80">
-              <QuoteModal>
-                <button
-                  type="button"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-xl bg-[#F8904D] hover:bg-[#e07b3b] text-white font-bold text-xs sm:text-sm tracking-wide shadow-md shadow-[#F8904D]/30 transition-all active:scale-95 cursor-pointer"
-                >
-                  <span>Start Planning My Trip</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </QuoteModal>
-
-              <p className="text-[#2E8B8B] font-bold text-sm sm:text-base italic">
-                That&apos;s it. You dream about India. We help make it happen.
-              </p>
-            </div>
-          </div>
-
+        {/* Bottom CTA & Note */}
+        <div className="mt-8 sm:mt-10 pt-6 border-t border-section-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <p className="text-[#2E8B8B] font-semibold text-sm sm:text-base">
+            That&apos;s it. You dream about India — we craft and manage everything seamlessly.
+          </p>
+          <QuoteModal>
+            <button
+              type="button"
+              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-semibold text-xs sm:text-sm tracking-wide shadow-sm transition-all cursor-pointer shrink-0 self-start sm:self-auto"
+            >
+              <span>Start Planning My Trip</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </QuoteModal>
         </div>
       </div>
     </section>

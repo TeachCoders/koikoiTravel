@@ -4,7 +4,7 @@ import DoodleBackground from "@/components/shared/DoodleBackground";
 
 const TrustedPartners: React.FC = () => {
   return (
-    <div className="py-8 sm:py-10 border-t border-section-border bg-section-tint relative">
+    <div className="py-8 sm:py-10 border-t border-section-border bg-white relative">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 relative z-10">
         <p className="text-center text-[11px] sm:text-xs font-bold tracking-widest text-[#F8904D] uppercase mb-6">The KoiKoi Travel Promise</p>
         <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
