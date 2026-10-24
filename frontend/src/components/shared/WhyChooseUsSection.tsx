@@ -1,11 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Maximize2, X, MapPin } from "lucide-react";
-import { SectionLabel } from "@/components/shared/SectionLabel";
-import { useGuestGallery } from "@/feature/guestGallery/api";
-import { GuestGallery, PaginatedGuestGallery } from "@/feature/guestGallery/type";
-import FallbackImage from "@/components/shared/FallbackImage";
+import Link from "next/link";
+import { PaginatedGuestGallery } from "@/feature/guestGallery/type";
 
 interface WhyChooseUsSectionProps {
   images?: string[];
@@ -13,50 +10,47 @@ interface WhyChooseUsSectionProps {
   initialGuestGallery?: PaginatedGuestGallery | null;
 }
 
-const DEFAULT_GUEST_MOMENTS = [
+const ADVANTAGE_POINTS = [
   {
-    url: "/content/guest-gallery-1791343287975-0.webp",
-    caption: "Sightseeing in India",
-    location: "Agra, India",
+    num: "1",
+    title: "100% tailored private trips",
+    desc: "Your hotels, pace and route. Nothing is fixed.",
   },
   {
-    url: "/content/guest-gallery-1791343320739-0.webp",
-    caption: "Maarya",
-    location: "England",
+    num: "2",
+    title: "Personal trip manager",
+    desc: "One person you can message, available around the clock.",
   },
   {
-    url: "/content/guest-gallery-1791343362879-0.webp",
-    caption: "Desert Safari & Dunes",
-    location: "Rajasthan, India",
+    num: "3",
+    title: "Comfortable cars, courteous drivers",
+    desc: "Verified chauffeurs who stay with you throughout.",
   },
   {
-    url: "/content/guest-gallery-1791343426950-0.webp",
-    caption: "Kerala Backwaters & Houseboat",
-    location: "Alleppey, India",
-  },
-  {
-    url: "/content/guest-gallery-1791343475610-0.webp",
-    caption: "Himalayan Vistas",
-    location: "Kashmir, India",
+    num: "4",
+    title: "No forced shopping stops",
+    desc: "You decide where to stop, and where not to.",
   },
 ];
 
 const REVIEWS = [
   {
     id: 1,
-    name: "James & Eleanor Vance",
-    location: "London, UK",
-    tripName: "Golden Triangle & Varanasi (8D/7N)",
-    rating: 5,
-    comment: "Landing in Delhi at 2 AM was seamless with our driver Ramesh waiting with a warm smile. Clean vehicle, bottled water always ready, and he took us to a quiet rooftop facing the Taj Mahal!",
-  },
-  {
-    id: 2,
     name: "Marcus & Clara Weber",
     location: "Munich, Germany",
     tripName: "Rajasthan Forts & Desert Safari (7D/6N)",
     rating: 5,
-    comment: "What we appreciated most was the complete transparency with zero hidden charges. Our driver Kuldeep was extremely courteous. Sleeping under the stars in Jaisalmer was magical!",
+    comment:
+      "What we appreciated most was the complete transparency with zero hidden charges. Our driver Kuldeep was extremely courteous. Sleeping under the stars in Jaisalmer was magical!",
+  },
+  {
+    id: 2,
+    name: "James & Eleanor Vance",
+    location: "London, UK",
+    tripName: "Golden Triangle & Varanasi (8D/7N)",
+    rating: 5,
+    comment:
+      "Landing in Delhi at 2 AM was seamless with our driver Ramesh waiting with a warm smile. Clean vehicle, bottled water always ready, and he took us to a quiet rooftop facing the Taj Mahal!",
   },
   {
     id: 3,
@@ -64,7 +58,8 @@ const REVIEWS = [
     location: "Manchester, UK",
     tripName: "Kashmir Luxury Tour (6D/5N)",
     rating: 5,
-    comment: "Our driver Tariq was amazing in Kashmir! Clean Innova cab, warm hotel rooms in Pahalgam, and zero hassle with Gulmarg snow passes.",
+    comment:
+      "Our driver Tariq was amazing in Kashmir! Clean Innova cab, warm hotel rooms in Pahalgam, and zero hassle with Gulmarg snow passes.",
   },
   {
     id: 4,
@@ -72,371 +67,137 @@ const REVIEWS = [
     location: "Sydney, Australia",
     tripName: "Kerala Backwaters & Hills (5D/4N)",
     rating: 5,
-    comment: "Traveled with our elderly mother and a toddler. Driver Sunil drove very carefully on Munnar curves, and the houseboat chef cooked mild non-spicy food specifically for our kid!",
+    comment:
+      "Traveled with our elderly mother and a toddler. Driver Sunil drove very carefully on Munnar curves, and the houseboat chef cooked mild non-spicy food specifically for our kid!",
   },
   {
     id: 5,
     name: "Clara & Thomas Schmidt",
     location: "Berlin, Germany",
-    tripName: "Himachal Manali & Shimla (7D/6N)",
+    tripName: "Rajasthan Grand Tour (10D/9N)",
     rating: 5,
-    comment: "Booked for 6 of us. Clean cab, huge breakfast spread, and Atal Tunnel permits were pre-arranged to avoid traffic jams. Highly recommend their local team!",
+    comment:
+      "Every detail from arrival to departure was flawless. Our guide made the forts come alive with fascinating historical stories. Unforgettable holiday!",
   },
 ];
 
-export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = ({
-  images = [],
-  hideGallery = false,
-  initialGuestGallery,
-}) => {
-  const { data: apiData } = useGuestGallery(1, 8, true, {
-    initialData: initialGuestGallery || undefined,
-  });
-
-  const rawItems = apiData?.data ?? initialGuestGallery?.data;
-  const dbItems =
-    rawItems && rawItems.length > 0
-      ? rawItems.map((item) => ({
-          url: item.imageUrl,
-          caption: item.caption || "",
-          location: item.location || "",
-        }))
-      : DEFAULT_GUEST_MOMENTS;
-
-  let galleryItems =
-    images && images.length > 0
-      ? images.map((url) => ({ url, caption: "", location: "" }))
-      : dbItems;
-
-  galleryItems = galleryItems.slice(0, 8);
-  
-  const showGallery = !hideGallery && galleryItems.length > 0;
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-
-  // Review Slider State
+export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = () => {
   const [reviewIndex, setReviewIndex] = useState(0);
 
   useEffect(() => {
-    const rTimer = setInterval(() => {
-      setReviewIndex((prev) => (prev + 1) % REVIEWS.length);
-    }, 5000);
-    return () => clearInterval(rTimer);
-  }, []);
-
-  useEffect(() => {
-    if (!showGallery || galleryItems.length <= 1 || isLightboxOpen) return;
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % galleryItems.length);
-    }, 4000);
+      setReviewIndex((prev) => (prev + 1) % REVIEWS.length);
+    }, 6000);
     return () => clearInterval(timer);
-  }, [showGallery, galleryItems.length, isLightboxOpen]);
-
-  const handlePrev = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    setCurrentIndex((prev) => (prev === 0 ? galleryItems.length - 1 : prev - 1));
-  };
-
-  const handleNext = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    setCurrentIndex((prev) => (prev + 1) % galleryItems.length);
-  };
+  }, []);
 
   const currentReview = REVIEWS[reviewIndex];
 
   return (
-    <section className="py-10 sm:py-14 bg-section-tint border-y border-section-border overflow-hidden">
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-        
-        <div className={`grid grid-cols-1 ${showGallery ? "lg:grid-cols-2 gap-8 lg:gap-12" : "gap-8"} items-center`}>
+    <section className="py-14 sm:py-20 bg-section-tint border-y border-section-border overflow-hidden">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 lg:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-14 items-center">
           
-          {/* Left Column: Reviews & Trusted Traveler Proof */}
-          <div className="flex flex-col justify-center">
-            <SectionLabel>The KoiKoi Advantage</SectionLabel>
-            <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mt-1.5 mb-2">
-              Why Book Your India Trip With <span className="text-[#F8904D]">KoiKoi Travel?</span>
+          {/* Left Column: Heading & 4 Key Advantage Points */}
+          <div>
+            <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#F8904D] mb-2.5 block">
+              The KoiKoi Advantage
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-[36px] font-bold text-slate-900 tracking-tight leading-[1.2] mb-3">
+              Why book your India trip <span className="text-[#F8904D]">with KoiKoi?</span>
             </h2>
-            <p className="text-slate-500 text-xs sm:text-sm mb-5 leading-relaxed max-w-xl">
-              Unlike generic travel booking engines, KoiKoi Travel provides dedicated private local tour managers, 100% custom itineraries, and courteous reliable chauffeurs.
+            <p className="text-slate-600 text-sm sm:text-base mb-8 leading-relaxed max-w-xl">
+              Unlike generic booking engines, we plan every trip for you, with a real person who knows the route.
             </p>
 
-            {/* Verified Review Card */}
-            <div className="mb-5 p-5 sm:p-6 bg-white rounded-2xl border border-section-border shadow-xs" suppressHydrationWarning>
-              {/* Star Rating & Trip Tag */}
-              <div className="flex items-center gap-3 mb-2.5">
-                <div className="flex items-center gap-1 text-amber-500">
-                  {[...Array(currentReview.rating)].map((_, i) => (
-                    <span key={i} className="text-base">★</span>
-                  ))}
-                </div>
-                <span className="text-[11.5px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700" suppressHydrationWarning>
-                  {currentReview.tripName}
-                </span>
+            {/* 4 Points List */}
+            <ul className="space-y-5">
+              {ADVANTAGE_POINTS.map((pt) => (
+                <li key={pt.num} className="flex items-start gap-4">
+                  <span className="w-10 h-10 rounded-xl bg-[#e6f4f1] text-[#1b8a7d] font-bold text-base flex items-center justify-center shrink-0 shadow-2xs">
+                    {pt.num}
+                  </span>
+                  <div>
+                    <b className="block text-slate-900 font-bold text-base leading-snug">
+                      {pt.title}
+                    </b>
+                    <span className="text-slate-600 text-sm leading-relaxed block mt-0.5">
+                      {pt.desc}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Right Column: Quote Card matching koikoi-home.html */}
+          <div className="bg-white border border-section-border rounded-2xl p-7 sm:p-9 shadow-[0_6px_24px_rgba(18,48,47,0.08)] flex flex-col justify-between">
+            <div>
+              {/* Stars */}
+              <div className="text-[#F8904D] text-lg tracking-[3px] mb-3">
+                ★★★★★
               </div>
 
-              {/* Review Comment Quote */}
-              <p className="text-slate-700 text-sm sm:text-[14.5px] leading-relaxed italic mb-3.5 min-h-[56px] font-normal" suppressHydrationWarning>
-                &ldquo;{currentReview.comment}&rdquo;
-              </p>
+              {/* Trip Badge */}
+              <div className="inline-block text-xs font-medium bg-section-tint border border-section-border rounded-full px-3.5 py-1 text-slate-700 mb-4" suppressHydrationWarning>
+                {currentReview.tripName}
+              </div>
 
-              {/* Reviewer Details & Normal Indicator Dots */}
-              <div className="flex items-center justify-between gap-4 pt-1 border-t border-slate-100">
-                <div className="flex items-center gap-3 pt-2">
-                  <div className="w-9 h-9 rounded-full bg-slate-900 text-[#F8904D] border border-slate-700 font-bold flex items-center justify-center text-xs shadow-xs" suppressHydrationWarning>
+              {/* Blockquote */}
+              <blockquote className="text-slate-700 text-sm sm:text-[15.5px] italic leading-relaxed min-h-[72px]" suppressHydrationWarning>
+                &ldquo;{currentReview.comment}&rdquo;
+              </blockquote>
+            </div>
+
+            <div>
+              <div className="mt-6 pt-5 border-t border-slate-100 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  {/* Avatar */}
+                  <div className="w-10 h-10 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-xs" suppressHydrationWarning>
                     {currentReview.name.split(" ")[0]?.[0]}
                     {currentReview.name.split(" ")[1]?.[0] || ""}
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-slate-900" suppressHydrationWarning>
+                    <b className="block text-slate-900 font-bold text-sm leading-snug" suppressHydrationWarning>
                       {currentReview.name}
-                    </h3>
-                    <p className="text-xs text-slate-500 font-normal" suppressHydrationWarning>{currentReview.location}</p>
+                    </b>
+                    <small className="text-slate-500 text-xs block" suppressHydrationWarning>
+                      {currentReview.location}
+                    </small>
                   </div>
                 </div>
 
-                {/* Normal Dots Navigation */}
-                <div className="flex items-center -mx-1 pt-2">
+                {/* Review Dots */}
+                <div className="flex items-center gap-1.5">
                   {REVIEWS.map((_, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => setReviewIndex(idx)}
-                      className="p-1.5 sm:p-2 flex items-center justify-center cursor-pointer focus:outline-none"
+                      className="p-1 cursor-pointer focus:outline-none"
                       aria-label={`Go to review ${idx + 1}`}
                     >
                       <span
                         className={`block h-2 rounded-full transition-all ${
-                          idx === reviewIndex ? "w-6 bg-[#F8904D]" : "w-2 bg-slate-200 hover:bg-slate-300"
+                          idx === reviewIndex ? "w-5 bg-[#F8904D]" : "w-2 bg-slate-200 hover:bg-slate-300"
                         }`}
                       />
                     </button>
                   ))}
                 </div>
               </div>
-            </div>
 
-            {/* Quick Trust Highlights */}
-            <div className="grid grid-cols-2 gap-2.5 pt-2">
-              <div className="flex items-center gap-2 text-xs sm:text-[13px] font-normal text-slate-700">
-                <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                <span>100% Tailored Private Trips</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs sm:text-[13px] font-normal text-slate-700">
-                <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                <span>24/7 Personal Trip Manager</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs sm:text-[13px] font-normal text-slate-700">
-                <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                <span>Direct Transparent Pricing</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs sm:text-[13px] font-normal text-slate-700">
-                <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-bold shrink-0">✓</span>
-                <span>Comfortable Vehicles & Top Drivers</span>
-              </div>
-            </div>
-          </div>
-          
-          {/* Right Column: Photo Slider + Lightbox Feature */}
-          {showGallery && (
-            <div className="flex flex-col">
-
-              <div className="relative group">
-              {/* Rotated Accent Backdrop */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-amber-400/20 via-orange-400/10 to-amber-500/10 rounded-[32px] transform rotate-2" />
-              
-              <div 
-                className="relative z-10 w-full h-[380px] sm:h-[420px] md:h-[460px] rounded-[32px] overflow-hidden shadow-xl bg-white border border-slate-100 cursor-pointer"
-                onClick={() => setIsLightboxOpen(true)}
+              <Link
+                href="/guest-gallery"
+                className="inline-block mt-4 text-sm font-semibold text-[#1b8a7d] hover:underline"
               >
-                
-                {/* Expand Lightbox Hint Icon */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsLightboxOpen(true);
-                  }}
-                  className="absolute top-4 right-4 z-30 w-9 h-9 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white backdrop-blur-md flex items-center justify-center transition-all opacity-90 hover:opacity-100 hover:scale-110 shadow-lg border border-white/30"
-                  title="Expand Fullscreen Lightbox"
-                >
-                  <Maximize2 size={16} />
-                </button>
-
-                {/* Horizontal Track Slider */}
-                <div className="w-full h-full overflow-hidden relative">
-                  <div
-                    className="flex w-full h-full transition-transform duration-500 ease-out"
-                    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-                  >
-                    {galleryItems.map((item, idx) => (
-                      <div key={idx} className="w-full h-full relative shrink-0 flex-none group/slide overflow-hidden rounded-2xl">
-                        <FallbackImage
-                          src={item.url || null}
-                          alt={item.caption || item.location || `Traveler Moment ${idx + 1}`}
-                          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/slide:scale-105"
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 50vw"
-                          priority={idx === 0}
-                          loading={idx <= 1 ? "eager" : "lazy"}
-                          fetchPriority={idx === 0 ? "high" : "auto"}
-                          unoptimized={item.url?.startsWith("/content/")}
-                        />
-                        
-                        {(item.caption || item.location) && (
-                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent p-5 sm:p-6 pt-24 flex flex-col justify-end pointer-events-none transition-all duration-300">
-                            {item.caption && <h3 className="text-white font-bold text-lg sm:text-xl tracking-tight drop-shadow-md mb-1">{item.caption}</h3>}
-                            {item.location && (
-                              <p className="text-orange-300 text-xs sm:text-sm font-semibold flex items-center gap-1.5 drop-shadow-sm">
-                                <MapPin size={14} className="text-orange-400" />
-                                {item.location}
-                              </p>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Navigation Controls */}
-                {galleryItems.length > 1 && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={handlePrev}
-                      className="absolute left-3.5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-slate-900 flex items-center justify-center shadow-md backdrop-blur-md transition-all hover:scale-105 active:scale-95 border border-slate-200/60 opacity-90 hover:opacity-100"
-                      aria-label="Previous Slide"
-                    >
-                      <ChevronLeft size={18} />
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={handleNext}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-slate-900 flex items-center justify-center shadow-md backdrop-blur-md transition-all hover:scale-105 active:scale-95 border border-slate-200/60 opacity-90 hover:opacity-100"
-                      aria-label="Next Slide"
-                    >
-                      <ChevronRight size={18} />
-                    </button>
-
-                    {/* Indicator Dots */}
-                    <div className="absolute bottom-4 inset-x-0 z-30 flex items-center justify-center gap-2" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20">
-                        {galleryItems.map((_, idx) => (
-                          <button
-                            key={idx}
-                            type="button"
-                            aria-label={`Go to slide ${idx + 1}`}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCurrentIndex(idx);
-                            }}
-                            className="p-1.5 sm:p-2 flex items-center justify-center cursor-pointer focus:outline-none"
-                          >
-                            <span
-                              className={`block h-1.5 rounded-full transition-all ${
-                                idx === currentIndex ? "w-5 bg-orange-500" : "w-1.5 bg-white/70 hover:bg-white"
-                              }`}
-                            />
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )}
-
-              </div>
-            </div>
-
-            {/* Premium Gallery Subtext */}
-            <div className="mt-4 px-2 text-center lg:text-right self-center lg:self-end">
-              <p className="text-slate-600 font-medium text-xs sm:text-sm tracking-tight flex items-center justify-center lg:justify-end gap-2">
-                <span className="w-8 h-px bg-slate-300 hidden sm:block"></span>
-                Sightseeing & Moments shared by our guests
-              </p>
+                See moments shared by our guests &rarr;
+              </Link>
             </div>
           </div>
-          )}
 
         </div>
-
       </div>
-
-      {/* Fullscreen Lightbox Modal */}
-      {isLightboxOpen && (
-        <div 
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-fade-in"
-          onClick={() => setIsLightboxOpen(false)}
-        >
-          {/* Close Button */}
-          <button
-            type="button"
-            onClick={() => setIsLightboxOpen(false)}
-            className="absolute top-6 right-6 z-50 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-md transition-all cursor-pointer"
-            title="Close Lightbox"
-          >
-            <X size={24} />
-          </button>
-
-          {/* Photo Counter */}
-          <div className="absolute top-6 left-6 z-50 text-white/90 font-bold text-sm bg-black/50 px-4 py-2 rounded-full border border-white/20 backdrop-blur-md">
-            {currentIndex + 1} / {galleryItems.length}
-          </div>
-
-          {/* Lightbox Image Container */}
-          <div 
-            className="relative max-w-5xl max-h-[85vh] w-full h-full flex flex-col items-center justify-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="relative w-full h-full min-h-[50vh]">
-              <FallbackImage
-                src={galleryItems[currentIndex]?.url || null}
-                alt={`Lightbox Photo ${currentIndex + 1}`}
-                className="object-contain rounded-2xl shadow-2xl"
-                fill
-              />
-            </div>
-
-            {(galleryItems[currentIndex]?.caption || galleryItems[currentIndex]?.location) && (
-              <div className="mt-6 text-center shrink-0">
-                {galleryItems[currentIndex]?.caption && (
-                  <h3 className="text-white font-bold text-2xl sm:text-3xl tracking-tight drop-shadow-lg mb-1.5">
-                    {galleryItems[currentIndex].caption}
-                  </h3>
-                )}
-                {galleryItems[currentIndex]?.location && (
-                  <div className="inline-flex items-center justify-center gap-1.5 mt-1 px-3 py-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm shadow-sm">
-                    <MapPin size={14} className="text-orange-400" />
-                    <span className="text-white/90 text-xs font-semibold tracking-wide uppercase">
-                      {galleryItems[currentIndex].location}
-                    </span>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Prev / Next Buttons in Lightbox */}
-            {galleryItems.length > 1 && (
-              <>
-                <button
-                  type="button"
-                  onClick={handlePrev}
-                  className="absolute left-2 sm:-left-12 top-1/2 -translate-y-1/2 text-white bg-black/60 hover:bg-black p-3.5 rounded-full border border-white/30 backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
-                >
-                  <ChevronLeft size={28} />
-                </button>
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className="absolute right-2 sm:-right-12 top-1/2 -translate-y-1/2 text-white bg-black/60 hover:bg-black p-3.5 rounded-full border border-white/30 backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer"
-                >
-                  <ChevronRight size={28} />
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      )}
     </section>
   );
 };
