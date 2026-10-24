@@ -197,7 +197,14 @@ function CityContent({
           </>
         ) : (
           <div className="absolute inset-0">
-  "fsdf"
+            <FallbackImage
+              src={city.thumbImg || city.banner?.images?.[0]}
+              alt={city.title}
+              fill
+              priority
+              className="object-cover object-center"
+              theme="dark"
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
           </div>
         )}
