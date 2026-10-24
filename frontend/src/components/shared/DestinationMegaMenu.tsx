@@ -278,7 +278,7 @@ export const DestinationMegaMenu: React.FC<DestinationMegaMenuProps> = ({
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-slate-600">Popular Inbound Circuits:</span>
                     <Link
-                      href="/travel-experiences/golden-triangle-tour-india"
+                      href="/tour-packages/india/golden-triangle"
                       onClick={onClose}
                       className="text-[#2E8B8B] font-semibold hover:underline"
                     >

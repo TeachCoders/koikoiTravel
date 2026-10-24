@@ -43,6 +43,7 @@ import CityCard from "./CityCard";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
+import { GOLDEN_TRIANGLE_FAQS } from "@/feature/travelExperience/goldenTriangleFaqs";
 
 export default function StateDetail({
   slug,
@@ -181,7 +182,30 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       : stateJourneys.find((j) => j.cities?.some((c) => c.id === cityId) || j.cityIds?.includes(cityId))?.thumbImg;
 
   const displayedCities = useMemo(() => {
-    return [...stateCities].sort((a, b) => {
+    let citiesList = [...stateCities];
+    if (citiesList.length === 0 && (state.slug === "golden-triangle" || state.slug?.includes("golden-triangle"))) {
+      const seen = new Set<string>();
+      const extracted: any[] = [];
+      for (const j of stateJourneys) {
+        for (const c of (j.cities || [])) {
+          if (!c.slug || seen.has(c.slug)) continue;
+          seen.add(c.slug);
+          extracted.push(c);
+        }
+      }
+      const priority = ["delhi", "agra", "jaipur", "fatehpur-sikri", "ranthambore"];
+      extracted.sort((a, b) => {
+        const aIdx = priority.indexOf(a.slug);
+        const bIdx = priority.indexOf(b.slug);
+        if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
+        if (aIdx !== -1) return -1;
+        if (bIdx !== -1) return 1;
+        return (a.title || "").localeCompare(b.title || "");
+      });
+      citiesList = extracted;
+    }
+
+    return citiesList.sort((a, b) => {
       const aCount = journeyCountFor(a.id);
       const bCount = journeyCountFor(b.id);
       if (aCount > 0 && bCount === 0) return -1;
@@ -190,7 +214,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       const bOrder = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
       return aOrder - bOrder;
     });
-  }, [stateCities, stateJourneys]);
+  }, [stateCities, stateJourneys, state.slug]);
 
   const cityCount = displayedCities.length ?? 0;
 
@@ -511,7 +535,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
       {/* ===== FAQ SECTION ===== */}
       <FaqSection
-        faqs={state.faqs}
+        faqs={state.faqs?.length ? state.faqs : (state.slug === "golden-triangle" ? (GOLDEN_TRIANGLE_FAQS as any) : undefined)}
         contextName={state.title}
         contextSlug={state.slug}
         entityType="State"

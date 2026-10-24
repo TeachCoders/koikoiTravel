@@ -15,16 +15,17 @@ export default function CityCard({
   fallbackImage?: string;
 }) {
   const journeys = city._count?.journeys ?? city.journeys?.length ?? journeyCount ?? 0;
-  const country = countrySlug ?? city.state?.country?.slug;
+  const actualStateSlug = (city.state?.slug && (stateSlug === "golden-triangle" || stateSlug.includes("golden-triangle")))
+    ? city.state.slug
+    : stateSlug;
+  const country = countrySlug ?? city.state?.country?.slug ?? "india";
   
   // Only make clickable if active tour packages exist (> 0)
-  const isSelf = city.slug === stateSlug;
+  const isSelf = city.slug === actualStateSlug;
   const href = journeys > 0
     ? (isSelf
-        ? (country ? `/tour-packages/${country}/${stateSlug}` : `/tour-packages/${stateSlug}`)
-        : (country
-            ? `/tour-packages/${country}/${stateSlug}/${city.slug}`
-            : `/tour-packages/${stateSlug}/${city.slug}`))
+        ? `/tour-packages/${country}/${actualStateSlug}`
+        : `/tour-packages/${country}/${actualStateSlug}/${city.slug}`)
     : undefined;
 
   return (

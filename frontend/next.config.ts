@@ -47,18 +47,18 @@ const nextConfig: NextConfig = {
         permanent: true,
       })),
       {
-        source: "/tour-packages/india/golden-triangle",
-        destination: "/travel-experiences/golden-triangle",
+        source: "/travel-experiences/golden-triangle",
+        destination: "/tour-packages/india/golden-triangle",
         permanent: true,
       },
       {
-        source: "/tour-packages/india/goa/pondicherry",
-        destination: "/tour-packages/india/tamil-nadu/pondicherry",
+        source: "/travel-experiences/golden-triangle-tour-india",
+        destination: "/tour-packages/india/golden-triangle",
         permanent: true,
       },
       {
         source: "/india-tours/tour-packages/golden-triangle",
-        destination: "/travel-experiences/golden-triangle",
+        destination: "/tour-packages/india/golden-triangle",
         permanent: true,
       },
       {

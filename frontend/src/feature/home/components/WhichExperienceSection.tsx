@@ -35,7 +35,7 @@ const EXPERIENCES = [
   {
     icon: "🕌",
     title: "Golden Triangle",
-    href: "/travel-experiences/golden-triangle-tour-india",
+    href: "/tour-packages/india/golden-triangle",
   },
   {
     icon: "🌴",

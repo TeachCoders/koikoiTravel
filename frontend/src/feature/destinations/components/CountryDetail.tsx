@@ -66,7 +66,7 @@ const ICONIC_REGIONS = [
     description: "Mughal grandeur, sunrise at the Taj Mahal, Jaipur's Amber Fort, and private tiger safaris.",
     image: "/banners/golden-triangle-comic-banner.webp",
     fallbackImage: "/content/3-days-jaipur-agra-tirp-from-delhi-golden-triangle-holiday-3.webp",
-    href: "/travel-experiences/golden-triangle-tour-india",
+    href: "/tour-packages/india/golden-triangle",
     highlights: ["Taj Mahal at Dawn", "Amer Fort Elephant/Jeep", "Ranthambore Royal Bengal Tigers"],
   },
   {

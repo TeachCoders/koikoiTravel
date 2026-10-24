@@ -25,8 +25,8 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  if (slug === "golden-triangle") {
-    redirect("/travel-experiences/golden-triangle-tour-india");
+  if (slug === "golden-triangle" || slug === "golden-triangle-tour-india") {
+    redirect("/tour-packages/india/golden-triangle");
   }
   const data = await fetchBySlugCached<TravelExperience>("/holidays/by-slug", slug);
   if (!data) return { title: "Travel Experience Not Found | KoiKoi Travel" };
@@ -75,8 +75,8 @@ function canonicalFor(
 
 export default async function TravelExperiencePage({ params }: Props) {
   const { slug } = await params;
-  if (slug === "golden-triangle") {
-    redirect("/travel-experiences/golden-triangle-tour-india");
+  if (slug === "golden-triangle" || slug === "golden-triangle-tour-india") {
+    redirect("/tour-packages/india/golden-triangle");
   }
   const data = await fetchBySlugCached<TravelExperience>("/holidays/by-slug", slug);
 

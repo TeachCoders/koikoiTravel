@@ -7,7 +7,7 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
   // Core Travel Experiences
   {
     terms: ["Golden Triangle Tours India", "Golden Triangle Tour India", "Golden Triangle Tour", "Golden Triangle Tours", "Golden Triangle Itinerary", "Golden Triangle"],
-    href: "/travel-experiences/golden-triangle-tour-india",
+    href: "/tour-packages/india/golden-triangle",
   },
   {
     terms: ["Taj Mahal Tour", "Taj Mahal Tours", "Taj Mahal"],

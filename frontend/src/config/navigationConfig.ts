@@ -19,7 +19,7 @@ export interface NavItemConfig {
 // 1. INDIA TOURS (Single-Column Clean Dropdown: Golden Triangle, Rajasthan, Kerala)
 // ============================================================================
 export const STATIC_INDIA_TOURS: NavItemConfig[] = [
-  { label: "Golden Triangle Tours", href: "/travel-experiences/golden-triangle-tour-india", enabled: true },
+  { label: "Golden Triangle Tours", href: "/tour-packages/india/golden-triangle", enabled: true },
   { label: "Rajasthan Tours", href: "/tour-packages/india/rajasthan", enabled: true },
   { label: "Kerala Tours", href: "/tour-packages/india/kerala", enabled: true },
 ];
@@ -33,9 +33,8 @@ export const getActiveIndiaTours = (): { label: string; href: string }[] =>
 // ============================================================================
 // 2. TRAVEL STYLES (Single-Column Clean Dropdown)
 // ============================================================================
-// Sequence: Golden Triangle -> Taj Mahal -> Ayurveda -> Wildlife -> Spiritual -> Hill Station -> Weekend
+// Sequence: Taj Mahal -> Ayurveda -> Wildlife -> Spiritual -> Hill Station -> Weekend
 export const STATIC_TRAVEL_STYLES: NavItemConfig[] = [
-  { label: "Golden Triangle Tours", href: "/travel-experiences/golden-triangle-tour-india", enabled: true },
   { label: "Taj Mahal Day & Short Tours", href: "/travel-experiences/taj-mahal", enabled: true },
   { label: "Ayurveda & Wellness Retreats", href: "/travel-experiences/ayurveda-yoga", enabled: true },
   { label: "Wildlife & Tiger Safaris", href: "/travel-experiences/wildlife", enabled: true },
@@ -97,7 +96,7 @@ export const STATIC_DESTINATION_TREE: DestinationTreeCountry[] = [
           { id: 9905, title: "Ranthambore (Tiger Safari)", slug: "ranthambore", href: "/tour-packages/india/rajasthan" },
         ],
         experiences: [
-          { id: 991, title: "Golden Triangle Tours (15 Packages)", slug: "golden-triangle-tour-india", href: "/travel-experiences/golden-triangle-tour-india", count: 15 },
+          { id: 991, title: "Golden Triangle Tours (15 Packages)", slug: "golden-triangle", href: "/tour-packages/india/golden-triangle", count: 15 },
           { id: 992, title: "Taj Mahal Day & Short Tours", slug: "taj-mahal", href: "/travel-experiences/taj-mahal", count: 12 },
           { id: 993, title: "Golden Triangle with Wildlife", slug: "wildlife", href: "/travel-experiences/wildlife", count: 6 },
         ],

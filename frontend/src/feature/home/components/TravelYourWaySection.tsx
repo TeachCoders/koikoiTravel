@@ -51,7 +51,7 @@ export default function SeoTextBlock() {
               Rajasthan Heritage Tours
             </Link>
             <span className="text-slate-300">•</span>
-            <Link href="/travel-experiences/golden-triangle-tour-india" className="hover:text-[#F8904D] transition-colors hover:underline">
+            <Link href="/tour-packages/india/golden-triangle" className="hover:text-[#F8904D] transition-colors hover:underline">
               Golden Triangle Tours India
             </Link>
             <span className="text-slate-300">•</span>
