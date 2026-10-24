@@ -189,7 +189,7 @@ function CityContent({
   return (
     <div>
       {/* ===== HERO ===== */}
-      <section className="relative w-full h-[400px] sm:h-[440px] md:h-[520px] overflow-hidden bg-slate-200">
+      <section className="relative w-full h-[56vw] min-h-[360px] max-h-[520px] md:h-[520px] md:max-h-none overflow-hidden bg-slate-200">
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={city.title} />
@@ -219,7 +219,7 @@ function CityContent({
             </div>
           )}
 
-          <div className="font-luxury text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+          <div className="font-luxury text-[42px] leading-[1.1] sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase text-white tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
             {heroTitle}
           </div>
         </div>

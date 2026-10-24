@@ -51,7 +51,7 @@ export default function TravelExperienceStateDetail({
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
       {/* ===== HERO ===== */}
-      <section className="relative w-full h-[320px] sm:h-[400px] md:h-[480px] overflow-hidden bg-slate-900">
+      <section className="relative w-full h-[56vw] min-h-[360px] max-h-[520px] md:h-[480px] md:max-h-none overflow-hidden bg-slate-900">
         <div className="absolute inset-0">
           <FallbackImage
             src={heroImage}
@@ -72,7 +72,7 @@ export default function TravelExperienceStateDetail({
             </span>
           </div>
 
-          <h1 className="font-luxury text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
+          <h1 className="font-luxury text-[42px] leading-[1.1] sm:text-5xl md:text-6xl font-black uppercase text-white tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
             {pageTitle}
           </h1>
 
