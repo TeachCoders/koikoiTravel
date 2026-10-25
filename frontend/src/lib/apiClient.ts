@@ -56,17 +56,15 @@ apiClient.interceptors.response.use(
       }
     }
 
-    // Session-expiry bounce – but NEVER for guest identity checks (/auth/me
-    // legitimately returns 401 for logged-out visitors) and never while
-    // already sitting on the login page (would cause a redirect loop).
+    // Session-expiry bounce – ONLY for protected /dashboard pages.
+    // Public visitors (browsing tour packages, blogs, destinations) should NEVER
+    // be abruptly redirected to /auth when a background fetch or guest check fails.
     if (error.response?.status === 401 && typeof window !== "undefined") {
-      const failedUrl = error.config?.url || "";
-      const isGuestCheck =
-        failedUrl.includes("/auth/me") ||
-        failedUrl.includes("/auth/csrf-token") ||
-        failedUrl.includes("/analytics/resolve-404");
-      const alreadyOnAuthPage = window.location.pathname.startsWith("/auth");
-      if (!isGuestCheck && !alreadyOnAuthPage) {
+      const pathname = window.location.pathname;
+      const isDashboardPage = pathname.startsWith("/dashboard");
+      const alreadyOnAuthPage = pathname.startsWith("/auth");
+
+      if (isDashboardPage && !alreadyOnAuthPage) {
         localStorage.removeItem("token");
         sessionStorage.removeItem("token");
         window.location.href = "/auth";

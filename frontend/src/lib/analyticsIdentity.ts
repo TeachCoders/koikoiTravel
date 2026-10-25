@@ -23,11 +23,12 @@ let meIdCache: { at: number; promise: Promise<number | null> } | null = null;
 /** Cached current-user lookup so frequent calls don't spam /auth/me. */
 export function resolveCurrentUserId(): Promise<number | null> {
   if (typeof window !== "undefined") {
+    // Only probe /auth/me if there is an explicit authenticated user token or admin flag.
+    // connect.sid is issued to all visitors for CSRF protection, so it must not trigger an auth check.
     const hasAuthToken =
       Boolean(localStorage.getItem("token") || sessionStorage.getItem("token")) ||
       document.cookie.includes("token") ||
-      document.cookie.includes("admin_logged_in") ||
-      document.cookie.includes("connect.sid");
+      document.cookie.includes("admin_logged_in");
     if (!hasAuthToken) {
       return Promise.resolve(null);
     }

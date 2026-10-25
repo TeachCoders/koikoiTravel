@@ -90,10 +90,13 @@ app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
-      const allowed = (process.env.CORS_ORIGIN || "http://localhost:3000")
+      const allowed = (process.env.CORS_ORIGIN || "https://koikoitravel.com,https://www.koikoitravel.com")
         .split(",")
         .map((o) => o.trim());
       if (allowed.includes(origin)) return callback(null, true);
+      if (/^https?:\/\/(www\.)?koikoitravel\.com$/.test(origin)) {
+        return callback(null, true);
+      }
       if (!isProduction && (/^http:\/\/localhost:\d+$/.test(origin) || /^http:\/\/127\.0\.0\.1:\d+$/.test(origin))) {
         return callback(null, true);
       }
