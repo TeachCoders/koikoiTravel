@@ -11,6 +11,8 @@ export default function robots(): MetadataRoute.Robots {
     "/auth/*",
     "/api/*",
     "/_next/static/media/*",
+    "/*?search=*",
+    "/*?*search_term_string*",
     "/*.woff2$",
     "/*.woff$",
     "/*.ttf$",
