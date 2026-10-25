@@ -163,6 +163,10 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
         ? (/\bsame\s*day\b/i.test(cleanJourneyTitle) ? "Same Day" : "1 Day")
         : `${journey.noDays} Days`
       : "");
+  const fullPageHeading =
+    durationText && !new RegExp(`^\\s*${durationText}`, "i").test(pageH1)
+      ? `${durationText} - ${pageH1}`
+      : pageH1;
   const daysCount =
     typeof journey.noDays === "number" && journey.noDays > 0
       ? journey.noDays
@@ -269,7 +273,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           ))}
           <ChevronRight size={13} className="text-slate-300 shrink-0" />
           <span className="text-slate-900 font-semibold truncate max-w-[300px] md:max-w-none">
-            {cleanJourneyTitle}
+            {fullPageHeading}
           </span>
         </div>
       </nav>
@@ -283,7 +287,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
             {pageH1 && (
               <h1 className="font-heading text-xl sm:text-2xl md:text-[28px] font-bold tracking-tight text-slate-900 leading-[1.3]">
-                {durationText ? `${durationText} - ${pageH1}` : pageH1}
+                {fullPageHeading}
               </h1>
             )}
           </div>
