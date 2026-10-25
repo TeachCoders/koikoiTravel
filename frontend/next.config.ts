@@ -64,6 +64,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/travel-experiences/adventure",
+        destination: "/travel-experiences",
+        permanent: true,
+      },
+      {
         source: "/travel-experiences/:expSlug/:stateSlug",
         destination: "/tour-packages/india/:stateSlug",
         permanent: true,
@@ -76,6 +81,131 @@ const nextConfig: NextConfig = {
       {
         source: "/tour-packages/india/karnataka",
         destination: "/tour-packages/india/south-india",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/rajasthan-tours/:city",
+        destination: "/tour-packages/india/rajasthan/:city",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/rajasthan-tours",
+        destination: "/tour-packages/india/rajasthan",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/ladakh-tours/:city",
+        destination: "/tour-packages/india/ladakh/:city",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/ladakh-tours",
+        destination: "/tour-packages/india/ladakh",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/himachal-pradesh-tours/:city",
+        destination: "/tour-packages/india/himachal-pradesh/:city",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/himachal-pradesh-tours",
+        destination: "/tour-packages/india/himachal-pradesh",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/uttarakhand-tours/:city",
+        destination: "/tour-packages/india/uttarakhand/:city",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/uttarakhand-tours",
+        destination: "/tour-packages/india/uttarakhand",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/kerala-tours/:city",
+        destination: "/tour-packages/india/kerala/:city",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/kerala-tours",
+        destination: "/tour-packages/india/kerala",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/golden-triangle-tours/:path*",
+        destination: "/tour-packages/india/golden-triangle",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/south-india-tours/:path*",
+        destination: "/tour-packages/india/south-india",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/tamil-nadu-tours/:path*",
+        destination: "/tour-packages/india/south-india",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/karnataka-tours/:path*",
+        destination: "/tour-packages/india/south-india",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/punjab-tours/:city",
+        destination: "/tour-packages/india/punjab/:city",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/punjab-tours",
+        destination: "/tour-packages/india/punjab",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/jammu-and-kashmir-tours/:city",
+        destination: "/tour-packages/india/jammu-and-kashmir/:city",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/jammu-and-kashmir-tours",
+        destination: "/tour-packages/india/jammu-and-kashmir",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/uttar-pradesh-tours/:city",
+        destination: "/tour-packages/india/uttar-pradesh/:city",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/uttar-pradesh-tours",
+        destination: "/tour-packages/india/uttar-pradesh",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tours/:path*",
+        destination: "/tour-packages/india",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india-tour/:path*",
+        destination: "/tour-packages/india",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india/:path*",
+        destination: "/tour-packages/india",
+        permanent: true,
+      },
+      {
+        source: "/blog/emirates-ai-robots-easy-travel-foreign-tourists",
+        destination: "/blog",
+        permanent: true,
+      },
+      {
+        source: "/&",
+        destination: "/",
         permanent: true,
       },
       {
