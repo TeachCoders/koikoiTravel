@@ -178,13 +178,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
           </div>
         </div>
 
-        {/* Main Heading */}
-        <div className="font-luxury text-white text-xl leading-snug sm:text-3xl md:text-5xl lg:text-[52px] font-black tracking-tight max-w-4xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
+        {/* Main H1 Heading for Rock-Solid SEO & Search Engine Hierarchy */}
+        <h1 className="font-luxury text-white text-xl leading-snug sm:text-3xl md:text-5xl lg:text-[52px] font-black tracking-tight max-w-4xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
           <span>Making every Journey</span>
           <span className="block mt-0.5 sm:mt-1.5 sm:whitespace-nowrap">
             <span className="text-[#F8904D]">Memorable</span> — KoiKoi Travel
           </span>
-        </div>
+        </h1>
 
         {/* Short Subtitle */}
         <p className="hidden sm:block font-outfit text-white/95 text-[15px] sm:text-base md:text-lg lg:text-[19px] max-w-3xl mt-3 sm:mt-4 leading-relaxed font-medium drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
