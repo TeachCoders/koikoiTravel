@@ -140,17 +140,6 @@ export default function TourPackageCard({
   const { rating, reviewsCount } = contextName ? getUniquePackageRating(journey) : { rating: null, reviewsCount: 0 };
   const isCompact = variant === "compact";
 
-  // Filter out "Golden Triangle" / "Golden Triangle Tour India"
-  const travelExperiences = (journey.travelExperiences || []).filter(
-    (t) => !t.title.toLowerCase().includes("golden triangle")
-  );
-
-  const daysCount =
-    typeof journey.noDays === "number" && journey.noDays > 0
-      ? journey.noDays
-      : parseInt((journey.duration || journey.title || journey.slug || "").match(/(\d+)\s*(?:day|days|d\b|-day)/i)?.[1] || "0", 10);
-  const hasSpecialOffer = daysCount >= 8;
-
   return (
     <div
       className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.09)] hover:-translate-y-1.5 transition-all duration-350 ease-out h-full"
@@ -161,31 +150,6 @@ export default function TourPackageCard({
           src={journey.thumbImg || journey.banner?.images?.[0] || ""}
           alt={`${journey.h1Title || journey.title}${journey.destination ? ` - ${journey.destination}` : ""} Tour Package | KoiKoi Travel`}
         />
-
-        {/* Subtle Edge Vignettes */}
-        <div className="absolute top-0 inset-x-0 h-14 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
-
-        {/* Top Badges (Days top-left, Category/Style top-right) */}
-        <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2 pointer-events-none">
-          {daysCount > 0 ? (
-            <span className="bg-white text-slate-900 font-bold px-3 py-1 rounded-full text-xs shadow-sm">
-              {daysCount} Days
-            </span>
-          ) : (
-            <span />
-          )}
-
-          {(() => {
-            const tag =
-              travelExperiences[0]?.title ||
-              (journey.isBestSelling ? "Best Seller" : daysCount <= 3 ? "Weekend" : daysCount >= 10 ? "Relaxed pace" : "Classic");
-            return (
-              <span className="bg-black/60 text-white font-medium px-3 py-1 rounded-full text-[11px] backdrop-blur-sm shadow-xs">
-                {tag}
-              </span>
-            );
-          })()}
-        </div>
       </Link>
 
       {/* Content Container */}

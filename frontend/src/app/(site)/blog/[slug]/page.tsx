@@ -101,10 +101,6 @@ export default async function BlogPostPage({ params }: Props) {
   if (!post) return notFound();
 
   const related = await fetchRelated(post.categories?.[0] || post.category, post.id);
-  const tags = (post.tags || "")
-    .split(",")
-    .map((t) => t.trim())
-    .filter(Boolean);
 
   const category =
     (post.categories?.length ? post.categories : post.category ? [post.category] : [])[0] || undefined;
@@ -263,7 +259,7 @@ export default async function BlogPostPage({ params }: Props) {
 
           <div className="mt-16 lg:mt-0">
             <div className="lg:sticky lg:top-24">
-              <BlogSidebar tags={tags} />
+              <BlogSidebar />
             </div>
           </div>
         </div>

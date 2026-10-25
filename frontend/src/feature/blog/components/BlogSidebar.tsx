@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CalendarDays, Tag, Sparkles, UserRound } from "lucide-react";
+import { CalendarDays, Sparkles, UserRound } from "lucide-react";
 import type { BlogPost } from "@/feature/blog/type";
 import { formatBlogDate } from "@/lib/dateUtils";
 import { SERVER_API_BASE } from "@/feature/destinations/api/public-server";
@@ -46,7 +46,7 @@ async function fetchTopJourneys(): Promise<any[]> {
   }
 }
 
-export default async function BlogSidebar({ tags }: { tags?: string[] }) {
+export default async function BlogSidebar() {
   const recent = await fetchRecent();
   const topJourneys = await fetchTopJourneys();
   const categories = await fetchCategories();
@@ -121,24 +121,6 @@ export default async function BlogSidebar({ tags }: { tags?: string[] }) {
                 }`}
               >
                 {c.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* ===== TAGS ===== */}
-      {tags && tags.length > 0 && (
-        <div className="bg-white rounded-3xl border border-slate-200/60 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
-          <h3 className="font-heading text-lg font-extrabold text-[#1C1C1C] mb-5">Tags</h3>
-          <div className="flex flex-wrap gap-2.5">
-            {tags.map((t) => (
-              <Link
-                key={t}
-                href={`/blog?search=${encodeURIComponent(t)}`}
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#2E8B8B] bg-[#2E8B8B]/5 border border-[#2E8B8B]/10 rounded-full transition-all hover:bg-[#2E8B8B] hover:text-white hover:shadow-md hover:-translate-y-0.5"
-              >
-                <Tag size={12} /> {t}
               </Link>
             ))}
           </div>
