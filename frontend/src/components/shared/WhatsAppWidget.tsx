@@ -16,7 +16,7 @@ export default function WhatsAppWidget() {
   const message = "Hi KoiKoi Travel, I want to inquire about a custom holiday tour package.";
 
   return (
-    <aside aria-label="WhatsApp quick chat" className="fixed bottom-5 right-4 sm:bottom-6 sm:right-6 z-[60]">
+    <aside aria-label="WhatsApp quick chat" className="hidden md:block fixed bottom-6 right-6 z-[60]">
       <a
         href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`}
         target="_blank"
