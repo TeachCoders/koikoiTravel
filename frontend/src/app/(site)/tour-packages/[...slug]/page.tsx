@@ -9,6 +9,7 @@ import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema, faqSchema, touristDestinationSchema, touristTripSchema, itemListSchema, graphSchema, buildTouristType } from "@/lib/jsonLd";
 import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
 import { stripHtml,  truncateMeta } from "@/lib/utils";
+import { getJourneyBreadcrumbState } from "@/lib/breadcrumbHelper";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { Country } from "@/feature/country/type";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
@@ -408,28 +409,17 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
         { name: "Home", path: "/" },
         { name: "Tour Packages", path: "/tour-packages" },
       ];
-      const firstCity = journey.cities?.[0];
-      if (firstCity?.state?.country?.slug && firstCity.state.country.title) {
+      const bcState = getJourneyBreadcrumbState(journey);
+      if (bcState.countrySlug && bcState.countryTitle) {
         breadcrumbItems.push({
-          name: firstCity.state.country.title.replace(/\s*Tour$/i, ""),
-          path: `/tour-packages/${firstCity.state.country.slug}`,
+          name: bcState.countryTitle,
+          path: `/tour-packages/${bcState.countrySlug}`,
         });
       }
-      if (firstCity?.state?.slug && firstCity.state.title && firstCity.state.country?.slug) {
-        let stateSlug = firstCity.state.slug;
-        let stateTitle = firstCity.state.title;
-        const isSouthIndia =
-          stateSlug === "karnataka" ||
-          stateSlug === "tamil-nadu" ||
-          stateSlug === "south-india" ||
-          (journey.title || "").toLowerCase().includes("south india");
-        if (isSouthIndia) {
-          stateSlug = "south-india";
-          stateTitle = "South India Tours";
-        }
+      if (bcState.stateSlug && bcState.stateTitle && bcState.countrySlug) {
         breadcrumbItems.push({
-          name: stateTitle,
-          path: `/tour-packages/${firstCity.state.country.slug}/${stateSlug}`,
+          name: bcState.stateTitle,
+          path: `/tour-packages/${bcState.countrySlug}/${bcState.stateSlug}`,
         });
       }
       breadcrumbItems.push({ name: journey.h1Title || journey.title, path: canonical });
