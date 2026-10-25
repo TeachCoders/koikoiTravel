@@ -15,7 +15,6 @@ import HeaderSearchBar from "./HeaderSearchBar";
 import {
   getActiveIndiaTours,
   getActiveTravelStyles,
-  getActiveAboutItems,
 } from "@/config/navigationConfig";
 
 export const Header: React.FC = () => {
@@ -77,7 +76,6 @@ export const Header: React.FC = () => {
 
   const indiaTourLinks = useMemo<NavChild[]>(() => getActiveIndiaTours(), []);
   const travelStyleLinks = useMemo<NavChild[]>(() => getActiveTravelStyles(), []);
-  const aboutLinks = useMemo<NavChild[]>(() => getActiveAboutItems(), []);
 
   type NavLink = {
     href: string;
@@ -120,9 +118,6 @@ export const Header: React.FC = () => {
         href: "/about-us",
         label: "About Us",
         directHref: "/about-us",
-        children: aboutLinks,
-        dropdownStyle: "mega",
-        dropdownColumns: 1,
       },
       {
         href: "/contact-us",
@@ -130,7 +125,7 @@ export const Header: React.FC = () => {
         directHref: "/contact-us",
       },
     ],
-    [indiaTourLinks, travelStyleLinks, aboutLinks]
+    [indiaTourLinks, travelStyleLinks]
   );
 
   useEffect(() => {
