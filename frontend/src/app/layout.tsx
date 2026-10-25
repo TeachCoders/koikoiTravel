@@ -18,28 +18,30 @@ const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-poppins",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const cinzel = Cinzel({
   subsets: ["latin"],
   variable: "--font-cinzel",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["700"],
+  preload: false,
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["600", "700"],
+  preload: false,
 });
 
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -48,7 +50,7 @@ export const metadata: Metadata = {
     default: "KoiKoi Travel | India Tour Operator & Tailor-Made Tours",
     template: "%s | KoiKoi Travel",
   },
-  description: "Discover India with KoiKoi Travel, a customize tour operator offering tailor-made India tours and private holidays across Rajasthan, Kerala, South India and beyond.",
+  description: "Discover India with KoiKoi Travel, offering tailor-made tours and private holidays across Rajasthan, Kerala, South India and the Golden Triangle.",
   keywords: [
     "India tour operator",
     "Tailor-made India tours",
@@ -67,7 +69,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "KoiKoi Travel",
     title: "KoiKoi Travel | India Tour Operator & Tailor-Made Tours",
-    description: "Discover India with KoiKoi Travel, a customize tour operator offering tailor-made India tours and private holidays across Rajasthan, Kerala, South India and beyond.",
+    description: "Discover India with KoiKoi Travel, offering tailor-made tours and private holidays across Rajasthan, Kerala, South India and the Golden Triangle.",
     locale: "en_IN",
     url: SITE_URL,
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "KoiKoi Travel - Customize Tour Operator & Tailor-Made India Tours" }],
@@ -75,7 +77,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "KoiKoi Travel | India Tour Operator & Tailor-Made Tours",
-    description: "Discover India with KoiKoi Travel, a customize tour operator offering tailor-made India tours and private holidays across Rajasthan, Kerala, South India and beyond.",
+    description: "Discover India with KoiKoi Travel, offering tailor-made tours and private holidays across Rajasthan, Kerala, South India and the Golden Triangle.",
     images: ["/og-image.png"],
   },
   icons: {

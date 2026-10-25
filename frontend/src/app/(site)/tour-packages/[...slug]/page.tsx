@@ -416,9 +416,20 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
         });
       }
       if (firstCity?.state?.slug && firstCity.state.title && firstCity.state.country?.slug) {
+        let stateSlug = firstCity.state.slug;
+        let stateTitle = firstCity.state.title;
+        const isSouthIndia =
+          stateSlug === "karnataka" ||
+          stateSlug === "tamil-nadu" ||
+          stateSlug === "south-india" ||
+          (journey.title || "").toLowerCase().includes("south india");
+        if (isSouthIndia) {
+          stateSlug = "south-india";
+          stateTitle = "South India Tours";
+        }
         breadcrumbItems.push({
-          name: firstCity.state.title,
-          path: `/tour-packages/${firstCity.state.country.slug}/${firstCity.state.slug}`,
+          name: stateTitle,
+          path: `/tour-packages/${firstCity.state.country.slug}/${stateSlug}`,
         });
       }
       breadcrumbItems.push({ name: journey.h1Title || journey.title, path: canonical });

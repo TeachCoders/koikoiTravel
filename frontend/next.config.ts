@@ -10,6 +10,8 @@ const SLUG_REDIRECTS: Record<string, string> = {
     "/tour-packages/9-days-rajasthan-tour-from-delhi-to-mumbai",
   "/tour-packages/3-days-jaipur-agra-tirp-from-delhi-golden-triangle":
     "/tour-packages/3-days-jaipur-agra-trip-from-delhi-golden-triangle",
+  "/tour-packages/7-days-south-india-hill-stations-tour":
+    "/tour-packages/7-days-south-india-hill-station-tour",
 };
 
 const nextConfig: NextConfig = {
