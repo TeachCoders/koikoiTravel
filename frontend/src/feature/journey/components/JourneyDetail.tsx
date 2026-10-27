@@ -163,10 +163,11 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
         ? (/\bsame\s*day\b/i.test(cleanJourneyTitle) ? "Same Day" : "1 Day")
         : `${journey.noDays} Days`
       : "");
-  const fullPageHeading =
-    durationText && !new RegExp(`\\b${durationText}\\b`, "i").test(pageH1)
-      ? `${durationText} - ${pageH1}`
-      : pageH1;
+  const fullPageHeading = journey.h1Title
+    ? journey.h1Title
+    : durationText && !new RegExp(`\\b${durationText}\\b`, "i").test(cleanJourneyTitle)
+      ? `${durationText} - ${cleanJourneyTitle}`
+      : cleanJourneyTitle;
   const daysCount =
     typeof journey.noDays === "number" && journey.noDays > 0
       ? journey.noDays

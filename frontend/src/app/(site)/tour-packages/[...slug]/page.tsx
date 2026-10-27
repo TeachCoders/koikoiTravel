@@ -424,9 +424,11 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
         });
       }
       const durationLabel = journey.duration || (journey.noDays > 0 ? `${journey.noDays} Days` : "");
-      const fullHeadingTitle = durationLabel && !new RegExp(`\\b${durationLabel}\\b`, "i").test(journey.h1Title || journey.title)
-        ? `${durationLabel} - ${journey.h1Title || journey.title}`
-        : (journey.h1Title || journey.title);
+      const fullHeadingTitle = journey.h1Title
+        ? journey.h1Title
+        : durationLabel && !new RegExp(`\\b${durationLabel}\\b`, "i").test(journey.title)
+          ? `${durationLabel} - ${journey.title}`
+          : journey.title;
       breadcrumbItems.push({ name: fullHeadingTitle, path: canonical });
 
       // Journey text: day titles + day content + page overview — signals yahin se aate hain
