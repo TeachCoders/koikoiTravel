@@ -164,7 +164,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
         : `${journey.noDays} Days`
       : "");
   const fullPageHeading =
-    durationText && !new RegExp(`^\\s*${durationText}`, "i").test(pageH1)
+    durationText && !new RegExp(`\\b${durationText}\\b`, "i").test(pageH1)
       ? `${durationText} - ${pageH1}`
       : pageH1;
   const daysCount =

@@ -229,7 +229,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
     case "journey": {
       const { journey } = resolved;
-      const title = journey.seoTitle || journey.h1Title || journey.title;
+      const rawTitle = journey.seoTitle || journey.h1Title || journey.title;
+      const title = rawTitle ? rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim() : rawTitle;
       const seoDescription = truncateMeta(journey.seoDescription || journey.overView);
       const canonical = journeySlugCanonical(journey.slug, journey.canonical);
       const ogImage = absoluteUrl(journey.thumbImg);
@@ -423,7 +424,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
         });
       }
       const durationLabel = journey.duration || (journey.noDays > 0 ? `${journey.noDays} Days` : "");
-      const fullHeadingTitle = durationLabel && !new RegExp(`^\\s*${durationLabel}`, "i").test(journey.h1Title || journey.title)
+      const fullHeadingTitle = durationLabel && !new RegExp(`\\b${durationLabel}\\b`, "i").test(journey.h1Title || journey.title)
         ? `${durationLabel} - ${journey.h1Title || journey.title}`
         : (journey.h1Title || journey.title);
       breadcrumbItems.push({ name: fullHeadingTitle, path: canonical });
