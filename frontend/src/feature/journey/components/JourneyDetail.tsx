@@ -154,8 +154,9 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
   const lightboxSlides = heroImages.map((src) => ({ src, alt: journey.title }));
 
+  const isShimlaTest = slug === "10-days-golden-triangle-with-shimla-tour";
   const pageH1 = journey.h1Title || journey.title;
-  const cleanJourneyTitle = (journey.title || journey.h1Title || "").split("|")[0].trim();
+  const cleanJourneyTitle = (journey.title || "").split("|")[0].trim();
   const durationText =
     journey.duration ||
     (journey.noDays > 0
@@ -163,15 +164,11 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
         ? (/\bsame\s*day\b/i.test(cleanJourneyTitle) ? "Same Day" : "1 Day")
         : `${journey.noDays} Days`
       : "");
-  const itineraryPrefix =
-    durationText && !new RegExp(`\\b${durationText}\\b`, "i").test(cleanJourneyTitle)
-      ? `${durationText} ${cleanJourneyTitle}`
-      : cleanJourneyTitle;
-  const fullPageHeading = journey.h1Title
-    ? journey.h1Title
-    : durationText && !new RegExp(`\\b${durationText}\\b`, "i").test(cleanJourneyTitle)
-      ? `${durationText} - ${cleanJourneyTitle}`
-      : cleanJourneyTitle;
+  const fullPageHeading = isShimlaTest
+    ? (journey.h1Title || "Golden Triangle with Shimla Tour (10 Days)")
+    : durationText && !new RegExp(`^\\s*${durationText}`, "i").test(pageH1)
+      ? `${durationText} - ${pageH1}`
+      : pageH1;
   const daysCount =
     typeof journey.noDays === "number" && journey.noDays > 0
       ? journey.noDays
@@ -603,14 +600,20 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               <div className="flex flex-wrap items-end justify-between gap-4 mb-4">
                 <div>
                   <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                    Itinerary Plan
+                    Itinerary
                   </span>
-                  <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight leading-snug">
-                    <span>Day By Day <span className="text-[#F8904D]">Itinerary</span></span>
-                    <span className="block text-sm sm:text-base font-medium text-slate-500 mt-1">
-                      {itineraryPrefix}
-                    </span>
-                  </h2>
+                  {isShimlaTest ? (
+                    <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight leading-snug">
+                      <span>Day By Day <span className="text-[#F8904D]">Itinerary</span></span>
+                      <span className="block text-sm sm:text-base font-medium text-slate-500 mt-1">
+                        10 Days Golden Triangle with Shimla Tour
+                      </span>
+                    </h2>
+                  ) : (
+                    <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight">
+                      Day By Day <span className="text-[#F8904D]">Itinerary</span>
+                    </h2>
+                  )}
                 </div>
               </div>
               <div className="relative bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 shadow-sm border border-slate-200/80">
@@ -770,8 +773,8 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
       {/* ===== FAQ SECTION (Placed Before Trip Guide) ===== */}
       <FaqSection
         faqs={journey.faqs}
-        heading={`Frequently Asked Questions: ${cleanJourneyTitle}`}
-        contextName={cleanJourneyTitle}
+        heading={isShimlaTest ? "Frequently Asked Questions: Golden Triangle with Shimla Tour" : undefined}
+        contextName={isShimlaTest ? "Golden Triangle with Shimla Tour" : undefined}
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
       />

@@ -15,7 +15,7 @@ export function journeyCardTitle(journey: {
   if (
     journey.noDays &&
     journey.noDays > 0 &&
-    !/\b\d+\s*(day|days|night|nights)\b/i.test(baseTitle) &&
+    !/^\d+\s*(day|days|night|nights)/i.test(baseTitle) &&
     !/\bsame\s*day\b/i.test(baseTitle)
   ) {
     return `${journey.noDays} ${journey.noDays === 1 ? "Day" : "Days"} - ${baseTitle}`;
