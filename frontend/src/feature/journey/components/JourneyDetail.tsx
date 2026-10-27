@@ -605,8 +605,11 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
                     Itinerary Plan
                   </span>
-                  <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight">
-                    {itineraryPrefix} - Day-by-Day <span className="text-[#F8904D]">Itinerary</span>
+                  <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight leading-snug">
+                    <span>Day By Day <span className="text-[#F8904D]">Itinerary</span></span>
+                    <span className="block text-sm sm:text-base font-medium text-slate-500 mt-1">
+                      {itineraryPrefix}
+                    </span>
                   </h2>
                 </div>
               </div>
