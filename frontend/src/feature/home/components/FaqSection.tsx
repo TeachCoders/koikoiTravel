@@ -153,6 +153,13 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
               <>
                 Frequently Asked <span className="text-[#F8904D]">Questions</span>
               </>
+            ) : displayHeading.startsWith("Frequently Asked Questions: ") ? (
+              <>
+                Frequently Asked Questions:{" "}
+                <span className="text-[#F8904D]">
+                  {displayHeading.replace(/^Frequently Asked Questions:\s*/, "")}
+                </span>
+              </>
             ) : (
               displayHeading
             )}

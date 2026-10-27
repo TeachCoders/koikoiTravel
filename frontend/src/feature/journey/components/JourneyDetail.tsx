@@ -155,7 +155,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
   const lightboxSlides = heroImages.map((src) => ({ src, alt: journey.title }));
 
   const pageH1 = journey.h1Title || journey.title;
-  const cleanJourneyTitle = (journey.title || "").split("|")[0].trim();
+  const cleanJourneyTitle = (journey.title || journey.h1Title || "").split("|")[0].trim();
   const durationText =
     journey.duration ||
     (journey.noDays > 0
@@ -163,6 +163,10 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
         ? (/\bsame\s*day\b/i.test(cleanJourneyTitle) ? "Same Day" : "1 Day")
         : `${journey.noDays} Days`
       : "");
+  const itineraryPrefix =
+    durationText && !new RegExp(`\\b${durationText}\\b`, "i").test(cleanJourneyTitle)
+      ? `${durationText} ${cleanJourneyTitle}`
+      : cleanJourneyTitle;
   const fullPageHeading = journey.h1Title
     ? journey.h1Title
     : durationText && !new RegExp(`\\b${durationText}\\b`, "i").test(cleanJourneyTitle)
@@ -599,10 +603,10 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
               <div className="flex flex-wrap items-end justify-between gap-4 mb-4">
                 <div>
                   <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                    Itinerary
+                    Itinerary Plan
                   </span>
                   <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight">
-                    Day By Day <span className="text-[#F8904D]">Itinerary</span>
+                    {itineraryPrefix} - Day-by-Day <span className="text-[#F8904D]">Itinerary</span>
                   </h2>
                 </div>
               </div>
@@ -763,6 +767,8 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
       {/* ===== FAQ SECTION (Placed Before Trip Guide) ===== */}
       <FaqSection
         faqs={journey.faqs}
+        heading={`Frequently Asked Questions: ${cleanJourneyTitle}`}
+        contextName={cleanJourneyTitle}
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
       />
