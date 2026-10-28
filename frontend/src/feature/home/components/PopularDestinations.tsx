@@ -55,7 +55,7 @@ export const PopularDestinations: React.FC<{
     list.push({
       id: "dest-taj-mahal",
       title: "Taj Mahal",
-      image: tajState?.thumbImg || tajExp?.thumbImg || "/banners/taj-mahal-comic-banner.webp",
+      image: tajState?.thumbImg || tajExp?.thumbImg || undefined,
       eyebrow: tajState?.banner?.bannerTag || tajExp?.banner?.bannerTag || "HOME OF TAJ MAHAL, INDIA",
       description: "Agra & Taj Mahal private sightseeing & heritage tours",
       region: "Uttar Pradesh",
@@ -75,7 +75,7 @@ export const PopularDestinations: React.FC<{
     list.push({
       id: "dest-golden-triangle",
       title: "Golden Triangle",
-      image: gtExp?.thumbImg || gtState?.thumbImg || "/golden-triangle/trip/golden-triangle.webp",
+      image: gtExp?.thumbImg || gtState?.thumbImg || undefined,
       eyebrow: gtExp?.banner?.bannerTag || gtState?.banner?.bannerTag || "ICONIC HERITAGE CIRCUIT",
       description: "Delhi, Agra & Jaipur private sightseeing & heritage tours",
       region: "North India",
@@ -90,7 +90,7 @@ export const PopularDestinations: React.FC<{
     list.push({
       id: "dest-rajasthan",
       title: "Rajasthan",
-      image: rajState?.thumbImg || rajState?.banner?.images?.[0] || "/india/trip/rajasthan-thumb.webp",
+      image: rajState?.thumbImg || undefined,
       eyebrow: rajState?.banner?.bannerTag || "LAND OF KINGS & PALACES",
       description: "Jaipur, Udaipur & desert forts private heritage tours",
       region: "Royal India",
@@ -105,7 +105,7 @@ export const PopularDestinations: React.FC<{
     list.push({
       id: "dest-kerala",
       title: "Kerala",
-      image: keralaState?.thumbImg || keralaState?.banner?.images?.[0] || "/content/kerala-holiday-1.webp",
+      image: keralaState?.thumbImg || undefined,
       eyebrow: keralaState?.banner?.bannerTag || "GOD'S OWN COUNTRY",
       description: "Alleppey, Munnar & tropical backwaters private tours",
       region: "South India",
@@ -120,7 +120,7 @@ export const PopularDestinations: React.FC<{
     list.push({
       id: "dest-south-india",
       title: "South India",
-      image: southState?.thumbImg || southState?.banner?.images?.[0] || "/india/holiday/mahablipuram-temple-1.webp",
+      image: southState?.thumbImg || undefined,
       eyebrow: southState?.banner?.bannerTag || "TEMPLES & TROPICAL COASTS",
       description: "Mahabalipuram, Madurai & temple heritage tours",
       region: "Dravidian Heritage",

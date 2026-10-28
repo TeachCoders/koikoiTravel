@@ -38,7 +38,7 @@ export default function DestinationCard({
         fill
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
         className="object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
-        fallbackSrc="/banners/rajasthan-comic-banner.webp"
+        fallbackSrc="/logo-with-name.png"
       />
       {/* Soft gradient only right around the text at the bottom */}
       <div className="absolute inset-x-0 bottom-0 h-20 sm:h-24 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
