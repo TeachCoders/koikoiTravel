@@ -6,6 +6,8 @@ import JsonLd from "@/components/shared/JsonLd";
 import { itemListSchema, breadcrumbSchema, graphSchema } from "@/lib/jsonLd";
 import type { BlogPost } from "@/feature/blog/type";
 import { SERVER_API_BASE } from "@/feature/destinations/api/public-server";
+import { fetchHeroBannersServer } from "@/feature/heroBanner/api/server";
+import { FallbackImage } from "@/components/shared/FallbackImage";
 
 export const revalidate = 300;
 
@@ -96,10 +98,12 @@ export default async function BlogPage({
     1,
     parseInt(Array.isArray(pageParam) ? pageParam[0] : pageParam || "1", 10) || 1
   );
-  const { posts, total: totalPosts, totalPages } = await fetchPosts(
-    searchTerm || undefined,
-    currentPage
-  );
+  const [blogData, heroBanners] = await Promise.all([
+    fetchPosts(searchTerm || undefined, currentPage),
+    fetchHeroBannersServer("Blog", { slug: "blog" }),
+  ]);
+  const { posts, total: totalPosts, totalPages } = blogData;
+  const heroBanner = heroBanners?.[0];
   const mainPosts = posts;
   
   const breadcrumbData = breadcrumbSchema([
@@ -119,20 +123,39 @@ export default async function BlogPage({
       <JsonLd data={graphSchema(schemaNodes)} />
 
       <main className="flex-1">
-        {/* ===== PAGE HERO WITH SOLID TEAL BACKGROUND ===== */}
-        <section className="relative overflow-hidden bg-[#2E8B8B]">
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute -top-16 right-0 w-72 h-72 rounded-full bg-[#F8904D]/20 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -left-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+        {/* ===== PAGE HERO ===== */}
+        <section className="relative overflow-hidden bg-[#2E8B8B] min-h-[260px] flex items-center">
+          {heroBanner?.image ? (
+            <>
+              <FallbackImage
+                src={heroBanner.image}
+                alt={heroBanner.altText || heroBanner.title || "India Travel Guides & News"}
+                fill
+                priority
+                fetchPriority="high"
+                sizes="100vw"
+                quality={80}
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+            </>
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute -top-16 right-0 w-72 h-72 rounded-full bg-[#F8904D]/20 blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-24 -left-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+            </>
+          )}
 
-          <div className="relative w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-14 md:py-20">
+          <div className="relative w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-14 md:py-20 z-10">
             <div className="flex flex-col lg:flex-row lg:items-center gap-10">
               <div className="flex-1">
                 <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#F5B041] mb-3">
-                  <Sparkles size={14} /> Travel Guides, News & Inspiration
+                  <Sparkles size={14} /> {heroBanner?.subtitle || "Travel Guides, News & Inspiration"}
                 </span>
                 <h1 className="font-heading text-3xl sm:text-4xl md:text-[46px] font-extrabold text-white tracking-tight leading-tight">
-                  India Travel Guides & News
+                  {heroBanner?.title || "India Travel Guides & News"}
                 </h1>
                 <p className="mt-3 text-white/85 font-medium max-w-xl text-[15px] leading-relaxed">
                   Expert destination guides and the latest travel news from India, curated by our team.

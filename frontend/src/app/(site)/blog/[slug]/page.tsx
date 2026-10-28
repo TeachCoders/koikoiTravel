@@ -8,10 +8,12 @@ import RichContent from "@/components/shared/RichContent";
 import JsonLd from "@/components/shared/JsonLd";
 import { articleSchema, breadcrumbSchema, faqSchema, graphSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached, SERVER_API_BASE } from "@/feature/destinations/api/public-server";
+import { fetchHeroBannersServer } from "@/feature/heroBanner/api/server";
 import { stripHtml, absoluteUrl,  truncateMeta } from "@/lib/utils";
 import { formatBlogDate } from "@/lib/dateUtils";
 import type { BlogPost } from "@/feature/blog/type";
 import { FallbackImage } from "@/components/shared/FallbackImage";
+import HeroSlider from "@/components/shared/HeroSlider";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import { blogPostParams } from "@/lib/prerender";
 import { BLOG_FAQS } from "@/lib/destinationFaqs";
@@ -97,7 +99,10 @@ function postCategoryNames(p: BlogPost): string[] {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = await fetchBySlugCached<BlogPost>("/blog/by-slug", slug);
+  const [post, customHeroBanners] = await Promise.all([
+    fetchBySlugCached<BlogPost>("/blog/by-slug", slug),
+    fetchHeroBannersServer("Blog", { slug }),
+  ]);
   if (!post) return notFound();
 
   const related = await fetchRelated(post.categories?.[0] || post.category, post.id);
@@ -140,24 +145,48 @@ export default async function BlogPostPage({ params }: Props) {
     schemaNodes.push(faqSchema(blogFaqs));
   }
 
+  const heroImages =
+    customHeroBanners.length > 0
+      ? customHeroBanners.map((b) => b.image)
+      : post.banner?.images?.length
+        ? post.banner.images
+        : post.thumbImg
+          ? [post.thumbImg]
+          : [];
+  const primaryHeroImage = heroImages[0];
+  const heroTitle = customHeroBanners[0]?.title || post.banner?.bannerTitle || post.h1Title || post.title;
+  const heroTag = customHeroBanners[0]?.subtitle || post.banner?.bannerTag;
+
   return (
     <div className="bg-[#f8f8f8] min-h-screen pb-20 font-sans">
       <JsonLd data={graphSchema(schemaNodes)} />
 
       {/* ===== HERO SECTION ===== */}
       <section className="relative h-[480px] md:h-[560px] overflow-hidden bg-slate-900 flex items-center justify-center">
-        <FallbackImage
-          src={post.thumbImg}
-          alt={post.title}
-          fill
-          priority
-          className="object-cover object-center"
-          theme="dark"
-        />
+        {heroImages.length > 1 ? (
+          <HeroSlider images={heroImages} alt={heroTitle} />
+        ) : (
+          <FallbackImage
+            src={primaryHeroImage}
+            alt={heroTitle}
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            quality={80}
+            className="object-cover object-center"
+            theme="dark"
+          />
+        )}
         {/* Soft gradient overlay so travel image colors shine through while keeping text readable */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-black/10 pointer-events-none" />
 
         <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 text-center py-8">
+          {heroTag && (
+            <span className="font-luxury font-black inline-block px-4 py-1.5 text-xs uppercase tracking-wider text-white bg-slate-900/70 backdrop-blur-md border border-white/20 rounded-full mb-4 mr-2 shadow-lg">
+              {heroTag}
+            </span>
+          )}
           {(post.categories?.length ? post.categories : post.category ? [post.category] : []).map((cat) => (
             <span
               key={cat}
@@ -169,7 +198,7 @@ export default async function BlogPostPage({ params }: Props) {
           
           {/* Always Guarantee H1 for Search Bots */}
           <h1 className="font-luxury text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight drop-shadow-2xl max-w-5xl mx-auto">
-            {post.h1Title || post.title}
+            {heroTitle}
           </h1>
 
           <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-white/95 text-[15px] font-bold drop-shadow-md">

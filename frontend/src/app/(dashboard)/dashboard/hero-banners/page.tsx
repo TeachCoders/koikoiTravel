@@ -32,6 +32,7 @@ import { useGetCountries } from "@/feature/country/api/useCountry";
 import { useGetStates } from "@/feature/state/api/useState";
 import { useGetCities } from "@/feature/city/api/useCity";
 import { useGetTravelExperiences } from "@/feature/travelExperience/api/useTravelExperience";
+import { useGetBlogPosts } from "@/feature/blog/api/useBlogPost";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/shared/EmptyState";
 import { FallbackImage } from "@/components/shared/FallbackImage";
@@ -45,6 +46,7 @@ const CATEGORIES: { label: string; value: HeroBannerEntityType }[] = [
   { label: "City", value: "City" },
   { label: "Travel Experience", value: "TravelExperience" },
   { label: "Destinations", value: "Destinations" },
+  { label: "Blog", value: "Blog" },
 ];
 
 export interface MultipleUploadItem {
@@ -66,6 +68,7 @@ export default function HeroBannersAdminPage() {
   const { states } = useGetStates({ limit: 300 });
   const { cities } = useGetCities({ limit: 1000 });
   const { travelExperiences } = useGetTravelExperiences({ limit: 100 });
+  const { blogPosts } = useGetBlogPosts({ limit: 500 });
 
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>("ALL");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -201,8 +204,13 @@ export default function HeroBannersAdminPage() {
 
   const handleCategoryChange = (cat: HeroBannerEntityType) => {
     setFormCategory(cat);
-    setSelectedEntityId(0);
-    setSelectedSlug("");
+    if (cat === "Blog") {
+      setSelectedSlug("blog");
+      setSelectedEntityId(0);
+    } else {
+      setSelectedEntityId(0);
+      setSelectedSlug("");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -724,6 +732,38 @@ export default function HeroBannersAdminPage() {
                     {travelExperiences.map((t: any) => (
                       <option key={t.id} value={t.slug}>
                         {t.title} ({t.slug})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {formCategory === "Blog" && (
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                    Select Target <span className="text-rose-500">*</span>
+                  </label>
+                  <select
+                    value={selectedSlug || "blog"}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === "blog") {
+                        setSelectedSlug("blog");
+                        setSelectedEntityId(0);
+                      } else {
+                        const item = blogPosts.find((b: any) => b.slug === val);
+                        if (item) {
+                          setSelectedSlug(item.slug);
+                          setSelectedEntityId(item.id);
+                        }
+                      }
+                    }}
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
+                  >
+                    <option value="blog">Main Blog Page (/blog)</option>
+                    {blogPosts.map((b: any) => (
+                      <option key={b.id} value={b.slug}>
+                        Post: {b.title} ({b.slug})
                       </option>
                     ))}
                   </select>

@@ -11,6 +11,8 @@ import EntityFields from "@/components/shared/EntityFields";
 import type { EntityField } from "@/components/shared/EntityFields";
 import RichTextEditor from "@/components/shared/RichTextEditor";
 import SearchableMultiSelect from "@/components/shared/SearchableMultiSelect";
+import BannerSection from "@/components/shared/BannerSection";
+import apiClient from "@/lib/apiClient";
 import {
   useCreateBlogPost,
   useUpdateBlogPost,
@@ -82,6 +84,12 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
   const [moreDescription, setMoreDescription] = useState(initialData?.moreDescription || "");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Banner Section states
+  const [bannerTitle, setBannerTitle] = useState(initialData?.banner?.bannerTitle || "");
+  const [bannerTag, setBannerTag] = useState(initialData?.banner?.bannerTag || "");
+  const [bannerImages, setBannerImages] = useState<string[]>(initialData?.banner?.images || []);
+  const [bannerFiles, setBannerFiles] = useState<{ file: File; index: number }[]>([]);
+
   const isLoading = isCreating || isUpdating;
 
   const categoryOptions = blogCategories.map((c) => ({ id: c.id, title: c.name }));
@@ -131,12 +139,43 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
       return;
     }
 
+    let finalBannerImages = bannerImages;
+    try {
+      if (bannerFiles.length > 0) {
+        const merged = [...bannerImages];
+        const ordered = [...bannerFiles].sort((a, b) => a.index - b.index);
+        for (const { file, index } of ordered) {
+          const fd = new FormData();
+          fd.append("category", "banner");
+          const customName =
+            file.name && file.name !== "banner-image.webp" && file.name !== "processed-image.webp" && file.name !== "blob"
+              ? file.name.replace(/\.[^/.]+$/, "")
+              : "";
+          const defaultName = formData.slug ? `${formData.slug}-banner-${index + 1}` : `blog-banner-${index + 1}`;
+          const filename = customName || defaultName;
+          fd.append("filename", filename);
+          fd.append("label", customName || (formData.slug ? `${formData.slug}-banner-${index + 1}` : `Blog Banner ${index + 1}`));
+          fd.append("folder", formData.slug ? `${formData.slug}/blog` : "blog");
+          fd.append("file", file);
+          const res = await apiClient.post("/upload", fd, { headers: { "Content-Type": "multipart/form-data" } });
+          const url = res.data?.url;
+          if (url) merged.splice(index, 0, url);
+        }
+        finalBannerImages = merged;
+      }
+    } catch {
+      return errorToast("Banner upload failed, please try again");
+    }
+
     const payload: any = {
       title: formData.title.trim(),
       seoDescription: formData.seoDescription.trim(),
       slug: formData.slug.trim().replace(/-+$/g, "") || undefined,
       seoKeyword: formData.seoKeyword.trim() || undefined,
       thumbImg: formData.thumbImg.trim() || undefined,
+      bannerTitle: bannerTitle.trim() || undefined,
+      bannerTag: bannerTag.trim() || undefined,
+      bannerImages: finalBannerImages,
       seoTitle: formData.seoTitle.trim() || undefined,
       h1Title: formData.h1Title.trim() || undefined,
       author: entityValues.author.trim() || undefined,
@@ -196,6 +235,20 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
           basePath="/blog"
           folderPath={formData.slug ? `${formData.slug}/blog` : ""}
           hideShortDesc
+        />
+
+        {/* Hero Banner Section */}
+        <BannerSection
+          bannerTitle={bannerTitle}
+          bannerTag={bannerTag}
+          bannerImages={bannerImages}
+          onBannerTileChange={setBannerTitle}
+          onBannerTagChange={setBannerTag}
+          onBannerImagesChange={setBannerImages}
+          onBannerFilesSelect={(files, indices) =>
+            setBannerFiles(files.map((file, i) => ({ file, index: indices?.[i] ?? bannerImages.length + i })))
+          }
+          folderPath={formData.slug ? `${formData.slug}/blog` : "blog"}
         />
 
         <EntityFields
