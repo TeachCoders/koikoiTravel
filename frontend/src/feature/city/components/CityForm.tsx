@@ -8,6 +8,7 @@ import Heading from "@/components/shared/heading";
 import FormActionButton from "@/components/shared/customBtns";
 import SeoFields from "@/components/shared/SeoFields";
 import BannerSection from "@/components/shared/BannerSection";
+import HeroBannerManagerSection from "@/components/shared/HeroBannerManagerSection";
 import EntityFields from "@/components/shared/EntityFields";
 import type { EntityField } from "@/components/shared/EntityFields";
 import RichTextEditor from "@/components/shared/RichTextEditor";
@@ -275,6 +276,14 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
           bannerImages={bannerImages}
           basePath={stateSlug ? `/${stateSlug}` : "/city"}
           folderPath={countrySlug ? `${countrySlug}/trip` : ""}
+        />
+
+        {/* Hero Full Banners (Desktop 1920x600 & Mobile 750x500) */}
+        <HeroBannerManagerSection
+          entityType="City"
+          entityId={initialData?.id}
+          pageSlug={formData.slug || initialData?.slug}
+          entityTitle={formData.title || initialData?.title || "City"}
         />
 
         <BannerSection

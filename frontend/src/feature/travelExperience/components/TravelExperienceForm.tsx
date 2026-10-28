@@ -8,6 +8,7 @@ import Heading from "@/components/shared/heading";
 import FormActionButton from "@/components/shared/customBtns";
 import SeoFields from "@/components/shared/SeoFields";
 import BannerSection from "@/components/shared/BannerSection";
+import HeroBannerManagerSection from "@/components/shared/HeroBannerManagerSection";
 import RichTextEditor from "@/components/shared/RichTextEditor";
 import FaqEditor, { FaqData } from "@/components/shared/FaqEditor";
 import AsyncMultiSelect from "@/components/shared/AsyncMultiSelect";
@@ -242,6 +243,14 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
           errors={errors}
           basePath="/travel-experience"
           folderPath={formData.slug ? `${formData.slug}/trip` : ""}
+        />
+
+        {/* Hero Full Banners (Desktop 1920x600 & Mobile 750x500) */}
+        <HeroBannerManagerSection
+          entityType="TravelExperience"
+          entityId={initialData?.id}
+          pageSlug={formData.slug || initialData?.slug}
+          entityTitle={formData.title || initialData?.title || "Travel Experience"}
         />
 
         <BannerSection

@@ -8,6 +8,7 @@ import FormActionButton from "@/components/shared/customBtns";
 import Heading from "@/components/shared/heading";
 import SeoFields from "@/components/shared/SeoFields";
 import BannerSection from "@/components/shared/BannerSection";
+import HeroBannerManagerSection from "@/components/shared/HeroBannerManagerSection";
 import EntityFields from "@/components/shared/EntityFields";
 import RichTextEditor from "@/components/shared/RichTextEditor";
 import FaqEditor, { FaqData } from "@/components/shared/FaqEditor";
@@ -237,6 +238,14 @@ export default function CountryFormPage({ initialData, mode }: CountryFormProps)
           basePath=""
           folderPath={seoData.slug ? `${seoData.slug}/trip` : ""}
           bannerImages={bannerImages}
+        />
+
+        {/* Dedicated Hero Banners (Desktop 1920x600 & Mobile 750x500) */}
+        <HeroBannerManagerSection
+          entityType="Country"
+          entityId={initialData?.id}
+          pageSlug={seoData.slug || initialData?.slug}
+          entityTitle={seoData.title || initialData?.title || "Country"}
         />
 
         <BannerSection

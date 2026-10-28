@@ -10,6 +10,7 @@ import FormActionButton from "@/components/shared/customBtns";
 import Heading from "@/components/shared/heading";
 import SeoFields from "@/components/shared/SeoFields";
 import BannerSection from "@/components/shared/BannerSection";
+import HeroBannerManagerSection from "@/components/shared/HeroBannerManagerSection";
 import RichTextEditor from "@/components/shared/RichTextEditor";
 import FaqEditor, { FaqData } from "@/components/shared/FaqEditor";
 import AsyncMultiSelect from "@/components/shared/AsyncMultiSelect";
@@ -289,6 +290,14 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
           bannerImages={bannerImages}
           basePath={countrySlug ? `/${countrySlug}` : "/state"}
           folderPath={countrySlug ? `${countrySlug}/trip` : ""}
+        />
+
+        {/* Hero Full Banners (Desktop 1920x600 & Mobile 750x500) */}
+        <HeroBannerManagerSection
+          entityType="State"
+          entityId={initialData?.id}
+          pageSlug={formData.slug || initialData?.slug}
+          entityTitle={formData.title || initialData?.title || "State"}
         />
 
         {/* Banner Section */}
