@@ -49,13 +49,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         subtitle: b.subtitle || null,
       }));
     }
-    return DEFAULT_SLIDES.map((s) => ({
-      image: s.image,
-      mobileImage: null as string | null,
-      alt: s.alt,
-      title: null as string | null,
-      subtitle: null as string | null,
-    }));
+    return [];
   }, [banners]);
 
   const [current, setCurrent] = useState(0);
@@ -88,8 +82,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
   return (
     <section className="relative w-full min-h-[220px] sm:min-h-[340px] md:min-h-[520px] py-4 sm:py-10 md:py-16 flex items-center justify-center bg-gradient-to-br from-[#241c18] via-[#1a1512] to-[#12100e] z-20">
       {/* Background slider with permanent Slide 0 for rock-solid LCP performance */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Base Slide 0: Always in DOM at z-0 with full opacity for instant LCP detection */}
+      {slides.length > 0 && (
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Base Slide 0: Always in DOM at z-0 with full opacity for instant LCP detection */}
         <div className="absolute inset-0 z-0" key={slides[0]?.image || "slide-0"}>
           {slides[0]?.mobileImage ? (
             <>
@@ -191,10 +186,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
           );
         })}
 
-        {/* Subtle soft gradient overlay so image colors, quality and sharpness shine through */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent z-10 pointer-events-none" />
-      </div>
+          {/* Subtle soft gradient overlay so image colors, quality and sharpness shine through */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent z-10 pointer-events-none" />
+        </div>
+      )}
 
       {/* Navigation arrows (desktop) - only when multiple slides */}
       {slides.length > 1 && (
