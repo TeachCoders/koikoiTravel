@@ -43,6 +43,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
     if (banners.length > 0) {
       return banners.map((b) => ({
         image: b.image,
+        mobileImage: b.mobileImage || null,
         alt: b.altText || b.title || "Tailor-Made India Tours - KoiKoi Travel",
         title: b.title || null,
         subtitle: b.subtitle || null,
@@ -50,6 +51,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
     }
     return DEFAULT_SLIDES.map((s) => ({
       image: s.image,
+      mobileImage: null as string | null,
       alt: s.alt,
       title: null as string | null,
       subtitle: null as string | null,
@@ -89,18 +91,53 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
       <div className="absolute inset-0 overflow-hidden">
         {/* Base Slide 0: Always in DOM at z-0 with full opacity for instant LCP detection */}
         <div className="absolute inset-0 z-0" key={slides[0]?.image || "slide-0"}>
-          <FallbackImage
-            src={slides[0]?.image}
-            alt={slides[0]?.alt || "KoiKoi Travel Hero Banner"}
-            fill
-            priority
-            fetchPriority="high"
-            placeholder="blur"
-            blurDataURL={HERO_BLUR_DATA_URL}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
-            className="object-cover object-center"
-            quality={80}
-          />
+          {slides[0]?.mobileImage ? (
+            <>
+              {/* Dedicated Mobile Image on mobile screens (max-width: 639px) */}
+              <div className="block sm:hidden absolute inset-0">
+                <FallbackImage
+                  src={slides[0].mobileImage}
+                  alt={slides[0]?.alt || "KoiKoi Travel Hero Banner"}
+                  fill
+                  priority
+                  fetchPriority="high"
+                  placeholder="blur"
+                  blurDataURL={HERO_BLUR_DATA_URL}
+                  sizes="100vw"
+                  className="object-cover object-center"
+                  quality={80}
+                />
+              </div>
+              {/* Desktop / Tablet Image on screens >= 640px */}
+              <div className="hidden sm:block absolute inset-0">
+                <FallbackImage
+                  src={slides[0]?.image}
+                  alt={slides[0]?.alt || "KoiKoi Travel Hero Banner"}
+                  fill
+                  priority
+                  fetchPriority="high"
+                  placeholder="blur"
+                  blurDataURL={HERO_BLUR_DATA_URL}
+                  sizes="(max-width: 1024px) 100vw, 1920px"
+                  className="object-cover object-center"
+                  quality={80}
+                />
+              </div>
+            </>
+          ) : (
+            <FallbackImage
+              src={slides[0]?.image}
+              alt={slides[0]?.alt || "KoiKoi Travel Hero Banner"}
+              fill
+              priority
+              fetchPriority="high"
+              placeholder="blur"
+              blurDataURL={HERO_BLUR_DATA_URL}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
+              className="object-cover object-center"
+              quality={80}
+            />
+          )}
         </div>
 
         {/* Subsequent slides 1..N: Crossfade on top (z-10) when active */}
@@ -114,15 +151,42 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
                 isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
               }`}
             >
-              <FallbackImage
-                src={s.image}
-                alt={s.alt || `Slide ${slideIndex + 1}`}
-                fill
-                loading="lazy"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
-                className="object-cover object-center"
-                quality={80}
-              />
+              {s.mobileImage ? (
+                <>
+                  <div className="block sm:hidden absolute inset-0">
+                    <FallbackImage
+                      src={s.mobileImage}
+                      alt={s.alt || `Slide ${slideIndex + 1}`}
+                      fill
+                      loading="lazy"
+                      sizes="100vw"
+                      className="object-cover object-center"
+                      quality={80}
+                    />
+                  </div>
+                  <div className="hidden sm:block absolute inset-0">
+                    <FallbackImage
+                      src={s.image}
+                      alt={s.alt || `Slide ${slideIndex + 1}`}
+                      fill
+                      loading="lazy"
+                      sizes="(max-width: 1024px) 100vw, 1920px"
+                      className="object-cover object-center"
+                      quality={80}
+                    />
+                  </div>
+                </>
+              ) : (
+                <FallbackImage
+                  src={s.image}
+                  alt={s.alt || `Slide ${slideIndex + 1}`}
+                  fill
+                  loading="lazy"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
+                  className="object-cover object-center"
+                  quality={80}
+                />
+              )}
             </div>
           );
         })}

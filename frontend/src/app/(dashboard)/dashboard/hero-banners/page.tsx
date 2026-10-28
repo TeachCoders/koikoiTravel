@@ -91,6 +91,10 @@ export default function HeroBannersAdminPage() {
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [selectedMobileFile, setSelectedMobileFile] = useState<File | null>(null);
+  const [mobilePreviewUrl, setMobilePreviewUrl] = useState<string | null>(null);
+  const [removeMobileImage, setRemoveMobileImage] = useState<boolean>(false);
+  const [libraryPickerTarget, setLibraryPickerTarget] = useState<"desktop" | "mobile" | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const allBanners: HeroFullBanner[] = data?.data || [];
@@ -99,6 +103,45 @@ export default function HeroBannersAdminPage() {
     if (selectedCategoryFilter === "ALL") return allBanners;
     return allBanners.filter((b) => b.entityType === selectedCategoryFilter);
   }, [allBanners, selectedCategoryFilter]);
+
+  // Existing unique images for the media library picker
+  const libraryImages = useMemo(() => {
+    const urls = new Set<string>();
+    allBanners.forEach((b) => {
+      if (b.image) urls.add(b.image);
+      if (b.mobileImage) urls.add(b.mobileImage);
+    });
+    return Array.from(urls);
+  }, [allBanners]);
+
+  // Active banners on the currently selected category / page
+  const categoryActiveBanners = useMemo(() => {
+    return allBanners.filter((b) => {
+      if (b.entityType !== formCategory) return false;
+      if (selectedSlug) {
+        return (b.pageSlug || "").toLowerCase() === selectedSlug.toLowerCase();
+      }
+      if (selectedEntityId) {
+        return b.entityId === selectedEntityId;
+      }
+      return true;
+    });
+  }, [allBanners, formCategory, selectedSlug, selectedEntityId]);
+
+  // Duplicate checks
+  const duplicateDesktopBanner = useMemo(() => {
+    if (!previewUrl) return null;
+    return categoryActiveBanners.find(
+      (b) => (!editingBanner || b.id !== editingBanner.id) && b.image === previewUrl
+    );
+  }, [previewUrl, categoryActiveBanners, editingBanner]);
+
+  const duplicateMobileBanner = useMemo(() => {
+    if (!mobilePreviewUrl) return null;
+    return categoryActiveBanners.find(
+      (b) => (!editingBanner || b.id !== editingBanner.id) && b.mobileImage === mobilePreviewUrl
+    );
+  }, [mobilePreviewUrl, categoryActiveBanners, editingBanner]);
 
   const [multiUrlInput, setMultiUrlInput] = useState("");
   const [multiUrlLoading, setMultiUrlLoading] = useState(false);
@@ -184,6 +227,9 @@ export default function HeroBannersAdminPage() {
       setDisplayOrder(bannerToEdit.displayOrder || 0);
       setSelectedFile(null);
       setPreviewUrl(bannerToEdit.image || null);
+      setSelectedMobileFile(null);
+      setMobilePreviewUrl(bannerToEdit.mobileImage || null);
+      setRemoveMobileImage(false);
     } else {
       setEditingBanner(null);
       setUploadMode("single");
@@ -197,8 +243,13 @@ export default function HeroBannersAdminPage() {
       setSelectedFile(null);
       if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
       setPreviewUrl(null);
+      setSelectedMobileFile(null);
+      if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
+      setMobilePreviewUrl(null);
+      setRemoveMobileImage(false);
       clearMultipleFiles();
     }
+    setLibraryPickerTarget(null);
     setIsModalOpen(true);
   };
 
@@ -226,7 +277,7 @@ export default function HeroBannersAdminPage() {
     }
 
     if (uploadMode === "single") {
-      if (!editingBanner && !selectedFile) {
+      if (!editingBanner && !selectedFile && !previewUrl) {
         toast.error("Please select or crop a panoramic banner image.");
         return;
       }
@@ -251,7 +302,18 @@ export default function HeroBannersAdminPage() {
       if (editingBanner) {
         if (selectedFile) {
           fd.append("image", selectedFile);
+        } else if (previewUrl && !previewUrl.startsWith("blob:")) {
+          fd.append("image", previewUrl);
         }
+
+        if (selectedMobileFile) {
+          fd.append("mobileImage", selectedMobileFile);
+        } else if (removeMobileImage) {
+          fd.append("removeMobileImage", "true");
+        } else if (mobilePreviewUrl && !mobilePreviewUrl.startsWith("blob:")) {
+          fd.append("mobileImage", mobilePreviewUrl);
+        }
+
         await updateMutation.mutateAsync({ id: editingBanner.id, formData: fd });
         toast.success("Hero Banner updated successfully!");
       } else if (uploadMode === "multiple") {
@@ -261,15 +323,30 @@ export default function HeroBannersAdminPage() {
         await createMutation.mutateAsync(fd);
         toast.success(`${multipleFiles.length} hero banner(s) uploaded successfully!`);
       } else {
-        if (selectedFile) fd.append("image", selectedFile);
+        if (selectedFile) {
+          fd.append("image", selectedFile);
+        } else if (previewUrl && !previewUrl.startsWith("blob:")) {
+          fd.append("image", previewUrl);
+        }
+
+        if (selectedMobileFile) {
+          fd.append("mobileImage", selectedMobileFile);
+        } else if (mobilePreviewUrl && !mobilePreviewUrl.startsWith("blob:")) {
+          fd.append("mobileImage", mobilePreviewUrl);
+        }
+
         await createMutation.mutateAsync(fd);
         toast.success("Hero Full Banner uploaded successfully!");
       }
 
       setIsModalOpen(false);
       if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+      if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
       setSelectedFile(null);
       setPreviewUrl(null);
+      setSelectedMobileFile(null);
+      setMobilePreviewUrl(null);
+      setRemoveMobileImage(false);
       clearMultipleFiles();
       setEditingBanner(null);
     } catch (err: any) {
@@ -435,6 +512,16 @@ export default function HeroBannersAdminPage() {
                   <div className="flex justify-between items-center">
                     <span className="font-medium text-slate-600">Display Order:</span>
                     <span className="font-semibold text-slate-800">{banner.displayOrder}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium text-slate-600">Mobile Banner:</span>
+                    {banner.mobileImage ? (
+                      <span className="inline-flex items-center gap-1 text-[10.5px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                        📱 Dedicated (750×500)
+                      </span>
+                    ) : (
+                      <span className="text-[10.5px] text-slate-400">Desktop Fallback</span>
+                    )}
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="font-medium text-slate-600">File URL:</span>
@@ -770,62 +857,254 @@ export default function HeroBannersAdminPage() {
                 </div>
               )}
 
-              {/* Upload Mode 1: Single Banner with Crop & Resize */}
-              {uploadMode === "single" ? (
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                      Panoramic Banner Image (1920 × 450 px){" "}
-                      {editingBanner ? (
-                        <span className="text-slate-400 font-normal">(Optional — leave unchanged to keep current image)</span>
-                      ) : (
-                        <span className="text-rose-500">*</span>
-                      )}
-                    </label>
+              {/* Category Active Banners Strip: Shows current banners on this page before upload */}
+              {categoryActiveBanners.length > 0 && (
+                <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                      <Layers size={14} className="text-[#2E8B8B]" />
+                      Currently Active Banners on this Page ({categoryActiveBanners.length})
+                    </span>
+                    <span className="text-[11px] text-slate-500 font-medium">
+                      Check existing images to avoid uploading duplicates
+                    </span>
                   </div>
-                  <ImageCropUpload
-                    onFileSelect={(file) => {
-                      setSelectedFile(file);
-                      if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
-                      setPreviewUrl(URL.createObjectURL(file));
-                    }}
-                    onClear={() => {
-                      setSelectedFile(null);
-                      if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
-                      setPreviewUrl(null);
-                    }}
-                    maxWidth={1920}
-                    maxHeight={450}
-                    aspectRatioPreset="hero"
-                    label="Upload Panoramic Banner (1920 × 450 px) — Click to Crop & Resize"
-                    initialImage={previewUrl || undefined}
-                  />
 
-                  {/* Live Preview with Text Overlays */}
-                  {previewUrl && (
-                    <div className="mt-3">
-                      <p className="text-xs font-bold text-slate-500 mb-1.5 flex items-center gap-1">
-                        <Eye size={13} /> Live Panoramic Ratio (1920×450) Overlay Preview:
-                      </p>
-                      <div className="relative w-full h-36 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200">
-                        <Image
-                          src={previewUrl}
-                          alt="Preview"
-                          fill
-                          unoptimized={previewUrl.startsWith("blob:")}
-                          className="object-cover object-center"
-                        />
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-center p-4">
-                          <div>
-                            {subtitle && <p className="text-xs font-bold uppercase text-[#F8904D]">{subtitle}</p>}
-                            <h4 className="text-lg font-black uppercase tracking-wide">
-                              {title || "Sample Overlay Title"}
-                            </h4>
+                  <div className="flex items-center gap-3 overflow-x-auto pb-1 pt-0.5">
+                    {categoryActiveBanners.map((b) => (
+                      <div
+                        key={b.id}
+                        className={`relative group shrink-0 rounded-xl overflow-hidden border transition-all ${
+                          editingBanner?.id === b.id
+                            ? "border-[#2E8B8B] ring-2 ring-[#2E8B8B]/30"
+                            : "border-slate-200 bg-white hover:border-slate-300 shadow-xs"
+                        }`}
+                        style={{ width: 140 }}
+                      >
+                        <div className="relative w-full h-20 bg-slate-900">
+                          <img
+                            src={b.image}
+                            alt={b.title || "Banner"}
+                            className="w-full h-full object-cover"
+                          />
+                          <span className="absolute bottom-1 right-1 bg-black/75 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
+                            #{b.displayOrder}
+                          </span>
+                          {b.mobileImage && (
+                            <span className="absolute top-1 left-1 bg-emerald-600 text-white text-[8px] font-bold px-1 py-0.2 rounded shadow-xs" title="Has dedicated mobile image">
+                              📱 Mobile
+                            </span>
+                          )}
+                        </div>
+                        <div className="p-1.5 text-center">
+                          <p className="text-[10.5px] font-semibold text-slate-700 truncate" title={b.title || "Untitled"}>
+                            {b.title || "(Untitled)"}
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPreviewUrl(b.image);
+                              setSelectedFile(null);
+                              if (b.mobileImage) {
+                                setMobilePreviewUrl(b.mobileImage);
+                                setSelectedMobileFile(null);
+                              }
+                              toast.success("Applied existing banner image to form!");
+                            }}
+                            className="mt-1 text-[10px] text-[#2E8B8B] hover:text-[#267373] font-bold hover:underline"
+                          >
+                            Reuse This Photo
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Duplicate Detection Alert */}
+              {duplicateDesktopBanner && (
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-2.5 text-amber-900 animate-in fade-in">
+                  <AlertCircle size={17} className="text-amber-600 shrink-0 mt-0.5" />
+                  <div className="text-xs">
+                    <p className="font-bold">⚠️ Notice: This image is already being used on this page!</p>
+                    <p className="text-amber-700 mt-0.5">
+                      It is currently used in <strong>Banner #{duplicateDesktopBanner.displayOrder}</strong> ({duplicateDesktopBanner.title || "Untitled"}). You can still use it or choose a different image.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Upload Mode 1: Single Banner with Dual Croppers (Desktop + Mobile) */}
+              {uploadMode === "single" ? (
+                <div className="space-y-6">
+                  {/* Box 1: Desktop Banner */}
+                  <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-4 space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                          1. Desktop Panoramic Banner (1920 × 600 px){" "}
+                          {editingBanner ? (
+                            <span className="text-slate-400 font-normal lowercase">(optional — leave unchanged to keep current)</span>
+                          ) : (
+                            <span className="text-rose-500">*</span>
+                          )}
+                        </label>
+                        <p className="text-[11px] text-slate-500">
+                          Displayed on Laptops, Desktops, TV and Tablets. (16:9 & 16:5 photos fit easily)
+                        </p>
+                      </div>
+
+                      {libraryImages.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => setLibraryPickerTarget("desktop")}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-700 hover:text-[#2E8B8B] text-xs font-semibold rounded-xl shadow-xs transition-colors shrink-0"
+                        >
+                          <ImageIcon size={13} />
+                          <span>📂 Choose from Library</span>
+                        </button>
+                      )}
+                    </div>
+
+                    <ImageCropUpload
+                      onFileSelect={(file) => {
+                        setSelectedFile(file);
+                        if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+                        setPreviewUrl(URL.createObjectURL(file));
+                      }}
+                      onClear={() => {
+                        setSelectedFile(null);
+                        if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+                        setPreviewUrl(null);
+                      }}
+                      maxWidth={1920}
+                      maxHeight={600}
+                      aspectRatioPreset="hero"
+                      label="Upload Desktop Banner (1920 × 600 px) — Click to Crop, Paste URL or File"
+                      initialImage={previewUrl || undefined}
+                    />
+
+                    {/* Live Desktop Preview with Overlay */}
+                    {previewUrl && (
+                      <div className="mt-2">
+                        <p className="text-xs font-bold text-slate-500 mb-1 flex items-center gap-1">
+                          <Eye size={13} /> Desktop Live Ratio (1920×600) Overlay Preview:
+                        </p>
+                        <div className="relative w-full h-36 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200">
+                          <Image
+                            src={previewUrl}
+                            alt="Preview"
+                            fill
+                            unoptimized={previewUrl.startsWith("blob:")}
+                            className="object-cover object-center"
+                          />
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-center p-4">
+                            <div>
+                              {subtitle && <p className="text-xs font-bold uppercase text-[#F8904D]">{subtitle}</p>}
+                              <h4 className="text-lg font-black uppercase tracking-wide">
+                                {title || "Sample Overlay Title"}
+                              </h4>
+                            </div>
                           </div>
                         </div>
                       </div>
+                    )}
+                  </div>
+
+                  {/* Box 2: Mobile Banner (Art Direction: 750 × 500 px) */}
+                  <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-4 space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                            2. Mobile Dedicated Banner (750 × 500 px)
+                          </label>
+                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-200">
+                            Optional (Recommended)
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-500">
+                          Dedicated 3:2 portrait/compact ratio for mobile phones. Zero side cropping! If omitted, desktop banner is auto-used.
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        {libraryImages.length > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => setLibraryPickerTarget("mobile")}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-700 hover:text-[#2E8B8B] text-xs font-semibold rounded-xl shadow-xs transition-colors"
+                          >
+                            <ImageIcon size={13} />
+                            <span>📂 Choose from Library</span>
+                          </button>
+                        )}
+
+                        {mobilePreviewUrl && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedMobileFile(null);
+                              if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
+                              setMobilePreviewUrl(null);
+                              setRemoveMobileImage(true);
+                            }}
+                            className="text-xs text-rose-600 hover:text-rose-800 font-semibold px-2 py-1 rounded-lg hover:bg-rose-50"
+                          >
+                            Remove Mobile Image
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  )}
+
+                    <ImageCropUpload
+                      onFileSelect={(file) => {
+                        setSelectedMobileFile(file);
+                        setRemoveMobileImage(false);
+                        if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
+                        setMobilePreviewUrl(URL.createObjectURL(file));
+                      }}
+                      onClear={() => {
+                        setSelectedMobileFile(null);
+                        if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
+                        setMobilePreviewUrl(null);
+                        setRemoveMobileImage(true);
+                      }}
+                      maxWidth={750}
+                      maxHeight={500}
+                      aspectRatioPreset="mobileHero"
+                      label="Upload Mobile Banner (750 × 500 px) — Click to Crop & Resize"
+                      initialImage={mobilePreviewUrl || undefined}
+                    />
+
+                    {/* Live Mobile Preview Box */}
+                    {mobilePreviewUrl && (
+                      <div className="mt-2 flex items-center gap-4">
+                        <div className="relative w-40 h-28 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200 shrink-0">
+                          <Image
+                            src={mobilePreviewUrl}
+                            alt="Mobile Preview"
+                            fill
+                            unoptimized={mobilePreviewUrl.startsWith("blob:")}
+                            className="object-cover object-center"
+                          />
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-center p-2">
+                            <span className="text-[10px] font-bold text-white/90">Mobile View</span>
+                          </div>
+                        </div>
+                        <div className="text-xs text-slate-600 space-y-1">
+                          <p className="font-bold text-slate-800 flex items-center gap-1.5">
+                            <Eye size={13} className="text-[#2E8B8B]" />
+                            Mobile Screen Preview (750 × 500 px)
+                          </p>
+                          <p className="text-[11px] text-slate-500">
+                            Mobile devices will download this lightweight dedicated image instead of the desktop wide banner.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               ) : (
                 /* Upload Mode 2: Multiple Images Batch Upload */
@@ -1032,6 +1311,83 @@ export default function HeroBannersAdminPage() {
                 </Button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Media Library Picker Modal */}
+      {libraryPickerTarget && (
+        <div className="fixed inset-0 z-[120] bg-black/70 flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col overflow-hidden shadow-2xl border border-slate-200">
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <ImageIcon size={18} className="text-[#2E8B8B]" />
+                <h3 className="font-bold text-slate-800 text-sm">
+                  Choose from Existing Media Library ({libraryPickerTarget === "desktop" ? "Desktop Banner" : "Mobile Banner"})
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setLibraryPickerTarget(null)}
+                className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="p-4 overflow-y-auto flex-1">
+              <p className="text-xs text-slate-500 mb-3">
+                Click any previously uploaded image below to use it without re-uploading (zero storage duplication):
+              </p>
+
+              {libraryImages.length === 0 ? (
+                <p className="text-sm text-slate-400 text-center py-10">No existing banners found in library yet.</p>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                  {libraryImages.map((imgUrl, i) => (
+                    <div
+                      key={i}
+                      onClick={() => {
+                        if (libraryPickerTarget === "desktop") {
+                          setPreviewUrl(imgUrl);
+                          setSelectedFile(null);
+                        } else {
+                          setMobilePreviewUrl(imgUrl);
+                          setSelectedMobileFile(null);
+                          setRemoveMobileImage(false);
+                        }
+                        setLibraryPickerTarget(null);
+                        toast.success(`Selected image for ${libraryPickerTarget === "desktop" ? "Desktop" : "Mobile"}!`);
+                      }}
+                      className="group relative h-28 bg-slate-900 rounded-xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-[#2E8B8B] shadow-xs hover:shadow-md transition-all"
+                    >
+                      <img
+                        src={imgUrl}
+                        alt={`Library ${i}`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                        <span className="bg-[#2E8B8B] text-white text-xs font-bold px-2 py-1 rounded-md shadow">
+                          Select
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="p-3 border-t border-slate-100 bg-slate-50 flex justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setLibraryPickerTarget(null)}
+                className="rounded-xl"
+              >
+                Close
+              </Button>
+            </div>
           </div>
         </div>
       )}

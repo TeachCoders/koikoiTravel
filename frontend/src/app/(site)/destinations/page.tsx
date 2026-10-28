@@ -158,6 +158,7 @@ async function fetchDestinations() {
     sortedCountries
       .map((c) => img(c.banner?.images?.[0], c.thumbImg))
       .find(Boolean) || undefined;
+  const heroMobileImage = heroBanners?.[0]?.mobileImage || undefined;
 
   const sortedJourneys = [...journeys].sort((a, b) => {
     const ao = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 99999;
@@ -179,6 +180,7 @@ async function fetchDestinations() {
       tourCount,
     },
     heroImage,
+    heroMobileImage,
   };
 }
 
@@ -230,6 +232,7 @@ export default async function DestinationsPage() {
     journeys,
     totals,
     heroImage,
+    heroMobileImage,
   } = await fetchDestinations();
 
   // One entry per state that actually has cities, each keeping its own city
@@ -300,13 +303,39 @@ export default async function DestinationsPage() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           {heroImage ? (
-            <FallbackImage
-              src={heroImage}
-              alt=""
-              fill
-              priority
-              className="object-cover"
-            />
+            heroMobileImage ? (
+              <>
+                <div className="block sm:hidden absolute inset-0">
+                  <FallbackImage
+                    src={heroMobileImage}
+                    alt=""
+                    fill
+                    priority
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="hidden sm:block absolute inset-0">
+                  <FallbackImage
+                    src={heroImage}
+                    alt=""
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 1920px"
+                    className="object-cover"
+                  />
+                </div>
+              </>
+            ) : (
+              <FallbackImage
+                src={heroImage}
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
+                className="object-cover"
+              />
+            )
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-[#1c4e4e] via-[#2E8B8B] to-[#F8904D]" />
           )}

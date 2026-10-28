@@ -25,7 +25,7 @@ export default function BannerImageUpload({
   const [cropSrc, setCropSrc] = useState<string | null>(null);
   const [cropBox, setCropBox] = useState({ x: 0, y: 0, w: 0, h: 0 });
   const RATIO_PRESETS = {
-    hero: { label: "Hero (1920×450)", ratio: 1920 / 450, outW: 1920, outH: 450 },
+    hero: { label: "Hero (1920×600)", ratio: 1920 / 600, outW: 1920, outH: 600 },
     wide: { label: "Wide (16:9)", ratio: 16 / 9, outW: 1920, outH: 1080 },
     free: { label: "Freeform", ratio: null, outW: 1920, outH: null },
   } as const;
@@ -186,7 +186,7 @@ export default function BannerImageUpload({
     if (contRatio > imgRatio) { drawH = ch; drawW = ch * imgRatio; drawX = (cw - drawW) / 2; drawY = 0; }
     else { drawW = cw; drawH = cw / imgRatio; drawX = 0; drawY = (ch - drawH) / 2; }
 
-    const targetRatio = RATIO_PRESETS[cropRatio].ratio || (1920 / 450);
+    const targetRatio = RATIO_PRESETS[cropRatio].ratio || (1920 / 600);
     const w = drawW;
     const h = Math.min(drawH, w / targetRatio);
     const x = drawX;
@@ -357,10 +357,10 @@ export default function BannerImageUpload({
     const sh = Math.min(img.naturalHeight - sy, cropBox.h * scaleY);
 
     let outW = 1920;
-    let outH = 450;
+    let outH = 600;
     if (cropRatio === "hero") {
       outW = 1920;
-      outH = 450;
+      outH = 600;
     } else if (cropRatio === "wide") {
       outW = 1920;
       outH = 1080;
@@ -608,7 +608,7 @@ export default function BannerImageUpload({
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                   }`}
                 >
-                  Hero (1920×450)
+                  Hero (1920×600)
                 </button>
                 <button
                   type="button"
@@ -678,7 +678,7 @@ export default function BannerImageUpload({
                 <span className="font-mono text-slate-600">{imgNatural.w} × {imgNatural.h}px</span>
                 <span className="text-slate-300">|</span>
                 <span className="font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                  Target: {cropRatio === "hero" ? "1920 × 450 px (Panoramic Hero)" : cropRatio === "wide" ? "1920 × 1080 px (16:9)" : "Custom Selection"}
+                  Target: {cropRatio === "hero" ? "1920 × 600 px (Panoramic Hero)" : cropRatio === "wide" ? "1920 × 1080 px (16:9)" : "Custom Selection"}
                 </span>
               </div>
               <div className="flex items-center gap-2">

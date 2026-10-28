@@ -105,14 +105,11 @@ router.get("/all", requireSalesOrAdmin, async (req, res) => {
 /**
  * POST /hero-full-banner
  * Admin endpoint to upload and create one or multiple hero banners.
+ * Supports both desktop banner (`image`) and optional mobile banner (`mobileImage`).
  */
 router.post("/", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => {
   try {
     const files = req.files || (req.file ? [req.file] : []);
-    if (!files || files.length === 0) {
-      return res.status(400).json({ success: false, message: "At least one banner image file is required" });
-    }
-
     const { entityType, entityId, pageSlug, title, subtitle, altText, displayOrder } = req.body;
 
     if (!entityType) {
@@ -122,33 +119,81 @@ router.post("/", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => {
     const parsedId = entityId !== undefined && entityId !== null && entityId !== "" ? Number(entityId) : 0;
     const baseOrder = displayOrder !== undefined ? Number(displayOrder) : 0;
 
-    const createdBanners = [];
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const imagePath = `/${file.path.replace(/^public[\\/]/, "").replace(/\\/g, "/")}`;
+    // Check if this is a multiple images batch upload (multiple files under "images" fieldname)
+    const isMultipleMode = files.filter((f) => f.fieldname === "images").length > 0;
 
-      const banner = await prisma.heroFullBanner.create({
-        data: {
-          entityType: String(entityType).trim(),
-          entityId: isNaN(parsedId) ? 0 : parsedId,
-          pageSlug: pageSlug ? String(pageSlug).trim().toLowerCase() : null,
-          image: imagePath,
-          title: title ? String(title).trim() : null,
-          subtitle: subtitle ? String(subtitle).trim() : null,
-          altText: altText ? String(altText).trim() : null,
-          displayOrder: (isNaN(baseOrder) ? 0 : baseOrder) + i,
-        },
+    if (isMultipleMode) {
+      const createdBanners = [];
+      const imageFiles = files.filter((f) => f.fieldname === "images");
+      for (let i = 0; i < imageFiles.length; i++) {
+        const file = imageFiles[i];
+        const imagePath = `/${file.path.replace(/^public[\\/]/, "").replace(/\\/g, "/")}`;
+
+        const banner = await prisma.heroFullBanner.create({
+          data: {
+            entityType: String(entityType).trim(),
+            entityId: isNaN(parsedId) ? 0 : parsedId,
+            pageSlug: pageSlug ? String(pageSlug).trim().toLowerCase() : null,
+            image: imagePath,
+            mobileImage: null,
+            title: title ? String(title).trim() : null,
+            subtitle: subtitle ? String(subtitle).trim() : null,
+            altText: altText ? String(altText).trim() : null,
+            displayOrder: (isNaN(baseOrder) ? 0 : baseOrder) + i,
+          },
+        });
+        createdBanners.push(banner);
+      }
+
+      await purgeImageCachesAndRevalidate(pageSlug || null);
+      return res.status(201).json({
+        success: true,
+        message: `${createdBanners.length} hero banner(s) uploaded successfully`,
+        data: createdBanners,
+        banners: createdBanners,
       });
-      createdBanners.push(banner);
     }
+
+    // Single banner upload: Look for desktop file and optional mobile file
+    const desktopFile = files.find((f) => f.fieldname === "image") || files.find((f) => f.fieldname !== "mobileImage");
+    const mobileFile = files.find((f) => f.fieldname === "mobileImage");
+
+    const desktopImagePath = desktopFile
+      ? `/${desktopFile.path.replace(/^public[\\/]/, "").replace(/\\/g, "/")}`
+      : req.body.image
+      ? String(req.body.image).trim()
+      : null;
+
+    const mobileImagePath = mobileFile
+      ? `/${mobileFile.path.replace(/^public[\\/]/, "").replace(/\\/g, "/")}`
+      : req.body.mobileImage
+      ? String(req.body.mobileImage).trim()
+      : null;
+
+    if (!desktopImagePath) {
+      return res.status(400).json({ success: false, message: "Desktop banner image is required" });
+    }
+
+    const banner = await prisma.heroFullBanner.create({
+      data: {
+        entityType: String(entityType).trim(),
+        entityId: isNaN(parsedId) ? 0 : parsedId,
+        pageSlug: pageSlug ? String(pageSlug).trim().toLowerCase() : null,
+        image: desktopImagePath,
+        mobileImage: mobileImagePath || null,
+        title: title ? String(title).trim() : null,
+        subtitle: subtitle ? String(subtitle).trim() : null,
+        altText: altText ? String(altText).trim() : null,
+        displayOrder: isNaN(baseOrder) ? 0 : baseOrder,
+      },
+    });
 
     await purgeImageCachesAndRevalidate(pageSlug || null);
 
     return res.status(201).json({
       success: true,
-      message: `${createdBanners.length} hero banner(s) uploaded successfully`,
-      data: createdBanners.length === 1 ? createdBanners[0] : createdBanners,
-      banners: createdBanners,
+      message: "Hero banner created successfully",
+      data: banner,
     });
   } catch (error) {
     logger.error("Error creating hero banner:", { error: error.message, stack: error.stack });
@@ -158,7 +203,7 @@ router.post("/", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => {
 
 /**
  * PUT /hero-full-banner/:id
- * Admin endpoint to update an existing hero banner, with optional new image replacement.
+ * Admin endpoint to update an existing hero banner, with optional desktop and mobile image replacement.
  */
 router.put("/:id", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => {
   try {
@@ -172,7 +217,7 @@ router.put("/:id", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => 
       return res.status(404).json({ success: false, message: "Hero banner not found" });
     }
 
-    const { entityType, entityId, pageSlug, title, subtitle, altText, displayOrder } = req.body;
+    const { entityType, entityId, pageSlug, title, subtitle, altText, displayOrder, removeMobileImage } = req.body;
     const updateData = {};
 
     if (entityType !== undefined) updateData.entityType = String(entityType).trim();
@@ -191,11 +236,13 @@ router.put("/:id", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => 
       updateData.displayOrder = isNaN(parsedOrder) ? 0 : parsedOrder;
     }
 
-    // Optional replacement image
     const files = req.files || (req.file ? [req.file] : []);
-    if (files && files.length > 0) {
-      const file = files[0];
-      const newImagePath = `/${file.path.replace(/^public[\\/]/, "").replace(/\\/g, "/")}`;
+    const desktopFile = files.find((f) => f.fieldname === "image") || files.find((f) => f.fieldname !== "mobileImage");
+    const mobileFile = files.find((f) => f.fieldname === "mobileImage");
+
+    // Handle desktop image update
+    if (desktopFile) {
+      const newImagePath = `/${desktopFile.path.replace(/^public[\\/]/, "").replace(/\\/g, "/")}`;
       updateData.image = newImagePath;
 
       // Clean up previous image if exists on disk
@@ -205,10 +252,43 @@ router.put("/:id", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => 
           try {
             fs.unlinkSync(oldDiskPath);
           } catch (unlinkErr) {
-            logger.warn("Could not delete old banner file:", { error: unlinkErr.message });
+            logger.warn("Could not delete old desktop banner file:", { error: unlinkErr.message });
           }
         }
       }
+    } else if (req.body.image !== undefined && req.body.image.trim()) {
+      updateData.image = req.body.image.trim();
+    }
+
+    // Handle mobile image update or removal
+    if (mobileFile) {
+      const newMobileImagePath = `/${mobileFile.path.replace(/^public[\\/]/, "").replace(/\\/g, "/")}`;
+      updateData.mobileImage = newMobileImagePath;
+
+      if (existing.mobileImage && existing.mobileImage.startsWith("/")) {
+        const oldMobileDiskPath = path.join("public", existing.mobileImage.replace(/^\//, ""));
+        if (fs.existsSync(oldMobileDiskPath)) {
+          try {
+            fs.unlinkSync(oldMobileDiskPath);
+          } catch (unlinkErr) {
+            logger.warn("Could not delete old mobile banner file:", { error: unlinkErr.message });
+          }
+        }
+      }
+    } else if (removeMobileImage === "true" || removeMobileImage === true) {
+      updateData.mobileImage = null;
+      if (existing.mobileImage && existing.mobileImage.startsWith("/")) {
+        const oldMobileDiskPath = path.join("public", existing.mobileImage.replace(/^\//, ""));
+        if (fs.existsSync(oldMobileDiskPath)) {
+          try {
+            fs.unlinkSync(oldMobileDiskPath);
+          } catch (unlinkErr) {
+            logger.warn("Could not delete old mobile banner file on removal:", { error: unlinkErr.message });
+          }
+        }
+      }
+    } else if (req.body.mobileImage !== undefined) {
+      updateData.mobileImage = req.body.mobileImage ? String(req.body.mobileImage).trim() : null;
     }
 
     const updated = await prisma.heroFullBanner.update({
@@ -219,6 +299,11 @@ router.put("/:id", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => 
     await purgeImageCachesAndRevalidate(updated.pageSlug || existing.pageSlug || null);
 
     return res.json({ success: true, message: "Hero banner updated successfully", data: updated });
+  } catch (error) {
+    logger.error("Error updating hero banner:", { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, message: "Failed to update hero banner" });
+  }
+});
   } catch (error) {
     logger.error("Error updating hero banner:", { error: error.message, stack: error.stack });
     return res.status(500).json({ success: false, message: "Failed to update hero banner" });
@@ -241,7 +326,7 @@ router.delete("/:id", requireSalesOrAdmin, async (req, res) => {
       return res.status(404).json({ success: false, message: "Hero banner not found" });
     }
 
-    // Attempt to remove physical file from public directory
+    // Attempt to remove physical files from public directory
     if (existing.image && existing.image.startsWith("/")) {
       const diskPath = path.join("public", existing.image.replace(/^\//, ""));
       if (fs.existsSync(diskPath)) {
@@ -249,6 +334,16 @@ router.delete("/:id", requireSalesOrAdmin, async (req, res) => {
           fs.unlinkSync(diskPath);
         } catch (unlinkErr) {
           logger.warn("Could not delete banner file from disk:", { path: diskPath, error: unlinkErr.message });
+        }
+      }
+    }
+    if (existing.mobileImage && existing.mobileImage.startsWith("/")) {
+      const mobileDiskPath = path.join("public", existing.mobileImage.replace(/^\//, ""));
+      if (fs.existsSync(mobileDiskPath)) {
+        try {
+          fs.unlinkSync(mobileDiskPath);
+        } catch (unlinkErr) {
+          logger.warn("Could not delete mobile banner file from disk:", { path: mobileDiskPath, error: unlinkErr.message });
         }
       }
     }

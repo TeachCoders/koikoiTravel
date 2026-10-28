@@ -24,7 +24,7 @@ export interface ImageCropUploadProps {
   onClear?: () => void;
   maxWidth?: number;
   maxHeight?: number;
-  aspectRatioPreset?: "hero" | "21:9" | "16:9" | "free";
+  aspectRatioPreset?: "hero" | "mobileHero" | "21:9" | "16:9" | "free";
   outputFormat?: "image/jpeg" | "image/webp" | "image/png";
   quality?: number;
   borderRadius?: number;
@@ -64,14 +64,16 @@ export default function ImageCropUpload({
   // Aspect Ratio & Resize controls
   const initialRatio =
     aspectRatioPreset === "hero"
-      ? 1920 / 450
+      ? 1920 / 600
+      : aspectRatioPreset === "mobileHero"
+      ? 750 / 500
       : aspectRatioPreset === "21:9"
       ? 21 / 9
       : aspectRatioPreset === "16:9"
       ? 16 / 9
       : "free";
 
-  const [activePreset, setActivePreset] = useState<"hero" | "21:9" | "16:9" | "free">(aspectRatioPreset);
+  const [activePreset, setActivePreset] = useState<"hero" | "mobileHero" | "21:9" | "16:9" | "free">(aspectRatioPreset);
   const [selectedRatio, setSelectedRatio] = useState<number | "free">(initialRatio);
   const [targetWidth, setTargetWidth] = useState<number>(maxWidth);
   const [targetHeight, setTargetHeight] = useState<number>(maxHeight);
@@ -258,13 +260,17 @@ export default function ImageCropUpload({
     img.src = imgSrc;
   }, [getContainDimensions, renderCanvas, selectedRatio]);
 
-  const setPresetRatio = useCallback((preset: "hero" | "21:9" | "16:9" | "free") => {
+  const setPresetRatio = useCallback((preset: "hero" | "mobileHero" | "21:9" | "16:9" | "free") => {
     setActivePreset(preset);
     let ratio: number | "free" = "free";
     if (preset === "hero") {
-      ratio = 1920 / 450;
+      ratio = 1920 / 600;
       setTargetWidth(1920);
-      setTargetHeight(450);
+      setTargetHeight(600);
+    } else if (preset === "mobileHero") {
+      ratio = 750 / 500;
+      setTargetWidth(750);
+      setTargetHeight(500);
     } else if (preset === "21:9") {
       ratio = 21 / 9;
       setTargetWidth(1920);
@@ -635,7 +641,16 @@ export default function ImageCropUpload({
                     activePreset === "hero" ? "bg-white text-indigo-700 shadow-xs font-bold" : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
-                  Hero (1920×450)
+                  Hero (1920×600)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPresetRatio("mobileHero")}
+                  className={`px-2.5 py-1 rounded-lg transition-all text-xs ${
+                    activePreset === "mobileHero" ? "bg-white text-indigo-700 shadow-xs font-bold" : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  Mobile (750×500)
                 </button>
                 <button
                   type="button"

@@ -127,16 +127,45 @@ export default async function BlogPage({
         <section className="relative overflow-hidden bg-[#2E8B8B] min-h-[260px] flex items-center">
           {heroBanner?.image ? (
             <>
-              <FallbackImage
-                src={heroBanner.image}
-                alt={heroBanner.altText || heroBanner.title || "India Travel Guides & News"}
-                fill
-                priority
-                fetchPriority="high"
-                sizes="100vw"
-                quality={80}
-                className="object-cover object-center"
-              />
+              {heroBanner.mobileImage ? (
+                <>
+                  <div className="block sm:hidden absolute inset-0">
+                    <FallbackImage
+                      src={heroBanner.mobileImage}
+                      alt={heroBanner.altText || heroBanner.title || "India Travel Guides & News"}
+                      fill
+                      priority
+                      fetchPriority="high"
+                      sizes="100vw"
+                      quality={80}
+                      className="object-cover object-center"
+                    />
+                  </div>
+                  <div className="hidden sm:block absolute inset-0">
+                    <FallbackImage
+                      src={heroBanner.image}
+                      alt={heroBanner.altText || heroBanner.title || "India Travel Guides & News"}
+                      fill
+                      priority
+                      fetchPriority="high"
+                      sizes="(max-width: 1024px) 100vw, 1920px"
+                      quality={80}
+                      className="object-cover object-center"
+                    />
+                  </div>
+                </>
+              ) : (
+                <FallbackImage
+                  src={heroBanner.image}
+                  alt={heroBanner.altText || heroBanner.title || "India Travel Guides & News"}
+                  fill
+                  priority
+                  fetchPriority="high"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
+                  quality={80}
+                  className="object-cover object-center"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
             </>

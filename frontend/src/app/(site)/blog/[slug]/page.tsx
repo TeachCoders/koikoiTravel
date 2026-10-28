@@ -154,6 +154,7 @@ export default async function BlogPostPage({ params }: Props) {
           ? [post.thumbImg]
           : [];
   const primaryHeroImage = heroImages[0];
+  const primaryHeroMobileImage = customHeroBanners[0]?.mobileImage || undefined;
   const heroTitle = customHeroBanners[0]?.title || post.banner?.bannerTitle || post.h1Title || post.title;
   const heroTag = customHeroBanners[0]?.subtitle || post.banner?.bannerTag;
 
@@ -165,6 +166,35 @@ export default async function BlogPostPage({ params }: Props) {
       <section className="relative h-[480px] md:h-[560px] overflow-hidden bg-slate-900 flex items-center justify-center">
         {heroImages.length > 1 ? (
           <HeroSlider images={heroImages} alt={heroTitle} />
+        ) : primaryHeroMobileImage ? (
+          <>
+            <div className="block sm:hidden absolute inset-0">
+              <FallbackImage
+                src={primaryHeroMobileImage}
+                alt={heroTitle}
+                fill
+                priority
+                fetchPriority="high"
+                sizes="100vw"
+                quality={80}
+                className="object-cover object-center"
+                theme="dark"
+              />
+            </div>
+            <div className="hidden sm:block absolute inset-0">
+              <FallbackImage
+                src={primaryHeroImage}
+                alt={heroTitle}
+                fill
+                priority
+                fetchPriority="high"
+                sizes="(max-width: 1024px) 100vw, 1920px"
+                quality={80}
+                className="object-cover object-center"
+                theme="dark"
+              />
+            </div>
+          </>
         ) : (
           <FallbackImage
             src={primaryHeroImage}
@@ -172,7 +202,7 @@ export default async function BlogPostPage({ params }: Props) {
             fill
             priority
             fetchPriority="high"
-            sizes="100vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
             quality={80}
             className="object-cover object-center"
             theme="dark"
