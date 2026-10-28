@@ -487,6 +487,7 @@ export default async function DestinationsPage() {
                           src={image}
                           alt={country.h1Title || country.title}
                           fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                       ) : (
@@ -603,6 +604,7 @@ export default async function DestinationsPage() {
                                 src={banner}
                                 alt={state.h1Title || state.title}
                                 fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                               />
                             ) : (
@@ -622,6 +624,7 @@ export default async function DestinationsPage() {
                                 src={banner}
                                 alt={state.h1Title || state.title}
                                 fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                 className="object-cover"
                               />
                             ) : (
