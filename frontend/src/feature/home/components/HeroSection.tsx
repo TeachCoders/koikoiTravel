@@ -16,12 +16,18 @@ const DEFAULT_SLIDES = [
   { image: "/content/jaipur-holiday-1.webp", alt: "Jaipur cultural heritage tour" },
 ];
 
+// Universal warm luxury blur placeholder for instant LCP render (0 black screen)
+const HERO_BLUR_DATA_URL =
+  "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAAAQBACdASoYAAYAPxFwsFAsJiSisAgBgCIJbACdMoR3ACkuyipu+Xn6AAD6jFD2T7FNApkV89lBPex0OUfM6cuGPtQ2X8k+FhQH+24AAAA=";
+
 interface HeroSectionProps {
   initialHeroBanners?: HeroFullBanner[] | null;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) => {
-  const { data: heroBannersData } = useHeroBanners("Home");
+  const { data: heroBannersData } = useHeroBanners("Home", {
+    enabled: !initialHeroBanners || initialHeroBanners.length === 0,
+  });
 
   const banners = useMemo(() => {
     if (heroBannersData?.data && heroBannersData.data.length > 0) {
@@ -78,7 +84,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
   const activeSlide = slides[safeCurrent];
 
   return (
-    <section className="relative w-full min-h-[220px] sm:min-h-[340px] md:min-h-[520px] py-4 sm:py-10 md:py-16 flex items-center justify-center bg-[#1c2226] z-20">
+    <section className="relative w-full min-h-[220px] sm:min-h-[340px] md:min-h-[520px] py-4 sm:py-10 md:py-16 flex items-center justify-center bg-gradient-to-br from-[#241c18] via-[#1a1512] to-[#12100e] z-20">
       {/* Background slider with permanent Slide 0 for rock-solid LCP performance */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Base Slide 0: Always in DOM at z-0 with full opacity for instant LCP detection */}
@@ -89,9 +95,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
             fill
             priority
             fetchPriority="high"
+            placeholder="blur"
+            blurDataURL={HERO_BLUR_DATA_URL}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
             className="object-cover object-center"
-            quality={90}
+            quality={80}
           />
         </div>
 
@@ -113,7 +121,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
                 loading="lazy"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
                 className="object-cover object-center"
-                quality={90}
+                quality={80}
               />
             </div>
           );

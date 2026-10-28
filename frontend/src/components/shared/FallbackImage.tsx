@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { ImageWatermark } from "@/components/shared/ImageWatermark";
 
-export interface FallbackImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src"> {
+export interface FallbackImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src" | "placeholder"> {
   src?: string | null;
   alt?: string;
   fallbackSrc?: string;
@@ -18,6 +18,8 @@ export interface FallbackImageProps extends Omit<React.ImgHTMLAttributes<HTMLIma
   quality?: number;
   unoptimized?: boolean;
   sizes?: string;
+  placeholder?: "blur" | "empty";
+  blurDataURL?: string;
 }
 
 /**
@@ -75,6 +77,8 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
   quality = 75,
   unoptimized,
   sizes,
+  placeholder,
+  blurDataURL,
   ...props
 }) => {
   const isInvalidPlaceholder =
@@ -113,9 +117,11 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
   // For other images, use a subtle 150ms transition instead of an artificial delay.
   return (
     <>
-      {!loaded && !isPriority && (
+      {!loaded && !isPriority && !placeholder && (
         <div
-          className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none bg-slate-100/80 animate-pulse"
+          className={`absolute inset-0 w-full h-full overflow-hidden pointer-events-none animate-pulse ${
+            theme === "dark" ? "bg-slate-800/80" : "bg-slate-100/80"
+          }`}
           aria-hidden="true"
         />
       )}
@@ -132,6 +138,8 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
         loading={effectiveLoading}
         quality={quality}
         sizes={computedSizes}
+        placeholder={placeholder}
+        blurDataURL={blurDataURL}
         width={!fill ? (props.width ? Number(props.width) : 800) : undefined}
         height={!fill ? (props.height ? Number(props.height) : 600) : undefined}
         {...(props as any)}
