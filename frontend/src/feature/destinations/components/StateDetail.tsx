@@ -137,6 +137,11 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           ? [state.thumbImg]
           : [];
 
+  const heroSlides =
+    customHeroBanners.length > 0
+      ? customHeroBanners.map((b) => ({ image: b.image, mobileImage: b.mobileImage }))
+      : heroImages.map((img) => ({ image: img, mobileImage: null }));
+
   const isIllustratedBanner =
     heroImages.some((img: string) => img.includes("comic") || img.includes("banner")) ||
     heroImages.length === 1;
@@ -300,7 +305,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       <section className="relative w-full h-[36vw] min-h-[234px] max-h-[520px] md:h-[520px] md:max-h-none overflow-hidden bg-slate-200">
         {heroImages.length > 0 ? (
           <>
-            <HeroSlider images={heroImages} alt={state.title} />
+            <HeroSlider slides={heroSlides} alt={state.title} />
             <div
               className={`absolute inset-0 z-10 pointer-events-none ${
                 isIllustratedBanner

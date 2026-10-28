@@ -4,42 +4,52 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import FallbackImage from "@/components/shared/FallbackImage";
 
+export interface HeroSlideItem {
+  image: string;
+  mobileImage?: string | null;
+}
+
 interface HeroSliderProps {
-  images: string[];
+  images?: string[];
+  slides?: HeroSlideItem[];
   alt?: string;
   interval?: number;
 }
 
-export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSliderProps) {
-  const validImages = (images || []).filter(
-    (img) =>
-      img &&
-      !img.includes("unsplash.com") &&
-      !img.includes("via.placeholder.com") &&
-      !img.includes("placeholder.com")
+export default function HeroSlider({ images, slides, alt = "", interval = 5000 }: HeroSliderProps) {
+  const normalizedSlides: HeroSlideItem[] = (
+    slides && slides.length > 0
+      ? slides
+      : (images || []).map((img) => ({ image: img, mobileImage: null }))
+  ).filter(
+    (s) =>
+      s.image &&
+      !s.image.includes("unsplash.com") &&
+      !s.image.includes("via.placeholder.com") &&
+      !s.image.includes("placeholder.com")
   );
 
   const [current, setCurrent] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
   const next = useCallback(() => {
-    if (validImages.length === 0) return;
-    setCurrent((prev) => (prev + 1) % validImages.length);
-  }, [validImages.length]);
+    if (normalizedSlides.length === 0) return;
+    setCurrent((prev) => (prev + 1) % normalizedSlides.length);
+  }, [normalizedSlides.length]);
 
   const prev = useCallback(() => {
-    if (validImages.length === 0) return;
-    setCurrent((prev) => (prev - 1 + validImages.length) % validImages.length);
-  }, [validImages.length]);
+    if (normalizedSlides.length === 0) return;
+    setCurrent((prev) => (prev - 1 + normalizedSlides.length) % normalizedSlides.length);
+  }, [normalizedSlides.length]);
 
   // Reset timer on slide change so user gets full interval after manual click
   useEffect(() => {
-    if (validImages.length <= 1) return;
+    if (normalizedSlides.length <= 1) return;
     const timer = setInterval(next, interval);
     return () => clearInterval(timer);
-  }, [validImages.length, interval, next, current]);
+  }, [normalizedSlides.length, interval, next, current]);
 
-  if (validImages.length === 0) return null;
+  if (normalizedSlides.length === 0) return null;
 
   return (
     <div
@@ -61,23 +71,29 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
       <div
         className="absolute inset-0 flex transition-transform duration-700 ease-in-out pointer-events-none"
         style={{
-          width: `${validImages.length * 100}%`,
-          transform: `translateX(-${(current * 100) / validImages.length}%)`,
+          width: `${normalizedSlides.length * 100}%`,
+          transform: `translateX(-${(current * 100) / normalizedSlides.length}%)`,
         }}
       >
-        {validImages.map((img, i) => (
+        {normalizedSlides.map((slide, i) => (
           <div
             key={i}
             className="relative h-full shrink-0 bg-slate-200 pointer-events-none"
-            style={{ width: `${100 / validImages.length}%` }}
+            style={{ width: `${100 / normalizedSlides.length}%` }}
           >
-            <SlideImage src={img} alt={alt} priority={i === 0} preload={true} />
+            <SlideImage
+              src={slide.image}
+              mobileSrc={slide.mobileImage}
+              alt={alt}
+              priority={i === 0}
+              preload={true}
+            />
           </div>
         ))}
       </div>
 
       {/* Navigation arrows (desktop) */}
-      {validImages.length > 1 && (
+      {normalizedSlides.length > 1 && (
         <>
           <button
             type="button"
@@ -107,9 +123,9 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
       )}
 
       {/* Dot pagination */}
-      {validImages.length > 1 && (
+      {normalizedSlides.length > 1 && (
         <div className="absolute bottom-2.5 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center pointer-events-auto select-none">
-          {validImages.map((_, i) => (
+          {normalizedSlides.map((_, i) => (
             <button
               key={i}
               type="button"
@@ -138,15 +154,52 @@ export default function HeroSlider({ images, alt = "", interval = 5000 }: HeroSl
 
 function SlideImage({
   src,
+  mobileSrc,
   alt,
   priority,
   preload,
 }: {
   src: string;
+  mobileSrc?: string | null;
   alt: string;
   priority?: boolean;
   preload?: boolean;
 }) {
+  if (mobileSrc) {
+    return (
+      <>
+        {/* Mobile Viewport */}
+        <div className="block sm:hidden absolute inset-0">
+          <FallbackImage
+            src={mobileSrc}
+            alt={alt}
+            fill
+            priority={priority}
+            loading={preload ? "eager" : undefined}
+            quality={80}
+            sizes="100vw"
+            theme="light"
+            className="object-cover object-center"
+          />
+        </div>
+        {/* Desktop & Tablet Viewport */}
+        <div className="hidden sm:block absolute inset-0">
+          <FallbackImage
+            src={src}
+            alt={alt}
+            fill
+            priority={priority}
+            loading={preload ? "eager" : undefined}
+            quality={80}
+            sizes="(max-width: 1024px) 100vw, 1920px"
+            theme="light"
+            className="object-cover object-center"
+          />
+        </div>
+      </>
+    );
+  }
+
   return (
     <FallbackImage
       src={src}
@@ -154,8 +207,8 @@ function SlideImage({
       fill
       priority={priority}
       loading={preload ? "eager" : undefined}
-      quality={90}
-      sizes="100vw"
+      quality={80}
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
       theme="light"
       className="object-cover object-center"
     />

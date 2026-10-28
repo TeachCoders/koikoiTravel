@@ -123,6 +123,11 @@ function CityContent({
           ? [city.thumbImg]
           : [];
 
+  const heroSlides =
+    customHeroBanners.length > 0
+      ? customHeroBanners.map((b) => ({ image: b.image, mobileImage: b.mobileImage }))
+      : heroImages.map((img) => ({ image: img, mobileImage: null }));
+
   const heroTitle =
     customHeroBanners[0]?.title ||
     city.h1Title ||
@@ -192,7 +197,7 @@ function CityContent({
       <section className="relative w-full h-[36vw] min-h-[234px] max-h-[520px] md:h-[520px] md:max-h-none overflow-hidden bg-slate-200">
         {heroImages.length > 0 ? (
           <>
-            <HeroSlider images={heroImages} alt={city.title} />
+            <HeroSlider slides={heroSlides} alt={city.title} />
             <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
           </>
         ) : (
