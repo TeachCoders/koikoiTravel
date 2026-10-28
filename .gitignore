@@ -4,6 +4,8 @@
 *.rar
 *.7z
 back-*.zip
+backup/
+*.dump
 
 # ── Design / content docs ──
 *.psd
