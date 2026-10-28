@@ -304,11 +304,6 @@ router.put("/:id", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => 
     return res.status(500).json({ success: false, message: "Failed to update hero banner" });
   }
 });
-  } catch (error) {
-    logger.error("Error updating hero banner:", { error: error.message, stack: error.stack });
-    return res.status(500).json({ success: false, message: "Failed to update hero banner" });
-  }
-});
 
 /**
  * DELETE /hero-full-banner/:id
