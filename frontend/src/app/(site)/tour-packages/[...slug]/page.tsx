@@ -425,7 +425,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
       }
       const durationLabel = journey.duration || (journey.noDays > 0 ? `${journey.noDays} Days` : "");
       const fullHeadingTitle = journey.slug === "10-days-golden-triangle-with-shimla-tour"
-        ? (journey.h1Title || "Golden Triangle with Shimla Tour (10 Days)")
+        ? "Golden Triangle with Shimla Tour"
         : durationLabel && !new RegExp(`^\\s*${durationLabel}`, "i").test(journey.h1Title || journey.title)
           ? `${durationLabel} - ${journey.h1Title || journey.title}`
           : (journey.h1Title || journey.title);

@@ -165,7 +165,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
         : `${journey.noDays} Days`
       : "");
   const fullPageHeading = isShimlaTest
-    ? (journey.h1Title || "Golden Triangle with Shimla Tour (10 Days)")
+    ? "Golden Triangle with Shimla Tour"
     : durationText && !new RegExp(`^\\s*${durationText}`, "i").test(pageH1)
       ? `${durationText} - ${pageH1}`
       : pageH1;

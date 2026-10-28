@@ -17,6 +17,7 @@ export interface FallbackImageProps extends Omit<React.ImgHTMLAttributes<HTMLIma
   fetchPriority?: "high" | "low" | "auto";
   quality?: number;
   unoptimized?: boolean;
+  sizes?: string;
 }
 
 /**
@@ -44,9 +45,9 @@ const FRONTEND_STATIC_FILES = new Set([
 
 function shouldBeUnoptimized(src?: string | null): boolean {
   if (!src || typeof src !== "string") return true;
-  // All pre-optimized .webp, .svg, and .gif files load directly from Nginx/browser cache
-  // This eliminates Next.js server CPU bottlenecks and prevents 404 timeouts
-  if (/\.(svg|gif|webp)$/i.test(src)) return true;
+  if (FRONTEND_STATIC_FILES.has(src)) return true;
+  // SVGs and animated GIFs are vector/animated so resizing them breaks animation or vector scaling
+  if (/\.(svg|gif)$/i.test(src)) return true;
   if (src.startsWith("/banners/")) return true;
   if (src.startsWith("/")) {
     return false;
@@ -73,6 +74,7 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
   loading,
   quality = 75,
   unoptimized,
+  sizes,
   ...props
 }) => {
   const isInvalidPlaceholder =
@@ -104,6 +106,7 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
   const isPriority = Boolean(priority);
   const effectiveLoading = isPriority ? "eager" : (loading || "lazy");
   const effectiveFetchPriority = isPriority ? "high" : (fetchPriority ?? undefined);
+  const computedSizes = sizes || (fill ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" : undefined);
 
   // Next.js Image for fast, optimized loading
   // For priority images (above-the-fold / hero), render instantly with no opacity lag.
@@ -128,6 +131,7 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
         fetchPriority={effectiveFetchPriority}
         loading={effectiveLoading}
         quality={quality}
+        sizes={computedSizes}
         width={!fill ? (props.width ? Number(props.width) : 800) : undefined}
         height={!fill ? (props.height ? Number(props.height) : 600) : undefined}
         {...(props as any)}
