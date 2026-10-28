@@ -41,6 +41,7 @@ import type { HeroBannerEntityType, HeroFullBanner } from "@/feature/heroBanner/
 
 const CATEGORIES: { label: string; value: HeroBannerEntityType }[] = [
   { label: "Home Page", value: "Home" },
+  { label: "Tour Packages", value: "TourPackages" },
   { label: "Country", value: "Country" },
   { label: "State", value: "State" },
   { label: "City", value: "City" },
@@ -257,6 +258,9 @@ export default function HeroBannersAdminPage() {
     setFormCategory(cat);
     if (cat === "Blog") {
       setSelectedSlug("blog");
+      setSelectedEntityId(0);
+    } else if (cat === "TourPackages") {
+      setSelectedSlug("tour-packages");
       setSelectedEntityId(0);
     } else {
       setSelectedEntityId(0);

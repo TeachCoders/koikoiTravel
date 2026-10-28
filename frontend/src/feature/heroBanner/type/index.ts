@@ -5,7 +5,8 @@ export type HeroBannerEntityType =
   | "City"
   | "TravelExperience"
   | "Destinations"
-  | "Blog";
+  | "Blog"
+  | "TourPackages";
 
 export interface HeroFullBanner {
   id: number;

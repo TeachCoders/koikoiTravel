@@ -9,6 +9,8 @@ import { fetchPublicJsonCached } from "@/feature/destinations/api/public-server"
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
 import { QuoteModal } from "@/components/shared/QuoteModal";
+import { fetchHeroBannersServer } from "@/feature/heroBanner/api/server";
+import { FallbackImage } from "@/components/shared/FallbackImage";
 
 export const revalidate = 300;
 
@@ -52,9 +54,16 @@ export default async function TourPackagesPage({
     .filter(Boolean);
   const search = first(params.search || params.q);
 
-  const initialJourneys = await fetchPublicJsonCached<JourneyPage<Journey>>(
-    "/journey?limit=100&isActive=true"
-  );
+  const [initialJourneys, heroBanners] = await Promise.all([
+    fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true"),
+    fetchHeroBannersServer("TourPackages"),
+  ]);
+
+  const customHero = heroBanners?.[0];
+  const heroImage = customHero?.image || "/content/rajasthan-tours-holiday-1.webp";
+  const heroMobileImage = customHero?.mobileImage || null;
+  const heroTitle = customHero?.title || "Tour Packages";
+  const heroSubtitle = customHero?.subtitle || "Tailor-Made Holiday Packages";
 
   const journeyItems = [...(initialJourneys?.data || [])]
     .sort((a, b) => (b.purchaseCount || 0) - (a.purchaseCount || 0))
@@ -76,16 +85,63 @@ export default async function TourPackagesPage({
       {journeyItems.length > 0 && <JsonLd data={itemListSchema(journeyItems)} />}
 
       {/* ===== HERO BANNER ===== */}
-      <section className="relative bg-slate-900 py-12 md:py-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent pointer-events-none" />
+      <section className="relative bg-slate-900 py-14 sm:py-16 md:py-24 overflow-hidden min-h-[300px] flex items-center justify-center">
+        {/* Background Image Layer with Dedicated Mobile and Desktop support */}
+        <div className="absolute inset-0 z-0">
+          {heroMobileImage ? (
+            <>
+              {/* Mobile screen (max-width: 639px) */}
+              <div className="block sm:hidden absolute inset-0">
+                <FallbackImage
+                  src={heroMobileImage}
+                  alt={customHero?.altText || heroTitle}
+                  fill
+                  priority
+                  fetchPriority="high"
+                  sizes="100vw"
+                  className="object-cover object-center"
+                  quality={80}
+                />
+              </div>
+              {/* Desktop & Tablet screen (min-width: 640px) */}
+              <div className="hidden sm:block absolute inset-0">
+                <FallbackImage
+                  src={heroImage}
+                  alt={customHero?.altText || heroTitle}
+                  fill
+                  priority
+                  fetchPriority="high"
+                  sizes="(max-width: 1024px) 100vw, 1920px"
+                  className="object-cover object-center"
+                  quality={80}
+                />
+              </div>
+            </>
+          ) : (
+            <FallbackImage
+              src={heroImage}
+              alt={customHero?.altText || heroTitle}
+              fill
+              priority
+              fetchPriority="high"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
+              className="object-cover object-center"
+              quality={80}
+            />
+          )}
+          {/* Subtle soft gradient overlay so photo clarity shines through */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/25 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent pointer-events-none" />
+        </div>
+
         <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 text-center flex flex-col items-center">
           <span className="font-luxury font-black inline-flex items-center gap-1.5 text-[11px] sm:text-xs uppercase tracking-widest text-[#F8904D] mb-3">
-            <Sparkles size={14} /> Tailor-Made Holiday Packages
+            <Sparkles size={14} /> {heroSubtitle}
           </span>
           <div className="font-luxury text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-wide drop-shadow-md">
-            Tour Packages
+            {heroTitle}
           </div>
-          <p className="mt-3 text-white/80 text-sm sm:text-base max-w-2xl leading-relaxed">
+          <p className="mt-3 text-white/90 text-sm sm:text-base max-w-2xl leading-relaxed drop-shadow-sm">
             {cities.length > 0 || experiences.length > 0
               ? "Results filtered by your search — refine using the filters below."
               : "Discover curated travel itineraries across India and top global destinations. Custom packages designed for memories."}
