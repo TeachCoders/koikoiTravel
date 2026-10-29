@@ -19,6 +19,8 @@ import {
   Link as LinkIcon,
   Loader2,
   Sparkles,
+  Monitor,
+  Smartphone,
 } from "lucide-react";
 import apiClient from "@/lib/apiClient";
 import ImageCropUpload from "@/components/shared/ImageCropUpload";
@@ -74,6 +76,7 @@ export default function HeroBannersAdminPage() {
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>("ALL");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
+  const [editorBannerTab, setEditorBannerTab] = useState<"desktop" | "mobile">("desktop");
 
   // Edit vs Add & Single vs Multiple
   const [editingBanner, setEditingBanner] = useState<HeroFullBanner | null>(null);
@@ -251,6 +254,7 @@ export default function HeroBannersAdminPage() {
       clearMultipleFiles();
     }
     setLibraryPickerTarget(null);
+    setEditorBannerTab("desktop");
     setIsModalOpen(true);
   };
 
@@ -941,174 +945,217 @@ export default function HeroBannersAdminPage() {
 
               {/* Upload Mode 1: Single Banner with Dual Croppers (Desktop + Mobile) */}
               {uploadMode === "single" ? (
-                <div className="space-y-6">
-                  {/* Box 1: Desktop Banner */}
-                  <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-4 space-y-3">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <div>
-                        <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                          1. Desktop Panoramic Banner (1920 × 600 px){" "}
-                          {editingBanner ? (
-                            <span className="text-slate-400 font-normal lowercase">(optional — leave unchanged to keep current)</span>
-                          ) : (
-                            <span className="text-rose-500">*</span>
-                          )}
-                        </label>
-                        <p className="text-[11px] text-slate-500">
-                          Displayed on Laptops, Desktops, TV and Tablets. (16:9 & 16:5 photos fit easily)
-                        </p>
-                      </div>
-
-                      {libraryImages.length > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => setLibraryPickerTarget("desktop")}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-700 hover:text-[#2E8B8B] text-xs font-semibold rounded-xl shadow-xs transition-colors shrink-0"
-                        >
-                          <ImageIcon size={13} />
-                          <span>📂 Choose from Library</span>
-                        </button>
+                <div className="space-y-4">
+                  {/* Tabs Switcher: Desktop Banner / Mobile Banner */}
+                  <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+                    <button
+                      type="button"
+                      onClick={() => setEditorBannerTab("desktop")}
+                      className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                        editorBannerTab === "desktop"
+                          ? "bg-[#2E8B8B] text-white shadow-xs"
+                          : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                      }`}
+                    >
+                      <Monitor size={15} />
+                      <span>Desktop Banner (1920 × 600)</span>
+                      {previewUrl ? (
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-500" title="Image selected" />
+                      ) : (
+                        <span className="text-rose-400 font-extrabold">*</span>
                       )}
-                    </div>
+                    </button>
 
-                    <ImageCropUpload
-                      onFileSelect={(file) => {
-                        setSelectedFile(file);
-                        if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
-                        setPreviewUrl(URL.createObjectURL(file));
-                      }}
-                      onClear={() => {
-                        setSelectedFile(null);
-                        if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
-                        setPreviewUrl(null);
-                      }}
-                      maxWidth={1920}
-                      maxHeight={600}
-                      aspectRatioPreset="hero"
-                      label="Upload Desktop Banner (1920 × 600 px) — Click to Crop, Paste URL or File"
-                      initialImage={previewUrl || undefined}
-                    />
-
-                    {/* Live Desktop Preview with Overlay */}
-                    {previewUrl && (
-                      <div className="mt-2">
-                        <p className="text-xs font-bold text-slate-500 mb-1 flex items-center gap-1">
-                          <Eye size={13} /> Desktop Live Ratio (1920×600) Overlay Preview:
-                        </p>
-                        <div className="relative w-full h-36 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200">
-                          <Image
-                            src={previewUrl}
-                            alt="Preview"
-                            fill
-                            unoptimized={previewUrl.startsWith("blob:")}
-                            className="object-cover object-center"
-                          />
-                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-center p-4">
-                            <div>
-                              {subtitle && <p className="text-xs font-bold uppercase text-[#F8904D]">{subtitle}</p>}
-                              <h4 className="text-lg font-black uppercase tracking-wide">
-                                {title || "Sample Overlay Title"}
-                              </h4>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                    <button
+                      type="button"
+                      onClick={() => setEditorBannerTab("mobile")}
+                      className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                        editorBannerTab === "mobile"
+                          ? "bg-[#2E8B8B] text-white shadow-xs"
+                          : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                      }`}
+                    >
+                      <Smartphone size={15} />
+                      <span>Mobile Banner (750 × 500)</span>
+                      {mobilePreviewUrl ? (
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-500" title="Mobile image selected" />
+                      ) : (
+                        <span className="text-[10px] font-normal opacity-75">(Optional)</span>
+                      )}
+                    </button>
                   </div>
 
-                  {/* Box 2: Mobile Banner (Art Direction: 750 × 500 px) */}
-                  <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-4 space-y-3">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <div>
-                        <div className="flex items-center gap-2">
+                  {/* Tab 1: Desktop Banner */}
+                  {editorBannerTab === "desktop" && (
+                    <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-4 space-y-3 animate-in fade-in duration-150">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
                           <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                            2. Mobile Dedicated Banner (750 × 500 px)
+                            Desktop Panoramic Banner (1920 × 600 px){" "}
+                            {editingBanner ? (
+                              <span className="text-slate-400 font-normal lowercase">(optional — leave unchanged to keep current)</span>
+                            ) : (
+                              <span className="text-rose-500">*</span>
+                            )}
                           </label>
-                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-200">
-                            Optional (Recommended)
-                          </span>
+                          <p className="text-[11px] text-slate-500">
+                            Displayed on Laptops, Desktops, TV and Tablets. (16:9 & 16:5 photos fit easily)
+                          </p>
                         </div>
-                        <p className="text-[11px] text-slate-500">
-                          Dedicated 3:2 portrait/compact ratio for mobile phones. Zero side cropping! If omitted, desktop banner is auto-used.
-                        </p>
-                      </div>
 
-                      <div className="flex items-center gap-2 shrink-0">
                         {libraryImages.length > 0 && (
                           <button
                             type="button"
-                            onClick={() => setLibraryPickerTarget("mobile")}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-700 hover:text-[#2E8B8B] text-xs font-semibold rounded-xl shadow-xs transition-colors"
+                            onClick={() => setLibraryPickerTarget("desktop")}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-700 hover:text-[#2E8B8B] text-xs font-semibold rounded-xl shadow-xs transition-colors shrink-0 cursor-pointer"
                           >
                             <ImageIcon size={13} />
                             <span>📂 Choose from Library</span>
                           </button>
                         )}
-
-                        {mobilePreviewUrl && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedMobileFile(null);
-                              if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
-                              setMobilePreviewUrl(null);
-                              setRemoveMobileImage(true);
-                            }}
-                            className="text-xs text-rose-600 hover:text-rose-800 font-semibold px-2 py-1 rounded-lg hover:bg-rose-50"
-                          >
-                            Remove Mobile Image
-                          </button>
-                        )}
                       </div>
-                    </div>
 
-                    <ImageCropUpload
-                      onFileSelect={(file) => {
-                        setSelectedMobileFile(file);
-                        setRemoveMobileImage(false);
-                        if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
-                        setMobilePreviewUrl(URL.createObjectURL(file));
-                      }}
-                      onClear={() => {
-                        setSelectedMobileFile(null);
-                        if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
-                        setMobilePreviewUrl(null);
-                        setRemoveMobileImage(true);
-                      }}
-                      maxWidth={750}
-                      maxHeight={500}
-                      aspectRatioPreset="mobileHero"
-                      label="Upload Mobile Banner (750 × 500 px) — Click to Crop & Resize"
-                      initialImage={mobilePreviewUrl || undefined}
-                    />
+                      <ImageCropUpload
+                        onFileSelect={(file) => {
+                          setSelectedFile(file);
+                          if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+                          setPreviewUrl(URL.createObjectURL(file));
+                        }}
+                        onClear={() => {
+                          setSelectedFile(null);
+                          if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+                          setPreviewUrl(null);
+                        }}
+                        maxWidth={1920}
+                        maxHeight={600}
+                        aspectRatioPreset="hero"
+                        label="Upload Desktop Banner (1920 × 600 px) — Click to Crop, Paste URL or File"
+                        initialImage={previewUrl || undefined}
+                      />
 
-                    {/* Live Mobile Preview Box */}
-                    {mobilePreviewUrl && (
-                      <div className="mt-2 flex items-center gap-4">
-                        <div className="relative w-40 h-28 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200 shrink-0">
-                          <Image
-                            src={mobilePreviewUrl}
-                            alt="Mobile Preview"
-                            fill
-                            unoptimized={mobilePreviewUrl.startsWith("blob:")}
-                            className="object-cover object-center"
-                          />
-                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-center p-2">
-                            <span className="text-[10px] font-bold text-white/90">Mobile View</span>
+                      {/* Live Desktop Preview with Overlay */}
+                      {previewUrl && (
+                        <div className="mt-2">
+                          <p className="text-xs font-bold text-slate-500 mb-1 flex items-center gap-1">
+                            <Eye size={13} /> Desktop Live Ratio (1920×600) Overlay Preview:
+                          </p>
+                          <div className="relative w-full h-36 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200">
+                            <Image
+                              src={previewUrl}
+                              alt="Preview"
+                              fill
+                              unoptimized={previewUrl.startsWith("blob:")}
+                              className="object-cover object-center"
+                            />
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-center p-4">
+                              <div>
+                                {subtitle && <p className="text-xs font-bold uppercase text-[#F8904D]">{subtitle}</p>}
+                                <h4 className="text-lg font-black uppercase tracking-wide">
+                                  {title || "Sample Overlay Title"}
+                                </h4>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <div className="text-xs text-slate-600 space-y-1">
-                          <p className="font-bold text-slate-800 flex items-center gap-1.5">
-                            <Eye size={13} className="text-[#2E8B8B]" />
-                            Mobile Screen Preview (750 × 500 px)
-                          </p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Tab 2: Mobile Banner */}
+                  {editorBannerTab === "mobile" && (
+                    <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-4 space-y-3 animate-in fade-in duration-150">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                              Mobile Dedicated Banner (750 × 500 px)
+                            </label>
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-200">
+                              Optional (Recommended)
+                            </span>
+                          </div>
                           <p className="text-[11px] text-slate-500">
-                            Mobile devices will download this lightweight dedicated image instead of the desktop wide banner.
+                            Dedicated 3:2 portrait/compact ratio for mobile phones. Zero side cropping! If omitted, desktop banner is auto-used.
                           </p>
                         </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          {libraryImages.length > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => setLibraryPickerTarget("mobile")}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-700 hover:text-[#2E8B8B] text-xs font-semibold rounded-xl shadow-xs transition-colors cursor-pointer"
+                            >
+                              <ImageIcon size={13} />
+                              <span>📂 Choose from Library</span>
+                            </button>
+                          )}
+
+                          {mobilePreviewUrl && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedMobileFile(null);
+                                if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
+                                setMobilePreviewUrl(null);
+                                setRemoveMobileImage(true);
+                              }}
+                              className="text-xs text-rose-600 hover:text-rose-800 font-semibold px-2 py-1 rounded-lg hover:bg-rose-50 cursor-pointer"
+                            >
+                              Remove Mobile Image
+                            </button>
+                          )}
+                        </div>
                       </div>
-                    )}
-                  </div>
+
+                      <ImageCropUpload
+                        onFileSelect={(file) => {
+                          setSelectedMobileFile(file);
+                          setRemoveMobileImage(false);
+                          if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
+                          setMobilePreviewUrl(URL.createObjectURL(file));
+                        }}
+                        onClear={() => {
+                          setSelectedMobileFile(null);
+                          if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
+                          setMobilePreviewUrl(null);
+                          setRemoveMobileImage(true);
+                        }}
+                        maxWidth={750}
+                        maxHeight={500}
+                        aspectRatioPreset="mobileHero"
+                        label="Upload Mobile Banner (750 × 500 px) — Click to Crop & Resize"
+                        initialImage={mobilePreviewUrl || undefined}
+                      />
+
+                      {/* Live Mobile Preview Box */}
+                      {mobilePreviewUrl && (
+                        <div className="mt-2 flex items-center gap-4">
+                          <div className="relative w-40 h-28 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200 shrink-0">
+                            <Image
+                              src={mobilePreviewUrl}
+                              alt="Mobile Preview"
+                              fill
+                              unoptimized={mobilePreviewUrl.startsWith("blob:")}
+                              className="object-cover object-center"
+                            />
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-center p-2">
+                              <span className="text-[10px] font-bold text-white/90">Mobile View</span>
+                            </div>
+                          </div>
+                          <div className="text-xs text-slate-600 space-y-1">
+                            <p className="font-bold text-slate-800 flex items-center gap-1.5">
+                              <Eye size={13} className="text-[#2E8B8B]" />
+                              Mobile Screen Preview (750 × 500 px)
+                            </p>
+                            <p className="text-[11px] text-slate-500">
+                              Mobile devices will download this lightweight dedicated image instead of the desktop wide banner.
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               ) : (
                 /* Upload Mode 2: Multiple Images Batch Upload */
