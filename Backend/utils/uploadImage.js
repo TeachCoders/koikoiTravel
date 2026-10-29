@@ -73,16 +73,32 @@ export const uploadImage = (folderName = "images") => {
       const ext = CONVERTIBLE_MIMETYPES.includes(file.mimetype) ? ".webp" : path.extname(file.originalname) || ".webp";
       const safeFolder = sanitizeFolder(req.body?.folder) || folderName;
       const uploadPath = path.join("public", safeFolder);
-      const baseName = safeName && safeName !== "." ? safeName : "image";
+      let baseName = safeName && safeName !== "." ? safeName : "image";
 
-      // Clean, readable filename. If the name already exists, append -1, -2 …
-      // so uploads never silently overwrite an existing image.
+      // If this file is specifically for mobileImage, ensure filename carries -mobile suffix
+      if (file.fieldname === "mobileImage" && !baseName.includes("mobile")) {
+        baseName = `${baseName}-mobile`;
+      } else if (file.fieldname === "image" && !baseName.includes("desktop") && !baseName.includes("mobile")) {
+        baseName = `${baseName}-desktop`;
+      }
+
+      // Track assigned filenames in current request to prevent concurrent multer stream race condition
+      if (!req._assignedFilenames) {
+        req._assignedFilenames = new Set();
+      }
+
+      // Clean, readable filename. If the name already exists on disk OR in current request,
+      // append -1, -2 … so uploads never silently overwrite an existing image.
       let candidate = baseName + ext;
       let counter = 1;
-      while (fs.existsSync(path.join(uploadPath, candidate))) {
-        candidate = `${safeName}-${counter}${ext}`;
+      while (
+        fs.existsSync(path.join(uploadPath, candidate)) ||
+        req._assignedFilenames.has(path.join(uploadPath, candidate))
+      ) {
+        candidate = `${baseName}-${counter}${ext}`;
         counter++;
       }
+      req._assignedFilenames.add(path.join(uploadPath, candidate));
       cb(null, candidate);
     },
   });

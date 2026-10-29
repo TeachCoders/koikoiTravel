@@ -10,6 +10,7 @@ import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journe
 import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import { fetchHeroBannersServer } from "@/feature/heroBanner/api/server";
+import { ImageWatermark } from "@/components/shared/ImageWatermark";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 
 export const revalidate = 300;

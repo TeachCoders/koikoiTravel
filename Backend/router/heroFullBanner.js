@@ -155,7 +155,7 @@ router.post("/", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => {
     }
 
     // Single banner upload: Look for desktop file and optional mobile file
-    const desktopFile = files.find((f) => f.fieldname === "image") || files.find((f) => f.fieldname !== "mobileImage");
+    const desktopFile = files.find((f) => f.fieldname === "image");
     const mobileFile = files.find((f) => f.fieldname === "mobileImage");
 
     const desktopImagePath = desktopFile
@@ -237,7 +237,7 @@ router.put("/:id", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => 
     }
 
     const files = req.files || (req.file ? [req.file] : []);
-    const desktopFile = files.find((f) => f.fieldname === "image") || files.find((f) => f.fieldname !== "mobileImage");
+    const desktopFile = files.find((f) => f.fieldname === "image");
     const mobileFile = files.find((f) => f.fieldname === "mobileImage");
 
     // Handle desktop image update

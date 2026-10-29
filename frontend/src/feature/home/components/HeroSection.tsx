@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { FallbackImage } from "@/components/shared/FallbackImage";
+import { ImageWatermark } from "@/components/shared/ImageWatermark";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import { useHeroBanners } from "@/feature/heroBanner/api";
 import type { HeroFullBanner } from "@/feature/heroBanner/type";
@@ -79,10 +80,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
   const safeCurrent = slides.length > 0 ? current % slides.length : 0;
   const activeSlide = slides[safeCurrent];
 
+  const hasSlides = slides.length > 0;
+
   return (
-    <section className="relative w-full min-h-[220px] sm:min-h-[340px] md:min-h-[520px] py-4 sm:py-10 md:py-16 flex items-center justify-center bg-gradient-to-br from-[#241c18] via-[#1a1512] to-[#12100e] z-20">
-      {/* Background slider with permanent Slide 0 for rock-solid LCP performance */}
-      {slides.length > 0 && (
+    <section
+      className={`relative w-full h-[36vw] min-h-[260px] max-h-[520px] md:h-[520px] md:max-h-none flex items-center justify-center ${
+        hasSlides ? "bg-slate-900" : "bg-slate-100"
+      } z-20 overflow-hidden`}
+    >
+      {/* Background slider when slides are present */}
+      {hasSlides ? (
         <div className="absolute inset-0 overflow-hidden">
           {/* Base Slide 0: Always in DOM at z-0 with full opacity for instant LCP detection */}
         <div className="absolute inset-0 z-0" key={slides[0]?.image || "slide-0"}>
@@ -190,6 +197,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
           <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent z-10 pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent z-10 pointer-events-none" />
         </div>
+      ) : (
+        <div className="absolute inset-0">
+          <ImageWatermark />
+        </div>
       )}
 
       {/* Navigation arrows (desktop) - only when multiple slides */}
@@ -238,16 +249,28 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
       <div className="relative z-30 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 w-full text-left font-outfit">
         {/* Eyebrow Tag matching inner hero section */}
         <div className="mb-2.5 sm:mb-3">
-          <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20 shadow-xl">
+          <div
+            className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-xs ${
+              hasSlides
+                ? "bg-slate-950/60 backdrop-blur-md border border-white/20 text-white"
+                : "bg-white/95 border border-slate-300 text-slate-800"
+            }`}
+          >
             <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shadow-[0_0_8px_#F8904D]" />
-            <span className="font-luxury font-bold text-[11px] sm:text-xs md:text-[13px] uppercase tracking-[0.22em] text-white/95 select-none">
+            <span className="font-luxury font-bold text-[11px] sm:text-xs md:text-[13px] uppercase tracking-[0.22em] select-none">
               Private Journeys Across India
             </span>
           </div>
         </div>
 
         {/* Main H1 Heading for Rock-Solid SEO & Search Engine Hierarchy */}
-        <h1 className="font-luxury text-white text-xl leading-snug sm:text-3xl md:text-5xl lg:text-[52px] font-black tracking-tight max-w-4xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
+        <h1
+          className={`font-luxury text-xl leading-snug sm:text-3xl md:text-5xl lg:text-[52px] font-black tracking-tight max-w-4xl ${
+            hasSlides
+              ? "text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]"
+              : "text-slate-900 drop-shadow-xs"
+          }`}
+        >
           <span>Making every Journey</span>
           <span className="block mt-0.5 sm:mt-1.5 sm:whitespace-nowrap">
             <span className="text-[#F8904D]">Memorable</span> — KoiKoi Travel
@@ -255,7 +278,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         </h1>
 
         {/* Short Subtitle */}
-        <p className="hidden sm:block font-outfit text-white/95 text-[15px] sm:text-base md:text-lg lg:text-[19px] max-w-3xl mt-3 sm:mt-4 leading-relaxed font-medium drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+        <p
+          className={`hidden sm:block font-outfit text-[15px] sm:text-base md:text-lg lg:text-[19px] max-w-3xl mt-3 sm:mt-4 leading-relaxed font-medium ${
+            hasSlides
+              ? "text-white/95 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
+              : "text-slate-600"
+          }`}
+        >
           Handcrafted private journeys across India, thoughtfully tailored to your style and pace.
         </p>
 
@@ -263,7 +292,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
         <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-start gap-2.5 sm:gap-3.5">
           <Link
             href="/destinations"
-            className="font-outfit px-5 sm:px-6 py-2.5 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-semibold text-xs sm:text-sm shadow-lg shadow-orange-950/30 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
+            className="font-outfit px-5 sm:px-6 py-2.5 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-semibold text-xs sm:text-sm shadow-md hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2"
           >
             <span>Explore Destinations</span>
             <ArrowRight className="w-4 h-4" />
@@ -272,7 +301,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
           <QuoteModal>
             <button
               type="button"
-              className="font-outfit px-5 sm:px-6 py-2.5 rounded-full bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs sm:text-sm shadow-lg shadow-black/20 hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2 cursor-pointer"
+              className={`font-outfit px-5 sm:px-6 py-2.5 rounded-full font-bold text-xs sm:text-sm shadow-md hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2 cursor-pointer ${
+                hasSlides
+                  ? "bg-white hover:bg-slate-100 text-slate-900"
+                  : "bg-slate-900 hover:bg-slate-800 text-white"
+              }`}
             >
               <span>Plan My Trip</span>
             </button>

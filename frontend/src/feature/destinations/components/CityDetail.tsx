@@ -208,23 +208,30 @@ function CityContent({
               fill
               priority
               className="object-cover object-center"
-              theme="dark"
+              theme="light"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
           </div>
         )}
 
         <div className="relative z-20 max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 h-full flex flex-col justify-center items-center py-4 sm:py-6 md:py-8 text-center pointer-events-none">
           {heroTag && (
-            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20 mb-2 sm:mb-4 shadow-xl pointer-events-auto">
+            <div className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full mb-2 sm:mb-4 shadow-sm pointer-events-auto ${
+              heroImages.length > 0
+                ? "bg-slate-950/60 backdrop-blur-md border border-white/20 text-white"
+                : "bg-white/90 border border-slate-300 text-slate-800"
+            }`}>
               <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shadow-[0_0_8px_#F8904D]" />
-              <span className="font-luxury font-bold text-xs sm:text-sm uppercase tracking-[0.22em] text-white/95">
+              <span className="font-luxury font-bold text-xs sm:text-sm uppercase tracking-[0.22em]">
                 {heroTag}
               </span>
             </div>
           )}
 
-          <div className="font-luxury text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+          <div className={`font-luxury text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase leading-tight tracking-wide ${
+            heroImages.length > 0
+              ? "text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]"
+              : "text-slate-900 drop-shadow-xs"
+          }`}>
             {heroTitle}
           </div>
         </div>

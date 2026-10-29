@@ -483,7 +483,10 @@ export default function ImageCropUpload({
         ? customFileName.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
         : "";
       const ext = outputFormat === "image/png" ? ".png" : outputFormat === "image/jpeg" ? ".jpg" : ".webp";
-      const fileName = formatted ? `${formatted}${ext}` : `processed-image${ext}`;
+      const suffix = aspectRatioPreset === "mobileHero" ? "-mobile" : aspectRatioPreset === "hero" ? "-desktop" : "";
+      const baseName = formatted || (aspectRatioPreset === "mobileHero" ? "mobile-banner" : "desktop-banner");
+      const cleanBase = baseName.endsWith(suffix) ? baseName : `${baseName}${suffix}`;
+      const fileName = `${cleanBase}${ext}`;
       const file = new File([blob], fileName, { type: outputFormat });
       setPreview(URL.createObjectURL(blob));
       setCropOpen(false);

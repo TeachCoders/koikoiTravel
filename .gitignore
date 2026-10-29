@@ -5,6 +5,7 @@
 *.7z
 back-*.zip
 backup/
+Backend/back-image/
 *.dump
 
 # ── Design / content docs ──
