@@ -7,7 +7,6 @@ import Link from "next/link";
 import Heading from "@/components/shared/heading";
 import FormActionButton from "@/components/shared/customBtns";
 import SeoFields from "@/components/shared/SeoFields";
-import BannerSection from "@/components/shared/BannerSection";
 import HeroBannerManagerSection from "@/components/shared/HeroBannerManagerSection";
 import EntityFields from "@/components/shared/EntityFields";
 import type { EntityField } from "@/components/shared/EntityFields";
@@ -284,19 +283,6 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
           entityId={initialData?.id}
           pageSlug={formData.slug || initialData?.slug}
           entityTitle={formData.title || initialData?.title || "City"}
-        />
-
-        <BannerSection
-          bannerTitle={bannerTitle}
-          bannerTag={bannerTag}
-          bannerImages={bannerImages}
-          onBannerTileChange={setBannerTile}
-          onBannerTagChange={setBannerTag}
-          onBannerImagesChange={setBannerImages}
-          onBannerFilesSelect={(files, indices) =>
-            setBannerFiles(files.map((file, i) => ({ file, index: indices?.[i] ?? bannerImages.length + i })))
-          }
-          folderPath={countrySlug ? `${countrySlug}/holiday` : ""}
         />
 
         <EntityFields

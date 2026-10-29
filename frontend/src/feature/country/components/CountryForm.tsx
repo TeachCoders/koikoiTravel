@@ -7,7 +7,6 @@ import Link from "next/link";
 import FormActionButton from "@/components/shared/customBtns";
 import Heading from "@/components/shared/heading";
 import SeoFields from "@/components/shared/SeoFields";
-import BannerSection from "@/components/shared/BannerSection";
 import HeroBannerManagerSection from "@/components/shared/HeroBannerManagerSection";
 import EntityFields from "@/components/shared/EntityFields";
 import RichTextEditor from "@/components/shared/RichTextEditor";
@@ -246,20 +245,6 @@ export default function CountryFormPage({ initialData, mode }: CountryFormProps)
           entityId={initialData?.id}
           pageSlug={seoData.slug || initialData?.slug}
           entityTitle={seoData.title || initialData?.title || "Country"}
-        />
-
-        <BannerSection
-          bannerTitle={bannerTitle}
-          bannerTag={bannerTag}
-          bannerImages={bannerImages}
-          onBannerTileChange={setBannerTile}
-          onBannerTagChange={setBannerTag}
-          onBannerImagesChange={setBannerImages}
-          onBannerFilesSelect={(files, indices) =>
-            setBannerFiles(files.map((file, i) => ({ file, index: indices?.[i] ?? bannerImages.length + i })))
-          }
-          folderPath={seoData.slug ? `${seoData.slug}/holiday` : ""}
-          maxImages={15}
         />
 
         <EntityFields

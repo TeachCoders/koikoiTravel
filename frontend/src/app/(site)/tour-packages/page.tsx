@@ -86,7 +86,7 @@ export default async function TourPackagesPage({
       {journeyItems.length > 0 && <JsonLd data={itemListSchema(journeyItems)} />}
 
       {/* ===== HERO BANNER ===== */}
-      <section className="relative bg-slate-900 py-14 sm:py-16 md:py-24 overflow-hidden min-h-[300px] flex items-center justify-center">
+      <section className="relative bg-slate-900 overflow-hidden w-full h-[70vh] min-h-[460px] max-h-[580px] md:h-[76vh] md:min-h-[600px] md:max-h-[680px] lg:h-[78vh] lg:min-h-[640px] lg:max-h-[720px] xl:h-[80vh] xl:max-h-[740px] flex items-center justify-center">
         {/* Background Image Layer with Dedicated Mobile and Desktop support */}
         <div className="absolute inset-0 z-0">
           {heroMobileImage ? (

@@ -7,7 +7,6 @@ import Link from "next/link";
 import Heading from "@/components/shared/heading";
 import FormActionButton from "@/components/shared/customBtns";
 import SeoFields from "@/components/shared/SeoFields";
-import BannerSection from "@/components/shared/BannerSection";
 import HeroBannerManagerSection from "@/components/shared/HeroBannerManagerSection";
 import RichTextEditor from "@/components/shared/RichTextEditor";
 import FaqEditor, { FaqData } from "@/components/shared/FaqEditor";
@@ -251,19 +250,6 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
           entityId={initialData?.id}
           pageSlug={formData.slug || initialData?.slug}
           entityTitle={formData.title || initialData?.title || "Travel Experience"}
-        />
-
-        <BannerSection
-          bannerTitle={bannerTitle}
-          bannerTag={bannerTag}
-          bannerImages={bannerImages}
-          onBannerTileChange={setBannerTile}
-          onBannerTagChange={setBannerTag}
-          onBannerImagesChange={setBannerImages}
-          onBannerFilesSelect={(files, indices) =>
-            setBannerFiles(files.map((file, i) => ({ file, index: indices?.[i] ?? bannerImages.length + i })))
-          }
-          folderPath={formData.slug ? `${formData.slug}/holiday` : ""}
         />
 
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-5">

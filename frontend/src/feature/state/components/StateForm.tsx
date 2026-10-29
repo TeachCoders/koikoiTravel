@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import FormActionButton from "@/components/shared/customBtns";
 import Heading from "@/components/shared/heading";
 import SeoFields from "@/components/shared/SeoFields";
-import BannerSection from "@/components/shared/BannerSection";
 import HeroBannerManagerSection from "@/components/shared/HeroBannerManagerSection";
 import RichTextEditor from "@/components/shared/RichTextEditor";
 import FaqEditor, { FaqData } from "@/components/shared/FaqEditor";
@@ -298,20 +297,6 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
           entityId={initialData?.id}
           pageSlug={formData.slug || initialData?.slug}
           entityTitle={formData.title || initialData?.title || "State"}
-        />
-
-        {/* Banner Section */}
-        <BannerSection
-          bannerTitle={bannerTitle}
-          bannerTag={bannerTag}
-          bannerImages={bannerImages}
-          onBannerTileChange={setBannerTile}
-          onBannerTagChange={setBannerTag}
-          onBannerImagesChange={setBannerImages}
-          onBannerFilesSelect={(files, indices) =>
-            setBannerFiles(files.map((file, i) => ({ file, index: indices?.[i] ?? bannerImages.length + i })))
-          }
-          folderPath={countrySlug ? `${countrySlug}/holiday` : ""}
         />
 
         {/* State Details */}

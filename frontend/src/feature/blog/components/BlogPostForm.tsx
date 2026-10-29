@@ -11,7 +11,7 @@ import EntityFields from "@/components/shared/EntityFields";
 import type { EntityField } from "@/components/shared/EntityFields";
 import RichTextEditor from "@/components/shared/RichTextEditor";
 import SearchableMultiSelect from "@/components/shared/SearchableMultiSelect";
-import BannerSection from "@/components/shared/BannerSection";
+import HeroBannerManagerSection from "@/components/shared/HeroBannerManagerSection";
 import apiClient from "@/lib/apiClient";
 import {
   useCreateBlogPost,
@@ -237,18 +237,12 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
           hideShortDesc
         />
 
-        {/* Hero Banner Section */}
-        <BannerSection
-          bannerTitle={bannerTitle}
-          bannerTag={bannerTag}
-          bannerImages={bannerImages}
-          onBannerTileChange={setBannerTitle}
-          onBannerTagChange={setBannerTag}
-          onBannerImagesChange={setBannerImages}
-          onBannerFilesSelect={(files, indices) =>
-            setBannerFiles(files.map((file, i) => ({ file, index: indices?.[i] ?? bannerImages.length + i })))
-          }
-          folderPath={formData.slug ? `${formData.slug}/blog` : "blog"}
+        {/* Dedicated Hero Banners (Desktop 1920x600 & Mobile 750x500) */}
+        <HeroBannerManagerSection
+          entityType="Blog"
+          entityId={initialData?.id}
+          pageSlug={formData.slug || initialData?.slug}
+          entityTitle={formData.title || initialData?.title || "Blog Post"}
         />
 
         <EntityFields

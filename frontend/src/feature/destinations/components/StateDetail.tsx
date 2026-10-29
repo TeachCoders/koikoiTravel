@@ -302,7 +302,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   return (
     <div>
       {/* ===== HERO ===== */}
-      <section className="relative w-full h-[36vw] min-h-[234px] max-h-[520px] md:h-[520px] md:max-h-none overflow-hidden bg-slate-200">
+      <section className="relative w-full h-[70vh] min-h-[460px] max-h-[580px] md:h-[76vh] md:min-h-[600px] md:max-h-[680px] lg:h-[78vh] lg:min-h-[640px] lg:max-h-[720px] xl:h-[80vh] xl:max-h-[740px] overflow-hidden bg-slate-200">
         {heroImages.length > 0 ? (
           <>
             <HeroSlider slides={heroSlides} alt={state.title} />
