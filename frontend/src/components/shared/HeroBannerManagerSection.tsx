@@ -76,6 +76,7 @@ export default function HeroBannerManagerSection({
   const [altText, setAltText] = useState("");
   const [displayOrder, setDisplayOrder] = useState(1);
   const [bannerTab, setBannerTab] = useState<"desktop" | "mobile">("desktop");
+  const [cardActiveTab, setCardActiveTab] = useState<Record<number, "desktop" | "mobile">>({});
 
   const resetForm = () => {
     setEditingBanner(null);
@@ -239,73 +240,127 @@ export default function HeroBannerManagerSection({
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {banners.map((b) => (
-                <div
-                  key={b.id}
-                  className="rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between"
-                >
-                  <div className="relative w-full h-32 bg-slate-900 overflow-hidden">
-                    <img
-                      src={b.image}
-                      alt={b.altText || b.title || "Banner"}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+              {banners.map((b) => {
+                const activeTab = cardActiveTab[b.id] || "desktop";
+                const activeSrc = activeTab === "mobile" ? b.mobileImage : b.image;
+                const isMobileView = activeTab === "mobile";
 
-                    {/* Badges */}
-                    <div className="absolute top-2 left-2 flex items-center gap-1">
-                      <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold rounded">
+                return (
+                  <div
+                    key={b.id}
+                    className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between"
+                  >
+                    {/* Top Tab Bar: Desktop vs Mobile */}
+                    <div className="flex items-center justify-between px-3 py-2 bg-slate-50 border-b border-slate-200">
+                      <div className="inline-flex rounded-lg p-0.5 bg-slate-200/80 text-[11px]">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setCardActiveTab((prev) => ({ ...prev, [b.id]: "desktop" }))
+                          }
+                          className={`px-2.5 py-1 rounded-md font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                            activeTab === "desktop"
+                              ? "bg-white text-slate-800 shadow-xs"
+                              : "text-slate-600 hover:text-slate-900"
+                          }`}
+                        >
+                          <Monitor size={12} />
+                          <span>Desktop</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setCardActiveTab((prev) => ({ ...prev, [b.id]: "mobile" }))
+                          }
+                          className={`px-2.5 py-1 rounded-md font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                            activeTab === "mobile"
+                              ? "bg-white text-slate-800 shadow-xs"
+                              : "text-slate-600 hover:text-slate-900"
+                          }`}
+                        >
+                          <Smartphone size={12} />
+                          <span>Mobile</span>
+                          {b.mobileImage ? (
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" title="Mobile ready" />
+                          ) : (
+                            <span className="text-[9px] text-slate-400 font-normal">None</span>
+                          )}
+                        </button>
+                      </div>
+
+                      <span className="px-2 py-0.5 bg-white border border-slate-200 text-slate-700 text-[10px] font-extrabold rounded-md shadow-2xs">
                         #{b.displayOrder}
                       </span>
-                      {b.mobileImage ? (
-                        <span className="px-1.5 py-0.5 bg-emerald-600 text-white text-[9px] font-bold rounded flex items-center gap-1">
-                          <Smartphone size={10} /> Mobile Ready
-                        </span>
+                    </div>
+
+                    {/* Image Preview Container */}
+                    <div className="relative w-full h-36 bg-slate-900 overflow-hidden flex items-center justify-center">
+                      {activeSrc ? (
+                        <>
+                          <img
+                            src={activeSrc}
+                            alt={b.altText || b.title || "Banner"}
+                            className={`w-full h-full ${
+                              isMobileView ? "object-contain bg-slate-950" : "object-cover"
+                            }`}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent pointer-events-none" />
+
+                          {/* Resolution Badge */}
+                          <div className="absolute top-2 left-2 flex items-center gap-1 pointer-events-none">
+                            <span className="px-2 py-0.5 bg-black/70 backdrop-blur-md text-white text-[10px] font-bold rounded">
+                              {isMobileView ? "750 × 500 px (3:2)" : "1920 × 600 px (Panoramic)"}
+                            </span>
+                          </div>
+
+                          {/* Overlay Title */}
+                          <div className="absolute bottom-2 left-2 right-2 text-white pointer-events-none">
+                            {b.subtitle && (
+                              <p className="text-[10px] font-bold uppercase text-[#F8904D] truncate">
+                                {b.subtitle}
+                              </p>
+                            )}
+                            <p className="text-xs font-extrabold truncate">
+                              {b.title || "(No Overlay Title)"}
+                            </p>
+                          </div>
+                        </>
                       ) : (
-                        <span className="px-1.5 py-0.5 bg-slate-700/80 text-slate-300 text-[9px] font-medium rounded flex items-center gap-1">
-                          <Monitor size={10} /> Desktop only
-                        </span>
+                        <div className="w-full h-full flex flex-col items-center justify-center bg-slate-900 text-slate-400 p-3 text-center">
+                          <Smartphone size={22} className="mb-1 text-slate-500" />
+                          <p className="text-xs font-bold text-slate-300">No Mobile Image Uploaded</p>
+                          <p className="text-[10px] text-slate-400">Desktop image is automatically used as fallback.</p>
+                        </div>
                       )}
                     </div>
 
-                    <div className="absolute bottom-2 left-2 right-2 text-white">
-                      {b.subtitle && (
-                        <p className="text-[10px] font-bold uppercase text-[#F8904D] truncate">
-                          {b.subtitle}
-                        </p>
-                      )}
-                      <p className="text-xs font-extrabold truncate">
-                        {b.title || "(No Overlay Title)"}
-                      </p>
+                    {/* Card Actions Footer */}
+                    <div className="p-3 bg-white flex items-center justify-between border-t border-slate-100">
+                      <span className="text-[11px] text-slate-500 font-medium truncate max-w-[160px]" title={activeSrc || ""}>
+                        {activeSrc ? activeSrc.split("/").pop() : "No mobile image"}
+                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => handleOpenEdit(b)}
+                          className="p-1.5 rounded-lg text-slate-600 hover:text-[#2E8B8B] hover:bg-teal-50 transition-colors cursor-pointer"
+                          title="Edit Banner"
+                        >
+                          <Edit2 size={14} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(b.id)}
+                          className="p-1.5 rounded-lg text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                          title="Delete Banner"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
                     </div>
                   </div>
-
-                  {/* Actions */}
-                  <div className="p-3 bg-white flex items-center justify-between border-t border-slate-100">
-                    <span className="text-[11px] text-slate-500 font-medium truncate max-w-[140px]">
-                      {b.altText || b.image.split("/").pop()}
-                    </span>
-                    <div className="flex items-center gap-1.5">
-                      <button
-                        type="button"
-                        onClick={() => handleOpenEdit(b)}
-                        className="p-1.5 rounded-lg text-slate-600 hover:text-[#2E8B8B] hover:bg-teal-50 transition-colors"
-                        title="Edit Banner"
-                      >
-                        <Edit2 size={14} />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(b.id)}
-                        className="p-1.5 rounded-lg text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors"
-                        title="Delete Banner"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
 

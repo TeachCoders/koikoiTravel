@@ -84,7 +84,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
 
   return (
     <section
-      className={`relative w-full h-[70vh] min-h-[460px] max-h-[580px] md:h-[76vh] md:min-h-[600px] md:max-h-[680px] lg:h-[78vh] lg:min-h-[640px] lg:max-h-[720px] xl:h-[80vh] xl:max-h-[740px] flex items-center justify-center ${
+      className={`relative w-full h-[62vw] min-h-[280px] max-h-[480px] md:h-[31.25vw] md:min-h-[380px] md:max-h-[560px] flex items-center justify-center ${
         hasSlides ? "bg-slate-900" : "bg-slate-100"
       } z-20 overflow-hidden`}
     >

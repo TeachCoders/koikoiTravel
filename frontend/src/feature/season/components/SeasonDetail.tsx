@@ -138,7 +138,7 @@ export default function SeasonDetail({
   return (
     <div>
       {/* ===== HERO ===== */}
-      <section className="relative w-full h-[70vh] min-h-[460px] max-h-[580px] md:h-[76vh] md:min-h-[600px] md:max-h-[680px] lg:h-[78vh] lg:min-h-[640px] lg:max-h-[720px] xl:h-[80vh] xl:max-h-[740px] overflow-hidden bg-slate-200">
+      <section className="relative w-full h-[62vw] min-h-[280px] max-h-[480px] md:h-[31.25vw] md:min-h-[380px] md:max-h-[560px] overflow-hidden bg-slate-200">
         {heroImages.length > 0 ? (
           <>
             <HeroSlider images={heroImages} alt={initialSeason.title} />
