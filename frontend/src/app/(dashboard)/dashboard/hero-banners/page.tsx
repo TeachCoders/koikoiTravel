@@ -53,15 +53,15 @@ import ShadcnSelect from "@/components/shared/ShadcnSelect";
 import toast from "react-hot-toast";
 import type { HeroBannerEntityType, HeroFullBanner } from "@/feature/heroBanner/type";
 
-const NAV_TABS: { label: string; value: string; icon: any; badge?: string }[] = [
-  { label: "Home Page", value: "Home", icon: Home, badge: "Default" },
-  { label: "State & Circuit", value: "State", icon: MapPin, badge: "Golden Triangle" },
-  { label: "Tour Packages", value: "TourPackages", icon: Compass },
-  { label: "Country", value: "Country", icon: Globe },
-  { label: "City", value: "City", icon: MapPin },
-  { label: "Travel Experience", value: "TravelExperience", icon: Sparkles },
-  { label: "Blog", value: "Blog", icon: FileText },
-  { label: "All Pages", value: "ALL", icon: Layers },
+const NAV_TABS = [
+  { label: "Home Page", value: "Home" },
+  { label: "State & Circuit", value: "State" },
+  { label: "Tour Packages", value: "TourPackages" },
+  { label: "Country", value: "Country" },
+  { label: "City", value: "City" },
+  { label: "Travel Experience", value: "TravelExperience" },
+  { label: "Blog", value: "Blog" },
+  { label: "All Pages", value: "ALL" },
 ];
 
 const CATEGORIES: { label: string; value: HeroBannerEntityType; icon: any }[] = [
@@ -614,16 +614,15 @@ export default function HeroBannersAdminPage() {
         </div>
       </div>
 
-      {/* 2. NAVIGATION TABS BAR (DEFAULT: HOME PAGE OPEN) */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-3 sm:p-4 space-y-4">
-        {/* Navigation Tabs Header */}
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
+      {/* 2. SIMPLE & SOBER NAVIGATION TABS (NO ICONS, CLEAN UNDERLINE TABS) */}
+      <div className="space-y-3">
+        {/* Sober Underline Navigation Tabs */}
+        <nav aria-label="Hero Categories" className="flex items-center gap-1 sm:gap-3 border-b border-slate-200 overflow-x-auto scrollbar-none px-0.5">
           {NAV_TABS.map((tab) => {
             const count =
               tab.value === "ALL"
                 ? allBanners.length
                 : allBanners.filter((b) => b.entityType === tab.value).length;
-            const Icon = tab.icon;
             const isActive = selectedCategoryFilter === tab.value;
 
             return (
@@ -634,48 +633,44 @@ export default function HeroBannersAdminPage() {
                   setSelectedCategoryFilter(tab.value);
                   setSearchQuery("");
                 }}
-                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer border ${
+                className={`flex items-center gap-2 py-3 px-3 text-xs sm:text-sm whitespace-nowrap cursor-pointer relative -mb-px border-b-2 transition-all ${
                   isActive
-                    ? "bg-[#2E8B8B] text-white border-[#2E8B8B] shadow-xs"
-                    : "bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200/80"
+                    ? "border-[#2E8B8B] text-[#2E8B8B] font-bold"
+                    : "border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 font-medium"
                 }`}
               >
-                <Icon size={16} className={isActive ? "text-white" : "text-slate-500"} />
                 <span>{tab.label}</span>
                 <span
-                  className={`text-[11px] px-2 py-0.5 rounded-full font-black ${
-                    isActive ? "bg-white/25 text-white" : "bg-slate-200 text-slate-600"
+                  className={`text-[11px] px-2 py-0.5 rounded-full font-bold transition-colors ${
+                    isActive
+                      ? "bg-[#2E8B8B]/10 text-[#2E8B8B]"
+                      : "bg-slate-100 text-slate-500"
                   }`}
                 >
                   {count}
                 </span>
-                {tab.badge && !isActive && (
-                  <span className="hidden lg:inline text-[10px] text-[#2E8B8B] font-semibold bg-[#2E8B8B]/10 px-1.5 py-0.5 rounded">
-                    {tab.badge}
-                  </span>
-                )}
               </button>
             );
           })}
-        </div>
+        </nav>
 
         {/* Tab Sub-Controls & Quick Search / Dropdown Row */}
-        <div className="pt-3 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-3">
-          {/* Quick Search inside active tab */}
-          <div className="relative w-full md:w-80">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+          {/* Quick Search */}
+          <div className="relative w-full sm:w-80">
             <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={`Search in ${selectedCategoryFilter === "ALL" ? "all banners" : selectedCategoryFilter}...`}
-              className="w-full pl-9 pr-8 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2E8B8B] transition-all"
+              className="w-full pl-9 pr-8 py-2 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2E8B8B] transition-all shadow-2xs"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
               >
                 <X size={14} />
               </button>
@@ -683,9 +678,9 @@ export default function HeroBannersAdminPage() {
           </div>
 
           {/* Tab Specific Quick Selector / Jump with Shadcn UI */}
-          <div className="flex-1 w-full flex items-center justify-start md:justify-end gap-3">
+          <div className="flex-1 w-full flex items-center justify-start sm:justify-end gap-3">
             {selectedCategoryFilter === "State" && (
-              <div className="w-full md:w-80">
+              <div className="w-full sm:w-80">
                 <ShadcnSelect
                   placeholder="Select State / Circuit (e.g. Golden Triangle)..."
                   icon={MapPin}
@@ -703,7 +698,7 @@ export default function HeroBannersAdminPage() {
             )}
 
             {selectedCategoryFilter === "Country" && (
-              <div className="w-full md:w-80">
+              <div className="w-full sm:w-80">
                 <ShadcnSelect
                   placeholder="Select Country (e.g. India)..."
                   icon={Globe}
@@ -721,7 +716,7 @@ export default function HeroBannersAdminPage() {
             )}
 
             {selectedCategoryFilter === "City" && (
-              <div className="w-full md:w-80">
+              <div className="w-full sm:w-80">
                 <ShadcnSelect
                   placeholder="Select City (e.g. Jaipur, Agra)..."
                   icon={MapPin}
@@ -739,7 +734,7 @@ export default function HeroBannersAdminPage() {
             )}
 
             {selectedCategoryFilter === "TravelExperience" && (
-              <div className="w-full md:w-80">
+              <div className="w-full sm:w-80">
                 <ShadcnSelect
                   placeholder="Select Travel Experience..."
                   icon={Sparkles}
