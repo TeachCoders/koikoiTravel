@@ -103,10 +103,11 @@ export default function HeroBannersAdminPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
   const [editorBannerTab, setEditorBannerTab] = useState<"desktop" | "mobile">("desktop");
+  const [showDestinationChange, setShowDestinationChange] = useState<boolean>(false);
 
   // Edit vs Add & Single vs Multiple
   const [editingBanner, setEditingBanner] = useState<HeroFullBanner | null>(null);
-  const [uploadMode, setUploadMode] = useState<"single" | "multiple">("multiple");
+  const [uploadMode, setUploadMode] = useState<"single" | "multiple">("single");
   const [multipleFiles, setMultipleFiles] = useState<MultipleUploadItem[]>([]);
   const multiFileInputRef = useRef<HTMLInputElement>(null);
 
@@ -376,13 +377,14 @@ export default function HeroBannersAdminPage() {
   };
 
   // Open Add modal with a specific page locked
-  const handleAddImagesToPage = (page: typeof groupedPages[0], defaultMode: "multiple" | "single" = "multiple") => {
+  const handleAddImagesToPage = (page: typeof groupedPages[0], defaultMode: "single" | "multiple" = "single") => {
     setFormCategory(page.entityType);
     setSelectedEntityId(page.entityId);
     setSelectedSlug(page.slug);
     const maxOrder = page.banners.reduce((max, b) => Math.max(max, b.displayOrder ?? 0), 0);
     setDisplayOrder(maxOrder + 1);
     setUploadMode(defaultMode);
+    setShowDestinationChange(false);
     setEditingBanner(null);
     setSelectedFile(null);
     setPreviewUrl(null);
@@ -394,10 +396,11 @@ export default function HeroBannersAdminPage() {
   };
 
   // Open Add/Edit Modal
-  const openAddModal = (bannerToEdit?: HeroFullBanner, defaultMode: "single" | "multiple" = "multiple") => {
+  const openAddModal = (bannerToEdit?: HeroFullBanner, defaultMode: "single" | "multiple" = "single") => {
     if (bannerToEdit) {
       setEditingBanner(bannerToEdit);
       setUploadMode("single");
+      setShowDestinationChange(false);
       setFormCategory(bannerToEdit.entityType as HeroBannerEntityType);
       setSelectedEntityId(bannerToEdit.entityId || 0);
       setSelectedSlug(bannerToEdit.pageSlug || "");
@@ -413,6 +416,7 @@ export default function HeroBannersAdminPage() {
     } else {
       setEditingBanner(null);
       setUploadMode(defaultMode);
+      setShowDestinationChange(true);
       setFormCategory("Home");
       setSelectedEntityId(0);
       setSelectedSlug("");
@@ -605,7 +609,7 @@ export default function HeroBannersAdminPage() {
 
           <Button
             type="button"
-            onClick={() => openAddModal(undefined, "multiple")}
+            onClick={() => openAddModal(undefined, "single")}
             className="bg-[#2E8B8B] hover:bg-[#267373] text-white flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold shadow-xs cursor-pointer"
           >
             <Plus size={16} />
@@ -856,7 +860,7 @@ export default function HeroBannersAdminPage() {
                   <div className="flex items-center gap-2 shrink-0">
                     <Button
                       type="button"
-                      onClick={() => handleAddImagesToPage(page, "multiple")}
+                      onClick={() => handleAddImagesToPage(page, "single")}
                       className="bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold shadow-xs cursor-pointer"
                     >
                       <Plus size={15} />
@@ -866,12 +870,12 @@ export default function HeroBannersAdminPage() {
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() => handleAddImagesToPage(page, "single")}
+                      onClick={() => handleAddImagesToPage(page, "multiple")}
                       className="border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer"
-                      title="Add single banner with crop & resize"
+                      title="Upload multiple photos in bulk at once"
                     >
-                      <Crop size={14} />
-                      <span>Single (Crop)</span>
+                      <Layers size={14} />
+                      <span>Fast Batch</span>
                     </Button>
                   </div>
                 </div>
@@ -1088,20 +1092,20 @@ export default function HeroBannersAdminPage() {
       {/* 5. UPLOAD & EDIT BANNER MODAL (USER-FRIENDLY & SIMPLIFIED) */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-150">
-          <div className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-100 overflow-hidden my-6 max-h-[94vh] flex flex-col">
+          <div className="bg-white rounded-3xl max-w-4xl sm:max-w-5xl w-full shadow-2xl border border-slate-100 overflow-hidden my-4 sm:my-6 max-h-[94vh] flex flex-col">
             {/* Modal Header */}
-            <div className="p-5 sm:p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/70 shrink-0">
+            <div className="p-4 sm:p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/70 shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-[#2E8B8B]/10 text-[#2E8B8B] flex items-center justify-center shrink-0">
                   <Upload size={20} />
                 </div>
                 <div>
-                  <h2 className="text-lg font-black text-slate-900">
+                  <h2 className="text-base sm:text-lg font-black text-slate-900">
                     {editingBanner
                       ? `Edit Slide (ID #${editingBanner.id})`
-                      : uploadMode === "multiple"
-                      ? `Upload Images to ${targetPageDisplayName}`
-                      : `Add Single Banner to ${targetPageDisplayName}`}
+                      : uploadMode === "single"
+                      ? `Add Banner to ${targetPageDisplayName}`
+                      : `Batch Upload Images to ${targetPageDisplayName}`}
                   </h2>
                   <p className="text-xs text-slate-500">
                     Target: <span className="font-bold text-slate-800">{targetPageDisplayName}</span>
@@ -1118,211 +1122,242 @@ export default function HeroBannersAdminPage() {
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-5 overflow-y-auto flex-1">
-              {/* Target Page Selection Accordion / Switcher */}
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80 space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                    <MapPin size={13} className="text-[#2E8B8B]" />
-                    <span>Selected Page Destination:</span>
-                  </label>
-                  <span className="text-xs font-bold text-[#2E8B8B] bg-white px-2.5 py-0.5 rounded-full border border-[#2E8B8B]/20">
-                    {targetPageDisplayName}
-                  </span>
+            <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto flex-1">
+              {/* Target Page Destination (Compact with Smooth Collapsible Selector) */}
+              <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-3 sm:p-3.5 space-y-3">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-8 h-8 rounded-xl bg-[#2E8B8B]/10 text-[#2E8B8B] flex items-center justify-center shrink-0">
+                      <MapPin size={15} />
+                    </div>
+                    <div className="min-w-0">
+                      <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block">
+                        Selected Page Destination
+                      </span>
+                      <span className="text-xs sm:text-sm font-bold text-slate-800 truncate block">
+                        {targetPageDisplayName}
+                      </span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowDestinationChange(!showDestinationChange)}
+                    className="text-xs font-bold text-[#2E8B8B] hover:text-[#246f6f] bg-white px-3 py-1.5 rounded-xl border border-[#2E8B8B]/30 hover:bg-[#2E8B8B]/5 transition-colors cursor-pointer shrink-0 shadow-2xs"
+                  >
+                    {showDestinationChange ? "Close Selector ▲" : "Change Page ▼"}
+                  </button>
                 </div>
 
-                {/* Category Picker */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-                  {CATEGORIES.map((cat) => (
-                    <button
-                      type="button"
-                      key={cat.value}
-                      onClick={() => handleCategoryChange(cat.value)}
-                      className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all text-center border cursor-pointer ${
-                        formCategory === cat.value
-                          ? "bg-[#2E8B8B] text-white border-[#2E8B8B] shadow-xs"
-                          : "bg-white text-slate-600 border-slate-200 hover:bg-slate-100"
-                      }`}
-                    >
-                      {cat.label}
-                    </button>
-                  ))}
-                </div>
+                {/* Collapsible Destination Picker */}
+                {showDestinationChange && (
+                  <div className="pt-2 border-t border-slate-200/80 space-y-2.5 animate-in fade-in duration-150">
+                    <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block">
+                      Choose Destination Page:
+                    </label>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                      {CATEGORIES.map((cat) => (
+                        <button
+                          type="button"
+                          key={cat.value}
+                          onClick={() => handleCategoryChange(cat.value)}
+                          className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all text-center border cursor-pointer ${
+                            formCategory === cat.value
+                              ? "bg-[#2E8B8B] text-white border-[#2E8B8B] shadow-xs"
+                              : "bg-white text-slate-600 border-slate-200 hover:bg-slate-100"
+                          }`}
+                        >
+                          {cat.label}
+                        </button>
+                      ))}
+                    </div>
 
-                {/* Dynamic Entity Dropdown with Shadcn UI (with Search) */}
-                {formCategory === "State" && (
-                  <ShadcnSelect
-                    label="Choose State or Iconic Circuit (e.g. Golden Triangle, Rajasthan)"
-                    icon={MapPin}
-                    value={selectedSlug}
-                    placeholder="-- Select State or Circuit --"
-                    searchPlaceholder="Type to search state or circuit..."
-                    items={states.map((s: any) => ({
-                      label: s.title,
-                      value: s.slug,
-                      sublabel: s.slug,
-                      icon: MapPin,
-                    }))}
-                    onChange={(val) => {
-                      const item = states.find((s: any) => s.slug === val);
-                      if (item) {
-                        setSelectedSlug(item.slug);
-                        setSelectedEntityId(item.id);
-                      } else {
-                        setSelectedSlug("");
-                        setSelectedEntityId(0);
-                      }
-                    }}
-                  />
-                )}
+                    {/* Dynamic Entity Dropdown with Shadcn UI (with Search) */}
+                    {formCategory === "State" && (
+                      <ShadcnSelect
+                        label="Choose State or Iconic Circuit (e.g. Golden Triangle, Rajasthan)"
+                        icon={MapPin}
+                        value={selectedSlug}
+                        placeholder="-- Select State or Circuit --"
+                        searchPlaceholder="Type to search state or circuit..."
+                        items={states.map((s: any) => ({
+                          label: s.title,
+                          value: s.slug,
+                          sublabel: s.slug,
+                          icon: MapPin,
+                        }))}
+                        onChange={(val) => {
+                          const item = states.find((s: any) => s.slug === val);
+                          if (item) {
+                            setSelectedSlug(item.slug);
+                            setSelectedEntityId(item.id);
+                          } else {
+                            setSelectedSlug("");
+                            setSelectedEntityId(0);
+                          }
+                        }}
+                      />
+                    )}
 
-                {formCategory === "Country" && (
-                  <ShadcnSelect
-                    label="Choose Country Destination"
-                    icon={Globe}
-                    value={selectedSlug}
-                    placeholder="-- Select Country --"
-                    searchPlaceholder="Type to search country..."
-                    items={countries.map((c: any) => ({
-                      label: c.title,
-                      value: c.slug,
-                      sublabel: c.slug,
-                      icon: Globe,
-                    }))}
-                    onChange={(val) => {
-                      const item = countries.find((c: any) => c.slug === val);
-                      if (item) {
-                        setSelectedSlug(item.slug);
-                        setSelectedEntityId(item.id);
-                      } else {
-                        setSelectedSlug("");
-                        setSelectedEntityId(0);
-                      }
-                    }}
-                  />
-                )}
+                    {formCategory === "Country" && (
+                      <ShadcnSelect
+                        label="Choose Country Destination"
+                        icon={Globe}
+                        value={selectedSlug}
+                        placeholder="-- Select Country --"
+                        searchPlaceholder="Type to search country..."
+                        items={countries.map((c: any) => ({
+                          label: c.title,
+                          value: c.slug,
+                          sublabel: c.slug,
+                          icon: Globe,
+                        }))}
+                        onChange={(val) => {
+                          const item = countries.find((c: any) => c.slug === val);
+                          if (item) {
+                            setSelectedSlug(item.slug);
+                            setSelectedEntityId(item.id);
+                          } else {
+                            setSelectedSlug("");
+                            setSelectedEntityId(0);
+                          }
+                        }}
+                      />
+                    )}
 
-                {formCategory === "City" && (
-                  <ShadcnSelect
-                    label="Choose City / Destination (e.g. Jaipur, Agra, Udaipur)"
-                    icon={MapPin}
-                    value={selectedSlug}
-                    placeholder="-- Select City --"
-                    searchPlaceholder="Type to search city..."
-                    items={cities.map((c: any) => ({
-                      label: c.title,
-                      value: c.slug,
-                      sublabel: c.state?.title || c.slug,
-                      icon: MapPin,
-                    }))}
-                    onChange={(val) => {
-                      const item = cities.find((c: any) => c.slug === val);
-                      if (item) {
-                        setSelectedSlug(item.slug);
-                        setSelectedEntityId(item.id);
-                      } else {
-                        setSelectedSlug("");
-                        setSelectedEntityId(0);
-                      }
-                    }}
-                  />
-                )}
+                    {formCategory === "City" && (
+                      <ShadcnSelect
+                        label="Choose City / Destination (e.g. Jaipur, Agra, Udaipur)"
+                        icon={MapPin}
+                        value={selectedSlug}
+                        placeholder="-- Select City --"
+                        searchPlaceholder="Type to search city..."
+                        items={cities.map((c: any) => ({
+                          label: c.title,
+                          value: c.slug,
+                          sublabel: c.state?.title || c.slug,
+                          icon: MapPin,
+                        }))}
+                        onChange={(val) => {
+                          const item = cities.find((c: any) => c.slug === val);
+                          if (item) {
+                            setSelectedSlug(item.slug);
+                            setSelectedEntityId(item.id);
+                          } else {
+                            setSelectedSlug("");
+                            setSelectedEntityId(0);
+                          }
+                        }}
+                      />
+                    )}
 
-                {formCategory === "TravelExperience" && (
-                  <ShadcnSelect
-                    label="Choose Travel Experience"
-                    icon={Sparkles}
-                    value={selectedSlug}
-                    placeholder="-- Select Travel Experience --"
-                    searchPlaceholder="Type to search travel experience..."
-                    items={travelExperiences.map((t: any) => ({
-                      label: t.title,
-                      value: t.slug,
-                      sublabel: t.slug,
-                      icon: Sparkles,
-                    }))}
-                    onChange={(val) => {
-                      const item = travelExperiences.find((t: any) => t.slug === val);
-                      if (item) {
-                        setSelectedSlug(item.slug);
-                        setSelectedEntityId(item.id);
-                      } else {
-                        setSelectedSlug("");
-                        setSelectedEntityId(0);
-                      }
-                    }}
-                  />
-                )}
+                    {formCategory === "TravelExperience" && (
+                      <ShadcnSelect
+                        label="Choose Travel Experience"
+                        icon={Sparkles}
+                        value={selectedSlug}
+                        placeholder="-- Select Travel Experience --"
+                        searchPlaceholder="Type to search travel experience..."
+                        items={travelExperiences.map((t: any) => ({
+                          label: t.title,
+                          value: t.slug,
+                          sublabel: t.slug,
+                          icon: Sparkles,
+                        }))}
+                        onChange={(val) => {
+                          const item = travelExperiences.find((t: any) => t.slug === val);
+                          if (item) {
+                            setSelectedSlug(item.slug);
+                            setSelectedEntityId(item.id);
+                          } else {
+                            setSelectedSlug("");
+                            setSelectedEntityId(0);
+                          }
+                        }}
+                      />
+                    )}
 
-                {formCategory === "Blog" && (
-                  <ShadcnSelect
-                    label="Choose Blog Target"
-                    icon={FileText}
-                    value={selectedSlug || "blog"}
-                    placeholder="-- Select Blog --"
-                    searchPlaceholder="Type to search blog post..."
-                    items={[
-                      { label: "Main Blog Page (/blog)", value: "blog", icon: FileText },
-                      ...blogPosts.map((b: any) => ({
-                        label: b.title,
-                        value: b.slug,
-                        sublabel: `/blog/${b.slug}`,
-                        icon: FileText,
-                      })),
-                    ]}
-                    onChange={(val) => {
-                      if (val === "blog") {
-                        setSelectedSlug("blog");
-                        setSelectedEntityId(0);
-                      } else {
-                        const item = blogPosts.find((b: any) => b.slug === val);
-                        if (item) {
-                          setSelectedSlug(item.slug);
-                          setSelectedEntityId(item.id);
-                        }
-                      }
-                    }}
-                  />
+                    {formCategory === "Blog" && (
+                      <ShadcnSelect
+                        label="Choose Blog Target"
+                        icon={FileText}
+                        value={selectedSlug || "blog"}
+                        placeholder="-- Select Blog --"
+                        searchPlaceholder="Type to search blog post..."
+                        items={[
+                          { label: "Main Blog Page (/blog)", value: "blog", icon: FileText },
+                          ...blogPosts.map((b: any) => ({
+                            label: b.title,
+                            value: b.slug,
+                            sublabel: `/blog/${b.slug}`,
+                            icon: FileText,
+                          })),
+                        ]}
+                        onChange={(val) => {
+                          if (val === "blog") {
+                            setSelectedSlug("blog");
+                            setSelectedEntityId(0);
+                          } else {
+                            const item = blogPosts.find((b: any) => b.slug === val);
+                            if (item) {
+                              setSelectedSlug(item.slug);
+                              setSelectedEntityId(item.id);
+                            }
+                          }
+                        }}
+                      />
+                    )}
+                  </div>
                 )}
               </div>
 
-              {/* Mode Switcher: Multiple Images vs Single Crop */}
+              {/* Mode Switcher: Single Banner (Crop & Mobile Resize) vs Multiple Batch */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  How would you like to upload?
+                  Choose Upload Method:
                 </label>
-                <div className="flex items-center p-1 bg-slate-100 rounded-xl border border-slate-200">
-                  <button
-                    type="button"
-                    onClick={() => setUploadMode("multiple")}
-                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                      uploadMode === "multiple"
-                        ? "bg-white text-indigo-700 shadow-xs"
-                        : "text-slate-500 hover:text-slate-800"
-                    }`}
-                  >
-                    <Layers size={14} />
-                    <span>Upload Multiple Images (Fast Batch)</span>
-                  </button>
-
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-1 bg-slate-100 rounded-2xl border border-slate-200">
                   <button
                     type="button"
                     onClick={() => setUploadMode("single")}
-                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    className={`py-2.5 px-3 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
                       uploadMode === "single"
-                        ? "bg-white text-[#2E8B8B] shadow-xs"
-                        : "text-slate-500 hover:text-slate-800"
+                        ? "bg-white text-[#2E8B8B] shadow-xs border border-slate-200"
+                        : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
-                    <Crop size={14} />
-                    <span>Single Banner (with Crop & Resize)</span>
+                    <Crop size={15} />
+                    <span>Single Slide (Desktop & Mobile Crop)</span>
+                    <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">
+                      Recommended
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setUploadMode("multiple")}
+                    className={`py-2.5 px-3 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                      uploadMode === "multiple"
+                        ? "bg-white text-indigo-700 shadow-xs border border-slate-200"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    <Layers size={15} />
+                    <span>Multiple Photos (Fast Bulk Batch)</span>
                   </button>
                 </div>
               </div>
 
-              {/* MODE 1: MULTIPLE IMAGES BATCH UPLOAD (SUPER USER-FRIENDLY) */}
+              {/* MODE 1: MULTIPLE IMAGES BATCH UPLOAD */}
               {uploadMode === "multiple" ? (
                 <div className="space-y-3">
+                  <div className="bg-indigo-50/70 border border-indigo-200/80 rounded-xl p-3 flex items-start gap-2.5">
+                    <Layers size={16} className="text-indigo-600 mt-0.5 shrink-0" />
+                    <div className="text-xs text-indigo-900">
+                      <span className="font-bold">Fast Bulk Batch:</span> Upload multiple photos at once. To set dedicated mobile size (750×500) or custom crop boundaries for a photo, click &quot;Single Slide (Desktop &amp; Mobile Crop)&quot; above.
+                    </div>
+                  </div>
+
                   {/* Multi Dropzone */}
                   <div
                     onClick={() => multiFileInputRef.current?.click()}
@@ -1417,8 +1452,23 @@ export default function HeroBannersAdminPage() {
                                 <X size={12} />
                               </button>
                             </div>
-                            <div className="p-1 bg-white text-center">
-                              <p className="text-[10px] font-medium text-slate-700 truncate">{item.name}</p>
+                            <div className="p-1.5 bg-white flex items-center justify-between text-[11px] border-t border-slate-100">
+                              <p className="font-medium text-slate-700 truncate max-w-[100px]">{item.name}</p>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setSelectedFile(item.file);
+                                  setPreviewUrl(item.preview);
+                                  setUploadMode("single");
+                                  removeMultipleItem(item.id);
+                                  toast.success("Moved image to Single Slide mode for cropping and mobile sizing.");
+                                }}
+                                className="text-xs text-[#2E8B8B] hover:underline font-bold flex items-center gap-0.5 cursor-pointer"
+                                title="Crop & set mobile banner for this image"
+                              >
+                                <Crop size={11} />
+                                <span>Crop</span>
+                              </button>
                             </div>
                           </div>
                         ))}
@@ -1427,72 +1477,41 @@ export default function HeroBannersAdminPage() {
                   )}
                 </div>
               ) : (
-                /* MODE 2: SINGLE BANNER WITH CROP & RESIZE (SIMPLIFIED & INTUITIVE) */
-                <div className="space-y-4">
-                  {/* Desktop vs Mobile Tabs */}
-                  <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
-                    <button
-                      type="button"
-                      onClick={() => setEditorBannerTab("desktop")}
-                      className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                        editorBannerTab === "desktop"
-                          ? "bg-[#2E8B8B] text-white shadow-xs"
-                          : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
-                      }`}
-                    >
-                      <Monitor size={15} />
-                      <span>Desktop Banner (1920 × 600)</span>
-                      {previewUrl ? (
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-500" />
-                      ) : (
-                        <span className="text-rose-400 font-black">*</span>
-                      )}
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setEditorBannerTab("mobile")}
-                      className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                        editorBannerTab === "mobile"
-                          ? "bg-[#2E8B8B] text-white shadow-xs"
-                          : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
-                      }`}
-                    >
-                      <Smartphone size={15} />
-                      <span>Mobile Banner (750 × 500)</span>
-                      {mobilePreviewUrl ? (
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-500" />
-                      ) : (
-                        <span className="text-[10px] font-normal opacity-75">(Optional)</span>
-                      )}
-                    </button>
-                  </div>
-
-                  {/* Desktop Cropper Tab */}
-                  {editorBannerTab === "desktop" && (
-                    <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-4 space-y-3">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                        <div>
-                          <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                            Desktop Banner (1920 × 600 px)
-                          </label>
-                          <p className="text-[11px] text-slate-500">
-                            16:5 ratio for desktops, laptops and tablets.
-                          </p>
+                /* MODE 2: SINGLE BANNER WITH BOTH DESKTOP (1920×600) AND MOBILE (750×500) CLEARLY VISIBLE */
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+                  {/* 1. DESKTOP HERO BANNER (1920 × 600 px) */}
+                  <div className="bg-slate-50/70 border-2 border-slate-200 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 rounded-lg bg-teal-600 text-white flex items-center justify-center text-xs">
+                            <Monitor size={14} />
+                          </span>
+                          <span className="text-xs font-black text-slate-800 uppercase tracking-wide">
+                            Desktop Banner
+                          </span>
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-black bg-rose-100 text-rose-700">
+                            1920 × 600 px
+                          </span>
                         </div>
 
                         {libraryImages.length > 0 && (
                           <button
                             type="button"
                             onClick={() => setLibraryPickerTarget("desktop")}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-700 hover:text-[#2E8B8B] text-xs font-semibold rounded-xl shadow-xs transition-colors shrink-0 cursor-pointer"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-700 hover:text-[#2E8B8B] text-xs font-semibold rounded-lg shadow-2xs transition-colors cursor-pointer"
                           >
-                            <ImageIcon size={13} />
-                            <span>📂 Choose from Library</span>
+                            <ImageIcon size={12} />
+                            <span>Library</span>
                           </button>
                         )}
                       </div>
+                      <p className="text-[11px] text-slate-500">
+                        Wide 16:5 ratio for desktops, laptops and iPads. Click to crop & auto-center.
+                      </p>
+                    </div>
 
+                    <div className="flex-1">
                       <ImageCropUpload
                         onFileSelect={(file) => {
                           setSelectedFile(file);
@@ -1510,65 +1529,62 @@ export default function HeroBannersAdminPage() {
                         label="Select or Drag Desktop Banner (Click to Crop / Center)"
                         initialImage={previewUrl || undefined}
                       />
+                    </div>
 
-                      {/* Live Desktop Preview with Overlay */}
-                      {previewUrl && (
-                        <div className="mt-2">
-                          <p className="text-xs font-bold text-slate-500 mb-1 flex items-center gap-1">
-                            <Eye size={13} /> Desktop Live Ratio (1920×600) Overlay Preview:
-                          </p>
-                          <div className="relative w-full h-36 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200">
-                            <Image
-                              src={previewUrl}
-                              alt="Preview"
-                              fill
-                              unoptimized={previewUrl.startsWith("blob:")}
-                              className="object-cover object-center"
-                            />
-                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-center p-4">
-                              <div>
-                                {subtitle && <p className="text-xs font-bold uppercase text-[#F8904D]">{subtitle}</p>}
-                                <h4 className="text-lg font-black uppercase tracking-wide">
-                                  {title || "Sample Overlay Title"}
-                                </h4>
-                              </div>
+                    {/* Live Desktop Preview with Overlay */}
+                    {previewUrl && (
+                      <div className="pt-2 border-t border-slate-200/80">
+                        <p className="text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
+                          <Eye size={12} /> Live Desktop Ratio (1920×600) Preview:
+                        </p>
+                        <div className="relative w-full h-28 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200">
+                          <Image
+                            src={previewUrl}
+                            alt="Desktop Preview"
+                            fill
+                            unoptimized={previewUrl.startsWith("blob:")}
+                            className="object-cover object-center"
+                          />
+                          <div className="absolute inset-0 bg-black/35 flex items-center justify-center text-white text-center p-3">
+                            <div>
+                              {subtitle && <p className="text-[10px] font-bold uppercase text-[#F8904D]">{subtitle}</p>}
+                              <h4 className="text-xs sm:text-sm font-black uppercase tracking-wide">
+                                {title || "(Banner Overlay Title)"}
+                              </h4>
                             </div>
                           </div>
                         </div>
-                      )}
-                    </div>
-                  )}
+                      </div>
+                    )}
+                  </div>
 
-                  {/* Mobile Cropper Tab */}
-                  {editorBannerTab === "mobile" && (
-                    <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-4 space-y-3">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                              Mobile Dedicated Banner (750 × 500 px)
-                            </label>
-                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-200">
-                              Optional
-                            </span>
-                          </div>
-                          <p className="text-[11px] text-slate-500">
-                            3:2 portrait/compact ratio for mobile phones. Zero side cropping!
-                          </p>
+                  {/* 2. MOBILE DEDICATED BANNER (750 × 500 px) */}
+                  <div className="bg-slate-50/70 border-2 border-slate-200 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xs">
+                            <Smartphone size={14} />
+                          </span>
+                          <span className="text-xs font-black text-slate-800 uppercase tracking-wide">
+                            Mobile Banner
+                          </span>
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-black bg-indigo-100 text-indigo-700">
+                            750 × 500 px
+                          </span>
                         </div>
 
-                        <div className="flex items-center gap-2 shrink-0">
+                        <div className="flex items-center gap-1.5">
                           {libraryImages.length > 0 && (
                             <button
                               type="button"
                               onClick={() => setLibraryPickerTarget("mobile")}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-700 hover:text-[#2E8B8B] text-xs font-semibold rounded-xl shadow-xs transition-colors cursor-pointer"
+                              className="inline-flex items-center gap-1 px-2.5 py-1 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-700 hover:text-[#2E8B8B] text-xs font-semibold rounded-lg shadow-2xs transition-colors cursor-pointer"
                             >
-                              <ImageIcon size={13} />
-                              <span>📂 Choose from Library</span>
+                              <ImageIcon size={12} />
+                              <span>Library</span>
                             </button>
                           )}
-
                           {mobilePreviewUrl && (
                             <button
                               type="button"
@@ -1579,14 +1595,19 @@ export default function HeroBannersAdminPage() {
                                 setMobilePreviewUrl(null);
                                 setRemoveMobileImage(true);
                               }}
-                              className="text-xs text-rose-600 hover:text-rose-800 font-semibold px-2 py-1 rounded-lg hover:bg-rose-50 cursor-pointer"
+                              className="text-[11px] text-rose-600 hover:text-rose-800 font-semibold px-1.5 py-0.5 rounded hover:bg-rose-50 cursor-pointer"
                             >
-                              Remove Mobile Image
+                              Remove
                             </button>
                           )}
                         </div>
                       </div>
+                      <p className="text-[11px] text-slate-500">
+                        3:2 ratio for mobile phones. Upload or crop here so photos don&apos;t get cut on mobile!
+                      </p>
+                    </div>
 
+                    <div className="flex-1">
                       <ImageCropUpload
                         onFileSelect={(file) => {
                           setSelectedMobileFile(file);
@@ -1609,7 +1630,39 @@ export default function HeroBannersAdminPage() {
                         initialImage={mobilePreviewUrl || undefined}
                       />
                     </div>
-                  )}
+
+                    {/* Live Mobile Preview or Informational Note */}
+                    {mobilePreviewUrl ? (
+                      <div className="pt-2 border-t border-slate-200/80">
+                        <p className="text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
+                          <Eye size={12} /> Live Mobile Ratio (750×500) Preview:
+                        </p>
+                        <div className="relative w-36 h-24 mx-auto bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200">
+                          <Image
+                            src={mobilePreviewUrl}
+                            alt="Mobile Preview"
+                            fill
+                            unoptimized={mobilePreviewUrl.startsWith("blob:")}
+                            className="object-cover object-center"
+                          />
+                          <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white text-center p-2">
+                            <div>
+                              {subtitle && <p className="text-[8px] font-bold uppercase text-[#F8904D]">{subtitle}</p>}
+                              <h4 className="text-[10px] font-black uppercase tracking-wide">
+                                {title || "(Title)"}
+                              </h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-indigo-50/60 border border-indigo-100 rounded-xl p-2.5 text-center">
+                        <p className="text-[11px] text-indigo-800 font-medium leading-relaxed">
+                          📱 <span className="font-bold">Optional:</span> If you don&apos;t upload a mobile banner, mobile screens will automatically center-zoom the desktop banner.
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
 
