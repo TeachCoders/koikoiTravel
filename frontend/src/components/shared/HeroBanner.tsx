@@ -100,15 +100,13 @@ export default function HeroBanner({
         </div>
       )}
 
-      {/* Transparent black background overlay layers (applied to all hero sections across all pages) */}
+      {/* Soft, light transparent black overlay so photos stay vibrant while text remains crystal clear */}
       {(hasSlides || hasFallback) && (
         <>
-          {/* Base transparent black tint across the whole banner */}
-          <div className="absolute inset-0 bg-black/25 z-10 pointer-events-none" />
-          {/* Subtle bottom-to-top gradient for crisp text legibility and contrast */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/10 z-10 pointer-events-none" />
-          {/* Left-to-right soft gradient for left-aligned tags, text and buttons */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent z-10 pointer-events-none" />
+          {/* Subtle bottom-to-top gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/15 to-transparent z-10 pointer-events-none" />
+          {/* Subtle left-to-right soft gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/10 to-transparent z-10 pointer-events-none" />
         </>
       )}
 
