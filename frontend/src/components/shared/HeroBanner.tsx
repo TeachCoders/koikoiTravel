@@ -57,7 +57,7 @@ export default function HeroBanner({
   gradient = "bottom",
   interval = 6000,
   children,
-  heightClass = "h-[70vw] min-h-[320px] max-h-[550px] md:h-[35.7vw] md:min-h-[440px] md:max-h-[640px]",
+  heightClass = "h-[80vw] min-h-[365px] max-h-[630px] md:h-[41vw] md:min-h-[505px] md:max-h-[735px]",
   className = "",
 }: HeroBannerProps) {
   // Normalize slides
