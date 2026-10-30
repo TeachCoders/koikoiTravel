@@ -126,12 +126,43 @@ export default function HeroBannerManagerSection({
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!editingBanner && !desktopFile && !desktopPreview) {
-      toast.error("Please upload or select a Desktop Banner image (1920 × 600 px)");
+    if (!editingBanner && !desktopFile && !desktopPreview && !mobileFile && !mobilePreview) {
+      toast.error("Please upload or select at least one banner image (Desktop or Mobile).");
       return;
     }
 
     try {
+      // SMART CASE: If user uploaded ONLY a mobile image while adding a banner,
+      // and there is already exactly 1 existing slide that doesn't have a mobile image,
+      // automatically attach the mobile image to that slide!
+      if (
+        !editingBanner &&
+        !desktopFile &&
+        !desktopPreview &&
+        (mobileFile || mobilePreview) &&
+        banners.length === 1 &&
+        !banners[0].mobileImage
+      ) {
+        const target = banners[0];
+        const formData = new FormData();
+        formData.append("entityType", entityType);
+        formData.append("entityId", String(entityId || 0));
+        if (pageSlug) formData.append("pageSlug", pageSlug.trim().toLowerCase());
+        if (mobileFile) {
+          formData.append("mobileImage", mobileFile);
+        } else if (mobilePreview && !mobilePreview.startsWith("blob:")) {
+          formData.append("mobileImage", mobilePreview);
+        }
+        if (title.trim()) formData.append("title", title.trim());
+        if (subtitle.trim()) formData.append("subtitle", subtitle.trim());
+        if (altText.trim()) formData.append("altText", altText.trim());
+
+        await updateBanner.mutateAsync({ id: target.id, formData });
+        toast.success("Mobile banner added to existing slide successfully!");
+        resetForm();
+        return;
+      }
+
       const formData = new FormData();
       formData.append("entityType", entityType);
       formData.append("entityId", String(entityId || 0));
@@ -141,6 +172,13 @@ export default function HeroBannerManagerSection({
         formData.append("image", desktopFile);
       } else if (desktopPreview && !desktopPreview.startsWith("blob:")) {
         formData.append("image", desktopPreview);
+      } else if (!editingBanner && (mobileFile || mobilePreview)) {
+        // Fallback: If no desktop image, use mobile image as desktop fallback
+        if (mobileFile) {
+          formData.append("image", mobileFile);
+        } else if (mobilePreview && !mobilePreview.startsWith("blob:")) {
+          formData.append("image", mobilePreview);
+        }
       }
 
       if (mobileFile) {
@@ -329,7 +367,15 @@ export default function HeroBannerManagerSection({
                         <div className="w-full h-full flex flex-col items-center justify-center bg-slate-900 text-slate-400 p-3 text-center">
                           <Smartphone size={22} className="mb-1 text-slate-500" />
                           <p className="text-xs font-bold text-slate-300">No Mobile Image Uploaded</p>
-                          <p className="text-[10px] text-slate-400">Desktop image is automatically used as fallback.</p>
+                          <p className="text-[10px] text-slate-400 mb-2">Desktop image is automatically used as fallback.</p>
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEdit(b)}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold rounded-lg shadow-2xs cursor-pointer transition-colors"
+                          >
+                            <Plus size={12} />
+                            <span>+ Add Mobile Image</span>
+                          </button>
                         </div>
                       )}
                     </div>
@@ -387,106 +433,60 @@ export default function HeroBannerManagerSection({
                 </button>
               </div>
 
-              {/* Tabs Switcher: Desktop Banner / Mobile Banner */}
-              <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
-                <button
-                  type="button"
-                  onClick={() => setBannerTab("desktop")}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                    bannerTab === "desktop"
-                      ? "bg-[#2E8B8B] text-white shadow-xs"
-                      : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
-                  }`}
-                >
-                  <Monitor size={15} />
-                  <span>Desktop Banner (1920 × 600)</span>
-                  {desktopPreview ? (
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-500" title="Image selected" />
-                  ) : (
-                    <span className="text-rose-400 font-extrabold">*</span>
-                  )}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setBannerTab("mobile")}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                    bannerTab === "mobile"
-                      ? "bg-[#2E8B8B] text-white shadow-xs"
-                      : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
-                  }`}
-                >
-                  <Smartphone size={15} />
-                  <span>Mobile Banner (750 × 500)</span>
-                  {mobilePreview ? (
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-500" title="Mobile image selected" />
-                  ) : (
-                    <span className="text-[10px] font-normal opacity-75">(Optional)</span>
-                  )}
-                </button>
-              </div>
-
-              {/* Tab 1: Desktop Banner */}
-              {bannerTab === "desktop" && (
-                <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3 animate-in fade-in duration-150">
+              {/* Desktop & Mobile Banners Side-by-Side (2 Columns) */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {/* 1. Desktop Panoramic Banner */}
+                <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3 flex flex-col justify-between">
                   <div className="flex items-center justify-between">
-                    <div>
+                    <div className="flex items-center gap-2">
+                      <Monitor size={15} className="text-[#2E8B8B]" />
                       <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                        Desktop Panoramic Banner (1920 × 600 px){" "}
-                        {editingBanner ? (
-                          <span className="text-slate-400 font-normal lowercase">
-                            (leave unchanged to keep current)
-                          </span>
-                        ) : (
-                          <span className="text-rose-500">*</span>
-                        )}
+                        Desktop Banner (1920 × 600 px)
                       </label>
-                      <p className="text-[11px] text-slate-500">
-                        Standard wide hero banner for Laptops, Desktops and Tablets.
-                      </p>
+                      {desktopPreview ? (
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-500" title="Desktop image selected" />
+                      ) : null}
                     </div>
+                    <span className="text-[10px] text-slate-400">Panoramic wide ratio</span>
                   </div>
 
-                  <ImageCropUpload
-                    onFileSelect={(file) => {
-                      setDesktopFile(file);
-                      if (desktopPreview && desktopPreview.startsWith("blob:")) {
-                        URL.revokeObjectURL(desktopPreview);
-                      }
-                      setDesktopPreview(URL.createObjectURL(file));
-                    }}
-                    onClear={() => {
-                      setDesktopFile(null);
-                      if (desktopPreview && desktopPreview.startsWith("blob:")) {
-                        URL.revokeObjectURL(desktopPreview);
-                      }
-                      setDesktopPreview(null);
-                    }}
-                    maxWidth={1920}
-                    maxHeight={600}
-                    aspectRatioPreset="hero"
-                    label="Upload Desktop Banner (1920 × 600 px) — Click to Crop & Resize"
-                    initialImage={desktopPreview || undefined}
-                  />
+                  <div className="flex-1">
+                    <ImageCropUpload
+                      key={`desktop-${editingBanner ? editingBanner.id : "new"}`}
+                      onFileSelect={(file) => {
+                        setDesktopFile(file);
+                        if (desktopPreview && desktopPreview.startsWith("blob:")) {
+                          URL.revokeObjectURL(desktopPreview);
+                        }
+                        setDesktopPreview(URL.createObjectURL(file));
+                      }}
+                      onClear={() => {
+                        setDesktopFile(null);
+                        if (desktopPreview && desktopPreview.startsWith("blob:")) {
+                          URL.revokeObjectURL(desktopPreview);
+                        }
+                        setDesktopPreview(null);
+                      }}
+                      maxWidth={1920}
+                      maxHeight={600}
+                      aspectRatioPreset="hero"
+                      label="Upload Desktop Banner (1920 × 600 px)"
+                      initialImage={desktopPreview || undefined}
+                    />
+                  </div>
                 </div>
-              )}
 
-              {/* Tab 2: Mobile Dedicated Banner */}
-              {bannerTab === "mobile" && (
-                <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3 animate-in fade-in duration-150">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                          Mobile Dedicated Banner (750 × 500 px)
-                        </label>
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-200">
-                          Optional (Recommended)
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-slate-500">
-                        Dedicated 3:2 portrait/compact ratio for smartphones. Zero side-cropping!
-                      </p>
+                {/* 2. Mobile Dedicated Banner */}
+                <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3 flex flex-col justify-between">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Smartphone size={15} className="text-indigo-600" />
+                      <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                        Mobile Banner (750 × 500 px)
+                      </label>
+                      <span className="px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-200">
+                        Optional
+                      </span>
                     </div>
 
                     {mobilePreview && (
@@ -500,38 +500,41 @@ export default function HeroBannerManagerSection({
                           setMobilePreview(null);
                           setRemoveMobileImage(true);
                         }}
-                        className="text-xs text-rose-600 hover:text-rose-800 font-semibold px-2 py-1 rounded-lg hover:bg-rose-50 self-start cursor-pointer"
+                        className="text-xs text-rose-600 hover:text-rose-800 font-semibold px-2 py-0.5 rounded hover:bg-rose-50 cursor-pointer"
                       >
-                        Remove Mobile Image
+                        Remove
                       </button>
                     )}
                   </div>
 
-                  <ImageCropUpload
-                    onFileSelect={(file) => {
-                      setMobileFile(file);
-                      setRemoveMobileImage(false);
-                      if (mobilePreview && mobilePreview.startsWith("blob:")) {
-                        URL.revokeObjectURL(mobilePreview);
-                      }
-                      setMobilePreview(URL.createObjectURL(file));
-                    }}
-                    onClear={() => {
-                      setMobileFile(null);
-                      if (mobilePreview && mobilePreview.startsWith("blob:")) {
-                        URL.revokeObjectURL(mobilePreview);
-                      }
-                      setMobilePreview(null);
-                      setRemoveMobileImage(true);
-                    }}
-                    maxWidth={750}
-                    maxHeight={500}
-                    aspectRatioPreset="mobileHero"
-                    label="Upload Mobile Banner (750 × 500 px) — Click to Crop & Resize"
-                    initialImage={mobilePreview || undefined}
-                  />
+                  <div className="flex-1">
+                    <ImageCropUpload
+                      key={`mobile-${editingBanner ? editingBanner.id : "new"}`}
+                      onFileSelect={(file) => {
+                        setMobileFile(file);
+                        setRemoveMobileImage(false);
+                        if (mobilePreview && mobilePreview.startsWith("blob:")) {
+                          URL.revokeObjectURL(mobilePreview);
+                        }
+                        setMobilePreview(URL.createObjectURL(file));
+                      }}
+                      onClear={() => {
+                        setMobileFile(null);
+                        if (mobilePreview && mobilePreview.startsWith("blob:")) {
+                          URL.revokeObjectURL(mobilePreview);
+                        }
+                        setMobilePreview(null);
+                        setRemoveMobileImage(true);
+                      }}
+                      maxWidth={750}
+                      maxHeight={500}
+                      aspectRatioPreset="mobileHero"
+                      label="Upload Mobile Banner (750 × 500 px)"
+                      initialImage={mobilePreview || undefined}
+                    />
+                  </div>
                 </div>
-              )}
+              </div>
 
               {/* Text Fields: Title, Subtitle, AltText, Order */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 bg-white p-4 rounded-xl border border-slate-200">

@@ -179,7 +179,11 @@ router.post("/", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => {
       : null;
 
     if (!desktopImagePath) {
-      return res.status(400).json({ success: false, message: "Desktop banner image is required" });
+      if (mobileImagePath) {
+        desktopImagePath = mobileImagePath;
+      } else {
+        return res.status(400).json({ success: false, message: "Banner image (Desktop or Mobile) is required" });
+      }
     }
 
     const banner = await prisma.heroFullBanner.create({
