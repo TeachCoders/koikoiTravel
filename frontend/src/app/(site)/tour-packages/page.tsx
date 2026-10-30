@@ -10,8 +10,7 @@ import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journe
 import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import { fetchHeroBannersServer } from "@/feature/heroBanner/api/server";
-import { ImageWatermark } from "@/components/shared/ImageWatermark";
-import { FallbackImage } from "@/components/shared/FallbackImage";
+import HeroBanner from "@/components/shared/HeroBanner";
 
 export const revalidate = 300;
 
@@ -86,81 +85,29 @@ export default async function TourPackagesPage({
       {journeyItems.length > 0 && <JsonLd data={itemListSchema(journeyItems)} />}
 
       {/* ===== HERO BANNER ===== */}
-      <section className="relative bg-slate-900 overflow-hidden w-full h-[62vw] min-h-[280px] max-h-[480px] md:h-[31.25vw] md:min-h-[380px] md:max-h-[560px] flex items-center justify-center">
-        {/* Background Image Layer with Dedicated Mobile and Desktop support */}
-        <div className="absolute inset-0 z-0">
-          {heroMobileImage ? (
-            <>
-              {/* Mobile screen (max-width: 639px) */}
-              <div className="block sm:hidden absolute inset-0">
-                <FallbackImage
-                  src={heroMobileImage}
-                  alt={customHero?.altText || heroTitle}
-                  fill
-                  priority
-                  fetchPriority="high"
-                  sizes="100vw"
-                  className="object-cover object-center"
-                  quality={80}
-                />
-              </div>
-              {/* Desktop & Tablet screen (min-width: 640px) */}
-              <div className="hidden sm:block absolute inset-0">
-                <FallbackImage
-                  src={heroImage}
-                  alt={customHero?.altText || heroTitle}
-                  fill
-                  priority
-                  fetchPriority="high"
-                  sizes="(max-width: 1024px) 100vw, 1920px"
-                  className="object-cover object-center"
-                  quality={80}
-                />
-              </div>
-            </>
-          ) : (
-            <FallbackImage
-              src={heroImage}
-              alt={customHero?.altText || heroTitle}
-              fill
-              priority
-              fetchPriority="high"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
-              className="object-cover object-center"
-              quality={80}
-            />
-          )}
-          {/* Same gradient effect as Golden Triangle inner banner */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent pointer-events-none" />
+      <HeroBanner
+        slides={[{ image: heroImage, mobileImage: heroMobileImage, alt: customHero?.altText || heroTitle }]}
+        tag={heroSubtitle}
+        title={heroTitle}
+        subtitle={
+          cities.length > 0 || experiences.length > 0
+            ? "Results filtered by your search — refine using the filters below."
+            : "Discover curated travel itineraries across India and top global destinations. Custom packages designed for memories."
+        }
+        alt={customHero?.altText || heroTitle}
+      >
+        <div className="mt-6 pointer-events-auto">
+          <QuoteModal>
+            <button
+              type="button"
+              className="btn-primary px-7 py-3 text-sm font-semibold tracking-wide flex items-center gap-2 cursor-pointer shadow-md active:scale-95 transition-all"
+            >
+              <Sparkles size={15} />
+              <span>Get Customized Trip Quote</span>
+            </button>
+          </QuoteModal>
         </div>
-
-        <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 text-center flex flex-col items-center">
-          <span className="font-luxury font-black inline-flex items-center gap-1.5 text-[11px] sm:text-xs uppercase tracking-widest text-[#F8904D] mb-3">
-            <Sparkles size={14} /> {heroSubtitle}
-          </span>
-          <div className="font-luxury text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-wide drop-shadow-md">
-            {heroTitle}
-          </div>
-          <p className="mt-3 text-white/90 text-sm sm:text-base max-w-2xl leading-relaxed drop-shadow-sm">
-            {cities.length > 0 || experiences.length > 0
-              ? "Results filtered by your search — refine using the filters below."
-              : "Discover curated travel itineraries across India and top global destinations. Custom packages designed for memories."}
-          </p>
-
-          <div className="mt-6">
-            <QuoteModal>
-              <button
-                type="button"
-                className="btn-primary px-7 py-3 text-sm font-semibold tracking-wide flex items-center gap-2 cursor-pointer shadow-md active:scale-95 transition-all"
-              >
-                <Sparkles size={15} />
-                <span>Get Customized Trip Quote</span>
-              </button>
-            </QuoteModal>
-          </div>
-        </div>
-      </section>
+      </HeroBanner>
 
       {/* ===== BREADCRUMB (BELOW HERO) ===== */}
       <nav aria-label="Breadcrumb" className="border-b border-slate-100 bg-slate-50/60">

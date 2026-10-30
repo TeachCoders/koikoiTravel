@@ -30,7 +30,7 @@ import { useGetStates } from "@/feature/state/api/useState";
 import { useGetCities } from "@/feature/city/api/useCity";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import DestinationSlider, { useSliderControl } from "@/components/shared/DestinationSlider";
-import HeroSlider from "@/components/shared/HeroSlider";
+import HeroBanner from "@/components/shared/HeroBanner";
 import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
@@ -580,66 +580,33 @@ function CountryContent({
       {/* ====================================================================== */}
       {/* 1. AUDLEY-STYLE EDITORIAL HERO BANNER                                  */}
       {/* ====================================================================== */}
-      <section className="relative w-full h-[62vw] min-h-[280px] max-h-[480px] md:h-[31.25vw] md:min-h-[380px] md:max-h-[560px] overflow-hidden bg-slate-900">
-        {heroImages.length > 0 ? (
-          <>
-            <HeroSlider slides={heroSlides} alt={displayTitle} />
-            {/* Same gradient as Golden Triangle inner banner */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
-          </>
-        ) : (
-          <div className="absolute inset-0">
-            <FallbackImage
-              src={country.thumbImg || country.banner?.images?.[0] || "/banners/home-comic-banner.webp"}
-              alt={displayTitle}
-              fill
-              priority
-              className="object-fit object-center"
-              theme="dark"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
-          </div>
-        )}
-
-        {/* Hero Content (Centered Audley Travel Style) */}
-        <div className="relative z-20 max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 h-full flex flex-col justify-center items-center py-4 sm:py-6 md:py-8 text-center">
-          {heroTag && (
-            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/70 backdrop-blur-md border border-white/25 mb-2 sm:mb-4 shadow-xl">
-              <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-[#F8904D] shadow-[0_0_10px_#F8904D]" />
-              <span className="font-luxury font-bold text-[11px] sm:text-[13px] uppercase tracking-[0.2em] sm:tracking-[0.24em] text-white">
-                {heroTag}
-              </span>
-            </div>
-          )}
-
-          <div className="font-luxury text-2xl sm:text-4xl md:text-5xl lg:text-[62px] font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_28px_rgba(0,0,0,0.95)] max-w-5xl">
-            {heroTitle}
-          </div>
-
-          <p className="hidden sm:block mt-3 sm:mt-4 text-white/95 text-sm sm:text-base md:text-lg max-w-3xl font-medium leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
-            Handcrafted private journeys across royal palaces, sacred rivers, tranquil backwaters and wild tiger sanctuaries. Tailored 100% to your pace.
-          </p>
-
-          <div className="mt-3 sm:mt-6 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
-            <QuoteModal>
-              <button
-                type="button"
-                className="font-outfit px-6 py-2.5 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-bold text-xs sm:text-sm shadow-xl hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2 cursor-pointer"
-              >
-                <span>Plan Your Tailor-Made Trip</span>
-                <ArrowRight size={15} />
-              </button>
-            </QuoteModal>
-
-            <a
-              href="#circuits"
-              className="font-outfit px-5 py-2.5 rounded-full bg-white/15 backdrop-blur-md border border-white/30 hover:bg-white/25 text-white font-semibold text-xs sm:text-sm transition-all"
+      <HeroBanner
+        slides={heroSlides}
+        fallbackImage={country.thumbImg || country.banner?.images?.[0] || "/banners/home-comic-banner.webp"}
+        tag={heroTag}
+        title={heroTitle}
+        subtitle="Handcrafted private journeys across royal palaces, sacred rivers, tranquil backwaters and wild tiger sanctuaries. Tailored 100% to your pace."
+        alt={displayTitle}
+      >
+        <div className="mt-3 sm:mt-6 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 pointer-events-auto">
+          <QuoteModal>
+            <button
+              type="button"
+              className="font-outfit px-6 py-2.5 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-bold text-xs sm:text-sm shadow-xl hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-2 cursor-pointer"
             >
-              Explore Iconic Circuits
-            </a>
-          </div>
+              <span>Plan Your Tailor-Made Trip</span>
+              <ArrowRight size={15} />
+            </button>
+          </QuoteModal>
+
+          <a
+            href="#circuits"
+            className="font-outfit px-5 py-2.5 rounded-full bg-white/15 backdrop-blur-md border border-white/30 hover:bg-white/25 text-white font-semibold text-xs sm:text-sm transition-all"
+          >
+            Explore Iconic Circuits
+          </a>
         </div>
-      </section>
+      </HeroBanner>
 
       {/* ====================================================================== */}
       {/* 2. AUDLEY-STYLE QUICK JUMP SUB-NAV BAR (STICKY)                        */}

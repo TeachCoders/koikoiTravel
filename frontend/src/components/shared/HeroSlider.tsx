@@ -7,6 +7,7 @@ import FallbackImage from "@/components/shared/FallbackImage";
 export interface HeroSlideItem {
   image: string;
   mobileImage?: string | null;
+  alt?: string;
 }
 
 interface HeroSliderProps {
@@ -84,7 +85,7 @@ export default function HeroSlider({ images, slides, alt = "", interval = 5000 }
             <SlideImage
               src={slide.image}
               mobileSrc={slide.mobileImage}
-              alt={alt}
+              alt={slide.alt || alt}
               priority={i === 0}
               preload={true}
             />

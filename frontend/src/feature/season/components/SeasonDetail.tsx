@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState, useMemo } from "react";
 import { Sparkles, CalendarDays, BadgeCheck, MapPin, ChevronRight } from "lucide-react";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
-import HeroSlider from "@/components/shared/HeroSlider";
+import HeroBanner from "@/components/shared/HeroBanner";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
@@ -138,41 +138,13 @@ export default function SeasonDetail({
   return (
     <div>
       {/* ===== HERO ===== */}
-      <section className="relative w-full h-[62vw] min-h-[280px] max-h-[480px] md:h-[31.25vw] md:min-h-[380px] md:max-h-[560px] overflow-hidden bg-slate-200">
-        {heroImages.length > 0 ? (
-          <>
-            <HeroSlider images={heroImages} alt={initialSeason.title} />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
-          </>
-        ) : (
-          <div className="absolute inset-0">
-            <FallbackImage
-              src={initialSeason.thumbImg}
-              alt={initialSeason.title}
-              fill
-              priority
-              className="object-cover object-center"
-              theme="dark"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
-          </div>
-        )}
-
-        <div className="relative z-20 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-center items-center py-4 sm:py-6 md:py-8 text-center pointer-events-none">
-          {heroTag && (
-            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md border border-white/20 mb-2 sm:mb-4 shadow-xl pointer-events-auto">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shadow-[0_0_8px_#F8904D]" />
-              <span className="font-luxury font-bold text-xs sm:text-sm uppercase tracking-[0.22em] text-white/95">
-                {heroTag}
-              </span>
-            </div>
-          )}
-
-          <div className="font-luxury text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase text-white leading-tight tracking-wide drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
-            {heroTitle}
-          </div>
-        </div>
-      </section>
+      <HeroBanner
+        images={heroImages}
+        fallbackImage={initialSeason.thumbImg}
+        tag={heroTag}
+        title={heroTitle}
+        alt={initialSeason.title}
+      />
 
       {/* ===== BREADCRUMB (BELOW HERO) ===== */}
       <nav aria-label="Breadcrumb" className="border-b border-slate-200 bg-slate-50 shadow-sm">

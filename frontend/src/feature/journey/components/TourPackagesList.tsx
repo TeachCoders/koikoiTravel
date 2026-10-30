@@ -9,7 +9,7 @@ import { QuoteModal } from "@/components/shared/QuoteModal";
 import Pagination from "@/components/shared/Pagination";
 import FilterBar from "@/components/shared/FilterBar";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
-import HeroSlider from "@/components/shared/HeroSlider";
+import HeroBanner from "@/components/shared/HeroBanner";
 import { useCountryBySlug } from "@/feature/country/api/useCountry";
 import type { Journey } from "@/feature/journey/type";
 import type { Country } from "@/feature/country/type";
@@ -156,36 +156,13 @@ export default function TourPackagesList({
 
   return (
     <div>
-      <section className="relative h-64 md:h-80 overflow-hidden bg-slate-900">
-        {heroImages.length > 0 ? (
-          <HeroSlider images={heroImages} alt={title} />
-        ) : (
-          <div className="absolute inset-0 w-full h-full bg-slate-900 flex items-center justify-center">
-            <img src="/logo-with-name.png" alt="KoiKoi Travel" className="w-64 h-auto opacity-10 object-contain grayscale" />
-          </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 pointer-events-none" />
-        <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 h-full flex flex-col justify-end pb-10 pointer-events-none">
-          <nav className="flex flex-wrap items-center gap-1.5 text-white/80 text-sm pb-3 font-medium pointer-events-auto">
-            <Link href="/" className="hover:text-white transition-colors">
-              Home
-            </Link>
-            <ChevronRight size={14} />
-            <Link href={`/tour-packages/${countrySlug}`} className="hover:text-white transition-colors">
-              {title}
-            </Link>
-            <ChevronRight size={14} />
-            <span className="text-white/95">Tour Packages</span>
-          </nav>
-          <div className="font-heading text-2xl md:text-4xl font-extrabold text-white tracking-tight">
-            {title} Tour Packages
-          </div>
-          <p className="mt-2 text-white/80 text-sm sm:text-base max-w-2xl">
-            All-inclusive holiday itineraries across {title} with private cabs, star hotels, and
-            verified local guides.
-          </p>
-        </div>
-      </section>
+      <HeroBanner
+        images={heroImages}
+        tag={`${title} Holidays`}
+        title={`${title} Tour Packages`}
+        subtitle={`All-inclusive holiday itineraries across ${title} with private cabs, star hotels, and verified local guides.`}
+        alt={title}
+      />
 
       <section id="packages" className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-12 md:py-16">
         {isLoading || countryLoading ? (

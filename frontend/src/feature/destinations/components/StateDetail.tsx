@@ -17,7 +17,7 @@ import {
 import { useStateBySlug } from "@/feature/state/api/useState";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import DestinationSlider, { useSliderControl } from "@/components/shared/DestinationSlider";
-import HeroSlider from "@/components/shared/HeroSlider";
+import HeroBanner from "@/components/shared/HeroBanner";
 import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
@@ -302,53 +302,13 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   return (
     <div>
       {/* ===== HERO ===== */}
-      <section className="relative w-full h-[62vw] min-h-[280px] max-h-[480px] md:h-[31.25vw] md:min-h-[380px] md:max-h-[560px] overflow-hidden bg-slate-200">
-        {heroImages.length > 0 ? (
-          <>
-            <HeroSlider slides={heroSlides} alt={state.title} />
-            <div
-              className={`absolute inset-0 z-10 pointer-events-none ${
-                isIllustratedBanner
-                  ? "bg-gradient-to-t from-black/40 via-transparent to-black/25"
-                  : "bg-gradient-to-t from-black/55 via-black/20 to-black/10"
-              }`}
-            />
-          </>
-        ) : (
-          <div className="absolute inset-0">
-            <FallbackImage
-              src={state.thumbImg || state.banner?.images?.[0]}
-              alt={state.title}
-              fill
-              priority
-              className="object-cover object-center"
-              theme="light"
-            />
-          </div>
-        )}
-
-        <div className="relative z-20 max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 h-full flex flex-col justify-center items-center py-4 sm:py-6 md:py-8 text-center pointer-events-none">
-          {heroTag && (
-            <div className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full mb-2 sm:mb-4 shadow-sm pointer-events-auto ${
-              heroImages.length > 0
-                ? "bg-slate-950/60 backdrop-blur-md border border-white/20 text-white"
-                : "bg-white/90 border border-slate-300 text-slate-800"
-            }`}>
-              <span className="font-luxury font-normal text-xs sm:text-sm uppercase tracking-[0.1] md:tracking-[0.22em]">
-                {heroTag}
-              </span>
-            </div>
-          )}
-
-          <div className={`font-luxury text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase leading-tight tracking-wide ${
-            heroImages.length > 0
-              ? "text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]"
-              : "text-slate-900 drop-shadow-xs"
-          }`}>
-            {heroTitle}
-          </div>
-        </div>
-      </section>
+      <HeroBanner
+        slides={heroSlides}
+        fallbackImage={state.thumbImg || state.banner?.images?.[0]}
+        alt={state.title}
+        tag={heroTag}
+        title={heroTitle}
+      />
 
       {/* ===== BREADCRUMB (BELOW HERO) ===== */}
       <nav aria-label="Breadcrumb" className="border-b border-slate-200/80 bg-slate-50/80 backdrop-blur-xs">
