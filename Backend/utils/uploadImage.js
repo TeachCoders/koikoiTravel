@@ -87,15 +87,16 @@ export const uploadImage = (folderName = "images") => {
         req._assignedFilenames = new Set();
       }
 
-      // Clean, readable filename. If the name already exists on disk OR in current request,
-      // append -1, -2 … so uploads never silently overwrite an existing image.
-      let candidate = baseName + ext;
+      // Unique timestamped filename so uploads never collide or serve stale browser/Next.js cache
+      const timeTag = Date.now();
+      const randTag = crypto.randomBytes(3).toString("hex");
+      let candidate = `${baseName}-${timeTag}-${randTag}${ext}`;
       let counter = 1;
       while (
         fs.existsSync(path.join(uploadPath, candidate)) ||
         req._assignedFilenames.has(path.join(uploadPath, candidate))
       ) {
-        candidate = `${baseName}-${counter}${ext}`;
+        candidate = `${baseName}-${timeTag}-${randTag}-${counter}${ext}`;
         counter++;
       }
       req._assignedFilenames.add(path.join(uploadPath, candidate));

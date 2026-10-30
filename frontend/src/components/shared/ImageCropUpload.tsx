@@ -511,7 +511,8 @@ export default function ImageCropUpload({
       const suffix = aspectRatioPreset === "mobileHero" ? "-mobile" : aspectRatioPreset === "hero" ? "-desktop" : "";
       const baseName = formatted || (aspectRatioPreset === "mobileHero" ? "mobile-banner" : "desktop-banner");
       const cleanBase = baseName.endsWith(suffix) ? baseName : `${baseName}${suffix}`;
-      const fileName = `${cleanBase}${ext}`;
+      const timeTag = Date.now();
+      const fileName = `${cleanBase}-${timeTag}${ext}`;
       const file = new File([blob], fileName, { type: outputFormat });
       setPreview(URL.createObjectURL(blob));
       setCropOpen(false);

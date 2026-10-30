@@ -51,6 +51,7 @@ function shouldBeUnoptimized(src?: string | null): boolean {
   // SVGs and animated GIFs are vector/animated so resizing them breaks animation or vector scaling
   if (/\.(svg|gif)$/i.test(src)) return true;
   if (src.startsWith("/banners/")) return true;
+  if (src.startsWith("/hero-banners/")) return true;
   if (src.startsWith("/")) {
     return false;
   }

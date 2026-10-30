@@ -25,6 +25,13 @@ const purgeImageCachesAndRevalidate = async (slug) => {
   }
 
   try {
+    const nextDevCacheDir = path.resolve(process.cwd(), "../frontend/.next/dev/cache/images");
+    if (fs.existsSync(nextDevCacheDir)) {
+      const entries = fs.readdirSync(nextDevCacheDir);
+      for (const entry of entries) {
+        fs.rmSync(path.join(nextDevCacheDir, entry), { recursive: true, force: true });
+      }
+    }
     const nextCacheDir = path.resolve(process.cwd(), "../frontend/.next/cache/images");
     if (fs.existsSync(nextCacheDir)) {
       const entries = fs.readdirSync(nextCacheDir);

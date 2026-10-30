@@ -897,6 +897,7 @@ export default function HeroBannersAdminPage() {
                             src={banner.image}
                             alt={banner.altText || banner.title || "Banner slide"}
                             fill
+                            unoptimized
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                             className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                           />
@@ -1504,7 +1505,7 @@ export default function HeroBannersAdminPage() {
                             src={previewUrl}
                             alt="Desktop Preview"
                             fill
-                            unoptimized={previewUrl.startsWith("blob:")}
+                            unoptimized
                             className="object-cover object-center"
                           />
                           <div className="absolute inset-0 bg-black/35 flex items-center justify-center text-white text-center p-2">
@@ -1593,7 +1594,7 @@ export default function HeroBannersAdminPage() {
                             src={mobilePreviewUrl}
                             alt="Mobile Preview"
                             fill
-                            unoptimized={mobilePreviewUrl.startsWith("blob:")}
+                            unoptimized
                             className="object-cover object-center"
                           />
                           <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white text-center p-1">
