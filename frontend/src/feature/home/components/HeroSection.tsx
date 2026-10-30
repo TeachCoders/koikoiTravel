@@ -14,7 +14,7 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) => {
   const { data: heroBannersData } = useHeroBanners("Home", {
-    enabled: !initialHeroBanners || initialHeroBanners.length === 0,
+    enabled: true,
   });
 
   const banners = useMemo(() => {

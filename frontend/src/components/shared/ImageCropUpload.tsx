@@ -80,8 +80,10 @@ export default function ImageCropUpload({
   const [lockRatio, setLockRatio] = useState<boolean>(true);
 
   useEffect(() => {
-    if (initialImage) {
-      setPreview(initialImage);
+    setPreview(initialImage || null);
+    if (!initialImage) {
+      setSrc(null);
+      setOutputSize(null);
     }
   }, [initialImage]);
 
@@ -538,7 +540,7 @@ export default function ImageCropUpload({
   };
 
   return (
-    <div className={className}>
+    <div className={`w-full max-w-full overflow-hidden ${className}`}>
       <input ref={fileInputRef} type="file" accept="image/*" className="hidden"
         onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }} />
 
@@ -608,40 +610,40 @@ export default function ImageCropUpload({
           </div>
 
           {mode === "file" ? (
-            <div onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }} onDragLeave={() => setIsDragOver(false)} onDrop={handleDrop}
+            <div
+              onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
+              onDragLeave={() => setIsDragOver(false)}
+              onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${isDragOver ? "border-indigo-400 bg-indigo-50/50" : "border-slate-300 hover:border-indigo-300 hover:bg-slate-50"}`}>
-              <ImageIcon size={32} className={`mx-auto mb-2 ${isDragOver ? "text-indigo-500" : "text-slate-400"}`} />
-              <p className="text-sm font-semibold text-slate-700">{label}</p>
-              <p className="text-xs text-slate-400 mt-1">Click or drag — crop before upload</p>
+              className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all ${
+                isDragOver ? "border-indigo-400 bg-indigo-50/50" : "border-slate-300 hover:border-indigo-300 hover:bg-slate-50"
+              }`}
+            >
+              <ImageIcon size={26} className={`mx-auto mb-1.5 ${isDragOver ? "text-indigo-500" : "text-slate-400"}`} />
+              <p className="text-xs font-semibold text-slate-700">{label}</p>
             </div>
           ) : (
-            <div className="border border-slate-200 rounded-xl p-4 space-y-3">
-              <div className="flex flex-col sm:flex-row gap-2">
+            <div className="border border-slate-200 rounded-xl p-2.5 space-y-2 bg-slate-50/50 w-full min-w-0 overflow-hidden">
+              <div className="flex items-center gap-1.5 w-full min-w-0">
                 <input
                   type="url"
                   value={urlInput}
                   onChange={(e) => { setUrlInput(e.target.value); setUrlError(""); }}
                   onKeyDown={(e) => e.key === "Enter" && handleUrlLoad()}
-                  placeholder="Paste image URL (e.g. https://example.com/photo.jpg)"
-                  className="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
+                  placeholder="Paste image URL (https://...)"
+                  className="flex-1 min-w-0 bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-indigo-400"
                 />
-                <input
-                  type="text"
-                  value={customFileName}
-                  onChange={(e) => setCustomFileName(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleUrlLoad()}
-                  placeholder="Image Name (optional)"
-                  className="w-full sm:w-52 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
-                />
-                <button type="button" onClick={handleUrlLoad} disabled={urlLoading || !urlInput.trim()}
-                  className="btn-primary px-4 py-2 text-sm flex items-center justify-center gap-1.5 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed shrink-0">
-                  {urlLoading ? <Loader2 size={14} className="animate-spin" /> : <Link size={14} />}
-                  {urlLoading ? "Loading..." : "Load"}
+                <button
+                  type="button"
+                  onClick={handleUrlLoad}
+                  disabled={urlLoading || !urlInput.trim()}
+                  className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed shrink-0 shadow-2xs cursor-pointer"
+                >
+                  {urlLoading ? <Loader2 size={13} className="animate-spin" /> : <Link size={13} />}
+                  <span>{urlLoading ? "..." : "Load"}</span>
                 </button>
               </div>
               {urlError && <p className="text-xs text-red-500">{urlError}</p>}
-              <p className="text-[11px] text-slate-400">Paste any image URL from the web — it will be proxied through server to avoid CORS issues</p>
             </div>
           )}
         </div>

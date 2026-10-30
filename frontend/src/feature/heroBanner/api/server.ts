@@ -21,8 +21,8 @@ export async function fetchHeroBannersServer(
 
     const res = await fetchPublicJsonCached<{ success: boolean; data: HeroFullBanner[] }>(
       `/hero-full-banner?${params.toString()}`,
-      undefined,
-      300
+      { next: { tags: ["hero-banner", "public-cache", entityType] } } as any,
+      60
     );
     return res?.data || [];
   } catch (err) {

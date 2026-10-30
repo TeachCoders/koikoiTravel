@@ -391,6 +391,9 @@ export default function HeroBannersAdminPage() {
     setSelectedMobileFile(null);
     setMobilePreviewUrl(null);
     setRemoveMobileImage(false);
+    setTitle("");
+    setSubtitle("");
+    setAltText("");
     clearMultipleFiles();
     setIsModalOpen(true);
   };
@@ -1095,20 +1098,16 @@ export default function HeroBannersAdminPage() {
           <div className="bg-white rounded-3xl max-w-4xl sm:max-w-5xl w-full shadow-2xl border border-slate-100 overflow-hidden my-4 sm:my-6 max-h-[94vh] flex flex-col">
             {/* Modal Header */}
             <div className="p-4 sm:p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/70 shrink-0">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-[#2E8B8B]/10 text-[#2E8B8B] flex items-center justify-center shrink-0">
-                  <Upload size={20} />
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-[#2E8B8B]/10 text-[#2E8B8B] flex items-center justify-center shrink-0">
+                  <Upload size={17} />
                 </div>
                 <div>
-                  <h2 className="text-base sm:text-lg font-black text-slate-900">
-                    {editingBanner
-                      ? `Edit Slide (ID #${editingBanner.id})`
-                      : uploadMode === "single"
-                      ? `Add Banner to ${targetPageDisplayName}`
-                      : `Batch Upload Images to ${targetPageDisplayName}`}
+                  <h2 className="text-base font-bold text-slate-900">
+                    {editingBanner ? `Edit Banner #${editingBanner.id}` : "Upload Hero Banner"}
                   </h2>
-                  <p className="text-xs text-slate-500">
-                    Target: <span className="font-bold text-slate-800">{targetPageDisplayName}</span>
+                  <p className="text-xs text-slate-500 font-medium">
+                    {targetPageDisplayName}
                   </p>
                 </div>
               </div>
@@ -1116,36 +1115,29 @@ export default function HeroBannersAdminPage() {
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="w-9 h-9 rounded-full hover:bg-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-full hover:bg-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
               >
-                <X size={18} />
+                <X size={16} />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto flex-1">
-              {/* Target Page Destination (Compact with Smooth Collapsible Selector) */}
-              <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-3 sm:p-3.5 space-y-3">
+            <form onSubmit={handleSubmit} className="p-4 sm:p-5 space-y-3.5 overflow-y-auto flex-1">
+              {/* Target Page Destination (Compact) */}
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 sm:p-3 space-y-2">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-8 h-8 rounded-xl bg-[#2E8B8B]/10 text-[#2E8B8B] flex items-center justify-center shrink-0">
-                      <MapPin size={15} />
-                    </div>
-                    <div className="min-w-0">
-                      <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block">
-                        Selected Page Destination
-                      </span>
-                      <span className="text-xs sm:text-sm font-bold text-slate-800 truncate block">
-                        {targetPageDisplayName}
-                      </span>
-                    </div>
+                  <div className="flex items-center gap-2 min-w-0">
+                    <MapPin size={14} className="text-[#2E8B8B] shrink-0" />
+                    <span className="text-xs font-bold text-slate-800 truncate">
+                      {targetPageDisplayName}
+                    </span>
                   </div>
 
                   <button
                     type="button"
                     onClick={() => setShowDestinationChange(!showDestinationChange)}
-                    className="text-xs font-bold text-[#2E8B8B] hover:text-[#246f6f] bg-white px-3 py-1.5 rounded-xl border border-[#2E8B8B]/30 hover:bg-[#2E8B8B]/5 transition-colors cursor-pointer shrink-0 shadow-2xs"
+                    className="text-xs font-semibold text-[#2E8B8B] hover:underline cursor-pointer shrink-0"
                   >
-                    {showDestinationChange ? "Close Selector ▲" : "Change Page ▼"}
+                    {showDestinationChange ? "Done" : "Change Page"}
                   </button>
                 </div>
 
@@ -1311,57 +1303,42 @@ export default function HeroBannersAdminPage() {
                 )}
               </div>
 
-              {/* Mode Switcher: Single Banner (Crop & Mobile Resize) vs Multiple Batch */}
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Choose Upload Method:
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-1 bg-slate-100 rounded-2xl border border-slate-200">
-                  <button
-                    type="button"
-                    onClick={() => setUploadMode("single")}
-                    className={`py-2.5 px-3 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                      uploadMode === "single"
-                        ? "bg-white text-[#2E8B8B] shadow-xs border border-slate-200"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <Crop size={15} />
-                    <span>Single Slide (Desktop & Mobile Crop)</span>
-                    <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">
-                      Recommended
-                    </span>
-                  </button>
+              {/* Mode Switcher */}
+              <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => setUploadMode("single")}
+                  className={`py-1.5 px-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    uploadMode === "single"
+                      ? "bg-white text-[#2E8B8B] shadow-2xs border border-slate-200"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  <Crop size={13} />
+                  <span>Single Slide</span>
+                </button>
 
-                  <button
-                    type="button"
-                    onClick={() => setUploadMode("multiple")}
-                    className={`py-2.5 px-3 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                      uploadMode === "multiple"
-                        ? "bg-white text-indigo-700 shadow-xs border border-slate-200"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <Layers size={15} />
-                    <span>Multiple Photos (Fast Bulk Batch)</span>
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setUploadMode("multiple")}
+                  className={`py-1.5 px-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    uploadMode === "multiple"
+                      ? "bg-white text-indigo-700 shadow-2xs border border-slate-200"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  <Layers size={13} />
+                  <span>Fast Batch</span>
+                </button>
               </div>
 
               {/* MODE 1: MULTIPLE IMAGES BATCH UPLOAD */}
               {uploadMode === "multiple" ? (
                 <div className="space-y-3">
-                  <div className="bg-indigo-50/70 border border-indigo-200/80 rounded-xl p-3 flex items-start gap-2.5">
-                    <Layers size={16} className="text-indigo-600 mt-0.5 shrink-0" />
-                    <div className="text-xs text-indigo-900">
-                      <span className="font-bold">Fast Bulk Batch:</span> Upload multiple photos at once. To set dedicated mobile size (750×500) or custom crop boundaries for a photo, click &quot;Single Slide (Desktop &amp; Mobile Crop)&quot; above.
-                    </div>
-                  </div>
-
                   {/* Multi Dropzone */}
                   <div
                     onClick={() => multiFileInputRef.current?.click()}
-                    className="border-2 border-dashed border-indigo-300 hover:border-indigo-500 bg-indigo-50/40 hover:bg-indigo-50/70 rounded-2xl p-6 text-center cursor-pointer transition-colors"
+                    className="border-2 border-dashed border-indigo-300 hover:border-indigo-500 bg-indigo-50/40 hover:bg-indigo-50/70 rounded-2xl p-5 text-center cursor-pointer transition-colors"
                   >
                     <input
                       ref={multiFileInputRef}
@@ -1375,24 +1352,21 @@ export default function HeroBannersAdminPage() {
                       className="hidden"
                     />
                     <div className="flex flex-col items-center justify-center">
-                      <div className="w-12 h-12 rounded-full bg-white shadow-xs flex items-center justify-center text-indigo-600 mb-2 border border-indigo-100">
-                        <Upload size={22} />
+                      <div className="w-10 h-10 rounded-full bg-white shadow-xs flex items-center justify-center text-indigo-600 mb-1.5 border border-indigo-100">
+                        <Upload size={18} />
                       </div>
-                      <p className="text-sm font-bold text-slate-800">
-                        Click to select images or drag & drop here
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1">
-                        Select 2, 5, 10 or more photos at once (JPG, PNG, WebP)
+                      <p className="text-xs font-bold text-slate-800">
+                        Select multiple images or drag & drop here
                       </p>
                     </div>
                   </div>
 
                   {/* Or Add from Image URL */}
-                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
-                    <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
-                      <LinkIcon size={12} className="text-indigo-600" /> Or Add via Image URL
+                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 space-y-1.5">
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                      <LinkIcon size={11} className="text-indigo-600" /> Add via Image URL
                     </span>
-                    <div className="flex gap-2">
+                    <div className="flex gap-1.5">
                       <input
                         type="url"
                         value={multiUrlInput}
@@ -1404,25 +1378,25 @@ export default function HeroBannersAdminPage() {
                           }
                         }}
                         placeholder="Paste image URL (https://...)"
-                        className="flex-1 px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-indigo-400"
+                        className="flex-1 min-w-0 px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-400"
                       />
                       <button
                         type="button"
                         onClick={handleAddUrlToMultiple}
                         disabled={multiUrlLoading || !multiUrlInput.trim()}
-                        className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-colors shrink-0 shadow-2xs cursor-pointer"
+                        className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold text-xs rounded-lg flex items-center gap-1 transition-colors shrink-0 shadow-2xs cursor-pointer"
                       >
-                        {multiUrlLoading ? <Loader2 size={13} className="animate-spin" /> : <LinkIcon size={13} />}
-                        <span>{multiUrlLoading ? "Loading..." : "Add to Queue"}</span>
+                        {multiUrlLoading ? <Loader2 size={12} className="animate-spin" /> : <LinkIcon size={12} />}
+                        <span>Add</span>
                       </button>
                     </div>
                   </div>
 
                   {/* Multiple Selected Files Grid */}
                   {multipleFiles.length > 0 && (
-                    <div className="space-y-2 pt-1">
+                    <div className="space-y-1.5 pt-1">
                       <div className="flex items-center justify-between text-xs text-slate-600 font-bold px-1">
-                        <span>{multipleFiles.length} Images Ready to Upload:</span>
+                        <span>{multipleFiles.length} Images:</span>
                         <button
                           type="button"
                           onClick={clearMultipleFiles}
@@ -1432,7 +1406,7 @@ export default function HeroBannersAdminPage() {
                         </button>
                       </div>
 
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-56 overflow-y-auto pr-1">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-52 overflow-y-auto pr-1">
                         {multipleFiles.map((item, idx) => (
                           <div
                             key={item.id}
@@ -1447,7 +1421,7 @@ export default function HeroBannersAdminPage() {
                                 type="button"
                                 onClick={() => removeMultipleItem(item.id)}
                                 className="absolute top-1 right-1 w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-sm"
-                                title="Remove this photo"
+                                title="Remove photo"
                               >
                                 <X size={12} />
                               </button>
@@ -1461,10 +1435,9 @@ export default function HeroBannersAdminPage() {
                                   setPreviewUrl(item.preview);
                                   setUploadMode("single");
                                   removeMultipleItem(item.id);
-                                  toast.success("Moved image to Single Slide mode for cropping and mobile sizing.");
+                                  toast.success("Moved image to Single Slide mode.");
                                 }}
                                 className="text-xs text-[#2E8B8B] hover:underline font-bold flex items-center gap-0.5 cursor-pointer"
-                                title="Crop & set mobile banner for this image"
                               >
                                 <Crop size={11} />
                                 <span>Crop</span>
@@ -1477,42 +1450,34 @@ export default function HeroBannersAdminPage() {
                   )}
                 </div>
               ) : (
-                /* MODE 2: SINGLE BANNER WITH BOTH DESKTOP (1920×600) AND MOBILE (750×500) CLEARLY VISIBLE */
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+                /* MODE 2: SINGLE BANNER WITH BOTH DESKTOP (1920×600) AND MOBILE (750×500) */
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                   {/* 1. DESKTOP HERO BANNER (1920 × 600 px) */}
-                  <div className="bg-slate-50/70 border-2 border-slate-200 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="w-6 h-6 rounded-lg bg-teal-600 text-white flex items-center justify-center text-xs">
-                            <Monitor size={14} />
-                          </span>
-                          <span className="text-xs font-black text-slate-800 uppercase tracking-wide">
-                            Desktop Banner
-                          </span>
-                          <span className="px-1.5 py-0.5 rounded text-[10px] font-black bg-rose-100 text-rose-700">
-                            1920 × 600 px
-                          </span>
-                        </div>
-
-                        {libraryImages.length > 0 && (
-                          <button
-                            type="button"
-                            onClick={() => setLibraryPickerTarget("desktop")}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-700 hover:text-[#2E8B8B] text-xs font-semibold rounded-lg shadow-2xs transition-colors cursor-pointer"
-                          >
-                            <ImageIcon size={12} />
-                            <span>Library</span>
-                          </button>
-                        )}
+                  <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-3.5 space-y-2.5 flex flex-col justify-between overflow-hidden min-w-0">
+                    <div className="flex items-center justify-between gap-1">
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <Monitor size={14} className="text-teal-700 shrink-0" />
+                        <span className="text-xs font-bold text-slate-800">Desktop</span>
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-teal-50 text-teal-700 border border-teal-200">
+                          1920 × 600 px
+                        </span>
                       </div>
-                      <p className="text-[11px] text-slate-500">
-                        Wide 16:5 ratio for desktops, laptops and iPads. Click to crop & auto-center.
-                      </p>
+
+                      {libraryImages.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => setLibraryPickerTarget("desktop")}
+                          className="inline-flex items-center gap-1 px-2 py-0.5 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-600 hover:text-[#2E8B8B] text-[11px] font-medium rounded-lg shadow-2xs transition-colors cursor-pointer"
+                        >
+                          <ImageIcon size={11} />
+                          <span>Library</span>
+                        </button>
+                      )}
                     </div>
 
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <ImageCropUpload
+                        key={`desktop-${editingBanner ? editingBanner.id : "new"}`}
                         onFileSelect={(file) => {
                           setSelectedFile(file);
                           if (previewUrl && previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
@@ -1526,18 +1491,15 @@ export default function HeroBannersAdminPage() {
                         maxWidth={1920}
                         maxHeight={600}
                         aspectRatioPreset="hero"
-                        label="Select or Drag Desktop Banner (Click to Crop / Center)"
+                        label="Drop desktop image or browse"
                         initialImage={previewUrl || undefined}
                       />
                     </div>
 
                     {/* Live Desktop Preview with Overlay */}
                     {previewUrl && (
-                      <div className="pt-2 border-t border-slate-200/80">
-                        <p className="text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
-                          <Eye size={12} /> Live Desktop Ratio (1920×600) Preview:
-                        </p>
-                        <div className="relative w-full h-28 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200">
+                      <div className="pt-1.5 border-t border-slate-200/80">
+                        <div className="relative w-full h-24 bg-slate-900 rounded-lg overflow-hidden border border-slate-200">
                           <Image
                             src={previewUrl}
                             alt="Desktop Preview"
@@ -1545,11 +1507,11 @@ export default function HeroBannersAdminPage() {
                             unoptimized={previewUrl.startsWith("blob:")}
                             className="object-cover object-center"
                           />
-                          <div className="absolute inset-0 bg-black/35 flex items-center justify-center text-white text-center p-3">
+                          <div className="absolute inset-0 bg-black/35 flex items-center justify-center text-white text-center p-2">
                             <div>
-                              {subtitle && <p className="text-[10px] font-bold uppercase text-[#F8904D]">{subtitle}</p>}
-                              <h4 className="text-xs sm:text-sm font-black uppercase tracking-wide">
-                                {title || "(Banner Overlay Title)"}
+                              {subtitle && <p className="text-[9px] font-bold uppercase text-[#F8904D]">{subtitle}</p>}
+                              <h4 className="text-xs font-bold uppercase truncate max-w-[200px]">
+                                {title || "(Title)"}
                               </h4>
                             </div>
                           </div>
@@ -1559,56 +1521,48 @@ export default function HeroBannersAdminPage() {
                   </div>
 
                   {/* 2. MOBILE DEDICATED BANNER (750 × 500 px) */}
-                  <div className="bg-slate-50/70 border-2 border-slate-200 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xs">
-                            <Smartphone size={14} />
-                          </span>
-                          <span className="text-xs font-black text-slate-800 uppercase tracking-wide">
-                            Mobile Banner
-                          </span>
-                          <span className="px-1.5 py-0.5 rounded text-[10px] font-black bg-indigo-100 text-indigo-700">
-                            750 × 500 px
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-1.5">
-                          {libraryImages.length > 0 && (
-                            <button
-                              type="button"
-                              onClick={() => setLibraryPickerTarget("mobile")}
-                              className="inline-flex items-center gap-1 px-2.5 py-1 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-700 hover:text-[#2E8B8B] text-xs font-semibold rounded-lg shadow-2xs transition-colors cursor-pointer"
-                            >
-                              <ImageIcon size={12} />
-                              <span>Library</span>
-                            </button>
-                          )}
-                          {mobilePreviewUrl && (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setSelectedMobileFile(null);
-                                if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:"))
-                                  URL.revokeObjectURL(mobilePreviewUrl);
-                                setMobilePreviewUrl(null);
-                                setRemoveMobileImage(true);
-                              }}
-                              className="text-[11px] text-rose-600 hover:text-rose-800 font-semibold px-1.5 py-0.5 rounded hover:bg-rose-50 cursor-pointer"
-                            >
-                              Remove
-                            </button>
-                          )}
-                        </div>
+                  <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-3.5 space-y-2.5 flex flex-col justify-between overflow-hidden min-w-0">
+                    <div className="flex items-center justify-between gap-1">
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <Smartphone size={14} className="text-indigo-700 shrink-0" />
+                        <span className="text-xs font-bold text-slate-800">Mobile</span>
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                          750 × 500 px (Opt.)
+                        </span>
                       </div>
-                      <p className="text-[11px] text-slate-500">
-                        3:2 ratio for mobile phones. Upload or crop here so photos don&apos;t get cut on mobile!
-                      </p>
+
+                      <div className="flex items-center gap-1">
+                        {libraryImages.length > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => setLibraryPickerTarget("mobile")}
+                            className="inline-flex items-center gap-1 px-2 py-0.5 bg-white border border-slate-200 hover:border-[#2E8B8B] text-slate-600 hover:text-[#2E8B8B] text-[11px] font-medium rounded-lg shadow-2xs transition-colors cursor-pointer"
+                          >
+                            <ImageIcon size={11} />
+                            <span>Library</span>
+                          </button>
+                        )}
+                        {mobilePreviewUrl && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedMobileFile(null);
+                              if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:"))
+                                URL.revokeObjectURL(mobilePreviewUrl);
+                              setMobilePreviewUrl(null);
+                              setRemoveMobileImage(true);
+                            }}
+                            className="text-[11px] text-rose-600 hover:text-rose-800 font-semibold px-1 py-0.5 rounded cursor-pointer"
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </div>
                     </div>
 
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <ImageCropUpload
+                        key={`mobile-${editingBanner ? editingBanner.id : "new"}`}
                         onFileSelect={(file) => {
                           setSelectedMobileFile(file);
                           setRemoveMobileImage(false);
@@ -1626,18 +1580,15 @@ export default function HeroBannersAdminPage() {
                         maxWidth={750}
                         maxHeight={500}
                         aspectRatioPreset="mobileHero"
-                        label="Select or Drag Mobile Banner (750 × 500 px)"
+                        label="Drop mobile image (Optional)"
                         initialImage={mobilePreviewUrl || undefined}
                       />
                     </div>
 
                     {/* Live Mobile Preview or Informational Note */}
                     {mobilePreviewUrl ? (
-                      <div className="pt-2 border-t border-slate-200/80">
-                        <p className="text-[11px] font-bold text-slate-500 mb-1 flex items-center gap-1">
-                          <Eye size={12} /> Live Mobile Ratio (750×500) Preview:
-                        </p>
-                        <div className="relative w-36 h-24 mx-auto bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200">
+                      <div className="pt-1.5 border-t border-slate-200/80">
+                        <div className="relative w-28 h-20 mx-auto bg-slate-900 rounded-lg overflow-hidden border border-slate-200">
                           <Image
                             src={mobilePreviewUrl}
                             alt="Mobile Preview"
@@ -1645,10 +1596,10 @@ export default function HeroBannersAdminPage() {
                             unoptimized={mobilePreviewUrl.startsWith("blob:")}
                             className="object-cover object-center"
                           />
-                          <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white text-center p-2">
+                          <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white text-center p-1">
                             <div>
-                              {subtitle && <p className="text-[8px] font-bold uppercase text-[#F8904D]">{subtitle}</p>}
-                              <h4 className="text-[10px] font-black uppercase tracking-wide">
+                              {subtitle && <p className="text-[7px] font-bold uppercase text-[#F8904D]">{subtitle}</p>}
+                              <h4 className="text-[9px] font-bold uppercase truncate max-w-[90px]">
                                 {title || "(Title)"}
                               </h4>
                             </div>
@@ -1656,10 +1607,10 @@ export default function HeroBannersAdminPage() {
                         </div>
                       </div>
                     ) : (
-                      <div className="bg-indigo-50/60 border border-indigo-100 rounded-xl p-2.5 text-center">
-                        <p className="text-[11px] text-indigo-800 font-medium leading-relaxed">
-                          📱 <span className="font-bold">Optional:</span> If you don&apos;t upload a mobile banner, mobile screens will automatically center-zoom the desktop banner.
-                        </p>
+                      <div className="py-1 text-center">
+                        <span className="text-[11px] text-slate-400">
+                          Optional: Desktop banner auto-centers if empty
+                        </span>
                       </div>
                     )}
                   </div>
@@ -1667,57 +1618,57 @@ export default function HeroBannersAdminPage() {
               )}
 
               {/* Optional Text Overlays & Display Order */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Custom Title Overlay (Optional)
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                    Title Overlay (Optional)
                   </label>
                   <input
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="e.g. Royal Rajasthan Tours"
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#2E8B8B]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Tag / Subtitle Overlay (Optional)
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                    Subtitle / Tag (Optional)
                   </label>
                   <input
                     type="text"
                     value={subtitle}
                     onChange={(e) => setSubtitle(e.target.value)}
                     placeholder="e.g. Land of Kings & Forts"
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#2E8B8B]"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    SEO Alt Text (Optional)
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                    Alt Text (Optional)
                   </label>
                   <input
                     type="text"
                     value={altText}
                     onChange={(e) => setAltText(e.target.value)}
-                    placeholder="e.g. Scenic panoramic view of Golden Triangle"
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
+                    placeholder="e.g. Scenic panoramic view"
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#2E8B8B]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Display Order (Slider Sequence)
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                    Display Order
                   </label>
                   <input
                     type="number"
                     value={displayOrder}
                     onChange={(e) => setDisplayOrder(Number(e.target.value))}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#2E8B8B]"
                   />
                 </div>
               </div>

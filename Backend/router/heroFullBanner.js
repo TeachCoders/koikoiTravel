@@ -38,6 +38,7 @@ const purgeImageCachesAndRevalidate = async (slug) => {
 
   try {
     await notifyRevalidate("hero-banner", { slug });
+    await notifyRevalidate("global", {});
   } catch (err) {
     logger.warn("Could not notify revalidate:", err);
   }
