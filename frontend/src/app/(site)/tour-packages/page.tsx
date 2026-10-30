@@ -130,9 +130,9 @@ export default async function TourPackagesPage({
               quality={80}
             />
           )}
-          {/* Subtle soft gradient overlay so photo clarity shines through */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/25 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent pointer-events-none" />
+          {/* Same gradient effect as Golden Triangle inner banner */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent pointer-events-none" />
         </div>
 
         <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 text-center flex flex-col items-center">

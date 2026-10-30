@@ -458,6 +458,11 @@ function CountryContent({
       ? [country.thumbImg]
       : ["/banners/home-comic-banner.webp"];
 
+  const heroSlides =
+    customHeroBanners.length > 0
+      ? customHeroBanners.map((b) => ({ image: b.image, mobileImage: b.mobileImage }))
+      : heroImages.map((img: string) => ({ image: img, mobileImage: null }));
+
   const heroTitle =
     customHeroBanners[0]?.title ||
     country.banner?.bannerTitle ||
@@ -578,9 +583,9 @@ function CountryContent({
       <section className="relative w-full h-[62vw] min-h-[280px] max-h-[480px] md:h-[31.25vw] md:min-h-[380px] md:max-h-[560px] overflow-hidden bg-slate-900">
         {heroImages.length > 0 ? (
           <>
-            <HeroSlider images={heroImages} alt={displayTitle} />
-            {/* Subtle overlay so illustrated artwork colors and center text stay legible */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-black/35 z-10 pointer-events-none" />
+            <HeroSlider slides={heroSlides} alt={displayTitle} />
+            {/* Same gradient as Golden Triangle inner banner */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
           </>
         ) : (
           <div className="absolute inset-0">
@@ -592,7 +597,7 @@ function CountryContent({
               className="object-fit object-center"
               theme="dark"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-black/35 z-10 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
           </div>
         )}
 
