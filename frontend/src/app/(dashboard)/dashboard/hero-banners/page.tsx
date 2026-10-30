@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Plus,
   Trash2,
@@ -21,6 +22,16 @@ import {
   Sparkles,
   Monitor,
   Smartphone,
+  Search,
+  LayoutGrid,
+  Check,
+  ChevronRight,
+  MapPin,
+  Globe,
+  Home,
+  Compass,
+  FileText,
+  Calendar,
 } from "lucide-react";
 import apiClient from "@/lib/apiClient";
 import ImageCropUpload from "@/components/shared/ImageCropUpload";
@@ -41,15 +52,15 @@ import { FallbackImage } from "@/components/shared/FallbackImage";
 import toast from "react-hot-toast";
 import type { HeroBannerEntityType, HeroFullBanner } from "@/feature/heroBanner/type";
 
-const CATEGORIES: { label: string; value: HeroBannerEntityType }[] = [
-  { label: "Home Page", value: "Home" },
-  { label: "Tour Packages", value: "TourPackages" },
-  { label: "Country", value: "Country" },
-  { label: "State", value: "State" },
-  { label: "City", value: "City" },
-  { label: "Travel Experience", value: "TravelExperience" },
-  { label: "Destinations", value: "Destinations" },
-  { label: "Blog", value: "Blog" },
+const CATEGORIES: { label: string; value: HeroBannerEntityType; icon: any }[] = [
+  { label: "Home Page", value: "Home", icon: Home },
+  { label: "Tour Packages", value: "TourPackages", icon: Compass },
+  { label: "Country", value: "Country", icon: Globe },
+  { label: "State", value: "State", icon: MapPin },
+  { label: "City", value: "City", icon: MapPin },
+  { label: "Travel Experience", value: "TravelExperience", icon: Sparkles },
+  { label: "Destinations", value: "Destinations", icon: Compass },
+  { label: "Blog", value: "Blog", icon: FileText },
 ];
 
 export interface MultipleUploadItem {
@@ -66,13 +77,16 @@ export default function HeroBannersAdminPage() {
   const updateMutation = useUpdateHeroBanner();
   const deleteMutation = useDeleteHeroBanner();
 
-  // Queries for dynamic dropdowns
+  // Queries for dynamic dropdowns & labels
   const { countries } = useGetCountries({ limit: 100 });
   const { states } = useGetStates({ limit: 300 });
   const { cities } = useGetCities({ limit: 1000 });
   const { travelExperiences } = useGetTravelExperiences({ limit: 100 });
   const { blogPosts } = useGetBlogPosts({ limit: 500 });
 
+  // Filters & Views
+  const [viewMode, setViewMode] = useState<"pages" | "grid">("pages");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>("ALL");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
@@ -80,7 +94,7 @@ export default function HeroBannersAdminPage() {
 
   // Edit vs Add & Single vs Multiple
   const [editingBanner, setEditingBanner] = useState<HeroFullBanner | null>(null);
-  const [uploadMode, setUploadMode] = useState<"single" | "multiple">("single");
+  const [uploadMode, setUploadMode] = useState<"single" | "multiple">("multiple");
   const [multipleFiles, setMultipleFiles] = useState<MultipleUploadItem[]>([]);
   const multiFileInputRef = useRef<HTMLInputElement>(null);
 
@@ -93,6 +107,7 @@ export default function HeroBannersAdminPage() {
   const [altText, setAltText] = useState<string>("");
   const [displayOrder, setDisplayOrder] = useState<number>(0);
 
+  // Single banner image states
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [selectedMobileFile, setSelectedMobileFile] = useState<File | null>(null);
@@ -101,12 +116,11 @@ export default function HeroBannersAdminPage() {
   const [libraryPickerTarget, setLibraryPickerTarget] = useState<"desktop" | "mobile" | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const allBanners: HeroFullBanner[] = data?.data || [];
+  // URL input for batch upload
+  const [multiUrlInput, setMultiUrlInput] = useState("");
+  const [multiUrlLoading, setMultiUrlLoading] = useState(false);
 
-  const filteredBanners = useMemo(() => {
-    if (selectedCategoryFilter === "ALL") return allBanners;
-    return allBanners.filter((b) => b.entityType === selectedCategoryFilter);
-  }, [allBanners, selectedCategoryFilter]);
+  const allBanners: HeroFullBanner[] = data?.data || [];
 
   // Existing unique images for the media library picker
   const libraryImages = useMemo(() => {
@@ -117,6 +131,128 @@ export default function HeroBannersAdminPage() {
     });
     return Array.from(urls);
   }, [allBanners]);
+
+  // Group all banners by page
+  const groupedPages = useMemo(() => {
+    const map = new Map<
+      string,
+      {
+        key: string;
+        title: string;
+        subtitle: string;
+        liveUrl?: string;
+        entityType: HeroBannerEntityType;
+        entityId: number;
+        slug: string;
+        banners: HeroFullBanner[];
+      }
+    >();
+
+    allBanners.forEach((b) => {
+      const slugKey = (b.pageSlug || "").toLowerCase();
+      const key = `${b.entityType}:${slugKey || b.entityId || "default"}`;
+
+      if (!map.has(key)) {
+        let title = b.entityType;
+        let subtitle = b.pageSlug || "";
+        let liveUrl = "";
+
+        if (b.entityType === "Home") {
+          title = "Home Page";
+          subtitle = "Main Landing Page";
+          liveUrl = "/";
+        } else if (b.entityType === "TourPackages") {
+          title = "Tour Packages";
+          subtitle = "All Tour Packages Listing";
+          liveUrl = "/tour-packages";
+        } else if (b.entityType === "Country") {
+          const match = countries.find((c: any) => c.slug === b.pageSlug || c.id === b.entityId);
+          title = match ? match.title : `Country: ${b.pageSlug || b.entityId}`;
+          subtitle = `Country Page (${b.pageSlug})`;
+          liveUrl = `/tour-packages/${b.pageSlug || ""}`;
+        } else if (b.entityType === "State") {
+          const match = states.find((s: any) => s.slug === b.pageSlug || s.id === b.entityId);
+          title = match ? match.title : `State / Circuit: ${b.pageSlug || b.entityId}`;
+          subtitle = `State & Iconic Circuit (${b.pageSlug})`;
+          liveUrl = `/tour-packages/india/${b.pageSlug || ""}`;
+        } else if (b.entityType === "City") {
+          const match = cities.find((c: any) => c.slug === b.pageSlug || c.id === b.entityId);
+          title = match ? match.title : `City: ${b.pageSlug || b.entityId}`;
+          subtitle = `City Destination (${b.pageSlug})`;
+          liveUrl = match?.state?.slug
+            ? `/tour-packages/india/${match.state.slug}/${b.pageSlug}`
+            : `/tour-packages/india/${b.pageSlug}`;
+        } else if (b.entityType === "TravelExperience") {
+          const match = travelExperiences.find((t: any) => t.slug === b.pageSlug || t.id === b.entityId);
+          title = match ? match.title : `Travel Experience: ${b.pageSlug || b.entityId}`;
+          subtitle = `Experience Page (${b.pageSlug})`;
+          liveUrl = `/travel-experience/${b.pageSlug || ""}`;
+        } else if (b.entityType === "Blog") {
+          title = b.pageSlug === "blog" ? "Main Blog Page" : `Blog: ${b.pageSlug}`;
+          subtitle = `/blog/${b.pageSlug}`;
+          liveUrl = `/blog/${b.pageSlug || ""}`;
+        }
+
+        map.set(key, {
+          key,
+          title,
+          subtitle,
+          liveUrl,
+          entityType: b.entityType as HeroBannerEntityType,
+          entityId: b.entityId || 0,
+          slug: b.pageSlug || "",
+          banners: [],
+        });
+      }
+
+      map.get(key)!.banners.push(b);
+    });
+
+    const list = Array.from(map.values());
+    list.forEach((p) => {
+      p.banners.sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+    });
+
+    return list;
+  }, [allBanners, countries, states, cities, travelExperiences]);
+
+  // Filtered pages based on category tab & search query
+  const filteredPages = useMemo(() => {
+    return groupedPages.filter((p) => {
+      if (selectedCategoryFilter !== "ALL" && p.entityType !== selectedCategoryFilter) {
+        return false;
+      }
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        const matchTitle = p.title.toLowerCase().includes(q);
+        const matchSlug = p.slug.toLowerCase().includes(q);
+        const matchSubtitle = p.subtitle.toLowerCase().includes(q);
+        const matchBanner = p.banners.some(
+          (b) => (b.title && b.title.toLowerCase().includes(q)) || (b.subtitle && b.subtitle.toLowerCase().includes(q))
+        );
+        return matchTitle || matchSlug || matchSubtitle || matchBanner;
+      }
+      return true;
+    });
+  }, [groupedPages, selectedCategoryFilter, searchQuery]);
+
+  // Filtered individual banners for "grid" view
+  const filteredBanners = useMemo(() => {
+    return allBanners.filter((b) => {
+      if (selectedCategoryFilter !== "ALL" && b.entityType !== selectedCategoryFilter) {
+        return false;
+      }
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        const matchSlug = (b.pageSlug || "").toLowerCase().includes(q);
+        const matchTitle = (b.title || "").toLowerCase().includes(q);
+        const matchSub = (b.subtitle || "").toLowerCase().includes(q);
+        const matchEntity = b.entityType.toLowerCase().includes(q);
+        return matchSlug || matchTitle || matchSub || matchEntity;
+      }
+      return true;
+    });
+  }, [allBanners, selectedCategoryFilter, searchQuery]);
 
   // Active banners on the currently selected category / page
   const categoryActiveBanners = useMemo(() => {
@@ -132,24 +268,33 @@ export default function HeroBannersAdminPage() {
     });
   }, [allBanners, formCategory, selectedSlug, selectedEntityId]);
 
-  // Duplicate checks
-  const duplicateDesktopBanner = useMemo(() => {
-    if (!previewUrl) return null;
-    return categoryActiveBanners.find(
-      (b) => (!editingBanner || b.id !== editingBanner.id) && b.image === previewUrl
-    );
-  }, [previewUrl, categoryActiveBanners, editingBanner]);
+  // Target page display name for modal
+  const targetPageDisplayName = useMemo(() => {
+    if (formCategory === "Home") return "Home Page (/)";
+    if (formCategory === "TourPackages") return "Tour Packages (/tour-packages)";
+    if (formCategory === "Country") {
+      const match = countries.find((c: any) => c.slug === selectedSlug || c.id === selectedEntityId);
+      return match ? `${match.title} (/tour-packages/${match.slug})` : `Country (${selectedSlug || "None"})`;
+    }
+    if (formCategory === "State") {
+      const match = states.find((s: any) => s.slug === selectedSlug || s.id === selectedEntityId);
+      return match ? `${match.title} (/tour-packages/india/${match.slug})` : `State (${selectedSlug || "None"})`;
+    }
+    if (formCategory === "City") {
+      const match = cities.find((c: any) => c.slug === selectedSlug || c.id === selectedEntityId);
+      return match ? `${match.title} (City)` : `City (${selectedSlug || "None"})`;
+    }
+    if (formCategory === "TravelExperience") {
+      const match = travelExperiences.find((t: any) => t.slug === selectedSlug || t.id === selectedEntityId);
+      return match ? `${match.title} (Experience)` : `Experience (${selectedSlug || "None"})`;
+    }
+    if (formCategory === "Blog") {
+      return selectedSlug === "blog" ? "Main Blog Page (/blog)" : `Blog Post (${selectedSlug})`;
+    }
+    return formCategory;
+  }, [formCategory, selectedSlug, selectedEntityId, countries, states, cities, travelExperiences]);
 
-  const duplicateMobileBanner = useMemo(() => {
-    if (!mobilePreviewUrl) return null;
-    return categoryActiveBanners.find(
-      (b) => (!editingBanner || b.id !== editingBanner.id) && b.mobileImage === mobilePreviewUrl
-    );
-  }, [mobilePreviewUrl, categoryActiveBanners, editingBanner]);
-
-  const [multiUrlInput, setMultiUrlInput] = useState("");
-  const [multiUrlLoading, setMultiUrlLoading] = useState(false);
-
+  // Clear batch files
   const clearMultipleFiles = () => {
     multipleFiles.forEach((item) => {
       if (item.preview && item.preview.startsWith("blob:")) {
@@ -158,30 +303,6 @@ export default function HeroBannersAdminPage() {
     });
     setMultipleFiles([]);
     setMultiUrlInput("");
-  };
-
-  const handleAddUrlToMultiple = async () => {
-    const trimmed = multiUrlInput.trim();
-    if (!trimmed) return;
-    setMultiUrlLoading(true);
-    try {
-      let file: File;
-      if (trimmed.startsWith("blob:") || trimmed.startsWith("data:")) {
-        const resp = await fetch(trimmed);
-        const blob = await resp.blob();
-        file = new File([blob], `banner-url-${Date.now()}.webp`, { type: blob.type || "image/webp" });
-      } else {
-        const res = await apiClient.get(`/proxy-image?url=${encodeURIComponent(trimmed)}`, { responseType: "blob" });
-        const blob = res.data;
-        file = new File([blob], `banner-url-${Date.now()}.webp`, { type: blob.type || "image/webp" });
-      }
-      handleMultipleFilesSelect([file]);
-      setMultiUrlInput("");
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message || "Failed to load image from URL. Try uploading the file directly.");
-    } finally {
-      setMultiUrlLoading(false);
-    }
   };
 
   const handleMultipleFilesSelect = (fileList: FileList | File[]) => {
@@ -218,7 +339,50 @@ export default function HeroBannersAdminPage() {
     });
   };
 
-  const openAddModal = (bannerToEdit?: HeroFullBanner) => {
+  const handleAddUrlToMultiple = async () => {
+    const trimmed = multiUrlInput.trim();
+    if (!trimmed) return;
+    setMultiUrlLoading(true);
+    try {
+      let file: File;
+      if (trimmed.startsWith("blob:") || trimmed.startsWith("data:")) {
+        const resp = await fetch(trimmed);
+        const blob = await resp.blob();
+        file = new File([blob], `banner-url-${Date.now()}.webp`, { type: blob.type || "image/webp" });
+      } else {
+        const res = await apiClient.get(`/proxy-image?url=${encodeURIComponent(trimmed)}`, { responseType: "blob" });
+        const blob = res.data;
+        file = new File([blob], `banner-url-${Date.now()}.webp`, { type: blob.type || "image/webp" });
+      }
+      handleMultipleFilesSelect([file]);
+      setMultiUrlInput("");
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || "Failed to load image from URL. Try uploading the file directly.");
+    } finally {
+      setMultiUrlLoading(false);
+    }
+  };
+
+  // Open Add modal with a specific page locked
+  const handleAddImagesToPage = (page: typeof groupedPages[0], defaultMode: "multiple" | "single" = "multiple") => {
+    setFormCategory(page.entityType);
+    setSelectedEntityId(page.entityId);
+    setSelectedSlug(page.slug);
+    const maxOrder = page.banners.reduce((max, b) => Math.max(max, b.displayOrder ?? 0), 0);
+    setDisplayOrder(maxOrder + 1);
+    setUploadMode(defaultMode);
+    setEditingBanner(null);
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setSelectedMobileFile(null);
+    setMobilePreviewUrl(null);
+    setRemoveMobileImage(false);
+    clearMultipleFiles();
+    setIsModalOpen(true);
+  };
+
+  // Open Add/Edit Modal
+  const openAddModal = (bannerToEdit?: HeroFullBanner, defaultMode: "single" | "multiple" = "multiple") => {
     if (bannerToEdit) {
       setEditingBanner(bannerToEdit);
       setUploadMode("single");
@@ -236,7 +400,7 @@ export default function HeroBannersAdminPage() {
       setRemoveMobileImage(false);
     } else {
       setEditingBanner(null);
-      setUploadMode("single");
+      setUploadMode(defaultMode);
       setFormCategory("Home");
       setSelectedEntityId(0);
       setSelectedSlug("");
@@ -375,578 +539,747 @@ export default function HeroBannersAdminPage() {
   };
 
   return (
-    <div className="p-6 md:p-8 space-y-6 max-w-[1600px] mx-auto">
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+    <div className="p-4 sm:p-6 md:p-8 space-y-6 max-w-[1600px] mx-auto font-sans">
+      {/* 1. TOP HEADER & PRIMARY ACTIONS */}
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-white p-6 rounded-2xl shadow-xs border border-slate-200">
         <div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#2E8B8B]/10 flex items-center justify-center text-[#2E8B8B]">
-              <Layers size={22} />
+            <div className="w-11 h-11 rounded-2xl bg-[#2E8B8B]/10 text-[#2E8B8B] flex items-center justify-center shadow-xs">
+              <Layers size={24} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Hero Full Banners</h1>
-              <p className="text-sm text-slate-500">
-                Manage dedicated high-resolution panoramic hero banners (1920×450) without affecting listing cards.
+              <h1 className="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                Hero Banner Manager
+                <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  {allBanners.length} Total Slides
+                </span>
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+                Manage full panoramic sliding banners (1920×600) for Home, Golden Triangle, Country & City pages.
               </p>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
-          <Button
-            type="button"
-            onClick={() => {
-              openAddModal();
-              setUploadMode("multiple");
-            }}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold shadow-sm shadow-indigo-600/20"
-          >
-            <Layers size={18} />
-            <span>Upload Multiple Images</span>
-          </Button>
-
-          <Button
-            type="button"
-            onClick={() => {
-              openAddModal();
-              setUploadMode("single");
-            }}
-            className="bg-[#2E8B8B] hover:bg-[#267373] text-white flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold shadow-sm shadow-[#2E8B8B]/20"
-          >
-            <Plus size={18} />
-            <span>Single Banner (with Crop)</span>
-          </Button>
-        </div>
-      </div>
-
-      {/* Category Filter Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200">
-        <button
-          onClick={() => setSelectedCategoryFilter("ALL")}
-          className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
-            selectedCategoryFilter === "ALL"
-              ? "bg-[#2E8B8B] text-white shadow-sm"
-              : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
-          }`}
-        >
-          All Categories ({allBanners.length})
-        </button>
-        {CATEGORIES.map((cat) => {
-          const count = allBanners.filter((b) => b.entityType === cat.value).length;
-          return (
+        {/* Action Buttons */}
+        <div className="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
+          {/* View Mode Toggle */}
+          <div className="flex items-center p-1 bg-slate-100 rounded-xl border border-slate-200">
             <button
-              key={cat.value}
-              onClick={() => setSelectedCategoryFilter(cat.value)}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
-                selectedCategoryFilter === cat.value
-                  ? "bg-[#2E8B8B] text-white shadow-sm"
-                  : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+              type="button"
+              onClick={() => setViewMode("pages")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                viewMode === "pages"
+                  ? "bg-white text-[#2E8B8B] shadow-xs"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
             >
-              {cat.label} ({count})
+              <Layers size={14} />
+              <span>Grouped by Page</span>
             </button>
-          );
-        })}
+            <button
+              type="button"
+              onClick={() => setViewMode("grid")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                viewMode === "grid"
+                  ? "bg-white text-[#2E8B8B] shadow-xs"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <LayoutGrid size={14} />
+              <span>All Banners Grid</span>
+            </button>
+          </div>
+
+          <Button
+            type="button"
+            onClick={() => openAddModal(undefined, "multiple")}
+            className="bg-[#2E8B8B] hover:bg-[#267373] text-white flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold shadow-xs cursor-pointer"
+          >
+            <Plus size={16} />
+            <span>Upload Banners</span>
+          </Button>
+        </div>
       </div>
 
-      {/* Banners Grid */}
-      {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-64 bg-slate-100 animate-pulse rounded-2xl border border-slate-200" />
-          ))}
-        </div>
-      ) : filteredBanners.length === 0 ? (
-        <EmptyState
-          title="No Hero Full Banners Found"
-          description={
-            selectedCategoryFilter === "ALL"
-              ? "Click 'Upload Full Banner' to add panoramic banners for Home, Country, State, City, or Travel Experiences."
-              : `No custom hero full banners uploaded for ${selectedCategoryFilter}. Fallback banners are currently in use.`
-          }
-        />
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredBanners.map((banner) => (
-            <div
-              key={banner.id}
-              className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col"
-            >
-              {/* Panoramic Banner Preview (aspect ratio ~ 21:9) */}
-              <div className="relative w-full h-44 bg-slate-900 overflow-hidden">
-                <FallbackImage
-                  src={banner.image}
-                  alt={banner.altText || banner.title || "Hero banner"}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-
-                {/* Badges on top */}
-                <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                  <span className="px-2.5 py-1 bg-black/60 backdrop-blur-md text-white text-xs font-bold rounded-lg border border-white/20">
-                    {banner.entityType}
-                  </span>
-                  {banner.pageSlug && (
-                    <span className="px-2.5 py-1 bg-[#2E8B8B]/90 backdrop-blur-md text-white text-xs font-semibold rounded-lg capitalize">
-                      {banner.pageSlug}
-                    </span>
-                  )}
-                </div>
-
-                {/* Overlay Text Preview */}
-                <div className="absolute bottom-3 left-3 right-3 text-white">
-                  {banner.subtitle && (
-                    <p className="text-[11px] font-bold uppercase tracking-wider text-[#F8904D] truncate">
-                      {banner.subtitle}
-                    </p>
-                  )}
-                  <h3 className="text-base font-extrabold text-white truncate drop-shadow-sm">
-                    {banner.title || "(No custom overlay title)"}
-                  </h3>
-                </div>
-              </div>
-
-              {/* Card Footer details */}
-              <div className="p-4 flex-1 flex flex-col justify-between space-y-3 bg-white">
-                <div className="space-y-1 text-xs text-slate-500">
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-slate-600">Target:</span>
-                    <span className="font-semibold text-slate-800">
-                      {banner.pageSlug ? banner.pageSlug : banner.entityType}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-slate-600">Display Order:</span>
-                    <span className="font-semibold text-slate-800">{banner.displayOrder}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-slate-600">Mobile Banner:</span>
-                    {banner.mobileImage ? (
-                      <span className="inline-flex items-center gap-1 text-[10.5px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                        📱 Dedicated (750×500)
-                      </span>
-                    ) : (
-                      <span className="text-[10.5px] text-slate-400">Desktop Fallback</span>
-                    )}
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-slate-600">File URL:</span>
-                    <a
-                      href={banner.image}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#2E8B8B] hover:underline flex items-center gap-1 font-mono truncate max-w-[180px]"
-                    >
-                      {banner.image.split("/").pop()}
-                      <ExternalLink size={12} className="shrink-0" />
-                    </a>
-                  </div>
-                </div>
-
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-                  <span className="text-[11px] text-slate-400">ID #{banner.id}</span>
-
-                  <div className="flex items-center gap-1.5">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        openAddModal();
-                        setUploadMode("multiple");
-                        setFormCategory(banner.entityType as HeroBannerEntityType);
-                        setSelectedEntityId(banner.entityId || 0);
-                        setSelectedSlug(banner.pageSlug || "");
-                        setDisplayOrder((banner.displayOrder || 0) + 1);
-                      }}
-                      className="h-8 px-2 text-xs flex items-center gap-1 border-indigo-200 text-indigo-700 bg-indigo-50/50 hover:bg-indigo-100"
-                      title="Add more images to this page"
-                    >
-                      <Layers size={12} />
-                      <span>+ Add Images</span>
-                    </Button>
-
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => openAddModal(banner)}
-                      className="h-8 px-2.5 text-xs flex items-center gap-1 border-slate-200 text-slate-700 hover:bg-[#2E8B8B]/10 hover:text-[#2E8B8B]"
-                      title="Re-crop or update this banner"
-                    >
-                      <Crop size={12} />
-                      <span>Crop / Resize</span>
-                    </Button>
-
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => setDeleteConfirmId(banner.id)}
-                      className="h-8 px-2.5 text-xs flex items-center gap-1 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 border border-rose-200"
-                    >
-                      <Trash2 size={12} />
-                      <span>Delete</span>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Delete Confirmation Modal */}
-      {deleteConfirmId && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4">
-            <div className="flex items-center gap-3 text-rose-600">
-              <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center">
-                <AlertCircle size={22} />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-900">Delete Hero Full Banner</h3>
-                <p className="text-xs text-slate-500">This action will remove the banner image and restore fallback.</p>
-              </div>
-            </div>
-            <p className="text-sm text-slate-600">
-              Are you sure you want to delete this panoramic banner? Once deleted, you can upload a new one if you wish to update it.
-            </p>
-            <div className="flex justify-end gap-3 pt-2">
-              <Button
-                variant="outline"
-                onClick={() => setDeleteConfirmId(null)}
-                className="rounded-xl"
+      {/* 2. SEARCH & CATEGORY FILTER BAR */}
+      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+        <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
+          {/* Live Search Bar */}
+          <div className="relative w-full sm:w-80">
+            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by page name, slug, or title..."
+              className="w-full pl-9 pr-8 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2E8B8B] transition-all"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
               >
-                Cancel
-              </Button>
-              <Button
-                variant="destructive"
-                onClick={() => handleDelete(deleteConfirmId)}
-                className="rounded-xl bg-rose-600 hover:bg-rose-700"
-              >
-                Yes, Delete Banner
-              </Button>
-            </div>
+                <X size={14} />
+              </button>
+            )}
+          </div>
+
+          <div className="text-xs text-slate-500 font-medium">
+            Showing{" "}
+            <span className="font-bold text-slate-800">
+              {viewMode === "pages" ? `${filteredPages.length} Pages` : `${filteredBanners.length} Banners`}
+            </span>
           </div>
         </div>
+
+        {/* Category Filter Chips */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1 scrollbar-none">
+          <button
+            onClick={() => setSelectedCategoryFilter("ALL")}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+              selectedCategoryFilter === "ALL"
+                ? "bg-[#2E8B8B] text-white shadow-xs"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+            }`}
+          >
+            All Categories ({allBanners.length})
+          </button>
+          {CATEGORIES.map((cat) => {
+            const count = allBanners.filter((b) => b.entityType === cat.value).length;
+            const Icon = cat.icon;
+            return (
+              <button
+                key={cat.value}
+                onClick={() => setSelectedCategoryFilter(cat.value)}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                  selectedCategoryFilter === cat.value
+                    ? "bg-[#2E8B8B] text-white shadow-xs"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+              >
+                <Icon size={13} />
+                <span>{cat.label}</span>
+                <span className="opacity-75">({count})</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 3. MAIN CONTENT: PAGES VIEW (GROUPED BY PAGE) */}
+      {viewMode === "pages" ? (
+        isLoading ? (
+          <div className="space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-48 bg-slate-100 animate-pulse rounded-2xl border border-slate-200" />
+            ))}
+          </div>
+        ) : filteredPages.length === 0 ? (
+          <EmptyState
+            title="No Pages Found"
+            description={
+              searchQuery
+                ? `No pages matching "${searchQuery}". Try a different keyword.`
+                : "No hero banners found. Click 'Upload Banners' above to add slides for your pages."
+            }
+          />
+        ) : (
+          <div className="space-y-6">
+            {filteredPages.map((page) => (
+              <div
+                key={page.key}
+                className="bg-white rounded-2xl border border-slate-200 shadow-xs hover:border-slate-300 transition-all overflow-hidden"
+              >
+                {/* Page Card Header */}
+                <div className="p-4 sm:p-5 bg-gradient-to-r from-slate-50 to-white border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#2E8B8B]/10 text-[#2E8B8B] flex items-center justify-center shrink-0">
+                      {page.entityType === "Home" ? (
+                        <Home size={20} />
+                      ) : page.entityType === "Country" ? (
+                        <Globe size={20} />
+                      ) : page.entityType === "State" ? (
+                        <MapPin size={20} />
+                      ) : page.entityType === "City" ? (
+                        <MapPin size={20} />
+                      ) : (
+                        <Sparkles size={20} />
+                      )}
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                          {page.title}
+                        </h2>
+                        <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-200 text-slate-700">
+                          {page.entityType}
+                        </span>
+                        <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-50 text-emerald-700 border border-emerald-200">
+                          {page.banners.length} {page.banners.length === 1 ? "Slide" : "Slides in Rotation"}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500">
+                        <span>{page.subtitle}</span>
+                        {page.liveUrl && (
+                          <Link
+                            href={page.liveUrl}
+                            target="_blank"
+                            className="text-[#2E8B8B] hover:underline inline-flex items-center gap-0.5 font-semibold"
+                            title="Open live page in new tab"
+                          >
+                            <span>View Live</span>
+                            <ExternalLink size={11} />
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quick Action: Add More Images to this specific page */}
+                  <div className="flex items-center gap-2 shrink-0">
+                    <Button
+                      type="button"
+                      onClick={() => handleAddImagesToPage(page, "multiple")}
+                      className="bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold shadow-xs cursor-pointer"
+                    >
+                      <Plus size={15} />
+                      <span>+ Add More Images</span>
+                    </Button>
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => handleAddImagesToPage(page, "single")}
+                      className="border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer"
+                      title="Add single banner with crop & resize"
+                    >
+                      <Crop size={14} />
+                      <span>Single (Crop)</span>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Slides Strip / Gallery */}
+                <div className="p-4 sm:p-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {page.banners.map((banner, index) => (
+                      <div
+                        key={banner.id}
+                        className="group relative bg-slate-900 rounded-xl overflow-hidden border border-slate-200 shadow-xs flex flex-col"
+                      >
+                        {/* Slide Preview (16:5 Panoramic Aspect Ratio) */}
+                        <div className="relative w-full h-36 bg-slate-950 overflow-hidden">
+                          <FallbackImage
+                            src={banner.image}
+                            alt={banner.altText || banner.title || "Banner slide"}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                            className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/10 pointer-events-none" />
+
+                          {/* Order Badge */}
+                          <span className="absolute top-2 left-2 bg-black/75 backdrop-blur-md text-white text-[11px] font-black px-2 py-0.5 rounded-md border border-white/20">
+                            Slide #{banner.displayOrder ?? index + 1}
+                          </span>
+
+                          {/* Mobile Image Badge */}
+                          {banner.mobileImage && (
+                            <span
+                              className="absolute top-2 right-2 bg-emerald-600/90 backdrop-blur-md text-white text-[9.5px] font-bold px-1.5 py-0.5 rounded shadow-xs"
+                              title="Dedicated mobile banner attached (750×500)"
+                            >
+                              📱 Mobile
+                            </span>
+                          )}
+
+                          {/* Overlay Text Preview */}
+                          <div className="absolute bottom-2 left-2.5 right-2.5 text-white pointer-events-none">
+                            {banner.subtitle && (
+                              <p className="text-[10px] font-bold uppercase tracking-wider text-[#F8904D] truncate">
+                                {banner.subtitle}
+                              </p>
+                            )}
+                            <h4 className="text-xs font-black uppercase text-white truncate drop-shadow-sm">
+                              {banner.title || "(No text overlay)"}
+                            </h4>
+                          </div>
+
+                          {/* Hover Actions Bar */}
+                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 p-2">
+                            <button
+                              type="button"
+                              onClick={() => openAddModal(banner, "single")}
+                              className="px-3 py-1.5 rounded-lg bg-white/95 hover:bg-white text-slate-800 text-xs font-bold shadow-md flex items-center gap-1 cursor-pointer transition-transform hover:scale-105"
+                              title="Crop or edit this banner"
+                            >
+                              <Crop size={12} className="text-[#2E8B8B]" />
+                              <span>Crop / Edit</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => setDeleteConfirmId(banner.id)}
+                              className="p-1.5 rounded-lg bg-rose-600/95 hover:bg-rose-700 text-white text-xs font-bold shadow-md cursor-pointer transition-transform hover:scale-105"
+                              title="Delete this slide"
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Card Details Footer */}
+                        <div className="p-2.5 bg-white border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                          <span className="font-mono truncate max-w-[140px]" title={banner.image}>
+                            {banner.image.split("/").pop()}
+                          </span>
+
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => openAddModal(banner, "single")}
+                              className="text-[#2E8B8B] hover:underline font-bold"
+                            >
+                              Edit
+                            </button>
+                            <span className="text-slate-300">•</span>
+                            <button
+                              type="button"
+                              onClick={() => setDeleteConfirmId(banner.id)}
+                              className="text-rose-600 hover:underline font-bold"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )
+      ) : (
+        /* 4. ALTERNATIVE: ALL BANNERS GRID VIEW */
+        isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-64 bg-slate-100 animate-pulse rounded-2xl border border-slate-200" />
+            ))}
+          </div>
+        ) : filteredBanners.length === 0 ? (
+          <EmptyState
+            title="No Hero Full Banners Found"
+            description="Click 'Upload Banners' to add panoramic banners for your pages."
+          />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredBanners.map((banner) => (
+              <div
+                key={banner.id}
+                className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition-shadow group flex flex-col"
+              >
+                <div className="relative w-full h-44 bg-slate-900 overflow-hidden">
+                  <FallbackImage
+                    src={banner.image}
+                    alt={banner.altText || banner.title || "Hero banner"}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+                  <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                    <span className="px-2.5 py-1 bg-black/60 backdrop-blur-md text-white text-xs font-bold rounded-lg border border-white/20">
+                      {banner.entityType}
+                    </span>
+                    {banner.pageSlug && (
+                      <span className="px-2.5 py-1 bg-[#2E8B8B]/90 backdrop-blur-md text-white text-xs font-semibold rounded-lg capitalize">
+                        {banner.pageSlug}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="absolute bottom-3 left-3 right-3 text-white">
+                    {banner.subtitle && (
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-[#F8904D] truncate">
+                        {banner.subtitle}
+                      </p>
+                    )}
+                    <h3 className="text-base font-black text-white truncate drop-shadow-sm">
+                      {banner.title || "(No custom overlay title)"}
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="p-4 flex-1 flex flex-col justify-between space-y-3 bg-white">
+                  <div className="space-y-1 text-xs text-slate-500">
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-slate-600">Target:</span>
+                      <span className="font-semibold text-slate-800">
+                        {banner.pageSlug ? banner.pageSlug : banner.entityType}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-slate-600">Display Order:</span>
+                      <span className="font-semibold text-slate-800">#{banner.displayOrder}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-slate-600">Mobile Banner:</span>
+                      {banner.mobileImage ? (
+                        <span className="inline-flex items-center gap-1 text-[10.5px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                          📱 Dedicated (750×500)
+                        </span>
+                      ) : (
+                        <span className="text-[10.5px] text-slate-400">Desktop Fallback</span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <span className="text-[11px] text-slate-400">ID #{banner.id}</span>
+                    <div className="flex items-center gap-1.5">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => openAddModal(banner, "single")}
+                        className="h-8 px-2.5 text-xs flex items-center gap-1 border-slate-200 text-slate-700 hover:bg-[#2E8B8B]/10 hover:text-[#2E8B8B]"
+                      >
+                        <Crop size={12} />
+                        <span>Crop / Resize</span>
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => setDeleteConfirmId(banner.id)}
+                        className="h-8 px-2.5 text-xs flex items-center gap-1 bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 border border-rose-200"
+                      >
+                        <Trash2 size={12} />
+                        <span>Delete</span>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )
       )}
 
-      {/* Upload/Edit Full Banner Modal */}
+      {/* 5. UPLOAD & EDIT BANNER MODAL (USER-FRIENDLY & SIMPLIFIED) */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-100 overflow-hidden my-8 max-h-[92vh] flex flex-col">
-            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 shrink-0">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-[#2E8B8B]/10 text-[#2E8B8B] flex items-center justify-center">
-                  <Upload size={18} />
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-150">
+          <div className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-100 overflow-hidden my-6 max-h-[94vh] flex flex-col">
+            {/* Modal Header */}
+            <div className="p-5 sm:p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/70 shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#2E8B8B]/10 text-[#2E8B8B] flex items-center justify-center shrink-0">
+                  <Upload size={20} />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-slate-900">
+                  <h2 className="text-lg font-black text-slate-900">
                     {editingBanner
-                      ? uploadMode === "single"
-                        ? `Edit Hero Banner (ID #${editingBanner.id})`
-                        : `Add Multiple Images to ${formCategory}`
-                      : uploadMode === "single"
-                      ? "Upload Hero Full Banner (Single)"
-                      : "Batch Upload Multiple Banners"}
+                      ? `Edit Slide (ID #${editingBanner.id})`
+                      : uploadMode === "multiple"
+                      ? `Upload Images to ${targetPageDisplayName}`
+                      : `Add Single Banner to ${targetPageDisplayName}`}
                   </h2>
                   <p className="text-xs text-slate-500">
-                    Dedicated high-resolution panoramic banner (1920 × 450 px)
+                    Target: <span className="font-bold text-slate-800">{targetPageDisplayName}</span>
                   </p>
                 </div>
               </div>
+
               <button
+                type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="w-8 h-8 rounded-full hover:bg-slate-200/70 flex items-center justify-center text-slate-400 hover:text-slate-700 transition-colors"
+                className="w-9 h-9 rounded-full hover:bg-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
               >
                 <X size={18} />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-5 overflow-y-auto flex-1">
-              {/* Mode Switcher: Single vs Multiple - Always visible */}
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Choose Mode:
-                </label>
-                <div className="flex items-center p-1 bg-slate-100 rounded-xl">
-                  <button
-                    type="button"
-                    onClick={() => setUploadMode("single")}
-                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                      uploadMode === "single"
-                        ? "bg-white text-[#2E8B8B] shadow-xs"
-                        : "text-slate-500 hover:text-slate-800"
-                    }`}
-                  >
-                    <Crop size={14} />
-                    <span>{editingBanner ? "Edit Single Banner (Crop/Resize)" : "Single Banner (with Crop)"}</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setUploadMode("multiple");
-                      if (editingBanner) {
-                        setEditingBanner(null);
-                        setDisplayOrder((displayOrder || 0) + 1);
-                      }
-                    }}
-                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                      uploadMode === "multiple"
-                        ? "bg-white text-indigo-700 shadow-xs"
-                        : "text-slate-500 hover:text-slate-800"
-                    }`}
-                  >
-                    <Layers size={14} />
-                    <span>Multiple Images (Batch Upload)</span>
-                  </button>
+            <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-5 overflow-y-auto flex-1">
+              {/* Target Page Selection Accordion / Switcher */}
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                    <MapPin size={13} className="text-[#2E8B8B]" />
+                    <span>Selected Page Destination:</span>
+                  </label>
+                  <span className="text-xs font-bold text-[#2E8B8B] bg-white px-2.5 py-0.5 rounded-full border border-[#2E8B8B]/20">
+                    {targetPageDisplayName}
+                  </span>
                 </div>
-              </div>
 
-              {/* Category Picker */}
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                  Page Category <span className="text-rose-500">*</span>
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {/* Category Picker */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
                   {CATEGORIES.map((cat) => (
                     <button
                       type="button"
                       key={cat.value}
                       onClick={() => handleCategoryChange(cat.value)}
-                      className={`px-3 py-2.5 rounded-xl text-xs font-bold transition-all text-center border ${
+                      className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all text-center border cursor-pointer ${
                         formCategory === cat.value
-                          ? "bg-[#2E8B8B] text-white border-[#2E8B8B] shadow-sm"
-                          : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                          ? "bg-[#2E8B8B] text-white border-[#2E8B8B] shadow-xs"
+                          : "bg-white text-slate-600 border-slate-200 hover:bg-slate-100"
                       }`}
                     >
                       {cat.label}
                     </button>
                   ))}
                 </div>
-              </div>
 
-              {/* Specific Entity Selection if not Home or Destinations */}
-              {formCategory === "Country" && (
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                    Select Country <span className="text-rose-500">*</span>
-                  </label>
-                  <select
-                    value={selectedSlug}
-                    onChange={(e) => {
-                      const item = countries.find((c: any) => c.slug === e.target.value);
-                      if (item) {
-                        setSelectedSlug(item.slug);
-                        setSelectedEntityId(item.id);
-                      }
-                    }}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
-                  >
-                    <option value="">-- Choose Country --</option>
-                    {countries.map((c: any) => (
-                      <option key={c.id} value={c.slug}>
-                        {c.title} ({c.slug})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              {formCategory === "State" && (
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                    Select State <span className="text-rose-500">*</span>
-                  </label>
-                  <select
-                    value={selectedSlug}
-                    onChange={(e) => {
-                      const item = states.find((s: any) => s.slug === e.target.value);
-                      if (item) {
-                        setSelectedSlug(item.slug);
-                        setSelectedEntityId(item.id);
-                      }
-                    }}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
-                  >
-                    <option value="">-- Choose State --</option>
-                    {states.map((s: any) => (
-                      <option key={s.id} value={s.slug}>
-                        {s.title} ({s.slug})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              {formCategory === "City" && (
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                    Select City / Destination <span className="text-rose-500">*</span>
-                  </label>
-                  <select
-                    value={selectedSlug}
-                    onChange={(e) => {
-                      const item = cities.find((c: any) => c.slug === e.target.value);
-                      if (item) {
-                        setSelectedSlug(item.slug);
-                        setSelectedEntityId(item.id);
-                      }
-                    }}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
-                  >
-                    <option value="">-- Choose City --</option>
-                    {cities.map((c: any) => (
-                      <option key={c.id} value={c.slug}>
-                        {c.title} ({c.slug})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              {formCategory === "TravelExperience" && (
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                    Select Travel Experience <span className="text-rose-500">*</span>
-                  </label>
-                  <select
-                    value={selectedSlug}
-                    onChange={(e) => {
-                      const item = travelExperiences.find((t: any) => t.slug === e.target.value);
-                      if (item) {
-                        setSelectedSlug(item.slug);
-                        setSelectedEntityId(item.id);
-                      }
-                    }}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
-                  >
-                    <option value="">-- Choose Travel Experience --</option>
-                    {travelExperiences.map((t: any) => (
-                      <option key={t.id} value={t.slug}>
-                        {t.title} ({t.slug})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              {formCategory === "Blog" && (
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                    Select Target <span className="text-rose-500">*</span>
-                  </label>
-                  <select
-                    value={selectedSlug || "blog"}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      if (val === "blog") {
-                        setSelectedSlug("blog");
-                        setSelectedEntityId(0);
-                      } else {
-                        const item = blogPosts.find((b: any) => b.slug === val);
+                {/* Dynamic Entity Dropdown */}
+                {formCategory === "State" && (
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                      Choose State or Circuit (e.g. Golden Triangle, Rajasthan):
+                    </label>
+                    <select
+                      value={selectedSlug}
+                      onChange={(e) => {
+                        const item = states.find((s: any) => s.slug === e.target.value);
                         if (item) {
                           setSelectedSlug(item.slug);
                           setSelectedEntityId(item.id);
                         }
-                      }
-                    }}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
+                      }}
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium focus:ring-2 focus:ring-[#2E8B8B] focus:outline-none"
+                    >
+                      <option value="">-- Select State --</option>
+                      {states.map((s: any) => (
+                        <option key={s.id} value={s.slug}>
+                          {s.title} ({s.slug})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                {formCategory === "Country" && (
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Choose Country:</label>
+                    <select
+                      value={selectedSlug}
+                      onChange={(e) => {
+                        const item = countries.find((c: any) => c.slug === e.target.value);
+                        if (item) {
+                          setSelectedSlug(item.slug);
+                          setSelectedEntityId(item.id);
+                        }
+                      }}
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium focus:ring-2 focus:ring-[#2E8B8B] focus:outline-none"
+                    >
+                      <option value="">-- Select Country --</option>
+                      {countries.map((c: any) => (
+                        <option key={c.id} value={c.slug}>
+                          {c.title} ({c.slug})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                {formCategory === "City" && (
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Choose City:</label>
+                    <select
+                      value={selectedSlug}
+                      onChange={(e) => {
+                        const item = cities.find((c: any) => c.slug === e.target.value);
+                        if (item) {
+                          setSelectedSlug(item.slug);
+                          setSelectedEntityId(item.id);
+                        }
+                      }}
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium focus:ring-2 focus:ring-[#2E8B8B] focus:outline-none"
+                    >
+                      <option value="">-- Select City --</option>
+                      {cities.map((c: any) => (
+                        <option key={c.id} value={c.slug}>
+                          {c.title} ({c.slug})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                {formCategory === "TravelExperience" && (
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Choose Travel Experience:</label>
+                    <select
+                      value={selectedSlug}
+                      onChange={(e) => {
+                        const item = travelExperiences.find((t: any) => t.slug === e.target.value);
+                        if (item) {
+                          setSelectedSlug(item.slug);
+                          setSelectedEntityId(item.id);
+                        }
+                      }}
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium focus:ring-2 focus:ring-[#2E8B8B] focus:outline-none"
+                    >
+                      <option value="">-- Select Experience --</option>
+                      {travelExperiences.map((t: any) => (
+                        <option key={t.id} value={t.slug}>
+                          {t.title} ({t.slug})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </div>
+
+              {/* Mode Switcher: Multiple Images vs Single Crop */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  How would you like to upload?
+                </label>
+                <div className="flex items-center p-1 bg-slate-100 rounded-xl border border-slate-200">
+                  <button
+                    type="button"
+                    onClick={() => setUploadMode("multiple")}
+                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                      uploadMode === "multiple"
+                        ? "bg-white text-indigo-700 shadow-xs"
+                        : "text-slate-500 hover:text-slate-800"
+                    }`}
                   >
-                    <option value="blog">Main Blog Page (/blog)</option>
-                    {blogPosts.map((b: any) => (
-                      <option key={b.id} value={b.slug}>
-                        Post: {b.title} ({b.slug})
-                      </option>
-                    ))}
-                  </select>
+                    <Layers size={14} />
+                    <span>Upload Multiple Images (Fast Batch)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setUploadMode("single")}
+                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                      uploadMode === "single"
+                        ? "bg-white text-[#2E8B8B] shadow-xs"
+                        : "text-slate-500 hover:text-slate-800"
+                    }`}
+                  >
+                    <Crop size={14} />
+                    <span>Single Banner (with Crop & Resize)</span>
+                  </button>
                 </div>
-              )}
+              </div>
 
-              {/* Category Active Banners Strip: Shows current banners on this page before upload */}
-              {categoryActiveBanners.length > 0 && (
-                <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 space-y-2.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                      <Layers size={14} className="text-[#2E8B8B]" />
-                      Currently Active Banners on this Page ({categoryActiveBanners.length})
-                    </span>
-                    <span className="text-[11px] text-slate-500 font-medium">
-                      Check existing images to avoid uploading duplicates
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-3 overflow-x-auto pb-1 pt-0.5">
-                    {categoryActiveBanners.map((b) => (
-                      <div
-                        key={b.id}
-                        className={`relative group shrink-0 rounded-xl overflow-hidden border transition-all ${
-                          editingBanner?.id === b.id
-                            ? "border-[#2E8B8B] ring-2 ring-[#2E8B8B]/30"
-                            : "border-slate-200 bg-white hover:border-slate-300 shadow-xs"
-                        }`}
-                        style={{ width: 140 }}
-                      >
-                        <div className="relative w-full h-20 bg-slate-900">
-                          <img
-                            src={b.image}
-                            alt={b.title || "Banner"}
-                            className="w-full h-full object-cover"
-                          />
-                          <span className="absolute bottom-1 right-1 bg-black/75 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
-                            #{b.displayOrder}
-                          </span>
-                          {b.mobileImage && (
-                            <span className="absolute top-1 left-1 bg-emerald-600 text-white text-[8px] font-bold px-1 py-0.2 rounded shadow-xs" title="Has dedicated mobile image">
-                              📱 Mobile
-                            </span>
-                          )}
-                        </div>
-                        <div className="p-1.5 text-center">
-                          <p className="text-[10.5px] font-semibold text-slate-700 truncate" title={b.title || "Untitled"}>
-                            {b.title || "(Untitled)"}
-                          </p>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setPreviewUrl(b.image);
-                              setSelectedFile(null);
-                              if (b.mobileImage) {
-                                setMobilePreviewUrl(b.mobileImage);
-                                setSelectedMobileFile(null);
-                              }
-                              toast.success("Applied existing banner image to form!");
-                            }}
-                            className="mt-1 text-[10px] text-[#2E8B8B] hover:text-[#267373] font-bold hover:underline"
-                          >
-                            Reuse This Photo
-                          </button>
-                        </div>
+              {/* MODE 1: MULTIPLE IMAGES BATCH UPLOAD (SUPER USER-FRIENDLY) */}
+              {uploadMode === "multiple" ? (
+                <div className="space-y-3">
+                  {/* Multi Dropzone */}
+                  <div
+                    onClick={() => multiFileInputRef.current?.click()}
+                    className="border-2 border-dashed border-indigo-300 hover:border-indigo-500 bg-indigo-50/40 hover:bg-indigo-50/70 rounded-2xl p-6 text-center cursor-pointer transition-colors"
+                  >
+                    <input
+                      ref={multiFileInputRef}
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={(e) => {
+                        if (e.target.files) handleMultipleFilesSelect(e.target.files);
+                        e.target.value = "";
+                      }}
+                      className="hidden"
+                    />
+                    <div className="flex flex-col items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-white shadow-xs flex items-center justify-center text-indigo-600 mb-2 border border-indigo-100">
+                        <Upload size={22} />
                       </div>
-                    ))}
+                      <p className="text-sm font-bold text-slate-800">
+                        Click to select images or drag & drop here
+                      </p>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Select 2, 5, 10 or more photos at once (JPG, PNG, WebP)
+                      </p>
+                    </div>
                   </div>
-                </div>
-              )}
 
-              {/* Duplicate Detection Alert */}
-              {duplicateDesktopBanner && (
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-2.5 text-amber-900 animate-in fade-in">
-                  <AlertCircle size={17} className="text-amber-600 shrink-0 mt-0.5" />
-                  <div className="text-xs">
-                    <p className="font-bold">⚠️ Notice: This image is already being used on this page!</p>
-                    <p className="text-amber-700 mt-0.5">
-                      It is currently used in <strong>Banner #{duplicateDesktopBanner.displayOrder}</strong> ({duplicateDesktopBanner.title || "Untitled"}). You can still use it or choose a different image.
-                    </p>
+                  {/* Or Add from Image URL */}
+                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
+                    <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
+                      <LinkIcon size={12} className="text-indigo-600" /> Or Add via Image URL
+                    </span>
+                    <div className="flex gap-2">
+                      <input
+                        type="url"
+                        value={multiUrlInput}
+                        onChange={(e) => setMultiUrlInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            handleAddUrlToMultiple();
+                          }
+                        }}
+                        placeholder="Paste image URL (https://...)"
+                        className="flex-1 px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-indigo-400"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleAddUrlToMultiple}
+                        disabled={multiUrlLoading || !multiUrlInput.trim()}
+                        className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-colors shrink-0 shadow-2xs cursor-pointer"
+                      >
+                        {multiUrlLoading ? <Loader2 size={13} className="animate-spin" /> : <LinkIcon size={13} />}
+                        <span>{multiUrlLoading ? "Loading..." : "Add to Queue"}</span>
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
 
-              {/* Upload Mode 1: Single Banner with Dual Croppers (Desktop + Mobile) */}
-              {uploadMode === "single" ? (
+                  {/* Multiple Selected Files Grid */}
+                  {multipleFiles.length > 0 && (
+                    <div className="space-y-2 pt-1">
+                      <div className="flex items-center justify-between text-xs text-slate-600 font-bold px-1">
+                        <span>{multipleFiles.length} Images Ready to Upload:</span>
+                        <button
+                          type="button"
+                          onClick={clearMultipleFiles}
+                          className="text-rose-600 hover:underline text-xs"
+                        >
+                          Clear All
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-56 overflow-y-auto pr-1">
+                        {multipleFiles.map((item, idx) => (
+                          <div
+                            key={item.id}
+                            className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-900 group"
+                          >
+                            <div className="relative w-full h-24">
+                              <img src={item.preview} alt={item.name} className="w-full h-full object-cover" />
+                              <span className="absolute top-1 left-1 bg-black/80 text-white text-[9px] font-black px-1.5 py-0.5 rounded">
+                                #{displayOrder + idx}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => removeMultipleItem(item.id)}
+                                className="absolute top-1 right-1 w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-sm"
+                                title="Remove this photo"
+                              >
+                                <X size={12} />
+                              </button>
+                            </div>
+                            <div className="p-1 bg-white text-center">
+                              <p className="text-[10px] font-medium text-slate-700 truncate">{item.name}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                /* MODE 2: SINGLE BANNER WITH CROP & RESIZE (SIMPLIFIED & INTUITIVE) */
                 <div className="space-y-4">
-                  {/* Tabs Switcher: Desktop Banner / Mobile Banner */}
+                  {/* Desktop vs Mobile Tabs */}
                   <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
                     <button
                       type="button"
@@ -960,9 +1293,9 @@ export default function HeroBannersAdminPage() {
                       <Monitor size={15} />
                       <span>Desktop Banner (1920 × 600)</span>
                       {previewUrl ? (
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-500" title="Image selected" />
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-500" />
                       ) : (
-                        <span className="text-rose-400 font-extrabold">*</span>
+                        <span className="text-rose-400 font-black">*</span>
                       )}
                     </button>
 
@@ -978,28 +1311,23 @@ export default function HeroBannersAdminPage() {
                       <Smartphone size={15} />
                       <span>Mobile Banner (750 × 500)</span>
                       {mobilePreviewUrl ? (
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-500" title="Mobile image selected" />
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-500" />
                       ) : (
                         <span className="text-[10px] font-normal opacity-75">(Optional)</span>
                       )}
                     </button>
                   </div>
 
-                  {/* Tab 1: Desktop Banner */}
+                  {/* Desktop Cropper Tab */}
                   {editorBannerTab === "desktop" && (
-                    <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-4 space-y-3 animate-in fade-in duration-150">
+                    <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-4 space-y-3">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
                           <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                            Desktop Panoramic Banner (1920 × 600 px){" "}
-                            {editingBanner ? (
-                              <span className="text-slate-400 font-normal lowercase">(optional — leave unchanged to keep current)</span>
-                            ) : (
-                              <span className="text-rose-500">*</span>
-                            )}
+                            Desktop Banner (1920 × 600 px)
                           </label>
                           <p className="text-[11px] text-slate-500">
-                            Displayed on Laptops, Desktops, TV and Tablets. (16:9 & 16:5 photos fit easily)
+                            16:5 ratio for desktops, laptops and tablets.
                           </p>
                         </div>
 
@@ -1029,7 +1357,7 @@ export default function HeroBannersAdminPage() {
                         maxWidth={1920}
                         maxHeight={600}
                         aspectRatioPreset="hero"
-                        label="Upload Desktop Banner (1920 × 600 px) — Click to Crop, Paste URL or File"
+                        label="Select or Drag Desktop Banner (Click to Crop / Center)"
                         initialImage={previewUrl || undefined}
                       />
 
@@ -1061,9 +1389,9 @@ export default function HeroBannersAdminPage() {
                     </div>
                   )}
 
-                  {/* Tab 2: Mobile Banner */}
+                  {/* Mobile Cropper Tab */}
                   {editorBannerTab === "mobile" && (
-                    <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-4 space-y-3 animate-in fade-in duration-150">
+                    <div className="bg-slate-50/70 border border-slate-200 rounded-2xl p-4 space-y-3">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
                           <div className="flex items-center gap-2">
@@ -1071,11 +1399,11 @@ export default function HeroBannersAdminPage() {
                               Mobile Dedicated Banner (750 × 500 px)
                             </label>
                             <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-200">
-                              Optional (Recommended)
+                              Optional
                             </span>
                           </div>
                           <p className="text-[11px] text-slate-500">
-                            Dedicated 3:2 portrait/compact ratio for mobile phones. Zero side cropping! If omitted, desktop banner is auto-used.
+                            3:2 portrait/compact ratio for mobile phones. Zero side cropping!
                           </p>
                         </div>
 
@@ -1096,7 +1424,8 @@ export default function HeroBannersAdminPage() {
                               type="button"
                               onClick={() => {
                                 setSelectedMobileFile(null);
-                                if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
+                                if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:"))
+                                  URL.revokeObjectURL(mobilePreviewUrl);
                                 setMobilePreviewUrl(null);
                                 setRemoveMobileImage(true);
                               }}
@@ -1112,175 +1441,29 @@ export default function HeroBannersAdminPage() {
                         onFileSelect={(file) => {
                           setSelectedMobileFile(file);
                           setRemoveMobileImage(false);
-                          if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
+                          if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:"))
+                            URL.revokeObjectURL(mobilePreviewUrl);
                           setMobilePreviewUrl(URL.createObjectURL(file));
                         }}
                         onClear={() => {
                           setSelectedMobileFile(null);
-                          if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:")) URL.revokeObjectURL(mobilePreviewUrl);
+                          if (mobilePreviewUrl && mobilePreviewUrl.startsWith("blob:"))
+                            URL.revokeObjectURL(mobilePreviewUrl);
                           setMobilePreviewUrl(null);
                           setRemoveMobileImage(true);
                         }}
                         maxWidth={750}
                         maxHeight={500}
                         aspectRatioPreset="mobileHero"
-                        label="Upload Mobile Banner (750 × 500 px) — Click to Crop & Resize"
+                        label="Select or Drag Mobile Banner (750 × 500 px)"
                         initialImage={mobilePreviewUrl || undefined}
                       />
-
-                      {/* Live Mobile Preview Box */}
-                      {mobilePreviewUrl && (
-                        <div className="mt-2 flex items-center gap-4">
-                          <div className="relative w-40 h-28 bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-200 shrink-0">
-                            <Image
-                              src={mobilePreviewUrl}
-                              alt="Mobile Preview"
-                              fill
-                              unoptimized={mobilePreviewUrl.startsWith("blob:")}
-                              className="object-cover object-center"
-                            />
-                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-center p-2">
-                              <span className="text-[10px] font-bold text-white/90">Mobile View</span>
-                            </div>
-                          </div>
-                          <div className="text-xs text-slate-600 space-y-1">
-                            <p className="font-bold text-slate-800 flex items-center gap-1.5">
-                              <Eye size={13} className="text-[#2E8B8B]" />
-                              Mobile Screen Preview (750 × 500 px)
-                            </p>
-                            <p className="text-[11px] text-slate-500">
-                              Mobile devices will download this lightweight dedicated image instead of the desktop wide banner.
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ) : (
-                /* Upload Mode 2: Multiple Images Batch Upload */
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                      Select Multiple Banner Images <span className="text-rose-500">*</span>
-                    </label>
-                    {multipleFiles.length > 0 && (
-                      <button
-                        type="button"
-                        onClick={clearMultipleFiles}
-                        className="text-xs text-rose-600 hover:text-rose-800 font-semibold"
-                      >
-                        Clear All ({multipleFiles.length})
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Multi-file drag / click dropzone */}
-                  <div
-                    onClick={() => multiFileInputRef.current?.click()}
-                    className="border-2 border-dashed border-[#2E8B8B]/40 hover:border-[#2E8B8B] bg-[#2E8B8B]/5 hover:bg-[#2E8B8B]/10 rounded-2xl p-6 text-center cursor-pointer transition-colors"
-                  >
-                    <input
-                      ref={multiFileInputRef}
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      onChange={(e) => {
-                        if (e.target.files) handleMultipleFilesSelect(e.target.files);
-                        e.target.value = "";
-                      }}
-                      className="hidden"
-                    />
-                    <div className="flex flex-col items-center justify-center">
-                      <div className="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center text-[#2E8B8B] mb-2 border border-[#2E8B8B]/20">
-                        <Upload size={22} />
-                      </div>
-                      <p className="text-sm font-bold text-slate-800">
-                        Click to select multiple images (or drag & drop)
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1">
-                        Select 2, 5, 10 or more images at once (PNG, JPG, WebP)
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Or Add via Image URL Bar */}
-                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 space-y-2">
-                    <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
-                      <LinkIcon size={12} className="text-indigo-600" /> Or Add via Image URL
-                    </span>
-                    <div className="flex gap-2">
-                      <input
-                        type="url"
-                        value={multiUrlInput}
-                        onChange={(e) => setMultiUrlInput(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            handleAddUrlToMultiple();
-                          }
-                        }}
-                        placeholder="Paste image URL (https://... or blob:...)"
-                        className="flex-1 px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-indigo-400"
-                      />
-                      <button
-                        type="button"
-                        onClick={handleAddUrlToMultiple}
-                        disabled={multiUrlLoading || !multiUrlInput.trim()}
-                        className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold text-xs rounded-xl flex items-center gap-1.5 transition-colors shrink-0 shadow-2xs"
-                      >
-                        {multiUrlLoading ? <Loader2 size={13} className="animate-spin" /> : <LinkIcon size={13} />}
-                        <span>{multiUrlLoading ? "Loading..." : "Add to Queue"}</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Multiple Files List */}
-                  {multipleFiles.length > 0 && (
-                    <div className="space-y-2 pt-1">
-                      <div className="flex items-center justify-between text-xs text-slate-500 px-1 font-semibold">
-                        <span>Selected ({multipleFiles.length} images ready):</span>
-                        <span>Auto-orders starting at #{displayOrder}</span>
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1">
-                        {multipleFiles.map((item, idx) => (
-                          <div
-                            key={item.id}
-                            className="flex items-center gap-3 p-2 bg-slate-50 rounded-xl border border-slate-200 relative group"
-                          >
-                            <div className="relative w-16 h-10 rounded-lg overflow-hidden shrink-0 bg-slate-200">
-                              <img
-                                src={item.preview}
-                                alt={item.name}
-                                className="w-full h-full object-cover"
-                              />
-                              <span className="absolute bottom-0 right-0 bg-black/75 text-white text-[9px] font-bold px-1 rounded-tl">
-                                #{displayOrder + idx}
-                              </span>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs font-semibold text-slate-800 truncate" title={item.name}>
-                                {item.name}
-                              </p>
-                              <p className="text-[10px] text-slate-400">{item.size}</p>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => removeMultipleItem(item.id)}
-                              className="text-slate-400 hover:text-rose-600 p-1 rounded-lg hover:bg-rose-50 transition-colors shrink-0"
-                              title="Remove image"
-                            >
-                              <X size={15} />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
                     </div>
                   )}
                 </div>
               )}
 
-              {/* Optional Text Overlays */}
+              {/* Optional Text Overlays & Display Order */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -1318,14 +1501,14 @@ export default function HeroBannersAdminPage() {
                     type="text"
                     value={altText}
                     onChange={(e) => setAltText(e.target.value)}
-                    placeholder="e.g. Scenic panoramic view of Udaipur palace"
+                    placeholder="e.g. Scenic panoramic view of Golden Triangle"
                     className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Display Order (Slider order)
+                    Display Order (Slider Sequence)
                   </label>
                   <input
                     type="number"
@@ -1342,7 +1525,7 @@ export default function HeroBannersAdminPage() {
                   type="button"
                   variant="outline"
                   onClick={() => setIsModalOpen(false)}
-                  className="rounded-xl"
+                  className="rounded-xl cursor-pointer"
                   disabled={isSubmitting}
                 >
                   Cancel
@@ -1350,7 +1533,7 @@ export default function HeroBannersAdminPage() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="rounded-xl bg-[#2E8B8B] hover:bg-[#267373] text-white font-semibold px-6 shadow-sm"
+                  className="rounded-xl bg-[#2E8B8B] hover:bg-[#267373] text-white font-semibold px-6 shadow-xs cursor-pointer"
                 >
                   {isSubmitting
                     ? "Saving..."
@@ -1366,7 +1549,43 @@ export default function HeroBannersAdminPage() {
         </div>
       )}
 
-      {/* Media Library Picker Modal */}
+      {/* 6. DELETE CONFIRMATION MODAL */}
+      {deleteConfirmId && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4">
+            <div className="flex items-center gap-3 text-rose-600">
+              <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center">
+                <AlertCircle size={22} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-slate-900">Delete Hero Banner Slide</h3>
+                <p className="text-xs text-slate-500">This will remove this image slide from the hero rotation.</p>
+              </div>
+            </div>
+            <p className="text-sm text-slate-600">
+              Are you sure you want to delete this banner? Once deleted, the slider will automatically rotate the remaining slides.
+            </p>
+            <div className="flex justify-end gap-3 pt-2">
+              <Button
+                variant="outline"
+                onClick={() => setDeleteConfirmId(null)}
+                className="rounded-xl cursor-pointer"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={() => handleDelete(deleteConfirmId)}
+                className="rounded-xl bg-rose-600 hover:bg-rose-700 cursor-pointer"
+              >
+                Yes, Delete
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 7. MEDIA LIBRARY PICKER MODAL */}
       {libraryPickerTarget && (
         <div className="fixed inset-0 z-[120] bg-black/70 flex items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col overflow-hidden shadow-2xl border border-slate-200">
@@ -1380,7 +1599,7 @@ export default function HeroBannersAdminPage() {
               <button
                 type="button"
                 onClick={() => setLibraryPickerTarget(null)}
-                className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100"
+                className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 cursor-pointer"
               >
                 <X size={18} />
               </button>
@@ -1434,7 +1653,7 @@ export default function HeroBannersAdminPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setLibraryPickerTarget(null)}
-                className="rounded-xl"
+                className="rounded-xl cursor-pointer"
               >
                 Close
               </Button>

@@ -308,6 +308,29 @@ export default function ImageCropUpload({
     setCropBox(box);
   }, []);
 
+  const handleAutoCenter = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const cw = container.clientWidth;
+    const ch = container.clientHeight;
+    const ratio = typeof selectedRatio === "number" ? selectedRatio : 1920 / 600;
+
+    let w = cw * 0.88;
+    let h = w / ratio;
+    if (h > ch * 0.88) {
+      h = ch * 0.88;
+      w = h * ratio;
+    }
+    const box = {
+      x: Math.max(0, (cw - w) / 2),
+      y: Math.max(0, (ch - h) / 2),
+      w,
+      h,
+    };
+    cropBoxRef.current = box;
+    setCropBox(box);
+  }, [selectedRatio]);
+
   useEffect(() => {
     if (src && cropOpen) loadImg(src);
   }, [src, cropOpen, loadImg]);
@@ -681,6 +704,16 @@ export default function ImageCropUpload({
                   }`}
                 >
                   Free
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleAutoCenter}
+                  className="px-2.5 py-1 bg-white hover:bg-indigo-50 text-indigo-700 text-xs font-bold rounded-lg border border-indigo-200 shadow-2xs flex items-center gap-1 transition-colors ml-1"
+                  title="Auto center crop box on the image"
+                >
+                  <Maximize2 size={12} />
+                  <span>Center Crop</span>
                 </button>
               </div>
 
