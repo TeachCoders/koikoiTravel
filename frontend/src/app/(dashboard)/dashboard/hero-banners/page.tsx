@@ -49,6 +49,7 @@ import { useGetBlogPosts } from "@/feature/blog/api/useBlogPost";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/shared/EmptyState";
 import { FallbackImage } from "@/components/shared/FallbackImage";
+import ShadcnSelect from "@/components/shared/ShadcnSelect";
 import toast from "react-hot-toast";
 import type { HeroBannerEntityType, HeroFullBanner } from "@/feature/heroBanner/type";
 
@@ -637,9 +638,12 @@ export default function HeroBannersAdminPage() {
         {/* Category Filter Chips */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1 scrollbar-none">
           <button
-            onClick={() => setSelectedCategoryFilter("ALL")}
+            onClick={() => {
+              setSelectedCategoryFilter("ALL");
+              setSearchQuery("");
+            }}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              selectedCategoryFilter === "ALL"
+              selectedCategoryFilter === "ALL" && !searchQuery
                 ? "bg-[#2E8B8B] text-white shadow-xs"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
             }`}
@@ -652,7 +656,10 @@ export default function HeroBannersAdminPage() {
             return (
               <button
                 key={cat.value}
-                onClick={() => setSelectedCategoryFilter(cat.value)}
+                onClick={() => {
+                  setSelectedCategoryFilter(cat.value);
+                  setSearchQuery("");
+                }}
                 className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                   selectedCategoryFilter === cat.value
                     ? "bg-[#2E8B8B] text-white shadow-xs"
@@ -665,6 +672,75 @@ export default function HeroBannersAdminPage() {
               </button>
             );
           })}
+        </div>
+
+        {/* Quick Shadcn UI Dropdowns: Filter by Country, City, or Travel Experience */}
+        <div className="pt-2.5 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <ShadcnSelect
+            placeholder="🔍 Select / Jump to Country..."
+            searchPlaceholder="Type country name..."
+            icon={Globe}
+            value={selectedCategoryFilter === "Country" ? searchQuery : ""}
+            items={countries.map((c: any) => ({
+              label: c.title,
+              value: c.slug,
+              sublabel: c.slug,
+              icon: Globe,
+            }))}
+            clearable={true}
+            onChange={(val) => {
+              if (val) {
+                setSelectedCategoryFilter("Country");
+                setSearchQuery(val);
+              } else {
+                setSearchQuery("");
+              }
+            }}
+          />
+
+          <ShadcnSelect
+            placeholder="🔍 Select / Jump to City..."
+            searchPlaceholder="Type city name..."
+            icon={MapPin}
+            value={selectedCategoryFilter === "City" ? searchQuery : ""}
+            items={cities.map((c: any) => ({
+              label: c.title,
+              value: c.slug,
+              sublabel: c.state?.title || c.slug,
+              icon: MapPin,
+            }))}
+            clearable={true}
+            onChange={(val) => {
+              if (val) {
+                setSelectedCategoryFilter("City");
+                setSearchQuery(val);
+              } else {
+                setSearchQuery("");
+              }
+            }}
+          />
+
+          <ShadcnSelect
+            placeholder="🔍 Select / Jump to Experience..."
+            searchPlaceholder="Type experience name..."
+            icon={Sparkles}
+            value={selectedCategoryFilter === "TravelExperience" ? searchQuery : ""}
+            items={travelExperiences.map((t: any) => ({
+              label: t.title,
+              value: t.slug,
+              sublabel: t.slug,
+              icon: Sparkles,
+            }))}
+            clearable={true}
+            onChange={(val) => {
+              if (val) {
+                setSelectedCategoryFilter("TravelExperience");
+                setSearchQuery(val);
+              } else {
+                setSearchQuery("");
+              }
+            }}
+          />
         </div>
       </div>
 
@@ -1036,103 +1112,140 @@ export default function HeroBannersAdminPage() {
                   ))}
                 </div>
 
-                {/* Dynamic Entity Dropdown */}
+                {/* Dynamic Entity Dropdown with Shadcn UI (with Search) */}
                 {formCategory === "State" && (
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                      Choose State or Circuit (e.g. Golden Triangle, Rajasthan):
-                    </label>
-                    <select
-                      value={selectedSlug}
-                      onChange={(e) => {
-                        const item = states.find((s: any) => s.slug === e.target.value);
-                        if (item) {
-                          setSelectedSlug(item.slug);
-                          setSelectedEntityId(item.id);
-                        }
-                      }}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium focus:ring-2 focus:ring-[#2E8B8B] focus:outline-none"
-                    >
-                      <option value="">-- Select State --</option>
-                      {states.map((s: any) => (
-                        <option key={s.id} value={s.slug}>
-                          {s.title} ({s.slug})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <ShadcnSelect
+                    label="Choose State or Iconic Circuit (e.g. Golden Triangle, Rajasthan)"
+                    icon={MapPin}
+                    value={selectedSlug}
+                    placeholder="-- Select State or Circuit --"
+                    searchPlaceholder="Type to search state or circuit..."
+                    items={states.map((s: any) => ({
+                      label: s.title,
+                      value: s.slug,
+                      sublabel: s.slug,
+                      icon: MapPin,
+                    }))}
+                    onChange={(val) => {
+                      const item = states.find((s: any) => s.slug === val);
+                      if (item) {
+                        setSelectedSlug(item.slug);
+                        setSelectedEntityId(item.id);
+                      } else {
+                        setSelectedSlug("");
+                        setSelectedEntityId(0);
+                      }
+                    }}
+                  />
                 )}
 
                 {formCategory === "Country" && (
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Choose Country:</label>
-                    <select
-                      value={selectedSlug}
-                      onChange={(e) => {
-                        const item = countries.find((c: any) => c.slug === e.target.value);
-                        if (item) {
-                          setSelectedSlug(item.slug);
-                          setSelectedEntityId(item.id);
-                        }
-                      }}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium focus:ring-2 focus:ring-[#2E8B8B] focus:outline-none"
-                    >
-                      <option value="">-- Select Country --</option>
-                      {countries.map((c: any) => (
-                        <option key={c.id} value={c.slug}>
-                          {c.title} ({c.slug})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <ShadcnSelect
+                    label="Choose Country Destination"
+                    icon={Globe}
+                    value={selectedSlug}
+                    placeholder="-- Select Country --"
+                    searchPlaceholder="Type to search country..."
+                    items={countries.map((c: any) => ({
+                      label: c.title,
+                      value: c.slug,
+                      sublabel: c.slug,
+                      icon: Globe,
+                    }))}
+                    onChange={(val) => {
+                      const item = countries.find((c: any) => c.slug === val);
+                      if (item) {
+                        setSelectedSlug(item.slug);
+                        setSelectedEntityId(item.id);
+                      } else {
+                        setSelectedSlug("");
+                        setSelectedEntityId(0);
+                      }
+                    }}
+                  />
                 )}
 
                 {formCategory === "City" && (
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Choose City:</label>
-                    <select
-                      value={selectedSlug}
-                      onChange={(e) => {
-                        const item = cities.find((c: any) => c.slug === e.target.value);
-                        if (item) {
-                          setSelectedSlug(item.slug);
-                          setSelectedEntityId(item.id);
-                        }
-                      }}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium focus:ring-2 focus:ring-[#2E8B8B] focus:outline-none"
-                    >
-                      <option value="">-- Select City --</option>
-                      {cities.map((c: any) => (
-                        <option key={c.id} value={c.slug}>
-                          {c.title} ({c.slug})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <ShadcnSelect
+                    label="Choose City / Destination (e.g. Jaipur, Agra, Udaipur)"
+                    icon={MapPin}
+                    value={selectedSlug}
+                    placeholder="-- Select City --"
+                    searchPlaceholder="Type to search city..."
+                    items={cities.map((c: any) => ({
+                      label: c.title,
+                      value: c.slug,
+                      sublabel: c.state?.title || c.slug,
+                      icon: MapPin,
+                    }))}
+                    onChange={(val) => {
+                      const item = cities.find((c: any) => c.slug === val);
+                      if (item) {
+                        setSelectedSlug(item.slug);
+                        setSelectedEntityId(item.id);
+                      } else {
+                        setSelectedSlug("");
+                        setSelectedEntityId(0);
+                      }
+                    }}
+                  />
                 )}
 
                 {formCategory === "TravelExperience" && (
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Choose Travel Experience:</label>
-                    <select
-                      value={selectedSlug}
-                      onChange={(e) => {
-                        const item = travelExperiences.find((t: any) => t.slug === e.target.value);
+                  <ShadcnSelect
+                    label="Choose Travel Experience"
+                    icon={Sparkles}
+                    value={selectedSlug}
+                    placeholder="-- Select Travel Experience --"
+                    searchPlaceholder="Type to search travel experience..."
+                    items={travelExperiences.map((t: any) => ({
+                      label: t.title,
+                      value: t.slug,
+                      sublabel: t.slug,
+                      icon: Sparkles,
+                    }))}
+                    onChange={(val) => {
+                      const item = travelExperiences.find((t: any) => t.slug === val);
+                      if (item) {
+                        setSelectedSlug(item.slug);
+                        setSelectedEntityId(item.id);
+                      } else {
+                        setSelectedSlug("");
+                        setSelectedEntityId(0);
+                      }
+                    }}
+                  />
+                )}
+
+                {formCategory === "Blog" && (
+                  <ShadcnSelect
+                    label="Choose Blog Target"
+                    icon={FileText}
+                    value={selectedSlug || "blog"}
+                    placeholder="-- Select Blog --"
+                    searchPlaceholder="Type to search blog post..."
+                    items={[
+                      { label: "Main Blog Page (/blog)", value: "blog", icon: FileText },
+                      ...blogPosts.map((b: any) => ({
+                        label: b.title,
+                        value: b.slug,
+                        sublabel: `/blog/${b.slug}`,
+                        icon: FileText,
+                      })),
+                    ]}
+                    onChange={(val) => {
+                      if (val === "blog") {
+                        setSelectedSlug("blog");
+                        setSelectedEntityId(0);
+                      } else {
+                        const item = blogPosts.find((b: any) => b.slug === val);
                         if (item) {
                           setSelectedSlug(item.slug);
                           setSelectedEntityId(item.id);
                         }
-                      }}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium focus:ring-2 focus:ring-[#2E8B8B] focus:outline-none"
-                    >
-                      <option value="">-- Select Experience --</option>
-                      {travelExperiences.map((t: any) => (
-                        <option key={t.id} value={t.slug}>
-                          {t.title} ({t.slug})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                      }
+                    }}
+                  />
                 )}
               </div>
 
