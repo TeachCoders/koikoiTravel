@@ -82,15 +82,7 @@ export default function HeroBanner({
     >
       {/* 1. Background Layer: Slides, Fallback, or Watermark */}
       {hasSlides ? (
-        <>
-          <HeroSlider slides={normalizedSlides} alt={alt} interval={interval} />
-          {/* Subtle bottom-to-top gradient for high text contrast without muddying photo clarity */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
-          {/* Optional left-to-right gradient for left-aligned content (e.g. Home page) */}
-          {gradient === "left-and-bottom" && (
-            <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent z-10 pointer-events-none" />
-          )}
-        </>
+        <HeroSlider slides={normalizedSlides} alt={alt} interval={interval} />
       ) : hasFallback ? (
         <div className="absolute inset-0">
           <FallbackImage
@@ -101,12 +93,23 @@ export default function HeroBanner({
             className="object-cover object-center"
             theme="light"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-black/10 z-10 pointer-events-none" />
         </div>
       ) : (
         <div className="absolute inset-0">
           <ImageWatermark />
         </div>
+      )}
+
+      {/* Transparent black background overlay layers (applied to all hero sections across all pages) */}
+      {(hasSlides || hasFallback) && (
+        <>
+          {/* Base transparent black tint across the whole banner */}
+          <div className="absolute inset-0 bg-black/25 z-10 pointer-events-none" />
+          {/* Subtle bottom-to-top gradient for crisp text legibility and contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/10 z-10 pointer-events-none" />
+          {/* Left-to-right soft gradient for left-aligned tags, text and buttons */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent z-10 pointer-events-none" />
+        </>
       )}
 
       {/* 2. Content Overlay Layer */}

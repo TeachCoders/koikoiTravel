@@ -42,7 +42,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
     <HeroBanner
       slides={slides}
       align="left"
-      gradient="left-and-bottom"
       tag="Private Journeys Across India"
       alt="KoiKoi Travel"
       interval={7000}
