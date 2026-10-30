@@ -53,6 +53,17 @@ import ShadcnSelect from "@/components/shared/ShadcnSelect";
 import toast from "react-hot-toast";
 import type { HeroBannerEntityType, HeroFullBanner } from "@/feature/heroBanner/type";
 
+const NAV_TABS: { label: string; value: string; icon: any; badge?: string }[] = [
+  { label: "Home Page", value: "Home", icon: Home, badge: "Default" },
+  { label: "State & Circuit", value: "State", icon: MapPin, badge: "Golden Triangle" },
+  { label: "Tour Packages", value: "TourPackages", icon: Compass },
+  { label: "Country", value: "Country", icon: Globe },
+  { label: "City", value: "City", icon: MapPin },
+  { label: "Travel Experience", value: "TravelExperience", icon: Sparkles },
+  { label: "Blog", value: "Blog", icon: FileText },
+  { label: "All Pages", value: "ALL", icon: Layers },
+];
+
 const CATEGORIES: { label: string; value: HeroBannerEntityType; icon: any }[] = [
   { label: "Home Page", value: "Home", icon: Home },
   { label: "Tour Packages", value: "TourPackages", icon: Compass },
@@ -88,7 +99,7 @@ export default function HeroBannersAdminPage() {
   // Filters & Views
   const [viewMode, setViewMode] = useState<"pages" | "grid">("pages");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>("ALL");
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>("Home");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
   const [editorBannerTab, setEditorBannerTab] = useState<"desktop" | "mobile">("desktop");
@@ -603,17 +614,61 @@ export default function HeroBannersAdminPage() {
         </div>
       </div>
 
-      {/* 2. SEARCH & CATEGORY FILTER BAR */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
-        <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
-          {/* Live Search Bar */}
-          <div className="relative w-full sm:w-80">
-            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+      {/* 2. NAVIGATION TABS BAR (DEFAULT: HOME PAGE OPEN) */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-3 sm:p-4 space-y-4">
+        {/* Navigation Tabs Header */}
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
+          {NAV_TABS.map((tab) => {
+            const count =
+              tab.value === "ALL"
+                ? allBanners.length
+                : allBanners.filter((b) => b.entityType === tab.value).length;
+            const Icon = tab.icon;
+            const isActive = selectedCategoryFilter === tab.value;
+
+            return (
+              <button
+                key={tab.value}
+                type="button"
+                onClick={() => {
+                  setSelectedCategoryFilter(tab.value);
+                  setSearchQuery("");
+                }}
+                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer border ${
+                  isActive
+                    ? "bg-[#2E8B8B] text-white border-[#2E8B8B] shadow-xs"
+                    : "bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200/80"
+                }`}
+              >
+                <Icon size={16} className={isActive ? "text-white" : "text-slate-500"} />
+                <span>{tab.label}</span>
+                <span
+                  className={`text-[11px] px-2 py-0.5 rounded-full font-black ${
+                    isActive ? "bg-white/25 text-white" : "bg-slate-200 text-slate-600"
+                  }`}
+                >
+                  {count}
+                </span>
+                {tab.badge && !isActive && (
+                  <span className="hidden lg:inline text-[10px] text-[#2E8B8B] font-semibold bg-[#2E8B8B]/10 px-1.5 py-0.5 rounded">
+                    {tab.badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Tab Sub-Controls & Quick Search / Dropdown Row */}
+        <div className="pt-3 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-3">
+          {/* Quick Search inside active tab */}
+          <div className="relative w-full md:w-80">
+            <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by page name, slug, or title..."
+              placeholder={`Search in ${selectedCategoryFilter === "ALL" ? "all banners" : selectedCategoryFilter}...`}
               className="w-full pl-9 pr-8 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2E8B8B] transition-all"
             />
             {searchQuery && (
@@ -627,120 +682,107 @@ export default function HeroBannersAdminPage() {
             )}
           </div>
 
-          <div className="text-xs text-slate-500 font-medium">
-            Showing{" "}
-            <span className="font-bold text-slate-800">
-              {viewMode === "pages" ? `${filteredPages.length} Pages` : `${filteredBanners.length} Banners`}
-            </span>
+          {/* Tab Specific Quick Selector / Jump with Shadcn UI */}
+          <div className="flex-1 w-full flex items-center justify-start md:justify-end gap-3">
+            {selectedCategoryFilter === "State" && (
+              <div className="w-full md:w-80">
+                <ShadcnSelect
+                  placeholder="Select State / Circuit (e.g. Golden Triangle)..."
+                  icon={MapPin}
+                  value={searchQuery}
+                  items={states.map((s: any) => ({
+                    label: s.title,
+                    value: s.slug,
+                    sublabel: s.slug,
+                    icon: MapPin,
+                  }))}
+                  clearable={true}
+                  onChange={(val) => setSearchQuery(val)}
+                />
+              </div>
+            )}
+
+            {selectedCategoryFilter === "Country" && (
+              <div className="w-full md:w-80">
+                <ShadcnSelect
+                  placeholder="Select Country (e.g. India)..."
+                  icon={Globe}
+                  value={searchQuery}
+                  items={countries.map((c: any) => ({
+                    label: c.title,
+                    value: c.slug,
+                    sublabel: c.slug,
+                    icon: Globe,
+                  }))}
+                  clearable={true}
+                  onChange={(val) => setSearchQuery(val)}
+                />
+              </div>
+            )}
+
+            {selectedCategoryFilter === "City" && (
+              <div className="w-full md:w-80">
+                <ShadcnSelect
+                  placeholder="Select City (e.g. Jaipur, Agra)..."
+                  icon={MapPin}
+                  value={searchQuery}
+                  items={cities.map((c: any) => ({
+                    label: c.title,
+                    value: c.slug,
+                    sublabel: c.state?.title || c.slug,
+                    icon: MapPin,
+                  }))}
+                  clearable={true}
+                  onChange={(val) => setSearchQuery(val)}
+                />
+              </div>
+            )}
+
+            {selectedCategoryFilter === "TravelExperience" && (
+              <div className="w-full md:w-80">
+                <ShadcnSelect
+                  placeholder="Select Travel Experience..."
+                  icon={Sparkles}
+                  value={searchQuery}
+                  items={travelExperiences.map((t: any) => ({
+                    label: t.title,
+                    value: t.slug,
+                    icon: Sparkles,
+                  }))}
+                  clearable={true}
+                  onChange={(val) => setSearchQuery(val)}
+                />
+              </div>
+            )}
+
+            {selectedCategoryFilter === "Home" && (
+              <div className="text-xs text-slate-500 font-medium flex items-center gap-2">
+                <span>Active on:</span>
+                <Link
+                  href="/"
+                  target="_blank"
+                  className="font-bold text-[#2E8B8B] hover:underline flex items-center gap-1 bg-[#2E8B8B]/10 px-2.5 py-1 rounded-lg"
+                >
+                  <span>http://localhost:3000/</span>
+                  <ExternalLink size={12} />
+                </Link>
+              </div>
+            )}
+
+            {selectedCategoryFilter === "TourPackages" && (
+              <div className="text-xs text-slate-500 font-medium flex items-center gap-2">
+                <span>Active on:</span>
+                <Link
+                  href="/tour-packages"
+                  target="_blank"
+                  className="font-bold text-[#2E8B8B] hover:underline flex items-center gap-1 bg-[#2E8B8B]/10 px-2.5 py-1 rounded-lg"
+                >
+                  <span>/tour-packages</span>
+                  <ExternalLink size={12} />
+                </Link>
+              </div>
+            )}
           </div>
-        </div>
-
-        {/* Category Filter Chips */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1 scrollbar-none">
-          <button
-            onClick={() => {
-              setSelectedCategoryFilter("ALL");
-              setSearchQuery("");
-            }}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              selectedCategoryFilter === "ALL" && !searchQuery
-                ? "bg-[#2E8B8B] text-white shadow-xs"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-            }`}
-          >
-            All Categories ({allBanners.length})
-          </button>
-          {CATEGORIES.map((cat) => {
-            const count = allBanners.filter((b) => b.entityType === cat.value).length;
-            const Icon = cat.icon;
-            return (
-              <button
-                key={cat.value}
-                onClick={() => {
-                  setSelectedCategoryFilter(cat.value);
-                  setSearchQuery("");
-                }}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                  selectedCategoryFilter === cat.value
-                    ? "bg-[#2E8B8B] text-white shadow-xs"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                }`}
-              >
-                <Icon size={13} />
-                <span>{cat.label}</span>
-                <span className="opacity-75">({count})</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Quick Shadcn UI Dropdowns: Filter by Country, City, or Travel Experience */}
-        <div className="pt-2.5 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          <ShadcnSelect
-            placeholder="🔍 Select / Jump to Country..."
-            searchPlaceholder="Type country name..."
-            icon={Globe}
-            value={selectedCategoryFilter === "Country" ? searchQuery : ""}
-            items={countries.map((c: any) => ({
-              label: c.title,
-              value: c.slug,
-              sublabel: c.slug,
-              icon: Globe,
-            }))}
-            clearable={true}
-            onChange={(val) => {
-              if (val) {
-                setSelectedCategoryFilter("Country");
-                setSearchQuery(val);
-              } else {
-                setSearchQuery("");
-              }
-            }}
-          />
-
-          <ShadcnSelect
-            placeholder="🔍 Select / Jump to City..."
-            searchPlaceholder="Type city name..."
-            icon={MapPin}
-            value={selectedCategoryFilter === "City" ? searchQuery : ""}
-            items={cities.map((c: any) => ({
-              label: c.title,
-              value: c.slug,
-              sublabel: c.state?.title || c.slug,
-              icon: MapPin,
-            }))}
-            clearable={true}
-            onChange={(val) => {
-              if (val) {
-                setSelectedCategoryFilter("City");
-                setSearchQuery(val);
-              } else {
-                setSearchQuery("");
-              }
-            }}
-          />
-
-          <ShadcnSelect
-            placeholder="🔍 Select / Jump to Experience..."
-            searchPlaceholder="Type experience name..."
-            icon={Sparkles}
-            value={selectedCategoryFilter === "TravelExperience" ? searchQuery : ""}
-            items={travelExperiences.map((t: any) => ({
-              label: t.title,
-              value: t.slug,
-              sublabel: t.slug,
-              icon: Sparkles,
-            }))}
-            clearable={true}
-            onChange={(val) => {
-              if (val) {
-                setSelectedCategoryFilter("TravelExperience");
-                setSearchQuery(val);
-              } else {
-                setSearchQuery("");
-              }
-            }}
-          />
         </div>
       </div>
 
