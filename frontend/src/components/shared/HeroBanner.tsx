@@ -28,6 +28,8 @@ export interface HeroBannerProps {
   interval?: number;
   /** Custom children (e.g. CTA buttons, search bar, modals) placed inside the banner */
   children?: React.ReactNode;
+  /** Custom height classes (defaults to 30% taller cinematic ratio) */
+  heightClass?: string;
   /** Additional container classes */
   className?: string;
 }
@@ -55,6 +57,7 @@ export default function HeroBanner({
   gradient = "bottom",
   interval = 6000,
   children,
+  heightClass = "h-[80vw] min-h-[365px] max-h-[625px] md:h-[40.6vw] md:min-h-[495px] md:max-h-[730px]",
   className = "",
 }: HeroBannerProps) {
   // Normalize slides
@@ -73,7 +76,7 @@ export default function HeroBanner({
 
   return (
     <section
-      className={`relative w-full h-[62vw] min-h-[280px] max-h-[480px] md:h-[31.25vw] md:min-h-[380px] md:max-h-[560px] overflow-hidden flex items-center justify-center ${
+      className={`relative w-full ${heightClass} overflow-hidden flex items-center justify-center ${
         hasSlides || hasFallback ? "bg-slate-900" : "bg-slate-100"
       } z-20 ${className}`}
     >
@@ -170,3 +173,4 @@ export default function HeroBanner({
     </section>
   );
 }
+
