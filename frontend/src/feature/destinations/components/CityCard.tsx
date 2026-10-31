@@ -3,19 +3,20 @@ import type { City } from "@/feature/city/type";
 import { stripHtml } from "@/lib/utils";
 
 const CITY_EYEBROWS: Record<string, string> = {
-  jaipur: "PINK CITY • FORTS & PALACES",
-  udaipur: "CITY OF LAKES • ROYAL HERITAGE",
-  jodhpur: "BLUE CITY • MEHRANGARH FORT",
-  ranthambore: "TIGER SAFARI • WILDLIFE",
-  jaisalmer: "GOLDEN CITY • THAR DESERT",
-  pushkar: "HOLY CITY • BRAHMA TEMPLE",
-  bikaner: "CAMEL COUNTRY • JUNAGARH FORT",
-  agra: "HOME OF TAJ MAHAL",
-  delhi: "HISTORIC CAPITAL OF INDIA",
-  varanasi: "SPIRITUAL CAPITAL ON GANGES",
-  munnar: "TEA GARDENS & HILLS",
-  alleppey: "BACKWATERS & HOUSEBOATS",
-  kochi: "COLONIAL PORT & SPICE COAST",
+  jaipur: "The Pink City of India",
+  udaipur: "City of Lakes of India",
+  jodhpur: "The Blue City of India",
+  ranthambore: "Land of Bengal Tigers in India",
+  jaisalmer: "The Golden City of India",
+  pushkar: "The Holy Lake City of India",
+  bikaner: "The Camel Country in India",
+  chittorgarh: "The Largest Fort City of India",
+  agra: "Home of Taj Mahal",
+  delhi: "Historic Capital of India",
+  varanasi: "The Spiritual Capital of India",
+  munnar: "Tea Gardens & Hills",
+  alleppey: "Backwaters & Houseboats",
+  kochi: "Colonial Port & Spice Coast",
 };
 
 const CITY_DESCRIPTIONS: Record<string, string> = {
@@ -54,17 +55,16 @@ export default function CityCard({
   const country = countrySlug ?? city.state?.country?.slug ?? "india";
 
   const isSelf = city.slug === actualStateSlug;
-  const href =
-    journeys > 0 && city.slug
-      ? isSelf
-        ? `/tour-packages/${country}/${actualStateSlug}`
-        : `/tour-packages/${country}/${actualStateSlug}/${city.slug}`
-      : undefined;
+  const href = city.slug
+    ? isSelf
+      ? `/tour-packages/${country}/${actualStateSlug}`
+      : `/tour-packages/${country}/${actualStateSlug}/${city.slug}`
+    : undefined;
 
   const citySlug = (city.slug || "").toLowerCase().trim();
 
   const eyebrow =
-    city.banner?.bannerTag ||
+    city.banner?.bannerTag?.trim() ||
     CITY_EYEBROWS[citySlug] ||
     (journeys >= 5 ? "POPULAR CIRCUIT" : "POPULAR DESTINATION");
 
@@ -81,7 +81,7 @@ export default function CityCard({
       image={city.thumbImg ?? fallbackImage}
       eyebrow={eyebrow}
       description={description}
-      tourCountText={`${journeys} ${journeys === 1 ? "Tour" : "Tours"}`}
+      tourCountText={journeys > 0 ? `${journeys} ${journeys === 1 ? "Tour" : "Tours"}` : "Private Tours"}
       href={href}
       aspectRatio="4/3"
     />

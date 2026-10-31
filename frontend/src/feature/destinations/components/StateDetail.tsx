@@ -224,12 +224,9 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       citiesList = extracted;
     }
 
-    // Only show cities that have at least 4 active tour packages
+    // Show all active cities that are enabled on site
     const qualifiedCities = citiesList.filter(
-      (c) =>
-        c.isActive !== false &&
-        c.showOnSite !== false &&
-        journeyCountFor(c.id) >= 4
+      (c) => c.isActive !== false && c.showOnSite !== false
     );
 
     return qualifiedCities.sort((a, b) => {
@@ -410,7 +407,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                 Discover iconic royal cities, peaceful lakes, desert landscapes, and historic forts across {cleanStateName}.
               </p>
             </div>
-            {!journeysLoading && displayedCities.length > 4 && canScroll && (
+            {!journeysLoading && displayedCities.length > 4 && (
               <div className="flex items-center gap-2">
                 <button
                   onClick={slidePrev}

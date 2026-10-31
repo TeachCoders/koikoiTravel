@@ -76,6 +76,29 @@ async function filterExistingIds(targetModel, ids) {
   }
 }
 
+async function attachChildBanners(item, childInclude) {
+  if (!item || !childInclude || !Array.isArray(item[childInclude.model]) || item[childInclude.model].length === 0) {
+    return;
+  }
+  try {
+    const childModel = childInclude.model;
+    const childTarget = getRelationTargetModel({ field: childModel });
+    const childEntityType = childTarget.charAt(0).toUpperCase() + childTarget.slice(1);
+    const childIds = item[childModel].map((c) => c.id).filter(Boolean);
+    const childBanners = await prisma.banner.findMany({
+      where: { entityType: childEntityType, entityId: { in: childIds } },
+      select: { entityId: true, bannerTitle: true, bannerTag: true, images: true },
+    });
+    const childBannerMap = new Map(childBanners.map((b) => [b.entityId, b]));
+    item[childModel] = item[childModel].map((c) => ({
+      ...c,
+      banner: childBannerMap.get(c.id) || null,
+    }));
+  } catch (err) {
+    logger.warn("Could not attach child banners:", { error: err.message });
+  }
+}
+
 function createCmsRouter({ modelName, entityType, schema, searchFields, parentField, childInclude, parentInclude, extraFilters, tourCountWhere, listSelect, relations = [], createDefaults }) {
   const router = express.Router();
 
@@ -457,6 +480,8 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
         }
       }
 
+      await attachChildBanners(item, childInclude);
+
       return res.status(200).json({ success: true, data: { ...item, banner, faqs } });
     } catch (err) {
       logger.error(`Error fetching ${modelName} by slug:`, { error: err.message, stack: err.stack });
@@ -488,6 +513,8 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
           item[rel.field] = orderByList(item[rel.field], item[rel.orderField]);
         }
       }
+
+      await attachChildBanners(item, childInclude);
 
       return res.status(200).json({ success: true, data: { ...item, banner, faqs } });
     } catch (err) {
