@@ -185,11 +185,13 @@ function CountryContent({
       .filter((s) => {
         const slug = (s.slug || "").toLowerCase().trim();
         const title = (s.title || "").toLowerCase().trim();
-        // User requested: exclude Tamil Nadu from India page
+        // User requested: exclude Tamil Nadu & Karnataka from India page
         if (
           slug === "tamil-nadu" ||
           slug === "tamilnadu" ||
-          title.replace(/\s+/g, "").includes("tamilnadu")
+          title.replace(/\s+/g, "").includes("tamilnadu") ||
+          slug === "karnataka" ||
+          title.replace(/\s+/g, "").includes("karnataka")
         ) {
           return false;
         }
