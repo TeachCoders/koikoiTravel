@@ -34,7 +34,7 @@ import TourPackageCard from "@/components/shared/TourPackageCard";
 import StateCard from "./StateCard";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
-import { stripHtml } from "@/lib/utils";
+import { stripHtml, cn } from "@/lib/utils";
 import type { Country } from "@/feature/country/type";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
@@ -230,6 +230,19 @@ function CountryContent({
   const [travelStyle, setTravelStyle] = useState<string>("all");
   const [durationFilter, setDurationFilter] = useState<string>("all");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [isOverviewExpanded, setIsOverviewExpanded] = useState<boolean>(false);
+
+  const { introHtml, restHtml } = useMemo(() => {
+    const html = country.moreDescription || "";
+    const firstPEnd = html.indexOf("</p>");
+    if (firstPEnd === -1) {
+      return { introHtml: html, restHtml: "" };
+    }
+    return {
+      introHtml: html.slice(0, firstPEnd + 4),
+      restHtml: html.slice(firstPEnd + 4),
+    };
+  }, [country.moreDescription]);
 
   const tripsSectionRef = useRef<HTMLDivElement>(null);
 
@@ -534,20 +547,54 @@ function CountryContent({
       {hasMoreDesc && (
         <section id="about" className="py-12 sm:py-16 md:py-20 bg-white border-b border-section-border">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-            <div className="max-w-4xl mx-auto">
-              <div className="mb-6 sm:mb-8 text-center sm:text-left">
-                <SectionLabel icon={<Sparkles className="w-3.5 h-3.5" />}>
-                  Destination Overview
-                </SectionLabel>
-              </div>
-              <div className="bg-slate-50/60 rounded-3xl p-6 sm:p-10 md:p-12 border border-section-border shadow-xs">
-                <RichContent
-                  html={country.moreDescription!}
-                  sharedLinkedHrefs={pageLinkedHrefs}
-                  excludeHrefs={excludeHrefs}
-                  className="rich-text-plain-links text-sm sm:text-base text-slate-700 leading-relaxed"
-                />
-              </div>
+            <div className="mb-6 sm:mb-8 text-left">
+              <SectionLabel icon={<Sparkles className="w-3.5 h-3.5" />}>
+                Destination Overview
+              </SectionLabel>
+            </div>
+            <div className="w-full bg-slate-50/60 rounded-3xl p-6 sm:p-10 md:p-12 border border-section-border shadow-xs">
+              <RichContent
+                html={introHtml}
+                sharedLinkedHrefs={pageLinkedHrefs}
+                excludeHrefs={excludeHrefs}
+                className="rich-text-plain-links text-sm sm:text-base text-slate-700 leading-relaxed"
+              />
+
+              {restHtml && (
+                <>
+                  <div
+                    className={cn(
+                      "overflow-hidden transition-all duration-500 ease-in-out",
+                      isOverviewExpanded
+                        ? "max-h-[8000px] opacity-100 mt-6 pt-6 border-t border-slate-200/80"
+                        : "max-h-0 opacity-0"
+                    )}
+                  >
+                    <RichContent
+                      html={restHtml}
+                      sharedLinkedHrefs={pageLinkedHrefs}
+                      excludeHrefs={excludeHrefs}
+                      className="rich-text-plain-links text-sm sm:text-base text-slate-700 leading-relaxed"
+                    />
+                  </div>
+
+                  <div className="mt-5 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setIsOverviewExpanded(!isOverviewExpanded)}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-slate-300 text-slate-800 text-xs sm:text-sm font-semibold hover:border-[#2E8B8B] hover:text-[#2E8B8B] transition-all shadow-xs cursor-pointer active:scale-95"
+                    >
+                      <span>{isOverviewExpanded ? "Read Less" : "Read More"}</span>
+                      <ChevronDown
+                        className={cn(
+                          "w-4 h-4 transition-transform duration-300",
+                          isOverviewExpanded ? "rotate-180" : ""
+                        )}
+                      />
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </section>
