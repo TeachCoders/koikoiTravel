@@ -79,7 +79,7 @@ export default function TripQuoteSection() {
   };
 
   return (
-    <section className="bg-[#11322b] text-white py-14 sm:py-16 md:py-20 border-t border-[#1b443b] relative overflow-hidden">
+    <section id="quote" className="bg-[#11322b] text-white py-14 sm:py-16 md:py-20 border-t border-[#1b443b] relative overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Column: Eyebrow, Heading, Value Propositions */}
