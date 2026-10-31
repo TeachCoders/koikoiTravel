@@ -13,11 +13,14 @@ function generateSlug(title) {
 async function upsertBanner(entityType, entityId, bannerData) {
   if (!bannerData) return null;
   const { bannerTitle, bannerTag, bannerImages } = bannerData;
-  if (!bannerTitle && !bannerTag && (!bannerImages || bannerImages.length === 0)) return null;
 
   const existing = await prisma.banner.findFirst({
     where: { entityType, entityId },
   });
+
+  if (!existing && !bannerTitle && !bannerTag && (!bannerImages || bannerImages.length === 0)) {
+    return null;
+  }
 
   const payload = {
     entityType,
