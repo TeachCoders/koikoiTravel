@@ -7,7 +7,6 @@ import Image from "next/image";
 import {
   MapPin,
   ChevronRight,
-  ChevronDown,
   Sparkles,
   Clock,
   ShieldCheck,
@@ -34,7 +33,8 @@ import TourPackageCard from "@/components/shared/TourPackageCard";
 import StateCard from "./StateCard";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
-import ExpandableRichContent from "@/components/shared/ExpandableRichContent";
+import DestinationGuideSection from "@/components/shared/DestinationGuideSection";
+import FaqSection from "@/feature/home/components/FaqSection";
 import { stripHtml, cn } from "@/lib/utils";
 import type { Country } from "@/feature/country/type";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
@@ -230,7 +230,6 @@ function CountryContent({
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [travelStyle, setTravelStyle] = useState<string>("all");
   const [durationFilter, setDurationFilter] = useState<string>("all");
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const tripsSectionRef = useRef<HTMLDivElement>(null);
 
@@ -808,70 +807,29 @@ function CountryContent({
 
 
       {/* ====================================================================== */}
-      {/* 7. SECTION: INDIA TRAVEL FAQS                                          */}
+      {/* 5. FAQ SECTION                                                         */}
       {/* ====================================================================== */}
-      <section id="faq" className="py-12 sm:py-16 md:py-20 bg-section-tint border-t border-section-border">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-          <div className="mb-8 sm:mb-10 text-center max-w-2xl mx-auto">
-            <SectionLabel icon={<HelpCircle className="w-3.5 h-3.5" />}>
-              Got Questions?
-            </SectionLabel>
-            <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
-              India Travel <span className="text-[#F8904D]">FAQs</span>
-            </h2>
-            <p className="text-slate-500 text-sm sm:text-base mt-1.5 leading-relaxed">
-              Quick answers to common questions about planning your India trip.
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto space-y-3">
-            {allFaqs.map((faq, idx) => {
-              const isOpen = openFaqIndex === idx;
-              return (
-                <div
-                  key={idx}
-                  className="border border-section-border rounded-xl overflow-hidden bg-white transition-colors shadow-2xs"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                    className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 hover:text-[#2E8B8B] transition-colors cursor-pointer"
-                  >
-                    <span>{faq.question}</span>
-                    <ChevronDown
-                      size={18}
-                      className={`text-[#2E8B8B] shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-                    />
-                  </button>
-                  {isOpen && (
-                    <div className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3 bg-white">
-                      {faq.answer}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <FaqSection
+        faqs={allFaqs}
+        contextName={displayTitle}
+        contextSlug={country.slug}
+        entityType="Country"
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
+        bgType="pattern"
+      />
 
       {/* ====================================================================== */}
-      {/* 6. EDITORIAL OVERVIEW: DISCOVER INCREDIBLE INDIA (BEFORE FOOTER)        */}
+      {/* 6. DESTINATION GUIDE (COMPLETE LAST BEFORE FOOTER)                     */}
       {/* ====================================================================== */}
-      {hasMoreDesc && (
-        <section id="about" className="py-10 sm:py-14 bg-white border-t border-section-border">
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-            <div className="w-full bg-slate-50/60 rounded-2xl p-5 sm:p-7 md:p-8">
-              <ExpandableRichContent
-                html={country.moreDescription}
-                fallbackHtml={country.seoDescription}
-                sharedLinkedHrefs={pageLinkedHrefs}
-                excludeHrefs={excludeHrefs}
-              />
-            </div>
-          </div>
-        </section>
-      )}
+      <DestinationGuideSection
+        title={country.h1Title || country.title || "Incredible India"}
+        badgeLabel="DESTINATION OVERVIEW"
+        moreDescription={country.moreDescription}
+        seoDescription={country.seoDescription}
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
+      />
     </div>
   );
 }
