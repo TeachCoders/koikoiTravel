@@ -22,6 +22,7 @@ export interface SingleDestinationReusableCardProps {
   sizes?: string;
   priority?: boolean;
   hideFooter?: boolean;
+  variant?: "standard" | "overlay";
 }
 
 /**
@@ -49,6 +50,7 @@ export function SingleDestinationReusableCard({
   sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px",
   priority = false,
   hideFooter = false,
+  variant = "standard",
 }: SingleDestinationReusableCardProps) {
   const displayEyebrow = eyebrow || tag;
   const displayDescription = description || (typeof subtitle === "string" ? subtitle : null);
@@ -61,11 +63,71 @@ export function SingleDestinationReusableCard({
       : null);
 
   const photoAspectClass =
-    aspectRatio === "standard" || aspectRatio === "16/10"
+    aspectRatio === "portrait"
+      ? "aspect-[3/4]"
+      : aspectRatio === "standard" || aspectRatio === "16/10"
       ? "aspect-[16/10]"
       : aspectRatio === "3/2"
       ? "aspect-[3/2]"
       : "aspect-[4/3]";
+
+  if (variant === "overlay") {
+    return (
+      <div
+        className={cn(
+          "group relative flex w-full flex-col overflow-hidden rounded-2xl border border-slate-200/50 bg-slate-900 text-left",
+          "shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-2xl hover:border-slate-400/50",
+          photoAspectClass,
+          className
+        )}
+      >
+        <FallbackImage
+          src={image}
+          alt={`${title} Tour Packages & Sightseeing | KoiKoi Travel`}
+          fill
+          sizes={sizes}
+          quality={90}
+          priority={priority}
+          className={cn(
+            "object-cover transition-transform duration-700 ease-out group-hover:scale-108",
+            imagePosition === "top" ? "object-top" : "object-center"
+          )}
+          fallbackSrc="/logo-with-name.png"
+        />
+
+        {/* Gradient overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10 pointer-events-none" />
+
+        {/* Tours badge (top-right) */}
+        {displayTours && (
+          <span className="absolute right-3 top-3 z-10 shrink-0 rounded-full bg-black/60 backdrop-blur-md px-3 py-1 text-[11px] font-bold text-white shadow-sm border border-white/20">
+            {displayTours}
+          </span>
+        )}
+
+        {/* Text directly on top of image (bottom) */}
+        <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 flex flex-col justify-end text-white z-10 pointer-events-none">
+          {displayEyebrow && (
+            <span className="line-clamp-1 text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#F8904D] mb-1">
+              {displayEyebrow}
+            </span>
+          )}
+          <h3 className="font-heading line-clamp-1 text-base sm:text-lg font-bold leading-tight text-white drop-shadow-xs group-hover:text-[#F8904D] transition-colors">
+            {title}
+          </h3>
+        </div>
+
+        {/* Full-card clickable navigation */}
+        {href && (
+          <Link
+            href={href}
+            aria-label={`View ${title} tour packages`}
+            className="absolute inset-0 z-20"
+          />
+        )}
+      </div>
+    );
+  }
 
   const photoContent = (
     <>
