@@ -665,6 +665,23 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
 
       const banner = await upsertBanner(entityType, id, bannerData);
 
+      // Bi-directional banner sync for Golden Triangle between State 30 and TravelExperience 6
+      if (bannerData) {
+        if (modelName === "state" && (item.slug === "golden-triangle" || id === 30)) {
+          try {
+            await upsertBanner("TravelExperience", 6, bannerData);
+          } catch (bSyncErr) {
+            logger.warn("Syncing golden-triangle banner to travelExperience failed:", bSyncErr);
+          }
+        } else if (modelName === "travelExperience" && (item.slug === "golden-triangle-tour-india" || id === 6)) {
+          try {
+            await upsertBanner("State", 30, bannerData);
+          } catch (bSyncErr) {
+            logger.warn("Syncing golden-triangle banner to state failed:", bSyncErr);
+          }
+        }
+      }
+
       const faqsInput = Array.isArray(req.body.faqs) ? req.body.faqs : null;
       let faqs = undefined;
       if (faqsInput !== null) {
