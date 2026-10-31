@@ -525,9 +525,9 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               <div className="mb-8 pb-6 border-b border-slate-200/80 space-y-4">
                 {/* Famous For */}
                 {hasFamousFor && (
-                  <div className="bg-[#FAF8F5]/90 rounded-2xl p-5 sm:p-6 border border-[#EBE7DF]">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Sparkles size={18} className="text-[#F8904D]" />
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Sparkles size={17} className="text-[#F8904D]" />
                       <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900">
                         Famous For
                       </h3>
@@ -548,7 +548,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                           .map((item, i) => (
                             <span
                               key={i}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-slate-700 text-xs sm:text-[13.5px] font-medium border border-slate-200/80 shadow-2xs"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs sm:text-[13.5px] font-medium"
                             >
                               <span className="w-1.5 h-1.5 rounded-full bg-[#2E8B8B]" />
                               {item}
