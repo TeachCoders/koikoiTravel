@@ -400,26 +400,29 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
                 Top Destinations
               </span>
-              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5">
-                Cities in {state.h1Title || state.title}
-                <span className="ml-3 align-middle text-xs font-medium text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-1 rounded-full">
+              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 font-heading">
+                Cities in {cleanStateName} <span className="text-[#F8904D]">Tours</span>
+                <span className="ml-3 align-middle text-xs font-medium text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-1 rounded-full font-sans">
                   {cityCount} Cities
                 </span>
               </h2>
+              <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl leading-relaxed">
+                Discover iconic royal cities, peaceful lakes, desert landscapes, and historic forts across {cleanStateName}.
+              </p>
             </div>
             {!journeysLoading && displayedCities.length > 4 && canScroll && (
               <div className="flex items-center gap-2">
                 <button
                   onClick={slidePrev}
                   aria-label="Previous cities"
-                  className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-700 flex items-center justify-center shadow-sm hover:bg-slate-900 hover:text-white transition-colors cursor-pointer"
+                  className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-700 flex items-center justify-center shadow-xs hover:bg-slate-900 hover:text-white transition-colors cursor-pointer"
                 >
                   <ChevronLeft size={18} />
                 </button>
                 <button
                   onClick={slideNext}
                   aria-label="Next cities"
-                  className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-700 flex items-center justify-center shadow-sm hover:bg-slate-900 hover:text-white transition-colors cursor-pointer"
+                  className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-700 flex items-center justify-center shadow-xs hover:bg-slate-900 hover:text-white transition-colors cursor-pointer"
                 >
                   <ChevronRight size={18} />
                 </button>
@@ -435,7 +438,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               <p className="text-slate-500">No cities found in {state.title}</p>
             </div>
           ) : displayedCities.length <= 4 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
               {displayedCities.map((c) => {
                 const cityId = c.id;
                 if (cityId == null) return null;
