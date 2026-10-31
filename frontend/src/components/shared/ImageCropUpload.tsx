@@ -16,6 +16,7 @@ import {
   Lock,
   Unlock,
   Sliders,
+  Grid3X3,
 } from "lucide-react";
 import apiClient from "@/lib/apiClient";
 
@@ -32,6 +33,7 @@ export interface ImageCropUploadProps {
   className?: string;
   label?: string;
   initialImage?: string;
+  onBrowseLibrary?: () => void;
 }
 
 type ResizeEdge = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw" | "move" | null;
@@ -49,6 +51,7 @@ export default function ImageCropUpload({
   className = "",
   label = "Upload Image",
   initialImage,
+  onBrowseLibrary,
 }: ImageCropUploadProps) {
   const [src, setSrc] = useState<string | null>(null);
   const [cropOpen, setCropOpen] = useState(false);
@@ -591,6 +594,17 @@ export default function ImageCropUpload({
               <span>Paste New URL</span>
             </button>
 
+            {onBrowseLibrary && (
+              <button
+                type="button"
+                onClick={onBrowseLibrary}
+                className="px-3 py-1.5 bg-white hover:bg-teal-50 text-[#2E8B8B] text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors border border-slate-200 hover:border-teal-200 shadow-2xs"
+              >
+                <Grid3X3 size={13} />
+                <span>Media Library</span>
+              </button>
+            )}
+
             <button
               type="button"
               onClick={handleClear}
@@ -614,6 +628,15 @@ export default function ImageCropUpload({
               className={`flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold transition-colors ${mode === "url" ? "bg-indigo-50 text-indigo-700 border-b-2 border-indigo-500" : "bg-white text-slate-500 hover:bg-slate-50"}`}>
               <Link size={13} /> Paste URL
             </button>
+            {onBrowseLibrary && (
+              <button
+                type="button"
+                onClick={onBrowseLibrary}
+                className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold transition-colors bg-white text-slate-600 hover:bg-teal-50 hover:text-[#2E8B8B]"
+              >
+                <Grid3X3 size={13} /> Media Library
+              </button>
+            )}
           </div>
 
           {mode === "file" ? (

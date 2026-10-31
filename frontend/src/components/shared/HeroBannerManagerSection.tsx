@@ -14,9 +14,11 @@ import {
   Check,
   Eye,
   Loader2,
+  Grid3X3,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import ImageCropUpload from "@/components/shared/ImageCropUpload";
+import MediaLibrary from "@/components/shared/MediaLibrary";
 import {
   useHeroBanners,
   useCreateHeroBanner,
@@ -86,6 +88,10 @@ export default function HeroBannerManagerSection({
   const [bannerTab, setBannerTab] = useState<"desktop" | "mobile">("desktop");
   const [cardActiveTab, setCardActiveTab] = useState<Record<number, "desktop" | "mobile">>({});
 
+  // Media Library state
+  const [mediaOpen, setMediaOpen] = useState(false);
+  const [mediaTarget, setMediaTarget] = useState<"desktop" | "mobile">("desktop");
+
   const resetForm = () => {
     setEditingBanner(null);
     setDesktopFile(null);
@@ -99,6 +105,21 @@ export default function HeroBannerManagerSection({
     setDisplayOrder(banners.length + 1);
     setBannerTab("desktop");
     setIsEditorOpen(false);
+    setMediaOpen(false);
+  };
+
+  const handleMediaSelect = (url: string) => {
+    if (mediaTarget === "desktop") {
+      setDesktopPreview(url);
+      setDesktopFile(null);
+    } else if (mediaTarget === "mobile") {
+      setMobilePreview(url);
+      setMobileFile(null);
+      setRemoveMobileImage(false);
+    }
+    setMediaOpen(false);
+    setIsEditorOpen(true);
+    toast.success("Previous image selected from library!");
   };
 
   const handleOpenAdd = () => {
@@ -244,14 +265,28 @@ export default function HeroBannerManagerSection({
         </div>
 
         {isExistingEntity && !isEditorOpen && (
-          <button
-            type="button"
-            onClick={handleOpenAdd}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#2E8B8B] hover:bg-[#267373] text-white text-xs font-bold rounded-xl shadow-xs transition-colors shrink-0"
-          >
-            <Plus size={15} />
-            <span>Add Hero Banner</span>
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                handleOpenAdd();
+                setMediaTarget("desktop");
+                setMediaOpen(true);
+              }}
+              className="inline-flex items-center gap-1.5 px-3 py-2 border border-slate-300 bg-white hover:bg-teal-50 hover:border-[#2E8B8B]/50 text-slate-700 hover:text-[#2E8B8B] text-xs font-bold rounded-xl shadow-2xs transition-colors cursor-pointer"
+            >
+              <Grid3X3 size={14} className="text-[#2E8B8B]" />
+              <span>Choose from Library</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleOpenAdd}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#2E8B8B] hover:bg-[#267373] text-white text-xs font-bold rounded-xl shadow-xs transition-colors shrink-0 cursor-pointer"
+            >
+              <Plus size={15} />
+              <span>Add Hero Banner</span>
+            </button>
+          </div>
         )}
       </div>
 
@@ -317,13 +352,26 @@ export default function HeroBannerManagerSection({
                 Upload a dedicated Desktop (1920×600) and Mobile (750×500) banner for this{" "}
                 {entityType.toLowerCase()}.
               </p>
-              <button
-                type="button"
-                onClick={handleOpenAdd}
-                className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#2E8B8B] text-white text-xs font-bold rounded-lg shadow-xs hover:bg-[#267373]"
-              >
-                <Plus size={14} /> Add First Banner
-              </button>
+              <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
+                <button
+                  type="button"
+                  onClick={handleOpenAdd}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#2E8B8B] text-white text-xs font-bold rounded-lg shadow-xs hover:bg-[#267373] cursor-pointer"
+                >
+                  <Plus size={14} /> Add First Banner
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleOpenAdd();
+                    setMediaTarget("desktop");
+                    setMediaOpen(true);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-slate-300 bg-white text-slate-700 text-xs font-bold rounded-lg hover:bg-teal-50 hover:text-[#2E8B8B] hover:border-[#2E8B8B]/40 shadow-2xs cursor-pointer"
+                >
+                  <Grid3X3 size={14} className="text-[#2E8B8B]" /> Choose from Library
+                </button>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -499,7 +547,7 @@ export default function HeroBannerManagerSection({
                     <span className="text-[10px] text-slate-400">Panoramic wide ratio</span>
                   </div>
 
-                  <div className="flex-1">
+                  <div className="flex-1 space-y-2">
                     <ImageCropUpload
                       key={`desktop-${editingBanner ? editingBanner.id : "new"}`}
                       onFileSelect={(file) => {
@@ -516,12 +564,27 @@ export default function HeroBannerManagerSection({
                         }
                         setDesktopPreview(null);
                       }}
+                      onBrowseLibrary={() => {
+                        setMediaTarget("desktop");
+                        setMediaOpen(true);
+                      }}
                       maxWidth={1920}
                       maxHeight={600}
                       aspectRatioPreset="hero"
                       label="Upload Desktop Banner (1920 × 600 px)"
                       initialImage={desktopPreview || undefined}
                     />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMediaTarget("desktop");
+                        setMediaOpen(true);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 py-2.5 border-2 border-dashed border-[#2E8B8B]/40 rounded-xl bg-teal-50/40 hover:bg-teal-50 text-[#2E8B8B] text-xs font-bold transition-colors cursor-pointer"
+                    >
+                      <Grid3X3 size={14} />
+                      <span>Choose Desktop Banner from Library (Previous Images)</span>
+                    </button>
                   </div>
                 </div>
 
@@ -556,7 +619,7 @@ export default function HeroBannerManagerSection({
                     )}
                   </div>
 
-                  <div className="flex-1">
+                  <div className="flex-1 space-y-2">
                     <ImageCropUpload
                       key={`mobile-${editingBanner ? editingBanner.id : "new"}`}
                       onFileSelect={(file) => {
@@ -575,12 +638,27 @@ export default function HeroBannerManagerSection({
                         setMobilePreview(null);
                         setRemoveMobileImage(true);
                       }}
+                      onBrowseLibrary={() => {
+                        setMediaTarget("mobile");
+                        setMediaOpen(true);
+                      }}
                       maxWidth={750}
                       maxHeight={500}
                       aspectRatioPreset="mobileHero"
                       label="Upload Mobile Banner (750 × 500 px)"
                       initialImage={mobilePreview || undefined}
                     />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMediaTarget("mobile");
+                        setMediaOpen(true);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 py-2.5 border-2 border-dashed border-indigo-300 rounded-xl bg-indigo-50/40 hover:bg-indigo-50 text-indigo-700 text-xs font-bold transition-colors cursor-pointer"
+                    >
+                      <Grid3X3 size={14} />
+                      <span>Choose Mobile Banner from Library (Previous Images)</span>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -673,6 +751,14 @@ export default function HeroBannerManagerSection({
           )}
         </>
       )}
+
+      {/* Media Library Modal for selecting previous uploaded images */}
+      <MediaLibrary
+        open={mediaOpen}
+        onClose={() => setMediaOpen(false)}
+        onSelect={handleMediaSelect}
+        title={mediaTarget === "mobile" ? "Select Mobile Banner from Library" : "Select Desktop Banner from Library"}
+      />
     </div>
   );
 }
