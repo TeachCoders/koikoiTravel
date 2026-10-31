@@ -9,12 +9,7 @@ import {
   ChevronRight,
   ChevronDown,
   Sparkles,
-  Calendar,
   Clock,
-  Globe,
-  Languages,
-  Building2,
-  Coins,
   ShieldCheck,
   Check,
   ArrowRight,
@@ -29,7 +24,6 @@ import {
 } from "lucide-react";
 import { useCountryBySlug } from "@/feature/country/api/useCountry";
 import { useGetStates } from "@/feature/state/api/useState";
-import { useGetCities } from "@/feature/city/api/useCity";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import { useGetTravelExperiences } from "@/feature/travelExperience/api/useTravelExperience";
 import HeroBanner from "@/components/shared/HeroBanner";
@@ -174,12 +168,6 @@ function CountryContent({
     isActive: "true",
   });
 
-  const { cities: dbCities = [] } = useGetCities({
-    countryId: country.id,
-    limit: 100,
-    isActive: "true",
-  });
-
   const { journeys, isLoading: journeysLoading } = useGetJourneys(
     { limit: 100, isActive: "true" },
     initialJourneys
@@ -273,82 +261,6 @@ function CountryContent({
       };
     });
   }, [states, travelExperiences, displayedStates, countryJourneys]);
-
-  // ==========================================================================
-  // 100% DYNAMIC POPULAR CITIES (PULLED LIVE FROM DB CITIES)
-  // ==========================================================================
-  const popularCities = useMemo(() => {
-    if (dbCities && dbCities.length > 0) {
-      return [...dbCities]
-        .sort((a, b) => {
-          const aCount = (a as any).tourCount || 0;
-          const bCount = (b as any).tourCount || 0;
-          if (bCount !== aCount) return bCount - aCount;
-          return a.title.localeCompare(b.title);
-        })
-        .slice(0, 14)
-        .map((c) => c.title);
-    }
-    return [
-      "Jaipur", "Agra", "Delhi", "Udaipur", "Varanasi",
-      "Kochi", "Munnar", "Alleppey", "Jodhpur", "Jaisalmer", "Shimla", "Amritsar",
-    ];
-  }, [dbCities]);
-
-  // City-by-City Spotlight with Region Tabs
-  const [cityTab, setCityTab] = useState<string>("all");
-
-  const displayedCitiesSpotlight = useMemo(() => {
-    if (dbCities && dbCities.length > 0) {
-      const sorted = [...dbCities].sort((a, b) => {
-        const aTours = (a as any).tourCount || 0;
-        const bTours = (b as any).tourCount || 0;
-        if (bTours !== aTours) return bTours - aTours;
-        return (
-          (a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999) -
-          (b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999)
-        );
-      });
-
-      const mapped = sorted.map((c) => {
-        const stateSlug = c.state?.slug || "";
-        let region = "all";
-        if (["rajasthan"].includes(stateSlug)) region = "rajasthan";
-        else if (["kerala", "tamil-nadu", "karnataka", "goa"].includes(stateSlug)) region = "kerala";
-        else if (["himachal-pradesh", "uttarakhand", "jammu-and-kashmir", "ladakh", "punjab"].includes(stateSlug))
-          region = "himalayas";
-        else if (["delhi", "uttar-pradesh"].includes(stateSlug)) region = "golden-triangle";
-
-        const href = c.state?.slug
-          ? `/tour-packages/india/${c.state.slug}/${c.slug}`
-          : `/tour-packages/india/${c.slug}`;
-
-        const tag = c.banner?.bannerTag || c.h1Title || c.state?.title || "Heritage City";
-        const image = c.thumbImg || c.banner?.images?.[0] || undefined;
-        const highlight =
-          c.cardShortDescription ||
-          (c as any).attractions ||
-          (c as any).famousFor?.replace(/<[^>]+>/g, "").slice(0, 90) ||
-          `${c.title} private sightseeing & heritage tours`;
-
-        return {
-          id: c.id,
-          name: c.title,
-          state: c.state?.title || "",
-          region,
-          tag,
-          image,
-          href,
-          highlight,
-          tourCount: (c as any).tourCount || 0,
-        };
-      });
-
-      if (cityTab === "all") return mapped.slice(0, 18);
-      return mapped.filter((c) => c.region === cityTab).slice(0, 18);
-    }
-    return [];
-  }, [dbCities, cityTab]);
 
   // ==========================================================================
   // TRIP FINDER STATE & FILTERS
@@ -496,18 +408,6 @@ function CountryContent({
     setDurationFilter("all");
   };
 
-  // Handle clicking a Popular Place pill
-  const handlePlaceClick = (place: string) => {
-    setSearchQuery(place);
-    const lower = place.toLowerCase();
-    if (["jaipur", "agra", "delhi"].includes(lower)) setSelectedRegion("gt");
-    else if (["udaipur", "jodhpur", "jaisalmer"].includes(lower)) setSelectedRegion("raj");
-    else if (["kochi", "munnar", "alleppey"].includes(lower)) setSelectedRegion("south");
-    else if (["varanasi", "shimla", "amritsar"].includes(lower)) setSelectedRegion("north");
-
-    tripsSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
   // Hero Banners Data
   const { data: heroBannersData } = useHeroBanners("Country", {
     slug: country.slug,
@@ -539,16 +439,6 @@ function CountryContent({
     customHeroBanners[0]?.subtitle ||
     country.banner?.bannerTag ||
     "Incredible India • Private Journeys";
-
-  // Quick Facts
-  const quickFacts = [
-    { label: "Capital", value: country.capital || "New Delhi" },
-    { label: "Languages", value: country.language || "Hindi, English" },
-    { label: "Currency", value: country.currency || "Indian Rupee (INR)" },
-    { label: "Best time", value: country.bestTimeToVisit || "October to March" },
-    { label: "Time zone", value: country.timezone || "UTC +5:30" },
-    { label: "Dial code", value: country.dialCode || "+91" },
-  ];
 
   // Combined FAQs (Curated Benchmark + CMS)
   const allFaqs = useMemo(() => {
@@ -897,97 +787,9 @@ function CountryContent({
       </section>
 
       {/* ====================================================================== */}
-      {/* 5. CITIES OF INDIA (CITY-BY-CITY DIRECTORY)                            */}
+      {/* 5. STATES OF INDIA (COMPREHENSIVE DIRECTORY)                           */}
       {/* ====================================================================== */}
-      <section id="cities" className="py-12 sm:py-16 md:py-20 bg-white border-b border-section-border">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
-            <div>
-              <SectionLabel icon={<MapPin className="w-3.5 h-3.5" />}>
-                City-by-City Directory
-              </SectionLabel>
-              <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
-                Places to Visit in <span className="text-[#F8904D]">{displayTitle}</span>
-              </h2>
-              <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl leading-relaxed">
-                Discover India's most captivating heritage cities, palace capitals, and serene natural escapes.
-              </p>
-            </div>
-
-            {/* Region Filter Tabs */}
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-              {[
-                { key: "all", label: "All Places" },
-                { key: "golden-triangle", label: "Golden Triangle" },
-                { key: "rajasthan", label: "Rajasthan" },
-                { key: "kerala", label: "Kerala & South" },
-                { key: "himalayas", label: "Himalayas & North" },
-              ].map((tab) => (
-                <button
-                  key={tab.key}
-                  type="button"
-                  onClick={() => setCityTab(tab.key)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
-                    cityTab === tab.key
-                      ? "bg-[#1C1C1C] text-white shadow-xs"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* City Cards Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3.5 sm:gap-4 lg:gap-5">
-            {displayedCitiesSpotlight.map((city) => (
-              <SingleDestinationReusableCard
-                key={city.id || city.name}
-                title={city.name}
-                image={city.image}
-                eyebrow={city.tag}
-                description={city.highlight}
-                region={city.state}
-                tourCount={city.tourCount}
-                tourCountText={city.tourCount > 0 ? `${city.tourCount} Tours` : undefined}
-                href={city.href}
-              />
-            ))}
-          </div>
-
-          {/* Popular Places to Visit (Interactive Quick Filter Pills) */}
-          <div className="mt-10 pt-6 border-t border-section-border">
-            <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-1">
-              Popular places quick filter
-            </h3>
-            <p className="text-xs text-slate-500 mb-3">
-              Tap a city to filter the trip packages above that include it.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {popularCities.map((place) => (
-                <button
-                  key={place}
-                  type="button"
-                  onClick={() => handlePlaceClick(place)}
-                  className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                    searchQuery.toLowerCase() === place.toLowerCase()
-                      ? "bg-[#2E8B8B] text-white border-[#2E8B8B]"
-                      : "bg-white border-section-border text-slate-700 hover:border-[#2E8B8B] hover:text-[#2E8B8B]"
-                  }`}
-                >
-                  {place}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ====================================================================== */}
-      {/* 6. STATES OF INDIA (COMPREHENSIVE DIRECTORY)                           */}
-      {/* ====================================================================== */}
-      <section id="states" className="py-12 sm:py-16 md:py-20 bg-section-tint border-b border-section-border">
+      <section id="states" className="py-12 sm:py-16 md:py-20 bg-white border-b border-section-border">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
             <div>
@@ -1084,231 +886,48 @@ function CountryContent({
       </section>
 
       {/* ====================================================================== */}
-      {/* 7. SECTION 4: INDIA TRAVEL GUIDE & QUICK FACTS                         */}
+      {/* 6. EDITORIAL OVERVIEW (IF CMS HAS RICH CONTENT)                         */}
       {/* ====================================================================== */}
-      <section id="guide" className="py-12 sm:py-16 md:py-20 bg-white border-b border-section-border">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-          <div className="mb-8 sm:mb-10">
-            <SectionLabel icon={<Calendar className="w-3.5 h-3.5" />}>
-              Trip Planning Guide
-            </SectionLabel>
-            <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
-              Before You <span className="text-[#F8904D]">Go</span>
-            </h2>
-            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl leading-relaxed">
-              A few simple tips so your first India trip runs smoothly.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Left Column: Practical Advice */}
-            <div className="lg:col-span-8 bg-section-tint border border-section-border rounded-2xl p-6 sm:p-8 space-y-8 shadow-xs">
-              {/* Best Time To Visit */}
-              <div>
-                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
-                  <Calendar size={18} className="text-[#2E8B8B]" />
-                  <span>Best time to visit</span>
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="p-4 rounded-xl bg-teal-50/70 border border-teal-200">
-                    <b className="block text-xs sm:text-sm font-bold text-[#2E8B8B]">
-                      October to March (Recommended)
-                    </b>
-                    <span className="text-xs text-slate-600 block mt-1">
-                      Cool and comfortable for most of India; ideal for palaces and sightseeing.
-                    </span>
-                  </div>
-                  <div className="p-4 rounded-xl bg-white border border-section-border">
-                    <b className="block text-xs sm:text-sm font-bold text-slate-900">
-                      April to June
-                    </b>
-                    <span className="text-xs text-slate-600 block mt-1">
-                      Hot in the plains; best for tiger sightings and cool Himalayan hills.
-                    </span>
-                  </div>
-                  <div className="p-4 rounded-xl bg-white border border-section-border">
-                    <b className="block text-xs sm:text-sm font-bold text-slate-900">
-                      July to September
-                    </b>
-                    <span className="text-xs text-slate-600 block mt-1">
-                      Monsoon season; lush green landscapes, quieter sights, and Ayurveda in Kerala.
-                    </span>
-                  </div>
-                  <div className="p-4 rounded-xl bg-white border border-section-border">
-                    <b className="block text-xs sm:text-sm font-bold text-slate-900">
-                      Winter (Dec to Feb)
-                    </b>
-                    <span className="text-xs text-slate-600 block mt-1">
-                      Crisp cool in the north and mountains; pleasantly warm and sunny in the south.
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* What to Pack */}
-              <div className="pt-6 border-t border-section-border">
-                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-3">
-                  What to pack
-                </h3>
-                <ul className="space-y-2 text-xs sm:text-sm text-slate-700">
-                  <li className="flex items-start gap-2.5">
-                    <Check size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                    <span>Light cotton clothes, plus a warm layer for winter in the north</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                    <span>Comfortable walking shoes that are easy to slip off at temples</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                    <span>Sun hat, sunglasses and high-SPF sunscreen</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                    <span>A scarf or shawl to cover shoulders at religious monuments</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                    <span>Basic travel medicines and an India power adapter (Type D/M)</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Dress & Etiquette */}
-              <div className="pt-6 border-t border-section-border">
-                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2">
-                  Dress and etiquette
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Dress modestly at temples, mosques and gurudwaras: cover shoulders and knees. Remove shoes before entering sacred premises, and always ask politely before photographing locals or inside sanctums.
-                </p>
-              </div>
-
-              {/* Food & Water */}
-              <div className="pt-6 border-t border-section-border">
-                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-3">
-                  Food and water
-                </h3>
-                <ul className="space-y-2 text-xs sm:text-sm text-slate-700">
-                  <li className="flex items-start gap-2.5">
-                    <Check size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                    <span>Drink sealed bottled or properly filtered water throughout your trip.</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                    <span>Pick busy, freshly cooked restaurants. Your guide can suggest top authentic spots.</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                    <span>Vegetarian food is widely available and diverse. Inform us of any allergies in advance.</span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <Check size={16} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                    <span>Spice levels vary greatly. Feel free to request &quot;mild&quot; or &quot;less spicy&quot;.</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Shopping */}
-              <div className="pt-6 border-t border-section-border">
-                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2">
-                  Shopping
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Handicrafts, textiles, jewelry, spices, and marble inlay work are world-famous. Polite bargaining is normal in bazaars. <strong>We maintain a strict policy of zero forced shopping stops</strong> on your itinerary.
-                </p>
-              </div>
-
-              {/* Expandable Full SEO Article */}
-              {hasKnowMoreText && (
-                <div className="pt-6 border-t border-section-border">
-                  <button
-                    type="button"
-                    onClick={() => setIsSeoOpen(!isSeoOpen)}
-                    className="flex items-center justify-between w-full text-left py-2 text-sm font-bold text-[#2E8B8B] hover:text-slate-900 transition-colors cursor-pointer"
-                  >
-                    <span>Read full editorial guide to {displayTitle}</span>
-                    <ChevronDown
-                      size={18}
-                      className={`transition-transform duration-200 ${isSeoOpen ? "rotate-180" : ""}`}
+      {hasKnowMoreText && (
+        <section className="py-10 bg-white border-b border-section-border">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+            <div className="max-w-4xl mx-auto border border-section-border rounded-2xl p-6 bg-slate-50/50">
+              <button
+                type="button"
+                onClick={() => setIsSeoOpen(!isSeoOpen)}
+                className="flex items-center justify-between w-full text-left text-sm sm:text-base font-bold text-slate-900 hover:text-[#2E8B8B] transition-colors cursor-pointer"
+              >
+                <span>Read detailed travel overview for {displayTitle}</span>
+                <ChevronDown
+                  size={18}
+                  className={`transition-transform duration-200 ${isSeoOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+              {isSeoOpen && (
+                <div className="mt-4 pt-4 border-t border-slate-200 space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  {hasSeoDesc && (
+                    <RichContent
+                      html={country.seoDescription!}
+                      sharedLinkedHrefs={pageLinkedHrefs}
+                      excludeHrefs={excludeHrefs}
                     />
-                  </button>
-
-                  {isSeoOpen && (
-                    <div className="mt-4 pt-4 border-t border-slate-200 space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                      {hasSeoDesc && (
-                        <RichContent
-                          html={country.seoDescription!}
-                          sharedLinkedHrefs={pageLinkedHrefs}
-                          excludeHrefs={excludeHrefs}
-                        />
-                      )}
-                      {hasMoreDesc && (
-                        <RichContent
-                          html={country.moreDescription!}
-                          sharedLinkedHrefs={pageLinkedHrefs}
-                          excludeHrefs={excludeHrefs}
-                        />
-                      )}
-                    </div>
+                  )}
+                  {hasMoreDesc && (
+                    <RichContent
+                      html={country.moreDescription!}
+                      sharedLinkedHrefs={pageLinkedHrefs}
+                      excludeHrefs={excludeHrefs}
+                    />
                   )}
                 </div>
               )}
             </div>
-
-            {/* Right Column: Sticky Quick Facts Panel */}
-            <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
-              <aside className="bg-white border border-section-border rounded-2xl p-6 sm:p-7 shadow-xs">
-                <h3 className="text-base font-bold text-slate-900 mb-4 pb-3 border-b border-section-border">
-                  Quick facts
-                </h3>
-                <dl className="space-y-3 text-xs sm:text-sm">
-                  {quickFacts.map((f) => (
-                    <div key={f.label} className="flex justify-between items-center py-1 border-b border-slate-100 last:border-0">
-                      <dt className="text-slate-500 font-medium">{f.label}</dt>
-                      <dd className="font-bold text-slate-900 text-right">{f.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-
-                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mt-6 mb-1.5">
-                  Famous for
-                </h4>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Taj Mahal, royal palaces, sacred Ganges, backwaters, tiger reserves, Himalayan valleys
-                </p>
-
-                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mt-4 mb-1.5">
-                  Weather
-                </h4>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  October to March pleasant, April to June hot, July to September monsoon
-                </p>
-
-                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mt-4 mb-1.5">
-                  Attractions
-                </h4>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Taj Mahal, Amber Fort, Red Fort, Hawa Mahal, Udaipur City Palace, Varanasi Ghats, Kerala backwaters, Golden Temple
-                </p>
-
-                <div className="mt-6 pt-4 border-t border-section-border">
-                  <a
-                    href="#quote"
-                    className="w-full py-2.5 rounded-xl bg-[#2E8B8B] hover:bg-[#267373] text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
-                  >
-                    <span>Request Custom Quote</span>
-                    <ArrowRight size={14} />
-                  </a>
-                </div>
-              </aside>
-            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ====================================================================== */}
-      {/* 8. SECTION 5: INDIA TRAVEL FAQS                                        */}
+      {/* 7. SECTION: INDIA TRAVEL FAQS                                          */}
       {/* ====================================================================== */}
       <section id="faq" className="py-12 sm:py-16 md:py-20 bg-section-tint border-t border-section-border">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
