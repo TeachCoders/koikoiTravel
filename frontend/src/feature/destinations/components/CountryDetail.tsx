@@ -545,14 +545,9 @@ function CountryContent({
       {/* 3. EDITORIAL OVERVIEW: DISCOVER INCREDIBLE INDIA                        */}
       {/* ====================================================================== */}
       {hasMoreDesc && (
-        <section id="about" className="py-12 sm:py-16 md:py-20 bg-white border-b border-section-border">
+        <section id="about" className="py-6 sm:py-8 bg-white border-b border-section-border">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-            <div className="mb-6 sm:mb-8 text-left">
-              <SectionLabel icon={<Sparkles className="w-3.5 h-3.5" />}>
-                Destination Overview
-              </SectionLabel>
-            </div>
-            <div className="w-full bg-slate-50/60 rounded-3xl p-6 sm:p-10 md:p-12">
+            <div className="w-full bg-slate-50/60 rounded-2xl p-5 sm:p-7 md:p-8">
               <RichContent
                 html={introHtml}
                 sharedLinkedHrefs={pageLinkedHrefs}
@@ -566,7 +561,7 @@ function CountryContent({
                     className={cn(
                       "overflow-hidden transition-all duration-500 ease-in-out",
                       isOverviewExpanded
-                        ? "max-h-[8000px] opacity-100 mt-6 pt-2"
+                        ? "max-h-[8000px] opacity-100 mt-5 pt-2"
                         : "max-h-0 opacity-0"
                     )}
                   >
@@ -578,7 +573,7 @@ function CountryContent({
                     />
                   </div>
 
-                  <div className="mt-5 pt-1">
+                  <div className="mt-4 pt-1">
                     <button
                       type="button"
                       onClick={() => setIsOverviewExpanded(!isOverviewExpanded)}
