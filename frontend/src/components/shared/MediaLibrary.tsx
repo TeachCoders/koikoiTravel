@@ -433,11 +433,17 @@ export default function MediaLibrary({
                         : "border-slate-200 hover:border-brand-primary/50 hover:shadow-md"
                     }`}
                   >
-                    <div className="relative w-full aspect-square bg-slate-50 overflow-hidden">
+                    <div
+                      className={`relative w-full bg-slate-50 overflow-hidden ${
+                        activeMode === "banner" ? "aspect-[16/9]" : "aspect-[4/3]"
+                      }`}
+                    >
                       <img
                         src={getMediaUrl(item)}
                         alt={displayName(item)}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+                          activeMode === "thumb" ? "object-top" : "object-center"
+                        }`}
                         loading="lazy"
                       />
                       <div className={`absolute inset-0 transition-colors ${
