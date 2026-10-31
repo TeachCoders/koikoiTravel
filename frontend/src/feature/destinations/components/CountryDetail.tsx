@@ -443,48 +443,31 @@ function CountryContent({
       {/* ====================================================================== */}
       <HeroBanner
         slides={heroSlides}
-        fallbackImage={country.thumbImg || country.banner?.images?.[0] || "/banners/home-comic-banner.webp"}
+        fallbackImage={country.thumbImg || country.banner?.images?.[0]}
+        alt={country.title}
         tag={heroTag}
         title={heroTitle}
-        subtitle={heroSubtitle}
-        alt={displayTitle}
-      >
-        {/* Breadcrumb inside Hero for high-contrast legible look */}
-        <div className="flex items-center justify-center gap-2 text-xs text-white/80 font-medium mb-3 sm:mb-4">
-          <Link href="/" className="hover:text-white hover:underline transition-colors">
+      />
+
+      {/* ===== BREADCRUMB (BELOW HERO) ===== */}
+      <nav aria-label="Breadcrumb" className="border-b border-slate-200/80 bg-slate-50/80 backdrop-blur-xs">
+        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-3 flex flex-wrap items-center gap-1.5 text-[13px] text-slate-500 font-medium">
+          <Link href="/" className="hover:text-[#2E8B8B] transition-colors shrink-0">
             Home
           </Link>
-          <span className="text-white/40">›</span>
-          <Link href="/destinations" className="hover:text-white hover:underline transition-colors">
-            Destinations
+          <ChevronRight size={13} className="text-slate-400 shrink-0" />
+          <Link href="/tour-packages" className="hover:text-[#2E8B8B] transition-colors shrink-0">
+            Tour Packages
           </Link>
-          <span className="text-white/40">›</span>
-          <span className="text-white font-semibold">India</span>
+          <ChevronRight size={13} className="text-slate-400 shrink-0" />
+          <span className="text-slate-900 font-semibold">{country.h1Title || country.title}</span>
         </div>
-
-        {/* Hero CTA buttons matching template */}
-        <div className="mt-4 sm:mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-4 pointer-events-auto">
-          <a
-            href="#quote"
-            className="px-6 py-3 rounded-full bg-[#F8904D] hover:bg-[#E07D3A] text-white font-bold text-sm sm:text-[15px] shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all inline-flex items-center gap-2 cursor-pointer"
-          >
-            <span>Plan My Tailor-Made Trip</span>
-            <ArrowRight size={16} />
-          </a>
-
-          <a
-            href="#circuits"
-            className="px-6 py-3 rounded-full bg-white/15 backdrop-blur-md border border-white/40 hover:bg-white hover:text-[#1C1C1C] text-white font-semibold text-sm sm:text-[15px] transition-all"
-          >
-            Explore Iconic Circuits
-          </a>
-        </div>
-      </HeroBanner>
+      </nav>
 
       {/* ====================================================================== */}
       {/* 2. TRUST BAR (4 VALUES PROPOSITIONS - MATCHING HOME WHY CHOOSE US)     */}
       {/* ====================================================================== */}
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 relative z-20 -mt-8 sm:-mt-10">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 relative z-20 py-6 sm:py-8">
         <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgba(18,48,47,0.08)] border border-section-border grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-section-border overflow-hidden">
           <div className="p-5 sm:p-6 flex items-start gap-4 hover:bg-slate-50/60 transition-colors">
             <div className="w-10 h-10 rounded-xl bg-teal-50 text-[#2E8B8B] flex items-center justify-center shrink-0 font-bold text-sm">
