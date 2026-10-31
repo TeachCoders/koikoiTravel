@@ -523,33 +523,51 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
             {/* Merged Common DB Fields (Famous For & Quick Facts) */}
             {(hasFamousFor || facts.length > 0) && (
               <div className="mb-8 pb-6 border-b border-slate-200/80 space-y-4">
-                {/* Famous For with icon and normal bullets from DB */}
+                {/* Famous For */}
                 {hasFamousFor && (
-                  <div className="space-y-2.5">
-                    <div className="flex items-center gap-2">
-                      <Sparkles size={17} className="text-[#F8904D]" />
+                  <div className="bg-[#FAF8F5]/90 rounded-2xl p-5 sm:p-6 border border-[#EBE7DF]">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Sparkles size={18} className="text-[#F8904D]" />
                       <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900">
                         Famous For
                       </h3>
                     </div>
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-2 list-disc list-inside text-sm sm:text-[14.5px] text-slate-700 font-medium">
-                      {stripHtml(state.famousFor!)
-                        .split(",")
-                        .map((item, i) => (
-                          <li key={i} className="marker:text-[#2E8B8B]">
-                            <span>{item.trim()}</span>
-                          </li>
-                        ))}
-                    </ul>
+                    {state.famousFor && /<li\b/i.test(state.famousFor) ? (
+                      <RichContent
+                        html={state.famousFor}
+                        sharedLinkedHrefs={pageLinkedHrefs}
+                        excludeHrefs={excludeHrefs}
+                        className="text-sm sm:text-[15px] text-slate-700 leading-relaxed [&>ul]:my-0 [&>ul]:space-y-2 [&_li]:my-1.5 [&_li]:text-sm sm:[&_li]:text-[15px] [&_p]:inline [&_p]:m-0"
+                      />
+                    ) : (
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        {stripHtml(state.famousFor || "")
+                          .split(/[,•\n]+/)
+                          .map((item) => item.trim())
+                          .filter(Boolean)
+                          .map((item, i) => (
+                            <span
+                              key={i}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-slate-700 text-xs sm:text-[13.5px] font-medium border border-slate-200/80 shadow-2xs"
+                            >
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#2E8B8B]" />
+                              {item}
+                            </span>
+                          ))}
+                      </div>
+                    )}
                   </div>
                 )}
 
                 {/* Quick Facts from DB */}
                 {facts.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-[13.5px] text-slate-600 pt-1">
+                  <div className="flex flex-wrap items-center gap-2.5 pt-1">
                     {facts.map((f) => (
-                      <div key={f.label} className="flex items-center gap-1.5">
-                        <span className="text-slate-400 font-normal">{f.label}:</span>
+                      <div
+                        key={f.label}
+                        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/70 text-xs sm:text-[13px] text-slate-600 shadow-2xs"
+                      >
+                        <span className="text-slate-400 font-medium">{f.label}:</span>
                         <span className="font-semibold text-slate-800 capitalize">{f.value}</span>
                       </div>
                     ))}

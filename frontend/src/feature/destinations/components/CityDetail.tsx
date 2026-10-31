@@ -8,12 +8,9 @@ import {
   Sparkles,
   CalendarDays,
   Sun,
-  BadgeCheck,
   CloudSun,
   Compass,
   ChevronDown,
-  Award,
-  ArrowRight,
 } from "lucide-react";
 import { useCityBySlug } from "@/feature/city/api/useCity";
 import type { City } from "@/feature/city/type";
@@ -33,7 +30,6 @@ import {
   journeyMatchesExperiences,
   journeyMatchesDuration,
   journeyMatchesSeasons,
-  journeyPackageHref,
 } from "@/feature/journey/filterOptions";
 import { cn, stripHtml, formatToursH1 } from "@/lib/utils";
 import { resolveCityJourneys } from "@/feature/journey/destinationJourneys";
@@ -189,9 +185,7 @@ function CityContent({
   const hasKnowMoreText = hasSeoDesc || hasMoreDesc || hasAttractions || hasWeather;
 
   const hasFamousFor = Boolean(stripHtml(city.famousFor || "").trim());
-  const hasTopPackages = cityJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0;
-  const hasSidebar = facts.length > 0 || hasFamousFor || hasTopPackages;
-  const showMoreSection = hasKnowMoreText || hasSidebar;
+  const showMoreSection = hasKnowMoreText || facts.length > 0 || hasFamousFor;
 
   return (
     <div>
@@ -279,33 +273,51 @@ function CityContent({
             {/* Merged Common DB Fields (Famous For & Quick Facts) */}
             {(hasFamousFor || facts.length > 0) && (
               <div className="mb-8 pb-6 border-b border-slate-200/80 space-y-4">
-                {/* Famous For with icon and normal bullets from DB */}
+                {/* Famous For */}
                 {hasFamousFor && (
-                  <div className="space-y-2.5">
-                    <div className="flex items-center gap-2">
-                      <Sparkles size={17} className="text-[#F8904D]" />
+                  <div className="bg-[#FAF8F5]/90 rounded-2xl p-5 sm:p-6 border border-[#EBE7DF]">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Sparkles size={18} className="text-[#F8904D]" />
                       <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900">
                         Famous For
                       </h3>
                     </div>
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-2 list-disc list-inside text-sm sm:text-[14.5px] text-slate-700 font-medium">
-                      {stripHtml(city.famousFor)
-                        .split(",")
-                        .map((item, i) => (
-                          <li key={i} className="marker:text-[#2E8B8B]">
-                            <span>{item.trim()}</span>
-                          </li>
-                        ))}
-                    </ul>
+                    {city.famousFor && /<li\b/i.test(city.famousFor) ? (
+                      <RichContent
+                        html={city.famousFor}
+                        sharedLinkedHrefs={pageLinkedHrefs}
+                        excludeHrefs={excludeHrefs}
+                        className="text-sm sm:text-[15px] text-slate-700 leading-relaxed [&>ul]:my-0 [&>ul]:space-y-2 [&_li]:my-1.5 [&_li]:text-sm sm:[&_li]:text-[15px] [&_p]:inline [&_p]:m-0"
+                      />
+                    ) : (
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        {stripHtml(city.famousFor || "")
+                          .split(/[,•\n]+/)
+                          .map((item) => item.trim())
+                          .filter(Boolean)
+                          .map((item, i) => (
+                            <span
+                              key={i}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-slate-700 text-xs sm:text-[13.5px] font-medium border border-slate-200/80 shadow-2xs"
+                            >
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#2E8B8B]" />
+                              {item}
+                            </span>
+                          ))}
+                      </div>
+                    )}
                   </div>
                 )}
 
                 {/* Quick Facts from DB */}
                 {facts.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-[13.5px] text-slate-600 pt-1">
+                  <div className="flex flex-wrap items-center gap-2.5 pt-1">
                     {facts.map((f) => (
-                      <div key={f.label} className="flex items-center gap-1.5">
-                        <span className="text-slate-400 font-normal">{f.label}:</span>
+                      <div
+                        key={f.label}
+                        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/70 text-xs sm:text-[13px] text-slate-600 shadow-2xs"
+                      >
+                        <span className="text-slate-400 font-medium">{f.label}:</span>
                         <span className="font-semibold text-slate-800 capitalize">{f.value}</span>
                       </div>
                     ))}
@@ -355,37 +367,6 @@ function CityContent({
                     sharedLinkedHrefs={pageLinkedHrefs}
                     excludeHrefs={excludeHrefs}
                   />
-                </div>
-              )}
-
-              {hasTopPackages && (
-                <div className="mt-8 pt-8 border-t border-slate-100">
-                  <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 mb-4 flex items-center gap-2">
-                    <Award size={17} className="text-[#2E8B8B]" /> Top Recommended Packages
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {[...cityJourneys]
-                      .filter((j) => (j.displayOrder ?? 0) > 0)
-                      .sort((a, b) => (a.displayOrder ?? 999) - (b.displayOrder ?? 999))
-                      .slice(0, 6)
-                      .map((j) => (
-                        <Link
-                          key={j.id}
-                          href={journeyPackageHref(j)}
-                          className="p-3.5 rounded-xl border border-slate-200/80 bg-white hover:border-[#2E8B8B] hover:shadow-xs transition-all flex items-center justify-between group"
-                        >
-                          <div className="min-w-0 pr-2">
-                            <p className="text-sm font-semibold text-slate-900 truncate group-hover:text-[#2E8B8B]">
-                              {j.title.split("|")[0].trim()}
-                            </p>
-                            <span className="text-xs text-slate-500">
-                              {j.duration || (j.noDays > 0 ? `${j.noDays} Days` : "")}
-                            </span>
-                          </div>
-                          <ArrowRight size={16} className="text-slate-400 group-hover:text-[#2E8B8B] shrink-0 transition-transform group-hover:translate-x-0.5" />
-                        </Link>
-                      ))}
-                  </div>
                 </div>
               )}
             </div>
