@@ -75,7 +75,7 @@ export function SingleDestinationReusableCard({
     return (
       <div
         className={cn(
-          "group relative flex w-full flex-col overflow-hidden rounded-2xl border border-slate-200/50 bg-slate-900 text-left",
+          "group relative flex w-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-100 text-left",
           "shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-2xl hover:border-slate-400/50",
           photoAspectClass,
           className
@@ -95,8 +95,8 @@ export function SingleDestinationReusableCard({
           fallbackSrc="/logo-with-name.png"
         />
 
-        {/* Gradient overlay for readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10 pointer-events-none" />
+        {/* Soft bottom-only gradient for text readability without darkening image */}
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/55 to-transparent pointer-events-none" />
 
         {/* Tours badge (top-right) */}
         {displayTours && (
@@ -108,11 +108,11 @@ export function SingleDestinationReusableCard({
         {/* Text directly on top of image (bottom) */}
         <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 flex flex-col justify-end text-white z-10 pointer-events-none">
           {displayEyebrow && (
-            <span className="line-clamp-1 text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#F8904D] mb-1">
+            <span className="line-clamp-1 text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#F8904D] mb-1 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
               {displayEyebrow}
             </span>
           )}
-          <h3 className="font-heading line-clamp-1 text-base sm:text-lg font-bold leading-tight text-white drop-shadow-xs group-hover:text-[#F8904D] transition-colors">
+          <h3 className="font-heading line-clamp-1 text-base sm:text-lg font-bold leading-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] group-hover:text-[#F8904D] transition-colors">
             {title}
           </h3>
         </div>
