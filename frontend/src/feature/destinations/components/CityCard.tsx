@@ -1,4 +1,4 @@
-import DestinationCard from "@/components/shared/DestinationCard";
+import { SingleDestinationReusableCard } from "@/components/shared/SingleDestinationReusableCard";
 import type { City } from "@/feature/city/type";
 
 export default function CityCard({
@@ -32,7 +32,7 @@ export default function CityCard({
     : undefined;
 
   return (
-    <DestinationCard
+    <SingleDestinationReusableCard
       title={city.h1Title || city.title || ""}
       image={city.thumbImg ?? fallbackImage}
       subtitle={journeys > 0 ? `${journeys} ${journeys === 1 ? 'Tour Package' : 'Tour Packages'}` : "Tailor-Made on Request"}

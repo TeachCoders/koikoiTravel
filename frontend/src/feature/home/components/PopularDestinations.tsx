@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { SectionLabel } from "@/components/shared/SectionLabel";
-import DestinationCard from "@/components/shared/DestinationCard";
+import { SingleDestinationReusableCard } from "@/components/shared/SingleDestinationReusableCard";
 import { useGetStates } from "@/feature/state/api/useState";
 import { useGetTravelExperiences } from "@/feature/travelExperience/api/useTravelExperience";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
@@ -173,7 +173,7 @@ export const PopularDestinations: React.FC<{
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5 animate-in fade-in duration-500">
             {destinations.map((item) => (
-              <DestinationCard
+              <SingleDestinationReusableCard
                 key={item.id}
                 title={item.title}
                 image={item.image}

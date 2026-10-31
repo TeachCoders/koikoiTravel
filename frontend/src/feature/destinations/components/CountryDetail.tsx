@@ -54,6 +54,7 @@ import StateCard from "./StateCard";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 import DoodleBackground from "@/components/shared/DoodleBackground";
+import { SingleDestinationReusableCard } from "@/components/shared/SingleDestinationReusableCard";
 
 // ============================================================================
 // AUDLEY TRAVEL BENCHMARK DATA: ICONIC REGIONS / CIRCUITS
@@ -551,7 +552,7 @@ function CountryContent({
 
         const href = c.state?.slug ? `/tour-packages/india/${c.state.slug}/${c.slug}` : `/tour-packages/india/${c.slug}`;
         const tag = c.banner?.bannerTag || c.h1Title || c.state?.title || "Heritage City";
-        const image = c.thumbImg || c.banner?.images?.[0] || "/content/jaipur-holiday-1.webp";
+        const image = c.thumbImg || c.banner?.images?.[0] || undefined;
         const highlight = c.attractions || c.famousFor?.replace(/<[^>]+>/g, "").slice(0, 90) || `${c.title} private sightseeing & heritage tours`;
 
         return {
@@ -801,39 +802,16 @@ function CountryContent({
             {/* City Cards Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-5">
               {displayedCitiesSpotlight.map((city) => (
-                <Link
+                <SingleDestinationReusableCard
                   key={city.name}
+                  title={city.name}
+                  image={city.image}
+                  eyebrow={city.tag}
+                  description={city.highlight}
+                  region={city.state}
+                  tourCount={city.tourCount}
                   href={city.href}
-                  className="group relative rounded-2xl overflow-hidden bg-slate-900 aspect-[3/4] flex flex-col justify-end p-4 shadow-sm hover:shadow-xl transition-all duration-300"
-                >
-                  <FallbackImage
-                    src={city.image}
-                    alt={city.name}
-                    fill
-                    loading="lazy"
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 220px"
-                    className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-90"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent z-10" />
-
-                  <div className="relative z-20">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#F8904D] block mb-0.5">
-                      {city.tag}
-                    </span>
-                    <h3 className="text-lg font-bold text-white group-hover:text-[#F8904D] transition-colors leading-tight">
-                      {city.name}
-                    </h3>
-                    <p className="text-[11px] text-white/80 line-clamp-2 mt-1 leading-snug">
-                      {city.highlight}
-                    </p>
-                    <div className="mt-2.5 flex items-center justify-between text-[11px] font-semibold text-white/90 pt-2 border-t border-white/15">
-                      <span>{city.state}</span>
-                      <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full text-white/95">
-                        {(city.tourCount ?? 0) > 0 ? `${city.tourCount} Tours` : "Explore"}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                />
               ))}
             </div>
           </div>

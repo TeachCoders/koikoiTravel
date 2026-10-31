@@ -1,4 +1,4 @@
-import DestinationCard from "@/components/shared/DestinationCard";
+import { SingleDestinationReusableCard } from "@/components/shared/SingleDestinationReusableCard";
 import type { State } from "@/feature/state/type";
 
 export default function StateCard({
@@ -22,7 +22,7 @@ export default function StateCard({
     : undefined;
 
   return (
-    <DestinationCard
+    <SingleDestinationReusableCard
       title={state.title}
       image={state.thumbImg}
       subtitle={
