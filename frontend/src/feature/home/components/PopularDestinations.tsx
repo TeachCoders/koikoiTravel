@@ -31,7 +31,8 @@ export const PopularDestinations: React.FC<{
     {
       limit: 100,
       isActive: "true",
-    },
+      includeAll: "true",
+    } as any,
     initialStates
   );
 
@@ -69,7 +70,7 @@ export const PopularDestinations: React.FC<{
       (e) => e.slug === "golden-triangle-tour-india" || e.slug === "golden-triangle"
     );
     const gtState = states.find(
-      (s) => s.slug === "golden-triangle" || s.slug === "golden-triangle-tour-india"
+      (s) => s.slug === "golden-triangle" || s.slug === "golden-triangle-tour-india" || s.id === 30
     );
     const gtTours = gtExp?.tourCount ?? gtState?.tourCount ?? 15;
     list.push({

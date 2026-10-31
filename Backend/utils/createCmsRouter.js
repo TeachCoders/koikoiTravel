@@ -238,7 +238,7 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       }
 
       if (modelName === "state") {
-        if (isPublic) {
+        if (isPublic && req.query.includeAll !== "true") {
           where.slug = { not: "golden-triangle" };
         }
         if (req.query.stateId) {
@@ -635,6 +635,33 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
         where: { id },
         data: { ...cleanRest, ...(slug && { slug }), ...relationOps },
       });
+
+      // Bi-directional sync for Golden Triangle between State (id: 30) and TravelExperience (id: 6)
+      if (modelName === "state" && (item.slug === "golden-triangle" || id === 30)) {
+        try {
+          await prisma.travelExperience.updateMany({
+            where: { OR: [{ id: 6 }, { slug: "golden-triangle-tour-india" }] },
+            data: {
+              ...(item.thumbImg && { thumbImg: item.thumbImg }),
+              ...(item.cardShortDescription && { cardShortDescription: item.cardShortDescription }),
+            },
+          });
+        } catch (syncErr) {
+          logger.warn("Syncing golden-triangle state to travelExperience failed:", syncErr);
+        }
+      } else if (modelName === "travelExperience" && (item.slug === "golden-triangle-tour-india" || id === 6)) {
+        try {
+          await prisma.state.updateMany({
+            where: { OR: [{ id: 30 }, { slug: "golden-triangle" }] },
+            data: {
+              ...(item.thumbImg && { thumbImg: item.thumbImg }),
+              ...(item.cardShortDescription && { cardShortDescription: item.cardShortDescription }),
+            },
+          });
+        } catch (syncErr) {
+          logger.warn("Syncing golden-triangle travelExperience to state failed:", syncErr);
+        }
+      }
 
       const banner = await upsertBanner(entityType, id, bannerData);
 
