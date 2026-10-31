@@ -273,38 +273,6 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
           </div>
         </div>
 
-        {/* Destination Card Short Description */}
-        <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-6 space-y-3">
-          <div className="flex items-center justify-between">
-            <div>
-              <label className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                🏷️ Card Short Description (Destination Card Text)
-              </label>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Yeh short text website par destination / state cards me title ke thik niche dikhega (Max 100 characters).
-              </p>
-            </div>
-            <span
-              className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                (formData.cardShortDescription?.length || 0) > 100
-                  ? "bg-rose-100 text-rose-700"
-                  : "bg-slate-100 text-slate-600"
-              }`}
-            >
-              {formData.cardShortDescription?.length || 0} / 100 Chars
-            </span>
-          </div>
-
-          <input
-            type="text"
-            maxLength={110}
-            value={formData.cardShortDescription || ""}
-            onChange={(e) => setFormData((prev) => ({ ...prev, cardShortDescription: e.target.value }))}
-            placeholder="e.g. Royal palaces, desert forts & vibrant cultural heritage"
-            className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E8B8B] focus:bg-white transition-all text-slate-800"
-          />
-        </div>
-
         {/* SEO Fields */}
         <SeoFields
           formData={{
@@ -316,6 +284,7 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
             seoKeyword: formData.seoKeyword || "",
             thumbImg: formData.thumbImg || "",
             h1Title: formData.h1Title || "",
+            cardShortDescription: formData.cardShortDescription || "",
           }}
           onFieldChange={handleFieldChange}
           onDescriptionChange={handleShortDescChange}

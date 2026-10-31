@@ -43,6 +43,7 @@ interface SeoFieldsProps {
     thumbImg: string;
     seoTitle?: string;
     h1Title?: string;
+    cardShortDescription?: string | null;
   };
   onFieldChange: (name: string, value: string) => void;
   onDescriptionChange: (html: string) => void;
@@ -56,6 +57,7 @@ interface SeoFieldsProps {
   hideThumbnail?: boolean;
   hideKeywords?: boolean;
   hideCanonical?: boolean;
+  hideCardShortDesc?: boolean;
 }
 
 export default function SeoFields({
@@ -72,6 +74,7 @@ export default function SeoFields({
   hideThumbnail = false,
   hideKeywords = false,
   hideCanonical = false,
+  hideCardShortDesc = false,
 }: SeoFieldsProps) {
   const [mediaOpen, setMediaOpen] = useState(false);
   const userEditedSlug = useRef(false);
@@ -337,6 +340,34 @@ export default function SeoFields({
                 <span className="text-sm font-medium text-brand-primary">Browse Library</span>
               </button>
             </div>
+
+            {/* Card Short Description (Directly beside / with Thumbnail) */}
+            {formData.cardShortDescription !== undefined && !hideCardShortDesc && (
+              <div className="pt-3 border-t border-slate-200/80 space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <Label className="text-sm font-semibold text-slate-600">
+                    Card Short Description
+                  </Label>
+                  <span
+                    className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                      (formData.cardShortDescription?.length || 0) > 100
+                        ? "bg-rose-100 text-rose-700"
+                        : "bg-slate-100 text-slate-600"
+                    }`}
+                  >
+                    {formData.cardShortDescription?.length || 0} / 100
+                  </span>
+                </div>
+                <Input
+                  type="text"
+                  maxLength={100}
+                  value={formData.cardShortDescription || ""}
+                  onChange={(e) => onFieldChange("cardShortDescription", e.target.value)}
+                  placeholder="e.g. Royal palaces, desert forts & vibrant cultural heritage"
+                  className="w-full text-sm"
+                />
+              </div>
+            )}
           </div>
         )}
 
