@@ -325,11 +325,12 @@ export default function SeoFields({
             <div className="space-y-2">
               <ImageCropUpload
                 onFileSelect={handleThumbUpload}
-                maxWidth={400}
-                maxHeight={300}
-                outputFormat="image/jpeg"
+                maxWidth={800}
+                maxHeight={600}
+                aspectRatioPreset="4:3"
+                outputFormat="image/webp"
                 quality={0.85}
-                label={formData.thumbImg ? "Upload / Replace Thumbnail" : "Upload Thumbnail"}
+                label={formData.thumbImg ? "Upload / Replace Thumbnail (800 × 600 px)" : "Upload Thumbnail (800 × 600 px)"}
               />
               <button
                 type="button"

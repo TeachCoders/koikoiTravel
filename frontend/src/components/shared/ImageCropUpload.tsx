@@ -24,7 +24,7 @@ export interface ImageCropUploadProps {
   onClear?: () => void;
   maxWidth?: number;
   maxHeight?: number;
-  aspectRatioPreset?: "hero" | "mobileHero" | "21:9" | "16:9" | "free";
+  aspectRatioPreset?: "hero" | "mobileHero" | "4:3" | "21:9" | "16:9" | "free";
   outputFormat?: "image/jpeg" | "image/webp" | "image/png";
   quality?: number;
   borderRadius?: number;
@@ -67,13 +67,15 @@ export default function ImageCropUpload({
       ? 1920 / 600
       : aspectRatioPreset === "mobileHero"
       ? 750 / 500
+      : aspectRatioPreset === "4:3"
+      ? 4 / 3
       : aspectRatioPreset === "21:9"
       ? 21 / 9
       : aspectRatioPreset === "16:9"
       ? 16 / 9
       : "free";
 
-  const [activePreset, setActivePreset] = useState<"hero" | "mobileHero" | "21:9" | "16:9" | "free">(aspectRatioPreset);
+  const [activePreset, setActivePreset] = useState<"hero" | "mobileHero" | "4:3" | "21:9" | "16:9" | "free">(aspectRatioPreset);
   const [selectedRatio, setSelectedRatio] = useState<number | "free">(initialRatio);
   const [targetWidth, setTargetWidth] = useState<number>(maxWidth);
   const [targetHeight, setTargetHeight] = useState<number>(maxHeight);
@@ -262,7 +264,7 @@ export default function ImageCropUpload({
     img.src = imgSrc;
   }, [getContainDimensions, renderCanvas, selectedRatio]);
 
-  const setPresetRatio = useCallback((preset: "hero" | "mobileHero" | "21:9" | "16:9" | "free") => {
+  const setPresetRatio = useCallback((preset: "hero" | "mobileHero" | "4:3" | "21:9" | "16:9" | "free") => {
     setActivePreset(preset);
     let ratio: number | "free" = "free";
     if (preset === "hero") {
@@ -273,6 +275,10 @@ export default function ImageCropUpload({
       ratio = 750 / 500;
       setTargetWidth(750);
       setTargetHeight(500);
+    } else if (preset === "4:3") {
+      ratio = 4 / 3;
+      setTargetWidth(maxWidth || 800);
+      setTargetHeight(maxHeight || 600);
     } else if (preset === "21:9") {
       ratio = 21 / 9;
       setTargetWidth(1920);
@@ -680,6 +686,15 @@ export default function ImageCropUpload({
                   }`}
                 >
                   Mobile (750×500)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPresetRatio("4:3")}
+                  className={`px-2.5 py-1 rounded-lg transition-all text-xs ${
+                    activePreset === "4:3" ? "bg-white text-indigo-700 shadow-xs font-bold" : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  Thumb (4:3)
                 </button>
                 <button
                   type="button"
