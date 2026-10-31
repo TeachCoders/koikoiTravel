@@ -45,7 +45,7 @@ export function SingleDestinationReusableCard({
   className,
   aspectRatio = "4/3",
   imagePosition = "top",
-  sizes = "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 240px",
+  sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px",
   priority = false,
 }: SingleDestinationReusableCardProps) {
   const displayEyebrow = eyebrow || tag;
@@ -80,6 +80,7 @@ export function SingleDestinationReusableCard({
           alt={`${title} Tour Packages & Sightseeing | KoiKoi Travel`}
           fill
           sizes={sizes}
+          quality={90}
           priority={priority}
           className={cn(
             "object-cover transition-transform duration-700 ease-out group-hover:scale-108",
