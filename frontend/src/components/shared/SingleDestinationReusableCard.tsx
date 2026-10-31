@@ -17,7 +17,8 @@ export interface SingleDestinationReusableCardProps {
   tourCountText?: string;
   href?: string;
   className?: string;
-  aspectRatio?: "portrait" | "standard";
+  aspectRatio?: "portrait" | "standard" | "4/3" | "16/10" | "3/2";
+  imagePosition?: "top" | "center";
   sizes?: string;
   priority?: boolean;
 }
@@ -26,10 +27,9 @@ export interface SingleDestinationReusableCardProps {
  * SingleDestinationReusableCard
  * Universal, reusable destination card used across the site (Home, Country, State, City spotlights).
  *
- * Layout: photo on top, white content area below. Text never sits on the photo,
- * so it stays readable with any image (and when the image is missing, the
- * fallback logo watermark shows on a soft tint instead of a broken-looking card).
- * Supports linkable and static modes. Props are unchanged from the previous version.
+ * Layout: photo on top with natural 4:3 aspect ratio and object-top framing
+ * so monument domes and spires never get cropped. White content area below with
+ * eyebrow, title, short description and View Tours CTA.
  */
 export function SingleDestinationReusableCard({
   title,
@@ -43,7 +43,8 @@ export function SingleDestinationReusableCard({
   tourCountText,
   href,
   className,
-  aspectRatio = "portrait",
+  aspectRatio = "4/3",
+  imagePosition = "top",
   sizes = "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 240px",
   priority = false,
 }: SingleDestinationReusableCardProps) {
@@ -57,6 +58,13 @@ export function SingleDestinationReusableCard({
         : "Explore"
       : null);
 
+  const photoAspectClass =
+    aspectRatio === "standard" || aspectRatio === "16/10"
+      ? "aspect-[16/10]"
+      : aspectRatio === "3/2"
+      ? "aspect-[3/2]"
+      : "aspect-[4/3]";
+
   const cardContent = (
     <div
       className={cn(
@@ -65,22 +73,18 @@ export function SingleDestinationReusableCard({
         className
       )}
     >
-      {/* Photo area */}
-      <div
-        className={cn(
-          "relative w-full overflow-hidden bg-[#F4EBDD]",
-          aspectRatio === "portrait"
-            ? "h-[210px] sm:h-[230px] md:h-[240px]"
-            : "h-[170px] sm:h-[190px] md:h-[200px]"
-        )}
-      >
+      {/* Photo area with natural aspect ratio & top-anchored framing */}
+      <div className={cn("relative w-full overflow-hidden bg-[#F4EBDD]", photoAspectClass)}>
         <FallbackImage
           src={image}
           alt={`${title} Tour Packages & Sightseeing | KoiKoi Travel`}
           fill
           sizes={sizes}
           priority={priority}
-          className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-108"
+          className={cn(
+            "object-cover transition-transform duration-700 ease-out group-hover:scale-108",
+            imagePosition === "top" ? "object-top" : "object-center"
+          )}
           fallbackSrc="/logo-with-name.png"
         />
 
@@ -119,14 +123,14 @@ export function SingleDestinationReusableCard({
         </h3>
 
         {(displayDescription || subtitle) && (
-          <p className="line-clamp-2 flex-1 text-[13px] leading-relaxed text-slate-600">
+          <p className="line-clamp-3 flex-1 text-[13px] leading-relaxed text-slate-600">
             {displayDescription || subtitle}
           </p>
         )}
 
         {/* Footer: only for clickable cards */}
         {href && (
-          <div className="mt-2.5 flex items-center justify-between border-t border-slate-100 pt-3.5">
+          <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-3.5">
             <span className="text-sm font-semibold text-slate-900 transition-colors duration-200 group-hover:text-[#F8904D]">
               View tours
             </span>
