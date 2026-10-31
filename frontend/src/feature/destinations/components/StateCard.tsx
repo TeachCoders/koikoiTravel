@@ -25,6 +25,7 @@ export default function StateCard({
     <SingleDestinationReusableCard
       title={state.title}
       image={state.thumbImg}
+      description={state.cardShortDescription || undefined}
       subtitle={
         journeys > 0 ? (
           <span className="inline-flex items-center justify-center gap-1.5">

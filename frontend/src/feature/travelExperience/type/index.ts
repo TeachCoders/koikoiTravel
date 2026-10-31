@@ -32,6 +32,7 @@ export interface TravelExperience {
   slug: string;
   seoDescription: string;
   moreDescription?: string;
+  cardShortDescription?: string | null;
   overView?: string;
   seoKeyword?: string;
   canonical?: string;
@@ -59,6 +60,7 @@ export interface TravelExperiencePayload {
   slug?: string;
   seoDescription: string;
   moreDescription?: string;
+  cardShortDescription?: string | null;
   overView?: string;
   seoKeyword?: string;
   canonical?: string;

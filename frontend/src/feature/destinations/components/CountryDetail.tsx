@@ -553,7 +553,11 @@ function CountryContent({
         const href = c.state?.slug ? `/tour-packages/india/${c.state.slug}/${c.slug}` : `/tour-packages/india/${c.slug}`;
         const tag = c.banner?.bannerTag || c.h1Title || c.state?.title || "Heritage City";
         const image = c.thumbImg || c.banner?.images?.[0] || undefined;
-        const highlight = c.attractions || c.famousFor?.replace(/<[^>]+>/g, "").slice(0, 90) || `${c.title} private sightseeing & heritage tours`;
+        const highlight =
+          c.cardShortDescription ||
+          c.attractions ||
+          c.famousFor?.replace(/<[^>]+>/g, "").slice(0, 90) ||
+          `${c.title} private sightseeing & heritage tours`;
 
         return {
           id: c.id,

@@ -629,6 +629,7 @@ model State {
   h1Title     String?
   thumbImg    String?
   moreDescription String?
+  cardShortDescription String?
   capital     String?
   language    String?
   famousFor   String?
@@ -661,6 +662,7 @@ model City {
   h1Title     String?
   thumbImg    String?
   moreDescription String?
+  cardShortDescription String?
   famousFor   String?
   attractions String?
   weather     String?
@@ -712,6 +714,7 @@ model TravelExperience {
   h1Title     String?
   thumbImg    String?
   moreDescription String?
+  cardShortDescription String?
   type        String?
   idealFor    String?
   duration    String?

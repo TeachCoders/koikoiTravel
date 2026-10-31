@@ -14,6 +14,7 @@ export interface State {
   slug: string;
   seoDescription: string;
   moreDescription?: string;
+  cardShortDescription?: string | null;
   overView?: string;
   seoKeyword?: string;
   canonical?: string;
@@ -44,6 +45,7 @@ export interface StatePayload {
   slug?: string;
   seoDescription: string;
   moreDescription?: string;
+  cardShortDescription?: string | null;
   overView?: string;
   seoKeyword?: string;
   canonical?: string;

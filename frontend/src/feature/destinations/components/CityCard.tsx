@@ -35,6 +35,7 @@ export default function CityCard({
     <SingleDestinationReusableCard
       title={city.h1Title || city.title || ""}
       image={city.thumbImg ?? fallbackImage}
+      description={city.cardShortDescription || undefined}
       subtitle={journeys > 0 ? `${journeys} ${journeys === 1 ? 'Tour Package' : 'Tour Packages'}` : "Tailor-Made on Request"}
       tag={journeys >= 5 ? "Popular Circuit" : undefined}
       href={href}

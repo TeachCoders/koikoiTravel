@@ -13,6 +13,7 @@ export interface City {
   slug: string;
   seoDescription: string;
   moreDescription?: string;
+  cardShortDescription?: string | null;
   overView?: string;
   seoKeyword?: string;
   canonical?: string;
@@ -46,6 +47,7 @@ export interface CityPayload {
   slug?: string;
   seoDescription: string;
   moreDescription?: string;
+  cardShortDescription?: string | null;
   overView?: string;
   seoKeyword?: string;
   canonical?: string;

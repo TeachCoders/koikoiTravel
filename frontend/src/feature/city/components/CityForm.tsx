@@ -45,6 +45,7 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
     title: initialData?.title || "",
     slug: initialData?.slug || "",
     seoDescription: initialData?.seoDescription || "",
+    cardShortDescription: initialData?.cardShortDescription || "",
     overView: initialData?.overView || "",
     seoKeyword: initialData?.seoKeyword || "",
     seoTitle: initialData?.seoTitle || "",
@@ -94,6 +95,7 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
         title: initialData.title || "",
         slug: initialData.slug || "",
         seoDescription: initialData.seoDescription || "",
+        cardShortDescription: initialData.cardShortDescription || "",
         overView: initialData.overView || "",
         seoKeyword: initialData.seoKeyword || "",
         seoTitle: initialData.seoTitle || "",
@@ -181,6 +183,7 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
     const payload: any = {
       title: formData.title.trim(),
       seoDescription: formData.seoDescription.trim(),
+      cardShortDescription: formData.cardShortDescription?.trim() || undefined,
       slug: formData.slug.trim().replace(/-+$/g, "") || undefined,
       overView: formData.overView.trim() || undefined,
       seoKeyword: formData.seoKeyword.trim() || undefined,
@@ -264,6 +267,38 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
             />
             {errors.stateId && <p className="text-xs text-red-500">{errors.stateId}</p>}
           </div>
+        </div>
+
+        {/* Destination Card Short Description */}
+        <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-6 space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <label className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                🏷️ Card Short Description (Destination Card Text)
+              </label>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Yeh short text website par destination / city cards me title ke thik niche dikhega (Max 100 characters).
+              </p>
+            </div>
+            <span
+              className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                (formData.cardShortDescription?.length || 0) > 100
+                  ? "bg-rose-100 text-rose-700"
+                  : "bg-slate-100 text-slate-600"
+              }`}
+            >
+              {formData.cardShortDescription?.length || 0} / 100 Chars
+            </span>
+          </div>
+
+          <input
+            type="text"
+            maxLength={110}
+            value={formData.cardShortDescription || ""}
+            onChange={(e) => setFormData((prev) => ({ ...prev, cardShortDescription: e.target.value }))}
+            placeholder="e.g. Amber Fort, Hawa Mahal & desert forts heritage tours"
+            className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E8B8B] focus:bg-white transition-all text-slate-800"
+          />
         </div>
 
         <SeoFields
