@@ -223,85 +223,12 @@ function CountryContent({
   // ==========================================================================
   // 100% DYNAMIC ICONIC CIRCUITS (PULLED LIVE FROM DB STATES & EXPERIENCES)
   // ==========================================================================
-  const iconicCircuits = useMemo(() => {
-    const findState = (slug: string, altId?: number) =>
-      states.find((s) => s.slug === slug || (altId && s.id === altId));
-
-    const findExp = (slug: string) =>
-      travelExperiences.find((e) => e.slug === slug);
-
-    // Resolve entities dynamically
-    const gt = findState("golden-triangle", 30) || findExp("golden-triangle");
-    const raj = findState("rajasthan");
-    const kerala = findState("kerala");
-    const south = findState("south-india");
-    const spiritual = findExp("spiritual") || findState("himachal-pradesh") || findState("jammu-and-kashmir");
-
-    // Check if admin has set explicit displayOrder on states (e.g. 1..5)
-    const statesWithOrder = displayedStates.filter(
-      (s) => s.displayOrder && s.displayOrder > 0 && s.displayOrder <= 5
-    );
-
-    const candidates =
-      statesWithOrder.length >= 4
-        ? statesWithOrder.map((s) => ({ item: s, defaultSlug: s.slug, isExp: false }))
-        : [
-            { item: gt, defaultSlug: "golden-triangle", isExp: false },
-            { item: raj, defaultSlug: "rajasthan", isExp: false },
-            { item: kerala, defaultSlug: "kerala", isExp: false },
-            { item: south, defaultSlug: "south-india", isExp: false },
-            { item: spiritual, defaultSlug: "spiritual", isExp: !findState("himachal-pradesh") && Boolean(findExp("spiritual")) },
-          ];
-
-    return candidates.map(({ item, defaultSlug, isExp }) => {
-      const slug = item?.slug || defaultSlug;
-      const title =
-        item?.banner?.bannerTitle ||
-        item?.h1Title ||
-        item?.title ||
-        slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-
-      const tag = item?.banner?.bannerTag || "";
-
-      const description =
-        item?.cardShortDescription ||
-        (item as any)?.attractions ||
-        (item as any)?.famousFor?.replace(/<[^>]+>/g, "").slice(0, 100) ||
-        (item as any)?.highlights?.replace(/<[^>]+>/g, "").slice(0, 100) ||
-        item?.seoDescription?.replace(/<[^>]+>/g, "").slice(0, 100) ||
-        "Private chauffeur, licensed guides and tailor-made sightseeing";
-
-      const href = isExp
-        ? `/travel-experiences/${slug}`
-        : `/tour-packages/india/${slug}`;
-
-      const count =
-        item && "id" in item && "countryId" in item
-          ? journeyCountForState(item.id) || (item as any).tourCount || 0
-          : (item as any)?.tourCount || 0;
-
-      const image = item?.thumbImg || item?.banner?.images?.[0] || undefined;
-
-      return {
-        id: item?.id || slug,
-        title,
-        tag,
-        description,
-        href,
-        count,
-        image,
-      };
-    });
-  }, [states, travelExperiences, displayedStates, countryJourneys]);
-
-  // ==========================================================================
   // TRIP FINDER STATE & FILTERS
   // ==========================================================================
   const [selectedRegion, setSelectedRegion] = useState<"all" | "gt" | "raj" | "south" | "north">("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [travelStyle, setTravelStyle] = useState<string>("all");
   const [durationFilter, setDurationFilter] = useState<string>("all");
-  const [isSeoOpen, setIsSeoOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const tripsSectionRef = useRef<HTMLDivElement>(null);
@@ -472,6 +399,12 @@ function CountryContent({
     country.banner?.bannerTag ||
     "Incredible India • Private Journeys";
 
+  const heroSubtitle =
+    country.seoDescription?.trim() ||
+    (isIndia
+      ? "Explore the beauty of India Tour - explore the diverse culture, historic monuments, and beautiful landscapes. Book the best India Tour tour packages with KoiKoi Travel for a peaceful vacation!"
+      : country.overView || `Explore the beauty of ${displayTitle} with KoiKoi Travel.`);
+
   // Combined FAQs (Curated Benchmark + CMS)
   const allFaqs = useMemo(() => {
     if (country.faqs && country.faqs.length > 0) {
@@ -513,7 +446,7 @@ function CountryContent({
         fallbackImage={country.thumbImg || country.banner?.images?.[0] || "/banners/home-comic-banner.webp"}
         tag={heroTag}
         title={heroTitle}
-        subtitle="Palaces, sacred rivers, backwaters and tiger reserves, all with your own car, driver and licensed guide. Pick a trip below or tell us what you have in mind."
+        subtitle={heroSubtitle}
         alt={displayTitle}
       >
         {/* Breadcrumb inside Hero for high-contrast legible look */}
@@ -596,50 +529,29 @@ function CountryContent({
       </div>
 
       {/* ====================================================================== */}
-      {/* 3. SECTION 0: ICONIC CIRCUITS (RELATING TO HOME POPULAR DESTINATIONS)   */}
+      {/* 3. EDITORIAL OVERVIEW: DISCOVER INCREDIBLE INDIA                        */}
       {/* ====================================================================== */}
-      <section id="circuits" className="py-12 sm:py-16 md:py-20 bg-white border-b border-section-border">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 gap-4">
-            <div>
-              <SectionLabel icon={<Compass className="w-3.5 h-3.5" />}>
-                Iconic Circuits
-              </SectionLabel>
-              <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
-                Start With a <span className="text-[#F8904D]">Classic Route</span>
-              </h2>
-              <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
-                Five routes that first-time visitors love. Each one can be shortened, stretched or mixed.
-              </p>
-            </div>
-
-            <div className="shrink-0">
-              <a
-                href="#trips"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-section-border text-slate-800 text-sm font-semibold hover:border-[#2E8B8B] hover:text-[#2E8B8B] transition-all shadow-xs cursor-pointer"
-              >
-                <span>Browse all tours</span>
-                <ArrowRight className="w-4 h-4" />
-              </a>
+      {hasMoreDesc && (
+        <section id="about" className="py-12 sm:py-16 md:py-20 bg-white border-b border-section-border">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+            <div className="max-w-4xl mx-auto">
+              <div className="mb-6 sm:mb-8 text-center sm:text-left">
+                <SectionLabel icon={<Sparkles className="w-3.5 h-3.5" />}>
+                  Destination Overview
+                </SectionLabel>
+              </div>
+              <div className="bg-slate-50/60 rounded-3xl p-6 sm:p-10 md:p-12 border border-section-border shadow-xs">
+                <RichContent
+                  html={country.moreDescription!}
+                  sharedLinkedHrefs={pageLinkedHrefs}
+                  excludeHrefs={excludeHrefs}
+                  className="rich-text-plain-links text-sm sm:text-base text-slate-700 leading-relaxed"
+                />
+              </div>
             </div>
           </div>
-
-          {/* 5 Destination Cards matching Home PopularDestinations */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5">
-            {iconicCircuits.map((circ) => (
-              <SingleDestinationReusableCard
-                key={circ.id}
-                title={circ.title}
-                image={circ.image}
-                eyebrow={circ.tag}
-                description={circ.description}
-                tourCountText={circ.count > 0 ? `${circ.count} Tours` : "View Trips"}
-                href={circ.href}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ====================================================================== */}
       {/* 4. SECTION 1: FIND YOUR TRIP / PACKAGES (RELATING TO BEST SELLING PKGS)*/}
@@ -917,46 +829,6 @@ function CountryContent({
         </div>
       </section>
 
-      {/* ====================================================================== */}
-      {/* 6. EDITORIAL OVERVIEW (IF CMS HAS RICH CONTENT)                         */}
-      {/* ====================================================================== */}
-      {hasKnowMoreText && (
-        <section className="py-10 bg-white border-b border-section-border">
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-            <div className="max-w-4xl mx-auto border border-section-border rounded-2xl p-6 bg-slate-50/50">
-              <button
-                type="button"
-                onClick={() => setIsSeoOpen(!isSeoOpen)}
-                className="flex items-center justify-between w-full text-left text-sm sm:text-base font-bold text-slate-900 hover:text-[#2E8B8B] transition-colors cursor-pointer"
-              >
-                <span>Read detailed travel overview for {displayTitle}</span>
-                <ChevronDown
-                  size={18}
-                  className={`transition-transform duration-200 ${isSeoOpen ? "rotate-180" : ""}`}
-                />
-              </button>
-              {isSeoOpen && (
-                <div className="mt-4 pt-4 border-t border-slate-200 space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  {hasSeoDesc && !hasMoreDesc && (
-                    <RichContent
-                      html={country.seoDescription!}
-                      sharedLinkedHrefs={pageLinkedHrefs}
-                      excludeHrefs={excludeHrefs}
-                    />
-                  )}
-                  {hasMoreDesc && (
-                    <RichContent
-                      html={country.moreDescription!}
-                      sharedLinkedHrefs={pageLinkedHrefs}
-                      excludeHrefs={excludeHrefs}
-                    />
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ====================================================================== */}
       {/* 7. SECTION: INDIA TRAVEL FAQS                                          */}
