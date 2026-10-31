@@ -328,47 +328,41 @@ function CityContent({
 
             {/* 100% DB Rich Content */}
             <div className="max-w-none">
-              {hasMoreDesc ? (
-                <ExpandableRichContent
-                  html={city.moreDescription!}
-                  fallbackHtml={city.seoDescription}
-                  sharedLinkedHrefs={pageLinkedHrefs}
-                  excludeHrefs={excludeHrefs}
-                />
-              ) : hasSeoDesc ? (
-                <RichContent
-                  html={city.seoDescription!}
-                  sharedLinkedHrefs={pageLinkedHrefs}
-                  excludeHrefs={excludeHrefs}
-                  className="rich-text-plain-links text-sm sm:text-base text-slate-700 leading-relaxed"
-                />
-              ) : null}
-
-              {hasAttractions && (
-                <div className="mt-8 pt-8 border-t border-slate-100">
-                  <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
-                    <Compass size={18} className="text-[#2E8B8B]" /> Top Attractions
-                  </h3>
-                  <RichContent
-                    html={city.attractions!}
-                    sharedLinkedHrefs={pageLinkedHrefs}
-                    excludeHrefs={excludeHrefs}
-                  />
-                </div>
-              )}
-
-              {hasWeather && (
-                <div className="mt-8 pt-8 border-t border-slate-100">
-                  <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
-                    <CloudSun size={18} className="text-[#F5B041]" /> Weather & Best Time
-                  </h3>
-                  <RichContent
-                    html={city.weather!}
-                    sharedLinkedHrefs={pageLinkedHrefs}
-                    excludeHrefs={excludeHrefs}
-                  />
-                </div>
-              )}
+              <ExpandableRichContent
+                html={city.moreDescription}
+                fallbackHtml={city.seoDescription}
+                sharedLinkedHrefs={pageLinkedHrefs}
+                excludeHrefs={excludeHrefs}
+                hideAllContentWhenCollapsed={hasFamousFor}
+                extraContent={
+                  (hasAttractions || hasWeather) ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 pt-6 border-t border-slate-200/80">
+                      {hasAttractions && (
+                        <div className="bg-slate-50/70 rounded-xl p-4 sm:p-5 border border-slate-200/70">
+                          <div className="flex items-center gap-2 text-[#2E8B8B] font-bold text-xs sm:text-sm uppercase tracking-wider mb-1.5">
+                            <Compass size={17} />
+                            <span>Top Attractions</span>
+                          </div>
+                          <p className="text-sm sm:text-[14.5px] text-slate-700 font-medium leading-relaxed">
+                            {stripHtml(city.attractions!)}
+                          </p>
+                        </div>
+                      )}
+                      {hasWeather && (
+                        <div className="bg-slate-50/70 rounded-xl p-4 sm:p-5 border border-slate-200/70">
+                          <div className="flex items-center gap-2 text-[#F8904D] font-bold text-xs sm:text-sm uppercase tracking-wider mb-1.5">
+                            <CloudSun size={17} />
+                            <span>Weather & Best Time</span>
+                          </div>
+                          <p className="text-sm sm:text-[14.5px] text-slate-700 font-medium leading-relaxed">
+                            {stripHtml(city.weather!)}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ) : null
+                }
+              />
             </div>
           </div>
         </section>

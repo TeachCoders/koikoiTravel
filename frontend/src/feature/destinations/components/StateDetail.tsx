@@ -583,6 +583,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                 fallbackHtml={state.seoDescription}
                 sharedLinkedHrefs={pageLinkedHrefs}
                 excludeHrefs={excludeHrefs}
+                hideAllContentWhenCollapsed={hasFamousFor}
               />
             </div>
           </div>

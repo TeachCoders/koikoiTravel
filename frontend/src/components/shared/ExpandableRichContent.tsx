@@ -29,6 +29,10 @@ export interface ExpandableRichContentProps {
   collapseLabel?: string;
   /** Initially expanded (defaults to false) */
   defaultExpanded?: boolean;
+  /** When true, hides all rich content under Read More (no intro paragraph above button) */
+  hideAllContentWhenCollapsed?: boolean;
+  /** Extra content to render inside the collapsible section (e.g. attractions, weather) */
+  extraContent?: React.ReactNode;
 }
 
 /**
@@ -80,51 +84,49 @@ export default function ExpandableRichContent({
   expandLabel = "Read More",
   collapseLabel = "Read Less",
   defaultExpanded = false,
+  hideAllContentWhenCollapsed = false,
+  extraContent,
 }: ExpandableRichContentProps) {
   const [isExpanded, setIsExpanded] = useState<boolean>(defaultExpanded);
 
   const rawContent = (html && stripHtml(html).trim() ? html : fallbackHtml) || "";
 
   const { introHtml, restHtml, hasRest } = useMemo(() => {
-    if (!rawContent) return { introHtml: "", restHtml: "", hasRest: false };
-    const { introHtml, restHtml } = splitFirstParagraph(rawContent);
-    const hasRest = Boolean(stripHtml(restHtml).trim());
-    return { introHtml, restHtml, hasRest };
-  }, [rawContent]);
+    const hasAnyContent = Boolean(stripHtml(rawContent).trim() || extraContent);
+    if (!hasAnyContent) return { introHtml: "", restHtml: "", hasRest: false };
 
-  if (!rawContent || !stripHtml(rawContent).trim()) {
+    if (hideAllContentWhenCollapsed) {
+      return {
+        introHtml: "",
+        restHtml: rawContent,
+        hasRest: true,
+      };
+    }
+
+    const { introHtml, restHtml } = splitFirstParagraph(rawContent);
+    const hasRest = Boolean(stripHtml(restHtml).trim() || extraContent);
+    return { introHtml, restHtml, hasRest };
+  }, [rawContent, hideAllContentWhenCollapsed, extraContent]);
+
+  if (!rawContent && !extraContent) {
     return null;
   }
 
   return (
     <div className={className}>
-      <RichContent
-        html={introHtml}
-        autoLink={autoLink}
-        sharedLinkedHrefs={sharedLinkedHrefs}
-        excludeHrefs={excludeHrefs}
-        rules={rules}
-        className={contentClassName}
-      />
+      {introHtml ? (
+        <RichContent
+          html={introHtml}
+          autoLink={autoLink}
+          sharedLinkedHrefs={sharedLinkedHrefs}
+          excludeHrefs={excludeHrefs}
+          rules={rules}
+          className={contentClassName}
+        />
+      ) : null}
 
       {hasRest && (
         <>
-          <div
-            className={cn(
-              "overflow-hidden transition-all duration-500 ease-in-out",
-              isExpanded ? "max-h-[10000px] opacity-100 mt-5 pt-2" : "max-h-0 opacity-0"
-            )}
-          >
-            <RichContent
-              html={restHtml}
-              autoLink={autoLink}
-              sharedLinkedHrefs={sharedLinkedHrefs}
-              excludeHrefs={excludeHrefs}
-              rules={rules}
-              className={contentClassName}
-            />
-          </div>
-
           <div className="mt-4 pt-1">
             <button
               type="button"
@@ -139,6 +141,39 @@ export default function ExpandableRichContent({
                 )}
               />
             </button>
+          </div>
+
+          <div
+            className={cn(
+              "overflow-hidden transition-all duration-500 ease-in-out",
+              isExpanded ? "max-h-[10000px] opacity-100 mt-5 pt-2" : "max-h-0 opacity-0"
+            )}
+          >
+            {restHtml ? (
+              <RichContent
+                html={restHtml}
+                autoLink={autoLink}
+                sharedLinkedHrefs={sharedLinkedHrefs}
+                excludeHrefs={excludeHrefs}
+                rules={rules}
+                className={contentClassName}
+              />
+            ) : null}
+
+            {extraContent}
+
+            {isExpanded && (
+              <div className="mt-8 pt-4 border-t border-slate-100 flex justify-start">
+                <button
+                  type="button"
+                  onClick={() => setIsExpanded(false)}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-slate-300 text-slate-800 text-xs sm:text-sm font-semibold hover:border-[#2E8B8B] hover:text-[#2E8B8B] transition-all shadow-xs cursor-pointer active:scale-95"
+                >
+                  <span>{collapseLabel}</span>
+                  <ChevronDown className="w-4 h-4 rotate-180 transition-transform duration-300" />
+                </button>
+              </div>
+            )}
           </div>
         </>
       )}
