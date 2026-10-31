@@ -25,6 +25,7 @@ export default function StateCard({
       eyebrow={state.banner?.bannerTag || undefined}
       tourCountText={journeys > 0 ? `${journeys} Tours` : `${cities} Cities`}
       href={href}
+      hideFooter={true}
     />
   );
 }

@@ -21,6 +21,7 @@ export interface SingleDestinationReusableCardProps {
   imagePosition?: "top" | "center";
   sizes?: string;
   priority?: boolean;
+  hideFooter?: boolean;
 }
 
 /**
@@ -47,6 +48,7 @@ export function SingleDestinationReusableCard({
   imagePosition = "top",
   sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px",
   priority = false,
+  hideFooter = false,
 }: SingleDestinationReusableCardProps) {
   const displayEyebrow = eyebrow || tag;
   const displayDescription = description || (typeof subtitle === "string" ? subtitle : null);
@@ -105,8 +107,8 @@ export function SingleDestinationReusableCard({
         className
       )}
     >
-      {/* 1. Photo area: linked separately */}
-      {href ? (
+      {/* 1. Photo area: linked separately when footer is visible */}
+      {href && !hideFooter ? (
         <Link
           href={href}
           aria-label={`View ${title} tour packages`}
@@ -128,9 +130,9 @@ export function SingleDestinationReusableCard({
           </span>
         )}
 
-        {/* 2. Title: linked separately */}
+        {/* 2. Title */}
         <h3 className="font-heading line-clamp-1 text-lg font-bold leading-tight text-slate-900 sm:text-xl">
-          {href ? (
+          {href && !hideFooter ? (
             <Link
               href={href}
               className="transition-colors duration-200 hover:text-[#F8904D] group-hover:text-[#F8904D]"
@@ -148,8 +150,8 @@ export function SingleDestinationReusableCard({
           </p>
         )}
 
-        {/* 3. Footer / View tours CTA: linked separately */}
-        {href && (
+        {/* 3. Footer / View tours CTA */}
+        {href && !hideFooter && (
           <Link
             href={href}
             className="mt-auto flex items-center justify-between border-t border-slate-100 pt-3.5 transition-colors group/cta"
@@ -173,6 +175,15 @@ export function SingleDestinationReusableCard({
               </svg>
             </span>
           </Link>
+        )}
+
+        {/* 4. When footer is hidden, overlay a full card link */}
+        {href && hideFooter && (
+          <Link
+            href={href}
+            aria-label={`View ${title} tour packages`}
+            className="absolute inset-0 z-10"
+          />
         )}
       </div>
     </div>
