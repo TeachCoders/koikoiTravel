@@ -181,11 +181,26 @@ function CountryContent({
     countryJourneys.filter((j) => j.cities?.some((c) => c.state?.id === stateId)).length;
 
   const displayedStates = useMemo(() => {
-    return [...states].sort((a, b) => {
-      const aOrder = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999;
-      const bOrder = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
-      return aOrder - bOrder;
-    });
+    return [...states]
+      .filter((s) => {
+        const slug = (s.slug || "").toLowerCase().trim();
+        const title = (s.title || "").toLowerCase().trim();
+        // User requested: exclude Tamil Nadu from India page
+        if (
+          slug === "tamil-nadu" ||
+          slug === "tamilnadu" ||
+          title.replace(/\s+/g, "").includes("tamilnadu")
+        ) {
+          return false;
+        }
+        if (s.showOnSite === false || s.isActive === false) return false;
+        return true;
+      })
+      .sort((a, b) => {
+        const aOrder = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999;
+        const bOrder = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
+        return aOrder - bOrder;
+      });
   }, [states]);
 
   // ==========================================================================
