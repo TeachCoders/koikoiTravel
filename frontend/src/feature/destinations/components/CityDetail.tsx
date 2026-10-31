@@ -21,6 +21,7 @@ import HeroBanner from "@/components/shared/HeroBanner";
 import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
+import ExpandableRichContent from "@/components/shared/ExpandableRichContent";
 import ToursSection from "@/components/shared/ToursSection";
 import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
 import FilterBar from "@/components/shared/FilterBar";
@@ -303,7 +304,7 @@ function CityContent({
                     )}
 
                     {hasMoreDesc && (
-                      <RichContent
+                      <ExpandableRichContent
                         html={city.moreDescription!}
                         sharedLinkedHrefs={pageLinkedHrefs}
                         excludeHrefs={excludeHrefs}

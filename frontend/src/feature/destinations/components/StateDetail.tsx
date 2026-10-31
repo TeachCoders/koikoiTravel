@@ -21,6 +21,7 @@ import HeroBanner from "@/components/shared/HeroBanner";
 import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
+import ExpandableRichContent from "@/components/shared/ExpandableRichContent";
 import ToursSection from "@/components/shared/ToursSection";
 import TourPackageCard from "@/components/shared/TourPackageCard";
 import FilterBar from "@/components/shared/FilterBar";
@@ -289,25 +290,6 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   const hasSeoDesc = Boolean(stripHtml(state.seoDescription).trim());
   const hasMoreDesc = Boolean(stripHtml(state.moreDescription).trim());
   const hasKnowMoreText = hasSeoDesc || hasMoreDesc;
-
-  const [isOverviewExpanded, setIsOverviewExpanded] = useState<boolean>(false);
-
-  const { introHtml, restHtml } = useMemo(() => {
-    const content = state.moreDescription || "";
-    if (!content) return { introHtml: "", restHtml: "" };
-    const pRegex = /<p\b[^>]*>(?:(?!<\/p>)[\s\S])*?[a-zA-Z0-9]+(?:(?!<\/p>)[\s\S])*?<\/p>/i;
-    const match = pRegex.exec(content);
-    if (!match) {
-      const firstPEnd = content.indexOf("</p>");
-      if (firstPEnd === -1) return { introHtml: content, restHtml: "" };
-      return { introHtml: content.slice(0, firstPEnd + 4), restHtml: content.slice(firstPEnd + 4) };
-    }
-    const splitIndex = match.index + match[0].length;
-    return {
-      introHtml: content.slice(0, splitIndex),
-      restHtml: content.slice(splitIndex),
-    };
-  }, [state.moreDescription]);
 
   const hasFamousFor = Boolean(stripHtml(state.famousFor || "").trim());
   const hasTopPackages = stateJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0;
@@ -578,62 +560,12 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
             {/* 100% DB Rich Content */}
             <div className="max-w-none">
-              {hasSeoDesc && !hasMoreDesc && (
-                <div className="text-base sm:text-[17px] text-slate-700 leading-relaxed font-normal mb-8 pb-6 border-b border-slate-100">
-                  <RichContent
-                    html={state.seoDescription!}
-                    sharedLinkedHrefs={pageLinkedHrefs}
-                    excludeHrefs={excludeHrefs}
-                  />
-                </div>
-              )}
-
-              {hasMoreDesc && (
-                <>
-                  <RichContent
-                    html={introHtml}
-                    sharedLinkedHrefs={pageLinkedHrefs}
-                    excludeHrefs={excludeHrefs}
-                    className="rich-text-plain-links text-sm sm:text-base text-slate-700 leading-relaxed"
-                  />
-
-                  {restHtml && (
-                    <>
-                      <div
-                        className={cn(
-                          "overflow-hidden transition-all duration-500 ease-in-out",
-                          isOverviewExpanded
-                            ? "max-h-[8000px] opacity-100 mt-5 pt-2"
-                            : "max-h-0 opacity-0"
-                        )}
-                      >
-                        <RichContent
-                          html={restHtml}
-                          sharedLinkedHrefs={pageLinkedHrefs}
-                          excludeHrefs={excludeHrefs}
-                          className="rich-text-plain-links text-sm sm:text-base text-slate-700 leading-relaxed"
-                        />
-                      </div>
-
-                      <div className="mt-4 pt-1">
-                        <button
-                          type="button"
-                          onClick={() => setIsOverviewExpanded(!isOverviewExpanded)}
-                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-slate-300 text-slate-800 text-xs sm:text-sm font-semibold hover:border-[#2E8B8B] hover:text-[#2E8B8B] transition-all shadow-xs cursor-pointer active:scale-95"
-                        >
-                          <span>{isOverviewExpanded ? "Read Less" : "Read More"}</span>
-                          <ChevronDown
-                            className={cn(
-                              "w-4 h-4 transition-transform duration-300",
-                              isOverviewExpanded ? "rotate-180" : ""
-                            )}
-                          />
-                        </button>
-                      </div>
-                    </>
-                  )}
-                </>
-              )}
+              <ExpandableRichContent
+                html={state.moreDescription}
+                fallbackHtml={state.seoDescription}
+                sharedLinkedHrefs={pageLinkedHrefs}
+                excludeHrefs={excludeHrefs}
+              />
             </div>
           </div>
         </section>

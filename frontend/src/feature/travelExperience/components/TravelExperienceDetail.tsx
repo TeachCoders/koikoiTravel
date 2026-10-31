@@ -18,6 +18,7 @@ import HeroBanner from "@/components/shared/HeroBanner";
 import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
+import ExpandableRichContent from "@/components/shared/ExpandableRichContent";
 import ToursSection from "@/components/shared/ToursSection";
 import TourPackageCard from "@/components/shared/TourPackageCard";
 import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
@@ -326,15 +327,15 @@ function ExperienceContent({
       {experience.moreDescription && (
         <section id="more" className={`${guideBgClass} border-y border-section-border py-10 md:py-14 relative`}>
           <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
-            <TravelGuideCollapsible
-              title={`Everything About ${experience.h1Title || experience.title}`}
-              subtitle={`Complete guide to ${experience.h1Title || experience.title} in India — highlights, best time to visit & travel tips.`}
-            >
-              <RichContent
+            <div className="bg-white rounded-3xl p-6 sm:p-10 border border-section-border shadow-xs">
+              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-4 font-heading">
+                Everything About <span className="text-[#F8904D]">{experience.h1Title || experience.title}</span>
+              </h2>
+              <ExpandableRichContent
                 html={experience.moreDescription}
                 excludeHrefs={excludeHrefs}
               />
-            </TravelGuideCollapsible>
+            </div>
           </div>
         </section>
       )}

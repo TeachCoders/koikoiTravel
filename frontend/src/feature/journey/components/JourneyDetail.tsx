@@ -42,6 +42,7 @@ import { getJourneyBreadcrumbState } from "@/lib/breadcrumbHelper";
 import TourBookingForm from "@/feature/leads/components/TourBookingForm";
 import { travelExperienceIcon } from "@/components/shared/TravelExperiencePills";
 import RichContent, { sanitizeHtml } from "@/components/shared/RichContent";
+import ExpandableRichContent from "@/components/shared/ExpandableRichContent";
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
 import { linkKeywords, buildExperienceLinkRules, type AutoLinkRule } from "@/lib/autoInternalLink";
 import { cn, stripHtml } from "@/lib/utils";
@@ -783,17 +784,19 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
       {journey.moreDescription && (
         <section id="more" className="bg-slate-50/80 border-t border-slate-200/80 py-10 md:py-14">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-            <TravelGuideCollapsible
-              title={`Essential Trip Guide: ${journey.title}`}
-              subtitle="Detailed day-by-day insights, local tips, what to pack, and cultural etiquette for this journey."
-              badge="Trip Guide & Travel Tips"
-            >
-              <RichContent
+            <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-xs">
+              <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+                Trip Guide & Travel Tips
+              </span>
+              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-4">
+                Essential Trip Guide: <span className="text-[#F8904D]">{journey.title}</span>
+              </h2>
+              <ExpandableRichContent
                 html={linkedMoreDesc}
                 autoLink={false}
-                className="rich-text-plain-links text-[15px] sm:text-base text-slate-600 leading-[1.8]"
+                contentClassName="rich-text-plain-links text-[15px] sm:text-base text-slate-600 leading-[1.8]"
               />
-            </TravelGuideCollapsible>
+            </div>
           </div>
         </section>
       )}
