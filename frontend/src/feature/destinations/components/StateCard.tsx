@@ -14,9 +14,12 @@ export default function StateCard({
   const journeys = journeyCount ?? state.journeys?.length ?? state.tourCount ?? 0;
   const country = countrySlug ?? state.country?.slug;
   
-  const href = country
-    ? `/tour-packages/${country}/${state.slug}`
-    : `/tour-packages/${state.slug}`;
+  const isAvailable = journeys > 0 || cities > 0;
+  const href = isAvailable
+    ? country
+      ? `/tour-packages/${country}/${state.slug}`
+      : `/tour-packages/${state.slug}`
+    : undefined;
 
   return (
     <SingleDestinationReusableCard

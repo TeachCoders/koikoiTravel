@@ -177,25 +177,40 @@ function CountryContent({
     (j) => j.cities?.some((c) => c.state?.country?.id === country.id)
   );
 
-  const journeyCountForState = (stateId: number) =>
-    countryJourneys.filter((j) => j.cities?.some((c) => c.state?.id === stateId)).length;
+  const journeyCountForState = (stateId: number) => {
+    const s = states.find((st) => st.id === stateId);
+    const directCount = s?.journeys?.length || s?.tourCount || 0;
+    const cityCount = countryJourneys.filter((j) =>
+      j.cities?.some((c) => c.state?.id === stateId || s?.cities?.some((sc) => sc.id === c.id))
+    ).length;
+    return Math.max(directCount, cityCount);
+  };
 
   const displayedStates = useMemo(() => {
     return [...states]
       .filter((s) => {
         const slug = (s.slug || "").toLowerCase().trim();
         const title = (s.title || "").toLowerCase().trim();
-        // User requested: exclude Tamil Nadu & Karnataka from India page
+        // User requested: exclude Tamil Nadu, Karnataka & Punjab from India page
         if (
           slug === "tamil-nadu" ||
           slug === "tamilnadu" ||
           title.replace(/\s+/g, "").includes("tamilnadu") ||
           slug === "karnataka" ||
-          title.replace(/\s+/g, "").includes("karnataka")
+          title.replace(/\s+/g, "").includes("karnataka") ||
+          slug === "punjab" ||
+          title.replace(/\s+/g, "").includes("punjab")
         ) {
           return false;
         }
+        // Exclude states hidden from site or inactive
         if (s.showOnSite === false || s.isActive === false) return false;
+
+        // Condition: jinke url / tours open nahi ho rahe unhe hide karo
+        const count = journeyCountForState(s.id);
+        const hasCities = Boolean((s.cities && s.cities.length > 0) || (s._count?.cities && s._count.cities > 0));
+        if (count === 0 && !hasCities) return false;
+
         return true;
       })
       .sort((a, b) => {
@@ -203,7 +218,7 @@ function CountryContent({
         const bOrder = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
         return aOrder - bOrder;
       });
-  }, [states]);
+  }, [states, countryJourneys]);
 
   // ==========================================================================
   // 100% DYNAMIC ICONIC CIRCUITS (PULLED LIVE FROM DB STATES & EXPERIENCES)
