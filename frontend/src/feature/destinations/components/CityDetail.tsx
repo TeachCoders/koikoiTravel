@@ -23,7 +23,6 @@ import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ExpandableRichContent from "@/components/shared/ExpandableRichContent";
 import ToursSection from "@/components/shared/ToursSection";
-import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
 import FilterBar from "@/components/shared/FilterBar";
 import {
   travelExperienceOptions,
@@ -265,20 +264,37 @@ function CityContent({
             <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
               {hasKnowMoreText && (
                 <div className={hasSidebar ? "lg:col-span-2" : "w-full"}>
-                  <TravelGuideCollapsible
-                    title={`Everything About ${city.h1Title || city.title}`}
-                    subtitle={`Essential travel guide, top attractions, weather, local tips & culture for ${city.h1Title || city.title}.`}
-                  >
-                    {hasSeoDesc && (
+                  <div className="bg-white rounded-3xl p-6 sm:p-8 md:p-10 border border-section-border shadow-xs">
+                    <div className="mb-6">
+                      <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+                        Destination Guide
+                      </span>
+                      <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold tracking-tight text-slate-900">
+                        Everything About {city.h1Title || city.title}
+                      </h2>
+                      <p className="text-sm sm:text-base text-slate-600 mt-1.5 leading-relaxed">
+                        Essential travel guide, top attractions, weather, local tips & culture for {city.h1Title || city.title}.
+                      </p>
+                    </div>
+
+                    {hasMoreDesc ? (
+                      <ExpandableRichContent
+                        html={city.moreDescription!}
+                        fallbackHtml={city.seoDescription}
+                        sharedLinkedHrefs={pageLinkedHrefs}
+                        excludeHrefs={excludeHrefs}
+                      />
+                    ) : hasSeoDesc ? (
                       <RichContent
                         html={city.seoDescription!}
                         sharedLinkedHrefs={pageLinkedHrefs}
                         excludeHrefs={excludeHrefs}
+                        className="rich-text-plain-links text-sm sm:text-base text-slate-700 leading-relaxed"
                       />
-                    )}
+                    ) : null}
 
                     {hasAttractions && (
-                      <div className="mt-8">
+                      <div className="mt-8 pt-8 border-t border-slate-100">
                         <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
                           <Compass size={18} className="text-[#2E8B8B]" /> Top Attractions
                         </h3>
@@ -291,7 +307,7 @@ function CityContent({
                     )}
 
                     {hasWeather && (
-                      <div className="mt-8">
+                      <div className="mt-8 pt-8 border-t border-slate-100">
                         <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
                           <CloudSun size={18} className="text-[#F5B041]" /> Weather & Best Time
                         </h3>
@@ -302,16 +318,7 @@ function CityContent({
                         />
                       </div>
                     )}
-
-                    {hasMoreDesc && (
-                      <ExpandableRichContent
-                        html={city.moreDescription!}
-                        sharedLinkedHrefs={pageLinkedHrefs}
-                        excludeHrefs={excludeHrefs}
-                        className="mt-8"
-                      />
-                    )}
-                  </TravelGuideCollapsible>
+                  </div>
                 </div>
               )}
 
