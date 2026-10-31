@@ -135,7 +135,6 @@ export default function CountryFormPage({ initialData, mode }: CountryFormProps)
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
     if (!seoData.title.trim()) newErrors.title = "Title is required";
-    if (!seoData.seoDescription.trim()) newErrors.seoDescription = "Description is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };

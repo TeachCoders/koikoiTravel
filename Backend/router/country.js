@@ -4,7 +4,7 @@ import createCmsRouter from "../utils/createCmsRouter.js";
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
   slug: z.string().optional(),
-  seoDescription: z.string().min(1, "Description is required").max(500),
+  seoDescription: z.string().max(500).optional().default(""),
   overView: z.string().max(1200, "Short seoDescription should be under 200 words").optional(),
   seoKeyword: z.string().optional(),
   canonical: z.string().optional(),
