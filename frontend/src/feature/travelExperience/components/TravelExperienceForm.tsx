@@ -189,8 +189,8 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
       h1Title: formData.h1Title.trim() || undefined,
       thumbImg: formData.thumbImg.trim() || undefined,
       isActive: formData.isActive,
-      bannerTitle: bannerTitle.trim() || undefined,
-      bannerTag: bannerTag.trim() || undefined,
+      bannerTitle: bannerTitle.trim(),
+      bannerTag: bannerTag.trim(),
       bannerImages: finalBannerImages.length > 0 ? finalBannerImages : undefined,
       moreDescription: moreDescription.trim() || undefined,
       faqs,
@@ -253,6 +253,10 @@ export default function TravelExperienceForm({ initialData, mode }: TravelExperi
           entityId={initialData?.id}
           pageSlug={formData.slug || initialData?.slug}
           entityTitle={formData.title || initialData?.title || "Travel Experience"}
+          bannerTag={bannerTag}
+          bannerTitle={bannerTitle}
+          onBannerTagChange={setBannerTag}
+          onBannerTitleChange={setBannerTile}
         />
 
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-5">

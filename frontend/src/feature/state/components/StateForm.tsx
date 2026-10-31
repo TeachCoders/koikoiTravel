@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, MapPin, Star, Tag } from "lucide-react";
+import { ArrowLeft, MapPin, Star } from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -295,49 +295,16 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
           folderPath={countrySlug ? `${countrySlug}/trip` : ""}
         />
 
-        {/* Hero Banner Tag & Title */}
-        <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-6 space-y-4">
-          <div className="flex items-center gap-2">
-            <Tag size={18} className="text-[#F8904D]" />
-            <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider">
-              Hero Banner Tag & Title
-            </h2>
-          </div>
-          <p className="text-xs text-slate-500">
-            <strong>Banner Tag</strong> hero banner heading ke upar pill badge me dikhta hai (jaise: <em>Wonder of the World • Agra • Delhi Express</em>) aur homepage ke destination card ka eyebrow text banta hai.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
-            <div className="space-y-1.5">
-              <Label className="text-sm font-semibold text-slate-600">
-                Banner Tag (Eyebrow Badge)
-              </Label>
-              <Input
-                value={bannerTag}
-                onChange={(e) => setBannerTag(e.target.value)}
-                placeholder="e.g. Wonder of the World • Agra • Delhi Express"
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <Label className="text-sm font-semibold text-slate-600">
-                Banner Title (Optional Heading)
-              </Label>
-              <Input
-                value={bannerTitle}
-                onChange={(e) => setBannerTile(e.target.value)}
-                placeholder="e.g. Taj Mahal Tours"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Hero Full Banners (Desktop 1920x600 & Mobile 750x500) */}
+        {/* Hero Full Banners (Desktop 1920x600 & Mobile 750x500) with integrated Tag & Title */}
         <HeroBannerManagerSection
           entityType="State"
           entityId={initialData?.id}
           pageSlug={formData.slug || initialData?.slug}
           entityTitle={formData.title || initialData?.title || "State"}
+          bannerTag={bannerTag}
+          bannerTitle={bannerTitle}
+          onBannerTagChange={setBannerTag}
+          onBannerTitleChange={setBannerTile}
         />
 
         {/* State Details */}

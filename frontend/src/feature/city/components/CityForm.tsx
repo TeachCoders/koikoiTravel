@@ -196,8 +196,8 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
       famousFor: entityValues.famousFor.trim() || undefined,
       attractions: entityValues.attractions.trim() || undefined,
       weather: entityValues.weather.trim() || undefined,
-      bannerTitle: bannerTitle.trim() || undefined,
-      bannerTag: bannerTag.trim() || undefined,
+      bannerTitle: bannerTitle.trim(),
+      bannerTag: bannerTag.trim(),
       bannerImages: finalBannerImages,
       moreDescription: moreDescription.trim() || undefined,
       faqs,
@@ -286,6 +286,10 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
           entityId={initialData?.id}
           pageSlug={formData.slug || initialData?.slug}
           entityTitle={formData.title || initialData?.title || "City"}
+          bannerTag={bannerTag}
+          bannerTitle={bannerTitle}
+          onBannerTagChange={setBannerTag}
+          onBannerTitleChange={setBannerTile}
         />
 
         <EntityFields

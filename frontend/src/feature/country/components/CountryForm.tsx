@@ -180,8 +180,8 @@ export default function CountryFormPage({ initialData, mode }: CountryFormProps)
       timezone: entityValues.timezone.trim() || undefined,
       bestTimeToVisit: entityValues.bestTimeToVisit.trim() || undefined,
       dialCode: entityValues.dialCode.trim() || undefined,
-      bannerTitle: bannerTitle.trim() || undefined,
-      bannerTag: bannerTag.trim() || undefined,
+      bannerTitle: bannerTitle.trim(),
+      bannerTag: bannerTag.trim(),
       bannerImages: finalBannerImages,
       moreDescription: moreDescription.trim() || undefined,
       faqs,
@@ -245,6 +245,10 @@ export default function CountryFormPage({ initialData, mode }: CountryFormProps)
           entityId={initialData?.id}
           pageSlug={seoData.slug || initialData?.slug}
           entityTitle={seoData.title || initialData?.title || "Country"}
+          bannerTag={bannerTag}
+          bannerTitle={bannerTitle}
+          onBannerTagChange={setBannerTag}
+          onBannerTitleChange={setBannerTile}
         />
 
         <EntityFields
