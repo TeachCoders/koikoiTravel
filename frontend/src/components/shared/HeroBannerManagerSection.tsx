@@ -757,7 +757,12 @@ export default function HeroBannerManagerSection({
         open={mediaOpen}
         onClose={() => setMediaOpen(false)}
         onSelect={handleMediaSelect}
-        title={mediaTarget === "mobile" ? "Select Mobile Banner from Library" : "Select Desktop Banner from Library"}
+        defaultCategory={mediaTarget === "desktop" ? "desktop_banner" : "mobile_banner"}
+        title={
+          mediaTarget === "mobile"
+            ? "Select Mobile Banner from Library (750 × 500)"
+            : "Select Desktop Banner from Library (1920 × 600)"
+        }
       />
     </div>
   );

@@ -11,6 +11,31 @@ const router = Router();
 
 const bannerUpload = uploadImage("hero-banners");
 
+const registerBannerMedia = async (imagePath, label, altText) => {
+  if (!imagePath || typeof imagePath !== "string") return;
+  try {
+    const filename = path.basename(imagePath);
+    await prisma.media.upsert({
+      where: { url: imagePath },
+      update: {
+        category: "banner",
+        folder: "hero-banners",
+        updatedAt: new Date(),
+      },
+      create: {
+        filename,
+        url: imagePath,
+        folder: "hero-banners",
+        category: "banner",
+        label: label || filename.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
+        altText: altText || label || null,
+      },
+    });
+  } catch (err) {
+    logger.warn("Could not register hero banner in media table:", { error: err.message });
+  }
+};
+
 const purgeImageCachesAndRevalidate = async (slug) => {
   try {
     const cacheDir = "/var/cache/nginx/next_images";
@@ -137,6 +162,8 @@ router.post("/", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => {
         const file = imageFiles[i];
         const imagePath = `/${file.path.replace(/^public[\\/]/, "").replace(/\\/g, "/")}`;
 
+        await registerBannerMedia(imagePath, title || null, altText || null);
+
         const banner = await prisma.heroFullBanner.create({
           data: {
             entityType: String(entityType).trim(),
@@ -184,6 +211,13 @@ router.post("/", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => {
       } else {
         return res.status(400).json({ success: false, message: "Banner image (Desktop or Mobile) is required" });
       }
+    }
+
+    if (desktopFile) {
+      await registerBannerMedia(desktopImagePath, title || null, altText || null);
+    }
+    if (mobileFile) {
+      await registerBannerMedia(mobileImagePath, title || null, altText || null);
     }
 
     const banner = await prisma.heroFullBanner.create({
@@ -256,18 +290,7 @@ router.put("/:id", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => 
     if (desktopFile) {
       const newImagePath = `/${desktopFile.path.replace(/^public[\\/]/, "").replace(/\\/g, "/")}`;
       updateData.image = newImagePath;
-
-      // Clean up previous image if exists on disk
-      if (existing.image && existing.image.startsWith("/")) {
-        const oldDiskPath = path.join("public", existing.image.replace(/^\//, ""));
-        if (fs.existsSync(oldDiskPath)) {
-          try {
-            fs.unlinkSync(oldDiskPath);
-          } catch (unlinkErr) {
-            logger.warn("Could not delete old desktop banner file:", { error: unlinkErr.message });
-          }
-        }
-      }
+      await registerBannerMedia(newImagePath, title || existing.title, altText || existing.altText);
     } else if (req.body.image !== undefined && req.body.image.trim()) {
       updateData.image = req.body.image.trim();
     }
@@ -276,29 +299,9 @@ router.put("/:id", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => 
     if (mobileFile) {
       const newMobileImagePath = `/${mobileFile.path.replace(/^public[\\/]/, "").replace(/\\/g, "/")}`;
       updateData.mobileImage = newMobileImagePath;
-
-      if (existing.mobileImage && existing.mobileImage.startsWith("/")) {
-        const oldMobileDiskPath = path.join("public", existing.mobileImage.replace(/^\//, ""));
-        if (fs.existsSync(oldMobileDiskPath)) {
-          try {
-            fs.unlinkSync(oldMobileDiskPath);
-          } catch (unlinkErr) {
-            logger.warn("Could not delete old mobile banner file:", { error: unlinkErr.message });
-          }
-        }
-      }
+      await registerBannerMedia(newMobileImagePath, title || existing.title, altText || existing.altText);
     } else if (removeMobileImage === "true" || removeMobileImage === true) {
       updateData.mobileImage = null;
-      if (existing.mobileImage && existing.mobileImage.startsWith("/")) {
-        const oldMobileDiskPath = path.join("public", existing.mobileImage.replace(/^\//, ""));
-        if (fs.existsSync(oldMobileDiskPath)) {
-          try {
-            fs.unlinkSync(oldMobileDiskPath);
-          } catch (unlinkErr) {
-            logger.warn("Could not delete old mobile banner file on removal:", { error: unlinkErr.message });
-          }
-        }
-      }
     } else if (req.body.mobileImage !== undefined) {
       updateData.mobileImage = req.body.mobileImage ? String(req.body.mobileImage).trim() : null;
     }
@@ -333,24 +336,42 @@ router.delete("/:id", requireSalesOrAdmin, async (req, res) => {
       return res.status(404).json({ success: false, message: "Hero banner not found" });
     }
 
-    // Attempt to remove physical files from public directory
+    // Only remove physical files from disk if NOT registered in Media library and not used by another banner
     if (existing.image && existing.image.startsWith("/")) {
-      const diskPath = path.join("public", existing.image.replace(/^\//, ""));
-      if (fs.existsSync(diskPath)) {
-        try {
-          fs.unlinkSync(diskPath);
-        } catch (unlinkErr) {
-          logger.warn("Could not delete banner file from disk:", { path: diskPath, error: unlinkErr.message });
+      const inMedia = await prisma.media.count({ where: { url: existing.image } });
+      const otherUsing = await prisma.heroFullBanner.count({
+        where: {
+          id: { not: id },
+          OR: [{ image: existing.image }, { mobileImage: existing.image }],
+        },
+      });
+      if (inMedia === 0 && otherUsing === 0) {
+        const diskPath = path.join("public", existing.image.replace(/^\//, ""));
+        if (fs.existsSync(diskPath)) {
+          try {
+            fs.unlinkSync(diskPath);
+          } catch (unlinkErr) {
+            logger.warn("Could not delete banner file from disk:", { path: diskPath, error: unlinkErr.message });
+          }
         }
       }
     }
     if (existing.mobileImage && existing.mobileImage.startsWith("/")) {
-      const mobileDiskPath = path.join("public", existing.mobileImage.replace(/^\//, ""));
-      if (fs.existsSync(mobileDiskPath)) {
-        try {
-          fs.unlinkSync(mobileDiskPath);
-        } catch (unlinkErr) {
-          logger.warn("Could not delete mobile banner file from disk:", { path: mobileDiskPath, error: unlinkErr.message });
+      const inMedia = await prisma.media.count({ where: { url: existing.mobileImage } });
+      const otherUsing = await prisma.heroFullBanner.count({
+        where: {
+          id: { not: id },
+          OR: [{ image: existing.mobileImage }, { mobileImage: existing.mobileImage }],
+        },
+      });
+      if (inMedia === 0 && otherUsing === 0) {
+        const mobileDiskPath = path.join("public", existing.mobileImage.replace(/^\//, ""));
+        if (fs.existsSync(mobileDiskPath)) {
+          try {
+            fs.unlinkSync(mobileDiskPath);
+          } catch (unlinkErr) {
+            logger.warn("Could not delete mobile banner file from disk:", { path: mobileDiskPath, error: unlinkErr.message });
+          }
         }
       }
     }

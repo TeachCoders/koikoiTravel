@@ -36,6 +36,7 @@ interface MediaLibraryProps {
   modeSwitch?: ModeSwitchProps;        // dual-mode with toggle
   maxSelection?: number;
   title?: string;
+  defaultCategory?: string;
 }
 
 const IMAGE_EXTS = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg"];
@@ -65,6 +66,7 @@ export default function MediaLibrary({
   modeSwitch,
   maxSelection = 1,
   title = "Media Library",
+  defaultCategory,
 }: MediaLibraryProps) {
   const [items, setItems] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -90,7 +92,7 @@ export default function MediaLibrary({
 
   // Active mode — category filter
   const [activeMode, setActiveMode] = useState<string>(
-    modeSwitch?.defaultMode ?? "all"
+    defaultCategory ?? modeSwitch?.defaultMode ?? "all"
   );
 
   const isDualMode = !!modeSwitch;
@@ -107,6 +109,8 @@ export default function MediaLibrary({
     }
     const file = item.filename.toLowerCase();
     const cat = (item.category || "").toLowerCase();
+    const folder = (item.folder || "").toLowerCase();
+    const label = displayName(item).toLowerCase();
 
     if (activeMode === "all") return true;
 
@@ -120,7 +124,31 @@ export default function MediaLibrary({
       );
     }
     if (activeMode === "banner") {
-      return cat === "banner" || file.includes("banner") || file.includes("hero");
+      return (
+        cat === "banner" ||
+        folder.includes("hero-banner") ||
+        file.includes("banner") ||
+        file.includes("hero")
+      );
+    }
+    if (activeMode === "desktop_banner") {
+      const isBanner =
+        cat === "banner" ||
+        folder.includes("hero-banner") ||
+        file.includes("banner") ||
+        file.includes("hero");
+      return (
+        isBanner &&
+        (file.includes("desktop") || label.includes("desktop") || !file.includes("mobile"))
+      );
+    }
+    if (activeMode === "mobile_banner") {
+      const isBanner =
+        cat === "banner" ||
+        folder.includes("hero-banner") ||
+        file.includes("banner") ||
+        file.includes("hero");
+      return isBanner && (file.includes("mobile") || label.includes("mobile"));
     }
     if (activeMode === "thumb") {
       return (
@@ -131,11 +159,11 @@ export default function MediaLibrary({
       );
     }
     if (activeMode === "gallery") {
-      if (cat === "guest_gallery" || (item.folder || "").includes("guest") || file.includes("guest")) return false;
+      if (cat === "guest_gallery" || folder.includes("guest") || file.includes("guest")) return false;
       return file.includes("gallery") || file.includes("itinerary") || file.includes("day");
     }
     if (activeMode === "guest_gallery") {
-      return cat === "guest_gallery" || (item.folder || "").includes("guest") || file.includes("guest");
+      return cat === "guest_gallery" || folder.includes("guest") || file.includes("guest");
     }
     if (activeMode === "blog") {
       return cat === "blog" || file.includes("blog") || file.includes("news");
@@ -163,9 +191,9 @@ export default function MediaLibrary({
       setSearch("");
       setShowUpload(false);
       setEditingId(null);
-      setActiveMode(modeSwitch?.defaultMode ?? "banner");
+      setActiveMode(defaultCategory ?? modeSwitch?.defaultMode ?? "banner");
     }
-  }, [open]);
+  }, [open, defaultCategory]);
 
   const handleSelect = (url: string) => {
     if (isDualMode) {
@@ -351,11 +379,13 @@ export default function MediaLibrary({
           <select
             value={activeMode}
             onChange={(e) => setActiveMode(e.target.value)}
-            className="px-3 py-1.5 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary bg-white text-slate-700 cursor-pointer"
+            className="px-3 py-1.5 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary bg-white text-slate-700 cursor-pointer font-medium"
           >
             <option value="all">All Media</option>
+            <option value="banner">Hero Banners (All)</option>
+            <option value="desktop_banner">🖥️ Desktop Banners (1920×600)</option>
+            <option value="mobile_banner">📱 Mobile Banners (750×500)</option>
             <option value="destination">Destinations (1:1)</option>
-            <option value="banner">Hero Banners (21:9)</option>
             <option value="thumb">Tour Packages (3:2)</option>
             <option value="gallery">Tour Gallery (3:2)</option>
             <option value="guest_gallery">Guest Gallery (4:3)</option>
@@ -374,6 +404,46 @@ export default function MediaLibrary({
             Upload
           </button>
         </div>
+
+        {/* ── Banner View Pills (Shown when in any banner mode) ── */}
+        {(activeMode === "banner" || activeMode === "desktop_banner" || activeMode === "mobile_banner") && (
+          <div className="flex items-center gap-2 px-5 py-2 bg-slate-100/90 border-b border-slate-200 text-xs">
+            <span className="text-slate-500 font-semibold">Banner View:</span>
+            <button
+              type="button"
+              onClick={() => setActiveMode("desktop_banner")}
+              className={`px-3 py-1 rounded-md font-semibold text-xs transition-colors cursor-pointer ${
+                activeMode === "desktop_banner"
+                  ? "bg-[#2E8B8B] text-white shadow-xs"
+                  : "bg-white text-slate-600 hover:bg-slate-200 border border-slate-200"
+              }`}
+            >
+              🖥️ Desktop (1920×600)
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveMode("mobile_banner")}
+              className={`px-3 py-1 rounded-md font-semibold text-xs transition-colors cursor-pointer ${
+                activeMode === "mobile_banner"
+                  ? "bg-indigo-600 text-white shadow-xs"
+                  : "bg-white text-slate-600 hover:bg-slate-200 border border-slate-200"
+              }`}
+            >
+              📱 Mobile (750×500)
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveMode("banner")}
+              className={`px-3 py-1 rounded-md font-semibold text-xs transition-colors cursor-pointer ${
+                activeMode === "banner"
+                  ? "bg-slate-700 text-white shadow-xs"
+                  : "bg-white text-slate-600 hover:bg-slate-200 border border-slate-200"
+              }`}
+            >
+              All Banners
+            </button>
+          </div>
+        )}
 
         {/* ── Upload Panel ── */}
         {showUpload && (
@@ -435,7 +505,13 @@ export default function MediaLibrary({
                   >
                     <div
                       className={`relative w-full bg-slate-50 overflow-hidden ${
-                        activeMode === "banner" ? "aspect-[16/9]" : "aspect-[4/3]"
+                        activeMode === "desktop_banner"
+                          ? "aspect-[21/9]"
+                          : activeMode === "mobile_banner"
+                          ? "aspect-[4/3]"
+                          : activeMode === "banner"
+                          ? "aspect-[16/9]"
+                          : "aspect-[4/3]"
                       }`}
                     >
                       <img
@@ -542,9 +618,21 @@ export default function MediaLibrary({
                       <p className="text-slate-700 text-[11px] font-medium truncate" title={displayName(item)}>
                         {displayName(item)}
                       </p>
-                      <p className="text-slate-400 text-[9px] mt-0.5 uppercase tracking-wider">
-                        {item.category || "Media"}
-                      </p>
+                      <div className="flex items-center justify-between mt-0.5">
+                        <span className="text-slate-400 text-[9px] uppercase tracking-wider">
+                          {item.category || "Media"}
+                        </span>
+                        {item.filename.toLowerCase().includes("desktop") && (
+                          <span className="text-[9px] bg-sky-50 text-sky-700 border border-sky-200 px-1 rounded font-medium">
+                            desktop
+                          </span>
+                        )}
+                        {item.filename.toLowerCase().includes("mobile") && (
+                          <span className="text-[9px] bg-purple-50 text-purple-700 border border-purple-200 px-1 rounded font-medium">
+                            mobile
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 );
