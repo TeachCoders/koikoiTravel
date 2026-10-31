@@ -27,6 +27,11 @@ export default function TravelExperienceClient() {
     search: debouncedSearch || undefined,
     isActive: isActive || undefined,
   });
+
+  // Exclude Golden Triangle (id 6) from Travel Experience dashboard list - managed via State 30
+  const filteredExperiences = React.useMemo(() => {
+    return travelExperiences.filter((e) => e.id !== 6 && e.slug !== "golden-triangle-tour-india");
+  }, [travelExperiences]);
   const { deleteTravelExperience, isPending: isDeleting } = useDeleteTravelExperience();
   const { toggleTravelExperienceActive, isPending: isToggling } = useToggleTravelExperienceActive();
   const { updateTravelExperienceOrder, isPending: isOrderSaving } = useUpdateTravelExperienceOrder();
@@ -40,8 +45,9 @@ export default function TravelExperienceClient() {
   React.useEffect(() => {
     getTravelExperiences({ limit: 1000 })
       .then((res) => {
-        setAllExperiences(res.data.map((e) => ({ id: e.id, title: e.title })));
-        const pinned = res.data
+        const nonGt = res.data.filter((e) => e.id !== 6 && e.slug !== "golden-triangle-tour-india");
+        setAllExperiences(nonGt.map((e) => ({ id: e.id, title: e.title })));
+        const pinned = nonGt
           .filter((e) => e.displayOrder && e.displayOrder > 0)
           .sort((a, b) => a.displayOrder! - b.displayOrder!)
           .map((e) => e.id);
@@ -139,7 +145,7 @@ export default function TravelExperienceClient() {
         canEdit={canEdit}
       >
         <DirectoryTable
-          data={travelExperiences}
+          data={filteredExperiences}
           getRowClass={seoPendingRowClass}
           groupBy={(exp) => ({
             id: exp.type || "uncategorized",

@@ -64,20 +64,17 @@ export const PopularDestinations: React.FC<{
       displayOrder: 1,
     });
 
-    // 2. Golden Triangle
-    const gtExp = travelExperiences.find(
-      (e) => e.slug === "golden-triangle-tour-india" || e.slug === "golden-triangle"
-    );
+    // 2. Golden Triangle (Driven exclusively by State 30)
     const gtState = states.find(
-      (s) => s.slug === "golden-triangle" || s.slug === "golden-triangle-tour-india" || s.id === 30
+      (s) => s.id === 30 || s.slug === "golden-triangle"
     );
-    const gtTours = gtExp?.tourCount ?? gtState?.tourCount ?? 15;
+    const gtTours = gtState?.tourCount ?? 15;
     list.push({
       id: "dest-golden-triangle",
       title: "Golden Triangle",
-      image: gtExp?.thumbImg || gtState?.thumbImg || undefined,
-      eyebrow: gtExp?.banner?.bannerTag || gtState?.banner?.bannerTag || "ICONIC HERITAGE CIRCUIT",
-      description: gtExp?.cardShortDescription || gtState?.cardShortDescription || "Delhi, Agra & Jaipur private sightseeing & heritage tours",
+      image: gtState?.thumbImg || undefined,
+      eyebrow: gtState?.banner?.bannerTag || "FIRST CHOICE OF TRAVEL IN INDIA",
+      description: gtState?.cardShortDescription || "Discover Golden Triangle tours with Delhi, Agra, Jaipur, Taj Mahal, forts and local markets in India",
       tourCountText: `${gtTours} Tours`,
       href: "/tour-packages/india/golden-triangle",
       displayOrder: 2,
