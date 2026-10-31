@@ -552,7 +552,7 @@ function CountryContent({
                 Destination Overview
               </SectionLabel>
             </div>
-            <div className="w-full bg-slate-50/60 rounded-3xl p-6 sm:p-10 md:p-12 border border-section-border shadow-xs">
+            <div className="w-full bg-slate-50/60 rounded-3xl p-6 sm:p-10 md:p-12">
               <RichContent
                 html={introHtml}
                 sharedLinkedHrefs={pageLinkedHrefs}
@@ -566,7 +566,7 @@ function CountryContent({
                     className={cn(
                       "overflow-hidden transition-all duration-500 ease-in-out",
                       isOverviewExpanded
-                        ? "max-h-[8000px] opacity-100 mt-6 pt-6 border-t border-slate-200/80"
+                        ? "max-h-[8000px] opacity-100 mt-6 pt-2"
                         : "max-h-0 opacity-0"
                     )}
                   >
