@@ -25,7 +25,7 @@ import {
   Sliders,
   PhoneCall,
   HelpCircle,
-  CheckCircle2,
+  Compass,
 } from "lucide-react";
 import { useCountryBySlug } from "@/feature/country/api/useCountry";
 import { useGetStates } from "@/feature/state/api/useState";
@@ -34,11 +34,13 @@ import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import { useGetTravelExperiences } from "@/feature/travelExperience/api/useTravelExperience";
 import HeroBanner from "@/components/shared/HeroBanner";
 import { useHeroBanners } from "@/feature/heroBanner/api";
+import { SectionLabel } from "@/components/shared/SectionLabel";
+import { SingleDestinationReusableCard } from "@/components/shared/SingleDestinationReusableCard";
+import TourPackageCard from "@/components/shared/TourPackageCard";
+import StateCard from "./StateCard";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
-import { QuoteModal } from "@/components/shared/QuoteModal";
 import { stripHtml } from "@/lib/utils";
-import { journeyPackageHref } from "@/feature/journey/filterOptions";
 import type { Country } from "@/feature/country/type";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
@@ -86,7 +88,7 @@ const DEFAULT_INDIA_FAQS = [
   {
     question: "Is India safe for solo travellers and families?",
     answer:
-      "Yes, millions of international visitors travel safely each year. With a private car, a vetted dedicated chauffeur, licensed guides, and 24/7 on-ground trip support, it is a comfortable and secure choice for families, seniors, and solo or women travelers.",
+      "Yes, millions of international visitors travel safely across India each year. With a private car, a vetted dedicated chauffeur, licensed guides, and 24/7 on-ground trip support, it is a comfortable and secure choice for families, seniors, and solo or women travelers.",
   },
   {
     question: "What handicrafts can I buy?",
@@ -120,7 +122,7 @@ export default function CountryDetail({
 
   if (isLoading) {
     return (
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 py-12">
         <DestinationsSkeleton />
       </div>
     );
@@ -198,7 +200,9 @@ function CountryContent({
     });
   }, [states]);
 
-  // 100% Dynamic Iconic Circuits derived from DB State & TravelExperience entities
+  // ==========================================================================
+  // 100% DYNAMIC ICONIC CIRCUITS (PULLED LIVE FROM DB STATES & EXPERIENCES)
+  // ==========================================================================
   const iconicCircuits = useMemo(() => {
     const findState = (slug: string, altId?: number) =>
       states.find((s) => s.slug === slug || (altId && s.id === altId));
@@ -256,6 +260,8 @@ function CountryContent({
           ? journeyCountForState(item.id) || (item as any).tourCount || 0
           : (item as any)?.tourCount || 0;
 
+      const image = item?.thumbImg || item?.banner?.images?.[0] || undefined;
+
       return {
         id: item?.id || slug,
         title,
@@ -263,11 +269,14 @@ function CountryContent({
         description,
         href,
         count,
+        image,
       };
     });
   }, [states, travelExperiences, displayedStates, countryJourneys]);
 
-  // 100% Dynamic Popular Cities derived from DB Cities
+  // ==========================================================================
+  // 100% DYNAMIC POPULAR CITIES (PULLED LIVE FROM DB CITIES)
+  // ==========================================================================
   const popularCities = useMemo(() => {
     if (dbCities && dbCities.length > 0) {
       return [...dbCities]
@@ -285,6 +294,61 @@ function CountryContent({
       "Kochi", "Munnar", "Alleppey", "Jodhpur", "Jaisalmer", "Shimla", "Amritsar",
     ];
   }, [dbCities]);
+
+  // City-by-City Spotlight with Region Tabs
+  const [cityTab, setCityTab] = useState<string>("all");
+
+  const displayedCitiesSpotlight = useMemo(() => {
+    if (dbCities && dbCities.length > 0) {
+      const sorted = [...dbCities].sort((a, b) => {
+        const aTours = (a as any).tourCount || 0;
+        const bTours = (b as any).tourCount || 0;
+        if (bTours !== aTours) return bTours - aTours;
+        return (
+          (a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999) -
+          (b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999)
+        );
+      });
+
+      const mapped = sorted.map((c) => {
+        const stateSlug = c.state?.slug || "";
+        let region = "all";
+        if (["rajasthan"].includes(stateSlug)) region = "rajasthan";
+        else if (["kerala", "tamil-nadu", "karnataka", "goa"].includes(stateSlug)) region = "kerala";
+        else if (["himachal-pradesh", "uttarakhand", "jammu-and-kashmir", "ladakh", "punjab"].includes(stateSlug))
+          region = "himalayas";
+        else if (["delhi", "uttar-pradesh"].includes(stateSlug)) region = "golden-triangle";
+
+        const href = c.state?.slug
+          ? `/tour-packages/india/${c.state.slug}/${c.slug}`
+          : `/tour-packages/india/${c.slug}`;
+
+        const tag = c.banner?.bannerTag || c.h1Title || c.state?.title || "Heritage City";
+        const image = c.thumbImg || c.banner?.images?.[0] || undefined;
+        const highlight =
+          c.cardShortDescription ||
+          (c as any).attractions ||
+          (c as any).famousFor?.replace(/<[^>]+>/g, "").slice(0, 90) ||
+          `${c.title} private sightseeing & heritage tours`;
+
+        return {
+          id: c.id,
+          name: c.title,
+          state: c.state?.title || "",
+          region,
+          tag,
+          image,
+          href,
+          highlight,
+          tourCount: (c as any).tourCount || 0,
+        };
+      });
+
+      if (cityTab === "all") return mapped.slice(0, 18);
+      return mapped.filter((c) => c.region === cityTab).slice(0, 18);
+    }
+    return [];
+  }, [dbCities, cityTab]);
 
   // ==========================================================================
   // TRIP FINDER STATE & FILTERS
@@ -435,7 +499,6 @@ function CountryContent({
   // Handle clicking a Popular Place pill
   const handlePlaceClick = (place: string) => {
     setSearchQuery(place);
-    // Auto-select corresponding region chip for convenience
     const lower = place.toLowerCase();
     if (["jaipur", "agra", "delhi"].includes(lower)) setSelectedRegion("gt");
     else if (["udaipur", "jodhpur", "jaisalmer"].includes(lower)) setSelectedRegion("raj");
@@ -564,17 +627,17 @@ function CountryContent({
       </HeroBanner>
 
       {/* ====================================================================== */}
-      {/* 2. TRUST BAR (4 VALUES PROPOSITIONS)                                   */}
+      {/* 2. TRUST BAR (4 VALUES PROPOSITIONS - MATCHING HOME WHY CHOOSE US)     */}
       {/* ====================================================================== */}
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 relative z-20 -mt-8 sm:-mt-10">
-        <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgba(18,48,47,0.08)] border border-[#EEE7DE] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#EEE7DE] overflow-hidden">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 relative z-20 -mt-8 sm:-mt-10">
+        <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgba(18,48,47,0.08)] border border-section-border grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-section-border overflow-hidden">
           <div className="p-5 sm:p-6 flex items-start gap-4 hover:bg-slate-50/60 transition-colors">
             <div className="w-10 h-10 rounded-xl bg-teal-50 text-[#2E8B8B] flex items-center justify-center shrink-0 font-bold text-sm">
               <Car size={20} />
             </div>
             <div>
-              <b className="block text-sm font-bold text-[#1C1C1C] leading-snug">Private car & driver</b>
-              <span className="text-xs text-[#66758A] mt-1 block">Air-conditioned, verified chauffeur</span>
+              <b className="block text-sm font-bold text-slate-900 leading-snug">Private car & driver</b>
+              <span className="text-xs text-slate-500 mt-1 block">Air-conditioned, verified chauffeur</span>
             </div>
           </div>
 
@@ -583,8 +646,8 @@ function CountryContent({
               <Award size={20} />
             </div>
             <div>
-              <b className="block text-sm font-bold text-[#1C1C1C] leading-snug">Licensed guides</b>
-              <span className="text-xs text-[#66758A] mt-1 block">English or other languages on request</span>
+              <b className="block text-sm font-bold text-slate-900 leading-snug">Licensed guides</b>
+              <span className="text-xs text-slate-500 mt-1 block">English or other languages on request</span>
             </div>
           </div>
 
@@ -593,8 +656,8 @@ function CountryContent({
               <Sliders size={20} />
             </div>
             <div>
-              <b className="block text-sm font-bold text-[#1C1C1C] leading-snug">100% tailor-made</b>
-              <span className="text-xs text-[#66758A] mt-1 block">Your hotels, pace and route</span>
+              <b className="block text-sm font-bold text-slate-900 leading-snug">100% tailor-made</b>
+              <span className="text-xs text-slate-500 mt-1 block">Your hotels, pace and route</span>
             </div>
           </div>
 
@@ -603,82 +666,76 @@ function CountryContent({
               <PhoneCall size={20} />
             </div>
             <div>
-              <b className="block text-sm font-bold text-[#1C1C1C] leading-snug">24/7 trip support</b>
-              <span className="text-xs text-[#66758A] mt-1 block">Real people on WhatsApp</span>
+              <b className="block text-sm font-bold text-slate-900 leading-snug">24/7 trip support</b>
+              <span className="text-xs text-slate-500 mt-1 block">Real people on WhatsApp</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* ====================================================================== */}
-      {/* 3. SECTION 0: ICONIC CIRCUITS                                          */}
+      {/* 3. SECTION 0: ICONIC CIRCUITS (RELATING TO HOME POPULAR DESTINATIONS)   */}
       {/* ====================================================================== */}
-      <section id="circuits" className="py-16 sm:py-20">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
-          <div className="mb-8 sm:mb-10">
-            <span className="text-xs font-bold uppercase tracking-[0.15em] text-[#F8904D] block mb-2">
-              Iconic circuits
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight">
-              Start with a <em className="not-italic text-[#F8904D]">classic route</em>
-            </h2>
-            <p className="text-[#66758A] text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
-              Five routes that first-time visitors love. Each one can be shortened, stretched or mixed.
-            </p>
+      <section id="circuits" className="py-12 sm:py-16 md:py-20 bg-white border-b border-section-border">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 gap-4">
+            <div>
+              <SectionLabel icon={<Compass className="w-3.5 h-3.5" />}>
+                Iconic Circuits
+              </SectionLabel>
+              <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
+                Start With a <span className="text-[#F8904D]">Classic Route</span>
+              </h2>
+              <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
+                Five routes that first-time visitors love. Each one can be shortened, stretched or mixed.
+              </p>
+            </div>
+
+            <div className="shrink-0">
+              <a
+                href="#trips"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-section-border text-slate-800 text-sm font-semibold hover:border-[#2E8B8B] hover:text-[#2E8B8B] transition-all shadow-xs cursor-pointer"
+              >
+                <span>Browse all tours</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
+          {/* 5 Destination Cards matching Home PopularDestinations */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5">
             {iconicCircuits.map((circ) => (
-              <Link
+              <SingleDestinationReusableCard
                 key={circ.id}
+                title={circ.title}
+                image={circ.image}
+                eyebrow={circ.tag}
+                description={circ.description}
+                tourCountText={circ.count > 0 ? `${circ.count} Tours` : "View Trips"}
                 href={circ.href}
-                className="group bg-[#FAF8F5] hover:bg-white border border-[#EEE7DE] hover:border-[#F8904D] rounded-2xl p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm"
-              >
-                <div>
-                  {circ.tag && (
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#F8904D] block mb-1.5 truncate">
-                      {circ.tag}
-                    </span>
-                  )}
-                  <b className="block text-base font-bold text-[#1C1C1C] group-hover:text-[#F8904D] transition-colors leading-snug mb-2">
-                    {circ.title}
-                  </b>
-                  <p className="text-xs font-semibold text-[#2E8B8B] leading-relaxed mb-6 line-clamp-3">
-                    {circ.description}
-                  </p>
-                </div>
-                <div className="mt-auto flex items-center justify-between pt-3 border-t border-[#EEE7DE]/60">
-                  <span className="text-[11px] font-medium text-[#66758A]">
-                    {circ.count > 0 ? `${circ.count} tours` : "View trips"}
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-xs font-bold text-[#F8904D] group-hover:translate-x-1 transition-transform">
-                    <span>View trips</span>
-                    <span>&rarr;</span>
-                  </span>
-                </div>
-              </Link>
+              />
             ))}
           </div>
         </div>
       </section>
 
       {/* ====================================================================== */}
-      {/* 4. SECTION 1: FIND YOUR TRIP / JOURNEY PACKAGES                        */}
+      {/* 4. SECTION 1: FIND YOUR TRIP / PACKAGES (RELATING TO BEST SELLING PKGS)*/}
       {/* ====================================================================== */}
       <section
         id="trips"
         ref={tripsSectionRef}
-        className="py-16 sm:py-20 bg-white border-y border-[#EEE7DE]"
+        className="py-12 sm:py-16 md:py-20 bg-section-tint border-b border-section-border"
       >
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className="mb-6 sm:mb-8">
-            <span className="text-xs font-bold uppercase tracking-[0.15em] text-[#F8904D] block mb-2">
-              Find your trip
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight">
-              Choose your <em className="not-italic text-[#F8904D]">India journey</em>
+            <SectionLabel icon={<Sparkles className="w-3.5 h-3.5" />}>
+              Featured Itineraries
+            </SectionLabel>
+            <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
+              Choose Your <span className="text-[#F8904D]">India Journey</span>
             </h2>
-            <p className="text-[#66758A] text-sm sm:text-base mt-2 max-w-3xl leading-relaxed">
+            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl leading-relaxed">
               Search by city, pick a region, a style or how many days you have. Every package is a starting point and can be changed.
             </p>
           </div>
@@ -696,7 +753,7 @@ function CountryContent({
                   className={`px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                     active
                       ? "bg-[#1C1C1C] text-white shadow-sm border border-[#1C1C1C]"
-                      : "bg-[#FAF8F5] text-[#1C1C1C] border border-[#EEE7DE] hover:border-[#2E8B8B] hover:text-[#2E8B8B]"
+                      : "bg-white text-slate-700 border border-section-border hover:border-[#2E8B8B] hover:text-[#2E8B8B]"
                   }`}
                 >
                   {chip.label}
@@ -706,11 +763,11 @@ function CountryContent({
           </div>
 
           {/* Interactive Finder Controls */}
-          <div className="bg-[#FAF8F5] border border-[#EEE7DE] rounded-2xl p-4 sm:p-5 shadow-sm mb-4">
+          <div className="bg-white border border-section-border rounded-2xl p-4 sm:p-5 shadow-xs mb-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-4 items-end">
               {/* Search input */}
               <div className="lg:col-span-5">
-                <label htmlFor="fq" className="block text-[11px] font-bold text-[#66758A] uppercase tracking-wider mb-1.5">
+                <label htmlFor="fq" className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                   Search
                 </label>
                 <div className="relative">
@@ -720,14 +777,14 @@ function CountryContent({
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="City or place, e.g. Jaipur, tiger, yoga"
-                    className="w-full pl-9 pr-8 py-2.5 rounded-xl border border-[#DDD5CA] bg-white text-sm text-[#1C1C1C] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2E8B8B] focus:ring-2 focus:ring-[#2E8B8B]/20 transition-all"
+                    className="w-full pl-9 pr-8 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#2E8B8B] focus:ring-2 focus:ring-[#2E8B8B]/20 transition-all"
                   />
-                  <Search size={15} className="absolute left-3 top-3 text-[#94A3B8]" />
+                  <Search size={15} className="absolute left-3 top-3 text-slate-400" />
                   {searchQuery && (
                     <button
                       type="button"
                       onClick={() => setSearchQuery("")}
-                      className="absolute right-2.5 top-2.5 text-[#94A3B8] hover:text-[#1C1C1C]"
+                      className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-700"
                     >
                       <X size={15} />
                     </button>
@@ -737,14 +794,14 @@ function CountryContent({
 
               {/* Travel Style */}
               <div className="lg:col-span-3">
-                <label htmlFor="fe" className="block text-[11px] font-bold text-[#66758A] uppercase tracking-wider mb-1.5">
+                <label htmlFor="fe" className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                   Travel style
                 </label>
                 <select
                   id="fe"
                   value={travelStyle}
                   onChange={(e) => setTravelStyle(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl border border-[#DDD5CA] bg-white text-sm text-[#1C1C1C] focus:outline-none focus:border-[#2E8B8B] focus:ring-2 focus:ring-[#2E8B8B]/20 transition-all cursor-pointer"
+                  className="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 focus:outline-none focus:border-[#2E8B8B] focus:ring-2 focus:ring-[#2E8B8B]/20 transition-all cursor-pointer"
                 >
                   <option value="all">Any style</option>
                   <option value="classic">Classic sightseeing</option>
@@ -759,14 +816,14 @@ function CountryContent({
 
               {/* Duration */}
               <div className="lg:col-span-3">
-                <label htmlFor="fd" className="block text-[11px] font-bold text-[#66758A] uppercase tracking-wider mb-1.5">
+                <label htmlFor="fd" className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                   Duration
                 </label>
                 <select
                   id="fd"
                   value={durationFilter}
                   onChange={(e) => setDurationFilter(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl border border-[#DDD5CA] bg-white text-sm text-[#1C1C1C] focus:outline-none focus:border-[#2E8B8B] focus:ring-2 focus:ring-[#2E8B8B]/20 transition-all cursor-pointer"
+                  className="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 focus:outline-none focus:border-[#2E8B8B] focus:ring-2 focus:ring-[#2E8B8B]/20 transition-all cursor-pointer"
                 >
                   <option value="all">Any length</option>
                   <option value="short">Same day to 2 days</option>
@@ -784,7 +841,7 @@ function CountryContent({
                   disabled={!isFiltered}
                   className={`w-full py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center cursor-pointer ${
                     isFiltered
-                      ? "bg-white border border-[#DDD5CA] text-[#1C1C1C] hover:border-[#2E8B8B] hover:text-[#2E8B8B]"
+                      ? "bg-white border border-slate-300 text-slate-800 hover:border-[#2E8B8B] hover:text-[#2E8B8B]"
                       : "bg-slate-100 text-slate-400 border border-transparent cursor-not-allowed"
                   }`}
                 >
@@ -795,7 +852,7 @@ function CountryContent({
           </div>
 
           {/* Status line */}
-          <div className="flex items-center justify-between text-xs sm:text-sm text-[#66758A] mb-8 pb-2">
+          <div className="flex items-center justify-between text-xs sm:text-sm text-slate-500 mb-6 pb-2">
             <span>
               Showing <strong>{filteredJourneys.length}</strong> of {countryJourneys.length} trips in India
               {selectedRegion !== "all" && (
@@ -813,12 +870,12 @@ function CountryContent({
             )}
           </div>
 
-          {/* Packages Grid */}
+          {/* Packages Grid: Uses KoiKoi's flagship TourPackageCard matching Home BestSellingPackages */}
           {filteredJourneys.length === 0 ? (
-            <div className="text-center py-16 px-4 bg-[#FAF8F5] rounded-2xl border border-dashed border-[#DDD5CA]">
+            <div className="text-center py-16 px-4 bg-white rounded-2xl border border-dashed border-slate-300">
               <HelpCircle size={40} className="mx-auto text-slate-400 mb-3" />
-              <h3 className="text-lg font-bold text-[#1C1C1C]">No packages match your search</h3>
-              <p className="text-xs sm:text-sm text-[#66758A] mt-1 max-w-md mx-auto">
+              <h3 className="text-lg font-bold text-slate-900">No packages match your search</h3>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-md mx-auto">
                 Try loosening your filters or reach out directly — we can design any custom route for you.
               </p>
               <button
@@ -830,157 +887,82 @@ function CountryContent({
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredJourneys.map((j) => {
-                const href = journeyPackageHref(j);
-                const days = j.duration || (j.noDays > 0 ? `${j.noDays} Days` : "Custom");
-                const tag = j.banner?.bannerTag || j.travelExperiences?.[0]?.title || "Bestseller";
-                const route = j.destination || (j.cities?.map((c) => c.title).join(" → ")) || "Delhi → Agra → Jaipur";
-                const img = j.thumbImg || j.banner?.images?.[0] || "/banners/home-comic-banner.webp";
-
-                return (
-                  <div
-                    key={j.id}
-                    className="group bg-white border border-[#EEE7DE] hover:border-[#F8904D] rounded-2xl overflow-hidden flex flex-col shadow-[0_2px_10px_rgba(18,48,47,0.04)] hover:shadow-[0_8px_24px_rgba(18,48,47,0.1)] hover:-translate-y-1 transition-all duration-300"
-                  >
-                    {/* Card Image */}
-                    <Link href={href} className="relative h-[200px] w-full block overflow-hidden bg-slate-900 shrink-0">
-                      <FallbackImage
-                        src={img}
-                        alt={j.h1Title || j.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                      <span className="absolute top-3.5 left-3.5 bg-white text-[#1C1C1C] font-bold text-xs px-3 py-1 rounded-full shadow-sm">
-                        {days}
-                      </span>
-                      <span className="absolute top-3.5 right-3.5 bg-black/75 backdrop-blur-xs text-white text-[11px] font-semibold px-2.5 py-1 rounded-full">
-                        {tag}
-                      </span>
-                    </Link>
-
-                    {/* Card Body */}
-                    <div className="p-5 flex flex-col flex-1 justify-between">
-                      <div>
-                        <Link href={href} className="block">
-                          <h3 className="text-base sm:text-lg font-bold text-[#1C1C1C] group-hover:text-[#F8904D] transition-colors line-clamp-2 leading-snug">
-                            {j.h1Title || j.title}
-                          </h3>
-                        </Link>
-                        <div className="text-xs font-semibold text-[#2E8B8B] mt-1.5 mb-3 line-clamp-1">
-                          {route}
-                        </div>
-
-                        {/* Inclusions Highlights */}
-                        <ul className="space-y-1.5 text-xs text-slate-700 font-medium">
-                          <li className="flex items-start gap-2">
-                            <Check size={14} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                            <span>Private AC executive vehicle & chauffeur</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <Check size={14} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                            <span>Licensed English-speaking monument historian</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <Check size={14} className="text-[#2E8B8B] shrink-0 mt-0.5" />
-                            <span>Boutique / luxury handpicked hotel options</span>
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div className="mt-5 pt-3 border-t border-dashed border-[#EEE7DE]">
-                        <p className="text-[11px] text-[#66758A] mb-3">
-                          Private car, driver, hotels & breakfast included
-                        </p>
-                        <div className="grid grid-cols-2 gap-2">
-                          <Link
-                            href={href}
-                            className="px-3 py-2 rounded-full border border-[#EEE7DE] hover:border-[#2E8B8B] text-[#1C1C1C] hover:text-[#2E8B8B] text-xs font-bold text-center transition-colors"
-                          >
-                            View details
-                          </Link>
-                          <QuoteModal>
-                            <button
-                              type="button"
-                              className="px-3 py-2 rounded-full bg-[#F8904D] hover:bg-[#E07D3A] text-white text-xs font-bold text-center shadow-xs transition-colors cursor-pointer"
-                            >
-                              Get a quote
-                            </button>
-                          </QuoteModal>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-5">
+              {filteredJourneys.map((j) => (
+                <TourPackageCard key={j.id} journey={j} />
+              ))}
             </div>
           )}
         </div>
       </section>
 
       {/* ====================================================================== */}
-      {/* 5. SECTION 2: EXPLORE BY STATE & POPULAR PLACES                        */}
+      {/* 5. CITIES OF INDIA (CITY-BY-CITY DIRECTORY)                            */}
       {/* ====================================================================== */}
-      <section id="places" className="py-16 sm:py-20">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
-          <div className="mb-8">
-            <span className="text-xs font-bold uppercase tracking-[0.15em] text-[#F8904D] block mb-2">
-              Explore by state
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight">
-              Where do you want <em className="not-italic text-[#F8904D]">to go?</em>
-            </h2>
-            <p className="text-[#66758A] text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
-              Browse every trip in a state or region.
-            </p>
-          </div>
+      <section id="cities" className="py-12 sm:py-16 md:py-20 bg-white border-b border-section-border">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
+            <div>
+              <SectionLabel icon={<MapPin className="w-3.5 h-3.5" />}>
+                City-by-City Directory
+              </SectionLabel>
+              <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
+                Places to Visit in <span className="text-[#F8904D]">{displayTitle}</span>
+              </h2>
+              <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl leading-relaxed">
+                Discover India's most captivating heritage cities, palace capitals, and serene natural escapes.
+              </p>
+            </div>
 
-          {/* States Grid (100% Dynamic from DB State table) */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 mb-12">
-            {displayedStates.map((s) => {
-              const realCount = journeyCountForState(s.id) || s.tourCount || 0;
-              const countLabel = realCount > 0 ? `${realCount} tours` : "View trips";
-              const href = `/tour-packages/india/${s.slug}`;
-              const title = s.banner?.bannerTitle || s.h1Title || s.title;
-
-              return (
-                <Link
-                  key={s.id}
-                  href={href}
-                  className="bg-white hover:bg-slate-50 border border-[#EEE7DE] hover:border-[#F8904D] rounded-xl p-3.5 sm:p-4 flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:shadow-sm"
+            {/* Region Filter Tabs */}
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+              {[
+                { key: "all", label: "All Places" },
+                { key: "golden-triangle", label: "Golden Triangle" },
+                { key: "rajasthan", label: "Rajasthan" },
+                { key: "kerala", label: "Kerala & South" },
+                { key: "himalayas", label: "Himalayas & North" },
+              ].map((tab) => (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => setCityTab(tab.key)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+                    cityTab === tab.key
+                      ? "bg-[#1C1C1C] text-white shadow-xs"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  }`}
                 >
-                  <b className="block text-sm sm:text-base font-bold text-[#1C1C1C] leading-snug">
-                    {title}
-                  </b>
-                  <small className="text-xs text-[#66758A] mt-2 block font-medium">
-                    {countLabel}
-                  </small>
-                </Link>
-              );
-            })}
-
-            {/* See all destinations card */}
-            <Link
-              href="/destinations"
-              className="bg-[#2E8B8B]/10 hover:bg-[#2E8B8B] text-[#2E8B8B] hover:text-white border border-[#2E8B8B]/30 rounded-xl p-3.5 sm:p-4 flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:shadow-sm"
-            >
-              <b className="block text-sm sm:text-base font-bold leading-snug">
-                See all destinations
-              </b>
-              <small className="text-xs mt-2 block font-bold">
-                Explore all &rarr;
-              </small>
-            </Link>
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Popular Places to Visit (100% Dynamic from DB Cities) */}
-          <div className="pt-6 border-t border-[#EEE7DE]">
-            <h3 className="text-lg sm:text-xl font-bold text-[#1C1C1C] mb-1">
-              Popular places to visit
+          {/* City Cards Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3.5 sm:gap-4 lg:gap-5">
+            {displayedCitiesSpotlight.map((city) => (
+              <SingleDestinationReusableCard
+                key={city.id || city.name}
+                title={city.name}
+                image={city.image}
+                eyebrow={city.tag}
+                description={city.highlight}
+                region={city.state}
+                tourCount={city.tourCount}
+                tourCountText={city.tourCount > 0 ? `${city.tourCount} Tours` : undefined}
+                href={city.href}
+              />
+            ))}
+          </div>
+
+          {/* Popular Places to Visit (Interactive Quick Filter Pills) */}
+          <div className="mt-10 pt-6 border-t border-section-border">
+            <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-1">
+              Popular places quick filter
             </h3>
-            <p className="text-xs sm:text-sm text-[#66758A] mb-4">
-              Tap a city to filter the trips above that include it.
+            <p className="text-xs text-slate-500 mb-3">
+              Tap a city to filter the trip packages above that include it.
             </p>
             <div className="flex flex-wrap gap-2">
               {popularCities.map((place) => (
@@ -988,10 +970,10 @@ function CountryContent({
                   key={place}
                   type="button"
                   onClick={() => handlePlaceClick(place)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
+                  className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
                     searchQuery.toLowerCase() === place.toLowerCase()
                       ? "bg-[#2E8B8B] text-white border-[#2E8B8B]"
-                      : "bg-white border-[#EEE7DE] text-[#1C1C1C] hover:border-[#2E8B8B] hover:text-[#2E8B8B]"
+                      : "bg-white border-section-border text-slate-700 hover:border-[#2E8B8B] hover:text-[#2E8B8B]"
                   }`}
                 >
                   {place}
@@ -1003,57 +985,99 @@ function CountryContent({
       </section>
 
       {/* ====================================================================== */}
-      {/* 6. SECTION 3: HOW IT WORKS                                             */}
+      {/* 6. STATES OF INDIA (COMPREHENSIVE DIRECTORY)                           */}
       {/* ====================================================================== */}
-      <section className="py-16 sm:py-20 bg-white border-y border-[#EEE7DE]">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
-          <div className="mb-10 text-center max-w-2xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-[0.15em] text-[#F8904D] block mb-2">
-              Simple process
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight">
-              How it <em className="not-italic text-[#F8904D]">works</em>
+      <section id="states" className="py-12 sm:py-16 md:py-20 bg-section-tint border-b border-section-border">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
+            <div>
+              <SectionLabel icon={<Compass className="w-3.5 h-3.5" />}>
+                Discover Every Region
+              </SectionLabel>
+              <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
+                States in <span className="text-[#F8904D]">{displayTitle}</span>
+                <span className="ml-3 align-middle text-xs font-bold text-[#F8904D] bg-[#F8904D]/10 px-3 py-1 rounded-full">
+                  {displayedStates.length} States
+                </span>
+              </h2>
+              <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl leading-relaxed">
+                Explore royal Rajasthan palaces, Taj Mahal heritage, lush Kerala backwaters, and Himalayan mountain passes.
+              </p>
+            </div>
+          </div>
+
+          {/* States Cards Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-4 lg:gap-5">
+            {displayedStates.map((s) => (
+              <StateCard
+                key={s.id}
+                state={s}
+                countrySlug={country.slug}
+                journeyCount={journeyCountForState(s.id)}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ====================================================================== */}
+      {/* 6. SECTION 3: HOW IT WORKS (EXACT SAME AS HOME PAGE HOW IT WORKS)      */}
+      {/* ====================================================================== */}
+      <section className="py-12 sm:py-16 md:py-20 bg-section-tint border-b border-section-border">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+          <div className="mb-8 sm:mb-10 text-left">
+            <SectionLabel icon={<Sparkles className="w-3.5 h-3.5" />}>
+              Simple Process
+            </SectionLabel>
+            <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
+              How It <span className="text-[#F8904D]">Works</span>
             </h2>
-            <p className="text-[#66758A] text-sm sm:text-base mt-2 leading-relaxed">
-              Planning should not feel like work. Three steps and you are set.
+            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
+              Planning your dream India vacation should not feel like work. Three simple steps and you are set.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-[#FAF8F5] border border-[#EEE7DE] rounded-2xl p-6 sm:p-7 relative hover:shadow-md transition-shadow">
-              <span className="text-3xl font-extrabold text-[#F8904D]/30 block mb-3 font-mono">
-                01
-              </span>
-              <h3 className="text-lg font-bold text-[#1C1C1C] mb-2">
-                Tell us your plan
-              </h3>
-              <p className="text-xs sm:text-sm text-[#66758A] leading-relaxed">
-                Share where you want to go, your dates and how many are travelling. Rough ideas are fine.
-              </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            <div className="bg-white border border-section-border rounded-2xl p-6 sm:p-7 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+              <div>
+                <span className="w-10 h-10 rounded-full bg-[#F8904D] text-white font-bold text-base flex items-center justify-center mb-5 shadow-sm shadow-[#F8904D]/30">
+                  1
+                </span>
+                <h3 className="font-bold text-slate-900 text-base sm:text-lg mb-2">
+                  Tell Us Your Plan
+                </h3>
+                <p className="text-slate-600 text-xs sm:text-[13.5px] leading-relaxed">
+                  Share where you want to go, your dates and how many are travelling. Rough ideas are completely fine — our specialists guide you.
+                </p>
+              </div>
             </div>
 
-            <div className="bg-[#FAF8F5] border border-[#EEE7DE] rounded-2xl p-6 sm:p-7 relative hover:shadow-md transition-shadow">
-              <span className="text-3xl font-extrabold text-[#F8904D]/30 block mb-3 font-mono">
-                02
-              </span>
-              <h3 className="text-lg font-bold text-[#1C1C1C] mb-2">
-                Get your custom plan
-              </h3>
-              <p className="text-xs sm:text-sm text-[#66758A] leading-relaxed">
-                We send a personalised itinerary and quote. Change the route, hotels or pace until it feels right.
-              </p>
+            <div className="bg-white border border-section-border rounded-2xl p-6 sm:p-7 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+              <div>
+                <span className="w-10 h-10 rounded-full bg-[#F8904D] text-white font-bold text-base flex items-center justify-center mb-5 shadow-sm shadow-[#F8904D]/30">
+                  2
+                </span>
+                <h3 className="font-bold text-slate-900 text-base sm:text-lg mb-2">
+                  Get Your Custom Plan
+                </h3>
+                <p className="text-slate-600 text-xs sm:text-[13.5px] leading-relaxed">
+                  We send a personalised itinerary with transparent pricing. Change the route, hotels or pace as many times as you like.
+                </p>
+              </div>
             </div>
 
-            <div className="bg-[#FAF8F5] border border-[#EEE7DE] rounded-2xl p-6 sm:p-7 relative hover:shadow-md transition-shadow">
-              <span className="text-3xl font-extrabold text-[#F8904D]/30 block mb-3 font-mono">
-                03
-              </span>
-              <h3 className="text-lg font-bold text-[#1C1C1C] mb-2">
-                Travel with support
-              </h3>
-              <p className="text-xs sm:text-sm text-[#66758A] leading-relaxed">
-                Your private car, driver and guides are arranged, and our team is on WhatsApp during the trip.
-              </p>
+            <div className="bg-white border border-section-border rounded-2xl p-6 sm:p-7 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+              <div>
+                <span className="w-10 h-10 rounded-full bg-[#F8904D] text-white font-bold text-base flex items-center justify-center mb-5 shadow-sm shadow-[#F8904D]/30">
+                  3
+                </span>
+                <h3 className="font-bold text-slate-900 text-base sm:text-lg mb-2">
+                  Travel With 24/7 Support
+                </h3>
+                <p className="text-slate-600 text-xs sm:text-[13.5px] leading-relaxed">
+                  Your private car, driver and guides are arranged, and our team is on WhatsApp around the clock during your trip.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -1062,56 +1086,56 @@ function CountryContent({
       {/* ====================================================================== */}
       {/* 7. SECTION 4: INDIA TRAVEL GUIDE & QUICK FACTS                         */}
       {/* ====================================================================== */}
-      <section id="guide" className="py-16 sm:py-20">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
-          <div className="mb-10">
-            <span className="text-xs font-bold uppercase tracking-[0.15em] text-[#F8904D] block mb-2">
-              India travel guide
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight">
-              Before you <em className="not-italic text-[#F8904D]">go</em>
+      <section id="guide" className="py-12 sm:py-16 md:py-20 bg-white border-b border-section-border">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+          <div className="mb-8 sm:mb-10">
+            <SectionLabel icon={<Calendar className="w-3.5 h-3.5" />}>
+              Trip Planning Guide
+            </SectionLabel>
+            <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
+              Before You <span className="text-[#F8904D]">Go</span>
             </h2>
-            <p className="text-[#66758A] text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
+            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl leading-relaxed">
               A few simple tips so your first India trip runs smoothly.
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left Column: Practical Advice */}
-            <div className="lg:col-span-8 bg-white border border-[#EEE7DE] rounded-2xl p-6 sm:p-8 space-y-8 shadow-sm">
+            <div className="lg:col-span-8 bg-section-tint border border-section-border rounded-2xl p-6 sm:p-8 space-y-8 shadow-xs">
               {/* Best Time To Visit */}
               <div>
-                <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
                   <Calendar size={18} className="text-[#2E8B8B]" />
                   <span>Best time to visit</span>
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="p-3.5 rounded-xl bg-teal-50/60 border border-teal-200">
-                    <b className="block text-xs font-bold text-[#2E8B8B]">
+                  <div className="p-4 rounded-xl bg-teal-50/70 border border-teal-200">
+                    <b className="block text-xs sm:text-sm font-bold text-[#2E8B8B]">
                       October to March (Recommended)
                     </b>
                     <span className="text-xs text-slate-600 block mt-1">
                       Cool and comfortable for most of India; ideal for palaces and sightseeing.
                     </span>
                   </div>
-                  <div className="p-3.5 rounded-xl bg-[#FAF8F5] border border-[#EEE7DE]">
-                    <b className="block text-xs font-bold text-[#1C1C1C]">
+                  <div className="p-4 rounded-xl bg-white border border-section-border">
+                    <b className="block text-xs sm:text-sm font-bold text-slate-900">
                       April to June
                     </b>
                     <span className="text-xs text-slate-600 block mt-1">
                       Hot in the plains; best for tiger sightings and cool Himalayan hills.
                     </span>
                   </div>
-                  <div className="p-3.5 rounded-xl bg-[#FAF8F5] border border-[#EEE7DE]">
-                    <b className="block text-xs font-bold text-[#1C1C1C]">
+                  <div className="p-4 rounded-xl bg-white border border-section-border">
+                    <b className="block text-xs sm:text-sm font-bold text-slate-900">
                       July to September
                     </b>
                     <span className="text-xs text-slate-600 block mt-1">
                       Monsoon season; lush green landscapes, quieter sights, and Ayurveda in Kerala.
                     </span>
                   </div>
-                  <div className="p-3.5 rounded-xl bg-[#FAF8F5] border border-[#EEE7DE]">
-                    <b className="block text-xs font-bold text-[#1C1C1C]">
+                  <div className="p-4 rounded-xl bg-white border border-section-border">
+                    <b className="block text-xs sm:text-sm font-bold text-slate-900">
                       Winter (Dec to Feb)
                     </b>
                     <span className="text-xs text-slate-600 block mt-1">
@@ -1122,8 +1146,8 @@ function CountryContent({
               </div>
 
               {/* What to Pack */}
-              <div className="pt-6 border-t border-[#EEE7DE]">
-                <h3 className="text-lg font-bold text-[#1C1C1C] mb-3">
+              <div className="pt-6 border-t border-section-border">
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-3">
                   What to pack
                 </h3>
                 <ul className="space-y-2 text-xs sm:text-sm text-slate-700">
@@ -1151,8 +1175,8 @@ function CountryContent({
               </div>
 
               {/* Dress & Etiquette */}
-              <div className="pt-6 border-t border-[#EEE7DE]">
-                <h3 className="text-lg font-bold text-[#1C1C1C] mb-2">
+              <div className="pt-6 border-t border-section-border">
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2">
                   Dress and etiquette
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -1161,8 +1185,8 @@ function CountryContent({
               </div>
 
               {/* Food & Water */}
-              <div className="pt-6 border-t border-[#EEE7DE]">
-                <h3 className="text-lg font-bold text-[#1C1C1C] mb-3">
+              <div className="pt-6 border-t border-section-border">
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-3">
                   Food and water
                 </h3>
                 <ul className="space-y-2 text-xs sm:text-sm text-slate-700">
@@ -1186,8 +1210,8 @@ function CountryContent({
               </div>
 
               {/* Shopping */}
-              <div className="pt-6 border-t border-[#EEE7DE]">
-                <h3 className="text-lg font-bold text-[#1C1C1C] mb-2">
+              <div className="pt-6 border-t border-section-border">
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2">
                   Shopping
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -1197,11 +1221,11 @@ function CountryContent({
 
               {/* Expandable Full SEO Article */}
               {hasKnowMoreText && (
-                <div className="pt-6 border-t border-[#EEE7DE]">
+                <div className="pt-6 border-t border-section-border">
                   <button
                     type="button"
                     onClick={() => setIsSeoOpen(!isSeoOpen)}
-                    className="flex items-center justify-between w-full text-left py-2 text-sm font-bold text-[#2E8B8B] hover:text-[#1C1C1C] transition-colors cursor-pointer"
+                    className="flex items-center justify-between w-full text-left py-2 text-sm font-bold text-[#2E8B8B] hover:text-slate-900 transition-colors cursor-pointer"
                   >
                     <span>Read full editorial guide to {displayTitle}</span>
                     <ChevronDown
@@ -1211,7 +1235,7 @@ function CountryContent({
                   </button>
 
                   {isSeoOpen && (
-                    <div className="mt-4 pt-4 border-t border-slate-100 space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    <div className="mt-4 pt-4 border-t border-slate-200 space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
                       {hasSeoDesc && (
                         <RichContent
                           html={country.seoDescription!}
@@ -1234,41 +1258,41 @@ function CountryContent({
 
             {/* Right Column: Sticky Quick Facts Panel */}
             <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
-              <aside className="bg-white border border-[#EEE7DE] rounded-2xl p-6 sm:p-7 shadow-sm">
-                <h3 className="text-base font-bold text-[#1C1C1C] mb-4 pb-3 border-b border-[#EEE7DE]">
+              <aside className="bg-white border border-section-border rounded-2xl p-6 sm:p-7 shadow-xs">
+                <h3 className="text-base font-bold text-slate-900 mb-4 pb-3 border-b border-section-border">
                   Quick facts
                 </h3>
                 <dl className="space-y-3 text-xs sm:text-sm">
                   {quickFacts.map((f) => (
-                    <div key={f.label} className="flex justify-between items-center py-1 border-b border-slate-50 last:border-0">
-                      <dt className="text-[#66758A] font-medium">{f.label}</dt>
-                      <dd className="font-bold text-[#1C1C1C] text-right">{f.value}</dd>
+                    <div key={f.label} className="flex justify-between items-center py-1 border-b border-slate-100 last:border-0">
+                      <dt className="text-slate-500 font-medium">{f.label}</dt>
+                      <dd className="font-bold text-slate-900 text-right">{f.value}</dd>
                     </div>
                   ))}
                 </dl>
 
-                <h4 className="text-xs font-bold text-[#1C1C1C] uppercase tracking-wider mt-6 mb-1.5">
+                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mt-6 mb-1.5">
                   Famous for
                 </h4>
                 <p className="text-xs text-slate-600 leading-relaxed">
                   Taj Mahal, royal palaces, sacred Ganges, backwaters, tiger reserves, Himalayan valleys
                 </p>
 
-                <h4 className="text-xs font-bold text-[#1C1C1C] uppercase tracking-wider mt-4 mb-1.5">
+                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mt-4 mb-1.5">
                   Weather
                 </h4>
                 <p className="text-xs text-slate-600 leading-relaxed">
                   October to March pleasant, April to June hot, July to September monsoon
                 </p>
 
-                <h4 className="text-xs font-bold text-[#1C1C1C] uppercase tracking-wider mt-4 mb-1.5">
+                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mt-4 mb-1.5">
                   Attractions
                 </h4>
                 <p className="text-xs text-slate-600 leading-relaxed">
                   Taj Mahal, Amber Fort, Red Fort, Hawa Mahal, Udaipur City Palace, Varanasi Ghats, Kerala backwaters, Golden Temple
                 </p>
 
-                <div className="mt-6 pt-4 border-t border-[#EEE7DE]">
+                <div className="mt-6 pt-4 border-t border-section-border">
                   <a
                     href="#quote"
                     className="w-full py-2.5 rounded-xl bg-[#2E8B8B] hover:bg-[#267373] text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
@@ -1286,32 +1310,32 @@ function CountryContent({
       {/* ====================================================================== */}
       {/* 8. SECTION 5: INDIA TRAVEL FAQS                                        */}
       {/* ====================================================================== */}
-      <section id="faq" className="py-16 sm:py-20 bg-white border-t border-[#EEE7DE]">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
-          <div className="mb-10 text-center max-w-2xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-[0.15em] text-[#F8904D] block mb-2">
-              Got questions?
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight">
-              India travel <em className="not-italic text-[#F8904D]">FAQs</em>
+      <section id="faq" className="py-12 sm:py-16 md:py-20 bg-section-tint border-t border-section-border">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+          <div className="mb-8 sm:mb-10 text-center max-w-2xl mx-auto">
+            <SectionLabel icon={<HelpCircle className="w-3.5 h-3.5" />}>
+              Got Questions?
+            </SectionLabel>
+            <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
+              India Travel <span className="text-[#F8904D]">FAQs</span>
             </h2>
-            <p className="text-[#66758A] text-sm sm:text-base mt-2 leading-relaxed">
+            <p className="text-slate-500 text-sm sm:text-base mt-1.5 leading-relaxed">
               Quick answers to common questions about planning your India trip.
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto space-y-3">
+          <div className="max-w-4xl mx-auto space-y-3">
             {allFaqs.map((faq, idx) => {
               const isOpen = openFaqIndex === idx;
               return (
                 <div
                   key={idx}
-                  className="border border-[#EEE7DE] rounded-xl overflow-hidden bg-[#FAF8F5] transition-colors"
+                  className="border border-section-border rounded-xl overflow-hidden bg-white transition-colors shadow-2xs"
                 >
                   <button
                     type="button"
                     onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                    className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-[#1C1C1C] hover:text-[#2E8B8B] transition-colors cursor-pointer"
+                    className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 hover:text-[#2E8B8B] transition-colors cursor-pointer"
                   >
                     <span>{faq.question}</span>
                     <ChevronDown
@@ -1320,7 +1344,7 @@ function CountryContent({
                     />
                   </button>
                   {isOpen && (
-                    <div className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200/60 pt-3 bg-white">
+                    <div className="px-4 pb-5 sm:px-5 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3 bg-white">
                       {faq.answer}
                     </div>
                   )}

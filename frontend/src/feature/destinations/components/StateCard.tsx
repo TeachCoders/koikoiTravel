@@ -14,18 +14,17 @@ export default function StateCard({
   const journeys = journeyCount ?? state.journeys?.length ?? state.tourCount ?? 0;
   const country = countrySlug ?? state.country?.slug;
   
-  // Only make clickable if active tour packages exist (> 0)
-  const href = journeys > 0
-    ? (country
-        ? `/tour-packages/${country}/${state.slug}`
-        : `/tour-packages/${state.slug}`)
-    : undefined;
+  const href = country
+    ? `/tour-packages/${country}/${state.slug}`
+    : `/tour-packages/${state.slug}`;
 
   return (
     <SingleDestinationReusableCard
-      title={state.title}
-      image={state.thumbImg}
+      title={state.banner?.bannerTitle || state.h1Title || state.title}
+      image={state.thumbImg || state.banner?.images?.[0]}
+      eyebrow={state.banner?.bannerTag || undefined}
       description={state.cardShortDescription || undefined}
+      tourCountText={journeys > 0 ? `${journeys} Tours` : `${cities} Cities`}
       subtitle={
         journeys > 0 ? (
           <span className="inline-flex items-center justify-center gap-1.5">
@@ -34,7 +33,7 @@ export default function StateCard({
             <span>{journeys} {journeys === 1 ? "Tour" : "Tours"}</span>
           </span>
         ) : (
-          <span>Tailor-Made on Request</span>
+          <span>{cities > 0 ? `${cities} Cities` : "Tailor-Made on Request"}</span>
         )
       }
       href={href}
