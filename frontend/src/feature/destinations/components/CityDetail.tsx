@@ -12,6 +12,8 @@ import {
   CloudSun,
   Compass,
   ChevronDown,
+  Award,
+  ArrowRight,
 } from "lucide-react";
 import { useCityBySlug } from "@/feature/city/api/useCity";
 import type { City } from "@/feature/city/type";
@@ -257,167 +259,138 @@ function CityContent({
         excludeHrefs={excludeHrefs}
       />
 
-      {/* ===== KNOW MORE (ALL INFO) ===== */}
+      {/* ===== KNOW MORE (ALL INFO) - FULL VIEW ===== */}
       {showMoreSection && (
         <section id="more" className="bg-white border-y border-section-border py-8 sm:py-10 md:py-12">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-            <div className={`grid grid-cols-1 gap-10 ${hasKnowMoreText && hasSidebar ? "lg:grid-cols-3" : ""}`}>
-              {hasKnowMoreText && (
-                <div className={hasSidebar ? "lg:col-span-2" : "w-full"}>
-                  <div className="bg-white rounded-3xl p-6 sm:p-8 md:p-10 border border-section-border shadow-xs">
-                    <div className="mb-6">
-                      <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                        Destination Guide
-                      </span>
-                      <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold tracking-tight text-slate-900">
-                        Everything About {city.h1Title || city.title}
-                      </h2>
-                      <p className="text-sm sm:text-base text-slate-600 mt-1.5 leading-relaxed">
-                        Essential travel guide, top attractions, weather, local tips & culture for {city.h1Title || city.title}.
-                      </p>
+            {/* Header */}
+            <div className="mb-6">
+              <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+                Destination Guide
+              </span>
+              <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold tracking-tight text-slate-900">
+                Everything About {city.h1Title || city.title}
+              </h2>
+              <p className="text-sm sm:text-base text-slate-600 mt-1.5 leading-relaxed">
+                Essential travel guide, top attractions, weather, local tips & culture for {city.h1Title || city.title}.
+              </p>
+            </div>
+
+            {/* Merged Common DB Fields (Famous For & Quick Facts) */}
+            {(hasFamousFor || facts.length > 0) && (
+              <div className="mb-8 pb-6 border-b border-slate-200/80 space-y-4">
+                {/* Famous For with icon and normal bullets from DB */}
+                {hasFamousFor && (
+                  <div className="space-y-2.5">
+                    <div className="flex items-center gap-2">
+                      <Sparkles size={17} className="text-[#F8904D]" />
+                      <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900">
+                        Famous For
+                      </h3>
                     </div>
-
-                    {hasMoreDesc ? (
-                      <ExpandableRichContent
-                        html={city.moreDescription!}
-                        fallbackHtml={city.seoDescription}
-                        sharedLinkedHrefs={pageLinkedHrefs}
-                        excludeHrefs={excludeHrefs}
-                      />
-                    ) : hasSeoDesc ? (
-                      <RichContent
-                        html={city.seoDescription!}
-                        sharedLinkedHrefs={pageLinkedHrefs}
-                        excludeHrefs={excludeHrefs}
-                        className="rich-text-plain-links text-sm sm:text-base text-slate-700 leading-relaxed"
-                      />
-                    ) : null}
-
-                    {hasAttractions && (
-                      <div className="mt-8 pt-8 border-t border-slate-100">
-                        <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
-                          <Compass size={18} className="text-[#2E8B8B]" /> Top Attractions
-                        </h3>
-                        <RichContent
-                          html={city.attractions!}
-                          sharedLinkedHrefs={pageLinkedHrefs}
-                          excludeHrefs={excludeHrefs}
-                        />
-                      </div>
-                    )}
-
-                    {hasWeather && (
-                      <div className="mt-8 pt-8 border-t border-slate-100">
-                        <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
-                          <CloudSun size={18} className="text-[#F5B041]" /> Weather & Best Time
-                        </h3>
-                        <RichContent
-                          html={city.weather!}
-                          sharedLinkedHrefs={pageLinkedHrefs}
-                          excludeHrefs={excludeHrefs}
-                        />
-                      </div>
-                    )}
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-2 list-disc list-inside text-sm sm:text-[14.5px] text-slate-700 font-medium">
+                      {stripHtml(city.famousFor)
+                        .split(",")
+                        .map((item, i) => (
+                          <li key={i} className="marker:text-[#2E8B8B]">
+                            <span>{item.trim()}</span>
+                          </li>
+                        ))}
+                    </ul>
                   </div>
-                </div>
-              )}
+                )}
 
-              {hasSidebar && (
-                <aside className={`space-y-6 lg:sticky lg:top-28 z-10 self-start ${!hasKnowMoreText ? "max-w-xl mx-auto w-full" : ""}`}>
-              {facts.length > 0 && (
-                <div className="rounded-2xl border border-slate-100 bg-white p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
-                  <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5">
-                    Quick Facts
-                  </h3>
-                  <dl className="flex flex-col divide-y divide-slate-100">
+                {/* Quick Facts from DB */}
+                {facts.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-[13.5px] text-slate-600 pt-1">
                     {facts.map((f) => (
-                      <div key={f.label} className="flex items-center justify-between gap-4 py-3.5 first:pt-0 last:pb-0">
-                        <dt className="text-[15px] text-slate-700 font-semibold flex items-center gap-2">
-                          {f.label}
-                        </dt>
-                        <dd className="text-[15px] font-bold text-[#1C1C1C] text-right capitalize">{f.value}</dd>
+                      <div key={f.label} className="flex items-center gap-1.5">
+                        <span className="text-slate-400 font-normal">{f.label}:</span>
+                        <span className="font-semibold text-slate-800 capitalize">{f.value}</span>
                       </div>
                     ))}
-                  </dl>
-                </div>
-              )}
-
-              {city.famousFor && (
-                <div className="rounded-2xl bg-gradient-to-br from-[#2E8B8B]/10 via-transparent to-[#2E8B8B]/5 border border-[#2E8B8B]/20 p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">
-                  <Sparkles className="absolute -top-4 -right-4 w-24 h-24 text-[#2E8B8B]/10 rotate-12" />
-                  <div className="w-full flex items-center justify-between gap-3 text-left relative z-10">
-                    <h3 className="flex items-center gap-2.5 text-lg font-black text-[#1C1C1C]">
-                      <Sparkles size={18} className="text-[#F8904D]" />
-                      Famous For
-                    </h3>
                   </div>
-                  <ul className="mt-5 space-y-3 relative z-10">
-                    {stripHtml(city.famousFor)
-                      .split(",")
-                      .map((item, i) => (
-                        <li key={i} className="flex items-start gap-2.5 text-[15px] text-slate-700 font-semibold leading-relaxed">
-                          <BadgeCheck size={18} className="shrink-0 mt-[3px] text-[#2E8B8B]" />
-                          {item.trim()}
-                        </li>
-                      ))}
-                  </ul>
+                )}
+              </div>
+            )}
+
+            {/* 100% DB Rich Content */}
+            <div className="max-w-none">
+              {hasMoreDesc ? (
+                <ExpandableRichContent
+                  html={city.moreDescription!}
+                  fallbackHtml={city.seoDescription}
+                  sharedLinkedHrefs={pageLinkedHrefs}
+                  excludeHrefs={excludeHrefs}
+                />
+              ) : hasSeoDesc ? (
+                <RichContent
+                  html={city.seoDescription!}
+                  sharedLinkedHrefs={pageLinkedHrefs}
+                  excludeHrefs={excludeHrefs}
+                  className="rich-text-plain-links text-sm sm:text-base text-slate-700 leading-relaxed"
+                />
+              ) : null}
+
+              {hasAttractions && (
+                <div className="mt-8 pt-8 border-t border-slate-100">
+                  <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
+                    <Compass size={18} className="text-[#2E8B8B]" /> Top Attractions
+                  </h3>
+                  <RichContent
+                    html={city.attractions!}
+                    sharedLinkedHrefs={pageLinkedHrefs}
+                    excludeHrefs={excludeHrefs}
+                  />
                 </div>
               )}
 
-              {cityJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length > 0 && (
-                <div className="rounded-2xl border border-slate-100 bg-white p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                  <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#2E8B8B] mb-5 flex items-center justify-between">
-                    Top 10 Tour Packages
-                    <span className="text-[10px] font-black text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-0.5 rounded-full">
-                      {Math.min(
-                        10,
-                        cityJourneys.filter((j) => (j.displayOrder ?? 0) > 0).length
-                      )}
-                    </span>
+              {hasWeather && (
+                <div className="mt-8 pt-8 border-t border-slate-100">
+                  <h3 className="text-lg font-bold text-[#1C1C1C] mb-3 flex items-center gap-2">
+                    <CloudSun size={18} className="text-[#F5B041]" /> Weather & Best Time
                   </h3>
-                  <ol className="mt-2 space-y-1">
+                  <RichContent
+                    html={city.weather!}
+                    sharedLinkedHrefs={pageLinkedHrefs}
+                    excludeHrefs={excludeHrefs}
+                  />
+                </div>
+              )}
+
+              {hasTopPackages && (
+                <div className="mt-8 pt-8 border-t border-slate-100">
+                  <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 mb-4 flex items-center gap-2">
+                    <Award size={17} className="text-[#2E8B8B]" /> Top Recommended Packages
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {[...cityJourneys]
                       .filter((j) => (j.displayOrder ?? 0) > 0)
-                      .sort(
-                        (a, b) =>
-                          (a.displayOrder ?? Number.MAX_SAFE_INTEGER) -
-                          (b.displayOrder ?? Number.MAX_SAFE_INTEGER)
-                      )
-                      .slice(0, 10)
-                      .map((j, i) => (
-                        <li key={j.id}>
-                          <Link
-                            href={journeyPackageHref(j)}
-                            className="flex items-start gap-3 p-2.5 -mx-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
-                          >
-                            <span className="mt-[2px] w-[26px] h-[26px] shrink-0 rounded-full bg-slate-100 text-[#1C1C1C] text-[11px] font-black flex items-center justify-center group-hover:bg-[#2E8B8B] group-hover:text-white transition-colors shadow-sm">
-                              {i + 1}
+                      .sort((a, b) => (a.displayOrder ?? 999) - (b.displayOrder ?? 999))
+                      .slice(0, 6)
+                      .map((j) => (
+                        <Link
+                          key={j.id}
+                          href={journeyPackageHref(j)}
+                          className="p-3.5 rounded-xl border border-slate-200/80 bg-white hover:border-[#2E8B8B] hover:shadow-xs transition-all flex items-center justify-between group"
+                        >
+                          <div className="min-w-0 pr-2">
+                            <p className="text-sm font-semibold text-slate-900 truncate group-hover:text-[#2E8B8B]">
+                              {j.title.split("|")[0].trim()}
+                            </p>
+                            <span className="text-xs text-slate-500">
+                              {j.duration || (j.noDays > 0 ? `${j.noDays} Days` : "")}
                             </span>
-                            <div className="flex-1 min-w-0">
-                              <span className="text-[14.5px] font-medium text-[#333] leading-snug group-hover:text-[#2E8B8B] transition-colors block truncate">
-                                {j.title.split("|")[0].trim()}
-                              </span>
-                              <div className="flex items-center gap-2 mt-0.5 text-[11.5px] font-semibold text-slate-500">
-                                <span>{j.duration || (j.noDays > 0 ? `${j.noDays} Days` : "")}</span>
-                                {j.destination && (
-                                  <>
-                                    <span>•</span>
-                                    <span className="truncate max-w-[140px]">{j.destination}</span>
-                                  </>
-                                )}
-                              </div>
-                            </div>
-                          </Link>
-                        </li>
+                          </div>
+                          <ArrowRight size={16} className="text-slate-400 group-hover:text-[#2E8B8B] shrink-0 transition-transform group-hover:translate-x-0.5" />
+                        </Link>
                       ))}
-                  </ol>
+                  </div>
                 </div>
               )}
-            </aside>
-            )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
       )}
 
       {/* ===== FAQ SECTION ===== */}
