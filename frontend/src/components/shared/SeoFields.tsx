@@ -128,6 +128,7 @@ export default function SeoFields({
     try {
       const res = await apiClient.post("/upload", fd);
       if (res.data?.url) {
+        onFieldChange("thumbImg", res.data.url);
         onThumbImgUpload?.(res.data.url);
       }
     } catch (err) {
@@ -375,7 +376,10 @@ export default function SeoFields({
         <MediaLibrary
           open={mediaOpen}
           onClose={() => setMediaOpen(false)}
-          onSelect={(url) => onThumbImgUpload?.(url)}
+          onSelect={(url) => {
+            onFieldChange("thumbImg", url);
+            onThumbImgUpload?.(url);
+          }}
           title="Select Thumbnail"
         />
       </div>
