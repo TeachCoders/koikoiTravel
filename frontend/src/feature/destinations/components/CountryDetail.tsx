@@ -31,6 +31,7 @@ import { useCountryBySlug } from "@/feature/country/api/useCountry";
 import { useGetStates } from "@/feature/state/api/useState";
 import { useGetCities } from "@/feature/city/api/useCity";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
+import { useGetTravelExperiences } from "@/feature/travelExperience/api/useTravelExperience";
 import HeroBanner from "@/components/shared/HeroBanner";
 import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
@@ -44,92 +45,7 @@ import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journe
 import DestinationsSkeleton from "./DestinationsSkeleton";
 
 // ============================================================================
-// 1. ICONIC CIRCUITS BENCHMARK DATA
-// ============================================================================
-const ICONIC_CIRCUITS = [
-  {
-    id: "golden-triangle",
-    title: "Golden Triangle & Tigers",
-    route: "Delhi • Agra • Jaipur • Ranthambore",
-    href: "/tour-packages/india/golden-triangle",
-    description: "Delhi, Agra, Jaipur, Ranthambore",
-    tag: "Iconic Circuit #1",
-  },
-  {
-    id: "rajasthan",
-    title: "Royal Rajasthan & Thar Desert",
-    route: "Jaipur • Jodhpur • Udaipur • Jaisalmer",
-    href: "/tour-packages/india/rajasthan",
-    description: "Jaipur, Jodhpur, Udaipur, Jaisalmer",
-    tag: "Land of Maharajas",
-  },
-  {
-    id: "kerala",
-    title: "Kerala Backwaters & Coast",
-    route: "Kochi • Munnar • Alleppey • Kovalam",
-    href: "/tour-packages/india/kerala",
-    description: "Kochi, Munnar, Alleppey, Kovalam",
-    tag: "God's Own Country",
-  },
-  {
-    id: "south-india",
-    title: "South India Temples & Heritage",
-    route: "Chennai • Mahabalipuram • Pondicherry • Madurai • Hampi • Mysore",
-    href: "/tour-packages/india/south-india",
-    description: "Chennai, Mahabalipuram, Pondicherry, Madurai, Hampi, Mysore",
-    tag: "Temple Kingdoms",
-  },
-  {
-    id: "himalayas-spiritual",
-    title: "Himalayas & Sacred Ganges",
-    route: "Varanasi • Rishikesh • Shimla • Amritsar",
-    href: "/travel-experiences/spiritual",
-    description: "Varanasi, Rishikesh, Shimla, Amritsar",
-    tag: "Spiritual & Mountains",
-  },
-];
-
-// ============================================================================
-// 2. CURATED EXPLORE STATES DIRECTORY
-// ============================================================================
-const CURATED_STATES_LIST = [
-  { title: "Delhi NCR", slug: "delhi", defaultCount: "36 tours" },
-  { title: "Rajasthan", slug: "rajasthan", defaultCount: "32 tours" },
-  { title: "Uttar Pradesh", slug: "uttar-pradesh", defaultCount: "30 tours" },
-  { title: "Golden Triangle", slug: "golden-triangle", defaultCount: "15 tours" },
-  { title: "Taj Mahal", slug: "taj-mahal", defaultCount: "12 tours" },
-  { title: "Kerala", slug: "kerala", defaultCount: "15 tours" },
-  { title: "South India", slug: "south-india", defaultCount: "10 tours" },
-  { title: "Maharashtra", slug: "maharashtra", defaultCount: "9 tours" },
-  { title: "Jammu & Kashmir", slug: "jammu-and-kashmir", defaultCount: "5 tours" },
-  { title: "Ladakh", slug: "ladakh", defaultCount: "4 tours" },
-  { title: "Himachal Pradesh", slug: "himachal-pradesh", defaultCount: "View trips" },
-  { title: "Uttarakhand", slug: "uttarakhand", defaultCount: "3 tours" },
-  { title: "Goa", slug: "goa", defaultCount: "3 tours" },
-  { title: "Madhya Pradesh", slug: "madhya-pradesh", defaultCount: "3 tours" },
-  { title: "Punjab", slug: "punjab", defaultCount: "2 tours" },
-];
-
-// ============================================================================
-// 3. POPULAR PLACES PILLS
-// ============================================================================
-const POPULAR_PLACES = [
-  "Jaipur",
-  "Agra",
-  "Delhi",
-  "Udaipur",
-  "Varanasi",
-  "Kochi",
-  "Munnar",
-  "Alleppey",
-  "Jodhpur",
-  "Jaisalmer",
-  "Shimla",
-  "Amritsar",
-];
-
-// ============================================================================
-// 4. INDIA TRAVEL FAQS
+// INDIA TRAVEL FAQS (Fallback when CMS has no custom FAQs)
 // ============================================================================
 const DEFAULT_INDIA_FAQS = [
   {
@@ -251,6 +167,17 @@ function CountryContent({
     initialStates
   );
 
+  const { travelExperiences = [] } = useGetTravelExperiences({
+    limit: 100,
+    isActive: "true",
+  });
+
+  const { cities: dbCities = [] } = useGetCities({
+    countryId: country.id,
+    limit: 100,
+    isActive: "true",
+  });
+
   const { journeys, isLoading: journeysLoading } = useGetJourneys(
     { limit: 100, isActive: "true" },
     initialJourneys
@@ -270,6 +197,94 @@ function CountryContent({
       return aOrder - bOrder;
     });
   }, [states]);
+
+  // 100% Dynamic Iconic Circuits derived from DB State & TravelExperience entities
+  const iconicCircuits = useMemo(() => {
+    const findState = (slug: string, altId?: number) =>
+      states.find((s) => s.slug === slug || (altId && s.id === altId));
+
+    const findExp = (slug: string) =>
+      travelExperiences.find((e) => e.slug === slug);
+
+    // Resolve entities dynamically
+    const gt = findState("golden-triangle", 30) || findExp("golden-triangle");
+    const raj = findState("rajasthan");
+    const kerala = findState("kerala");
+    const south = findState("south-india");
+    const spiritual = findExp("spiritual") || findState("himachal-pradesh") || findState("jammu-and-kashmir");
+
+    // Check if admin has set explicit displayOrder on states (e.g. 1..5)
+    const statesWithOrder = displayedStates.filter(
+      (s) => s.displayOrder && s.displayOrder > 0 && s.displayOrder <= 5
+    );
+
+    const candidates =
+      statesWithOrder.length >= 4
+        ? statesWithOrder.map((s) => ({ item: s, defaultSlug: s.slug, isExp: false }))
+        : [
+            { item: gt, defaultSlug: "golden-triangle", isExp: false },
+            { item: raj, defaultSlug: "rajasthan", isExp: false },
+            { item: kerala, defaultSlug: "kerala", isExp: false },
+            { item: south, defaultSlug: "south-india", isExp: false },
+            { item: spiritual, defaultSlug: "spiritual", isExp: !findState("himachal-pradesh") && Boolean(findExp("spiritual")) },
+          ];
+
+    return candidates.map(({ item, defaultSlug, isExp }) => {
+      const slug = item?.slug || defaultSlug;
+      const title =
+        item?.banner?.bannerTitle ||
+        item?.h1Title ||
+        item?.title ||
+        slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+      const tag = item?.banner?.bannerTag || "";
+
+      const description =
+        item?.cardShortDescription ||
+        (item as any)?.attractions ||
+        (item as any)?.famousFor?.replace(/<[^>]+>/g, "").slice(0, 100) ||
+        (item as any)?.highlights?.replace(/<[^>]+>/g, "").slice(0, 100) ||
+        item?.seoDescription?.replace(/<[^>]+>/g, "").slice(0, 100) ||
+        "Private chauffeur, licensed guides and tailor-made sightseeing";
+
+      const href = isExp
+        ? `/travel-experiences/${slug}`
+        : `/tour-packages/india/${slug}`;
+
+      const count =
+        item && "id" in item && "countryId" in item
+          ? journeyCountForState(item.id) || (item as any).tourCount || 0
+          : (item as any)?.tourCount || 0;
+
+      return {
+        id: item?.id || slug,
+        title,
+        tag,
+        description,
+        href,
+        count,
+      };
+    });
+  }, [states, travelExperiences, displayedStates, countryJourneys]);
+
+  // 100% Dynamic Popular Cities derived from DB Cities
+  const popularCities = useMemo(() => {
+    if (dbCities && dbCities.length > 0) {
+      return [...dbCities]
+        .sort((a, b) => {
+          const aCount = (a as any).tourCount || 0;
+          const bCount = (b as any).tourCount || 0;
+          if (bCount !== aCount) return bCount - aCount;
+          return a.title.localeCompare(b.title);
+        })
+        .slice(0, 14)
+        .map((c) => c.title);
+    }
+    return [
+      "Jaipur", "Agra", "Delhi", "Udaipur", "Varanasi",
+      "Kochi", "Munnar", "Alleppey", "Jodhpur", "Jaisalmer", "Shimla", "Amritsar",
+    ];
+  }, [dbCities]);
 
   // ==========================================================================
   // TRIP FINDER STATE & FILTERS
@@ -613,24 +628,34 @@ function CountryContent({
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
-            {ICONIC_CIRCUITS.map((circ) => (
+            {iconicCircuits.map((circ) => (
               <Link
                 key={circ.id}
                 href={circ.href}
                 className="group bg-[#FAF8F5] hover:bg-white border border-[#EEE7DE] hover:border-[#F8904D] rounded-2xl p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm"
               >
                 <div>
+                  {circ.tag && (
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#F8904D] block mb-1.5 truncate">
+                      {circ.tag}
+                    </span>
+                  )}
                   <b className="block text-base font-bold text-[#1C1C1C] group-hover:text-[#F8904D] transition-colors leading-snug mb-2">
                     {circ.title}
                   </b>
-                  <p className="text-xs font-semibold text-[#2E8B8B] leading-relaxed mb-6">
+                  <p className="text-xs font-semibold text-[#2E8B8B] leading-relaxed mb-6 line-clamp-3">
                     {circ.description}
                   </p>
                 </div>
-                <span className="mt-auto inline-flex items-center gap-1 text-xs font-bold text-[#F8904D] group-hover:translate-x-1 transition-transform">
-                  <span>View trips</span>
-                  <span>&rarr;</span>
-                </span>
+                <div className="mt-auto flex items-center justify-between pt-3 border-t border-[#EEE7DE]/60">
+                  <span className="text-[11px] font-medium text-[#66758A]">
+                    {circ.count > 0 ? `${circ.count} tours` : "View trips"}
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-xs font-bold text-[#F8904D] group-hover:translate-x-1 transition-transform">
+                    <span>View trips</span>
+                    <span>&rarr;</span>
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
@@ -911,25 +936,22 @@ function CountryContent({
             </p>
           </div>
 
-          {/* States Grid */}
+          {/* States Grid (100% Dynamic from DB State table) */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 mb-12">
-            {CURATED_STATES_LIST.map((item) => {
-              // Match real state from DB if available for accurate tour count
-              const dbState = displayedStates.find(
-                (s) => s.slug === item.slug || s.title.toLowerCase() === item.title.toLowerCase()
-              );
-              const realCount = dbState ? journeyCountForState(dbState.id) : 0;
-              const countLabel = realCount > 0 ? `${realCount} tours` : item.defaultCount;
-              const href = `/tour-packages/india/${item.slug}`;
+            {displayedStates.map((s) => {
+              const realCount = journeyCountForState(s.id) || s.tourCount || 0;
+              const countLabel = realCount > 0 ? `${realCount} tours` : "View trips";
+              const href = `/tour-packages/india/${s.slug}`;
+              const title = s.banner?.bannerTitle || s.h1Title || s.title;
 
               return (
                 <Link
-                  key={item.slug}
+                  key={s.id}
                   href={href}
                   className="bg-white hover:bg-slate-50 border border-[#EEE7DE] hover:border-[#F8904D] rounded-xl p-3.5 sm:p-4 flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:shadow-sm"
                 >
                   <b className="block text-sm sm:text-base font-bold text-[#1C1C1C] leading-snug">
-                    {item.title}
+                    {title}
                   </b>
                   <small className="text-xs text-[#66758A] mt-2 block font-medium">
                     {countLabel}
@@ -952,7 +974,7 @@ function CountryContent({
             </Link>
           </div>
 
-          {/* Popular Places to Visit (Interactive Pills) */}
+          {/* Popular Places to Visit (100% Dynamic from DB Cities) */}
           <div className="pt-6 border-t border-[#EEE7DE]">
             <h3 className="text-lg sm:text-xl font-bold text-[#1C1C1C] mb-1">
               Popular places to visit
@@ -961,7 +983,7 @@ function CountryContent({
               Tap a city to filter the trips above that include it.
             </p>
             <div className="flex flex-wrap gap-2">
-              {POPULAR_PLACES.map((place) => (
+              {popularCities.map((place) => (
                 <button
                   key={place}
                   type="button"
