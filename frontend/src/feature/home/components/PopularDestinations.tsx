@@ -59,7 +59,6 @@ export const PopularDestinations: React.FC<{
       image: tajState?.thumbImg || tajExp?.thumbImg || undefined,
       eyebrow: tajState?.banner?.bannerTag || tajExp?.banner?.bannerTag || "HOME OF TAJ MAHAL, INDIA",
       description: tajState?.cardShortDescription || tajExp?.cardShortDescription || "Agra & Taj Mahal private sightseeing & heritage tours",
-      region: "Uttar Pradesh",
       tourCountText: `${tajTours} Tours`,
       href: "/tour-packages/india/taj-mahal",
       displayOrder: 1,
@@ -79,7 +78,6 @@ export const PopularDestinations: React.FC<{
       image: gtExp?.thumbImg || gtState?.thumbImg || undefined,
       eyebrow: gtExp?.banner?.bannerTag || gtState?.banner?.bannerTag || "ICONIC HERITAGE CIRCUIT",
       description: gtExp?.cardShortDescription || gtState?.cardShortDescription || "Delhi, Agra & Jaipur private sightseeing & heritage tours",
-      region: "North India",
       tourCountText: `${gtTours} Tours`,
       href: "/tour-packages/india/golden-triangle",
       displayOrder: 2,
@@ -94,7 +92,6 @@ export const PopularDestinations: React.FC<{
       image: rajState?.thumbImg || undefined,
       eyebrow: rajState?.banner?.bannerTag || "LAND OF KINGS & PALACES",
       description: rajState?.cardShortDescription || "Jaipur, Udaipur & desert forts private heritage tours",
-      region: "Royal India",
       tourCountText: `${rajTours} Tours`,
       href: "/tour-packages/india/rajasthan",
       displayOrder: 3,
@@ -109,7 +106,6 @@ export const PopularDestinations: React.FC<{
       image: keralaState?.thumbImg || undefined,
       eyebrow: keralaState?.banner?.bannerTag || "GOD'S OWN COUNTRY",
       description: keralaState?.cardShortDescription || "Alleppey, Munnar & tropical backwaters private tours",
-      region: "South India",
       tourCountText: `${keralaTours} Tours`,
       href: "/tour-packages/india/kerala",
       displayOrder: 4,
@@ -124,7 +120,6 @@ export const PopularDestinations: React.FC<{
       image: southState?.thumbImg || undefined,
       eyebrow: southState?.banner?.bannerTag || "TEMPLES & TROPICAL COASTS",
       description: southState?.cardShortDescription || "Mahabalipuram, Madurai & temple heritage tours",
-      region: "Dravidian Heritage",
       tourCountText: `${southTours} Tours`,
       href: "/tour-packages/india/south-india",
       displayOrder: 5,
@@ -180,7 +175,6 @@ export const PopularDestinations: React.FC<{
                 image={item.image}
                 eyebrow={item.eyebrow}
                 description={item.description}
-                region={item.region}
                 tourCountText={item.tourCountText}
                 href={item.href}
               />
