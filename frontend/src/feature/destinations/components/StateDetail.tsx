@@ -20,8 +20,7 @@ import DestinationSlider, { useSliderControl } from "@/components/shared/Destina
 import HeroBanner from "@/components/shared/HeroBanner";
 import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
-import RichContent from "@/components/shared/RichContent";
-import ExpandableRichContent from "@/components/shared/ExpandableRichContent";
+import DestinationGuideSection from "@/components/shared/DestinationGuideSection";
 import ToursSection from "@/components/shared/ToursSection";
 import TourPackageCard from "@/components/shared/TourPackageCard";
 import FilterBar from "@/components/shared/FilterBar";
@@ -498,97 +497,19 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         bgType={showCitiesSection ? "pattern" : "white"}
       />
 
-      {/* ===== TRAVEL GUIDE (100% DB DRIVEN - STRICT 2-BG ALTERNATION, NO SIDEBAR) ===== */}
-      {showMoreSection && (
-        <section
-          id="more"
-          className={`w-full relative border-y border-section-border py-10 sm:py-12 md:py-14 ${
-            showCitiesSection ? "bg-white" : "bg-section-tint"
-          }`}
-        >
-          <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-10 relative z-10">
-            {/* Header */}
-            <div className="mb-8">
-              <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                TRAVEL GUIDE
-              </span>
-              <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold tracking-tight text-slate-900">
-                Everything About {state.title}
-              </h2>
-              <p className="text-sm sm:text-base text-slate-600 mt-1.5 leading-relaxed">
-                Essential travel guide, top places to visit, culture, food & insider tips for {state.title}.
-              </p>
-            </div>
-
-            {/* Merged Common DB Fields (Famous For & Quick Facts) */}
-            {(hasFamousFor || facts.length > 0) && (
-              <div className="mb-8 pb-6 border-b border-slate-200/80 space-y-4">
-                {/* Famous For */}
-                {hasFamousFor && (
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <Sparkles size={17} className="text-[#F8904D]" />
-                      <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900">
-                        Famous For
-                      </h3>
-                    </div>
-                    {state.famousFor && /<li\b/i.test(state.famousFor) ? (
-                      <RichContent
-                        html={state.famousFor}
-                        sharedLinkedHrefs={pageLinkedHrefs}
-                        excludeHrefs={excludeHrefs}
-                        className="text-sm sm:text-[15px] text-slate-700 leading-relaxed [&>ul]:my-0 [&>ul]:space-y-2 [&_li]:my-1.5 [&_li]:text-sm sm:[&_li]:text-[15px] [&_p]:inline [&_p]:m-0"
-                      />
-                    ) : (
-                      <div className="flex flex-wrap gap-2 pt-1">
-                        {stripHtml(state.famousFor || "")
-                          .split(/[,•\n]+/)
-                          .map((item) => item.trim())
-                          .filter(Boolean)
-                          .map((item, i) => (
-                            <span
-                              key={i}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs sm:text-[13.5px] font-medium"
-                            >
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#2E8B8B]" />
-                              {item}
-                            </span>
-                          ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Quick Facts from DB */}
-                {facts.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-2.5 pt-1">
-                    {facts.map((f) => (
-                      <div
-                        key={f.label}
-                        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/70 text-xs sm:text-[13px] text-slate-600 shadow-2xs"
-                      >
-                        <span className="text-slate-400 font-medium">{f.label}:</span>
-                        <span className="font-semibold text-slate-800 capitalize">{f.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* 100% DB Rich Content */}
-            <div className="max-w-none">
-              <ExpandableRichContent
-                html={state.moreDescription}
-                fallbackHtml={state.seoDescription}
-                sharedLinkedHrefs={pageLinkedHrefs}
-                excludeHrefs={excludeHrefs}
-                hideAllContentWhenCollapsed={hasFamousFor}
-              />
-            </div>
-          </div>
-        </section>
-      )}
+      {/* ===== TRAVEL GUIDE (100% DB DRIVEN - COMPLETE LAST BEFORE FOOTER) ===== */}
+      <DestinationGuideSection
+        title={state.h1Title || state.title}
+        badgeLabel="TRAVEL GUIDE"
+        famousFor={state.famousFor}
+        moreDescription={state.moreDescription}
+        seoDescription={state.seoDescription}
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
+        className={`w-full relative border-y border-section-border py-10 sm:py-12 md:py-14 ${
+          showCitiesSection ? "bg-white" : "bg-section-tint"
+        }`}
+      />
     </div>
   );
 }

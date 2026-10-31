@@ -8,9 +8,6 @@ import {
   Sparkles,
   CalendarDays,
   Sun,
-  CloudSun,
-  Compass,
-  ChevronDown,
 } from "lucide-react";
 import { useCityBySlug } from "@/feature/city/api/useCity";
 import type { City } from "@/feature/city/type";
@@ -19,8 +16,7 @@ import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journe
 import HeroBanner from "@/components/shared/HeroBanner";
 import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
-import RichContent from "@/components/shared/RichContent";
-import ExpandableRichContent from "@/components/shared/ExpandableRichContent";
+import DestinationGuideSection from "@/components/shared/DestinationGuideSection";
 import ToursSection from "@/components/shared/ToursSection";
 import FilterBar from "@/components/shared/FilterBar";
 import {
@@ -174,15 +170,6 @@ function CityContent({
     />
   );
 
-  const hasSeoDesc = Boolean(stripHtml(city.seoDescription).trim());
-  const hasMoreDesc = Boolean(stripHtml(city.moreDescription).trim());
-  const hasAttractions = Boolean(stripHtml(city.attractions).trim());
-  const hasWeather = Boolean(stripHtml(city.weather).trim());
-  const hasKnowMoreText = hasSeoDesc || hasMoreDesc || hasAttractions || hasWeather;
-
-  const hasFamousFor = Boolean(stripHtml(city.famousFor || "").trim());
-  const showMoreSection = hasKnowMoreText || hasFamousFor;
-
   return (
     <div>
       {/* ===== HERO ===== */}
@@ -250,100 +237,6 @@ function CityContent({
       />
 
       {/* ===== KNOW MORE (ALL INFO) - FULL VIEW ===== */}
-      {showMoreSection && (
-        <section id="more" className="bg-white border-y border-section-border py-8 sm:py-10 md:py-12">
-          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-            {/* Header */}
-            <div className="mb-6">
-              <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                Destination Guide
-              </span>
-              <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold tracking-tight text-slate-900">
-                Everything About {city.h1Title || city.title}
-              </h2>
-              <p className="text-sm sm:text-base text-slate-600 mt-1.5 leading-relaxed">
-                Essential travel guide, top attractions, weather, local tips & culture for {city.h1Title || city.title}.
-              </p>
-            </div>
-
-            {/* Famous For */}
-            {hasFamousFor && (
-              <div className="mb-6 space-y-3">
-                <div className="flex items-center gap-2">
-                  <Sparkles size={17} className="text-[#F8904D]" />
-                  <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900">
-                    Famous For
-                  </h3>
-                </div>
-                {city.famousFor && /<li\b/i.test(city.famousFor) ? (
-                  <RichContent
-                    html={city.famousFor}
-                    sharedLinkedHrefs={pageLinkedHrefs}
-                    excludeHrefs={excludeHrefs}
-                    className="text-sm sm:text-[15px] text-slate-700 leading-relaxed [&>ul]:my-0 [&>ul]:space-y-2 [&_li]:my-1.5 [&_li]:text-sm sm:[&_li]:text-[15px] [&_p]:inline [&_p]:m-0"
-                  />
-                ) : (
-                  <div className="flex flex-wrap gap-2 pt-1">
-                    {stripHtml(city.famousFor || "")
-                      .split(/[,•\n]+/)
-                      .map((item) => item.trim())
-                      .filter(Boolean)
-                      .map((item, i) => (
-                        <span
-                          key={i}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs sm:text-[13.5px] font-medium"
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#2E8B8B]" />
-                          {item}
-                        </span>
-                      ))}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* 100% DB Rich Content */}
-            <div className="max-w-none">
-              <ExpandableRichContent
-                html={city.moreDescription}
-                fallbackHtml={city.seoDescription}
-                sharedLinkedHrefs={pageLinkedHrefs}
-                excludeHrefs={excludeHrefs}
-                hideAllContentWhenCollapsed={hasFamousFor}
-                extraContent={
-                  (hasAttractions || hasWeather) ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 pt-6 border-t border-slate-200/80">
-                      {hasAttractions && (
-                        <div className="bg-slate-50/70 rounded-xl p-4 sm:p-5 border border-slate-200/70">
-                          <div className="flex items-center gap-2 text-[#2E8B8B] font-bold text-xs sm:text-sm uppercase tracking-wider mb-1.5">
-                            <Compass size={17} />
-                            <span>Top Attractions</span>
-                          </div>
-                          <p className="text-sm sm:text-[14.5px] text-slate-700 font-medium leading-relaxed">
-                            {stripHtml(city.attractions!)}
-                          </p>
-                        </div>
-                      )}
-                      {hasWeather && (
-                        <div className="bg-slate-50/70 rounded-xl p-4 sm:p-5 border border-slate-200/70">
-                          <div className="flex items-center gap-2 text-[#F8904D] font-bold text-xs sm:text-sm uppercase tracking-wider mb-1.5">
-                            <CloudSun size={17} />
-                            <span>Weather & Best Time</span>
-                          </div>
-                          <p className="text-sm sm:text-[14.5px] text-slate-700 font-medium leading-relaxed">
-                            {stripHtml(city.weather!)}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  ) : null
-                }
-              />
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* ===== FAQ SECTION ===== */}
       <FaqSection
         faqs={city.faqs}
@@ -353,6 +246,18 @@ function CityContent({
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
         bgType="pattern"
+      />
+
+      {/* ===== DESTINATION GUIDE (COMPLETE LAST BEFORE FOOTER) ===== */}
+      <DestinationGuideSection
+        title={city.h1Title || city.title}
+        famousFor={city.famousFor}
+        moreDescription={city.moreDescription}
+        seoDescription={city.seoDescription}
+        attractions={city.attractions}
+        weather={city.weather}
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
       />
     </div>
   );
