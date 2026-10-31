@@ -255,12 +255,12 @@ export default function HeroBannerManagerSection({
         )}
       </div>
 
-      {/* Simple Banner Title & Banner Tag */}
+      {/* Banner Title & Banner Tag in 2 cards with full bg-gray */}
       {(onBannerTitleChange || onBannerTagChange) && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {onBannerTitleChange && (
-            <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-700 block">
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 space-y-2">
+              <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
                 Banner Title
               </label>
               <input
@@ -268,14 +268,17 @@ export default function HeroBannerManagerSection({
                 value={bannerTitle ?? ""}
                 onChange={(e) => onBannerTitleChange(e.target.value)}
                 placeholder="e.g. Taj Mahal Tours"
-                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
+                className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
               />
+              <p className="text-[11px] text-gray-500">
+                Hero banner heading override (defaults to page title)
+              </p>
             </div>
           )}
 
           {onBannerTagChange && (
-            <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-700 block">
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 space-y-2">
+              <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
                 Banner Tag
               </label>
               <input
@@ -283,8 +286,11 @@ export default function HeroBannerManagerSection({
                 value={bannerTag ?? ""}
                 onChange={(e) => onBannerTagChange(e.target.value)}
                 placeholder="e.g. Wonder of the World • Agra • Delhi Express"
-                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
+                className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E8B8B]"
               />
+              <p className="text-[11px] text-gray-500">
+                Pill badge above hero heading & destination card eyebrow
+              </p>
             </div>
           )}
         </div>
