@@ -79,6 +79,16 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/tour-packages/india/kerala/kochi",
+        destination: "/tour-packages/india/kerala/cochin",
+        permanent: true,
+      },
+      {
+        source: "/india/kerala/kochi",
+        destination: "/tour-packages/india/kerala/cochin",
+        permanent: true,
+      },
+      {
         source: "/tour-packages/india/karnataka",
         destination: "/tour-packages/india/south-india",
         permanent: true,

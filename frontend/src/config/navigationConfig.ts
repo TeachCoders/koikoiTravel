@@ -145,7 +145,7 @@ export const STATIC_DESTINATION_TREE: DestinationTreeCountry[] = [
         cities: [
           { id: 101, title: "Munnar", slug: "munnar", href: "/tour-packages/india/kerala/munnar" },
           { id: 102, title: "Alleppey", slug: "alleppey", href: "/tour-packages/india/kerala/alleppey" },
-          { id: 103, title: "Kochi", slug: "kochi", href: "/tour-packages/india/kerala/kochi" },
+          { id: 103, title: "Cochin", slug: "cochin", href: "/tour-packages/india/kerala/cochin" },
           { id: 104, title: "Kovalam", slug: "kovalam", href: "/tour-packages/india/kerala/kovalam" },
           { id: 105, title: "Thekkady", slug: "thekkady", href: "/tour-packages/india/kerala/thekkady" },
           { id: 106, title: "Kumarakom", slug: "kumarakom", href: "/tour-packages/india/kerala/kumarakom" },

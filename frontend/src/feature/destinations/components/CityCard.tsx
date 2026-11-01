@@ -17,6 +17,7 @@ const CITY_EYEBROWS: Record<string, string> = {
   munnar: "Tea Gardens & Hills",
   alleppey: "Backwaters & Houseboats",
   kochi: "Colonial Port & Spice Coast",
+  cochin: "Colonial Port & Spice Coast",
 };
 
 const CITY_DESCRIPTIONS: Record<string, string> = {
