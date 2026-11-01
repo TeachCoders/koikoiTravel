@@ -307,15 +307,15 @@ export default function HeaderSearchBar({
       <form
         onSubmit={handleSubmit}
         className={`relative flex items-center rounded-full border transition-all duration-200 ${
-          isMobileModal ? "h-11 bg-white border-slate-300" : "h-10 sm:h-11 md:h-11"
+          isMobileModal ? "h-11 bg-white border-slate-300" : "h-9 sm:h-10 lg:h-10 xl:h-11"
         } shadow-xs ${
           isOpen && q
             ? "bg-white border-[#2E8B8B] ring-2 ring-[#2E8B8B]/15 shadow-md"
             : "bg-slate-50 hover:bg-slate-100/80 border-slate-200 hover:border-slate-300"
         }`}
       >
-        <div className="pl-3.5 pr-2 text-slate-400 shrink-0">
-          <Search className="w-4.5 h-4.5" />
+        <div className="pl-3 pr-1.5 text-slate-400 shrink-0">
+          <Search className="w-4 h-4" />
         </div>
 
         <input
@@ -336,7 +336,7 @@ export default function HeaderSearchBar({
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           aria-label="Search destinations, tours"
-          className="w-full h-full py-2 md:py-2.5 text-xs sm:text-[13px] md:text-sm text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none pr-3"
+          className="w-full min-w-0 h-full py-1.5 text-xs xl:text-[13px] text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none pr-2.5 truncate"
         />
 
         {query && (

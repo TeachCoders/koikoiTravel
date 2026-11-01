@@ -205,12 +205,12 @@ export const Header: React.FC = () => {
           }`}
       >
         <div
-          className={`max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 transition-[padding] duration-200 ${
-            isScrolled ? "py-2 sm:py-2.5" : "py-3 sm:py-3.5"
+          className={`max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-6 xl:px-8 2xl:px-10 transition-[padding] duration-200 ${
+            isScrolled ? "py-2 sm:py-2.5" : "py-2.5 sm:py-3 lg:py-3.5"
           }`}
         >
         {/* ===== Single Compact Row: Logo | Search Bar | Nav Links + Create My Trip ===== */}
-        <div className="flex items-center justify-between gap-1.5 lg:gap-2.5 xl:gap-4">
+        <div className="flex items-center justify-between gap-1.5 lg:gap-2 xl:gap-3">
           {/* 1. Brand Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <Image
@@ -219,13 +219,13 @@ export const Header: React.FC = () => {
               width={685}
               height={222}
               priority
-              className="w-[125px] sm:w-[140px] md:w-[155px] lg:w-[168px] xl:w-[175px] h-auto object-contain"
+              className="w-[120px] sm:w-[135px] md:w-[145px] lg:w-[148px] xl:w-[165px] 2xl:w-[175px] h-auto object-contain"
             />
           </Link>
 
           {/* 2. Navigation Links (Centered) */}
           {!isOfferPage && (
-            <nav className="hidden md:flex items-center justify-center gap-0.5 lg:gap-1 flex-1 mx-1 lg:mx-2 xl:mx-3 shrink-0">
+            <nav className="hidden lg:flex items-center justify-center gap-0.5 xl:gap-1 flex-1 mx-1 lg:mx-1.5 xl:mx-3 shrink-0 min-w-0">
               {navLinks.map((link) => (
                 <div
                   key={link.href}
@@ -238,7 +238,7 @@ export const Header: React.FC = () => {
                       <Link
                         href={link.directHref}
                         onClick={() => setOpenDesktopDropdown(null)}
-                        className={`relative whitespace-nowrap px-2.5 xl:px-3 py-1.5 text-[14px] xl:text-[15px] font-semibold tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                        className={`relative whitespace-nowrap px-2 xl:px-3 py-1.5 text-[13px] xl:text-[14.5px] font-semibold tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
                           ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
                           : "text-[#222]"
                           }`}
@@ -272,7 +272,7 @@ export const Header: React.FC = () => {
                           openDesktopDropdown === link.href ? null : link.href
                         )
                       }
-                      className={`relative whitespace-nowrap px-2.5 xl:px-3 py-1.5 text-[14px] xl:text-[15px] font-semibold tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1.5 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
+                      className={`relative whitespace-nowrap px-2 xl:px-3 py-1.5 text-[13px] xl:text-[14.5px] font-semibold tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1.5 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 cursor-pointer ${openDesktopDropdown === link.href
                         ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
                         : "text-[#222]"
                         }`}
@@ -286,7 +286,7 @@ export const Header: React.FC = () => {
                   ) : (
                     <Link
                       href={link.directHref || link.href}
-                      className={`relative whitespace-nowrap px-2.5 xl:px-3 py-1.5 text-[14px] xl:text-[15px] font-semibold tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
+                      className={`relative whitespace-nowrap px-2 xl:px-3 py-1.5 text-[13px] xl:text-[14.5px] font-semibold tracking-normal rounded-full transition-all duration-200 group flex items-center gap-1 hover:text-[#2E8B8B] hover:bg-[#2E8B8B]/5 ${openDesktopDropdown === link.href
                         ? "text-[#2E8B8B] bg-[#2E8B8B]/5"
                         : "text-[#222]"
                         }`}
@@ -365,9 +365,9 @@ export const Header: React.FC = () => {
 
           {/* 3. Right Controls: Search Bar -> Language Selector -> Create My Trip Button */}
           {!isOfferPage && (
-            <div className="hidden md:flex items-center gap-1.5 lg:gap-2 xl:gap-2.5 shrink-0">
+            <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 shrink-0">
               {/* Search Bar (Next to Language Selector) */}
-              <div className="w-[130px] md:w-[150px] lg:w-[175px] xl:w-[220px] 2xl:w-[260px]">
+              <div className="w-[135px] lg:w-[145px] xl:w-[185px] 2xl:w-[240px]">
                 <HeaderSearchBar />
               </div>
 
@@ -378,7 +378,7 @@ export const Header: React.FC = () => {
               <QuoteModal>
                 <button
                   type="button"
-                  className="btn-primary px-3.5 lg:px-4.5 h-10 sm:h-11 md:h-11 text-[13.5px] lg:text-[14.5px] font-bold tracking-normal flex items-center justify-center gap-1 shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+                  className="btn-primary px-3 xl:px-4 h-9 sm:h-10 md:h-10 xl:h-11 text-[13px] xl:text-[14px] font-bold tracking-normal flex items-center justify-center gap-1 shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
                 >
                   <span>Create My Trip</span>
                 </button>
@@ -386,14 +386,14 @@ export const Header: React.FC = () => {
             </div>
           )}
 
-          {/* Mobile Right Controls: Search Icon -> Language Selector -> Hamburger Toggle */}
-          <div className="flex md:hidden items-center gap-1 sm:gap-1.5">
+          {/* Mobile & Tablet (<1024px) Right Controls: Search Icon -> Language Selector -> Create My Trip (on tablet sm/md) -> Hamburger Toggle */}
+          <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
             {!isOfferPage && (
               <button
                 type="button"
                 onClick={() => setIsMobileSearchOpen(true)}
                 aria-label="Search destinations and tours"
-                className="w-9 h-9 flex items-center justify-center rounded-full text-slate-700 hover:text-[#2E8B8B] hover:bg-slate-100 transition-colors cursor-pointer"
+                className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full text-slate-700 hover:text-[#2E8B8B] hover:bg-slate-100 transition-colors cursor-pointer"
               >
                 <Search className="w-5 h-5 text-slate-700" />
               </button>
@@ -401,12 +401,26 @@ export const Header: React.FC = () => {
 
             <LanguageSelector />
 
+            {/* On Tablets (640px to 1023px, e.g. 768px), also show Create My Trip CTA */}
+            {!isOfferPage && (
+              <div className="hidden sm:block">
+                <QuoteModal>
+                  <button
+                    type="button"
+                    className="btn-primary px-3 sm:px-3.5 h-9 sm:h-10 text-xs sm:text-[13px] font-bold tracking-normal flex items-center justify-center gap-1 shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+                  >
+                    <span>Create My Trip</span>
+                  </button>
+                </QuoteModal>
+              </div>
+            )}
+
             {!isOfferPage && (
               <button
                 onClick={() => (isMobileMenuOpen ? handleMobileClose() : handleMobileOpen())}
                 aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isMobileMenuOpen}
-                className="w-9 h-9 flex items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 transition-colors focus:outline-none cursor-pointer"
+                className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 transition-colors focus:outline-none cursor-pointer"
               >
                 {isMobileMenuOpen ? (
                   <X className="w-6 h-6" />
@@ -428,14 +442,14 @@ export const Header: React.FC = () => {
           <>
             {/* Backdrop */}
             <div
-              className="fixed inset-0 z-[75] bg-black/60 backdrop-blur-xs transition-opacity duration-200 md:hidden"
+              className="fixed inset-0 z-[75] bg-black/60 backdrop-blur-xs transition-opacity duration-200 lg:hidden"
               onClick={() => setIsMobileSearchOpen(false)}
               aria-hidden="true"
             />
 
             {/* Slide-down search drawer at top */}
             <div
-              className="fixed top-0 left-0 right-0 z-[80] bg-white border-b border-slate-200 shadow-2xl p-3 sm:p-4 md:hidden animate-in slide-in-from-top-3 duration-200"
+              className="fixed top-0 left-0 right-0 z-[80] bg-white border-b border-slate-200 shadow-2xl p-3 sm:p-4 lg:hidden animate-in slide-in-from-top-3 duration-200"
               role="dialog"
               aria-modal="true"
               aria-label="Search destinations"
@@ -471,7 +485,7 @@ export const Header: React.FC = () => {
           <>
             {/* Backdrop */}
             <div
-              className={`fixed inset-0 z-[65] bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 md:hidden ${isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+              className={`fixed inset-0 z-[65] bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 lg:hidden ${isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
                 }`}
               onClick={handleMobileClose}
               aria-hidden="true"
@@ -479,7 +493,7 @@ export const Header: React.FC = () => {
 
             {/* Drawer panel */}
             <div
-              className={`fixed top-0 left-0 z-[70] flex h-full w-[86vw] max-w-[380px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out md:hidden ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+              className={`fixed top-0 left-0 z-[70] flex h-full w-[86vw] max-w-[380px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out lg:hidden ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
                 }`}
               role="dialog"
               aria-modal="true"
@@ -547,7 +561,7 @@ export const Header: React.FC = () => {
     </header>
     {/* Spacer to preserve document flow so banner and content are never clipped under fixed header */}
     <div
-      className={`${isOfferPage ? "h-[56px]" : "h-[54px] sm:h-[60px] md:h-[72px]"} w-full shrink-0 pointer-events-none`}
+      className={`${isOfferPage ? "h-[56px]" : "h-[56px] sm:h-[62px] lg:h-[70px] xl:h-[74px]"} w-full shrink-0 pointer-events-none`}
       aria-hidden="true"
     />
   </>
