@@ -197,48 +197,12 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
   const displayedCities = useMemo(() => {
     if (isTajMahal || isGoldenTriangle) return [];
-    let citiesList = [...stateCities];
-    const isCircuit = state.slug === "golden-triangle" || state.slug === "taj-mahal" || state.slug === "south-india" || state.slug?.includes("golden-triangle") || state.slug?.includes("taj-mahal") || state.slug?.includes("south-india");
-    if (citiesList.length === 0 && isCircuit) {
-      const seen = new Set<string>();
-      const extracted: any[] = [];
-      for (const j of stateJourneys) {
-        for (const c of (j.cities || [])) {
-          if (!c.slug || seen.has(c.slug)) continue;
-          seen.add(c.slug);
-          extracted.push(c);
-        }
-      }
-      const priority = state.slug === "taj-mahal"
-        ? ["agra", "delhi", "fatehpur-sikri", "jaipur"]
-        : state.slug === "south-india"
-        ? ["mahabalipuram", "pondicherry", "madurai", "thanjavur", "hampi", "mysore", "mysuru", "coorg", "ooty", "bangalore", "chennai", "nagarhole", "bandipur", "kodaikanal", "rameshwaram", "badami"]
-        : ["delhi", "agra", "jaipur", "fatehpur-sikri", "ranthambore"];
-      extracted.sort((a, b) => {
-        const aIdx = priority.indexOf(a.slug);
-        const bIdx = priority.indexOf(b.slug);
-        if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
-        if (aIdx !== -1) return -1;
-        if (bIdx !== -1) return 1;
-        return (a.title || "").localeCompare(b.title || "");
-      });
-      citiesList = extracted;
-    }
 
-    // Show all active cities that have at least 2 tour itineraries and are enabled on site
-    const qualifiedCities = citiesList.filter(
+    // Show only cities created under this state that have at least 2 tour itineraries and are enabled on site
+    return stateCities.filter(
       (c) => c.isActive !== false && c.showOnSite !== false && journeyCountFor(c.id) >= 2
     );
-
-    return qualifiedCities.sort((a, b) => {
-      const aCount = journeyCountFor(a.id);
-      const bCount = journeyCountFor(b.id);
-      if (aCount !== bCount) return bCount - aCount;
-      const aOrder = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999;
-      const bOrder = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
-      return aOrder - bOrder;
-    });
-  }, [stateCities, stateJourneys, state.slug]);
+  }, [stateCities, isTajMahal, isGoldenTriangle]);
 
   const cityCount = displayedCities.length ?? 0;
   const showCitiesSection = displayedCities.length > 0 && !isGoldenTriangle && !isTajMahal;
