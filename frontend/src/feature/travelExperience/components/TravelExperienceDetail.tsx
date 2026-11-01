@@ -282,7 +282,15 @@ function ExperienceContent({
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+            <div className={
+              filteredJourneys.length === 1
+                ? "grid grid-cols-1 max-w-md mx-auto gap-6 mt-6"
+                : filteredJourneys.length === 2
+                ? "grid grid-cols-1 md:grid-cols-2 gap-6 mt-6"
+                : filteredJourneys.length === 3
+                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6"
+                : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6"
+            }>
               {filteredJourneys.map((j) => (
                 <TourPackageCard key={j.id} journey={j} contextName={h1Title} variant="default" />
               ))}

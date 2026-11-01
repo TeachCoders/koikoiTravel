@@ -34,61 +34,86 @@ interface DestinationSliderProps {
   children: ReactNode[];
   className?: string;
   swiperRef?: RefObject<SwiperClass | null>;
+  onSwiper?: (swiper: SwiperClass) => void;
   options?: SliderOptions;
 }
 
 export function useSliderControl() {
+  const [swiper, setSwiper] = useState<SwiperClass | null>(null);
   const swiperRef = useRef<SwiperClass | null>(null);
   const [canScroll, setCanScroll] = useState(false);
 
-  const updateCanScroll = useCallback(() => {
-    const s = swiperRef.current;
+  const updateCanScroll = useCallback((sInstance?: SwiperClass | null) => {
+    const s = sInstance || swiper || swiperRef.current;
     if (!s) return;
-    setCanScroll(!s.isBeginning || !s.isEnd);
-  }, []);
+    const isLocked = Boolean(s.isLocked || (s.snapGrid && s.snapGrid.length <= 1));
+    setCanScroll(!isLocked);
+  }, [swiper]);
 
   useEffect(() => {
-    const s = swiperRef.current;
-    if (!s) return;
-    s.on("init", updateCanScroll);
-    s.on("resize", updateCanScroll);
-    s.on("slideChange", updateCanScroll);
-    updateCanScroll();
+    if (!swiper) return;
+    swiperRef.current = swiper;
+    updateCanScroll(swiper);
+
+    const check = () => updateCanScroll(swiper);
+
+    swiper.on("init", check);
+    swiper.on("resize", check);
+    swiper.on("slideChange", check);
+    swiper.on("lock", check);
+    swiper.on("unlock", check);
+    swiper.on("update", check);
+    swiper.on("breakpoint", check);
+
+    const timer = setTimeout(check, 100);
+
     return () => {
-      s.off("init", updateCanScroll);
-      s.off("resize", updateCanScroll);
-      s.off("slideChange", updateCanScroll);
+      clearTimeout(timer);
+      swiper.off("init", check);
+      swiper.off("resize", check);
+      swiper.off("slideChange", check);
+      swiper.off("lock", check);
+      swiper.off("unlock", check);
+      swiper.off("update", check);
+      swiper.off("breakpoint", check);
     };
+  }, [swiper, updateCanScroll]);
+
+  const handleSwiper = useCallback((s: SwiperClass) => {
+    swiperRef.current = s;
+    setSwiper(s);
+    updateCanScroll(s);
   }, [updateCanScroll]);
 
   const stopAutoplay = useCallback(() => {
-    const s = swiperRef.current;
+    const s = swiper || swiperRef.current;
     if (s && s.autoplay) s.autoplay.stop();
-  }, []);
+  }, [swiper]);
 
   const slidePrev = useCallback(() => {
-    const s = swiperRef.current;
+    const s = swiper || swiperRef.current;
     if (!s) return;
     stopAutoplay();
     if (s.isBeginning) s.slideTo(s.slides.length - 1);
     else s.slidePrev();
-  }, [stopAutoplay]);
+  }, [swiper, stopAutoplay]);
 
   const slideNext = useCallback(() => {
-    const s = swiperRef.current;
+    const s = swiper || swiperRef.current;
     if (!s) return;
     stopAutoplay();
     if (s.isEnd) s.slideTo(0);
     else s.slideNext();
-  }, [stopAutoplay]);
+  }, [swiper, stopAutoplay]);
 
-  return { swiperRef, slidePrev, slideNext, stopAutoplay, canScroll };
+  return { swiperRef, handleSwiper, slidePrev, slideNext, stopAutoplay, canScroll };
 }
 
 export default function DestinationSlider({
   children,
   className,
   swiperRef,
+  onSwiper,
   options,
 }: DestinationSliderProps) {
   const {
@@ -128,6 +153,7 @@ export default function DestinationSlider({
         }
         onSwiper={(swiper) => {
           if (swiperRef) swiperRef.current = swiper;
+          if (onSwiper) onSwiper(swiper);
         }}
         breakpoints={breakpoints}
       >

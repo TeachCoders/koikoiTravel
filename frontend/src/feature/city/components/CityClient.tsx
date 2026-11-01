@@ -14,7 +14,7 @@ import DirectoryTableLayout from "@/components/shared/DirectoryTableLayout";
 import DirectoryTable, { ColumnDef } from "@/components/shared/DirectoryTable";
 import { getCities } from "@/feature/city/api";
 import { useGetCurrentUser } from "@/feature/auth/api/useAuth";
-import { confirmToast } from "@/components/shared/tost";
+import { confirmToast, errorToast } from "@/components/shared/tost";
 import { getCountries } from "@/feature/country/api";
 import { getStates } from "@/feature/state/api";
 import type { Country } from "@/feature/country/type";
@@ -98,7 +98,11 @@ export default function CityClient() {
     });
   };
 
-  const handleToggle = (city: { id: number; title: string; isActive?: boolean }) => {
+  const handleToggle = (city: { id: number; title: string; isActive?: boolean; tourCount?: number }) => {
+    if (!city.isActive && (city.tourCount ?? 0) < 2) {
+      errorToast("Cannot activate city: At least 2 tour itineraries are required before activating a city.");
+      return;
+    }
     toggleCityActive(city.id);
   };
 

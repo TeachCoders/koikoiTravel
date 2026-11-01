@@ -105,7 +105,15 @@ export default function ToursSection({
           <div>
             {filterBar}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+            <div className={
+              journeys.length === 1
+                ? "grid grid-cols-1 max-w-md mx-auto gap-6 mt-6"
+                : journeys.length === 2
+                ? "grid grid-cols-1 md:grid-cols-2 gap-6 mt-6"
+                : journeys.length === 3
+                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6"
+                : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6"
+            }>
               {journeys.map((j) => (
                 <TourPackageCard key={j.id} journey={j} contextName={contextName} variant={cardVariant} />
               ))}

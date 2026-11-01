@@ -164,23 +164,6 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     { label: "Area", value: state.area },
   ].filter((f) => f.value);
 
-  const stateCities = [...(state.cities ?? [])]
-    .filter(
-      (c) =>
-        c.isActive !== false &&
-        c.showOnSite !== false &&
-        c.slug !== state.slug &&
-        (c.title ?? "").trim().toLowerCase() !== (state.title ?? "").trim().toLowerCase()
-    )
-    .sort((a, b) => {
-    const aOrder = a.displayOrder ?? 0;
-    const bOrder = b.displayOrder ?? 0;
-    if (aOrder > 0 && bOrder > 0) return aOrder - bOrder;
-    if (aOrder > 0) return -1;
-    if (bOrder > 0) return 1;
-    return (a.title ?? "").localeCompare(b.title ?? "");
-  });
-
   const journeyCountFor = (cityId?: number) =>
     cityId == null
       ? 0
@@ -190,6 +173,24 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     cityId == null
       ? undefined
       : stateJourneys.find((j) => j.cities?.some((c) => c.id === cityId) || j.cityIds?.includes(cityId))?.thumbImg;
+
+  const stateCities = [...(state.cities ?? [])]
+    .filter(
+      (c) =>
+        c.isActive !== false &&
+        c.showOnSite !== false &&
+        c.slug !== state.slug &&
+        (c.title ?? "").trim().toLowerCase() !== (state.title ?? "").trim().toLowerCase() &&
+        journeyCountFor(c.id) >= 2
+    )
+    .sort((a, b) => {
+    const aOrder = a.displayOrder ?? 0;
+    const bOrder = b.displayOrder ?? 0;
+    if (aOrder > 0 && bOrder > 0) return aOrder - bOrder;
+    if (aOrder > 0) return -1;
+    if (bOrder > 0) return 1;
+    return (a.title ?? "").localeCompare(b.title ?? "");
+  });
 
   const isTajMahal = state.slug === "taj-mahal" || state.slug?.includes("taj-mahal");
   const isGoldenTriangle = state.slug === "golden-triangle" || state.slug?.includes("golden-triangle");
@@ -224,9 +225,9 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       citiesList = extracted;
     }
 
-    // Show all active cities that are enabled on site
+    // Show all active cities that have at least 2 tour itineraries and are enabled on site
     const qualifiedCities = citiesList.filter(
-      (c) => c.isActive !== false && c.showOnSite !== false
+      (c) => c.isActive !== false && c.showOnSite !== false && journeyCountFor(c.id) >= 2
     );
 
     return qualifiedCities.sort((a, b) => {
@@ -246,7 +247,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     .replace(/\s*Tours?(\s*Packages?)?$/i, "")
     .trim();
 
-  const { swiperRef: citiesSwiperRef, slidePrev, slideNext, canScroll } = useSliderControl();
+  const { swiperRef: citiesSwiperRef, handleSwiper: handleCitiesSwiper, slidePrev, slideNext, canScroll } = useSliderControl();
 
   const filterBar = (
     <FilterBar
@@ -368,7 +369,15 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+              <div className={
+                filteredCurrentJourneys.length === 1
+                  ? "grid grid-cols-1 max-w-md mx-auto gap-6 mt-6"
+                  : filteredCurrentJourneys.length === 2
+                  ? "grid grid-cols-1 md:grid-cols-2 gap-6 mt-6"
+                  : filteredCurrentJourneys.length === 3
+                  ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6"
+                  : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6"
+              }>
                 {filteredCurrentJourneys.map((j) => (
                   <TourPackageCard key={j.id} journey={j} variant="default" />
                 ))}
@@ -407,7 +416,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                 Discover iconic royal cities, peaceful lakes, desert landscapes, and historic forts across {cleanStateName}.
               </p>
             </div>
-            {!journeysLoading && displayedCities.length > 4 && (
+            {!journeysLoading && canScroll && (
               <div className="flex items-center gap-2">
                 <button
                   onClick={slidePrev}
@@ -435,7 +444,15 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               <p className="text-slate-500">No cities found in {state.title}</p>
             </div>
           ) : displayedCities.length <= 4 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+            <div className={
+              displayedCities.length === 1
+                ? "grid grid-cols-1 max-w-sm mx-auto gap-4 sm:gap-5 lg:gap-6"
+                : displayedCities.length === 2
+                ? "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 lg:gap-6"
+                : displayedCities.length === 3
+                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6"
+                : "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 lg:gap-6"
+            }>
               {displayedCities.map((c) => {
                 const cityId = c.id;
                 if (cityId == null) return null;
@@ -452,7 +469,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               })}
             </div>
           ) : (
-            <DestinationSlider swiperRef={citiesSwiperRef}>
+            <DestinationSlider swiperRef={citiesSwiperRef} onSwiper={handleCitiesSwiper}>
               {displayedCities.map((c) => {
                 const cityId = c.id;
                 if (cityId == null) return null;
