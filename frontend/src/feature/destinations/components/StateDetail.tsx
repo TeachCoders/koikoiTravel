@@ -408,15 +408,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
               <p className="text-slate-500">No cities found in {state.title}</p>
             </div>
           ) : displayedCities.length <= 4 ? (
-            <div className={
-              displayedCities.length === 1
-                ? "grid grid-cols-1 max-w-sm mx-auto gap-4 sm:gap-5 lg:gap-6"
-                : displayedCities.length === 2
-                ? "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 lg:gap-6"
-                : displayedCities.length === 3
-                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6"
-                : "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 lg:gap-6"
-            }>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
               {displayedCities.map((c) => {
                 const cityId = c.id;
                 if (cityId == null) return null;

@@ -18,6 +18,10 @@ const CITY_EYEBROWS: Record<string, string> = {
   alleppey: "Backwaters & Houseboats",
   kochi: "Colonial Port & Spice Coast",
   cochin: "Colonial Port & Spice Coast",
+  srinagar: "Paradise On Earth in India",
+  gulmarg: "Meadow of Flowers & Ski Capital",
+  pahalgam: "Valley of Shepherds & Pine Forests",
+  sonamarg: "Meadow of Gold & Glacier Trails",
 };
 
 const CITY_DESCRIPTIONS: Record<string, string> = {
@@ -28,6 +32,10 @@ const CITY_DESCRIPTIONS: Record<string, string> = {
   jaisalmer: "Venture into golden sandstone forts, camel desert dunes, and starlit camp safaris.",
   pushkar: "Walk around the sacred holy lake, historic Brahma Temple, and colorful annual fairgrounds.",
   bikaner: "Visit the grand Junagarh Fort, red sandstone palaces, and authentic desert culture.",
+  srinagar: "Experience tranquil Dal Lake shikara rides, traditional houseboats, and Mughal gardens.",
+  gulmarg: "Ride the scenic Gondola cable car, enjoy snow-clad alpine peaks, and world-class ski slopes.",
+  pahalgam: "Discover scenic Lidder River banks, lush Betaab Valley, and horse trails in pine forests.",
+  sonamarg: "Explore the majestic Thajiwas Glacier, alpine meadows, and pristine trout-fishing rivers.",
 };
 
 export default function CityCard({
