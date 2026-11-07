@@ -22,6 +22,7 @@ export interface BlogPost {
   canonical?: string;
   seoTitle?: string;
   h1Title?: string;
+  videoUrl?: string | null;
   isActive: boolean;
   displayOrder?: number;
   createdAt?: string;
@@ -46,6 +47,7 @@ export interface BlogPostPayload {
   canonical?: string;
   seoTitle?: string;
   h1Title?: string;
+  videoUrl?: string | null;
   isActive?: boolean;
   displayOrder?: number;
 }

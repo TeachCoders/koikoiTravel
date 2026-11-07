@@ -111,16 +111,15 @@ export default function SeoFields({
   const handleThumbUpload = async (file: File) => {
     const fd = new FormData();
     fd.append("category", "thumb");
-    const rawCustomName = file.name && !file.name.startsWith("processed-image") && file.name !== "blob" && file.name !== "image.webp"
+    const rawCustomName = file.name && !file.name.startsWith("processed-image") && file.name !== "blob" && file.name !== "image.webp" && !file.name.startsWith("pasted-image") && !file.name.startsWith("url-banner")
       ? file.name.replace(/\.[^/.]+$/, "")
       : "";
-    const baseName = rawCustomName || formData.slug || formData.title;
-    if (baseName) {
-      const formatted = baseName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-      const finalFilename = formatted.endsWith("-thumb") ? formatted : `${formatted}-thumb`;
-      fd.append("filename", finalFilename);
-      fd.append("label", `${rawCustomName || baseName} - Thumbnail`);
-    }
+    const isCustom = rawCustomName && !rawCustomName.startsWith("thumb-journey");
+    const finalFilename = isCustom
+      ? rawCustomName
+      : (formData.slug ? `${formData.slug}-journey-600x400` : `journey-thumb-600x400`);
+    fd.append("filename", finalFilename);
+    fd.append("label", finalFilename);
     if (folderPath) {
       fd.append("folder", folderPath);
     }
@@ -326,12 +325,16 @@ export default function SeoFields({
             <div className="space-y-2">
               <ImageCropUpload
                 onFileSelect={handleThumbUpload}
-                maxWidth={800}
-                maxHeight={600}
-                aspectRatioPreset="4:3"
+                onSelectExistingUrl={(url) => {
+                  onFieldChange("thumbImg", url);
+                  onThumbImgUpload?.(url);
+                }}
+                maxWidth={600}
+                maxHeight={400}
+                aspectRatioPreset="3:2"
                 outputFormat="image/webp"
-                quality={0.85}
-                label={formData.thumbImg ? "Upload / Replace Thumbnail (800 × 600 px)" : "Upload Thumbnail (800 × 600 px)"}
+                quality={0.80}
+                label={formData.thumbImg ? "Upload / Replace Thumbnail (600 × 400 px - Card Size)" : "Upload Thumbnail (600 × 400 px - Card Size)"}
               />
               <button
                 type="button"

@@ -1,7 +1,11 @@
 import fs from "fs";
 import path from "path";
 
-const API_BASE = process.env.API_BASE_URL || "https://api.koikoitravel.com";
+const API_BASE =
+  process.env.API_BASE_URL ||
+  (process.env.NODE_ENV === "production"
+    ? "https://api.koikoitravel.com"
+    : "http://localhost:5000");
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 
 export const revalidate = 3600; // Cache and revalidate every 1 hour

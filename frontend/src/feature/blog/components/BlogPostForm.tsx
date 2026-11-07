@@ -31,6 +31,11 @@ const baseBlogFields: EntityField[] = [
   { name: "author", label: "Author", placeholder: "e.g. KoiKoi Travel Team" },
   { name: "tags", label: "Tags", placeholder: "e.g. rajasthan, heritage, forts (comma separated)" },
   { name: "publishedAt", label: "Published Date", placeholder: "e.g. 2026-08-05" },
+  {
+    name: "videoUrl",
+    label: "YouTube Video URL",
+    placeholder: "e.g. https://youtu.be/TzK8or-Fhx0 or https://www.youtube.com/watch?v=...",
+  },
 ];
 
 export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
@@ -65,6 +70,7 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
     publishedAt:
       initialData?.publishedAt ||
       new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }),
+    videoUrl: initialData?.videoUrl || "",
   });
 
   const initialCategoryNames =
@@ -183,6 +189,7 @@ export default function BlogPostForm({ initialData, mode }: BlogPostFormProps) {
       categories: selectedCategoryNames,
       tags: entityValues.tags.trim() || undefined,
       publishedAt: entityValues.publishedAt.trim() || undefined,
+      videoUrl: entityValues.videoUrl.trim() || undefined,
       moreDescription: moreDescription.trim() || undefined,
       isActive: formData.isActive,
     };

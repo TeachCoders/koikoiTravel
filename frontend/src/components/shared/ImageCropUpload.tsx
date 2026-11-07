@@ -25,7 +25,7 @@ export interface ImageCropUploadProps {
   onClear?: () => void;
   maxWidth?: number;
   maxHeight?: number;
-  aspectRatioPreset?: "hero" | "mobileHero" | "4:3" | "21:9" | "16:9" | "free";
+  aspectRatioPreset?: "hero" | "mobileHero" | "4:3" | "3:2" | "21:9" | "16:9" | "free";
   outputFormat?: "image/jpeg" | "image/webp" | "image/png";
   quality?: number;
   borderRadius?: number;
@@ -34,6 +34,7 @@ export interface ImageCropUploadProps {
   label?: string;
   initialImage?: string;
   onBrowseLibrary?: () => void;
+  onSelectExistingUrl?: (url: string) => void;
 }
 
 type ResizeEdge = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw" | "move" | null;
@@ -52,6 +53,7 @@ export default function ImageCropUpload({
   label = "Upload Image",
   initialImage,
   onBrowseLibrary,
+  onSelectExistingUrl,
 }: ImageCropUploadProps) {
   const [src, setSrc] = useState<string | null>(null);
   const [cropOpen, setCropOpen] = useState(false);
@@ -60,6 +62,8 @@ export default function ImageCropUpload({
   const [mode, setMode] = useState<"file" | "url">("file");
   const [urlInput, setUrlInput] = useState("");
   const [customFileName, setCustomFileName] = useState("");
+  const [matchingMedia, setMatchingMedia] = useState<{ id: number; url: string; filename: string; label: string | null }[]>([]);
+  const [isCheckingDuplicate, setIsCheckingDuplicate] = useState(false);
   const [urlLoading, setUrlLoading] = useState(false);
   const [urlError, setUrlError] = useState("");
   const [zoomPercent, setZoomPercent] = useState(100);
@@ -70,6 +74,8 @@ export default function ImageCropUpload({
       ? 1920 / 600
       : aspectRatioPreset === "mobileHero"
       ? 750 / 500
+      : aspectRatioPreset === "3:2"
+      ? 3 / 2
       : aspectRatioPreset === "4:3"
       ? 4 / 3
       : aspectRatioPreset === "21:9"
@@ -78,7 +84,7 @@ export default function ImageCropUpload({
       ? 16 / 9
       : "free";
 
-  const [activePreset, setActivePreset] = useState<"hero" | "mobileHero" | "4:3" | "21:9" | "16:9" | "free">(aspectRatioPreset);
+  const [activePreset, setActivePreset] = useState<"hero" | "mobileHero" | "4:3" | "3:2" | "21:9" | "16:9" | "free">(aspectRatioPreset);
   const [selectedRatio, setSelectedRatio] = useState<number | "free">(initialRatio);
   const [targetWidth, setTargetWidth] = useState<number>(maxWidth);
   const [targetHeight, setTargetHeight] = useState<number>(maxHeight);
@@ -91,6 +97,32 @@ export default function ImageCropUpload({
       setOutputSize(null);
     }
   }, [initialImage]);
+
+  useEffect(() => {
+    const query = customFileName.trim();
+    if (query.length < 3) {
+      setMatchingMedia([]);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      try {
+        setIsCheckingDuplicate(true);
+        const res = await apiClient.get(`/media/search?q=${encodeURIComponent(query)}`);
+        const list = res.data?.data || [];
+        const cleanQ = query.toLowerCase().replace(/[^a-z0-9]/g, "");
+        const matches = list.filter((m: any) => {
+          const cleanName = (m.label || m.filename || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+          return cleanName.includes(cleanQ);
+        });
+        setMatchingMedia(matches.slice(0, 3));
+      } catch {
+        setMatchingMedia([]);
+      } finally {
+        setIsCheckingDuplicate(false);
+      }
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [customFileName]);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -142,7 +174,7 @@ export default function ImageCropUpload({
         setUrlError("URL does not point to an image");
         return;
       }
-      const file = new File([blob], "url-banner.webp", { type: mimeType });
+      const file = new File([blob], "pasted-image.webp", { type: mimeType });
       onFileSelect(file);
       const objectUrl = URL.createObjectURL(blob);
       setPreview(objectUrl);
@@ -157,7 +189,7 @@ export default function ImageCropUpload({
           try {
             const resp = await fetch(trimmed);
             const blob = await resp.blob();
-            const file = new File([blob], "url-banner.webp", { type: blob.type || "image/webp" });
+            const file = new File([blob], "pasted-image.webp", { type: blob.type || "image/webp" });
             onFileSelect(file);
           } catch {}
           setSrc(trimmed);
@@ -233,8 +265,34 @@ export default function ImageCropUpload({
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
   }, [getContainDimensions]);
 
-  const loadImg = useCallback((imgSrc: string) => {
+  const loadImg = useCallback(async (imgSrc: string) => {
+    let cleanSrc = imgSrc;
+    if (!imgSrc.startsWith("data:") && !imgSrc.startsWith("blob:")) {
+      try {
+        let blob: Blob | null = null;
+        try {
+          const resp = await fetch(imgSrc, { mode: "cors" });
+          if (resp.ok) {
+            blob = await resp.blob();
+          }
+        } catch {
+          try {
+            const proxyRes = await apiClient.get(`/proxy-image?url=${encodeURIComponent(imgSrc)}`, { responseType: "blob" });
+            if (proxyRes.data) {
+              blob = proxyRes.data;
+            }
+          } catch {}
+        }
+        if (blob) {
+          cleanSrc = URL.createObjectURL(blob);
+        }
+      } catch (err) {
+        console.warn("Could not convert image to clean blob, falling back to direct load:", err);
+      }
+    }
+
     const img = new Image();
+    img.crossOrigin = "anonymous";
     img.onload = () => {
       imgRef.current = img;
       setImgNatural({ w: img.naturalWidth, h: img.naturalHeight });
@@ -264,10 +322,10 @@ export default function ImageCropUpload({
 
       renderCanvas();
     };
-    img.src = imgSrc;
+    img.src = cleanSrc;
   }, [getContainDimensions, renderCanvas, selectedRatio]);
 
-  const setPresetRatio = useCallback((preset: "hero" | "mobileHero" | "4:3" | "21:9" | "16:9" | "free") => {
+  const setPresetRatio = useCallback((preset: "hero" | "mobileHero" | "4:3" | "3:2" | "21:9" | "16:9" | "free") => {
     setActivePreset(preset);
     let ratio: number | "free" = "free";
     if (preset === "hero") {
@@ -278,6 +336,10 @@ export default function ImageCropUpload({
       ratio = 750 / 500;
       setTargetWidth(750);
       setTargetHeight(500);
+    } else if (preset === "3:2") {
+      ratio = 3 / 2;
+      setTargetWidth(maxWidth || 600);
+      setTargetHeight(maxHeight || 400);
     } else if (preset === "4:3") {
       ratio = 4 / 3;
       setTargetWidth(maxWidth || 800);
@@ -511,24 +573,28 @@ export default function ImageCropUpload({
     outCanvas.height = outH;
     outCanvas.getContext("2d")!.drawImage(img, clampedSx, clampedSy, clampedSw, clampedSh, 0, 0, outW, outH);
 
-    outCanvas.toBlob((blob) => {
-      if (!blob) return;
-      const formatted = customFileName.trim()
-        ? customFileName.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
-        : "";
-      const ext = outputFormat === "image/png" ? ".png" : outputFormat === "image/jpeg" ? ".jpg" : ".webp";
-      const suffix = aspectRatioPreset === "mobileHero" ? "-mobile" : aspectRatioPreset === "hero" ? "-desktop" : "";
-      const baseName = formatted || (aspectRatioPreset === "mobileHero" ? "mobile-banner" : "desktop-banner");
-      const cleanBase = baseName.endsWith(suffix) ? baseName : `${baseName}${suffix}`;
-      const timeTag = Date.now();
-      const fileName = `${cleanBase}-${timeTag}${ext}`;
-      const file = new File([blob], fileName, { type: outputFormat });
-      setPreview(URL.createObjectURL(blob));
-      setCropOpen(false);
-      setSrc(null);
-      setUrlInput("");
-      onFileSelect(file);
-    }, outputFormat, quality);
+    try {
+      outCanvas.toBlob((blob) => {
+        if (!blob) return;
+        const formatted = customFileName.trim()
+          ? customFileName.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
+          : "";
+        const ext = outputFormat === "image/png" ? ".png" : outputFormat === "image/jpeg" ? ".jpg" : ".webp";
+        const cleanBase = formatted ? `${formatted}-journey` : (aspectRatioPreset === "mobileHero" ? "mobile-banner" : aspectRatioPreset === "hero" ? "desktop-banner" : "thumb-journey");
+        const fileName = `${cleanBase}-${outW}x${outH}${ext}`;
+        const file = new File([blob], fileName, { type: outputFormat });
+        setPreview(URL.createObjectURL(blob));
+        setCropOpen(false);
+        setSrc(null);
+        setUrlInput("");
+        setCustomFileName("");
+        setMatchingMedia([]);
+        onFileSelect(file);
+      }, outputFormat, quality);
+    } catch (cropErr: any) {
+      console.error("Canvas export failed:", cropErr);
+      setUrlError("Image security/CORS restriction prevented canvas export. Please upload the image file directly.");
+    }
   }, [targetWidth, targetHeight, outputFormat, quality, onFileSelect, getContainDimensions, customFileName]);
 
   const handleClear = () => { if (preview) URL.revokeObjectURL(preview); setPreview(null); setSrc(null); setCropOpen(false); setUrlInput(""); setCustomFileName(""); onClear?.(); };
@@ -712,12 +778,21 @@ export default function ImageCropUpload({
                 </button>
                 <button
                   type="button"
+                  onClick={() => setPresetRatio("3:2")}
+                  className={`px-2.5 py-1 rounded-lg transition-all text-xs ${
+                    activePreset === "3:2" ? "bg-white text-indigo-700 shadow-xs font-bold" : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  Card (3:2)
+                </button>
+                <button
+                  type="button"
                   onClick={() => setPresetRatio("4:3")}
                   className={`px-2.5 py-1 rounded-lg transition-all text-xs ${
                     activePreset === "4:3" ? "bg-white text-indigo-700 shadow-xs font-bold" : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
-                  Thumb (4:3)
+                  4:3
                 </button>
                 <button
                   type="button"
@@ -891,6 +966,43 @@ export default function ImageCropUpload({
                 Output size: {outputSize.w} × {outputSize.h} px
               </p>
             )}
+
+            {/* Duplicate Image Warning & View */}
+            {matchingMedia.length > 0 && (
+              <div className="mx-4 my-2 p-2.5 bg-amber-50/90 border border-amber-200 rounded-xl flex items-center justify-between gap-3 text-xs shadow-xs animate-in fade-in slide-in-from-bottom-1 duration-200">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="relative w-12 h-10 rounded-lg overflow-hidden border border-amber-300 shrink-0 bg-slate-100 shadow-2xs">
+                    <img src={matchingMedia[0].url} alt={matchingMedia[0].label || "Match"} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5 font-bold text-amber-900 truncate">
+                      <span>⚠️ Matching image already exists:</span>
+                      <span className="font-semibold text-amber-800 underline truncate">{matchingMedia[0].label || matchingMedia[0].filename}</span>
+                    </div>
+                    <p className="text-[11px] text-amber-700 truncate">Use this existing image to avoid duplicates, or change the name.</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (onSelectExistingUrl) {
+                        onSelectExistingUrl(matchingMedia[0].url);
+                      }
+                      setPreview(matchingMedia[0].url);
+                      setCropOpen(false);
+                      setSrc(null);
+                      setCustomFileName("");
+                      setMatchingMedia([]);
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors flex items-center gap-1 cursor-pointer"
+                  >
+                    ✓ Use Existing Image
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-t border-slate-200 bg-slate-50">
               <div className="flex items-center gap-3">
                 <p className="text-xs text-slate-400 shrink-0">{imgNatural.w} x {imgNatural.h}px</p>

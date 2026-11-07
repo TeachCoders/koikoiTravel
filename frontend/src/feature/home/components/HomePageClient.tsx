@@ -4,8 +4,7 @@ import React from "react";
 import HeroSection from "./HeroSection";
 import SeoTextBlock from "./TravelYourWaySection";
 import BestSellingPackages from "./BestSellingPackages";
-import PopularDestinations from "./PopularDestinations";
-import TravelExperiencesSection from "./TravelExperiencesSection";
+import PlanAdventureSection from "./PlanAdventureSection";
 import HowItWorksSection from "./HowItWorksSection";
 import WhyChooseUsSection from "@/components/shared/WhyChooseUsSection";
 import FaqSection from "./FaqSection";
@@ -39,21 +38,20 @@ export const HomePageClient: React.FC<{
   return (
     <div className="flex flex-col min-h-screen">
       <HeroSection initialHeroBanners={initialHeroBanners} />
-      <BestSellingPackages initialJourneys={initialJourneys} />
-      <PopularDestinations
+      <SeoTextBlock />
+      
+      <PlanAdventureSection
         initialStates={initialStates}
-        initialCountries={initialCountries}
-        initialExperiences={initialExperiences}
-      />
-      <TravelExperiencesSection
         initialExperiences={initialExperiences}
         initialJourneys={initialJourneys}
       />
-      <HowItWorksSection />
+      
+      <BestSellingPackages initialJourneys={initialJourneys} />
       <WhyChooseUsSection initialGuestGallery={initialGuestGallery} />
-      <SeoTextBlock />
-      <FaqSection bgType="pattern" />
-      <TrustedPartners />
+      <HowItWorksSection />
+ 
+      <FaqSection bgType="white" />
+      {/* <TrustedPartners /> */}
     </div>
   );
 };

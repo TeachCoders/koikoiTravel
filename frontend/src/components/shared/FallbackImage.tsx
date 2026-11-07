@@ -89,13 +89,33 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
 
   const [error, setError] = useState(!src || isInvalidPlaceholder);
   const [loaded, setLoaded] = useState(false);
+  const [imgSrc, setImgSrc] = useState(src);
+  const [triedLiveFallback, setTriedLiveFallback] = useState(false);
 
   useEffect(() => {
     setError(!src || isInvalidPlaceholder);
     setLoaded(false);
+    setImgSrc(src);
+    setTriedLiveFallback(false);
   }, [src, isInvalidPlaceholder]);
 
-  if (error || !src || isInvalidPlaceholder) {
+  const handleError = () => {
+    // If a relative image fails (e.g. locally missing upload), immediately try the live production site
+    if (
+      !triedLiveFallback &&
+      typeof imgSrc === "string" &&
+      imgSrc.startsWith("/") &&
+      !imgSrc.startsWith("//") &&
+      !FRONTEND_STATIC_FILES.has(imgSrc)
+    ) {
+      setTriedLiveFallback(true);
+      setImgSrc(`https://koikoitravel.com${imgSrc}`);
+      return;
+    }
+    setError(true);
+  };
+
+  if (error || !imgSrc || isInvalidPlaceholder) {
     return (
       <div
         className={`${
@@ -127,12 +147,12 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
         />
       )}
       <Image
-        src={src}
+        src={imgSrc}
         alt={alt}
         className={className}
         onLoad={() => setLoaded(true)}
-        onError={() => setError(true)}
-        unoptimized={unoptimized ?? shouldBeUnoptimized(src)}
+        onError={handleError}
+        unoptimized={unoptimized ?? shouldBeUnoptimized(imgSrc)}
         fill={fill}
         priority={isPriority}
         fetchPriority={effectiveFetchPriority}

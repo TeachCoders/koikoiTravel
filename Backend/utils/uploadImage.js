@@ -40,6 +40,16 @@ const CONVERTIBLE_MIMETYPES = ["image/jpeg", "image/png", "image/gif"];
 // Images sharp can process (JPEG/PNG/GIF → WebP; WebP → recompress/resize)
 const PROCESSABLE_MIMETYPES = [...CONVERTIBLE_MIMETYPES, "image/webp"];
 
+const getResizeWidth = (req, file) => {
+  const isThumb =
+    req?.body?.category === "thumb" ||
+    (file?.filename && file.filename.toLowerCase().includes("thumb")) ||
+    (file?.originalname && file.originalname.toLowerCase().includes("thumb")) ||
+    (req?.body?.folder && req.body.folder.toLowerCase().includes("thumb"));
+
+  return isThumb ? 600 : 1920;
+};
+
 /**
  * Upload images with flexible folder + filename support
  * Auto-converts JPEG/PNG/GIF → WebP using sharp
@@ -124,11 +134,12 @@ export const uploadImage = (folderName = "images") => {
           if (err) return next(err);
           if (!req.file) return next();
 
-          // Convert to WebP if processable, cap width at 1920px
+          // Convert to WebP if processable, cap width at 1920px (or 600px for thumbnails)
           if (PROCESSABLE_MIMETYPES.includes(req.file.mimetype)) {
             try {
+              const targetWidth = getResizeWidth(req, req.file);
               const webpBuffer = await sharp(req.file.buffer || req.file.path)
-                .resize({ width: 1920, withoutEnlargement: true })
+                .resize({ width: targetWidth, withoutEnlargement: true })
                 .webp({ quality: 80 })
                 .toBuffer();
 
@@ -164,8 +175,9 @@ export const uploadImage = (folderName = "images") => {
             for (const file of fieldFiles) {
               if (PROCESSABLE_MIMETYPES.includes(file.mimetype)) {
                 try {
+                  const targetWidth = getResizeWidth(req, file);
                   const webpBuffer = await sharp(file.buffer || file.path)
-                    .resize({ width: 1920, withoutEnlargement: true })
+                    .resize({ width: targetWidth, withoutEnlargement: true })
                     .webp({ quality: 80 })
                     .toBuffer();
 
@@ -199,8 +211,9 @@ export const uploadImage = (folderName = "images") => {
           for (const file of req.files) {
             if (PROCESSABLE_MIMETYPES.includes(file.mimetype)) {
               try {
+                const targetWidth = getResizeWidth(req, file);
                 const webpBuffer = await sharp(file.buffer || file.path)
-                  .resize({ width: 1920, withoutEnlargement: true })
+                  .resize({ width: targetWidth, withoutEnlargement: true })
                   .webp({ quality: 80 })
                   .toBuffer();
 
@@ -233,8 +246,9 @@ export const uploadImage = (folderName = "images") => {
           for (const file of req.files) {
             if (PROCESSABLE_MIMETYPES.includes(file.mimetype)) {
               try {
+                const targetWidth = getResizeWidth(req, file);
                 const webpBuffer = await sharp(file.buffer || file.path)
-                  .resize({ width: 1920, withoutEnlargement: true })
+                  .resize({ width: targetWidth, withoutEnlargement: true })
                   .webp({ quality: 80 })
                   .toBuffer();
 

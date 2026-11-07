@@ -852,6 +852,7 @@ model BlogPost {
   h1Title         String?
   seoKeyword         String?
   canonical       String?
+  videoUrl        String?
   isActive        Boolean  @default(true)
   displayOrder    Int      @default(0)
   createdAt       DateTime @default(now())

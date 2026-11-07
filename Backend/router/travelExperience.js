@@ -60,6 +60,7 @@ export default createCmsRouter({
     overView: true,
     isActive: true,
     displayOrder: true,
+    featuredJourneyOrder: true,
     cityOrder: true,
     cities: { select: citySelect },
   },

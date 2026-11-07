@@ -2,13 +2,8 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
+import { Toaster } from "react-hot-toast";
 import { fetchCsrfToken } from "@/lib/apiClient";
-
-const Toaster = dynamic(
-  () => import("react-hot-toast").then((c) => c.Toaster),
-  { ssr: false }
-);
 
 export function AppProviders({
   children,

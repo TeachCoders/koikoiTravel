@@ -296,13 +296,13 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
           </div>
 
           {/* LEFT: BANNER | RIGHT: BOOKING CARD */}
-          <div className="grid grid-cols-1 lg:grid-cols-[55fr_45fr] lg:items-stretch items-start gap-8 lg:gap-10">
-            <section className="h-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 lg:items-stretch items-start gap-8 lg:gap-10 lg:min-h-[490px]">
+            <section className="h-full min-h-[280px] md:min-h-[380px] lg:min-h-[490px]">
               {heroImages.length > 0 ? (
                 <div className="flex flex-col h-full">
                   <div
                     className={cn(
-                      "grid gap-2 md:gap-3 w-full h-[260px] md:h-[380px] lg:h-full",
+                      "grid gap-2 md:gap-3 w-full h-[280px] md:h-[380px] lg:h-full min-h-[280px] md:min-h-[380px] lg:min-h-[490px]",
                       heroImages.length === 1 ? "grid-cols-1 grid-rows-1" :
                         heroImages.length === 2 ? "grid-cols-1 grid-rows-2" :
                           "grid-cols-2 grid-rows-2" // 3 or 4+ images
@@ -322,7 +322,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                         alt={journey.title}
                         fill
                         priority
-                        sizes="(max-width: 1024px) 100vw, 55vw"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       />
                     </button>
@@ -339,7 +339,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                           alt={journey.title}
                           fill
                           priority
-                          sizes="(max-width: 1024px) 50vw, 27vw"
+                          sizes="(max-width: 1024px) 50vw, 25vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                       </button>
@@ -357,7 +357,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                           alt={journey.title}
                           fill
                           loading="eager"
-                          sizes="(max-width: 1024px) 50vw, 27vw"
+                          sizes="(max-width: 1024px) 50vw, 25vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                       </button>
@@ -375,7 +375,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                           alt={journey.title}
                           fill
                           loading="eager"
-                          sizes="(max-width: 1024px) 50vw, 27vw"
+                          sizes="(max-width: 1024px) 50vw, 25vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                         {/* +More Photos overlay for 4+ images */}
@@ -397,7 +397,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                   </div>
                 </div>
               ) : (
-                <div className="relative h-[260px] md:h-[380px] bg-slate-200 rounded-3xl overflow-hidden">
+                <div className="relative h-[280px] md:h-[380px] lg:h-full lg:min-h-[490px] bg-slate-200 rounded-3xl overflow-hidden">
                   <ImageWatermark theme="light" />
                 </div>
               )}
@@ -405,7 +405,7 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
 
             {/* RIGHT: DETAILS */}
             <aside className="h-full">
-              <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm relative overflow-hidden flex flex-col justify-between p-6 sm:p-7 h-full">
+              <div className="rounded-3xl border border-slate-200/80 bg-white shadow-sm relative overflow-hidden flex flex-col justify-between p-6 sm:p-7 h-full min-h-[490px]">
                 {/* Top: Header, Duration, Journey Route & Action Buttons */}
                 <div className="space-y-4 relative z-10">
                   {/* Header: Title */}

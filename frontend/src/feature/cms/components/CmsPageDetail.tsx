@@ -4,6 +4,7 @@ import RichContent from "@/components/shared/RichContent";
 import { autoLinkKeywords } from "@/lib/autoInternalLink";
 import type { CmsPage } from "@/feature/cms/type";
 import CmsGuestGalleryWrapper from "@/feature/guestGallery/components/CmsGuestGalleryWrapper";
+import { ABOUT_US_CONTENT_HTML } from "@/feature/cms/aboutUsContent";
 
 const cleanTitle = (rawTitle: string) => {
   if (!rawTitle) return "";
@@ -15,6 +16,7 @@ export default function CmsPageDetail({ page }: { page: CmsPage }) {
   const hasThumb = Boolean(page.thumbImg);
   const isGuestGalleryPage = page.slug === "guest-gallery" || page.title?.toLowerCase().includes("guest gallery");
   const isTealHeroPage = page.slug === "about-us" || page.slug === "about";
+  const contentHtml = page.moreDescription || ABOUT_US_CONTENT_HTML;
 
   return (
     <div>
@@ -71,9 +73,9 @@ export default function CmsPageDetail({ page }: { page: CmsPage }) {
 
       {/* ===== CONTENT ===== */}
       <section className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-12 md:py-16 space-y-10">
-        {page.moreDescription && (
-          <div className="prose prose-lg max-w-none">
-            <RichContent html={autoLinkKeywords(page.moreDescription)} />
+        {contentHtml && (
+          <div className="prose prose-lg max-w-none text-slate-800">
+            <RichContent html={autoLinkKeywords(contentHtml)} />
           </div>
         )}
 

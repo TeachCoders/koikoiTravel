@@ -62,6 +62,23 @@ export default function AsyncMultiSelect<T extends string | number = number>({
   const [loading, setLoading] = useState(false);
   const hasFetchedInitial = useRef(false);
 
+  // Sync cachedOptions and searchResults when initialOptions change (e.g. initialData loads)
+  useEffect(() => {
+    if (initialOptions && initialOptions.length > 0) {
+      setCachedOptions((prev) => {
+        const next = new Map(prev);
+        initialOptions.forEach((opt) => next.set(opt.id, opt));
+        return next;
+      });
+      setSearchResults((prev) => {
+        if (prev.length === 0) return initialOptions;
+        const seen = new Set(prev.map((o) => o.id));
+        const added = initialOptions.filter((o) => !seen.has(o.id));
+        return added.length > 0 ? [...prev, ...added] : prev;
+      });
+    }
+  }, [initialOptions]);
+
   const isOpen = isOpenProp ?? internalOpen;
 
   const setOpen = (open: boolean) => {

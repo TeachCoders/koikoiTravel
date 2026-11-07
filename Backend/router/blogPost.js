@@ -16,6 +16,7 @@ const schema = z.object({
   canonical: z.string().optional(),
   seoTitle: z.string().optional(),
   h1Title: z.string().optional(),
+  videoUrl: z.string().optional().nullable(),
   isActive: z.boolean().optional(),
   displayOrder: z.number().int().optional(),
 });
@@ -35,6 +36,7 @@ export default createCmsRouter({
     category: true,
     categories: true,
     publishedAt: true,
+    videoUrl: true,
     isActive: true,
     displayOrder: true,
   },

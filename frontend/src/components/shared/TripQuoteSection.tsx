@@ -9,8 +9,9 @@ import apiClient, { fetchCsrfToken } from "@/lib/apiClient";
 export default function TripQuoteSection() {
   const pathname = usePathname();
 
-  // Hide on checkout, auth, or thank-you pages
+  // Hide on home page, checkout, auth, or thank-you pages
   const isHidden =
+    pathname === "/" ||
     pathname?.startsWith("/dashboard") ||
     pathname?.startsWith("/auth") ||
     pathname?.startsWith("/booking") ||

@@ -13,6 +13,7 @@ interface BannerSectionProps {
   maxImages?: number;
   hideInputs?: boolean;
   label?: string;
+  defaultRatio?: "free" | "landscape" | "standard" | "portrait" | "wide" | "hero";
 }
 
 export default function BannerSection({
@@ -27,6 +28,7 @@ export default function BannerSection({
   maxImages = 15,
   hideInputs = false,
   label = "Banner Images",
+  defaultRatio = "free",
 }: BannerSectionProps) {
   return (
     <div className="border border-slate-200 rounded-xl shadow-sm bg-white p-6 space-y-5">
@@ -71,6 +73,7 @@ export default function BannerSection({
         label={label}
         maxImages={maxImages}
         folderPath={folderPath}
+        defaultRatio={defaultRatio}
       />
     </div>
   );

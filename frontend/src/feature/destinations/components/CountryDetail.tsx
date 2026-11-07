@@ -2,40 +2,32 @@
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import {
-  MapPin,
   ChevronRight,
+  ChevronDown,
   Sparkles,
-  Clock,
-  ShieldCheck,
-  Check,
+  MapPin,
   ArrowRight,
-  Search,
-  X,
-  Car,
-  Award,
-  Sliders,
-  PhoneCall,
-  HelpCircle,
-  Compass,
 } from "lucide-react";
 import { useCountryBySlug } from "@/feature/country/api/useCountry";
 import { useGetStates } from "@/feature/state/api/useState";
+import { useGetCities } from "@/feature/city/api/useCity";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import { useGetTravelExperiences } from "@/feature/travelExperience/api/useTravelExperience";
 import HeroBanner from "@/components/shared/HeroBanner";
 import { useHeroBanners } from "@/feature/heroBanner/api";
 import { SectionLabel } from "@/components/shared/SectionLabel";
+import { CapsuleTabs } from "@/components/shared/CapsuleTabs";
 import { SingleDestinationReusableCard } from "@/components/shared/SingleDestinationReusableCard";
-import TourPackageCard from "@/components/shared/TourPackageCard";
-import StateCard from "./StateCard";
+import { QuoteModal } from "@/components/shared/QuoteModal";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import DestinationGuideSection from "@/components/shared/DestinationGuideSection";
 import FaqSection from "@/feature/home/components/FaqSection";
 import { stripHtml, cn } from "@/lib/utils";
+import { resolveStateJourneys } from "@/feature/journey/destinationJourneys";
 import type { Country } from "@/feature/country/type";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
@@ -102,6 +94,143 @@ const DEFAULT_INDIA_FAQS = [
   },
 ];
 
+function DestinationTourCard({
+  state,
+  journeys,
+  countrySlug,
+  image,
+  eyebrow,
+}: {
+  state: State;
+  journeys: Journey[];
+  countrySlug: string;
+  image: string;
+  eyebrow: string;
+}) {
+  const cleanTitle = (state.title || "").replace(/\s*Tours?$/i, "");
+  const displayedJourneys = journeys.slice(0, 5);
+  const totalCount = journeys.length;
+  const hasMore = totalCount > 5;
+  const destinationHref = `/tour-packages/${countrySlug}/${state.slug}`;
+
+  return (
+    <div className="group/card flex flex-col bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+      {/* 1. Cinematic Header Photo & Luxury Centered Branding */}
+      <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-900">
+        <FallbackImage
+          src={image}
+          alt={`${cleanTitle} Tour Packages | KoiKoi Travel`}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
+          fallbackSrc="/logo-with-name.png"
+        />
+
+        {/* Cinematic gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/25 pointer-events-none" />
+
+        {/* Top-Right Badge: Tour Count (Frosted Glass) */}
+        <div className="absolute top-3.5 right-3.5 z-10">
+          <span className="px-3 py-1 rounded-full bg-slate-950/65 backdrop-blur-md text-[11px] font-bold text-white border border-white/20 shadow-xs">
+            {totalCount} {totalCount === 1 ? "Tour" : "Tours"}
+          </span>
+        </div>
+
+        {/* Centered Eyebrow & Title Overlay */}
+        <div className="absolute inset-0 p-4 z-10 flex flex-col items-center justify-center text-center">
+          {eyebrow && (
+            <div className="mb-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-950/65 backdrop-blur-md border border-white/20 text-white shadow-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shadow-[0_0_8px_#F8904D]" />
+                <span className="font-semibold text-[11px] sm:text-xs uppercase tracking-wider text-white">
+                  {eyebrow}
+                </span>
+              </div>
+            </div>
+          )}
+          <Link
+            href={destinationHref}
+            className="group/t inline-block px-2"
+          >
+            <h3 className="font-heading text-2xl sm:text-3xl font-bold uppercase tracking-wide leading-tight text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.95)] group-hover/t:text-[#F8904D] transition-colors text-center">
+              {cleanTitle} <span className="text-[#F8904D]">Tours</span>
+            </h3>
+          </Link>
+        </div>
+      </div>
+
+      {/* 2. Premium Itineraries List with Generous Top-Bottom Spacing */}
+      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+        <div className="space-y-3">
+          {displayedJourneys.map((j) => {
+            const rawTitle = j.h1Title || j.title || "India Tour Package";
+            const hasDaysInTitle = /^\d+\s*Days?/i.test(rawTitle);
+            const displayTitle = hasDaysInTitle || !j.noDays
+              ? rawTitle
+              : `${j.noDays} Days - ${rawTitle}`;
+
+            const routeText =
+              j.cities && j.cities.length > 0
+                ? j.cities.map((c) => c.title).join(" • ")
+                : j.destination || "India";
+
+            return (
+              <Link
+                key={j.id}
+                href={`/tour-packages/${j.slug}`}
+                className="group/item flex items-center gap-3.5 px-3 py-2.5 sm:py-3 rounded-xl border border-slate-100 hover:border-[#F8904D]/35 hover:bg-[#FAF8F5] transition-all duration-200 shadow-2xs hover:shadow-xs"
+              >
+                {/* Clean Thumbnail */}
+                <div className="relative w-16 h-12 rounded-lg overflow-hidden shrink-0 bg-slate-100 border border-slate-200/70 shadow-2xs">
+                  <FallbackImage
+                    src={j.thumbImg || "/logo-with-name.png"}
+                    alt={displayTitle}
+                    fill
+                    sizes="64px"
+                    className="object-cover group-hover/item:scale-105 transition-transform duration-300"
+                    fallbackSrc="/logo-with-name.png"
+                  />
+                </div>
+
+                {/* Middle Info: Days in Name + Normal Bold + Clear Spacing */}
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-slate-800 group-hover/item:text-[#F8904D] transition-colors leading-snug">
+                    {displayTitle}
+                  </h4>
+                  <div className="flex items-center gap-1.5 text-[11.5px] text-slate-500 mt-1 font-normal">
+                    <MapPin className="w-3 h-3 text-[#F8904D] shrink-0" />
+                    <span className="truncate">{routeText}</span>
+                  </div>
+                </div>
+
+                {/* Right Action: Sleek Circular Arrow Button */}
+                <div className="shrink-0 w-8 h-8 rounded-full bg-slate-100 group-hover/item:bg-[#F8904D] text-slate-500 group-hover/item:text-white flex items-center justify-center transition-all duration-200 shadow-2xs">
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/item:translate-x-0.5" />
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* 3. Card Footer */}
+        <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-1.5 text-slate-500 font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+            <span>Showing {displayedJourneys.length} of {totalCount} tours</span>
+          </div>
+          <Link
+            href={destinationHref}
+            className="font-semibold text-[#F8904D] hover:text-[#d85511] inline-flex items-center gap-1.5 group/btn hover:underline"
+          >
+            <span>{hasMore ? `View all ${totalCount} tours` : `View tours`}</span>
+            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function CountryDetail({
   slug,
   initialCountry,
@@ -142,6 +271,8 @@ function CountryContent({
   initialStates?: StatePage<State> | null;
   initialJourneys?: JourneyPage<Journey> | null;
 }) {
+  const [activeTab, setActiveTab] = useState<"destination" | "experience">("destination");
+  const [isCityTableExpanded, setIsCityTableExpanded] = useState(false);
   const isIndia = country.slug === "india";
   const displayTitle = country.title.replace(/\s*Tour$/i, "") || country.title;
   const hasSeoDesc = Boolean(stripHtml(country.seoDescription).trim());
@@ -159,7 +290,24 @@ function CountryContent({
     [country.slug]
   );
 
-  const { states } = useGetStates(
+  // Synchronously extract lists from server props so SSR immediately has access to items
+  const initialStatesList = useMemo<State[]>(() => {
+    if (!initialStates) return [];
+    if (Array.isArray(initialStates)) return initialStates;
+    if (Array.isArray(initialStates.data)) return initialStates.data;
+    if (Array.isArray((initialStates as any).items)) return (initialStates as any).items;
+    return [];
+  }, [initialStates]);
+
+  const initialJourneysList = useMemo<Journey[]>(() => {
+    if (!initialJourneys) return [];
+    if (Array.isArray(initialJourneys)) return initialJourneys;
+    if (Array.isArray(initialJourneys.data)) return initialJourneys.data;
+    if (Array.isArray((initialJourneys as any).items)) return (initialJourneys as any).items;
+    return [];
+  }, [initialJourneys]);
+
+  const { states: clientStates } = useGetStates(
     { countryId: country.id, limit: 100 },
     initialStates
   );
@@ -169,19 +317,30 @@ function CountryContent({
     isActive: "true",
   });
 
-  const { journeys, isLoading: journeysLoading } = useGetJourneys(
+  const { cities: apiCities = [] } = useGetCities({
+    limit: 200,
+    isActive: "true",
+    countryId: country.id,
+  });
+
+  const { journeys: clientJourneys, isLoading: journeysLoading } = useGetJourneys(
     { limit: 100, isActive: "true" },
     initialJourneys
   );
 
-  const countryJourneys = journeys.filter(
-    (j) => j.cities?.some((c) => c.state?.country?.id === country.id)
-  );
+  const states: State[] = clientStates && clientStates.length > 0 ? clientStates : initialStatesList;
+  const journeys: Journey[] = clientJourneys && clientJourneys.length > 0 ? clientJourneys : initialJourneysList;
+
+  const countryJourneys = useMemo<Journey[]>(() => {
+    return journeys.filter(
+      (j: Journey) => j.cities?.some((c) => c.state?.country?.id === country.id)
+    );
+  }, [journeys, country.id]);
 
   const journeyCountForState = (stateId: number) => {
-    const s = states.find((st) => st.id === stateId);
+    const s = states.find((st: State) => st.id === stateId);
     const directCount = s?.journeys?.length || s?.tourCount || 0;
-    const cityCount = countryJourneys.filter((j) =>
+    const cityCount = countryJourneys.filter((j: Journey) =>
       j.cities?.some((c) => c.state?.id === stateId || s?.cities?.some((sc) => sc.id === c.id))
     ).length;
     return Math.max(directCount, cityCount);
@@ -215,157 +374,210 @@ function CountryContent({
         return true;
       })
       .sort((a, b) => {
+        const aSlug = (a.slug || "").toLowerCase();
+        const bSlug = (b.slug || "").toLowerCase();
+        const priorityOrder = ["taj-mahal", "golden-triangle", "rajasthan", "kerala", "south-india"];
+        const aPri = priorityOrder.indexOf(aSlug);
+        const bPri = priorityOrder.indexOf(bSlug);
+        if (aPri !== -1 && bPri !== -1) return aPri - bPri;
+        if (aPri !== -1) return -1;
+        if (bPri !== -1) return 1;
+
         const aOrder = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999;
         const bOrder = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
-        return aOrder - bOrder;
+        if (aOrder !== bOrder) return aOrder - bOrder;
+        return (a.title || "").localeCompare(b.title || "");
       });
   }, [states, countryJourneys]);
 
-  // ==========================================================================
-  // 100% DYNAMIC ICONIC CIRCUITS (PULLED LIVE FROM DB STATES & EXPERIENCES)
-  // ==========================================================================
-  // TRIP FINDER STATE & FILTERS
-  // ==========================================================================
-  const [selectedRegion, setSelectedRegion] = useState<"all" | "gt" | "raj" | "south" | "north">("all");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [travelStyle, setTravelStyle] = useState<string>("all");
-  const [durationFilter, setDurationFilter] = useState<string>("all");
-
-  const tripsSectionRef = useRef<HTMLDivElement>(null);
-
-  // Region Chips List
-  const regionChips: { id: "all" | "gt" | "raj" | "south" | "north"; label: string }[] = [
-    { id: "all", label: "All India" },
-    { id: "gt", label: "Golden Triangle" },
-    { id: "raj", label: "Rajasthan" },
-    { id: "south", label: "Kerala & South" },
-    { id: "north", label: "Himalayas & North" },
-  ];
-
-  // Helper matching journeys to Region Chip
-  const matchesRegion = (j: Journey, reg: typeof selectedRegion) => {
-    if (reg === "all") return true;
-    const text = `${j.title} ${j.destination || ""} ${j.cities?.map((c) => c.title).join(" ") || ""} ${j.cities?.[0]?.state?.title || ""}`.toLowerCase();
-
-    if (reg === "gt") {
-      return (
-        text.includes("delhi") ||
-        text.includes("agra") ||
-        text.includes("jaipur") ||
-        text.includes("golden triangle") ||
-        text.includes("uttar pradesh") ||
-        text.includes("taj mahal")
-      );
-    }
-    if (reg === "raj") {
-      return (
-        text.includes("rajasthan") ||
-        text.includes("jaipur") ||
-        text.includes("jodhpur") ||
-        text.includes("udaipur") ||
-        text.includes("jaisalmer") ||
-        text.includes("bikaner") ||
-        text.includes("ranthambore") ||
-        text.includes("pushkar")
-      );
-    }
-    if (reg === "south") {
-      return (
-        text.includes("kerala") ||
-        text.includes("kochi") ||
-        text.includes("munnar") ||
-        text.includes("alleppey") ||
-        text.includes("kovalam") ||
-        text.includes("tamil nadu") ||
-        text.includes("madurai") ||
-        text.includes("chennai") ||
-        text.includes("pondicherry") ||
-        text.includes("mysore") ||
-        text.includes("hampi") ||
-        text.includes("karnataka") ||
-        text.includes("goa") ||
-        text.includes("south india")
-      );
-    }
-    if (reg === "north") {
-      return (
-        text.includes("himalaya") ||
-        text.includes("shimla") ||
-        text.includes("manali") ||
-        text.includes("himachal") ||
-        text.includes("uttarakhand") ||
-        text.includes("rishikesh") ||
-        text.includes("varanasi") ||
-        text.includes("amritsar") ||
-        text.includes("kashmir") ||
-        text.includes("ladakh") ||
-        text.includes("punjab")
-      );
-    }
-    return true;
+  const getDestinationImage = (s: State) => {
+    if (s.thumbImg) return s.thumbImg;
+    if (s.banner?.images?.[0]) return s.banner.images[0];
+    const slug = (s.slug || "").toLowerCase();
+    if (slug === "taj-mahal") return "/india/trip/url-banner-thumb-1793419518009-8d41ab.webp";
+    if (slug === "golden-triangle") return "/india/trip/desktop-banner-1793421572670-thumb-1793421572676-a2298d.webp";
+    if (slug === "rajasthan") return "/india/trip/rajasthan-thumb.webp";
+    if (slug === "kerala") return "/india/trip/allerpey-house-boat-1793424353077-thumb-1793424353083-271e0e.webp";
+    if (slug === "south-india") return "/india/trip/south-india-1793424596731-thumb-1793424596737-527f4a.webp";
+    return "/content/jaipur-holiday-1.webp";
   };
 
-  // Helper matching journeys to Travel Style
-  const matchesStyle = (j: Journey, style: string) => {
-    if (style === "all") return true;
-    const text = `${j.title} ${j.destination || ""} ${j.travelExperiences?.map((e) => e.title).join(" ") || ""}`.toLowerCase();
-
-    if (style === "classic") return text.includes("classic") || text.includes("golden triangle") || text.includes("sightseeing") || text.includes("highlights");
-    if (style === "weekend") return (j.noDays && j.noDays <= 3) || text.includes("weekend") || text.includes("day trip") || text.includes("short");
-    if (style === "wildlife") return text.includes("wildlife") || text.includes("tiger") || text.includes("safari") || text.includes("ranthambore");
-    if (style === "spiritual") return text.includes("spiritual") || text.includes("temple") || text.includes("ganges") || text.includes("varanasi") || text.includes("amritsar") || text.includes("rishikesh");
-    if (style === "wellness") return text.includes("wellness") || text.includes("ayurveda") || text.includes("yoga");
-    if (style === "hills") return text.includes("hills") || text.includes("mountain") || text.includes("shimla") || text.includes("manali") || text.includes("ladakh") || text.includes("kashmir");
-    if (style === "heritage") return text.includes("heritage") || text.includes("fort") || text.includes("palace") || text.includes("royal") || text.includes("rajasthan");
-    return true;
+  const getDestinationEyebrow = (s: State) => {
+    if (s.banner?.bannerTag) return s.banner.bannerTag;
+    const slug = (s.slug || "").toLowerCase();
+    if (slug === "taj-mahal") return "HOME OF TAJ MAHAL, INDIA";
+    if (slug === "golden-triangle") return "FIRST CHOICE OF TRAVEL IN INDIA";
+    if (slug === "rajasthan") return "LAND OF KINGS & PALACES";
+    if (slug === "kerala") return "GOD'S OWN COUNTRY";
+    if (slug === "south-india") return "TEMPLES & TROPICAL COASTS";
+    const cleanTitle = (s.title || "").replace(/\s*Tours?$/i, "");
+    return `${cleanTitle.toUpperCase()}, INDIA`;
   };
 
-  // Helper matching journeys to Duration
-  const matchesDuration = (j: Journey, dur: string) => {
-    if (dur === "all") return true;
-    const days = j.noDays || 0;
-    if (dur === "short") return days <= 2;
-    if (dur === "mid") return days >= 3 && days <= 5;
-    if (dur === "week") return days >= 6 && days <= 9;
-    if (dur === "long") return days >= 10;
-    return true;
+  const getDestinationDescription = (s: State) => {
+    if (s.cardShortDescription) return s.cardShortDescription;
+    const slug = (s.slug || "").toLowerCase();
+    if (slug === "taj-mahal") return "Agra & Taj Mahal private sightseeing & heritage tours";
+    if (slug === "golden-triangle") return "Discover Golden Triangle tours with Delhi, Agra, Jaipur, Taj Mahal, forts and local markets in India";
+    if (slug === "rajasthan") return "Jaipur, Udaipur & desert forts private heritage tours";
+    if (slug === "kerala") return "Alleppey, Munnar & tropical backwaters private tours";
+    if (slug === "south-india") return "Mahabalipuram, Madurai & temple heritage tours";
+    const raw = stripHtml(s.overView || "");
+    return raw.length > 90 ? `${raw.slice(0, 90)}...` : raw || undefined;
   };
 
-  // Filtered Journeys
-  const filteredJourneys = useMemo(() => {
-    return countryJourneys.filter((j) => {
-      // 1. Region
-      if (!matchesRegion(j, selectedRegion)) return false;
+  const getExperienceEyebrow = (exp: any) => {
+    if (exp.banner?.bannerTag) return stripHtml(exp.banner.bannerTag);
+    const title = exp.title || "";
+    if (/wildlife/i.test(title)) return "WILDLIFE & JUNGLE SAFARI";
+    if (/heritage/i.test(title)) return "ROYAL HERITAGE & CULTURE";
+    if (/honeymoon/i.test(title)) return "ROMANTIC HONEYMOON GETAWAY";
+    if (/spiritual/i.test(title)) return "SACRED TEMPLES & PILGRIMAGE";
+    if (/ayurveda/i.test(title)) return "HOLISTIC AYURVEDA & YOGA";
+    if (/desert/i.test(title)) return "DESERT SAFARI & DUNES";
+    if (/family/i.test(title)) return "FAMILY VACATIONS IN INDIA";
+    return "HOLIDAY THEME";
+  };
 
-      // 2. Search query
-      if (searchQuery.trim()) {
-        const q = searchQuery.trim().toLowerCase();
-        const text = `${j.title} ${j.destination || ""} ${j.cities?.map((c) => c.title).join(" ") || ""} ${j.cities?.[0]?.state?.title || ""} ${j.overView || ""}`.toLowerCase();
-        if (!text.includes(q)) return false;
+  const getExperienceDescription = (exp: any) => {
+    const raw = exp.cardShortDescription || exp.overView || exp.description || "";
+    const clean = stripHtml(raw).trim();
+    return clean.length > 95 ? `${clean.slice(0, 95)}...` : clean || undefined;
+  };
+
+  // ==========================================================================
+  // 100% SSR-SAFE DESTINATION GROUPS (WITH RESOLVED CANONICAL PACKAGES)
+  // ==========================================================================
+  const destinationGroups = useMemo(() => {
+    return displayedStates
+      .map((s) => {
+        const { stateJourneys } = resolveStateJourneys(countryJourneys, s);
+        return {
+          state: s,
+          journeys: stateJourneys,
+        };
+      })
+      .filter((g) => g.journeys.length > 0);
+  }, [displayedStates, countryJourneys]);
+
+  // ==========================================================================
+  // TOP TOURIST CITIES FROM A-Z (100% DYNAMIC FROM API - NO STATIC FALLBACKS)
+  // Strict Filtering:
+  // 1. City must be explicitly active (isActive !== false && showOnSite !== false)
+  // 2. Parent state must exist, be active, belong to this country, and not be excluded
+  // 3. City must have at least 1 active tour/journey so its URL actually works and opens
+  // ==========================================================================
+  const azCityGroups = useMemo(() => {
+    const map: Record<string, { title: string; slug: string; stateSlug: string }[]> = {};
+
+    // Excluded states for India page
+    const isExcludedState = (sSlug?: string, sTitle?: string) => {
+      const slug = (sSlug || "").toLowerCase().trim();
+      const title = (sTitle || "").toLowerCase().trim().replace(/\s+/g, "");
+      return (
+        slug === "tamil-nadu" ||
+        slug === "tamilnadu" ||
+        title.includes("tamilnadu") ||
+        slug === "karnataka" ||
+        title.includes("karnataka") ||
+        slug === "punjab" ||
+        title.includes("punjab")
+      );
+    };
+
+    // Lookup map of valid active parent states
+    const validStateMap = new Map<number | string, State>();
+    displayedStates.forEach((s) => {
+      if (s.id) validStateMap.set(s.id, s);
+      if (s.slug) validStateMap.set(s.slug.toLowerCase(), s);
+    });
+
+    // Pool candidate cities from states and apiCities
+    const candidateCities: any[] = [];
+    states.forEach((s) => {
+      if (isExcludedState(s.slug, s.title)) return;
+      if (s.isActive === false || s.showOnSite === false) return;
+      (s.cities || []).forEach((c) => {
+        candidateCities.push({ ...c, state: s });
+      });
+    });
+
+    apiCities.forEach((c: any) => {
+      const parentState = c.state || (c.stateId ? validStateMap.get(c.stateId) : null);
+      if (parentState) {
+        candidateCities.push({ ...c, state: parentState });
+      }
+    });
+
+    const seenCitySlugs = new Set<string>();
+
+    candidateCities.forEach((c) => {
+      if (!c?.title || !c?.slug) return;
+      const cSlug = c.slug.toLowerCase().trim();
+      if (seenCitySlugs.has(cSlug)) return;
+
+      const anyCity = c as any;
+
+      // 1. Disable check: do not show if city is disabled or hidden from site
+      if (anyCity.isActive === false || anyCity.showOnSite === false) return;
+
+      // 2. Parent state check: must exist, be active, and not excluded
+      const stateObj = anyCity.state;
+      if (!stateObj || !stateObj.slug) return;
+      const sSlug = stateObj.slug.toLowerCase().trim();
+      const sTitle = stateObj.title || "";
+      if (isExcludedState(sSlug, sTitle)) return;
+      if (stateObj.isActive === false || stateObj.showOnSite === false) return;
+
+      // 3. Country match
+      const cCountryId = stateObj.country?.id || stateObj.countryId;
+      const cCountrySlug = stateObj.country?.slug;
+      if (cCountryId && cCountryId !== country.id) return;
+      if (cCountrySlug && cCountrySlug !== country.slug) return;
+
+      // 4. Tour/journey check: City MUST have active journeys/tours
+      // Excludes cities like Chittorgarh that have 0 tours or inactive pages
+      const journeyCount =
+        (anyCity._count?.journeys && anyCity._count.journeys > 0) ||
+        (anyCity.tourCount && anyCity.tourCount > 0) ||
+        (anyCity.journeys && anyCity.journeys.length > 0);
+
+      const hasJourneyInCountry = countryJourneys.some((j: Journey) =>
+        j.cities?.some((jc) => jc.id === c.id || jc.slug?.toLowerCase() === cSlug)
+      );
+
+      if (!journeyCount && !hasJourneyInCountry) {
+        return;
       }
 
-      // 3. Travel Style
-      if (!matchesStyle(j, travelStyle)) return false;
+      const cleanTitle = c.title.trim();
+      const firstLetter = cleanTitle.charAt(0).toUpperCase();
+      if (!firstLetter || !/[A-Z]/.test(firstLetter)) return;
 
-      // 4. Duration
-      if (!matchesDuration(j, durationFilter)) return false;
+      seenCitySlugs.add(cSlug);
 
-      return true;
+      if (!map[firstLetter]) {
+        map[firstLetter] = [];
+      }
+      map[firstLetter].push({
+        title: cleanTitle,
+        slug: c.slug,
+        stateSlug: stateObj.slug,
+      });
     });
-  }, [countryJourneys, selectedRegion, searchQuery, travelStyle, durationFilter]);
 
-  const isFiltered =
-    selectedRegion !== "all" ||
-    searchQuery.trim() !== "" ||
-    travelStyle !== "all" ||
-    durationFilter !== "all";
+    // Sort letters alphabetically and cities within each letter
+    const sortedEntries = Object.entries(map).sort(([a], [b]) => a.localeCompare(b));
+    sortedEntries.forEach(([, list]) => {
+      list.sort((a, b) => a.title.localeCompare(b.title));
+    });
 
-  const resetAllFilters = () => {
-    setSelectedRegion("all");
-    setSearchQuery("");
-    setTravelStyle("all");
-    setDurationFilter("all");
-  };
+    return sortedEntries;
+  }, [apiCities, states, displayedStates, countryJourneys, country.id, country.slug]);
+
+  const totalCitiesCount = useMemo(() => {
+    return azCityGroups.reduce((acc, [, list]) => acc + list.length, 0);
+  }, [azCityGroups]);
 
   // Hero Banners Data
   const { data: heroBannersData } = useHeroBanners("Country", {
@@ -465,340 +677,234 @@ function CountryContent({
       </nav>
 
       {/* ====================================================================== */}
-      {/* 2. TRUST BAR (4 VALUES PROPOSITIONS - MATCHING HOME WHY CHOOSE US)     */}
+      {/* 1. EDITORIAL INTRO SECTION (FULL-WIDTH LUXURY VIEW)                    */}
       {/* ====================================================================== */}
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 relative z-20 py-6 sm:py-8">
-        <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgba(18,48,47,0.08)] border border-section-border grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-section-border overflow-hidden">
-          <div className="p-5 sm:p-6 flex items-start gap-4 hover:bg-slate-50/60 transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-teal-50 text-[#2E8B8B] flex items-center justify-center shrink-0 font-bold text-sm">
-              <Car size={20} />
-            </div>
-            <div>
-              <b className="block text-sm font-bold text-slate-900 leading-snug">Private car & driver</b>
-              <span className="text-xs text-slate-500 mt-1 block">Air-conditioned, verified chauffeur</span>
-            </div>
-          </div>
-
-          <div className="p-5 sm:p-6 flex items-start gap-4 hover:bg-slate-50/60 transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-teal-50 text-[#2E8B8B] flex items-center justify-center shrink-0 font-bold text-sm">
-              <Award size={20} />
-            </div>
-            <div>
-              <b className="block text-sm font-bold text-slate-900 leading-snug">Licensed guides</b>
-              <span className="text-xs text-slate-500 mt-1 block">English or other languages on request</span>
-            </div>
-          </div>
-
-          <div className="p-5 sm:p-6 flex items-start gap-4 hover:bg-slate-50/60 transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-teal-50 text-[#2E8B8B] flex items-center justify-center shrink-0 font-bold text-sm">
-              <Sliders size={20} />
-            </div>
-            <div>
-              <b className="block text-sm font-bold text-slate-900 leading-snug">100% tailor-made</b>
-              <span className="text-xs text-slate-500 mt-1 block">Your hotels, pace and route</span>
-            </div>
-          </div>
-
-          <div className="p-5 sm:p-6 flex items-start gap-4 hover:bg-slate-50/60 transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-teal-50 text-[#2E8B8B] flex items-center justify-center shrink-0 font-bold text-sm">
-              <PhoneCall size={20} />
-            </div>
-            <div>
-              <b className="block text-sm font-bold text-slate-900 leading-snug">24/7 trip support</b>
-              <span className="text-xs text-slate-500 mt-1 block">Real people on WhatsApp</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      {/* ====================================================================== */}
-      {/* 4. SECTION 1: FIND YOUR TRIP / PACKAGES (RELATING TO BEST SELLING PKGS)*/}
-      {/* ====================================================================== */}
-      <section
-        id="trips"
-        ref={tripsSectionRef}
-        className="py-12 sm:py-16 md:py-20 bg-section-tint border-b border-section-border"
-      >
+      <section className="py-10 sm:py-14 md:py-16 bg-[#FAF8F5] border-b border-section-border">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-          <div className="mb-6 sm:mb-8">
-            <SectionLabel icon={<Sparkles className="w-3.5 h-3.5" />}>
-              Featured Itineraries
-            </SectionLabel>
-            <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
-              Choose Your <span className="text-[#F8904D]">India Journey</span>
-            </h2>
-            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl leading-relaxed">
-              Search by city, pick a region, a style or how many days you have. Every package is a starting point and can be changed.
+          <div className="w-full">
+            {/* Header: Tag, Styled H1 & Subheading (Matches Home Page Hierarchy) */}
+            <div>
+              <SectionLabel>{isIndia ? "Incredible India" : `Explore ${displayTitle}`}</SectionLabel>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight leading-tight mt-2">
+                Travel to <span className="text-[#F8904D]">{displayTitle}</span>
+              </h1>
+              <p className="mt-2 text-lg sm:text-xl font-semibold text-slate-800">
+                Which {displayTitle} Will You Travel Through?
+              </p>
+            </div>
+
+            {/* Full-Width Content */}
+            <p className="text-base sm:text-lg md:text-xl text-slate-800 font-medium mt-4 leading-relaxed">
+              <strong className="font-bold text-slate-900">India is not one trip.</strong> A week in{" "}
+              <strong className="font-bold text-slate-900">Rajasthan</strong>, a fortnight in{" "}
+              <strong className="font-bold text-slate-900">Kerala</strong> and a few days in the{" "}
+              <strong className="font-bold text-slate-900">Himalayas</strong> can feel like three different countries, each with its own food, language and pace. That is why we do not sell one fixed route. We start with what you want from your holiday, then build the journey around it.
             </p>
-          </div>
 
-          {/* Region Chips */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-5" role="group" aria-label="Region Filters">
-            {regionChips.map((chip) => {
-              const active = selectedRegion === chip.id;
-              return (
-                <button
-                  key={chip.id}
-                  type="button"
-                  onClick={() => setSelectedRegion(chip.id)}
-                  aria-pressed={active}
-                  className={`px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
-                    active
-                      ? "bg-[#1C1C1C] text-white shadow-sm border border-[#1C1C1C]"
-                      : "bg-white text-slate-700 border border-section-border hover:border-[#2E8B8B] hover:text-[#2E8B8B]"
-                  }`}
-                >
-                  {chip.label}
-                </button>
-              );
-            })}
-          </div>
+            <div className="mt-4 space-y-4 text-sm sm:text-base md:text-[16.5px] text-slate-700 leading-relaxed font-normal">
+              <p>
+                If you love palaces and living history,{" "}
+                <strong className="font-bold text-slate-900">Rajasthan and the Golden Triangle</strong> are a natural fit. If you want calm,{" "}
+                <strong className="font-bold text-slate-900">Kerala&apos;s backwaters and tea hills</strong> slow everything down. For{" "}
+                <strong className="font-bold text-slate-900">wildlife</strong>,{" "}
+                <strong className="font-bold text-slate-900">spiritual cities</strong> or{" "}
+                <strong className="font-bold text-slate-900">mountain air</strong>, there is a route for that too. Not sure where to begin? Tell us your dates and what you enjoy, and we will suggest a plan.
+              </p>
 
-          {/* Interactive Finder Controls */}
-          <div className="bg-white border border-section-border rounded-2xl p-4 sm:p-5 shadow-xs mb-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-4 items-end">
-              {/* Search input */}
-              <div className="lg:col-span-5">
-                <label htmlFor="fq" className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                  Search
-                </label>
-                <div className="relative">
-                  <input
-                    id="fq"
-                    type="search"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="City or place, e.g. Jaipur, tiger, yoga"
-                    className="w-full pl-9 pr-8 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#2E8B8B] focus:ring-2 focus:ring-[#2E8B8B]/20 transition-all"
-                  />
-                  <Search size={15} className="absolute left-3 top-3 text-slate-400" />
-                  {searchQuery && (
-                    <button
-                      type="button"
-                      onClick={() => setSearchQuery("")}
-                      className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-700"
-                    >
-                      <X size={15} />
-                    </button>
+              <p>
+                <strong className="font-bold text-slate-900">Every trip is private or small-group</strong>, with a personal trip manager on WhatsApp. Prices are quoted for your dates and hotel level, with{" "}
+                <strong className="font-bold text-slate-900">no hidden charges</strong> and{" "}
+                <strong className="font-bold text-slate-900">no forced shopping stops</strong>.
+              </p>
+            </div>
+
+            {/* Expandable A-Z Tour Cities Directory (Inside Section - Default Collapsed, 100% SSR Safe) */}
+            {azCityGroups.length > 0 && (
+              <div className="mt-8 pt-6 border-t border-slate-200/80">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                      Explore {displayTitle} Tour Cities from A-Z
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-500">
+                      Browse our comprehensive directory of tourist cities across {displayTitle}.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsCityTableExpanded(!isCityTableExpanded)}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-slate-800 hover:text-[#F8904D] bg-white hover:bg-slate-50 border border-slate-300 transition-all cursor-pointer shadow-2xs shrink-0 self-start sm:self-auto"
+                  >
+                    <span>
+                      {isCityTableExpanded
+                        ? "Hide Cities List"
+                        : `Browse Cities from A-Z (${totalCitiesCount} cities)`}
+                    </span>
+                    <ChevronDown
+                      className={cn(
+                        "w-4 h-4 transition-transform duration-200",
+                        isCityTableExpanded && "rotate-180"
+                      )}
+                    />
+                  </button>
+                </div>
+
+                {/* 100% SSR SEO Guarantee: Rendered in HTML for Googlebot, toggled via CSS */}
+                <div
+                  className={cn(
+                    "mt-4 transition-all duration-300",
+                    isCityTableExpanded ? "block" : "hidden"
                   )}
+                  aria-hidden={!isCityTableExpanded}
+                >
+                  <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="bg-slate-100/80 border-b border-slate-200 text-xs sm:text-[13px] font-bold text-slate-700">
+                            <th className="w-16 sm:w-20 p-3 sm:p-3.5 border-r border-slate-200 text-center font-bold">
+                              Letter
+                            </th>
+                            <th className="p-3 sm:p-3.5 pl-4 sm:pl-6 font-bold">
+                              City List
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {azCityGroups.map(([letter, cityList]) => (
+                            <tr
+                              key={letter}
+                              className="border-b border-slate-200/70 last:border-b-0 hover:bg-slate-50/60 transition-colors"
+                            >
+                              <td className="w-16 sm:w-20 p-3 sm:p-3.5 border-r border-slate-200 text-center align-top font-bold text-slate-900 text-sm sm:text-base bg-slate-50/40">
+                                {letter}
+                              </td>
+                              <td className="p-3 sm:p-3.5 pl-4 sm:pl-6 align-top text-xs sm:text-[13.5px] leading-relaxed text-slate-600">
+                                {cityList.map((c, i) => {
+                                  const href = c.stateSlug
+                                    ? `/tour-packages/${country.slug}/${c.stateSlug}/${c.slug}`
+                                    : `/tour-packages?city=${c.slug}`;
+
+                                  return (
+                                    <span key={`${c.slug}-${i}`}>
+                                      <Link
+                                        href={href}
+                                        className="text-slate-800 hover:text-[#F8904D] hover:underline underline-offset-2 transition-colors font-medium"
+                                      >
+                                        {c.title}
+                                      </Link>
+                                      {i < cityList.length - 1 && (
+                                        <span className="text-slate-400 mr-1.5">, </span>
+                                      )}
+                                    </span>
+                                  );
+                                })}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              {/* Travel Style */}
-              <div className="lg:col-span-3">
-                <label htmlFor="fe" className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                  Travel style
-                </label>
-                <select
-                  id="fe"
-                  value={travelStyle}
-                  onChange={(e) => setTravelStyle(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 focus:outline-none focus:border-[#2E8B8B] focus:ring-2 focus:ring-[#2E8B8B]/20 transition-all cursor-pointer"
-                >
-                  <option value="all">Any style</option>
-                  <option value="classic">Classic sightseeing</option>
-                  <option value="weekend">Short break</option>
-                  <option value="wildlife">Wildlife</option>
-                  <option value="spiritual">Spiritual</option>
-                  <option value="wellness">Yoga & wellness</option>
-                  <option value="hills">Hills & mountains</option>
-                  <option value="heritage">Heritage & culture</option>
-                </select>
-              </div>
-
-              {/* Duration */}
-              <div className="lg:col-span-3">
-                <label htmlFor="fd" className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                  Duration
-                </label>
-                <select
-                  id="fd"
-                  value={durationFilter}
-                  onChange={(e) => setDurationFilter(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 focus:outline-none focus:border-[#2E8B8B] focus:ring-2 focus:ring-[#2E8B8B]/20 transition-all cursor-pointer"
-                >
-                  <option value="all">Any length</option>
-                  <option value="short">Same day to 2 days</option>
-                  <option value="mid">3 to 5 days</option>
-                  <option value="week">6 to 9 days</option>
-                  <option value="long">10 days or more</option>
-                </select>
-              </div>
-
-              {/* Reset button */}
-              <div className="lg:col-span-1">
-                <button
-                  type="button"
-                  onClick={resetAllFilters}
-                  disabled={!isFiltered}
-                  className={`w-full py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center cursor-pointer ${
-                    isFiltered
-                      ? "bg-white border border-slate-300 text-slate-800 hover:border-[#2E8B8B] hover:text-[#2E8B8B]"
-                      : "bg-slate-100 text-slate-400 border border-transparent cursor-not-allowed"
-                  }`}
-                >
-                  Reset
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Status line */}
-          <div className="flex items-center justify-between text-xs sm:text-sm text-slate-500 mb-6 pb-2">
-            <span>
-              Showing <strong>{filteredJourneys.length}</strong> of {countryJourneys.length} trips in India
-              {selectedRegion !== "all" && (
-                <span className="text-[#2E8B8B] font-semibold"> • {regionChips.find((c) => c.id === selectedRegion)?.label}</span>
-              )}
-            </span>
-            {isFiltered && (
-              <button
-                type="button"
-                onClick={resetAllFilters}
-                className="text-[#F8904D] hover:underline font-semibold cursor-pointer"
-              >
-                Reset all filters
-              </button>
             )}
           </div>
-
-          {/* Packages Grid: Uses KoiKoi's flagship TourPackageCard matching Home BestSellingPackages */}
-          {filteredJourneys.length === 0 ? (
-            <div className="text-center py-16 px-4 bg-white rounded-2xl border border-dashed border-slate-300">
-              <HelpCircle size={40} className="mx-auto text-slate-400 mb-3" />
-              <h3 className="text-lg font-bold text-slate-900">No packages match your search</h3>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-md mx-auto">
-                Try loosening your filters or reach out directly — we can design any custom route for you.
-              </p>
-              <button
-                type="button"
-                onClick={resetAllFilters}
-                className="mt-4 px-5 py-2 rounded-full bg-[#1C1C1C] text-white text-xs font-bold hover:bg-[#F8904D] transition-colors cursor-pointer"
-              >
-                Reset Filters
-              </button>
-            </div>
-          ) : (
-            <div className={
-              filteredJourneys.length === 1
-                ? "grid grid-cols-1 max-w-md mx-auto gap-5"
-                : filteredJourneys.length === 2
-                ? "grid grid-cols-1 md:grid-cols-2 gap-5"
-                : filteredJourneys.length === 3
-                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
-                : "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-5"
-            }>
-              {filteredJourneys.map((j) => (
-                <TourPackageCard key={j.id} journey={j} />
-              ))}
-            </div>
-          )}
         </div>
       </section>
 
       {/* ====================================================================== */}
-      {/* 5. STATES OF INDIA (COMPREHENSIVE DIRECTORY)                           */}
+      {/* 2. TOURS BY DESTINATION & BY EXPERIENCE (WITH CAPSULE TABS & 100% SSR) */}
       {/* ====================================================================== */}
-      <section id="states" className="py-12 sm:py-16 md:py-20 bg-white border-b border-section-border">
+      <section id="tour-packages" className="py-10 sm:py-14 md:py-16 bg-white border-b border-section-border">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
+          <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-              <SectionLabel icon={<Compass className="w-3.5 h-3.5" />}>
-                Discover Every Region
-              </SectionLabel>
+              <SectionLabel>Curated Itineraries</SectionLabel>
               <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
-                States in <span className="text-[#F8904D]">{displayTitle}</span>
-                <span className="ml-3 align-middle text-xs font-bold text-[#F8904D] bg-[#F8904D]/10 px-3 py-1 rounded-full">
-                  {displayedStates.length} States
-                </span>
+                Explore <span className="text-[#F8904D]">{displayTitle}</span> Tours
               </h2>
               <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl leading-relaxed">
-                Explore royal Rajasthan palaces, Taj Mahal heritage, lush Kerala backwaters, and Himalayan mountain passes.
+                Discover iconic royal cities, peaceful lakes, desert landscapes, and holiday themes with handpicked private itineraries.
               </p>
             </div>
-          </div>
 
-          {/* States Cards Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-4 lg:gap-5">
-            {displayedStates.map((s) => (
-              <StateCard
-                key={s.id}
-                state={s}
-                countrySlug={country.slug}
-                journeyCount={journeyCountForState(s.id)}
+            {/* Tabs Switcher */}
+            <div className="flex justify-start sm:justify-end shrink-0">
+              <CapsuleTabs<"destination" | "experience">
+                tabs={[
+                  { id: "destination", label: "By destination" },
+                  { id: "experience", label: "By experience" },
+                ]}
+                activeTab={activeTab}
+                onChange={setActiveTab}
               />
-            ))}
+            </div>
+          </div>
+
+          {/* TAB 1: BY DESTINATION (3-Column Grid) - 100% SSR Crawlable */}
+          <div
+            className={activeTab === "destination" ? "block" : "hidden"}
+            aria-hidden={activeTab !== "destination"}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {destinationGroups.map(({ state, journeys: stJourneys }) => (
+                <DestinationTourCard
+                  key={state.id}
+                  state={state}
+                  journeys={stJourneys}
+                  countrySlug={country.slug}
+                  image={getDestinationImage(state)}
+                  eyebrow={getDestinationEyebrow(state)}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* TAB 2: BY EXPERIENCE (5-Column Grid) - 100% SSR Crawlable */}
+          <div
+            className={activeTab === "experience" ? "block" : "hidden"}
+            aria-hidden={activeTab !== "experience"}
+          >
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5">
+              {travelExperiences.map((exp) => (
+                <SingleDestinationReusableCard
+                  key={exp.id}
+                  title={exp.title}
+                  image={exp.thumbImg || exp.banner?.images?.[0] || "/content/jaipur-holiday-1.webp"}
+                  eyebrow={getExperienceEyebrow(exp)}
+                  description={getExperienceDescription(exp)}
+                  tourCountText={`${exp.journeys?.length || exp.tourCount || 0} tours`}
+                  href={`/travel-experiences/${exp.slug}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Custom DMC Pricing & Trust Note */}
+          <div className="mt-10 p-5 sm:p-6 rounded-2xl bg-section-tint border border-section-border text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xs">
+            <div>
+              <h4 className="text-sm sm:text-base md:text-lg font-bold text-slate-900">
+                Looking for a 100% tailor-made private journey in India?
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl">
+                Prices depend on your travel dates, group size, and preferred hotel level. Connect with your dedicated personal trip manager.
+              </p>
+            </div>
+            <QuoteModal>
+              <button
+                type="button"
+                className="shrink-0 px-6 py-2.5 rounded-full bg-slate-900 text-white text-xs sm:text-sm font-semibold hover:bg-[#F8904D] transition-colors cursor-pointer shadow-xs"
+              >
+                Ask for your quote →
+              </button>
+            </QuoteModal>
           </div>
         </div>
       </section>
 
       {/* ====================================================================== */}
-      {/* 6. SECTION 3: HOW IT WORKS (EXACT SAME AS HOME PAGE HOW IT WORKS)      */}
-      {/* ====================================================================== */}
-      <section className="py-12 sm:py-16 md:py-20 bg-section-tint border-b border-section-border">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-          <div className="mb-8 sm:mb-10 text-left">
-            <SectionLabel icon={<Sparkles className="w-3.5 h-3.5" />}>
-              Simple Process
-            </SectionLabel>
-            <h2 className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight mt-1.5 font-heading">
-              How It <span className="text-[#F8904D]">Works</span>
-            </h2>
-            <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">
-              Planning your dream India vacation should not feel like work. Three simple steps and you are set.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            <div className="bg-white border border-section-border rounded-2xl p-6 sm:p-7 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
-              <div>
-                <span className="w-10 h-10 rounded-full bg-[#F8904D] text-white font-bold text-base flex items-center justify-center mb-5 shadow-sm shadow-[#F8904D]/30">
-                  1
-                </span>
-                <h3 className="font-bold text-slate-900 text-base sm:text-lg mb-2">
-                  Tell Us Your Plan
-                </h3>
-                <p className="text-slate-600 text-xs sm:text-[13.5px] leading-relaxed">
-                  Share where you want to go, your dates and how many are travelling. Rough ideas are completely fine — our specialists guide you.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-white border border-section-border rounded-2xl p-6 sm:p-7 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
-              <div>
-                <span className="w-10 h-10 rounded-full bg-[#F8904D] text-white font-bold text-base flex items-center justify-center mb-5 shadow-sm shadow-[#F8904D]/30">
-                  2
-                </span>
-                <h3 className="font-bold text-slate-900 text-base sm:text-lg mb-2">
-                  Get Your Custom Plan
-                </h3>
-                <p className="text-slate-600 text-xs sm:text-[13.5px] leading-relaxed">
-                  We send a personalised itinerary with transparent pricing. Change the route, hotels or pace as many times as you like.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-white border border-section-border rounded-2xl p-6 sm:p-7 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
-              <div>
-                <span className="w-10 h-10 rounded-full bg-[#F8904D] text-white font-bold text-base flex items-center justify-center mb-5 shadow-sm shadow-[#F8904D]/30">
-                  3
-                </span>
-                <h3 className="font-bold text-slate-900 text-base sm:text-lg mb-2">
-                  Travel With 24/7 Support
-                </h3>
-                <p className="text-slate-600 text-xs sm:text-[13.5px] leading-relaxed">
-                  Your private car, driver and guides are arranged, and our team is on WhatsApp around the clock during your trip.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ====================================================================== */}
-      {/* 5. FAQ SECTION                                                         */}
+      {/* 3. FAQ SECTION (STRICT 2-BG ALTERNATION: PATTERN / TINT)               */}
       {/* ====================================================================== */}
       <FaqSection
         faqs={allFaqs}
@@ -811,7 +917,7 @@ function CountryContent({
       />
 
       {/* ====================================================================== */}
-      {/* 6. DESTINATION GUIDE (COMPLETE LAST BEFORE FOOTER)                     */}
+      {/* 4. DESTINATION GUIDE (STRICT 2-BG ALTERNATION: WHITE)                  */}
       {/* ====================================================================== */}
       <DestinationGuideSection
         title={country.h1Title || country.title || "Incredible India"}
@@ -820,6 +926,7 @@ function CountryContent({
         seoDescription={country.seoDescription}
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
+        className="w-full relative border-t border-section-border py-10 sm:py-12 md:py-14 bg-white"
       />
     </div>
   );

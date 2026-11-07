@@ -46,6 +46,7 @@ const schema = z.object({
   pricePerPerson: z.number().optional(),
   discountPrice: z.number().optional().nullable(),
   cityIds: z.array(z.number().int()).min(1, "At least one city is required"),
+  stateIds: z.array(z.number().int()).optional(),
   monthIds: z.array(z.number().int()).optional(),
   travelExperienceIds: z.array(z.number().int()).optional(),
   hotelDetails: z.any().optional(),
@@ -413,6 +414,7 @@ router.get("/by-slug/:slug", async (req, res) => {
           },
         },
         months: { select: { id: true, title: true, slug: true, season: true } },
+        states: { select: { id: true, title: true, slug: true } },
         travelExperiences: { select: { id: true, title: true, slug: true } },
         days: { orderBy: { id: "asc" } },
       },
@@ -479,6 +481,7 @@ router.get("/:id", async (req, res) => {
           },
         },
         months: { select: { id: true, title: true, slug: true, season: true } },
+        states: { select: { id: true, title: true, slug: true } },
         travelExperiences: { select: { id: true, title: true, slug: true } },
         days: { orderBy: { id: "asc" } },
       },
@@ -524,9 +527,10 @@ router.post("/", requireTeamOrAdmin(["it"]), async (req, res) => {
       return res.status(400).json({ success: false, message });
     }
 
-    const { days, inclusions, exclusions, whyChooseUs, bookingPolicy, faqs, highlights, cityIds, monthIds, travelExperienceIds, ...rest } = parsed.data;
+    const { days, inclusions, exclusions, whyChooseUs, bookingPolicy, faqs, highlights, cityIds, stateIds, monthIds, travelExperienceIds, ...rest } = parsed.data;
     const slug = rest.slug || generateSlug(rest.title);
     const distinctCityIds = [...new Set(cityIds || [])];
+    const distinctStateIds = [...new Set(stateIds || [])];
 
     const item = await prisma.journey.create({
       data: {
@@ -536,6 +540,7 @@ router.post("/", requireTeamOrAdmin(["it"]), async (req, res) => {
         cityOrder: cityIds || [],
         travelExperienceOrder: travelExperienceIds || [],
         cities: { connect: distinctCityIds.map((id) => ({ id })) },
+        ...(distinctStateIds.length > 0 && { states: { connect: distinctStateIds.map((id) => ({ id })) } }),
         months: { connect: (monthIds || []).map((id) => ({ id })) },
         travelExperiences: { connect: (travelExperienceIds || []).map((id) => ({ id })) },
       },
@@ -595,7 +600,7 @@ router.put("/:id", requireTeamOrAdmin(["it"]), async (req, res) => {
       return res.status(400).json({ success: false, message });
     }
 
-    const { days, inclusions, exclusions, whyChooseUs, bookingPolicy, faqs, highlights, cityIds, monthIds, travelExperienceIds, ...rest } = parsed.data;
+    const { days, inclusions, exclusions, whyChooseUs, bookingPolicy, faqs, highlights, cityIds, stateIds, monthIds, travelExperienceIds, ...rest } = parsed.data;
     const slug = rest.slug || (rest.title ? generateSlug(rest.title) : undefined);
 
     const item = await prisma.journey.update({
@@ -607,6 +612,9 @@ router.put("/:id", requireTeamOrAdmin(["it"]), async (req, res) => {
         ...(cityIds !== undefined && {
           cities: { set: [...new Set(cityIds)].map((cid) => ({ id: cid })) },
           cityOrder: cityIds,
+        }),
+        ...(stateIds !== undefined && {
+          states: { set: [...new Set(stateIds)].map((sid) => ({ id: sid })) },
         }),
         ...(monthIds !== undefined && { months: { set: monthIds.map((mid) => ({ id: mid })) } }),
         ...(travelExperienceIds !== undefined && {

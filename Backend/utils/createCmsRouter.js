@@ -387,10 +387,18 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
             ordered[rel.field] = orderByList(ordered[rel.field], ordered[rel.orderField]);
           }
         }
+        let tourCount = tourCountWhere ? tourCounts.get(item.id) || 0 : undefined;
+        if (tourCount !== undefined) {
+          if (Array.isArray(ordered.featuredJourneyOrder) && ordered.featuredJourneyOrder.length > 0) {
+            tourCount = ordered.featuredJourneyOrder.length;
+          } else if (Array.isArray(ordered.journeys) && ordered.journeys.length > 0) {
+            tourCount = ordered.journeys.length;
+          }
+        }
         return {
           ...ordered,
           banner: bannerMap.get(item.id) || null,
-          ...(tourCountWhere ? { tourCount: tourCounts.get(item.id) || 0 } : {}),
+          ...(tourCountWhere ? { tourCount } : {}),
         };
       });
 

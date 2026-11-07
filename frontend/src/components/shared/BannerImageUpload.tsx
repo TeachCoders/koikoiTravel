@@ -12,10 +12,11 @@ interface BannerImageUploadProps {
   label?: string;
   maxImages?: number;
   folderPath?: string;
+  defaultRatio?: "free" | "landscape" | "standard" | "portrait" | "wide" | "hero";
 }
 
 export default function BannerImageUpload({
-  value = [], onChange, onFilesSelect, onThumbSelect, label = "Banner Images", maxImages = 15, folderPath = "",
+  value = [], onChange, onFilesSelect, onThumbSelect, label = "Banner Images", maxImages = 15, folderPath = "", defaultRatio = "free",
 }: BannerImageUploadProps) {
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [pendingPreviews, setPendingPreviews] = useState<string[]>([]);
@@ -25,12 +26,15 @@ export default function BannerImageUpload({
   const [cropSrc, setCropSrc] = useState<string | null>(null);
   const [cropBox, setCropBox] = useState({ x: 0, y: 0, w: 0, h: 0 });
   const RATIO_PRESETS = {
-    hero: { label: "Hero (1920×600)", ratio: 1920 / 600, outW: 1920, outH: 600 },
+    free: { label: "Freeform (Full / Any)", ratio: null, outW: 1920, outH: null },
+    landscape: { label: "Landscape (3:2)", ratio: 3 / 2, outW: 1200, outH: 800 },
+    standard: { label: "Standard (4:3)", ratio: 4 / 3, outW: 1200, outH: 900 },
+    portrait: { label: "Portrait (3:4)", ratio: 3 / 4, outW: 900, outH: 1200 },
     wide: { label: "Wide (16:9)", ratio: 16 / 9, outW: 1920, outH: 1080 },
-    free: { label: "Freeform", ratio: null, outW: 1920, outH: null },
+    hero: { label: "Hero (1920×600)", ratio: 1920 / 600, outW: 1920, outH: 600 },
   } as const;
   type RatioKey = keyof typeof RATIO_PRESETS;
-  const [cropRatio, setCropRatio] = useState<RatioKey>("hero");
+  const [cropRatio, setCropRatio] = useState<RatioKey>(defaultRatio);
   const [mediaOpen, setMediaOpen] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragType, setDragType] = useState<string | null>(null);
@@ -39,6 +43,8 @@ export default function BannerImageUpload({
   const [urlMode, setUrlMode] = useState(false);
   const [urlInput, setUrlInput] = useState("");
   const [customFileName, setCustomFileName] = useState("");
+  const [matchingMedia, setMatchingMedia] = useState<{ id: number; url: string; filename: string; label: string | null }[]>([]);
+  const [isCheckingDuplicate, setIsCheckingDuplicate] = useState(false);
   const [urlLoading, setUrlLoading] = useState(false);
   const [urlError, setUrlError] = useState("");
   const [dragIndex, setDragIndex] = useState<number | null>(null);
@@ -70,6 +76,32 @@ export default function BannerImageUpload({
       prevValueRef.current = value;
     }
   }, [value]);
+
+  useEffect(() => {
+    const query = customFileName.trim();
+    if (query.length < 3) {
+      setMatchingMedia([]);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      try {
+        setIsCheckingDuplicate(true);
+        const res = await apiClient.get(`/media/search?q=${encodeURIComponent(query)}`);
+        const list = res.data?.data || [];
+        const cleanQ = query.toLowerCase().replace(/[^a-z0-9]/g, "");
+        const matches = list.filter((m: any) => {
+          const cleanName = (m.label || m.filename || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+          return cleanName.includes(cleanQ);
+        });
+        setMatchingMedia(matches.slice(0, 3));
+      } catch {
+        setMatchingMedia([]);
+      } finally {
+        setIsCheckingDuplicate(false);
+      }
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [customFileName]);
 
   const totalImages = value.length + pendingFiles.length;
   const canAdd = totalImages < maxImages;
@@ -154,8 +186,34 @@ export default function BannerImageUpload({
     return { x, y, w, h };
   }, []);
 
-  const loadImgForCrop = useCallback((src: string, targetKey: RatioKey = "hero") => {
+  const loadImgForCrop = useCallback(async (src: string, targetKey: RatioKey = defaultRatio) => {
+    let cleanSrc = src;
+    if (!src.startsWith("data:") && !src.startsWith("blob:")) {
+      try {
+        let blob: Blob | null = null;
+        try {
+          const resp = await fetch(src, { mode: "cors" });
+          if (resp.ok) {
+            blob = await resp.blob();
+          }
+        } catch {
+          try {
+            const proxyRes = await apiClient.get(`/proxy-image?url=${encodeURIComponent(src)}`, { responseType: "blob" });
+            if (proxyRes.data) {
+              blob = proxyRes.data;
+            }
+          } catch {}
+        }
+        if (blob) {
+          cleanSrc = URL.createObjectURL(blob);
+        }
+      } catch (err) {
+        console.warn("Could not convert banner image to clean blob:", err);
+      }
+    }
+
     const img = new Image();
+    img.crossOrigin = "anonymous";
     img.onload = () => {
       imgRef.current = img;
       setImgNatural({ w: img.naturalWidth, h: img.naturalHeight });
@@ -163,8 +221,8 @@ export default function BannerImageUpload({
       setCropBox(newCrop);
       drawCanvas(img, newCrop);
     };
-    img.src = src;
-  }, [drawCanvas, computeCropBox]);
+    img.src = cleanSrc;
+  }, [drawCanvas, computeCropBox, defaultRatio]);
 
   const switchRatio = (newKey: RatioKey) => {
     setCropRatio(newKey);
@@ -173,6 +231,22 @@ export default function BannerImageUpload({
       setCropBox(newBox);
       drawCanvas(imgRef.current, newBox);
     }
+  };
+
+  const handleResetFull = () => {
+    if (!imgRef.current || !containerRef.current) return;
+    setCropRatio("free");
+    const cw = containerRef.current.clientWidth;
+    const ch = containerRef.current.clientHeight;
+    const img = imgRef.current;
+    const imgRatio = img.naturalWidth / img.naturalHeight;
+    const contRatio = cw / ch;
+    let drawW: number, drawH: number, drawX: number, drawY: number;
+    if (contRatio > imgRatio) { drawH = ch; drawW = ch * imgRatio; drawX = (cw - drawW) / 2; drawY = 0; }
+    else { drawW = cw; drawH = cw / imgRatio; drawX = 0; drawY = (ch - drawH) / 2; }
+    const newBox = { x: drawX, y: drawY, w: drawW, h: drawH };
+    setCropBox(newBox);
+    drawCanvas(img, newBox);
   };
 
   const handleFullWidth = () => {
@@ -186,9 +260,9 @@ export default function BannerImageUpload({
     if (contRatio > imgRatio) { drawH = ch; drawW = ch * imgRatio; drawX = (cw - drawW) / 2; drawY = 0; }
     else { drawW = cw; drawH = cw / imgRatio; drawX = 0; drawY = (ch - drawH) / 2; }
 
-    const targetRatio = RATIO_PRESETS[cropRatio].ratio || (1920 / 600);
+    const targetRatio = RATIO_PRESETS[cropRatio].ratio;
     const w = drawW;
-    const h = Math.min(drawH, w / targetRatio);
+    const h = targetRatio ? Math.min(drawH, w / targetRatio) : drawH;
     const x = drawX;
     const y = drawY + Math.max(0, (drawH - h) / 2);
     const newBox = { x, y, w, h };
@@ -218,10 +292,10 @@ export default function BannerImageUpload({
 
   useEffect(() => {
     if (cropSrc && cropOpen) {
-      setCropRatio("hero");
-      loadImgForCrop(cropSrc, "hero");
+      setCropRatio(defaultRatio);
+      loadImgForCrop(cropSrc, defaultRatio);
     }
-  }, [cropSrc, cropOpen, loadImgForCrop]);
+  }, [cropSrc, cropOpen, loadImgForCrop, defaultRatio]);
 
   const handleFileSelect = useCallback((file: File) => {
     if (!file.type.startsWith("image/")) return;
@@ -357,18 +431,27 @@ export default function BannerImageUpload({
     const sh = Math.min(img.naturalHeight - sy, cropBox.h * scaleY);
 
     let outW = 1920;
-    let outH = 600;
+    let outH = 1080;
     if (cropRatio === "hero") {
       outW = 1920;
       outH = 600;
     } else if (cropRatio === "wide") {
       outW = 1920;
       outH = 1080;
+    } else if (cropRatio === "landscape") {
+      outW = 1200;
+      outH = 800;
+    } else if (cropRatio === "standard") {
+      outW = 1200;
+      outH = 900;
+    } else if (cropRatio === "portrait") {
+      outW = 900;
+      outH = 1200;
     } else {
       outW = Math.round(sw);
       outH = Math.round(sh);
       if (outW > 1920) { outH = Math.round((outH / outW) * 1920); outW = 1920; }
-      if (outH > 1080) { outW = Math.round((outW / outH) * 1080); outH = 1080; }
+      if (outH > 1400) { outW = Math.round((outW / outH) * 1400); outH = 1400; }
     }
 
     const outCanvas = document.createElement("canvas");
@@ -378,22 +461,28 @@ export default function BannerImageUpload({
     ctx.imageSmoothingQuality = "high";
     ctx.drawImage(img, sx, sy, sw, sh, 0, 0, outW, outH);
 
-    outCanvas.toBlob((blob) => {
-      if (!blob) return;
-      const formatted = customFileName.trim()
-        ? customFileName.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
-        : "";
-      const fileName = formatted ? `${formatted}.webp` : "banner-image.webp";
-      const file = new File([blob], fileName, { type: "image/webp" });
-      const previewUrl = URL.createObjectURL(blob);
-      setPendingFiles(prev => [...prev, file]);
-      setPendingPreviews(prev => [...prev, previewUrl]);
-      if (onFilesSelect) onFilesSelect([...pendingFiles, file]);
-      setCropOpen(false); setCropSrc(null); setUrlInput(""); setCustomFileName("");
-      if (fileQueueRef.current.length > 0) {
-        setTimeout(() => processNextInQueue(), 100);
-      }
-    }, "image/webp", 0.85);
+    try {
+      outCanvas.toBlob((blob) => {
+        if (!blob) return;
+        const formatted = customFileName.trim()
+          ? customFileName.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
+          : "";
+        const baseName = formatted ? `${formatted}-journey` : "journey-banner";
+        const fileName = `${baseName}-${outW}x${outH}.webp`;
+        const file = new File([blob], fileName, { type: "image/webp" });
+        const previewUrl = URL.createObjectURL(blob);
+        setPendingFiles(prev => [...prev, file]);
+        setPendingPreviews(prev => [...prev, previewUrl]);
+        if (onFilesSelect) onFilesSelect([...pendingFiles, file]);
+        setCropOpen(false); setCropSrc(null); setUrlInput(""); setCustomFileName(""); setMatchingMedia([]);
+        if (fileQueueRef.current.length > 0) {
+          setTimeout(() => processNextInQueue(), 100);
+        }
+      }, "image/webp", 0.85);
+    } catch (cropErr: any) {
+      console.error("Banner canvas export failed:", cropErr);
+      setUrlError("Image security/CORS restriction prevented export. Please upload file directly.");
+    }
   }, [cropBox, pendingFiles, onFilesSelect, processNextInQueue, customFileName, cropRatio]);
 
   const buildItems = () => [
@@ -593,49 +682,42 @@ export default function BannerImageUpload({
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-900 text-sm leading-tight">Crop & Resize Banner</h3>
-                  <p className="text-[11px] text-slate-400">Position & crop for panoramic hero display</p>
+                  <p className="text-[11px] text-slate-400">Choose an aspect ratio or use Freeform for full height</p>
                 </div>
               </div>
 
               {/* Aspect Ratio Selector Pills */}
-              <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-2xs">
-                <button
-                  type="button"
-                  onClick={() => switchRatio("hero")}
-                  className={`px-3 py-1 text-xs font-bold rounded-lg transition-all ${
-                    cropRatio === "hero"
-                      ? "bg-brand-primary text-white shadow-xs"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  }`}
-                >
-                  Hero (1920×600)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => switchRatio("wide")}
-                  className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
-                    cropRatio === "wide"
-                      ? "bg-brand-primary text-white shadow-xs"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  }`}
-                >
-                  Wide (16:9)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => switchRatio("free")}
-                  className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
-                    cropRatio === "free"
-                      ? "bg-brand-primary text-white shadow-xs"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  }`}
-                >
-                  Freeform
-                </button>
+              <div className="flex flex-wrap items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-2xs">
+                {(Object.keys(RATIO_PRESETS) as RatioKey[]).map((key) => {
+                  const preset = RATIO_PRESETS[key];
+                  const isActive = cropRatio === key;
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => switchRatio(key)}
+                      className={`px-2.5 py-1 text-xs rounded-lg transition-all ${
+                        isActive
+                          ? "bg-brand-primary text-white shadow-xs font-bold"
+                          : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium"
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  );
+                })}
               </div>
 
               {/* Quick Adjustment Buttons */}
               <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={handleResetFull}
+                  className="px-2.5 py-1 text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 rounded-lg transition-colors cursor-pointer"
+                  title="Select full photo without cropping"
+                >
+                  ⛶ Full Image
+                </button>
                 <button
                   type="button"
                   onClick={handleFullWidth}
@@ -650,7 +732,7 @@ export default function BannerImageUpload({
                   className="px-2.5 py-1 text-xs font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                   title="Center crop box"
                 >
-                  ⛶ Center
+                  ✛ Center
                 </button>
               </div>
             </div>
@@ -672,13 +754,53 @@ export default function BannerImageUpload({
               )}
             </div>
 
+            {/* Duplicate Image Warning & View */}
+            {matchingMedia.length > 0 && (
+              <div className="mx-4 my-2 p-2.5 bg-amber-50/90 border border-amber-200 rounded-xl flex items-center justify-between gap-3 text-xs shadow-xs animate-in fade-in slide-in-from-bottom-1 duration-200">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="relative w-12 h-10 rounded-lg overflow-hidden border border-amber-300 shrink-0 bg-slate-100 shadow-2xs">
+                    <img src={matchingMedia[0].url} alt={matchingMedia[0].label || "Match"} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5 font-bold text-amber-900 truncate">
+                      <span>⚠️ Matching image already exists:</span>
+                      <span className="font-semibold text-amber-800 underline truncate">{matchingMedia[0].label || matchingMedia[0].filename}</span>
+                    </div>
+                    <p className="text-[11px] text-amber-700 truncate">Use this existing image to prevent duplicate uploads, or change the name.</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleLibrarySelectMany([matchingMedia[0].url]);
+                      setCropOpen(false);
+                      setCropSrc(null);
+                      setCustomFileName("");
+                      setMatchingMedia([]);
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors flex items-center gap-1 cursor-pointer"
+                  >
+                    ✓ Use Existing Image
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Modal Footer */}
             <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-t border-brand-neutral-border bg-slate-50/80 rounded-b-2xl">
               <div className="flex items-center gap-2.5 text-xs text-slate-500">
                 <span className="font-mono text-slate-600">{imgNatural.w} × {imgNatural.h}px</span>
                 <span className="text-slate-300">|</span>
                 <span className="font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                  Target: {cropRatio === "hero" ? "1920 × 600 px (Panoramic Hero)" : cropRatio === "wide" ? "1920 × 1080 px (16:9)" : "Custom Selection"}
+                  Target: {
+                    cropRatio === "hero" ? "1920 × 600 px (Panoramic Hero)" :
+                    cropRatio === "wide" ? "1920 × 1080 px (16:9 Wide)" :
+                    cropRatio === "landscape" ? "1200 × 800 px (3:2 Landscape)" :
+                    cropRatio === "standard" ? "1200 × 900 px (4:3 Standard)" :
+                    cropRatio === "portrait" ? "900 × 1200 px (3:4 Portrait)" :
+                    "Full / Custom Selection"
+                  }
                 </span>
               </div>
               <div className="flex items-center gap-2">

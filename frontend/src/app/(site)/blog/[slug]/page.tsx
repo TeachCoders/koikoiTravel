@@ -97,6 +97,34 @@ function postCategoryNames(p: BlogPost): string[] {
   );
 }
 
+function extractYouTubeId(url?: string | null): string | null {
+  if (!url) return null;
+  const trimmed = url.trim();
+  if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
+  const match = trimmed.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([a-zA-Z0-9_-]{11})/
+  );
+  return match ? match[1] : null;
+}
+
+function splitArticleHeading(
+  html?: string | null,
+  removeFirstImage = false
+): { headingHtml: string | null; bodyHtml: string } {
+  if (!html) return { headingHtml: null, bodyHtml: "" };
+  const trimmed = html.trim();
+  const match = trimmed.match(
+    /^(\s*<h[1-6][^>]*>[\s\S]*?<\/h[1-6]>)\s*(?:<p[^>]*>\s*(?:<img[^>]*>|&nbsp;|\s*)*<\/p>|<img[^>]*>)?/i
+  );
+  if (!match) return { headingHtml: null, bodyHtml: trimmed };
+  const headingHtml = match[1];
+  let bodyHtml = trimmed.slice(match[0].length).trim();
+  if (removeFirstImage) {
+    bodyHtml = bodyHtml.replace(/^(\s*<p[^>]*>\s*<img[^>]*>\s*<\/p>|\s*<img[^>]*>)/i, "").trim();
+  }
+  return { headingHtml, bodyHtml };
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const [post, customHeroBanners] = await Promise.all([
@@ -104,6 +132,12 @@ export default async function BlogPostPage({ params }: Props) {
     fetchHeroBannersServer("Blog", { slug }),
   ]);
   if (!post) return notFound();
+
+  const youtubeVideoId =
+    extractYouTubeId(post.videoUrl) ||
+    (post.slug === "jawai-leopard-safari-guide" ? "TzK8or-Fhx0" : null);
+  const hasVideo = Boolean(youtubeVideoId);
+  const { headingHtml, bodyHtml } = splitArticleHeading(post.moreDescription, hasVideo);
 
   const related = await fetchRelated(post.categories?.[0] || post.category, post.id);
 
@@ -269,8 +303,43 @@ export default async function BlogPostPage({ params }: Props) {
       {/* ===== CONTENT + SIDEBAR ===== */}
       <section className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-12 md:py-20 relative z-20">
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_420px] xl:grid-cols-[minmax(0,1fr)_480px] lg:gap-16">
-          <article className="min-w-0 bg-white rounded-3xl px-8 pt-0 pb-8 md:px-14 md:pt-0 md:pb-14 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200/60 prose prose-lg prose-slate max-w-none">
-            {post.moreDescription && <RichContent html={post.moreDescription} className="rich-text--legacy" />}
+          <article className="min-w-0 bg-white rounded-3xl px-8 pt-8 pb-8 md:px-14 md:pt-12 md:pb-14 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200/60 prose prose-lg prose-slate max-w-none">
+            {/* 1. Article Heading */}
+            {headingHtml ? (
+              <RichContent html={headingHtml} className="rich-text--legacy mb-4" />
+            ) : hasVideo ? (
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1C1C1C] mb-4">
+                {post.h1Title || post.title}
+              </h2>
+            ) : null}
+
+            {/* 2. Video Player - placed always right after the heading */}
+            {youtubeVideoId && (
+              <div className="not-prose my-8">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                    Featured Video Experience
+                  </span>
+                </div>
+                <div className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-xl border border-slate-200 bg-slate-950">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${youtubeVideoId}?rel=0&modestbranding=1`}
+                    title={`${post.title} Video`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full border-0"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* 3. Rest of article content (with any initial image right under heading removed when video is present) */}
+            {bodyHtml ? (
+              <RichContent html={bodyHtml} className="rich-text--legacy" />
+            ) : !headingHtml && post.moreDescription ? (
+              <RichContent html={post.moreDescription} className="rich-text--legacy" />
+            ) : null}
 
             {blogFaqs.length > 0 && (
               <div className="not-prose mt-12 pt-8 border-t border-slate-200/80">

@@ -29,9 +29,11 @@ const ReplayRecorder = dynamic(
  * to keep initial main-thread blocking time minimal for high PageSpeed performance.
  */
 export default function ClientSideWidgets() {
+  const [mounted, setMounted] = useState(false);
   const [shouldLoadChat, setShouldLoadChat] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     let triggered = false;
     const trigger = () => {
       if (triggered) return;
@@ -50,6 +52,8 @@ export default function ClientSideWidgets() {
       clearTimeout(timer);
     };
   }, []);
+
+  if (!mounted) return null;
 
   return (
     <>

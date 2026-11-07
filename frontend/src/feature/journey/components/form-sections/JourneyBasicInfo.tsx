@@ -107,7 +107,7 @@ export default function JourneyBasicInfo({
 
         <div className="space-y-3 p-4 bg-slate-50 border border-slate-200 rounded-lg">
           <label className="text-sm font-semibold text-slate-700">Route Selection (Cities) <span className="text-red-500">*</span></label>
-          <div className="text-xs text-slate-500 mb-2">Filter by country and state to easily find cities.</div>
+          <div className="text-xs text-slate-500 mb-2">Select countries, states, and cities for this tour package.</div>
           
           <div className="flex flex-col md:flex-row gap-3">
             <div className="flex-1">
@@ -115,19 +115,14 @@ export default function JourneyBasicInfo({
                 <AsyncMultiSelect
                   selectedIds={filterCountryIds}
                   onChange={(ids) => {
-                    const hasOverlap = filterCountryIds.length === 0 || ids.some(id => filterCountryIds.includes(id));
                     setFilterCountryIds(ids);
-                    if (!hasOverlap) {
-                      setFilterStateIds([]); 
-                      setFormData((prev: any) => ({ ...prev, cityIds: [] }));
-                    }
                   }}
                   fetchOptions={async (search) => {
                     const res = await getCountries({ search, limit: 20 });
                     return res.data;
                   }}
                   initialOptions={[...(initialData?.cities?.map((c: any) => c.state?.country).filter(Boolean).map((c: any) => ({id: c.id, title: c.title})) || []), ...(quickCreatedOptions.country || [])]}
-                  placeholder="Filter by Countries"
+                  placeholder="Select Countries"
                   searchPlaceholder="Search countries..."
                 />
                 <button type="button" onClick={() => quickCreateProps.openQuickCreate("country")} className="shrink-0 h-9 w-9 flex items-center justify-center rounded-lg border border-dashed border-slate-300 text-slate-500 hover:border-indigo-400 hover:text-indigo-600 transition-colors cursor-pointer"><Plus size={15} /></button>
@@ -139,19 +134,18 @@ export default function JourneyBasicInfo({
                 <AsyncMultiSelect
                   selectedIds={filterStateIds}
                   onChange={(ids) => {
-                    const hasOverlap = filterStateIds.length === 0 || ids.some(id => filterStateIds.includes(id));
                     setFilterStateIds(ids);
-                    if (!hasOverlap) {
-                      setFormData((prev: any) => ({ ...prev, cityIds: [] }));
-                    }
                   }}
                   fetchOptions={async (search) => {
                     const countryId = filterCountryIds.length > 0 ? filterCountryIds.join(',') : undefined;
                     const res = await getStates({ search, limit: 100, countryId });
                     return res.data;
                   }}
-                  initialOptions={initialData?.cities?.map((c: any) => c.state).filter(Boolean).map((s: any) => ({id: s.id, title: s.title}))}
-                  placeholder="Filter by States"
+                  initialOptions={[
+                    ...(initialData?.states?.map((s: any) => ({ id: s.id, title: s.title })) || []),
+                    ...(initialData?.cities?.map((c: any) => c.state).filter(Boolean).map((s: any) => ({id: s.id, title: s.title})) || []),
+                  ]}
+                  placeholder="Select States"
                   searchPlaceholder="Search states..."
                 />
                 <button type="button" onClick={() => quickCreateProps.openQuickCreate("state")} className="shrink-0 h-9 w-9 flex items-center justify-center rounded-lg border border-dashed border-slate-300 text-slate-500 hover:border-indigo-400 hover:text-indigo-600 transition-colors cursor-pointer"><Plus size={15} /></button>
@@ -167,7 +161,11 @@ export default function JourneyBasicInfo({
                   }}
                   fetchOptions={async (search) => {
                     const stateId = filterStateIds.length > 0 ? filterStateIds.join(',') : undefined;
-                    const res = await getCities({ search, limit: 100, stateId });
+                    let res = await getCities({ search, limit: 100, stateId });
+                    // If filtered by a macro state like South India which has 0 direct cities, fall back to all cities
+                    if ((!res.data || res.data.length === 0) && filterStateIds.length > 0) {
+                      res = await getCities({ search, limit: 100 });
+                    }
                     return res.data;
                   }}
                   initialOptions={[

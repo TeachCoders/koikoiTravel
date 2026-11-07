@@ -30,6 +30,7 @@ export interface Journey {
   pricePerPerson?: number;
   discountPrice?: number;
   cityIds: number[];
+  stateIds?: number[];
   monthIds?: number[];
   travelExperienceIds?: number[];
   hotelDetails?: any;
@@ -103,6 +104,7 @@ export interface JourneyPayload {
   pricePerPerson?: number;
   discountPrice?: number;
   cityIds: number[];
+  stateIds?: number[];
   monthIds?: number[];
   travelExperienceIds?: number[];
   hotelDetails?: any;

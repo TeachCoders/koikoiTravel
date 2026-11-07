@@ -147,7 +147,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10 space-y-6 sm:space-y-8 relative z-10">
         {/* Section Header */}
         <div>
-          <SectionLabel icon={<HelpCircle className="w-4 h-4" />}>Got Questions?</SectionLabel>
+          <SectionLabel>Frequently Asked Questions</SectionLabel>
           <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-slate-900 mt-2">
             {displayHeading === "Frequently Asked Questions" ? (
               <>

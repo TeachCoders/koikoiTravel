@@ -5,17 +5,40 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, Search } from "lucide-react";
+import { Menu, X, ChevronDown, Search, Phone, Mail } from "lucide-react";
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
 import type { NavChild } from "@/lib/utils";
 import { QuoteModal } from "./QuoteModal";
-import { RequestCallbackModal } from "./RequestCallbackModal";
 import LanguageSelector from "./LanguageSelector";
 import HeaderSearchBar from "./HeaderSearchBar";
 import {
   getActiveIndiaTours,
   getActiveTravelStyles,
 } from "@/config/navigationConfig";
+
+/* ---------- Contact details ---------- */
+const PHONE_DISPLAY = "+91 91367 39178";
+const PHONE_HREF = "tel:+919136739178";
+const EMAIL = "info@koikoitravel.com";
+const FACEBOOK_URL = "https://www.facebook.com/koikoiTravel/";
+const YOUTUBE_URL = "https://www.youtube.com/@KoiKoiTravel";
+const WHATSAPP_URL = `https://wa.me/${
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919136739178"
+}?text=${encodeURIComponent(
+  "Hi KoiKoi Travel, I want to inquire about a custom holiday tour package."
+)}`;
+
+const FacebookIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+    <path d="M14 8.5V6.9c0-.8.5-1 1-1h1.8V3H14.4C11.8 3 10.6 4.6 10.6 6.7v1.8H8.5V12h2.1v9H14v-9h2.5l.4-3.5H14z" />
+  </svg>
+);
+
+const YoutubeIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+    <path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3L10 15z" />
+  </svg>
+);
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
@@ -87,6 +110,7 @@ export const Header: React.FC = () => {
     dropdownTitle?: string;
     dropdownSubtext?: string;
     directHref?: string;
+    compact?: boolean;
   };
 
   const navLinks: NavLink[] = useMemo(
@@ -115,14 +139,17 @@ export const Header: React.FC = () => {
         directHref: "/guest-gallery",
       },
       {
+        // About Us + Contact Us ek hi dropdown mein
         href: "/about-us",
-        label: "About Us",
+        label: "About",
         directHref: "/about-us",
-      },
-      {
-        href: "/contact-us",
-        label: "Contact",
-        directHref: "/contact-us",
+        children: [
+          { href: "/about-us", label: "About Us" },
+          { href: "/contact-us", label: "Contact Us" },
+        ] as NavChild[],
+        dropdownStyle: "simple",
+        dropdownColumns: 1,
+        compact: true,
       },
     ],
     [indiaTourLinks, travelStyleLinks]
@@ -134,18 +161,18 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  /* ---------- Mobile drawer menu rows ---------- */
+  const mobileRowClass =
+    "flex w-full items-center justify-between px-5 py-3.5 text-[15px] font-semibold text-[#1C1C1C] transition-colors hover:bg-[#f6f7f8]";
+
   const renderMobileAccordion = navLinks.map((link) => {
     const hasChildren = link.children && link.children.length > 0;
     const isOpen = openMenuKey === link.href;
 
     return (
-      <div key={link.href} className="border-b border-[#f2f2f2] last:border-0">
+      <div key={link.href} className="border-b border-[#efefef]">
         {!hasChildren ? (
-          <Link
-            href={link.href}
-            onClick={handleMobileClose}
-            className="flex w-full items-center justify-between px-2 py-3.5 text-[16px] font-semibold text-[#1C1C1C] transition-colors hover:bg-[#f6f7f8]"
-          >
+          <Link href={link.href} onClick={handleMobileClose} className={mobileRowClass}>
             {link.label}
           </Link>
         ) : (
@@ -153,45 +180,47 @@ export const Header: React.FC = () => {
             type="button"
             onClick={() => toggleMenu(link.href)}
             aria-expanded={isOpen}
-            className="flex w-full items-center justify-between px-2 py-3.5 text-[16px] font-semibold text-[#1C1C1C] transition-colors hover:bg-[#f6f7f8]"
+            className={mobileRowClass}
           >
             <span>{link.label}</span>
             <ChevronDown
-              className={`h-5 w-5 text-[#999] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+              className={`h-4 w-4 text-[#888] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
             />
           </button>
         )}
 
-        <div
-          className={`grid transition-all duration-300 ease-in-out ${isOpen
-            ? "grid-rows-[1fr] opacity-100"
-            : "grid-rows-[0fr] opacity-0"
-            }`}
-        >
-          <div className="overflow-hidden">
-            <div className="pb-3">
-              {link.children?.map((child) => (
-                <Link
-                  key={child.href}
-                  href={child.href}
-                  onClick={handleMobileClose}
-                  className="block px-4 py-2.5 text-[15px] font-medium text-[#444] transition-colors hover:bg-[#f6f7f8] hover:text-[#1C1C1C]"
-                >
-                  <span suppressHydrationWarning>{child.label}</span>
-                </Link>
-              ))}
-              {link.seeAllHref && (
-                <Link
-                  href={link.seeAllHref}
-                  onClick={handleMobileClose}
-                  className="flex items-center gap-1 px-4 py-2.5 text-[14px] font-bold text-[#F8904D]"
-                >
-                  See All <span aria-hidden>→</span>
-                </Link>
-              )}
+        {hasChildren && (
+          <div
+            className={`grid transition-all duration-300 ease-in-out ${isOpen
+              ? "grid-rows-[1fr] opacity-100"
+              : "grid-rows-[0fr] opacity-0"
+              }`}
+          >
+            <div className="overflow-hidden">
+              <div className="pb-3">
+                {link.children?.map((child) => (
+                  <Link
+                    key={child.href}
+                    href={child.href}
+                    onClick={handleMobileClose}
+                    className="block px-7 py-2.5 text-[14px] font-medium text-[#555] transition-colors hover:bg-[#f6f7f8] hover:text-[#1C1C1C]"
+                  >
+                    <span suppressHydrationWarning>{child.label}</span>
+                  </Link>
+                ))}
+                {link.seeAllHref && (
+                  <Link
+                    href={link.seeAllHref}
+                    onClick={handleMobileClose}
+                    className="flex items-center gap-1 px-7 py-2.5 text-[14px] font-bold text-[#F8904D]"
+                  >
+                    See All <span aria-hidden>→</span>
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     );
   });
@@ -209,7 +238,7 @@ export const Header: React.FC = () => {
             isScrolled ? "py-2 sm:py-2.5" : "py-2.5 sm:py-3 lg:py-3.5"
           }`}
         >
-        {/* ===== Single Compact Row: Logo | Search Bar | Nav Links + Create My Trip ===== */}
+        {/* ===== Single Compact Row: Logo | Nav Links | Search + Language + WhatsApp + CTA ===== */}
         <div className="flex items-center justify-between gap-1.5 lg:gap-2 xl:gap-3">
           {/* 1. Brand Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
@@ -305,7 +334,11 @@ export const Header: React.FC = () => {
                         }`}
                     >
                       <div
-                        className={`bg-white rounded-2xl border border-slate-200/90 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] p-5 ${link.dropdownColumns === 1 ? "w-[340px]" : "w-[720px] max-w-[85vw]"
+                        className={`bg-white rounded-2xl border border-slate-200/90 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] ${link.compact ? "p-3" : "p-5"} ${link.compact
+                          ? "w-[220px]"
+                          : link.dropdownColumns === 1
+                            ? "w-[340px]"
+                            : "w-[720px] max-w-[85vw]"
                           }`}
                       >
                         {link.dropdownTitle && (
@@ -363,7 +396,7 @@ export const Header: React.FC = () => {
             </nav>
           )}
 
-          {/* 3. Right Controls: Search Bar -> Language Selector -> Create My Trip Button */}
+          {/* 3. Right Controls: Search Bar -> Language Selector -> WhatsApp -> Create My Trip Button */}
           {!isOfferPage && (
             <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 shrink-0">
               {/* Search Bar (Next to Language Selector) */}
@@ -373,6 +406,18 @@ export const Header: React.FC = () => {
 
               {/* Language Selector (Next to Create My Trip) */}
               <LanguageSelector />
+
+              {/* WhatsApp */}
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Chat on WhatsApp"
+                title="Chat on WhatsApp"
+                className="flex h-9 w-9 xl:h-11 xl:w-11 shrink-0 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xs transition-all hover:scale-105 hover:bg-[#1ebe5b] active:scale-95"
+              >
+                <WhatsAppIcon className="h-5 w-5" />
+              </a>
 
               {/* Create My Trip CTA Button */}
               <QuoteModal>
@@ -386,7 +431,7 @@ export const Header: React.FC = () => {
             </div>
           )}
 
-          {/* Mobile & Tablet (<1024px) Right Controls: Search Icon -> Language Selector -> Create My Trip (on tablet sm/md) -> Hamburger Toggle */}
+          {/* Mobile & Tablet (<1024px) Right Controls: Search Icon -> WhatsApp -> Language Selector -> Create My Trip (on tablet sm/md) -> Hamburger Toggle */}
           <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
             {!isOfferPage && (
               <button
@@ -397,6 +442,19 @@ export const Header: React.FC = () => {
               >
                 <Search className="w-5 h-5 text-slate-700" />
               </button>
+            )}
+
+            {/* WhatsApp (bahut chhoti screen par drawer mein dikhega) */}
+            {!isOfferPage && (
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Chat on WhatsApp"
+                className="hidden min-[380px]:flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-[#25D366] text-white transition-transform active:scale-95"
+              >
+                <WhatsAppIcon className="h-5 w-5" />
+              </a>
             )}
 
             <LanguageSelector />
@@ -477,7 +535,7 @@ export const Header: React.FC = () => {
           document.body
         )}
 
-      {/* Mobile drawer navigation (slide-in, drill-down) */}
+      {/* ===== Mobile drawer (right side) ===== */}
       {!isOfferPage &&
         typeof document !== "undefined" &&
         mounted &&
@@ -493,14 +551,15 @@ export const Header: React.FC = () => {
 
             {/* Drawer panel */}
             <div
-              className={`fixed top-0 left-0 z-[70] flex h-full w-[86vw] max-w-[380px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out lg:hidden ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+              className={`fixed top-0 right-0 z-[70] flex h-full w-[86vw] max-w-[320px] flex-col bg-white shadow-2xl transition-[transform,visibility] duration-300 ease-out lg:hidden ${isMobileMenuOpen ? "visible translate-x-0" : "invisible translate-x-full"
                 }`}
               role="dialog"
               aria-modal="true"
               aria-label="Mobile navigation"
+              aria-hidden={!isMobileMenuOpen}
             >
-              {/* Drawer head */}
-              <div className="flex h-16 shrink-0 items-center justify-between border-b border-[#ececec] px-4">
+              {/* Head: logo + close */}
+              <div className="flex h-16 shrink-0 items-center justify-between border-b border-[#ececec] px-5">
                 <Link
                   href="/"
                   onClick={handleMobileClose}
@@ -516,6 +575,7 @@ export const Header: React.FC = () => {
                   />
                 </Link>
                 <button
+                  type="button"
                   onClick={handleMobileClose}
                   aria-label="Close menu"
                   className="rounded-lg p-2 text-[#555] transition-colors hover:bg-[#f5f5f5]"
@@ -524,35 +584,81 @@ export const Header: React.FC = () => {
                 </button>
               </div>
 
-              {/* Search inside mobile menu drawer */}
-              <div className="px-3 py-2.5 border-b border-slate-100 bg-slate-50/70">
-                <HeaderSearchBar
-                  onClose={handleMobileClose}
-                  placeholder="Search destinations or tours..."
-                />
+              {/* Scrollable area: menu + contact + social */}
+              <div className="flex-1 overflow-y-auto">
+                {/* Menu list */}
+                <div className="border-b border-[#efefef]">
+                  <Link
+                    href="/"
+                    onClick={handleMobileClose}
+                    className={mobileRowClass}
+                  >
+                    Home
+                  </Link>
+                </div>
+                {renderMobileAccordion}
+
+                {/* Contact */}
+                <div className="space-y-3 border-b border-[#efefef] px-5 py-4">
+                  <a
+                    href={WHATSAPP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-[13px] font-semibold text-[#555] hover:text-[#25D366]"
+                  >
+                    <WhatsAppIcon className="h-4 w-4 text-[#25D366]" />
+                    Chat on WhatsApp
+                  </a>
+                  <a
+                    href={PHONE_HREF}
+                    className="flex items-center gap-3 text-[13px] text-[#555] hover:text-[#F8904D]"
+                  >
+                    <Phone className="h-4 w-4 text-[#888]" />
+                    {PHONE_DISPLAY}
+                  </a>
+                  <a
+                    href={`mailto:${EMAIL}`}
+                    className="flex items-center gap-3 text-[13px] text-[#555] hover:text-[#F8904D]"
+                  >
+                    <Mail className="h-4 w-4 text-[#888]" />
+                    {EMAIL}
+                  </a>
+                </div>
+
+                {/* Social */}
+                <div className="flex items-center gap-2.5 px-5 py-4">
+                  <a
+                    href={FACEBOOK_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="KoiKoi Travel on Facebook"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-[#ddd] text-[#777] transition-colors hover:border-[#F8904D] hover:text-[#F8904D]"
+                  >
+                    <FacebookIcon className="h-4 w-4" />
+                  </a>
+                  <a
+                    href={YOUTUBE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="KoiKoi Travel on YouTube"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-[#ddd] text-[#777] transition-colors hover:border-[#F8904D] hover:text-[#F8904D]"
+                  >
+                    <YoutubeIcon className="h-4 w-4" />
+                  </a>
+                </div>
               </div>
 
-              {/* Accordion menu */}
-              <div className="flex-1 overflow-y-auto px-3 py-3">
-                <div className="space-y-2">{renderMobileAccordion}</div>
-              </div>
-
-                  {/* Drawer actions */}
-              <div className="shrink-0 space-y-2 border-t border-[#ececec] px-4 py-3">
+              {/* Bottom CTA */}
+              <div className="shrink-0 border-t border-[#ececec] p-4">
                 <QuoteModal>
-                  <button className="btn-primary w-full py-3 text-base">
-                    <span>Enquire Now</span>
+                  <button
+                    type="button"
+                    className="btn-primary flex w-full items-center justify-center gap-2 py-3 text-[15px] font-bold"
+                  >
+                    <span>Plan My Trip</span>
+                    <span aria-hidden>→</span>
                   </button>
                 </QuoteModal>
-                <a
-                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919136739178"}?text=${encodeURIComponent("Hi KoiKoi Travel, I want to inquire about a custom holiday tour package.")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex w-full items-center justify-center gap-2 rounded-[8px] bg-[#2E8B8B] py-3 text-base font-bold text-white transition-colors hover:bg-[#266f6f] active:scale-95"
-                >
-                  <WhatsAppIcon className="h-4 w-4" />
-                  Chat on WhatsApp
-                </a>
               </div>
             </div>
           </>,

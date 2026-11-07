@@ -2,7 +2,7 @@
 
 import React, { ReactNode } from "react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn, stripHtml } from "@/lib/utils";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 
 export interface SingleDestinationReusableCardProps {
@@ -52,8 +52,10 @@ export function SingleDestinationReusableCard({
   hideFooter = false,
   variant = "standard",
 }: SingleDestinationReusableCardProps) {
-  const displayEyebrow = eyebrow || tag;
-  const displayDescription = description || (typeof subtitle === "string" ? subtitle : null);
+  const rawEyebrow = eyebrow || tag;
+  const displayEyebrow = rawEyebrow ? stripHtml(rawEyebrow) : undefined;
+  const rawDesc = description || (typeof subtitle === "string" ? subtitle : null);
+  const displayDescription = rawDesc ? stripHtml(rawDesc) : null;
   const displayTours =
     tourCountText ||
     (tourCount !== undefined

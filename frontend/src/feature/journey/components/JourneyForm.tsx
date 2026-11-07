@@ -60,7 +60,13 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
     [initialData]
   );
   const journeyStateIds = React.useMemo(
-    () => Array.from(new Set((initialData?.cities ?? []).map((c: any) => c.state?.id).filter(Boolean))) as number[],
+    () =>
+      Array.from(
+        new Set([
+          ...(initialData?.states ?? []).map((s: any) => s.id),
+          ...(initialData?.cities ?? []).map((c: any) => c.state?.id),
+        ].filter(Boolean))
+      ) as number[],
     [initialData]
   );
   const [filterCountryIds, setFilterCountryIds] = useState<number[]>(journeyCountryIds);
@@ -199,10 +205,20 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
       setSeasonIds(initialData.months?.map((m: any) => m.id) || []);
       setTravelExperienceIds(initialData.travelExperiences?.map((e: any) => e.id) || []);
       setFilterCountryIds(
-        Array.from(new Set((initialData.cities ?? []).map((c: any) => c.state?.country?.id).filter(Boolean)))
+        Array.from(
+          new Set([
+            ...(initialData.cities ?? []).map((c: any) => c.state?.country?.id),
+            ...(initialData.states ?? []).map((s: any) => s.countryId || s.country?.id),
+          ].filter(Boolean))
+        )
       );
       setFilterStateIds(
-        Array.from(new Set((initialData.cities ?? []).map((c: any) => c.state?.id).filter(Boolean)))
+        Array.from(
+          new Set([
+            ...(initialData.states ?? []).map((s: any) => s.id),
+            ...(initialData.cities ?? []).map((c: any) => c.state?.id),
+          ].filter(Boolean))
+        )
       );
       setBannerTile(initialData.banner?.bannerTitle || "");
       setBannerTag(initialData.banner?.bannerTag || "");
@@ -438,8 +454,13 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
         for (const { file, index } of ordered) {
           const fd = new FormData();
           fd.append("category", "banner");
-          fd.append("filename", formData.slug ? `${formData.slug}-holiday-${index + 1}` : `new-journey-holiday-${index + 1}`);
-          fd.append("label", formData.slug ? `${formData.slug}-holiday-${index + 1}` : `New Journey Holiday ${index + 1}`);
+          const rawName = file.name ? file.name.replace(/\.[^/.]+$/, "") : "";
+          const isCustom = rawName && !rawName.startsWith("banner-image") && !rawName.startsWith("journey-banner");
+          const finalName = isCustom
+            ? rawName
+            : (formData.slug ? `${formData.slug}-journey-${index + 1}` : `journey-holiday-${index + 1}`);
+          fd.append("filename", finalName);
+          fd.append("label", finalName);
           fd.append("file", file);
           const res = await apiClient.post("/upload", fd, { headers: { "Content-Type": "multipart/form-data" } });
           const url = res.data?.url;
@@ -462,6 +483,7 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
       thumbImg: formData.thumbImg.trim() || undefined,
       noDays: Number(formData.noDays),
       cityIds: formData.cityIds,
+      stateIds: filterStateIds.length > 0 ? filterStateIds : undefined,
       destination: formData.destination.trim() || undefined,
       isActive: formData.isActive,
       isBestSelling: activeTab === "bestSelling" ? true : formData.isBestSelling,

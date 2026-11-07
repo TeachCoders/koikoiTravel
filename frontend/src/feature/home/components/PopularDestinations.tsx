@@ -52,7 +52,14 @@ export const PopularDestinations: React.FC<{
     // 1. Taj Mahal
     const tajState = states.find((s) => s.slug === "taj-mahal");
     const tajExp = travelExperiences.find((e) => e.slug === "taj-mahal");
-    const tajTours = tajState?.tourCount ?? tajExp?.tourCount ?? 12;
+    const tajTours =
+      (Array.isArray(tajState?.featuredJourneyOrder) && tajState.featuredJourneyOrder.length > 0
+        ? tajState.featuredJourneyOrder.length
+        : tajState?.tourCount) ??
+      (Array.isArray(tajExp?.featuredJourneyOrder) && tajExp.featuredJourneyOrder.length > 0
+        ? tajExp.featuredJourneyOrder.length
+        : tajExp?.tourCount) ??
+      12;
     list.push({
       id: "dest-taj-mahal",
       title: "Taj Mahal",
@@ -68,7 +75,10 @@ export const PopularDestinations: React.FC<{
     const gtState = states.find(
       (s) => s.id === 30 || s.slug === "golden-triangle"
     );
-    const gtTours = gtState?.tourCount ?? 15;
+    const gtTours =
+      (Array.isArray(gtState?.featuredJourneyOrder) && gtState.featuredJourneyOrder.length > 0
+        ? gtState.featuredJourneyOrder.length
+        : gtState?.tourCount) ?? 13;
     list.push({
       id: "dest-golden-triangle",
       title: "Golden Triangle",
@@ -82,7 +92,10 @@ export const PopularDestinations: React.FC<{
 
     // 3. Rajasthan
     const rajState = states.find((s) => s.slug === "rajasthan");
-    const rajTours = rajState?.tourCount ?? 32;
+    const rajTours =
+      (Array.isArray(rajState?.featuredJourneyOrder) && rajState.featuredJourneyOrder.length > 0
+        ? rajState.featuredJourneyOrder.length
+        : rajState?.tourCount) ?? 16;
     list.push({
       id: "dest-rajasthan",
       title: "Rajasthan",
@@ -96,7 +109,10 @@ export const PopularDestinations: React.FC<{
 
     // 4. Kerala
     const keralaState = states.find((s) => s.slug === "kerala");
-    const keralaTours = keralaState?.tourCount ?? 15;
+    const keralaTours =
+      (Array.isArray(keralaState?.featuredJourneyOrder) && keralaState.featuredJourneyOrder.length > 0
+        ? keralaState.featuredJourneyOrder.length
+        : keralaState?.tourCount) ?? 7;
     list.push({
       id: "dest-kerala",
       title: "Kerala",
@@ -110,7 +126,10 @@ export const PopularDestinations: React.FC<{
 
     // 5. South India
     const southState = states.find((s) => s.slug === "south-india");
-    const southTours = southState?.tourCount ?? 10;
+    const southTours =
+      (Array.isArray(southState?.featuredJourneyOrder) && southState.featuredJourneyOrder.length > 0
+        ? southState.featuredJourneyOrder.length
+        : southState?.tourCount) ?? 11;
     list.push({
       id: "dest-south-india",
       title: "South India",
@@ -146,7 +165,7 @@ export const PopularDestinations: React.FC<{
 
           <div className="shrink-0">
             <Link
-              href="/destinations"
+              href="/tour-packages/india"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-section-border text-slate-800 text-sm font-semibold hover:border-[#2E8B8B] hover:text-[#2E8B8B] transition-all shadow-xs"
             >
               <span>All destinations</span>

@@ -65,6 +65,7 @@ const router = createCmsRouter({
     showOnSite: true,
     displayOrder: true,
     stateId: true,
+    featuredJourneyOrder: true,
   },
   parentInclude: {
     model: "state",
