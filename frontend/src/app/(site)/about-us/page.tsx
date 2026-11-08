@@ -15,7 +15,7 @@ import { HowItWorksSection } from "@/feature/home/components/HowItWorksSection";
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "about-us", 0);
+  const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "about-us", 60);
 
   const title = cmsPage?.seoTitle || "About Us | KoiKoi Travel - Private Luxury & Small Group Tours";
   const description =
@@ -46,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AboutUsPage() {
-  const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "about-us", 0);
+  const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "about-us", 60);
 
   const displayTitle = cmsPage?.h1Title || cmsPage?.title || "About KoiKoi Travel";
 
