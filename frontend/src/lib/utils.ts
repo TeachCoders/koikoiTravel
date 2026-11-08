@@ -53,6 +53,12 @@ export function stripTourSuffix(label?: string | null): string {
 export function formatToursH1(title?: string | null): string {
   if (!title) return "Tour Packages";
   const t = title.trim();
+
+  // If already ends with "Tour Packages" or "Packages"
+  if (/(?:tour\s+packages?|packages?)$/i.test(t)) {
+    return t;
+  }
+
   const clean = stripTourSuffix(t);
 
   // Golden Triangle should cleanly remain "Golden Triangle Tours India"
