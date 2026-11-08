@@ -23,28 +23,28 @@ interface TrustCardItem {
 const TRUST_CARDS_DATA: TrustCardItem[] = [
   {
     tag: "YOUR",
-    title: "PERSONAL TRAVEL\nDESIGNER",
+    title: "PERSONAL TRAVEL DESIGNER",
     tagline: "We're Travelers First, Planners Second.”",
     image: "/images/why-choose-us/designer-v5.jpg",
     desc: "Deeply rooted in India for authentic advice. Passionate about crafting your unique journey.",
   },
   {
     tag: "YOUR",
-    title: "LOCAL\nSTORYTELLER",
+    title: "LOCAL STORYTELLER",
     tagline: "We share the stories you won't find in a guidebook”",
     image: "/images/why-choose-us/storyteller-v5.jpg",
     desc: "Connecting you with the top 20% of local storytellers. Your personal photographer for cherished moments.",
   },
   {
     tag: "YOUR",
-    title: "PRIVATE DRIVER\n& CAR",
+    title: "PRIVATE DRIVER & CAR",
     tagline: "20% more space, 100% on your schedule.”",
     image: "/images/why-choose-us/driver-v5.jpg",
     desc: "A seamless journey that moves at your own pace. Your private, comfortable space on the road.",
   },
   {
     tag: "YOUR",
-    title: "24/7\nTRAVEL SUPPORT",
+    title: "24/7 TRAVEL SUPPORT",
     tagline: "Any Problem, Anytime, Anywhere.”",
     image: "/images/why-choose-us/support-v5.jpg",
     desc: "Your safety and peace of mind are our priority. Instant responses, so you're never left waiting.",
@@ -82,9 +82,10 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = () => {
                   {card.tag}
                 </span>
 
-                <h3 className="mt-1.5 font-bold text-base sm:text-lg lg:text-[19px] tracking-tight text-[#F8904D] uppercase leading-snug whitespace-pre-line min-h-[48px] flex items-center justify-center">
-                  {card.title}
-                </h3>
+                <h3
+                  className="mt-1.5 font-bold text-base sm:text-lg lg:text-[19px] tracking-tight text-[#F8904D] uppercase leading-snug min-h-[48px] flex items-center justify-center max-w-[220px]"
+                  dangerouslySetInnerHTML={{ __html: card.title }}
+                />
 
                 {/* Quotation mark */}
                 <span className="text-2xl sm:text-3xl font-serif text-[#F8904D]/70 leading-none mt-1.5 select-none">
@@ -92,16 +93,17 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = () => {
                 </span>
 
                 {/* Italic Tagline */}
-                <p className="text-sm sm:text-[15px] md:text-base italic font-semibold text-slate-800 leading-snug px-1 -mt-1 min-h-[44px] flex items-center justify-center">
-                  {card.tagline}
-                </p>
+                <p
+                  className="text-sm sm:text-[15px] md:text-base italic font-semibold text-slate-800 leading-snug px-1 -mt-1 min-h-[44px] flex items-center justify-center"
+                  dangerouslySetInnerHTML={{ __html: card.tagline }}
+                />
               </div>
 
               {/* Center: Illustration Image with Uniform Height across all 4 cards */}
               <div className="my-3.5 w-full aspect-[3/2] flex items-center justify-center overflow-hidden rounded-md bg-[#F8F3EF]">
                 <Image
                   src={card.image}
-                  alt={card.title.replace("\n", " ")}
+                  alt={card.title}
                   width={600}
                   height={400}
                   className="w-full h-full object-contain"
@@ -109,9 +111,10 @@ export const WhyChooseUsSection: React.FC<WhyChooseUsSectionProps> = () => {
               </div>
 
               {/* Bottom: Description */}
-              <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed px-1 mt-auto">
-                {card.desc}
-              </p>
+              <p
+                className="text-sm sm:text-[15px] text-slate-600 leading-relaxed px-1 mt-auto"
+                dangerouslySetInnerHTML={{ __html: card.desc }}
+              />
             </div>
           ))}
         </div>

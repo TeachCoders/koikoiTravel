@@ -330,12 +330,18 @@ export const PlanAdventureSection: React.FC<PlanAdventureSectionProps> = ({
 
           {/* Subtitle (FULL WIDTH, STRUCTURED WITH PARAGRAPH BREAKS) */}
           <div className="text-slate-600 text-sm sm:text-base mt-2.5 w-full leading-relaxed font-normal text-left space-y-1.5">
-            <p>
-              <strong className="font-semibold text-slate-900">Plan your India holiday your way.</strong> Choose <strong className="font-semibold text-slate-900">By Destination</strong> to find places like <strong className="font-semibold text-slate-900">Rajasthan</strong>, where you can visit grand royal palaces, the <strong className="font-semibold text-slate-900">Taj Mahal</strong>, a world-famous monument of love, <strong className="font-semibold text-slate-900">Kerala</strong>, known as God&apos;s Own Country for its beautiful backwaters, and <strong className="font-semibold text-slate-900">South India</strong>, famous for its ancient temples.
-            </p>
-            <p>
-              Or choose <strong className="font-semibold text-slate-900">By Experience</strong> to enjoy relaxing <strong className="font-semibold text-slate-900">Ayurveda and Yoga</strong> retreats, exciting <strong className="font-semibold text-slate-900">wildlife adventures</strong> with jungle jeep safaris, <strong className="font-semibold text-slate-900">spiritual journeys</strong>, <strong className="font-semibold text-slate-900">family holidays</strong> and peaceful <strong className="font-semibold text-slate-900">hill station escapes</strong>. Find the holiday that suits your interests.
-            </p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html:
+                  '<strong class="font-semibold text-slate-900">Plan your India holiday your way.</strong> Choose <strong class="font-semibold text-slate-900">By Destination</strong> to find places like <strong class="font-semibold text-slate-900">Rajasthan</strong>, where you can visit grand royal palaces, the <strong class="font-semibold text-slate-900">Taj Mahal</strong>, a world-famous monument of love, <strong class="font-semibold text-slate-900">Kerala</strong>, known as God\'s Own Country for its beautiful backwaters, and <strong class="font-semibold text-slate-900">South India</strong>, famous for its ancient temples.',
+              }}
+            />
+            <p
+              dangerouslySetInnerHTML={{
+                __html:
+                  'Or choose <strong class="font-semibold text-slate-900">By Experience</strong> to enjoy relaxing <strong class="font-semibold text-slate-900">Ayurveda and Yoga</strong> retreats, exciting <strong class="font-semibold text-slate-900">wildlife adventures</strong> with jungle jeep safaris, <strong class="font-semibold text-slate-900">spiritual journeys</strong>, <strong class="font-semibold text-slate-900">family holidays</strong> and peaceful <strong class="font-semibold text-slate-900">hill station escapes</strong>. Find the holiday that suits your interests.',
+              }}
+            />
           </div>
 
           {/* Tabs Switcher (Centered) */}

@@ -200,18 +200,20 @@ export function SingleDestinationReusableCard({
             <Link
               href={href}
               className="transition-colors duration-200 hover:text-[#F8904D] group-hover:text-[#F8904D]"
-            >
-              {title}
-            </Link>
+              dangerouslySetInnerHTML={{ __html: title }}
+            />
           ) : (
-            title
+            <span dangerouslySetInnerHTML={{ __html: title }} />
           )}
         </h3>
 
         {(displayDescription || subtitle) && (
-          <p className="flex-1 text-xs sm:text-[13px] leading-relaxed text-slate-600">
-            {displayDescription || subtitle}
-          </p>
+          <p
+            className="flex-1 text-xs sm:text-[13px] leading-relaxed text-slate-600"
+            dangerouslySetInnerHTML={{
+              __html: (typeof subtitle === "string" ? subtitle : displayDescription) || "",
+            }}
+          />
         )}
 
         {/* 3. Footer / View tours CTA */}

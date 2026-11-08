@@ -47,9 +47,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
       interval={7000}
       title={
         <div className="font-luxury text-xl sm:text-4xl md:text-5xl md:leading-[1.1] lg:text-[56px] lg:leading-[1.1] max-w-4xl text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]">
-          <span className="block">We plan it like</span>
+          <span className="block">We plan it, </span>
           <span className="block sm:whitespace-nowrap">
-            It’s our own trip in India
+           like It’s our own trip
           </span>
         </div>
       }
