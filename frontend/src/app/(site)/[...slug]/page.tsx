@@ -4,7 +4,7 @@ import CmsPageDetail from "@/feature/cms/components/CmsPageDetail";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema, webPageSchema, graphSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached } from "@/feature/destinations/api/public-server";
-import { absoluteUrl, truncateMeta } from "@/lib/utils";
+import { absoluteUrl, truncateMeta, cleanSeoTitle } from "@/lib/utils";
 import type { CmsPage } from "@/feature/cms/type";
 import { cmsPageParams } from "@/lib/prerender";
 
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!page) return { title: "Page Not Found | KoiKoi Travel" };
   const seoDescription = truncateMeta(page.seoDescription || page.moreDescription || "");
   const rawTitle = page.seoTitle || page.title;
-  const title = rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim();
+  const title = cleanSeoTitle(rawTitle);
   const canonical = page.canonical || `/${page.slug || slug.join("/")}`;
   const ogImage = absoluteUrl(page.thumbImg);
   return {

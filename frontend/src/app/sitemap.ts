@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { isIndexableCity } from "@/lib/cityValidation";
 const API_BASE = process.env.API_BASE_URL || "http://localhost:5000";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 
@@ -25,12 +26,18 @@ async function fetchAll<T>(path: string): Promise<T[]> {
 }
 
 function url(path: string, lastModified?: string): MetadataRoute.Sitemap[number] {
-  return {
+  const item: MetadataRoute.Sitemap[number] = {
     url: `${SITE_URL}${path}`,
-    lastModified: lastModified ? new Date(lastModified) : new Date(),
     changeFrequency: "weekly",
     priority: 0.7,
   };
+  if (lastModified) {
+    const d = new Date(lastModified);
+    if (!isNaN(d.getTime())) {
+      item.lastModified = d;
+    }
+  }
+  return item;
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -57,14 +64,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "destinations",
   ]);
 
+  const STATIC_DATE = "2026-11-01T00:00:00.000Z";
   const entries: MetadataRoute.Sitemap = [
-    url("/", new Date().toISOString()),
-    url("/destinations"),
-    url("/travel-experiences"),
-    url("/blog"),
-    url("/tour-packages"),
-    url("/contact-us"),
-    url("/tour-packages/india/golden-triangle"),
+    url("/", STATIC_DATE),
+    url("/destinations", STATIC_DATE),
+    url("/travel-experiences", STATIC_DATE),
+    url("/blog", STATIC_DATE),
+    url("/tour-packages", STATIC_DATE),
+    url("/contact-us", STATIC_DATE),
+    url("/tour-packages/india/golden-triangle", STATIC_DATE),
   ];
 
   // Count journeys per state and city to filter out thin pages (< 2 tours)
@@ -116,11 +124,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (s.country?.slug) entries.push(url(`/tour-packages/${s.country.slug}/${s.slug}`, s.updatedAt));
   });
   cities.forEach((c: any) => {
-    if (c.isActive === false || c.showOnSite === false) return;
-    if (EXCLUDED_CITY_SLUGS.has(c.slug)) return;
-    if (c.state?.slug === c.slug) return;
-    const count = cityTourCount.get(c.slug) || 0;
-    if (count < 2) return;
+    if (!isIndexableCity(c.state?.slug, c.slug)) return;
     if (c.state?.country?.slug) {
       entries.push(url(`/tour-packages/${c.state.country.slug}/${c.state.slug}/${c.slug}`, c.updatedAt));
     }

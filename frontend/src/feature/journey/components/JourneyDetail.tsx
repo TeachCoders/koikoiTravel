@@ -38,6 +38,7 @@ import { useJourneyBySlug } from "@/feature/journey/api/useJourney";
 import type { Journey } from "@/feature/journey/type";
 import { groupMonthsBySeason } from "@/components/shared/seasonUtils";
 import PageLoader from "@/components/shared/PageLoader";
+import { isIndexableCity } from "@/lib/cityValidation";
 import { getJourneyBreadcrumbState } from "@/lib/breadcrumbHelper";
 import TourBookingForm from "@/feature/leads/components/TourBookingForm";
 import { travelExperienceIcon } from "@/components/shared/TravelExperiencePills";
@@ -88,17 +89,19 @@ export default function JourneyDetail({
   const bcState = getJourneyBreadcrumbState(journey);
 
   const coveredCities = useMemo(() => {
-    const list: { name: string; href: string; slug: string }[] = [];
+    const list: { name: string; href: string | null; slug: string; isValid: boolean }[] = [];
     const seen = new Set<string>();
     (journey?.cities || []).forEach((c: any) => {
       if (!c.slug || seen.has(c.slug)) return;
       seen.add(c.slug);
       const stateSlug = c.state?.slug || bcState.stateSlug;
       const countrySlug = c.state?.country?.slug || bcState.countrySlug || "india";
+      const isValid = isIndexableCity(stateSlug, c.slug);
       list.push({
         name: c.title || c.slug,
         slug: c.slug,
-        href: `/tour-packages/${countrySlug}/${stateSlug}/${c.slug}`,
+        href: isValid ? `/tour-packages/${countrySlug}/${stateSlug}/${c.slug}` : null,
+        isValid,
       });
     });
     return list;
@@ -800,16 +803,26 @@ export default function JourneyDetail({
               Places Covered in this Tour
             </h2>
             <div className="flex flex-wrap gap-2.5">
-              {coveredCities.map((c) => (
-                <Link
-                  key={c.slug}
-                  href={c.href}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-50 hover:bg-[#F8904D]/10 border border-slate-200 hover:border-[#F8904D]/30 text-slate-800 hover:text-[#d85511] font-semibold text-xs sm:text-sm transition-all"
-                >
-                  <MapPin size={14} className="text-[#F8904D]" />
-                  <span>{c.name} Tour Packages</span>
-                </Link>
-              ))}
+              {coveredCities.map((c) =>
+                c.isValid && c.href ? (
+                  <Link
+                    key={c.slug}
+                    href={c.href}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-50 hover:bg-[#F8904D]/10 border border-slate-200 hover:border-[#F8904D]/30 text-slate-800 hover:text-[#d85511] font-semibold text-xs sm:text-sm transition-all"
+                  >
+                    <MapPin size={14} className="text-[#F8904D]" />
+                    <span>{c.name} Tour Packages</span>
+                  </Link>
+                ) : (
+                  <span
+                    key={c.slug}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-50 border border-slate-200/80 text-slate-600 font-medium text-xs sm:text-sm"
+                  >
+                    <MapPin size={14} className="text-slate-400" />
+                    <span>{c.name}</span>
+                  </span>
+                )
+              )}
             </div>
           </div>
         </section>

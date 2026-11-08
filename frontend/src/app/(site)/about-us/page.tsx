@@ -7,7 +7,7 @@ import { fetchBySlugCached } from "@/feature/destinations/api/public-server";
 import RichContent from "@/components/shared/RichContent";
 import { autoLinkKeywords } from "@/lib/autoInternalLink";
 import type { CmsPage } from "@/feature/cms/type";
-import { truncateMeta } from "@/lib/utils";
+import { truncateMeta, cleanSeoTitle } from "@/lib/utils";
 import { ABOUT_US_CONTENT_HTML } from "@/feature/cms/aboutUsContent";
 import { WhyChooseUsSection } from "@/components/shared/WhyChooseUsSection";
 import { HowItWorksSection } from "@/feature/home/components/HowItWorksSection";
@@ -17,7 +17,7 @@ export const revalidate = 60;
 export async function generateMetadata(): Promise<Metadata> {
   const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "about-us", 60);
 
-  const title = cmsPage?.seoTitle || "About Us | KoiKoi Travel - Private Luxury & Small Group Tours";
+  const title = cleanSeoTitle(cmsPage?.seoTitle || "About Us - Private Luxury & Small Group Tours");
   const description =
     truncateMeta(cmsPage?.seoDescription || cmsPage?.moreDescription || "") ||
     "KoiKoi Travel is a small, India-based tour operator crafting private luxury journeys and small-group tours across India. Plan every trip as if it were our own.";

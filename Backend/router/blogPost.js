@@ -39,5 +39,6 @@ export default createCmsRouter({
     videoUrl: true,
     isActive: true,
     displayOrder: true,
+    updatedAt: true,
   },
 });

@@ -18,7 +18,7 @@ import { breadcrumbSchema, webPageSchema, graphSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached } from "@/feature/destinations/api/public-server";
 import RichContent from "@/components/shared/RichContent";
 import type { CmsPage } from "@/feature/cms/type";
-import { truncateMeta } from "@/lib/utils";
+import { truncateMeta, cleanSeoTitle } from "@/lib/utils";
 import ContactFormClient from "@/feature/contact/components/ContactFormClient";
 
 export const revalidate = 300;
@@ -31,8 +31,9 @@ const CLEAN_PHONE = SALES_PHONE.replace(/[^0-9+]/g, "");
 export async function generateMetadata(): Promise<Metadata> {
   const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "contact-us");
 
-  const title =
-    cmsPage?.seoTitle || cmsPage?.title || "Contact Us | KoiKoi Travel - Get in Touch for Custom Tours";
+  const rawTitle =
+    cmsPage?.seoTitle || cmsPage?.title || "Contact Us - Get in Touch for Custom Tours";
+  const title = cleanSeoTitle(rawTitle);
   const description =
     truncateMeta(cmsPage?.seoDescription || cmsPage?.moreDescription || "") ||
     "Contact KoiKoi Travel for custom India tours, private cabs & 24/7 travel support. Reach our local destination experts by phone, WhatsApp, or email.";

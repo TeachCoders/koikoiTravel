@@ -1,3 +1,5 @@
+import { isIndexableCity } from "./cityValidation";
+
 export interface AutoLinkRule {
   term: string;
   href: string;
@@ -304,7 +306,13 @@ function escapeRegex(str: string): string {
 }
 
 export function buildExperienceLinkRules(): AutoLinkRule[] {
-  return KEYWORD_LINKS.flatMap((entry) =>
+  return KEYWORD_LINKS.filter((entry) => {
+    const match = entry.href.match(/^\/tour-packages\/india\/([a-z0-9-]+)\/([a-z0-9-]+)\/?$/i);
+    if (match) {
+      return isIndexableCity(match[1], match[2]);
+    }
+    return true;
+  }).flatMap((entry) =>
     entry.terms.map((term) => ({ term, href: entry.href }))
   );
 }
@@ -633,6 +641,9 @@ export function linkTourPackageSections(params: LinkTourPackageParams): LinkTour
     const segments = normHref.split("/").filter(Boolean);
     const isCityPath = segments.length >= 4 || normHref === "/tour-packages/india/delhi";
     if (!isCityPath) {
+      continue;
+    }
+    if (segments.length >= 4 && !isIndexableCity(segments[2], segments[3])) {
       continue;
     }
 

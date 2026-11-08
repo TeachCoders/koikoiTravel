@@ -10,7 +10,7 @@ import {
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
 
 export const metadata: Metadata = {
-  title: "Thank You | KoiKoi Travel - Inquiry Received",
+  title: "Thank You - Inquiry Received",
   description:
     "Thank you for contacting KoiKoi Travel. Your travel inquiry has been received and our destination specialists will contact you shortly.",
 };

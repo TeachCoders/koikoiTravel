@@ -101,6 +101,7 @@ export const PlanAdventureSection: React.FC<PlanAdventureSectionProps> = ({
   // Helper to resolve accurate tour count for states (checks curated order first, then tagged/destination journeys)
   const getStateCount = (stateObj: any, fallbackCount: number = 0) => {
     if (!stateObj) return fallbackCount;
+    if (typeof stateObj.tourCount === "number" && stateObj.tourCount > 0) return stateObj.tourCount;
     if (journeys && journeys.length > 0) {
       const { stateJourneys } = resolveStateJourneys(journeys, stateObj);
       if (stateJourneys && stateJourneys.length > 0) return stateJourneys.length;
@@ -114,6 +115,7 @@ export const PlanAdventureSection: React.FC<PlanAdventureSectionProps> = ({
   // Helper to resolve accurate tour count for experiences (checks curated order first, then tagged journeys)
   const getExperienceCount = (expObj: any, fallbackCount: number = 0) => {
     if (!expObj) return fallbackCount;
+    if (typeof expObj.tourCount === "number" && expObj.tourCount > 0) return expObj.tourCount;
     if (journeys && journeys.length > 0) {
       const { experienceJourneys } = resolveTravelExperienceJourneys(journeys, expObj);
       if (experienceJourneys && experienceJourneys.length > 0) return experienceJourneys.length;

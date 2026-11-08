@@ -4,7 +4,7 @@ import TravelExperienceDetail from "@/feature/travelExperience/components/Travel
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema, touristAttractionSchema, itemListSchema, faqSchema, graphSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
-import { stripHtml, absoluteUrl,  truncateMeta } from "@/lib/utils";
+import { stripHtml, absoluteUrl, truncateMeta, cleanSeoTitle } from "@/lib/utils";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { TravelExperience } from "@/feature/travelExperience/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
@@ -45,7 +45,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const rawTitle = isGoldenTriangle
     ? "Golden Triangle Tour Packages (Delhi Agra Jaipur) | Private Car & Chauffeur"
     : data.seoTitle || data.title;
-  const cleanTitle = rawTitle ? rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim() : rawTitle;
+  const cleanTitle = cleanSeoTitle(rawTitle);
   const title = pageNum > 1 ? `${cleanTitle} (Page ${pageNum})` : cleanTitle;
 
   const seoDescription = isGoldenTriangle

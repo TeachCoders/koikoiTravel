@@ -41,6 +41,15 @@ export function truncateMeta(text?: string, max = 150): string {
   return body.replace(/[\s,;:.!?\-–—]+$/, "");
 }
 
+export function cleanSeoTitle(title?: string | null): string {
+  if (!title) return "";
+  let clean = title.replace(/\s+/g, " ").trim();
+  while (/\s*(?:\||-|–|—)\s*KoiKoi(?:\s*Travel)?\s*$/i.test(clean)) {
+    clean = clean.replace(/\s*(?:\||-|–|—)\s*KoiKoi(?:\s*Travel)?\s*$/i, "").trim();
+  }
+  return clean;
+}
+
 export function stripTourSuffix(label?: string | null): string {
   if (!label) return "";
   const t = label.trim();

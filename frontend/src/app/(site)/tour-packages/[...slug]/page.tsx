@@ -8,7 +8,8 @@ import CmsFallbackPage from "@/feature/cms/components/CmsFallbackPage";
 import JsonLd from "@/components/shared/JsonLd";
 import { breadcrumbSchema, faqSchema, touristDestinationSchema, touristTripSchema, itemListSchema, graphSchema, buildTouristType } from "@/lib/jsonLd";
 import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
-import { stripHtml,  truncateMeta } from "@/lib/utils";
+import { stripHtml, truncateMeta, cleanSeoTitle } from "@/lib/utils";
+import { isIndexableCity } from "@/lib/cityValidation";
 import { getJourneyBreadcrumbState } from "@/lib/breadcrumbHelper";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { Country } from "@/feature/country/type";
@@ -111,7 +112,7 @@ async function resolveSlug(slug: string[]): Promise<Resolved> {
 
   if (slug.length === 3) {
     const [countrySlug, stateSlug, citySlug] = slug;
-    if (stateSlug === citySlug) {
+    if (stateSlug === citySlug || !isIndexableCity(stateSlug, citySlug)) {
       return { type: "notfound" };
     }
     const city = await fetchBySlugCached<City>("/city/by-slug", citySlug);
@@ -148,7 +149,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         country?.title?.replace(/\s*Tour$/i, "") ||
         country?.title ||
         (slug[0] ? slug[0] : "Tour Package");
-      const title = rawTitle ? rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim() : rawTitle;
+      const title = cleanSeoTitle(rawTitle);
       const seoDescription =
         truncateMeta(country?.seoDescription || country?.overView || "");
       const canonical = `/tour-packages/${country.slug}`;
@@ -182,7 +183,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       const hasFewTours = allOrderedJourneys.length < 2;
 
       const rawTitle = state.seoTitle || state.h1Title || state.title;
-      const title = rawTitle ? rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim() : rawTitle;
+      const title = cleanSeoTitle(rawTitle);
       const seoDescription = truncateMeta(state.seoDescription || state.overView);
       const canonical = `/tour-packages/${state.country?.slug}/${state.slug}`;
       const ogImage = absoluteUrl(state.thumbImg);
@@ -216,7 +217,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       const hasFewTours = cityJourneys.length < 2;
 
       const rawTitle = city.seoTitle || city.h1Title || city.title;
-      const title = rawTitle ? rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim() : rawTitle;
+      const title = cleanSeoTitle(rawTitle);
       const seoDescription = truncateMeta(city.seoDescription || city.overView);
       const canonical =
         `/tour-packages/${city.state?.country?.slug}/${city.state?.slug}/${city.slug}`;
@@ -245,7 +246,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     case "journey": {
       const { journey } = resolved;
       const rawTitle = journey.seoTitle || journey.h1Title || journey.title;
-      const title = rawTitle ? rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim() : rawTitle;
+      const title = cleanSeoTitle(rawTitle);
       const seoDescription = truncateMeta(journey.seoDescription || journey.overView);
       const canonical = journeySlugCanonical(journey.slug, journey.canonical);
       const ogImage = absoluteUrl(journey.thumbImg);
@@ -272,7 +273,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     case "cms": {
       const { cms } = resolved;
       const rawTitle = cms.seoTitle || cms.title;
-      const title = rawTitle ? rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim() : rawTitle;
+      const title = cleanSeoTitle(rawTitle);
       const seoDescription = truncateMeta(cms.seoDescription || cms.moreDescription || "");
       return {
         title,

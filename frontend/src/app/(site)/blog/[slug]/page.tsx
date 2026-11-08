@@ -9,7 +9,7 @@ import JsonLd from "@/components/shared/JsonLd";
 import { articleSchema, breadcrumbSchema, faqSchema, graphSchema } from "@/lib/jsonLd";
 import { fetchBySlugCached, SERVER_API_BASE } from "@/feature/destinations/api/public-server";
 import { fetchHeroBannersServer } from "@/feature/heroBanner/api/server";
-import { stripHtml, absoluteUrl,  truncateMeta } from "@/lib/utils";
+import { stripHtml, absoluteUrl, truncateMeta, cleanSeoTitle } from "@/lib/utils";
 import { formatBlogDate } from "@/lib/dateUtils";
 import type { BlogPost } from "@/feature/blog/type";
 import { FallbackImage } from "@/components/shared/FallbackImage";
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await fetchBySlugCached<BlogPost>("/blog/by-slug", slug);
   if (!post) return { title: "Blog Post Not Found | KoiKoi Travel" };
   const seoDescription = truncateMeta(post.seoDescription || post.moreDescription || "");
-  const title = (post.seoTitle || post.title).replace(/\s{2,}/g, " ").trim();
+  const title = cleanSeoTitle(post.seoTitle || post.title);
   const canonical = post.canonical || `/blog/${post.slug}`;
   const section = (post.categories?.length ? post.categories : post.category ? [post.category] : [])[0];
   return {

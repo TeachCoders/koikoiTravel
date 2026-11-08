@@ -47,6 +47,7 @@ import { GOLDEN_TRIANGLE_FAQS } from "@/feature/travelExperience/goldenTriangleF
 import { SOUTH_INDIA_FAQS } from "../southIndiaFaqs";
 import { TAJ_MAHAL_FAQS } from "../tajMahalFaqs";
 import { QuoteModal } from "@/components/shared/QuoteModal";
+import { isIndexableCity } from "@/lib/cityValidation";
 
 export default function StateDetail({
   slug,
@@ -181,7 +182,8 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         c.showOnSite !== false &&
         c.slug !== state.slug &&
         (c.title ?? "").trim().toLowerCase() !== (state.title ?? "").trim().toLowerCase() &&
-        journeyCountFor(c.id) >= 2
+        journeyCountFor(c.id) >= 2 &&
+        isIndexableCity(state.slug, c.slug)
     )
     .sort((a, b) => {
     const aOrder = a.displayOrder ?? 0;
@@ -198,11 +200,15 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   const displayedCities = useMemo(() => {
     if (isTajMahal || isGoldenTriangle) return [];
 
-    // Show only cities created under this state that have at least 2 tour itineraries and are enabled on site
+    // Show only valid indexable cities under this state that have at least 2 tours
     return stateCities.filter(
-      (c) => c.isActive !== false && c.showOnSite !== false && journeyCountFor(c.id) >= 2
+      (c) =>
+        c.isActive !== false &&
+        c.showOnSite !== false &&
+        journeyCountFor(c.id) >= 2 &&
+        isIndexableCity(state.slug, c.slug)
     );
-  }, [stateCities, isTajMahal, isGoldenTriangle]);
+  }, [stateCities, isTajMahal, isGoldenTriangle, state.slug]);
 
   const cityCount = displayedCities.length ?? 0;
   const showCitiesSection = displayedCities.length > 0 && !isGoldenTriangle && !isTajMahal;

@@ -54,9 +54,7 @@ export const websiteSchema: Record<string, unknown> = {
   description: "Discover India with KoiKoi Travel, a customize tour operator offering tailor-made India tours and private holidays across Rajasthan, Kerala, South India and beyond.",
   inLanguage: ["en", "en-US"],
   publisher: {
-    "@type": "TravelAgency",
     "@id": `${SITE_URL}/#organization`,
-    name: "KoiKoi Travel",
   },
 };
 

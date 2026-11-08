@@ -79,11 +79,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/&",
-        destination: "/",
-        permanent: true,
-      },
-      {
         source: "/india-tours/tour-packages/golden-triangle",
         destination: "/tour-packages/india/golden-triangle",
         permanent: true,
