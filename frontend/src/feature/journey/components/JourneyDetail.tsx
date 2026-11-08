@@ -48,11 +48,20 @@ import { linkTourPackageSections } from "@/lib/autoInternalLink";
 import { cn, stripHtml } from "@/lib/utils";
 import FaqSection from "@/feature/home/components/FaqSection";
 import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
+import TourPackageCard from "@/components/shared/TourPackageCard";
 
 const JourneyLightbox = dynamic(() => import("./JourneyLightbox"), { ssr: false });
 const QuoteModal = dynamic(() => import("@/components/shared/QuoteModal").then((m) => m.QuoteModal), { ssr: false });
 
-export default function JourneyDetail({ slug, initialJourney }: { slug: string; initialJourney?: Journey | null }) {
+export default function JourneyDetail({
+  slug,
+  initialJourney,
+  relatedJourneys,
+}: {
+  slug: string;
+  initialJourney?: Journey | null;
+  relatedJourneys?: Journey[];
+}) {
   const { journey: queriedJourney, isLoading } = useJourneyBySlug(slug, initialJourney);
   const journey = queriedJourney || initialJourney;
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -77,6 +86,23 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
   if (!journey) return notFound();
 
   const bcState = getJourneyBreadcrumbState(journey);
+
+  const coveredCities = useMemo(() => {
+    const list: { name: string; href: string; slug: string }[] = [];
+    const seen = new Set<string>();
+    (journey?.cities || []).forEach((c: any) => {
+      if (!c.slug || seen.has(c.slug)) return;
+      seen.add(c.slug);
+      const stateSlug = c.state?.slug || bcState.stateSlug;
+      const countrySlug = c.state?.country?.slug || bcState.countrySlug || "india";
+      list.push({
+        name: c.title || c.slug,
+        slug: c.slug,
+        href: `/tour-packages/${countrySlug}/${stateSlug}/${c.slug}`,
+      });
+    });
+    return list;
+  }, [journey?.cities, bcState]);
 
   // Process all content sections of ONE page together in page order:
   // Overview -> Days -> Trip Guide
@@ -758,6 +784,51 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
                 autoLink={false}
                 contentClassName="rich-text-plain-links text-[15px] sm:text-base text-slate-600 leading-[1.8]"
               />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===== PLACES COVERED (CITY LINKS) ===== */}
+      {coveredCities.length > 0 && (
+        <section className="bg-white border-t border-slate-200/80 py-8 sm:py-10">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+            <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+              Destinations Visited
+            </span>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-4">
+              Places Covered in this Tour
+            </h2>
+            <div className="flex flex-wrap gap-2.5">
+              {coveredCities.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={c.href}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-50 hover:bg-[#F8904D]/10 border border-slate-200 hover:border-[#F8904D]/30 text-slate-800 hover:text-[#d85511] font-semibold text-xs sm:text-sm transition-all"
+                >
+                  <MapPin size={14} className="text-[#F8904D]" />
+                  <span>{c.name} Tour Packages</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===== RELATED TOURS (SAME STATE) ===== */}
+      {relatedJourneys && relatedJourneys.length > 0 && (
+        <section className="bg-section-tint border-y border-section-border py-8 sm:py-12">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+            <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+              Explore More Options
+            </span>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-6">
+              Similar Tours You Might Like
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {relatedJourneys.map((rj) => (
+                <TourPackageCard key={rj.id} journey={rj} variant="default" />
+              ))}
             </div>
           </div>
         </section>

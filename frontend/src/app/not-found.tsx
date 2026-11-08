@@ -1,18 +1,19 @@
-"use client";
-
-import { useEffect } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
-import { queueNotFound } from "@/lib/analyticsNotFoundBuffer";
+import { NotFoundAnalytics } from "@/components/shared/NotFoundAnalytics";
+
+export const metadata: Metadata = {
+  title: "Page Not Found",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function NotFound() {
-  // Let the analytics tracker know the visitor landed on a broken URL.
-  useEffect(() => {
-    queueNotFound();
-    window.dispatchEvent(new CustomEvent("analytics:notfound"));
-  }, []);
-
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-6 text-center">
+      <NotFoundAnalytics />
       <p className="text-[#2E8B8B] text-sm font-bold uppercase tracking-widest mb-3">404</p>
       <h1 className="font-heading text-4xl md:text-5xl font-extrabold text-[#1C1C1C]">
         Page Not Found

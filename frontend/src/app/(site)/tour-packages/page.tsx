@@ -14,12 +14,31 @@ import HeroBanner from "@/components/shared/HeroBanner";
 
 export const revalidate = 300;
 
-export const metadata: Metadata = {
-  title: "Tour Packages in India and Worldwide | KoiKoi Travel",
-  description:
-    "Explore handcrafted tour packages across India. Filter by state, city, travel experience, season & duration. Book your dream trip with KoiKoi Travel.",
-  alternates: { canonical: "/tour-packages" },
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    city?: string | string[];
+    exp?: string | string[];
+    state?: string | string[];
+    country?: string | string[];
+    search?: string | string[];
+    q?: string | string[];
+  }>;
+}): Promise<Metadata> {
+  const params = await searchParams;
+  const hasQueryParams = Boolean(
+    params.search || params.q || params.city || params.exp || params.state || params.country
+  );
+
+  return {
+    title: "Tour Packages in India and Worldwide",
+    description:
+      "Explore handcrafted tour packages across India. Filter by state, city, travel experience, season & duration. Book your dream trip with KoiKoi Travel.",
+    alternates: { canonical: "/tour-packages" },
+    robots: hasQueryParams ? { index: false, follow: true } : undefined,
+  };
+}
 
 export default async function TourPackagesPage({
   searchParams,
@@ -88,7 +107,11 @@ export default async function TourPackagesPage({
       <HeroBanner
         slides={[{ image: heroImage, mobileImage: heroMobileImage, alt: customHero?.altText || heroTitle }]}
         tag={heroSubtitle}
-        title={heroTitle}
+        title={
+          <h1 className="font-luxury text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase leading-tight tracking-wide text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+            {heroTitle}
+          </h1>
+        }
         subtitle={
           cities.length > 0 || experiences.length > 0
             ? "Results filtered by your search — refine using the filters below."

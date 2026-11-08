@@ -63,7 +63,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
       {/* Dual Primary Call-to-Actions */}
       <div className="mt-3.5 sm:mt-6 flex flex-wrap items-center justify-start gap-2 sm:gap-3.5 pointer-events-auto">
         <Link
-          href="/destinations/india"
+          href="/tour-packages/india"
           className="font-outfit px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-semibold text-xs sm:text-sm shadow-md hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-1.5 sm:gap-2"
         >
           <span>Explore Destinations</span>

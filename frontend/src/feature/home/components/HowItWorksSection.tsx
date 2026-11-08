@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { SectionLabel } from "@/components/shared/SectionLabel";
 import { QuoteModal } from "@/components/shared/QuoteModal";
+import { getWhatsAppUrl } from "@/config/siteConfig";
 
 interface StepItem {
   num: string;
@@ -91,9 +92,9 @@ const TIMELINE_STEPS: StepItem[] = [
 ];
 
 export const HowItWorksSection: React.FC = () => {
-  const whatsappUrl = `https://wa.me/919873003099?text=${encodeURIComponent(
+  const whatsappUrl = getWhatsAppUrl(
     "Hi KoiKoi Travel! I am planning a trip to India and would love to get a customized itinerary."
-  )}`;
+  );
 
   return (
     <section

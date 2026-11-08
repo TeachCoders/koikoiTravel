@@ -151,6 +151,7 @@ router.get("/", async (req, res) => {
       displayOrder: true,
       cityOrder: true,
       travelExperienceOrder: true,
+      updatedAt: true,
       cities: {
         select: {
           id: true,

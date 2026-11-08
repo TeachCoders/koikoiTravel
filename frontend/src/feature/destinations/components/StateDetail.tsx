@@ -299,22 +299,21 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       </nav>
 
       {/* ===== SECTION 2: TOUR PACKAGES IN STATE ===== */}
-      {stateJourneys.length > 0 && (
-        <ToursSection
-          id="top-tours"
-          basePath={basePath}
-          isLoading={journeysLoading && stateJourneys.length === 0}
-          accentLabel="State Itineraries"
-          h1Title={formatToursH1(state.h1Title || state.title)}
-          overView={state.overView ?? undefined}
-          emptyLabel={`No tour packages found matching your criteria in ${cleanStateName}`}
-          filterBar={stateJourneys.length >= 8 ? filterBar : undefined}
-          onClearFilters={clearFilters}
-          sectionClassName="py-8 sm:py-10 md:py-12 bg-section-tint border-y border-section-border"
-          cardVariant="default"
-          sharedLinkedHrefs={pageLinkedHrefs}
-          excludeHrefs={excludeHrefs}
-        >
+      <ToursSection
+        id="top-tours"
+        basePath={basePath}
+        isLoading={journeysLoading && stateJourneys.length === 0}
+        accentLabel="State Itineraries"
+        h1Title={formatToursH1(state.h1Title || state.title)}
+        overView={state.overView ?? undefined}
+        emptyLabel={`No tour packages found matching your criteria in ${cleanStateName}`}
+        filterBar={stateJourneys.length >= 8 ? filterBar : undefined}
+        onClearFilters={clearFilters}
+        sectionClassName="py-8 sm:py-10 md:py-12 bg-section-tint border-y border-section-border"
+        cardVariant="default"
+        sharedLinkedHrefs={pageLinkedHrefs}
+        excludeHrefs={excludeHrefs}
+      >
           {filteredCurrentJourneys.length === 0 ? (
             <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
               <p className="text-slate-500">
@@ -359,7 +358,6 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
             </>
           )}
         </ToursSection>
-      )}
 
       {/* ===== SECTION 3: CITIES / TOP DESTINATIONS IN STATE ===== */}
       {showCitiesSection && (

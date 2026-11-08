@@ -1,7 +1,7 @@
 import React from "react";
 import HomeSections from "@/feature/home/components/HomeSections";
 import JsonLd from "@/components/shared/JsonLd";
-import { organizationSchema, websiteSchema, faqSchema } from "@/lib/jsonLd";
+import { faqSchema } from "@/lib/jsonLd";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { Metadata } from "next";
 
@@ -55,7 +55,7 @@ export default async function Home() {
 
   return (
     <>
-      <JsonLd data={[organizationSchema, websiteSchema, homeFaqJsonLd]} />
+      <JsonLd data={homeFaqJsonLd} />
       <HomeSections />
     </>
   );

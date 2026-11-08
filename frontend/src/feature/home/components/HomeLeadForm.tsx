@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Send, Sparkles, MapPin, Calendar, Users, Compass, Phone, CheckCircle, ArrowRight } from "lucide-react";
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
+import { getWhatsAppUrl } from "@/config/siteConfig";
 
 const POPULAR_DESTINATIONS = [
   "Golden Triangle (Delhi, Agra, Jaipur)",
@@ -91,7 +92,7 @@ export const HomeLeadForm: React.FC = () => {
     setSubmitted(true);
 
     // Auto redirect to WhatsApp
-    const waUrl = `https://wa.me/919873003099?text=${encodeURIComponent(messageText)}`;
+    const waUrl = getWhatsAppUrl(messageText);
     window.open(waUrl, "_blank");
   };
 
@@ -126,9 +127,9 @@ export const HomeLeadForm: React.FC = () => {
                 Our India travel expert will review your preferences and message you on WhatsApp shortly with a personalized proposal.
               </p>
               <a
-                href={`https://wa.me/919873003099?text=${encodeURIComponent(
+                href={getWhatsAppUrl(
                   `Hi KoiKoi Travel, I just submitted an itinerary request for ${destination}.`
-                )}`}
+                )}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-all"

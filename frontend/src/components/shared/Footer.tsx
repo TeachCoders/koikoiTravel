@@ -34,13 +34,13 @@ const TOP_DESTINATIONS = [
 ];
 
 const TRAVEL_THEMES = [
-  { label: "Nature & Eco Tours", href: "/travel-experiences/nature" },
+  { label: "Family Holiday Packages", href: "/travel-experiences/family" },
   { label: "Desert Safari & Camping", href: "/travel-experiences/desert-safari" },
   { label: "Wildlife & Tiger Safari", href: "/travel-experiences/wildlife" },
   { label: "Ayurveda & Yoga Retreats", href: "/travel-experiences/ayurveda-yoga" },
   { label: "Honeymoon & Romantic", href: "/travel-experiences/honeymoon" },
   { label: "Hill Stations & Valleys", href: "/travel-experiences/hill-station" },
-  { label: "Beach & Lake Vacations", href: "/travel-experiences/beach-lake" },
+  { label: "Weekend Tours in India", href: "/travel-experiences/weekend-tours-in-india" },
   { label: "Heritage & Culture Tours", href: "/travel-experiences/heritage-and-culture" },
   { label: "Spiritual & Pilgrimage", href: "/travel-experiences/spiritual" },
 ];

@@ -63,14 +63,64 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url("/travel-experiences"),
     url("/blog"),
     url("/tour-packages"),
+    url("/contact-us"),
+    url("/tour-packages/india/golden-triangle"),
   ];
 
+  // Count journeys per state and city to filter out thin pages (< 2 tours)
+  const stateTourCount = new Map<string, number>();
+  const cityTourCount = new Map<string, number>();
+
+  journeys.forEach((j: any) => {
+    const visitedStates = new Set<string>();
+    const visitedCities = new Set<string>();
+
+    (j.cities || []).forEach((c: any) => {
+      if (c.slug && !visitedCities.has(c.slug)) {
+        visitedCities.add(c.slug);
+        cityTourCount.set(c.slug, (cityTourCount.get(c.slug) || 0) + 1);
+      }
+      if (c.state?.slug && !visitedStates.has(c.state.slug)) {
+        visitedStates.add(c.state.slug);
+        stateTourCount.set(c.state.slug, (stateTourCount.get(c.state.slug) || 0) + 1);
+      }
+    });
+
+    (j.states || []).forEach((s: any) => {
+      if (s.slug && !visitedStates.has(s.slug)) {
+        visitedStates.add(s.slug);
+        stateTourCount.set(s.slug, (stateTourCount.get(s.slug) || 0) + 1);
+      }
+    });
+  });
+
+  const EXCLUDED_CITY_SLUGS = new Set([
+    "sariska",
+    "ranakpur",
+    "trivandrum",
+    "kovalam",
+    "nagpur",
+    "mumbai",
+    "kufri",
+    "sarchu",
+    "delhi",
+    "fatehpur-sikri",
+  ]);
+
   countries.forEach((c: SitemapItem) => entries.push(url(`/tour-packages/${c.slug}`, c.updatedAt)));
-  states.forEach((s: SitemapItem) => {
+  states.forEach((s: any) => {
     if (s.slug === "golden-triangle" || s.slug === "golden-triangle-tour-india") return;
+    if (s.isActive === false || s.showOnSite === false) return;
+    const count = stateTourCount.get(s.slug) || 0;
+    if (count < 2 && s.slug !== "south-india") return;
     if (s.country?.slug) entries.push(url(`/tour-packages/${s.country.slug}/${s.slug}`, s.updatedAt));
   });
-  cities.forEach((c: SitemapItem) => {
+  cities.forEach((c: any) => {
+    if (c.isActive === false || c.showOnSite === false) return;
+    if (EXCLUDED_CITY_SLUGS.has(c.slug)) return;
+    if (c.state?.slug === c.slug) return;
+    const count = cityTourCount.get(c.slug) || 0;
+    if (count < 2) return;
     if (c.state?.country?.slug) {
       entries.push(url(`/tour-packages/${c.state.country.slug}/${c.state.slug}/${c.slug}`, c.updatedAt));
     }
@@ -81,8 +131,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entries.push(url(`/tour-packages/${j.slug}`, j.updatedAt));
   });
   posts.forEach((p: SitemapItem) => entries.push(url(`/blog/${p.slug}`, p.updatedAt)));
-  cmsPages.forEach((c: SitemapItem) => {
+  cmsPages.forEach((c: any) => {
     if (RESERVED_SLUGS.has(c.slug)) return;
+    if (c.slug === "cancellation-and-refund-policy") return;
     entries.push(url(`/${c.slug}`, c.updatedAt));
   });
 

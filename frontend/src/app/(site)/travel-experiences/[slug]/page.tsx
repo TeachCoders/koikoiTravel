@@ -21,9 +21,12 @@ export async function generateStaticParams() {
   return travelExperienceParams();
 }
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = {
+  params: Promise<{ slug: string }>;
+  searchParams?: Promise<{ page?: string | string[] }>;
+};
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { slug } = await params;
   if (slug === "golden-triangle" || slug === "golden-triangle-tour-india") {
     redirect("/tour-packages/india/golden-triangle");
@@ -32,22 +35,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     redirect("/tour-packages/india/taj-mahal");
   }
   const data = await fetchBySlugCached<TravelExperience>("/holidays/by-slug", slug);
-  if (!data) return { title: "Travel Experience Not Found | KoiKoi Travel" };
+  if (!data) return { title: "Travel Experience Not Found" };
+
+  const sp = searchParams ? await searchParams : {};
+  const pageParam = Array.isArray(sp.page) ? sp.page[0] : sp.page;
+  const pageNum = parseInt(pageParam || "1", 10) || 1;
 
   const isGoldenTriangle = slug === "golden-triangle-tour-india" || slug === "golden-triangle" || data.slug === "golden-triangle-tour-india" || data.slug === "golden-triangle";
-  const title = isGoldenTriangle
+  const rawTitle = isGoldenTriangle
     ? "Golden Triangle Tour Packages (Delhi Agra Jaipur) | Private Car & Chauffeur"
     : data.seoTitle || data.title;
+  const cleanTitle = rawTitle ? rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim() : rawTitle;
+  const title = pageNum > 1 ? `${cleanTitle} (Page ${pageNum})` : cleanTitle;
+
   const seoDescription = isGoldenTriangle
     ? "Explore Delhi, Agra & Jaipur with 100% private AC chauffeur, verified guides & customizable 1 to 7+ days itineraries. Tailor-made Golden Triangle holiday packages. Request your custom quote!"
     : truncateMeta(data.seoDescription || data.moreDescription || "");
-  const canonical = canonicalFor(data, slug);
+  const baseCanonical = canonicalFor(data, slug);
+  const canonical = pageNum > 1 ? `${baseCanonical}?page=${pageNum}` : baseCanonical;
   const ogImage = absoluteUrl(data.thumbImg);
   return {
     title,
     description: seoDescription,
     keywords: data.seoKeyword,
     alternates: { canonical },
+    robots: pageNum > 1 ? { index: false, follow: true } : undefined,
     openGraph: {
       type: "website",
       title,

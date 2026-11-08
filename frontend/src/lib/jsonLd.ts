@@ -9,6 +9,7 @@ function absoluteImage(src?: string): string | undefined {
 export const organizationSchema: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
+  "@id": `${SITE_URL}/#organization`,
   name: "KoiKoi Travel",
   alternateName: ["India Tour Operator", "Tailor-Made India Tours", "Customize Tour Operator India"],
   description: "KoiKoi Travel is a customize tour operator offering tailor-made India tours and private holidays across Rajasthan, Kerala, South India, and beyond.",
@@ -46,6 +47,7 @@ export const organizationSchema: Record<string, unknown> = {
 export const websiteSchema: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
   name: "KoiKoi Travel",
   alternateName: "KoiKoi Travel - Customize Tour Operator & Tailor-Made India Tours",
   url: SITE_URL,
@@ -53,15 +55,8 @@ export const websiteSchema: Record<string, unknown> = {
   inLanguage: ["en", "en-US"],
   publisher: {
     "@type": "TravelAgency",
+    "@id": `${SITE_URL}/#organization`,
     name: "KoiKoi Travel",
-  },
-  potentialAction: {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      urlTemplate: `${SITE_URL}/blog?search={search_term_string}`,
-    },
-    "query-input": "required name=search_term_string",
   },
 };
 

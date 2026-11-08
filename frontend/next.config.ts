@@ -69,28 +69,48 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/travel-experiences/:expSlug/:stateSlug",
-        destination: "/tour-packages/india/:stateSlug",
+        source: "/&",
+        destination: "/",
         permanent: true,
       },
       {
-        source: "/tour-packages/india/tamil-nadu",
-        destination: "/tour-packages/india/south-india",
+        source: "/tour-packages/10-days-south-india-itinerary",
+        destination: "/tour-packages/10-days-south-india-tour-package",
+        permanent: true,
+      },
+      {
+        source: "/tour-packages/india/golden-triangle-tour-india",
+        destination: "/tour-packages/india/golden-triangle",
+        permanent: true,
+      },
+      {
+        source: "/destinations/india",
+        destination: "/tour-packages/india",
+        permanent: true,
+      },
+      {
+        source: "/cancellation-and-refund-policy",
+        destination: "/cancellation-and-refund",
+        permanent: true,
+      },
+      {
+        source: "/travel-experiences/nature",
+        destination: "/travel-experiences/hill-station",
+        permanent: true,
+      },
+      {
+        source: "/travel-experiences/beach-lake",
+        destination: "/tour-packages/india/kerala",
+        permanent: true,
+      },
+      {
+        source: "/tour-packages/india/uttar-pradesh/fatehpur-sikri",
+        destination: "/tour-packages/india/uttar-pradesh",
         permanent: true,
       },
       {
         source: "/tour-packages/india/kerala/kochi",
         destination: "/tour-packages/india/kerala/cochin",
-        permanent: true,
-      },
-      {
-        source: "/india/kerala/kochi",
-        destination: "/tour-packages/india/kerala/cochin",
-        permanent: true,
-      },
-      {
-        source: "/tour-packages/india/karnataka",
-        destination: "/tour-packages/india/south-india",
         permanent: true,
       },
       {

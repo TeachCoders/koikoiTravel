@@ -64,18 +64,30 @@ export async function generateMetadata({
   const searchTerm = Array.isArray(search) ? search[0] : search || "";
   const currentPage =
     Math.max(1, parseInt(Array.isArray(pageParam) ? pageParam[0] : pageParam || "1", 10) || 1);
-  const canonical = buildPageHref(currentPage, searchTerm);
+
+  const hasSearch = Boolean(searchTerm.trim());
+  const canonical = hasSearch
+    ? "/blog"
+    : currentPage > 1
+    ? `/blog?page=${currentPage}`
+    : "/blog";
+
   const baseDesc =
     "Explore expert destination guides, the latest travel news, budgeting tips, and hidden insights for India tours — curated by KoiKoi Travel.";
   const title =
     currentPage <= 1
-      ? "Travel Guides & News — Destination Guides and India Tour Tips | KoiKoi Travel"
-      : `Travel Guides & News (Page ${currentPage}) — Destination Guides and India Tour Tips | KoiKoi Travel`;
+      ? "Travel Guides & News — Destination Guides and India Tour Tips"
+      : `Travel Guides & News (Page ${currentPage}) — Destination Guides and India Tour Tips`;
+
   return {
     title,
     description: baseDesc,
     alternates: { canonical },
-    robots: currentPage > 1 ? { index: false, follow: true } : undefined,
+    robots: hasSearch
+      ? { index: false, follow: true }
+      : currentPage > 1
+      ? { index: false, follow: true }
+      : undefined,
     openGraph: {
       title,
       description: baseDesc,

@@ -98,7 +98,12 @@ async function resolveSlug(slug: string[]): Promise<Resolved> {
   if (slug.length === 2) {
     const [countrySlug, stateSlug] = slug;
     const state = await fetchBySlugCached<State>("/state/by-slug", stateSlug);
-    if (state && state.country?.slug === countrySlug) return { type: "state", state };
+    if (state && state.country?.slug === countrySlug) {
+      if (state.isActive === false || state.showOnSite === false) {
+        return { type: "notfound" };
+      }
+      return { type: "state", state };
+    }
     const cms = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug.join("/"));
     if (cms) return { type: "cms", cms };
     return { type: "notfound" };
@@ -107,7 +112,7 @@ async function resolveSlug(slug: string[]): Promise<Resolved> {
   if (slug.length === 3) {
     const [countrySlug, stateSlug, citySlug] = slug;
     if (stateSlug === citySlug) {
-      redirect(`/tour-packages/${countrySlug}/${stateSlug}`);
+      return { type: "notfound" };
     }
     const city = await fetchBySlugCached<City>("/city/by-slug", citySlug);
     if (
@@ -115,20 +120,13 @@ async function resolveSlug(slug: string[]): Promise<Resolved> {
       city.state?.slug === stateSlug &&
       city.state?.country?.slug === countrySlug
     ) {
-      // If city is disabled from dashboard, redirect to parent state page so Google gets 0 404s
       if (city.isActive === false || city.showOnSite === false) {
-        redirect(`/tour-packages/${countrySlug}/${stateSlug}`);
+        return { type: "notfound" };
       }
       return { type: "city", city };
     }
     const cms = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug.join("/"));
     if (cms) return { type: "cms", cms };
-
-    // SEO Safety Fallback: If missing or inactive city under an existing state, redirect to state tour packages
-    const state = await fetchBySlugCached<State>("/state/by-slug", stateSlug);
-    if (state && (state.country?.slug === countrySlug || countrySlug === "india")) {
-      redirect(`/tour-packages/${countrySlug}/${stateSlug}`);
-    }
 
     return { type: "notfound" };
   }
@@ -145,11 +143,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   switch (resolved.type) {
     case "country": {
       const { country } = resolved;
-      const title =
+      const rawTitle =
         country?.seoTitle ||
         country?.title?.replace(/\s*Tour$/i, "") ||
         country?.title ||
         (slug[0] ? slug[0] : "Tour Package");
+      const title = rawTitle ? rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim() : rawTitle;
       const seoDescription =
         truncateMeta(country?.seoDescription || country?.overView || "");
       const canonical = `/tour-packages/${country.slug}`;
@@ -176,7 +175,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
     case "state": {
       const { state } = resolved;
-      const title = state.seoTitle || state.h1Title || state.title;
+      const initialJourneys = await fetchPublicJsonCached<JourneyPage<Journey>>(
+        "/journey?limit=100&isActive=true"
+      );
+      const { allOrderedJourneys } = resolveStateJourneys(initialJourneys?.data, state);
+      const hasFewTours = allOrderedJourneys.length < 2;
+
+      const rawTitle = state.seoTitle || state.h1Title || state.title;
+      const title = rawTitle ? rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim() : rawTitle;
       const seoDescription = truncateMeta(state.seoDescription || state.overView);
       const canonical = `/tour-packages/${state.country?.slug}/${state.slug}`;
       const ogImage = absoluteUrl(state.thumbImg);
@@ -185,6 +191,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: seoDescription,
         keywords: state.seoKeyword,
         alternates: { canonical },
+        robots: hasFewTours ? { index: false, follow: true } : undefined,
         openGraph: {
           type: "website",
           title,
@@ -202,7 +209,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
     case "city": {
       const { city } = resolved;
-      const title = city.seoTitle || city.h1Title || city.title;
+      const initialJourneys = await fetchPublicJsonCached<JourneyPage<Journey>>(
+        "/journey?limit=100&isActive=true"
+      );
+      const cityJourneys = resolveCityJourneys(initialJourneys?.data, city);
+      const hasFewTours = cityJourneys.length < 2;
+
+      const rawTitle = city.seoTitle || city.h1Title || city.title;
+      const title = rawTitle ? rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim() : rawTitle;
       const seoDescription = truncateMeta(city.seoDescription || city.overView);
       const canonical =
         `/tour-packages/${city.state?.country?.slug}/${city.state?.slug}/${city.slug}`;
@@ -212,6 +226,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: seoDescription,
         keywords: city.seoKeyword,
         alternates: { canonical },
+        robots: hasFewTours ? { index: false, follow: true } : undefined,
         openGraph: {
           type: "website",
           title,
@@ -256,16 +271,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
     case "cms": {
       const { cms } = resolved;
+      const rawTitle = cms.seoTitle || cms.title;
+      const title = rawTitle ? rawTitle.replace(/\s*\|\s*KoiKoi\s*Travel\s*$/i, "").trim() : rawTitle;
       const seoDescription = truncateMeta(cms.seoDescription || cms.moreDescription || "");
       return {
-        title: cms.seoTitle || cms.title,
+        title,
         description: seoDescription || undefined,
         keywords: cms.seoKeyword || undefined,
         alternates: { canonical: cms.canonical || `/tour-packages/${cms.slug}` },
       };
     }
     default:
-      return { title: "Page Not Found | KoiKoi Travel" };
+      return {
+        title: "Page Not Found",
+        robots: { index: false, follow: false },
+      };
   }
 }
 
@@ -462,11 +482,22 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
             faqSchema(journeyFaqs),
           ])
         : null;
+      const allJourneysRes = await fetchPublicJsonCached<JourneyPage<Journey>>(
+        "/journey?limit=100&isActive=true"
+      );
+      const stateSlug = journey.states?.[0]?.slug || journey.cities?.[0]?.state?.slug;
+      const relatedJourneys = (allJourneysRes?.data || [])
+        .filter((j) => j.id !== journey.id && (
+          j.states?.some((s) => s.slug === stateSlug) ||
+          j.cities?.some((c) => c.state?.slug === stateSlug)
+        ))
+        .slice(0, 4);
+
       return (
         <div className="flex flex-col min-h-screen bg-slate-50 font-sans">
           {schema && <JsonLd data={schema} />}
           <main className="flex-1">
-            <JourneyDetail slug={journey.slug} initialJourney={journey} />
+            <JourneyDetail slug={journey.slug} initialJourney={journey} relatedJourneys={relatedJourneys} />
           </main>
         </div>
       );

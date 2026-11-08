@@ -27,12 +27,45 @@ export default async function HomeSections() {
     fetchHeroBannersServer("Home"),
   ]);
 
+  // Trim journeys to only the cards displayed on homepage, stripping heavy itinerary text
+  const trimmedJourneys = initialJourneys
+    ? {
+        ...initialJourneys,
+        data: (initialJourneys.data || []).slice(0, 16).map((j) => ({
+          id: j.id,
+          title: j.title,
+          slug: j.slug,
+          thumbImg: j.thumbImg,
+          destination: j.destination,
+          duration: j.duration,
+          noDays: j.noDays,
+          pricePerPerson: j.pricePerPerson,
+          discountPrice: j.discountPrice,
+          isBestSelling: j.isBestSelling,
+          purchaseCount: j.purchaseCount,
+          displayOrder: j.displayOrder,
+          cities: (j.cities || []).map((c: any) => ({
+            id: c.id,
+            title: c.title,
+            slug: c.slug,
+            state: c.state ? { id: c.state.id, slug: c.state.slug } : null,
+          })),
+          states: (j.states || []).map((s: any) => ({ id: s.id, title: s.title, slug: s.slug })),
+          travelExperiences: (j.travelExperiences || []).map((e: any) => ({
+            id: e.id,
+            title: e.title,
+            slug: e.slug,
+          })),
+        })) as Journey[],
+      }
+    : null;
+
   return (
     <HomePageClient
       initialStates={initialStates}
       initialCountries={initialCountries}
       initialExperiences={initialExperiences}
-      initialJourneys={initialJourneys}
+      initialJourneys={trimmedJourneys}
       initialSeasons={initialSeasons}
       initialGuestGallery={initialGuestGallery}
       initialHeroBanners={initialHeroBanners}

@@ -4,11 +4,12 @@ import React from "react";
 import { Sparkles, MessageCircle, Check } from "lucide-react";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import { QuoteModal } from "@/components/shared/QuoteModal";
+import { getWhatsAppUrl } from "@/config/siteConfig";
 
 export const FinalCtaSection: React.FC = () => {
-  const whatsappUrl = `https://wa.me/919873003099?text=${encodeURIComponent(
+  const whatsappUrl = getWhatsAppUrl(
     "Hi KoiKoi Travel, I am ready to plan my trip to India. Please help me create a personalized itinerary."
-  )}`;
+  );
 
   return (
     <section className="relative py-16 sm:py-20 bg-slate-950 text-white overflow-hidden">
