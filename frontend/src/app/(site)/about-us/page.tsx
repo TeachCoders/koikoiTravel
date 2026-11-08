@@ -12,8 +12,7 @@ import { ABOUT_US_CONTENT_HTML } from "@/feature/cms/aboutUsContent";
 import { WhyChooseUsSection } from "@/components/shared/WhyChooseUsSection";
 import { HowItWorksSection } from "@/feature/home/components/HowItWorksSection";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const cmsPage = await fetchBySlugCached<CmsPage>("/cms/by-slug", "about-us", 0);
