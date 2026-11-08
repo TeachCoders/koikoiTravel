@@ -515,7 +515,8 @@ export function linkTourPackageSections(params: LinkTourPackageParams): LinkTour
     excludedHrefs.add(normalizeHref(`/tour-packages/india/${breadcrumbStateSlug}`));
   }
   for (const s of journey.states || []) {
-    if (s?.slug) {
+    // Delhi is a key city destination (not a broad state), do not exclude it
+    if (s?.slug && s.slug !== "delhi") {
       excludedHrefs.add(normalizeHref(`/tour-packages/india/${s.slug}`));
     }
   }
