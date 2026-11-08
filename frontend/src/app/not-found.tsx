@@ -3,9 +3,8 @@ import Link from "next/link";
 import { NotFoundAnalytics } from "@/components/shared/NotFoundAnalytics";
 
 export const metadata: Metadata = {
-  title: "Page Not Found",
-  robots: {
-    index: false,
+  title: {
+    absolute: "Page Not Found | KoiKoi Travel",
   },
 };
 
