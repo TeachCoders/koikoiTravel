@@ -116,7 +116,7 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
     href: "/tour-packages/india/punjab",
   },
   {
-    terms: ["Delhi NCR", "Delhi Tour Packages", "New Delhi"],
+    terms: ["Delhi NCR", "Delhi Tour Packages", "New Delhi", "Delhi"],
     href: "/tour-packages/india/delhi",
   },
   {
