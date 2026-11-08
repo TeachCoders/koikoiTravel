@@ -175,7 +175,7 @@ export const PopularDestinations: React.FC<{
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5">
+          <div className="grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="h-[310px] sm:h-[340px] md:h-[365px] rounded-2xl sm:rounded-3xl bg-slate-100 animate-pulse" />
             ))}
@@ -183,7 +183,7 @@ export const PopularDestinations: React.FC<{
         ) : destinations.length === 0 ? (
           <p className="text-center text-slate-400 py-16">No destinations found.</p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5 animate-in fade-in duration-500">
+          <div className="grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5 animate-in fade-in duration-500">
             {destinations.map((item) => (
               <SingleDestinationReusableCard
                 key={item.id}

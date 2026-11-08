@@ -354,7 +354,7 @@ export const PlanAdventureSection: React.FC<PlanAdventureSectionProps> = ({
 
         {/* TAB 1: DESTINATIONS GRID */}
         <div className={activeTab === "destination" ? "block" : "hidden"} aria-hidden={activeTab !== "destination"}>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5 animate-in fade-in duration-300">
+          <div className="grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5 animate-in fade-in duration-300">
             {destinations.map((item) => (
               <SingleDestinationReusableCard
                 key={item.id}
@@ -371,7 +371,7 @@ export const PlanAdventureSection: React.FC<PlanAdventureSectionProps> = ({
 
         {/* TAB 2: EXPERIENCES GRID */}
         <div className={activeTab === "experience" ? "block" : "hidden"} aria-hidden={activeTab !== "experience"}>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5 animate-in fade-in duration-300">
+          <div className="grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5 animate-in fade-in duration-300">
             {experiences.map((item) => (
               <SingleDestinationReusableCard
                 key={item.id}
