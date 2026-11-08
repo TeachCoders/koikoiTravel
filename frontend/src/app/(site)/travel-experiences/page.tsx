@@ -26,11 +26,30 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
+  const title = "India Tour Themes: Honeymoon, Heritage, Wildlife | KoiKoi";
+  const description =
+    "Find your kind of India trip: honeymoon, heritage, wildlife, yoga, spiritual, family, desert and hill stations. Every tour custom-planned by our local team.";
   return {
-    title: "Travel Experiences",
-    description:
-      "Hand-picked travel experiences across India — honeymoons, heritage, culinary, yoga, nature & more. Book your perfect trip with KoiKoi Travel.",
-    alternates: { canonical: "/travel-experiences" },
+    title: {
+      absolute: title,
+    },
+    description,
+    alternates: { canonical: `${SITE_URL}/travel-experiences` },
+    openGraph: {
+      title: {
+        absolute: title,
+      },
+      description,
+      url: `${SITE_URL}/travel-experiences`,
+      siteName: "KoiKoi Travel",
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 
@@ -235,9 +254,9 @@ export default async function TravelExperiencesPage() {
           <span className="font-luxury font-black inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#F5B041] mb-3">
             <Sparkles size={14} /> Curated Travel Themes
           </span>
-          <div className="font-luxury text-2xl sm:text-4xl md:text-[46px] font-black text-white tracking-wide leading-tight">
-            Hand-Crafted Travel Experiences
-          </div>
+          <h1 className="font-luxury text-2xl sm:text-4xl md:text-[46px] font-black text-white tracking-wide leading-tight">
+            Hand-Crafted India Travel Experiences
+          </h1>
           <p className="mt-4 text-white/85 text-base md:text-lg max-w-2xl leading-relaxed">
             From romantic honeymoons to soulful heritage trails and rejuvenating wellness retreats — choose your dream theme and let us design your custom itinerary.
           </p>
@@ -264,37 +283,28 @@ export default async function TravelExperiencesPage() {
               Why Travellers Trust KoiKoi Travel
             </SectionLabel>
             <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-2 leading-tight">
-              Travel Experiences Made <span className="text-[#F8904D]">Simple & Personal</span>
+              India Tour Themes, Planned Around the Way You Like to Travel
             </h2>
           </div>
-          <div className="mt-8 w-full space-y-5 text-[18px] leading-relaxed text-slate-600">
-            <p className="text-[15px] text-slate-600 leading-relaxed line-clamp-3">
-              A travel experience is a special way of travelling. Some people love
-              slow trips. Some people love adventure. Some people just want peace.
-              At KoiKoi Travel, we have made travel experiences for every kind of
-              traveller.
-            </p>
-            <p className="text-[15px] text-slate-600 leading-relaxed line-clamp-3">
-              On this page you will find our hand-made themes. Honeymoon trips for
-              couples who want romance. Heritage trips for history lovers. Wellness
-              trips for people who need rest and calm. Adventure trips for those who
-              want more thrill. Food trips for people who travel to taste new
-              dishes. Each theme is built by our team to feel special and easy at
-              the same time.
-            </p>
-            <p className="text-[15px] text-slate-600 leading-relaxed line-clamp-3">
-              When you pick a travel experience, we plan the whole trip around that
-              feeling. The hotels, the cabs, the places and the food — everything
-              matches the theme. The price is always clear, and every day of your
-              plan is shown to you before you book. If you want changes, we are
-              happy to make them.
-            </p>
-            <p className="text-[15px] text-slate-600 leading-relaxed line-clamp-3">
-              Not sure which experience fits you? Ask us on WhatsApp. Tell us how
-              you like to travel and how many days you have free. Our team will
-              suggest a theme, or build a new one just for you. Whatever your dream
-              holiday looks like — KoiKoi Travel makes it real.
-            </p>
+          <div className="mt-8 max-w-4xl mx-auto space-y-4 text-base sm:text-lg leading-relaxed text-slate-700 text-left sm:text-center">
+            <p
+              dangerouslySetInnerHTML={{
+                __html:
+                  "India is too big to see in one trip, so the best place to start is not a map but a mood. Do you want a quiet honeymoon on a Kerala backwater, a tiger safari at sunrise in Ranthambore, or a slow walk through the old forts of Rajasthan?",
+              }}
+            />
+            <p
+              dangerouslySetInnerHTML={{
+                __html:
+                  "Our India tour themes are built around exactly that. Pick the style that sounds like you, and our local team in India will shape the route, the pace and the stays around it. There are no fixed packages here. Every trip is planned for your dates, your group and your comfort level, and quoted only after we have talked through what you want.",
+              }}
+            />
+            <p
+              dangerouslySetInnerHTML={{
+                __html:
+                  "Browse the themes below to see sample tours and ideas, then tell us about your trip. A real person will reply, usually on WhatsApp, with a plan that fits.",
+              }}
+            />
           </div>
         </div>
       </section>
