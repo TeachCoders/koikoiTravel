@@ -22,9 +22,11 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/tour-packages/india/golden-triangle", request.url), 301);
   }
 
-  // 301 redirect for /destinations/india
-  if (pathname === "/destinations/india" || pathname === "/destinations/india/") {
-    return NextResponse.redirect(new URL("/tour-packages/india", request.url), 301);
+  // 301 redirect for /destinations/india and subpaths
+  if (pathname.startsWith("/destinations/india")) {
+    const rest = pathname.replace(/^\/destinations\/india\/?/, "");
+    const dest = rest ? `/tour-packages/india/${rest}` : "/tour-packages/india";
+    return NextResponse.redirect(new URL(dest, request.url), 301);
   }
 
   // 301 redirect for /cancellation-and-refund-policy
@@ -72,8 +74,9 @@ export const config = {
   matcher: [
     "/dashboard/:path*",
     "/destinations/india-tours/:path*",
-    "/tour-packages/india/golden-triangle-tour-india",
+    "/destinations/india/:path*",
     "/destinations/india",
+    "/tour-packages/india/golden-triangle-tour-india",
     "/cancellation-and-refund-policy",
     "/&",
     "/tour-packages/10-days-south-india-itinerary",

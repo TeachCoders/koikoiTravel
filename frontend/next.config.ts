@@ -74,16 +74,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/destinations/india-tour/:path*",
-        destination: "/tour-packages/india",
-        permanent: true,
-      },
-      {
-        source: "/destinations/india/:path*",
-        destination: "/tour-packages/india",
-        permanent: true,
-      },
-      {
         source: "/blog/emirates-ai-robots-easy-travel-foreign-tourists",
         destination: "/blog",
         permanent: true,
