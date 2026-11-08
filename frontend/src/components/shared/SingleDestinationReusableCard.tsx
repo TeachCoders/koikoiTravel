@@ -195,7 +195,7 @@ export function SingleDestinationReusableCard({
         )}
 
         {/* 2. Title */}
-        <h3 className="font-heading line-clamp-2 min-h-[2.4rem] sm:min-h-0 text-[15px] sm:text-lg md:text-xl font-bold leading-snug sm:leading-tight text-slate-900">
+        <h3 className="font-heading line-clamp-2 min-h-[2.4rem] sm:min-h-0 text-[14px] sm:text-lg md:text-xl font-bold leading-tight text-slate-900 break-words">
           {href && !hideFooter ? (
             <Link
               href={href}
