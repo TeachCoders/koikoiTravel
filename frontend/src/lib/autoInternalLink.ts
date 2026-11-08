@@ -430,3 +430,317 @@ export function autoLinkKeywords(html: string, options?: AutoLinkOptions): strin
   const rules = options?.rules && options.rules.length > 0 ? options.rules : buildExperienceLinkRules();
   return linkKeywords(html, rules, options);
 }
+
+/**
+ * Strips auto-generated internal destination/experience links, reverting them back to plain text.
+ * Leaves external links intact.
+ */
+export function stripAutoInternalLinks(html: string): string {
+  if (!html) return "";
+  return html.replace(
+    /<a\b[^>]*href=["'](?:https?:\/\/(?:www\.)?koikoitravel\.com)?\/(?:tour-packages|travel-experiences)[^"']*["'][^>]*>([\s\S]*?)<\/a>/gi,
+    "$1"
+  );
+}
+
+export interface LinkTourPackageParams {
+  overview?: string | null;
+  days?: Array<{
+    id: any;
+    day: string;
+    description?: string;
+    seoDescription?: string;
+    image?: string;
+    [k: string]: any;
+  }>;
+  moreDescription?: string | null;
+  journey: {
+    slug?: string | null;
+    title?: string | null;
+    h1Title?: string | null;
+    seoKeyword?: string | null;
+    cities?: Array<{
+      title?: string | null;
+      h1Title?: string | null;
+      slug?: string | null;
+      state?: {
+        slug?: string | null;
+        country?: { slug?: string | null } | null;
+      } | null;
+    }>;
+    states?: Array<{ slug?: string | null; title?: string | null }>;
+    travelExperiences?: Array<{ slug?: string | null; title?: string | null }>;
+  };
+  breadcrumbStateSlug?: string | null;
+  maxLinks?: number;
+}
+
+export interface LinkTourPackageResult {
+  linkedOverview: string;
+  linkedDays: Array<{
+    id: any;
+    day: string;
+    description?: string;
+    seoDescription?: string;
+    linkedDescription: string;
+    image?: string;
+    [k: string]: any;
+  }>;
+  linkedMoreDesc: string;
+  totalLinksCount: number;
+  linkedHrefs: string[];
+}
+
+/**
+ * Specialized linker for tour package pages meeting strict SEO criteria:
+ * - Process all sections of ONE page together in page order (overview -> days -> trip guide).
+ * - Maximum 4 auto-links on the entire page.
+ * - Link each target URL only on its FIRST mention on the page.
+ * - Never link primary or secondary keywords (from journey's SEO keywords field), e.g. "Golden Triangle tour".
+ * - Never link current page URL or its category/breadcrumb parent.
+ * - Never add links inside headings (h1-h6), highlights, FAQs, or inside existing links.
+ * - Prefer city pages over broad category pages.
+ */
+export function linkTourPackageSections(params: LinkTourPackageParams): LinkTourPackageResult {
+  const { overview, days = [], moreDescription, journey, breadcrumbStateSlug } = params;
+  const maxLinks = params.maxLinks ?? 4;
+
+  // 1. Excluded Hrefs
+  const excludedHrefs = new Set<string>();
+  if (journey.slug) {
+    excludedHrefs.add(normalizeHref(`/tour-packages/${journey.slug}`));
+    excludedHrefs.add(normalizeHref(journey.slug));
+  }
+  if (breadcrumbStateSlug) {
+    excludedHrefs.add(normalizeHref(`/tour-packages/india/${breadcrumbStateSlug}`));
+  }
+  for (const s of journey.states || []) {
+    if (s?.slug) {
+      excludedHrefs.add(normalizeHref(`/tour-packages/india/${s.slug}`));
+    }
+  }
+  for (const e of journey.travelExperiences || []) {
+    if (e?.slug) {
+      excludedHrefs.add(normalizeHref(`/travel-experiences/${e.slug}`));
+    }
+  }
+  // Exclude broad category pages so tour package pages only link specific cities/places
+  const broadCategories = [
+    "/tour-packages",
+    "/tour-packages/india",
+    "/tour-packages/india/golden-triangle",
+    "/tour-packages/india/taj-mahal",
+    "/tour-packages/india/rajasthan",
+    "/tour-packages/india/kerala",
+    "/tour-packages/india/south-india",
+    "/tour-packages/india/himachal-pradesh",
+    "/tour-packages/india/uttarakhand",
+    "/tour-packages/india/uttar-pradesh",
+  ];
+  for (const bc of broadCategories) {
+    excludedHrefs.add(normalizeHref(bc));
+  }
+
+  // 2. Disallowed Terms (never link primary/secondary keywords or circuit names)
+  const disallowedTerms = new Set<string>();
+
+  // Add primary circuit & category names
+  const defaultDisallowed = [
+    "golden triangle tour",
+    "golden triangle tours",
+    "golden triangle tour india",
+    "golden triangle tours india",
+    "golden triangle itinerary",
+    "golden triangle",
+    "taj mahal tour",
+    "taj mahal tours",
+    "taj mahal",
+    "rajasthan tour packages",
+    "rajasthan tours",
+    "rajasthan heritage",
+    "rajasthan",
+    "south india tours",
+    "south india tour",
+    "south india tour packages",
+    "south india",
+    "kerala tour packages",
+    "kerala holiday packages",
+    "kerala tours",
+    "kerala",
+  ];
+  for (const dt of defaultDisallowed) {
+    disallowedTerms.add(dt.toLowerCase().trim());
+  }
+
+  if (journey.title) {
+    disallowedTerms.add(journey.title.toLowerCase().trim());
+  }
+  if (journey.h1Title) {
+    disallowedTerms.add(journey.h1Title.toLowerCase().trim());
+  }
+
+  // Parse SEO Keywords from journey
+  if (journey.seoKeyword) {
+    const rawKeywords = journey.seoKeyword.split(/[,;\n]+/).map((k) => k.toLowerCase().trim()).filter(Boolean);
+    for (const kw of rawKeywords) {
+      disallowedTerms.add(kw);
+      // If keyword is a phrase like "5 days golden triangle tour", also disallow "golden triangle tour"
+      if (kw.includes("golden triangle")) {
+        disallowedTerms.add("golden triangle tour");
+        disallowedTerms.add("golden triangle");
+      }
+    }
+  }
+
+  // 3. Assemble and Filter Candidate Rules (preferring city pages)
+  const candidateRules = new Map<string, { term: string; href: string }>();
+
+  // A) Journey's own visited cities (highest priority)
+  for (const c of journey.cities || []) {
+    if (!c?.title && !c?.h1Title) continue;
+    const countrySlug = c?.state?.country?.slug || "india";
+    const stateSlug = c?.state?.slug;
+    const citySlug = c?.slug;
+    if (!stateSlug || !citySlug) continue;
+
+    const href =
+      citySlug === stateSlug
+        ? `/tour-packages/${countrySlug}/${stateSlug}`
+        : `/tour-packages/${countrySlug}/${stateSlug}/${citySlug}`;
+
+    const normHref = normalizeHref(href);
+    if (excludedHrefs.has(normHref)) continue;
+
+    const terms = [c.h1Title, c.title].filter(Boolean) as string[];
+    for (const t of terms) {
+      const cleanTerm = t.trim();
+      const lower = cleanTerm.toLowerCase();
+      if (cleanTerm.length < 2) continue;
+      if (disallowedTerms.has(lower)) continue;
+      candidateRules.set(lower, { term: cleanTerm, href });
+    }
+  }
+
+  // B) Standard City & Place rules from KEYWORD_LINKS
+  for (const entry of KEYWORD_LINKS) {
+    const normHref = normalizeHref(entry.href);
+    // Only accept city/monument pages, reject broad categories and experiences
+    if (entry.href.startsWith("/travel-experiences") || excludedHrefs.has(normHref)) {
+      continue;
+    }
+    // Must be a city/monument level path (e.g. /tour-packages/india/rajasthan/jaipur or /tour-packages/india/delhi)
+    const segments = normHref.split("/").filter(Boolean);
+    const isCityPath = segments.length >= 4 || normHref === "/tour-packages/india/delhi";
+    if (!isCityPath) {
+      continue;
+    }
+
+    for (const term of entry.terms) {
+      const cleanTerm = term.trim();
+      const lower = cleanTerm.toLowerCase();
+      if (cleanTerm.length < 2) continue;
+      if (disallowedTerms.has(lower)) continue;
+      if (!candidateRules.has(lower)) {
+        candidateRules.set(lower, { term: cleanTerm, href: entry.href });
+      }
+    }
+  }
+
+  // Sorted list of terms by length descending to match longer phrases first
+  const sortedTerms = Array.from(candidateRules.keys()).sort((a, b) => b.length - a.length);
+
+  const linkedHrefs = new Set<string>();
+  let totalLinksCount = 0;
+
+  // Single regex matching any candidate term on word boundaries
+  const termRegex =
+    sortedTerms.length > 0
+      ? new RegExp(`\\b(${sortedTerms.map(escapeRegex).join("|")})\\b`, "gi")
+      : null;
+
+  // Helper to process a single HTML block
+  const processBlock = (rawHtml?: string | null): string => {
+    if (!rawHtml) return "";
+    // Step 1: Strip existing auto/internal destination links to ensure fresh, clean pass
+    const cleanHtml = stripAutoInternalLinks(rawHtml);
+    if (!termRegex || totalLinksCount >= maxLinks) {
+      return cleanHtml;
+    }
+
+    const protectedTokens: string[] = [];
+
+    // Step 2: Protect all headings (h1-h6)
+    let working = cleanHtml.replace(/<h[1-6]\b[^>]*>[\s\S]*?<\/h[1-6]>/gi, (m) => {
+      protectedTokens.push(m);
+      return `\uE000H_${protectedTokens.length - 1}\uE001`;
+    });
+
+    // Step 3: Protect existing links
+    working = working.replace(/<a\b[^>]*>[\s\S]*?<\/a>/gi, (m) => {
+      protectedTokens.push(m);
+      return `\uE000A_${protectedTokens.length - 1}\uE001`;
+    });
+
+    // Step 4: Protect HTML tags
+    const tagTokens: string[] = [];
+    working = working.replace(/<[^>]+>/g, (m) => {
+      tagTokens.push(m);
+      return `\uE000TAG_${tagTokens.length - 1}\uE001`;
+    });
+
+    // Step 5: Replace terms in text in page appearance order
+    working = working.replace(termRegex, (matchedText) => {
+      if (totalLinksCount >= maxLinks) {
+        return matchedText;
+      }
+      const lower = matchedText.toLowerCase();
+      const rule = candidateRules.get(lower);
+      if (!rule) {
+        return matchedText;
+      }
+      const normHref = normalizeHref(rule.href);
+      if (linkedHrefs.has(normHref) || excludedHrefs.has(normHref)) {
+        return matchedText;
+      }
+
+      linkedHrefs.add(normHref);
+      totalLinksCount++;
+
+      const anchor = `<a href="${rule.href}" class="text-[#2E8B8B] hover:underline font-medium">${matchedText}</a>`;
+      protectedTokens.push(anchor);
+      return `\uE000L_${protectedTokens.length - 1}\uE001`;
+    });
+
+    // Step 6: Restore HTML tags
+    working = working.replace(/\uE000TAG_(\d+)\uE001/g, (_, i) => tagTokens[Number(i)] ?? "");
+
+    // Step 7: Restore headings, existing links, and newly injected links
+    working = working.replace(/\uE000[HAL]_(\d+)\uE001/g, (_, i) => protectedTokens[Number(i)] ?? "");
+
+    return working;
+  };
+
+  // Process in strict page order:
+  // 1. Overview
+  const linkedOverview = processBlock(overview);
+
+  // 2. Days (Day 1 -> Day N)
+  const linkedDays = days.map((day) => {
+    const rawDesc = day.seoDescription || (day as any).description || "";
+    return {
+      ...day,
+      linkedDescription: processBlock(rawDesc),
+    };
+  });
+
+  // 3. Trip Guide (moreDescription)
+  const linkedMoreDesc = processBlock(moreDescription);
+
+  return {
+    linkedOverview,
+    linkedDays,
+    linkedMoreDesc,
+    totalLinksCount,
+    linkedHrefs: Array.from(linkedHrefs),
+  };
+}

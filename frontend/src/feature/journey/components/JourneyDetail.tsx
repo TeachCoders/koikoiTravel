@@ -44,7 +44,7 @@ import { travelExperienceIcon } from "@/components/shared/TravelExperiencePills"
 import RichContent, { sanitizeHtml } from "@/components/shared/RichContent";
 import ExpandableRichContent from "@/components/shared/ExpandableRichContent";
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
-import { linkKeywords, buildExperienceLinkRules, type AutoLinkRule } from "@/lib/autoInternalLink";
+import { linkTourPackageSections } from "@/lib/autoInternalLink";
 import { cn, stripHtml } from "@/lib/utils";
 import FaqSection from "@/feature/home/components/FaqSection";
 import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
@@ -58,71 +58,6 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [pageUrl, setPageUrl] = useState("");
-
-  const cityLinkRules = useMemo<AutoLinkRule[]>(
-    () =>
-      (journey?.cities ?? [])
-        .filter((c) => c.state?.slug && c.state?.country?.slug && c.slug)
-        .map((c) => ({
-          term: c.h1Title || c.title,
-          href:
-            c.slug === c.state?.slug
-              ? `/tour-packages/${c.state!.country!.slug}/${c.state!.slug}`
-              : `/tour-packages/${c.state!.country!.slug}/${c.state!.slug}/${c.slug}`,
-        })),
-    [journey]
-  );
-
-  const paragraphLinkRules = useMemo<AutoLinkRule[]>(
-    () => [...buildExperienceLinkRules(), ...cityLinkRules],
-    [cityLinkRules]
-  );
-
-  // Single shared set of linked hrefs across the entire tour package page
-  // Ensures maximum 1 link per destination across Overview, all Itinerary Days, Trip Guide, and FAQs
-  const { linkedOverview, linkedDays, linkedMoreDesc, pageLinkedHrefs, excludeHrefs } = useMemo(() => {
-    const pageLinked = new Set<string>();
-    const exclude = [
-      `/tour-packages/${slug}`,
-      `/tour-packages/${journey?.slug || ""}`,
-      slug,
-    ];
-
-    const overview = journey?.overView
-      ? linkKeywords(journey.overView, paragraphLinkRules, {
-          sharedLinkedHrefs: pageLinked,
-          excludeHrefs: exclude,
-        })
-      : "";
-
-    const days = (journey?.days || []).map((day) => {
-      const desc = day.seoDescription || (day as any).description || "";
-      return {
-        ...day,
-        linkedDescription: desc
-          ? linkKeywords(desc, paragraphLinkRules, {
-              sharedLinkedHrefs: pageLinked,
-              excludeHrefs: exclude,
-            })
-          : "",
-      };
-    });
-
-    const moreDesc = journey?.moreDescription
-      ? linkKeywords(journey.moreDescription, paragraphLinkRules, {
-          sharedLinkedHrefs: pageLinked,
-          excludeHrefs: exclude,
-        })
-      : "";
-
-    return {
-      linkedOverview: overview,
-      linkedDays: days,
-      linkedMoreDesc: moreDesc,
-      pageLinkedHrefs: pageLinked,
-      excludeHrefs: exclude,
-    };
-  }, [journey, paragraphLinkRules, slug]);
 
   useEffect(() => {
     setPageUrl(window.location.href);
@@ -142,6 +77,33 @@ export default function JourneyDetail({ slug, initialJourney }: { slug: string; 
   if (!journey) return notFound();
 
   const bcState = getJourneyBreadcrumbState(journey);
+
+  // Process all content sections of ONE page together in page order:
+  // Overview -> Days -> Trip Guide
+  // Hard cap of max 4 auto-links across the whole page, each URL only once.
+  // Never links primary keywords (e.g. Golden Triangle tour) or category/breadcrumb parent.
+  const { linkedOverview, linkedDays, linkedMoreDesc, pageLinkedHrefs, excludeHrefs } = useMemo(() => {
+    const res = linkTourPackageSections({
+      overview: journey.overView,
+      days: journey.days as any,
+      moreDescription: journey.moreDescription,
+      journey,
+      breadcrumbStateSlug: bcState?.stateSlug,
+      maxLinks: 4,
+    });
+
+    return {
+      linkedOverview: res.linkedOverview,
+      linkedDays: res.linkedDays,
+      linkedMoreDesc: res.linkedMoreDesc,
+      pageLinkedHrefs: new Set<string>(res.linkedHrefs),
+      excludeHrefs: [
+        `/tour-packages/${slug}`,
+        `/tour-packages/${journey.slug || ""}`,
+        `/tour-packages/india/${bcState?.stateSlug || ""}`,
+      ],
+    };
+  }, [journey, slug, bcState?.stateSlug]);
   const countrySlug = bcState.countrySlug;
   const countryTitle = bcState.countryTitle;
   const stateSlug = bcState.stateSlug;

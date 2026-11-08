@@ -124,6 +124,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
           >
             <RichContent
               html={faq.answer}
+              autoLink={false}
               sharedLinkedHrefs={sharedLinkedHrefs}
               excludeHrefs={excludeHrefs}
             />

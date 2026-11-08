@@ -590,7 +590,7 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
             onThumbImgUpload={handleThumbImgUpload}
             errors={errors}
             bannerImages={bannerImages}
-            basePath={citySlug ? `/${citySlug}` : "/journey"}
+            basePath="/tour-packages"
             folderPath={formData.slug ? `${formData.slug}/trip` : ""}
           />
           <button
@@ -690,7 +690,7 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
                 onThumbImgUpload={handleThumbImgUpload}
                 errors={errors}
                 bannerImages={bannerImages}
-                basePath={citySlug ? `/${citySlug}` : "/journey"}
+                basePath="/tour-packages"
                 folderPath={formData.slug ? `${formData.slug}/trip` : ""}
               />
             </div>
