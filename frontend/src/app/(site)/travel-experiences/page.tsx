@@ -245,48 +245,19 @@ export default async function TravelExperiencesPage() {
         </div>
       </nav>
 
-      {/* ===== HERO (SOLID TEAL BACKGROUND) ===== */}
-      <section className="relative overflow-hidden bg-[#2E8B8B]">
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent pointer-events-none" />
-        <div className="absolute -top-16 right-0 w-72 h-72 rounded-full bg-[#F8904D]/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-        <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-14 md:py-20 text-center flex flex-col items-center">
-          <span className="font-luxury font-black inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#F5B041] mb-3">
-            <Sparkles size={14} /> Curated Travel Themes
+      {/* ===== HEADER & INTRO SECTION ===== */}
+      <section className="bg-white border-b border-slate-100 py-8 sm:py-10">
+        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10">
+          <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
+            <Sparkles size={13} /> Curated Travel Themes
           </span>
-          <h1 className="font-luxury text-2xl sm:text-4xl md:text-[46px] font-black text-white tracking-wide leading-tight">
+          <h1 className="font-heading text-2xl sm:text-3xl md:text-[32px] font-bold tracking-tight text-slate-900 leading-[1.3] mb-2">
             Hand-Crafted India Travel Experiences
           </h1>
-          <p className="mt-4 text-white/85 text-base md:text-lg max-w-2xl leading-relaxed">
-            From romantic honeymoons to soulful heritage trails and rejuvenating wellness retreats — choose your dream theme and let us design your custom itinerary.
-          </p>
-
-          <div className="mt-8">
-            <QuoteModal>
-              <button
-                type="button"
-                className="btn-primary px-7 py-3.5 text-sm font-bold tracking-wide flex items-center gap-2 cursor-pointer shadow-lg shadow-[#F8904D]/30 active:scale-95 transition-all"
-              >
-                <Sparkles size={16} />
-                <span>Plan My Custom Trip</span>
-              </button>
-            </QuoteModal>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== SEO CONTENT ===== */}
-      <section className="bg-white border-b border-slate-100">
-        <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 py-14 md:py-16">
-          <div className="text-center">
-            <SectionLabel icon={<Compass size={12} />}>
-              Why Travellers Trust KoiKoi Travel
-            </SectionLabel>
-            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1C1C1C] tracking-tight mt-2 leading-tight">
-              India Tour Themes, Planned Around the Way You Like to Travel
-            </h2>
-          </div>
-          <div className="mt-8 max-w-4xl mx-auto space-y-4 text-base sm:text-lg leading-relaxed text-slate-700 text-left sm:text-center">
+          <h2 className="font-heading text-base sm:text-lg font-semibold text-slate-700 mb-3">
+            India Tour Themes, Planned Around the Way You Like to Travel
+          </h2>
+          <div className="space-y-3 text-slate-600 font-normal text-sm sm:text-base leading-relaxed max-w-5xl">
             <p
               dangerouslySetInnerHTML={{
                 __html:
