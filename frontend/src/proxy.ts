@@ -37,6 +37,26 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url), 301);
   }
 
+  // 301 redirect for /tour-packages/10-days-south-india-itinerary
+  if (pathname === "/tour-packages/10-days-south-india-itinerary" || pathname === "/tour-packages/10-days-south-india-itinerary/") {
+    return NextResponse.redirect(new URL("/tour-packages/10-days-south-india-tour-package", request.url), 301);
+  }
+
+  // 301 redirect for /travel-experiences/nature
+  if (pathname === "/travel-experiences/nature" || pathname === "/travel-experiences/nature/") {
+    return NextResponse.redirect(new URL("/travel-experiences/hill-station", request.url), 301);
+  }
+
+  // 301 redirect for /travel-experiences/beach-lake
+  if (pathname === "/travel-experiences/beach-lake" || pathname === "/travel-experiences/beach-lake/") {
+    return NextResponse.redirect(new URL("/tour-packages/india/kerala", request.url), 301);
+  }
+
+  // 301 redirect for /tour-packages/india/uttar-pradesh/fatehpur-sikri
+  if (pathname === "/tour-packages/india/uttar-pradesh/fatehpur-sikri" || pathname === "/tour-packages/india/uttar-pradesh/fatehpur-sikri/") {
+    return NextResponse.redirect(new URL("/tour-packages/india/uttar-pradesh", request.url), 301);
+  }
+
   // Dashboard auth check
   if (pathname.startsWith("/dashboard")) {
     const session = request.cookies.get("connect.sid");
@@ -56,5 +76,9 @@ export const config = {
     "/destinations/india",
     "/cancellation-and-refund-policy",
     "/&",
+    "/tour-packages/10-days-south-india-itinerary",
+    "/travel-experiences/nature",
+    "/travel-experiences/beach-lake",
+    "/tour-packages/india/uttar-pradesh/fatehpur-sikri",
   ],
 };
