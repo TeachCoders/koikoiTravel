@@ -50,9 +50,8 @@ export default async function AboutUsPage() {
 
   const displayTitle = cmsPage?.h1Title || cmsPage?.title || "About KoiKoi Travel";
 
-  // Directly use whatever is in cmsPage.moreDescription from CMS!
-  // If empty, fall back to ABOUT_US_CONTENT_HTML.
-  const contentHtml = cmsPage?.moreDescription || ABOUT_US_CONTENT_HTML;
+  // Always use the latest curated About Us content
+  const contentHtml = ABOUT_US_CONTENT_HTML;
 
   return (
     <div>

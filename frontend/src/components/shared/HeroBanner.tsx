@@ -57,7 +57,7 @@ export default function HeroBanner({
   gradient = "bottom",
   interval = 6000,
   children,
-  heightClass = "h-[80vw] min-h-[365px] max-h-[630px] md:h-[41vw] md:min-h-[505px] md:max-h-[735px]",
+  heightClass = "w-full aspect-[3/2] sm:aspect-auto sm:h-[41vw] sm:min-h-[460px] md:min-h-[505px] md:max-h-[735px]",
   className = "",
 }: HeroBannerProps) {
   // Normalize slides
@@ -112,22 +112,22 @@ export default function HeroBanner({
 
       {/* 2. Content Overlay Layer */}
       <div
-        className={`relative z-30 max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 h-full w-full flex flex-col justify-center pointer-events-none py-4 sm:py-6 md:py-8 ${
+        className={`relative z-30 max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 h-full w-full flex flex-col justify-center pointer-events-none py-2.5 sm:py-6 md:py-8 ${
           align === "center" ? "items-center text-center" : "items-start text-left font-outfit"
         }`}
       >
         {/* Eyebrow Tag / Badge */}
         {tag && (
-          <div className="mb-2 sm:mb-4 pointer-events-auto">
+          <div className="mb-1.5 sm:mb-4 pointer-events-auto">
             <div
-              className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-xs ${
+              className={`inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-0.5 sm:py-1.5 rounded-full shadow-xs ${
                 hasSlides || hasFallback
                   ? "bg-slate-950/60 backdrop-blur-md border border-white/20 text-white"
                   : "bg-white/95 border border-slate-300 text-slate-800"
               }`}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shadow-[0_0_8px_#F8904D]" />
-              <span className="font-luxury font-bold text-[11px] sm:text-xs md:text-[13px] uppercase tracking-[0.14em] sm:tracking-[0.22em] select-none">
+              <span className="font-luxury font-bold text-[10px] sm:text-xs md:text-[13px] uppercase tracking-[0.14em] sm:tracking-[0.22em] select-none">
                 {tag}
               </span>
             </div>
