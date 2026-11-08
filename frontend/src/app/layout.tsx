@@ -47,10 +47,10 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "India Tour Packages & Tailor-Made Private Tours | KoiKoi Travel",
+    default: "Private Customized & Group Travel India | KoiKoi Travel",
     template: "%s | KoiKoi Travel",
   },
-  description: "Discover authentic India tour packages with KoiKoi Travel. Tailor-made private holidays across Rajasthan, Kerala, Golden Triangle & South India.",
+  description: "Private luxury India tours and small-group journeys, planned by a small travel team. Rajasthan, Golden Triangle, Kerala & South India. Get a free quote",
   keywords: [
     "India tour packages",
     "India tour operator",
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "KoiKoi Travel",
     title: "India Tour Packages & Tailor-Made Private Tours | KoiKoi Travel",
-    description: "Discover authentic India tour packages with KoiKoi Travel. Tailor-made private holidays across Rajasthan, Kerala, Golden Triangle & South India.",
+    description: "Private luxury India tours and small-group journeys, planned by a small travel team. Rajasthan, Golden Triangle, Kerala & South India. Get a free quote",
     locale: "en_IN",
     url: SITE_URL,
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "KoiKoi Travel - Tailor-Made India Tour Packages" }],
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "India Tour Packages & Tailor-Made Private Tours | KoiKoi Travel",
-    description: "Discover authentic India tour packages with KoiKoi Travel. Tailor-made private holidays across Rajasthan, Kerala, Golden Triangle & South India.",
+    description: "Private luxury India tours and small-group journeys, planned by a small travel team. Rajasthan, Golden Triangle, Kerala & South India. Get a free quote",
     images: ["/og-image.png"],
   },
   icons: {

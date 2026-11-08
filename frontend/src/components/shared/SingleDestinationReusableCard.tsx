@@ -209,7 +209,7 @@ export function SingleDestinationReusableCard({
         </h3>
 
         {(displayDescription || subtitle) && (
-          <p className="line-clamp-2 sm:line-clamp-3 flex-1 text-xs sm:text-[13px] leading-relaxed text-slate-600">
+          <p className="flex-1 text-xs sm:text-[13px] leading-relaxed text-slate-600">
             {displayDescription || subtitle}
           </p>
         )}

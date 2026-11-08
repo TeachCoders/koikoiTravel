@@ -10,11 +10,12 @@ export const revalidate = 300;
 export const metadata: Metadata = {
   metadataBase: new URL("https://koikoitravel.com"),
   title: {
-    absolute: "India Tour Packages & Tailor-Made Private Tours | KoiKoi Travel",
+    absolute: "Private Customized & Group Travel India | KoiKoi Travel",
   },
   description:
-    "Discover authentic India tour packages with KoiKoi Travel. Tailor-made private holidays across Rajasthan, Kerala, Golden Triangle & South India.",
+    "Private luxury India tours and small-group journeys, planned by a small travel team. Rajasthan, Golden Triangle, Kerala & South India. Get a free quote",
   keywords: [
+    "Private Customized & Group Travel India",
     "India tour packages",
     "India tour operator",
     "Tailor-made India tours",
@@ -33,10 +34,10 @@ export const metadata: Metadata = {
   verification: { google: "El1jKO1piAq20XL3gueQKlsrPhBvrZFOUF-Jg6addow" },
   openGraph: {
     title: {
-    absolute: "India Tour Packages & Tailor-Made Private Tours | KoiKoi Travel",
+    absolute: "Private Customized & Group Travel India | KoiKoi Travel",
   },
     description:
-      "Discover authentic India tour packages with KoiKoi Travel. Tailor-made private holidays across Rajasthan, Kerala, Golden Triangle & South India.",
+      "Private luxury India tours and small-group journeys, planned by a small travel team. Rajasthan, Golden Triangle, Kerala & South India. Get a free quote",
     url: "https://koikoitravel.com",
     siteName: "KoiKoi Travel",
     locale: "en_US",

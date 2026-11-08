@@ -219,8 +219,14 @@ export const PlanAdventureSection: React.FC<PlanAdventureSectionProps> = ({
         else if (/family/i.test(exp.title)) eyebrow = "FAMILY VACATIONS IN INDIA";
 
         const rawDesc = stripHtml(exp.cardShortDescription || exp.overView || exp.description || "");
-        const description =
-          rawDesc.length > 90 ? `${rawDesc.slice(0, 90)}...` : rawDesc || "Handcrafted private holiday itineraries designed for your travel style";
+        let description = exp.cardShortDescription ? stripHtml(exp.cardShortDescription) : "";
+        if (!description && rawDesc) {
+          const firstSentence = rawDesc.split(/(?<=[.!?])\s+/)[0] || rawDesc;
+          description = firstSentence;
+        }
+        if (!description) {
+          description = "Handcrafted private holiday itineraries designed for your travel style";
+        }
 
         return {
           id: `exp-${exp.id}`,
