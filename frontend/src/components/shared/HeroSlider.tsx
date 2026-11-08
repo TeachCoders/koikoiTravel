@@ -176,8 +176,8 @@ function SlideImage({
             alt={alt}
             fill
             priority={priority}
-            loading={preload ? "eager" : undefined}
-            quality={80}
+            loading={priority || preload ? "eager" : undefined}
+            quality={75}
             sizes="100vw"
             theme="light"
             className="object-cover object-center"
@@ -190,8 +190,8 @@ function SlideImage({
             alt={alt}
             fill
             priority={priority}
-            loading={preload ? "eager" : undefined}
-            quality={80}
+            loading={priority || preload ? "eager" : undefined}
+            quality={75}
             sizes="(max-width: 1024px) 100vw, 1920px"
             theme="light"
             className="object-cover object-center"

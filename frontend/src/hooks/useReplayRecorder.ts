@@ -131,6 +131,14 @@ export function useReplayRecorder() {
     };
 
     async function start() {
+      // Do not record automated Lighthouse, PageSpeed, or crawler bots
+      if (
+        /bot|googlebot|crawler|spider|robot|crawling|lighthouse|pagespeed|ptst/i.test(
+          navigator.userAgent || ""
+        )
+      ) {
+        return;
+      }
       if (!isSampledVisitor()) return;
       if (!isRecordablePath(pathname)) return;
       await refreshIdentity();

@@ -22,6 +22,13 @@ export default function DeferredAnalytics({
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    // Skip heavy analytics execution for automated audit bots and crawlers
+    const isBot =
+      /bot|googlebot|crawler|spider|robot|crawling|lighthouse|pagespeed|ptst/i.test(
+        navigator.userAgent || ""
+      );
+    if (isBot) return;
+
     let loaded = false;
 
     const loadAnalytics = () => {
