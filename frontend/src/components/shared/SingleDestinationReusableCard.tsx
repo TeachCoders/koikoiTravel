@@ -149,14 +149,14 @@ export function SingleDestinationReusableCard({
 
       {/* Tours badge (top-right) */}
       {displayTours && (
-        <span className="absolute right-3 top-3 z-10 shrink-0 rounded-full bg-slate-900 px-3 py-1 text-[11px] font-semibold text-white shadow-sm transition-shadow group-hover:shadow-md">
+        <span className="absolute right-2.5 top-2.5 sm:right-3 sm:top-3 z-10 shrink-0 rounded-full bg-slate-900 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-[11px] font-semibold text-white shadow-sm transition-shadow group-hover:shadow-md">
           {displayTours}
         </span>
       )}
 
       {/* Extra tag, only when it differs from the eyebrow (bottom-left) */}
       {tag && eyebrow && tag !== eyebrow && (
-        <span className="absolute bottom-3 left-3 z-10 rounded-full bg-[#F8904D] px-2.5 py-1 text-[10px] font-bold text-white shadow-sm">
+        <span className="absolute bottom-2.5 left-2.5 sm:bottom-3 sm:left-3 z-10 rounded-full bg-[#F8904D] px-2 py-0.5 sm:px-2.5 sm:py-1 text-[9px] sm:text-[10px] font-bold text-white shadow-sm">
           {tag}
         </span>
       )}
@@ -187,15 +187,15 @@ export function SingleDestinationReusableCard({
       )}
 
       {/* Content area */}
-      <div className="flex flex-1 flex-col gap-1.5 p-4 sm:p-5">
+      <div className="flex flex-1 flex-col gap-1 sm:gap-1.5 p-3 sm:p-4 md:p-5">
         {displayEyebrow && (
-          <span className="line-clamp-1 text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#F8904D]">
+          <span className="line-clamp-1 text-[9.5px] sm:text-[10.5px] font-bold uppercase tracking-[0.08em] sm:tracking-[0.12em] text-[#F8904D]">
             {displayEyebrow}
           </span>
         )}
 
         {/* 2. Title */}
-        <h3 className="font-heading line-clamp-1 text-lg font-bold leading-tight text-slate-900 sm:text-xl">
+        <h3 className="font-heading line-clamp-2 min-h-[2.4rem] sm:min-h-0 text-[15px] sm:text-lg md:text-xl font-bold leading-snug sm:leading-tight text-slate-900">
           {href && !hideFooter ? (
             <Link
               href={href}
@@ -209,7 +209,7 @@ export function SingleDestinationReusableCard({
         </h3>
 
         {(displayDescription || subtitle) && (
-          <p className="line-clamp-3 flex-1 text-[13px] leading-relaxed text-slate-600">
+          <p className="line-clamp-2 sm:line-clamp-3 flex-1 text-xs sm:text-[13px] leading-relaxed text-slate-600">
             {displayDescription || subtitle}
           </p>
         )}
@@ -218,15 +218,15 @@ export function SingleDestinationReusableCard({
         {href && !hideFooter && (
           <Link
             href={href}
-            className="mt-auto flex items-center justify-between border-t border-slate-100 pt-3.5 transition-colors group/cta"
+            className="mt-auto flex items-center justify-between border-t border-slate-100 pt-2.5 sm:pt-3.5 transition-colors group/cta"
           >
-            <span className="text-sm font-semibold text-slate-900 transition-colors duration-200 group-hover:text-[#F8904D] group-hover/cta:text-[#F8904D]">
+            <span className="text-xs sm:text-sm font-semibold text-slate-900 transition-colors duration-200 group-hover:text-[#F8904D] group-hover/cta:text-[#F8904D]">
               View tours
             </span>
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#F8904D] text-white shadow-xs transition-all duration-300 ease-out group-hover:bg-[#E87A36] group-hover:scale-105 group-hover:translate-x-1 group-hover:shadow-md">
+            <span className="inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-[#F8904D] text-white shadow-xs transition-all duration-300 ease-out group-hover:bg-[#E87A36] group-hover:scale-105 group-hover:translate-x-1 group-hover:shadow-md">
               <svg
-                width="16"
-                height="16"
+                width="14"
+                height="14"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="#FFFFFF"
