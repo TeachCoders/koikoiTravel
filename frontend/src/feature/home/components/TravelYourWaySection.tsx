@@ -7,8 +7,8 @@ import { ArrowRight, Play, Sparkles, X } from "lucide-react";
 import { SectionLabel } from "@/components/shared/SectionLabel";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 
-// India 4K Scenic Travel Film (Verified 100% Embeddable)
-const INCREDIBLE_INDIA_VIDEO_ID = "FOvOxeb2TCg";
+// KoiKoi Travel Official Film
+const INCREDIBLE_INDIA_VIDEO_ID = "R4yeNWUvF0Q";
 
 export default function SeoTextBlock() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -82,8 +82,8 @@ export default function SeoTextBlock() {
                   <div className="relative h-full w-full cursor-pointer select-none" onClick={() => setIsPlaying(true)}>
                     {/* Poster Image */}
                     <Image
-                      src="/content/jaipur-holiday-1.webp"
-                      alt="Experience Incredible India"
+                      src="/content/koikoi-travel-video-cover.jpg"
+                      alt="KoiKoi Travel | Private India Tours"
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"
                       className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
@@ -97,7 +97,7 @@ export default function SeoTextBlock() {
                     <div className="absolute top-4 left-4 z-10">
                       <div className="inline-flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md border border-white/20 shadow-sm">
                         <Sparkles className="h-3 w-3 text-[#F8904D]" />
-                        <span>Incredible India • Official Film</span>
+                        <span>KoiKoi Travel • Official Film</span>
                       </div>
                     </div>
 
@@ -109,7 +109,7 @@ export default function SeoTextBlock() {
                           e.stopPropagation();
                           setIsPlaying(true);
                         }}
-                        aria-label="Play Incredible India Video"
+                        aria-label="Play KoiKoi Travel Video"
                         className="group/btn relative flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full bg-[#F8904D] text-white shadow-2xl shadow-[#F8904D]/50 transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer"
                       >
                         <span className="absolute inset-0 rounded-full bg-[#F8904D] animate-ping opacity-35 pointer-events-none" />
@@ -134,7 +134,7 @@ export default function SeoTextBlock() {
                     </button>
                     <iframe
                       src={`https://www.youtube.com/embed/${INCREDIBLE_INDIA_VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-                      title="India 4K Scenic Travel Experience"
+                      title="KoiKoi Travel | Private India Tours - Varanasi, Wildlife, Kerala & Maharajas' Express"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       referrerPolicy="strict-origin-when-cross-origin"
                       allowFullScreen
