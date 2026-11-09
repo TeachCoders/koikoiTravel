@@ -152,9 +152,11 @@ export default function SeoFields({
               </Label>
               <span
                 className={`text-xs tabular-nums transition-colors ${
-                  (formData.seoTitle || "").length > 60
+                  (formData.seoTitle || "").length >= 60
+                    ? "text-red-600 font-bold"
+                    : (formData.seoTitle || "").length >= 55
                     ? "text-amber-600 font-semibold"
-                    : "text-slate-400"
+                    : "text-slate-400 font-medium"
                 }`}
               >
                 {(formData.seoTitle || "").length} / 60
@@ -162,12 +164,31 @@ export default function SeoFields({
             </div>
             <Input
               value={formData.seoTitle || ""}
-              onChange={(e) => onFieldChange("seoTitle", e.target.value)}
+              maxLength={60}
+              onChange={(e) => {
+                const val = e.target.value.slice(0, 60);
+                onFieldChange("seoTitle", val);
+              }}
               placeholder="e.g. Best India Tour Packages"
+              className={`transition-colors ${
+                (formData.seoTitle || "").length >= 60
+                  ? "border-red-500 focus-visible:ring-red-500"
+                  : ""
+              }`}
             />
-            <p className="text-[10px] text-slate-400">
-              Appears in the browser tab and Google search results. Write the full title — add " | KoiKoi Travel" at the end yourself if you want the brand to show; it is not added automatically.
-            </p>
+            <div className="flex items-center justify-between text-[10px]">
+              <p
+                className={
+                  (formData.seoTitle || "").length >= 60
+                    ? "text-red-600 font-medium"
+                    : "text-slate-400"
+                }
+              >
+                {(formData.seoTitle || "").length >= 60
+                  ? "Maximum 60 characters reached — title will not be truncated on Google."
+                  : 'Appears in Google search results. Keep under 60 chars so it does not get cut off (...).'}
+              </p>
+            </div>
           </div>
 
           {/* <div className="space-y-1.5">

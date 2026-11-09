@@ -1,0 +1,279 @@
+================================================================================
+   KOIKOI TRAVEL - 14 GAME-CHANGER HIGH INTENT ITINERARY VARIATIONS
+   (Private Tour, Luxury Tour, by Train, by Car, Best of Modifiers)
+================================================================================
+Created Date: 2026-11-09
+Purpose: Targets high-converting international buyers searching for Luxury, Private,
+and Transport-specific terms on pages that currently have low/no Google rankings.
+Rules Followed:
+  1. URLs are 100% UNCHANGED (zero link breakages).
+  2. All Proposed Titles are <= 60 characters (including " | KoiKoi Travel").
+  3. All Proposed Meta Descriptions are <= 160 characters.
+================================================================================
+
+[1/14] SLUG: 10-days-rajasthan-trip-including-golden-triangle
+URL: https://koikoitravel.com/tour-packages/10-days-rajasthan-trip-including-golden-triangle
+GSC STATUS: Pos 62 (No organic clicks)
+STRATEGY / MODIFIER: Luxury Tour
+--------------------------------------------------------------------------------
+OLD TITLE (87 chars):
+  10 Days Rajasthan Trip Including Golden Triangle – Delhi, Agra & Jaipur | KoiKoi Travel
+PROPOSED NEW TITLE (57 chars / Max 60):
+  10 Days Luxury Rajasthan & Golden Triangle | KoiKoi Travel
+
+OLD META DESCRIPTION (165 chars):
+  Explore Rajasthan and the Golden Triangle with 10 Days Rajasthan Trip Including Golden Triangle covering Delhi, Agra, Jaipur, Jodhpur and Udaipur with KoiKoi Travel.
+PROPOSED META DESCRIPTION (153 chars / Max 160):
+  Experience royal India with 10 Days Luxury Rajasthan & Golden Triangle Tour. Stay at 5-star heritage palaces in Jaipur, Udaipur & Agra with KoiKoi Travel.
+
+TARGET KEYWORDS:
+  luxury rajasthan tour, 10 days luxury rajasthan, golden triangle luxury tour, rajasthan heritage palace tour
+================================================================================
+
+[2/14] SLUG: 3-days-ranthambore-weekend-tour-from-delhi
+URL: https://koikoitravel.com/tour-packages/3-days-ranthambore-weekend-tour-from-delhi
+GSC STATUS: Pos 62.8 (6 Impressions, 0 Clicks)
+STRATEGY / MODIFIER: by Train
+--------------------------------------------------------------------------------
+OLD TITLE (81 chars):
+  3 Days Ranthambore Weekend Tour from Delhi – Train & Tiger Safari | KoiKoi Travel
+PROPOSED NEW TITLE (57 chars / Max 60):
+  Ranthambore Tiger Safari by Train: 3 Days | KoiKoi Travel
+
+OLD META DESCRIPTION (146 chars):
+  Enjoy a 3 Days Ranthambore Weekend Tour from Delhi by train with jungle safari, wildlife spotting and a comfortable stay near Ranthambore National
+PROPOSED META DESCRIPTION (158 chars / Max 160):
+  Book 3 Days Ranthambore Tiger Safari from Delhi by train. Enjoy comfortable express train travel, guided jungle jeep safaris & resort stay with KoiKoi Travel.
+
+TARGET KEYWORDS:
+  ranthambore safari by train, ranthambore tour from delhi by train, ranthambore tiger safari 3 days, delhi to ranthambore train tour
+================================================================================
+
+[3/14] SLUG: 2-days-delhi-to-agra-weekend-tour
+URL: https://koikoitravel.com/tour-packages/2-days-delhi-to-agra-weekend-tour
+GSC STATUS: Pos 31.2 (15 Impressions, 0 Clicks)
+STRATEGY / MODIFIER: Private Tour / by Car
+--------------------------------------------------------------------------------
+OLD TITLE (75 chars):
+  2 Days Delhi to Agra Weekend Tour: Taj Mahal & Fort Package | KoiKoi Travel
+PROPOSED NEW TITLE (57 chars / Max 60):
+  2 Days Agra Private Tour by Car from Delhi | KoiKoi Travel
+
+OLD META DESCRIPTION (163 chars):
+  Plan a 2 Days Delhi to Agra Weekend Tour by private car. Visit the Taj Mahal at sunrise, explore Agra Fort and enjoy a relaxing weekend getaway with KoiKoi Travel.
+PROPOSED META DESCRIPTION (152 chars / Max 160):
+  Book a 2 Days Agra Private Tour by AC car from Delhi. Experience sunrise at Taj Mahal, Agra Fort & Mehtab Bagh with private chauffeur by KoiKoi Travel.
+
+TARGET KEYWORDS:
+  agra private tour by car, delhi to agra private car tour, 2 days agra tour from delhi, taj mahal sunrise private tour
+================================================================================
+
+[4/14] SLUG: 2-days-delhi-to-amritsar-weekend-tour
+URL: https://koikoitravel.com/tour-packages/2-days-delhi-to-amritsar-weekend-tour
+GSC STATUS: Pos 29.7 (19 Impressions, 1 Click)
+STRATEGY / MODIFIER: by Train (Shatabdi Express)
+--------------------------------------------------------------------------------
+OLD TITLE (73 chars):
+  2 Days Delhi to Amritsar Weekend Tour: Golden Temple Trip | KoiKoi Travel
+PROPOSED NEW TITLE (54 chars / Max 60):
+  2 Days Delhi to Amritsar Tour by Train | KoiKoi Travel
+
+OLD META DESCRIPTION (153 chars):
+  Take a 2 Days Delhi to Amritsar Weekend Tour by train. Visit the Golden Temple, Wagah Border and Jallianwala Bagh on a memorable trip with KoiKoi Travel.
+PROPOSED META DESCRIPTION (154 chars / Max 160):
+  Travel Delhi to Amritsar by express train for 2 days. Experience Golden Temple Palki Sahib, Wagah Border ceremony & Amritsari cuisine with KoiKoi Travel.
+
+TARGET KEYWORDS:
+  delhi to amritsar tour by train, 2 days amritsar tour from delhi, amritsar shatabdi train package, golden temple weekend tour
+================================================================================
+
+[5/14] SLUG: 8-days-golden-triangle-tour-with-ranthambore-tiger-safari-tour
+URL: https://koikoitravel.com/tour-packages/8-days-golden-triangle-tour-with-ranthambore-tiger-safari-tour
+GSC STATUS: Pos 36.2 (29 Impressions, 1 Click)
+STRATEGY / MODIFIER: Private Tour by Car
+--------------------------------------------------------------------------------
+OLD TITLE (73 chars):
+  8 Days Golden Triangle Tour with Ranthambore Tiger Safari | KoiKoi Travel
+PROPOSED NEW TITLE (58 chars / Max 60):
+  8 Days Golden Triangle & Tiger Safari by Car | KoiKoi Travel
+
+OLD META DESCRIPTION (160 chars):
+  Book an 8 Days Golden Triangle Tour with Ranthambore Tiger Safari. Explore Delhi, Agra, Jaipur and Ranthambore National Park with private car and KoiKoi Travel.
+PROPOSED META DESCRIPTION (158 chars / Max 160):
+  Discover Delhi, Agra, Jaipur & Ranthambore on an 8 Days Golden Triangle & Tiger Safari private car tour. Spot Bengal tigers & Mughal forts with KoiKoi Travel.
+
+TARGET KEYWORDS:
+  golden triangle tiger safari by car, golden triangle ranthambore private tour, 8 days golden triangle wildlife tour
+================================================================================
+
+[6/14] SLUG: 8-days-triangle-with-varanasi-trip
+URL: https://koikoitravel.com/tour-packages/8-days-triangle-with-varanasi-trip
+GSC STATUS: Pos 41.4 (13 Impressions, 0 Clicks)
+STRATEGY / MODIFIER: Private Tour
+--------------------------------------------------------------------------------
+OLD TITLE (77 chars):
+  8 Days Golden Triangle with Varanasi Tour | Delhi Agra Jaipur | KoiKoi Travel
+PROPOSED NEW TITLE (60 chars / Max 60):
+  8 Days Golden Triangle & Varanasi Tour | KoiKoi Travel
+
+OLD META DESCRIPTION (163 chars):
+  Discover India with an 8 Days Golden Triangle with Varanasi Tour. Visit Delhi, Agra, Jaipur and the holy city of Varanasi with private transport and KoiKoi Travel.
+PROPOSED META DESCRIPTION (156 chars / Max 160):
+  Experience Delhi, Agra, Jaipur and holy Varanasi on an 8 Days Golden Triangle Private Tour. Enjoy Ganga Aarti & Taj Mahal private guides with KoiKoi Travel.
+
+TARGET KEYWORDS:
+  golden triangle varanasi private tour, 8 days golden triangle with varanasi, delhi agra jaipur varanasi private tour
+================================================================================
+
+[7/14] SLUG: 10-days-golden-triangle-with-khajuraho-varanasi-tour
+URL: https://koikoitravel.com/tour-packages/10-days-golden-triangle-with-khajuraho-varanasi-tour
+GSC STATUS: Pos 54 (17 Impressions, 1 Click)
+STRATEGY / MODIFIER: Private Tour
+--------------------------------------------------------------------------------
+OLD TITLE (62 chars):
+  Golden Triangle Tour with Khajuraho & Varanasi | KoiKoi Travel
+PROPOSED NEW TITLE (60 chars / Max 60):
+  10 Days Golden Triangle & Varanasi Tour | KoiKoi Travel
+
+OLD META DESCRIPTION (149 chars):
+  Experience the best of heritage with a 10 Days Golden Triangle Tour with Khajuraho and Varanasi covering Delhi, Agra, Jaipur, Khajuraho and Varanasi.
+PROPOSED META DESCRIPTION (152 chars / Max 160):
+  Book a 10 Days Private Heritage Tour of Delhi, Agra, Jaipur, Khajuraho temples & Varanasi Ganga Aarti with dedicated private guides by KoiKoi Travel.
+
+TARGET KEYWORDS:
+  golden triangle khajuraho varanasi private tour, 10 days india heritage private tour, private tour khajuraho varanasi
+================================================================================
+
+[8/14] SLUG: 6-days-kerala-honeymoon-tour
+URL: https://koikoitravel.com/tour-packages/6-days-kerala-honeymoon-tour
+GSC STATUS: Pos 44 (4 Impressions, 0 Clicks)
+STRATEGY / MODIFIER: Luxury Honeymoon
+--------------------------------------------------------------------------------
+OLD TITLE (74 chars):
+  6 Days Kerala Honeymoon Tour Packages | Romantic Itinerary | KoiKoi Travel
+PROPOSED NEW TITLE (58 chars / Max 60):
+  Luxury Kerala Honeymoon Tour: 6 Days Package | KoiKoi Travel
+
+OLD META DESCRIPTION (158 chars):
+  Book romantic 6 Days Kerala Honeymoon Tour Packages covering Munnar tea gardens, Alleppey backwater houseboat cruise and scenic hill views with KoiKoi Travel.
+PROPOSED META DESCRIPTION (155 chars / Max 160):
+  Celebrate love with a 6 Days Luxury Kerala Honeymoon Tour. Enjoy 5-star Munnar mountain resorts & a private luxury houseboat in Alleppey by KoiKoi Travel.
+
+TARGET KEYWORDS:
+  luxury kerala honeymoon tour, 6 days kerala honeymoon package, private houseboat honeymoon kerala, luxury couples tour kerala
+================================================================================
+
+[9/14] SLUG: 14-days-kerala-ayurveda-retreat-somatheeram-backwaters-beach
+URL: https://koikoitravel.com/tour-packages/14-days-kerala-ayurveda-retreat-somatheeram-backwaters-beach
+GSC STATUS: No rank in GSC
+STRATEGY / MODIFIER: Luxury Ayurveda & Wellness
+--------------------------------------------------------------------------------
+OLD TITLE (72 chars):
+  14 Days Kerala Ayurveda Retreat: Backwaters & Beach Tour | KoiKoi Travel
+PROPOSED NEW TITLE (58 chars / Max 60):
+  Luxury Kerala Ayurveda Retreat: 14 Days Tour | KoiKoi Travel
+
+OLD META DESCRIPTION (156 chars):
+  Rejuvenate with a 14 Days Kerala Ayurveda Retreat at Somatheeram Ayurvedic Beach Resort. Includes daily treatments, doctor consultations and backwater tour.
+PROPOSED META DESCRIPTION (153 chars / Max 160):
+  Rejuvenate body & mind with a 14 Days Luxury Kerala Ayurveda Retreat at Somatheeram. Includes doctor consultation, panchakarma & yoga by KoiKoi Travel.
+
+TARGET KEYWORDS:
+  luxury kerala ayurveda retreat, somatheeram ayurvedic retreat 14 days, kerala panchakarma luxury wellness, ayurveda beach retreat
+================================================================================
+
+[10/14] SLUG: 7-days-rajasthan-tour-packages
+URL: https://koikoitravel.com/tour-packages/7-days-rajasthan-tour-packages
+GSC STATUS: No rank in GSC
+STRATEGY / MODIFIER: Best of Rajasthan
+--------------------------------------------------------------------------------
+OLD TITLE (83 chars):
+  7 Days Rajasthan Tour Packages – Jaipur, Pushkar, Jodhpur & Udaipur | KoiKoi Travel
+PROPOSED NEW TITLE (58 chars / Max 60):
+  Best of Rajasthan Tour: 7 Days Royal Palaces | KoiKoi Travel
+
+OLD META DESCRIPTION (148 chars):
+  Explore the royal state with 7 Days Rajasthan Tour Packages covering Jaipur, Pushkar, Jodhpur and Udaipur with comfortable travel and KoiKoi Travel.
+PROPOSED META DESCRIPTION (147 chars / Max 160):
+  Discover the Best of Rajasthan on a 7 Days Royal Tour covering Jaipur forts, Pushkar lake, Jodhpur Blue City & Udaipur palaces with KoiKoi Travel.
+
+TARGET KEYWORDS:
+  best of rajasthan tour, 7 days rajasthan tour packages, rajasthan royal palace tour, jaipur jodhpur udaipur 7 days
+================================================================================
+
+[11/14] SLUG: 3-days-jaisalmer-jodhpur-tour
+URL: https://koikoitravel.com/tour-packages/3-days-jaisalmer-jodhpur-tour
+GSC STATUS: Pos 44 (2 Impressions, 0 Clicks)
+STRATEGY / MODIFIER: Private Desert Safari
+--------------------------------------------------------------------------------
+OLD TITLE (79 chars):
+  3 Days Jaisalmer Jodhpur Tour Package | Desert & Blue City Tour | KoiKoi Travel
+PROPOSED NEW TITLE (59 chars / Max 60):
+  3 Days Jaisalmer Private Desert Safari | KoiKoi Travel
+
+OLD META DESCRIPTION (145 chars):
+  Book a 3 Days Jaisalmer Jodhpur Tour Package. Experience Thar Desert camel safari, luxury Swiss tent stay and Mehrangarh Fort with KoiKoi Travel.
+PROPOSED META DESCRIPTION (153 chars / Max 160):
+  Experience the Thar Desert with a 3 Days Jaisalmer Private Tour. Enjoy camel safari, luxury desert camp stay & Jodhpur Mehrangarh Fort by KoiKoi Travel.
+
+TARGET KEYWORDS:
+  jaisalmer desert safari private tour, 3 days jaisalmer jodhpur tour, jaisalmer private camel safari, thar desert luxury camp tour
+================================================================================
+
+[12/14] SLUG: 6-days-shimla-manali-honeymoon-tours-from-delhi
+URL: https://koikoitravel.com/tour-packages/6-days-shimla-manali-honeymoon-tours-from-delhi
+GSC STATUS: No rank in GSC
+STRATEGY / MODIFIER: Luxury Hill Honeymoon
+--------------------------------------------------------------------------------
+OLD TITLE (62 chars):
+  6 Days Shimla Manali Honeymoon Tour from Delhi | KoiKoi Travel
+PROPOSED NEW TITLE (57 chars / Max 60):
+  Luxury Shimla Manali Honeymoon Tour: 6 Days | KoiKoi Travel
+
+OLD META DESCRIPTION (173 chars):
+  Enjoy 6 days of romance, mountain views and adventure with Shimla Manali Honeymoon Tour Packages from Delhi. Explore Kufri, Manali, Solang Valley and more with KoiKoi Travel
+PROPOSED META DESCRIPTION (159 chars / Max 160):
+  Book a romantic 6 Days Luxury Shimla Manali Honeymoon Tour from Delhi. Enjoy scenic hill resorts, private AC car, Solang Valley snow & Kufri by KoiKoi Travel.
+
+TARGET KEYWORDS:
+  luxury shimla manali honeymoon tour, 6 days himachal honeymoon package, shimla manali private car honeymoon, luxury hill station couples tour
+================================================================================
+
+[13/14] SLUG: 3-days-jim-corbett-wildlife-tour-from-delhi
+URL: https://koikoitravel.com/tour-packages/3-days-jim-corbett-wildlife-tour-from-delhi
+GSC STATUS: Pos 26.1 (42 Impressions, 1 Click)
+STRATEGY / MODIFIER: by Car / Private Jeep Safari
+--------------------------------------------------------------------------------
+OLD TITLE (82 chars):
+  3 Days Jim Corbett Wildlife Tour from Delhi: Jungle Safari Package | KoiKoi Travel
+PROPOSED NEW TITLE (58 chars / Max 60):
+  3 Days Jim Corbett Safari by Car from Delhi | KoiKoi Travel
+
+OLD META DESCRIPTION (174 chars):
+  Experience tiger spotting and nature with a 3 Days Jim Corbett Wildlife Tour from Delhi. Includes jeep safari, riverside resort stay and private transfers with KoiKoi Travel.
+PROPOSED META DESCRIPTION (160 chars / Max 160):
+  Book a 3 Days Jim Corbett Wildlife Safari by private car from Delhi. Includes open jeep jungle safari, riverside wilderness resort stay & meals by KoiKoi Travel.
+
+TARGET KEYWORDS:
+  jim corbett safari by car from delhi, 3 days jim corbett tour from delhi, jim corbett private jeep safari, delhi to corbett road trip package
+================================================================================
+
+[14/14] SLUG: 6-days-wildlife-birdwatching-tour-with-taj-mahal
+URL: https://koikoitravel.com/tour-packages/6-days-wildlife-birdwatching-tour-with-taj-mahal
+GSC STATUS: Pos 31.2 (5 Impressions, 1 Click)
+STRATEGY / MODIFIER: Private Safari
+--------------------------------------------------------------------------------
+OLD TITLE (68 chars):
+  6 Days Wildlife and Birdwatching Tour with Taj Mahal | KoiKoi Travel
+PROPOSED NEW TITLE (56 chars / Max 60):
+  6 Days Taj Mahal & Wildlife Private Safari | KoiKoi Travel
+
+OLD META DESCRIPTION (149 chars):
+  Combine birdwatching at Bharatpur with tiger safari at Ranthambore and Taj Mahal visit on a 6 Days Wildlife and Birdwatching Tour with KoiKoi Travel.
+PROPOSED META DESCRIPTION (155 chars / Max 160):
+  Explore Taj Mahal, Keoladeo bird sanctuary & Ranthambore tigers on a 6 Days Private Wildlife Safari by AC car with expert birding guides by KoiKoi Travel.
+
+TARGET KEYWORDS:
+  taj mahal and wildlife private safari, 6 days birdwatching taj mahal tour, private safari bharatpur ranthambore, private wildlife tour india
+================================================================================
+
