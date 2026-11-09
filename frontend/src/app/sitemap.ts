@@ -16,7 +16,7 @@ type SitemapItem = {
 
 async function fetchAll<T>(path: string): Promise<T[]> {
   try {
-    const res = await fetch(`${API_BASE}${path}`, { cache: "no-store" });
+    const res = await fetch(`${API_BASE}${path}`, { next: { revalidate: 300 } });
     if (!res.ok) {
       console.error(`[sitemap] Error fetching ${path}: ${res.status} ${res.statusText}`);
       return [];
