@@ -9,7 +9,7 @@ import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { TravelExperience } from "@/feature/travelExperience/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
-import { resolveTravelExperienceJourneys } from "@/feature/journey/destinationJourneys";
+import { resolveTravelExperienceJourneys, trimJourneyForListing } from "@/feature/journey/destinationJourneys";
 import { travelExperienceParams } from "@/lib/prerender";
 
 import { getDestinationFaqs } from "@/lib/destinationFaqs";
@@ -95,9 +95,16 @@ export default async function TravelExperiencePage({ params }: Props) {
 
   let schema = null;
   let journeys: JourneyPage<Journey> | null = null;
+  let trimmedJourneys: Journey[] = [];
+  let trimmedExperience: any = null;
   if (data) {
     journeys = await fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true");
     const { allOrderedJourneys } = resolveTravelExperienceJourneys(journeys?.data, data);
+    trimmedJourneys = allOrderedJourneys.map(trimJourneyForListing);
+    trimmedExperience = {
+      ...data,
+      journeys: (data.journeys || []).map(trimJourneyForListing),
+    };
     const isGoldenTriangle = slug === "golden-triangle-tour-india" || slug === "golden-triangle" || data.slug === "golden-triangle-tour-india" || data.slug === "golden-triangle";
     const rawFaqs = isGoldenTriangle ? (GOLDEN_TRIANGLE_FAQS as any) : data.faqs;
     const faqItems = getDestinationFaqs(
@@ -132,7 +139,11 @@ export default async function TravelExperiencePage({ params }: Props) {
     <div className="flex flex-col min-h-screen bg-slate-50 font-sans">
       {schema && <JsonLd data={schema} />}
       <main className="flex-1">
-        <TravelExperienceDetail slug={slug} initialExperience={data} initialJourneys={journeys} />
+        <TravelExperienceDetail
+          slug={slug}
+          initialExperience={trimmedExperience || data}
+          initialJourneys={trimmedJourneys.length > 0 ? ({ data: trimmedJourneys, total: trimmedJourneys.length } as any) : journeys}
+        />
       </main>
     </div>
   );

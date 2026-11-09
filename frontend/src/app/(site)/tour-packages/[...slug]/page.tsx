@@ -21,6 +21,7 @@ import {
   resolveStateJourneys,
   resolveCityJourneys,
   resolveCountryJourneys,
+  trimJourneyForListing,
 } from "@/feature/journey/destinationJourneys";
 import type { CmsPage } from "@/feature/cms/type";
 import { journeyParams } from "@/lib/prerender";
@@ -305,6 +306,24 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
       ]);
 
       const countryJourneys = resolveCountryJourneys(initialJourneys?.data, country);
+      const trimmedCountryJourneys = countryJourneys.map(trimJourneyForListing);
+      const trimmedCountry = {
+        ...country,
+        journeys: ((country as any).journeys || []).map(trimJourneyForListing),
+      };
+      const trimmedStates = initialStates
+        ? {
+            ...initialStates,
+            data: (initialStates.data || []).map((s: any) => ({
+              id: s.id,
+              title: s.title,
+              slug: s.slug,
+              thumbImg: s.thumbImg,
+              tourCount: s.tourCount,
+              cities: (s.cities || []).map((c: any) => ({ id: c.id, title: c.title, slug: c.slug })),
+            })),
+          }
+        : null;
 
       const schema = graphSchema([
         touristDestinationSchema({
@@ -333,9 +352,9 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
           <main className="flex-1">
             <CountryDetail
               slug={country.slug}
-              initialCountry={country}
-              initialStates={initialStates}
-              initialJourneys={initialJourneys}
+              initialCountry={trimmedCountry as any}
+              initialStates={trimmedStates as any}
+              initialJourneys={{ data: trimmedCountryJourneys, total: trimmedCountryJourneys.length } as any}
             />
           </main>
         </div>
@@ -348,6 +367,22 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
         "/journey?limit=100&isActive=true"
       );
       const { allOrderedJourneys } = resolveStateJourneys(initialJourneys?.data, state);
+      const trimmedJourneys = allOrderedJourneys.map(trimJourneyForListing);
+      const trimmedState = {
+        ...state,
+        journeys: (state.journeys || []).map(trimJourneyForListing),
+        cities: (state.cities || []).map((c: any) => ({
+          id: c.id,
+          title: c.title,
+          slug: c.slug,
+          thumbImg: c.thumbImg,
+          displayOrder: c.displayOrder,
+          showOnSite: c.showOnSite,
+          isActive: c.isActive,
+          tourCount: c.tourCount,
+          _count: c._count,
+        })),
+      };
       const schema = graphSchema([
         touristDestinationSchema({
           name: state.title,
@@ -375,7 +410,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
         <div className="flex flex-col min-h-screen bg-slate-50 font-sans">
           <JsonLd data={schema} />
           <main className="flex-1">
-            <StateDetail slug={state.slug} initialState={state} initialJourneys={initialJourneys} />
+            <StateDetail slug={state.slug} initialState={trimmedState} initialJourneys={{ data: trimmedJourneys, total: trimmedJourneys.length } as any} />
           </main>
         </div>
       );
@@ -387,6 +422,19 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
         "/journey?limit=100&isActive=true"
       );
       const cityJourneys = resolveCityJourneys(initialJourneys?.data, city);
+      const trimmedJourneys = cityJourneys.map(trimJourneyForListing);
+      const trimmedCity = {
+        ...city,
+        journeys: (city.journeys || []).map(trimJourneyForListing),
+        state: city.state
+          ? {
+              id: city.state.id,
+              title: city.state.title,
+              slug: city.state.slug,
+              country: city.state.country ? { slug: city.state.country.slug, title: city.state.country.title } : null,
+            }
+          : null,
+      };
       const schema = graphSchema([
         touristDestinationSchema({
           name: city.title,
@@ -417,7 +465,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
         <div className="flex flex-col min-h-screen bg-slate-50 font-sans">
           <JsonLd data={schema} />
           <main className="flex-1">
-            <CityDetail citySlug={city.slug} initialCity={city} initialJourneys={initialJourneys} />
+            <CityDetail citySlug={city.slug} initialCity={trimmedCity as any} initialJourneys={{ data: trimmedJourneys, total: trimmedJourneys.length } as any} />
           </main>
         </div>
       );

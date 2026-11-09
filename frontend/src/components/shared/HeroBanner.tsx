@@ -91,7 +91,7 @@ export default function HeroBanner({
             fill
             priority
             className="object-cover object-center"
-            theme="light"
+            theme="dark"
           />
         </div>
       ) : (

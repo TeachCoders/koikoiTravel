@@ -79,7 +79,7 @@ export default function HeroSlider({ images, slides, alt = "", interval = 5000 }
         {normalizedSlides.map((slide, i) => (
           <div
             key={i}
-            className="relative h-full shrink-0 bg-slate-200 pointer-events-none"
+            className="relative h-full shrink-0 bg-slate-900 pointer-events-none"
             style={{ width: `${100 / normalizedSlides.length}%` }}
           >
             <SlideImage
@@ -170,7 +170,7 @@ function SlideImage({
     return (
       <>
         {/* Mobile Viewport */}
-        <div className="block sm:hidden absolute inset-0">
+        <div className="block sm:hidden absolute inset-0 bg-slate-900">
           <FallbackImage
             src={mobileSrc}
             alt={alt}
@@ -179,12 +179,12 @@ function SlideImage({
             loading={priority || preload ? "eager" : undefined}
             quality={75}
             sizes="100vw"
-            theme="light"
+            theme="dark"
             className="object-cover object-center"
           />
         </div>
         {/* Desktop & Tablet Viewport */}
-        <div className="hidden sm:block absolute inset-0">
+        <div className="hidden sm:block absolute inset-0 bg-slate-900">
           <FallbackImage
             src={src}
             alt={alt}
@@ -193,7 +193,7 @@ function SlideImage({
             loading={priority || preload ? "eager" : undefined}
             quality={75}
             sizes="(max-width: 1024px) 100vw, 1920px"
-            theme="light"
+            theme="dark"
             className="object-cover object-center"
           />
         </div>
@@ -210,7 +210,7 @@ function SlideImage({
       loading={preload ? "eager" : undefined}
       quality={80}
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
-      theme="light"
+      theme="dark"
       className="object-cover object-center"
     />
   );

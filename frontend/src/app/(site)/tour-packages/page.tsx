@@ -8,6 +8,7 @@ import PackagesExplorer from "@/feature/journey/components/PackagesExplorer";
 import { fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
+import { trimJourneyForListing } from "@/feature/journey/destinationJourneys";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import { fetchHeroBannersServer } from "@/feature/heroBanner/api/server";
 import HeroBanner from "@/components/shared/HeroBanner";
@@ -195,7 +196,14 @@ export default async function TourPackagesPage({
           initialStates={states}
           initialCountries={countries}
           initialSearch={search}
-          initialJourneys={initialJourneys}
+          initialJourneys={
+            initialJourneys
+              ? {
+                  ...initialJourneys,
+                  data: (initialJourneys.data || []).map(trimJourneyForListing),
+                }
+              : null
+          }
         />
       </div>
     </div>
