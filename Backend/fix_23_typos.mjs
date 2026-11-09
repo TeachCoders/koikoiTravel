@@ -9,17 +9,17 @@ async function main() {
   console.log("\n[1/23] Fixing 3-days-jaipur-agra-trip-from-delhi-golden-triangle (ID 2)...");
   const j2 = await prisma.journey.findUnique({
     where: { id: 2 },
-    include: { exclusions: true, days: true },
+    include: { exclusion: true, days: true },
   });
   if (j2) {
     // A. PPersonal -> Personal in exclusions
-    if (j2.exclusions && Array.isArray(j2.exclusions.exclusionList)) {
-      const fixedExcl = j2.exclusions.exclusionList.map((item) =>
+    if (j2.exclusion && Array.isArray(j2.exclusion.inclusionList)) {
+      const fixedExcl = j2.exclusion.inclusionList.map((item) =>
         item.replace(/\bPPersonal\b/g, "Personal")
       );
       await prisma.exclusion.update({
-        where: { id: j2.exclusions.id },
-        data: { exclusionList: fixedExcl },
+        where: { id: j2.exclusion.id },
+        data: { inclusionList: fixedExcl },
       });
       console.log("  - Fixed PPersonal in exclusions");
     }
@@ -187,16 +187,16 @@ async function main() {
   console.log("\n[5/23] Fixing 15-days-north-india-wildlife-cultural-tour (ID 109)...");
   const j109 = await prisma.journey.findUnique({
     where: { id: 109 },
-    include: { exclusions: true, days: true },
+    include: { exclusion: true, days: true },
   });
   if (j109) {
-    if (j109.exclusions && Array.isArray(j109.exclusions.exclusionList)) {
-      const fixedExcl = j109.exclusions.exclusionList.map((item) =>
+    if (j109.exclusion && Array.isArray(j109.exclusion.inclusionList)) {
+      const fixedExcl = j109.exclusion.inclusionList.map((item) =>
         item.replace(/beyond contr\b/gi, "beyond control")
       );
       await prisma.exclusion.update({
-        where: { id: j109.exclusions.id },
-        data: { exclusionList: fixedExcl },
+        where: { id: j109.exclusion.id },
+        data: { inclusionList: fixedExcl },
       });
       console.log("  - Fixed 'beyond contr' -> 'beyond control' in exclusions");
     }
