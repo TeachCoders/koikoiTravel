@@ -17,10 +17,14 @@ type SitemapItem = {
 async function fetchAll<T>(path: string): Promise<T[]> {
   try {
     const res = await fetch(`${API_BASE}${path}`, { cache: "no-store" });
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.error(`[sitemap] Error fetching ${path}: ${res.status} ${res.statusText}`);
+      return [];
+    }
     const json = await res.json();
     return json?.data || [];
-  } catch {
+  } catch (err) {
+    console.error(`[sitemap] Network error fetching ${path}:`, err);
     return [];
   }
 }
@@ -64,15 +68,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "destinations",
   ]);
 
-  const STATIC_DATE = "2026-11-01T00:00:00.000Z";
   const entries: MetadataRoute.Sitemap = [
-    url("/", STATIC_DATE),
-    url("/destinations", STATIC_DATE),
-    url("/travel-experiences", STATIC_DATE),
-    url("/blog", STATIC_DATE),
-    url("/tour-packages", STATIC_DATE),
-    url("/contact-us", STATIC_DATE),
-    url("/tour-packages/india/golden-triangle", STATIC_DATE),
+    url("/"),
+    url("/destinations"),
+    url("/travel-experiences"),
+    url("/blog"),
+    url("/tour-packages"),
+    url("/contact-us"),
+    url("/tour-packages/india/golden-triangle"),
   ];
 
   // Count journeys per state and city to filter out thin pages (< 2 tours)
@@ -102,34 +105,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   });
 
-  const EXCLUDED_CITY_SLUGS = new Set([
-    "sariska",
-    "ranakpur",
-    "trivandrum",
-    "kovalam",
-    "nagpur",
-    "mumbai",
-    "kufri",
-    "sarchu",
-    "delhi",
-    "fatehpur-sikri",
-  ]);
+  countries.forEach((c: SitemapItem) => {
+    entries.push(url(`/tour-packages/${c.slug}`, c.updatedAt));
+  });
 
-  countries.forEach((c: SitemapItem) => entries.push(url(`/tour-packages/${c.slug}`, c.updatedAt)));
   states.forEach((s: any) => {
     if (s.slug === "golden-triangle" || s.slug === "golden-triangle-tour-india") return;
     if (s.isActive === false || s.showOnSite === false) return;
     const count = stateTourCount.get(s.slug) || 0;
     if (count < 2 && s.slug !== "south-india") return;
-    if (s.country?.slug) entries.push(url(`/tour-packages/${s.country.slug}/${s.slug}`, s.updatedAt));
+    const countrySlug = s.country?.slug || "india";
+    entries.push(url(`/tour-packages/${countrySlug}/${s.slug}`, s.updatedAt));
   });
+
   cities.forEach((c: any) => {
     if (!isIndexableCity(c.state?.slug, c.slug)) return;
-    if (c.state?.country?.slug) {
-      entries.push(url(`/tour-packages/${c.state.country.slug}/${c.state.slug}/${c.slug}`, c.updatedAt));
-    }
+    const countrySlug = c.state?.country?.slug || "india";
+    entries.push(url(`/tour-packages/${countrySlug}/${c.state.slug}/${c.slug}`, c.updatedAt));
   });
-  experiences.forEach((e: SitemapItem) => entries.push(url(`/travel-experiences/${e.slug}`, e.updatedAt)));
+
+  experiences.forEach((e: SitemapItem) => {
+    if (e.slug === "golden-triangle" || e.slug === "golden-triangle-tour-india" || e.slug === "taj-mahal") return;
+    entries.push(url(`/travel-experiences/${e.slug}`, e.updatedAt));
+  });
 
   journeys.forEach((j: SitemapItem) => {
     entries.push(url(`/tour-packages/${j.slug}`, j.updatedAt));

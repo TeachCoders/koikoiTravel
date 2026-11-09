@@ -41,7 +41,6 @@ export default createCmsRouter({
     isActive: true,
     showOnSite: true,
     displayOrder: true,
-    updatedAt: true,
   },
   childInclude: { model: "states", select: { id: true, title: true, slug: true, displayOrder: true } },
   extraFilters: ["id"],
