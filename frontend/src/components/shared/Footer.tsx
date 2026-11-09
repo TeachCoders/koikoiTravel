@@ -29,7 +29,7 @@ const TOP_DESTINATIONS = [
   { label: "Uttarakhand Hills & Trekking", href: "/tour-packages/india/uttarakhand" },
   { label: "Ladakh Adventure Tours", href: "/tour-packages/india/ladakh" },
   { label: "Madhya Pradesh Wildlife", href: "/tour-packages/india/madhya-pradesh" },
-  { label: "Maharashtra Tours", href: "/tour-packages/india/maharashtra" },
+  { label: "South India Tour Packages", href: "/tour-packages/india/south-india" },
   { label: "Punjab Heritage Tours", href: "/tour-packages/india/punjab" },
 ];
 
