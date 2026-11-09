@@ -697,26 +697,19 @@ export default async function DestinationsPage() {
                                     href={cityHref}
                                     className="group flex items-center gap-2 py-1.5 text-[13px] font-semibold text-slate-600 hover:text-[#2E8B8B] transition-colors duration-200"
                                   >
-                                    <MapPin
-                                      size={12}
-                                      className="shrink-0 text-[#F8904D]"
-                                    />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shrink-0 group-hover:scale-125 transition-transform" />
                                     <span className="truncate group-hover:underline">
                                       {city.h1Title || city.title}
                                     </span>
                                     <span className="ml-auto shrink-0 text-[11px] font-semibold text-slate-400 tabular-nums">
                                       {cityTours}
                                     </span>
-                                    <ArrowRight
-                                      size={12}
-                                      className="shrink-0 opacity-0 -ml-0.5 group-hover:opacity-100 transition-opacity duration-200"
-                                    />
                                   </Link>
                                 ) : (
                                   // Listed but not linked. Still worth showing:
                                   // the destination exists, the tours do not yet.
                                   <span className="flex items-center gap-2 py-1.5 text-[13px] font-semibold text-slate-400">
-                                    <MapPin size={12} className="shrink-0 text-slate-300" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />
                                     <span className="truncate">{city.h1Title || city.title}</span>
                                   </span>
                                 )}
