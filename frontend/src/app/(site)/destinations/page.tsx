@@ -246,7 +246,17 @@ export default async function DestinationsPage() {
   // and the browser balances them by height, so putting the biggest blocks
   // first is what keeps the two columns close to the same length.
   const stateGroups = orderByDisplay(states)
-    .map((s) => ({ state: s, cities: orderByDisplay(s.cities || []) }));
+    .filter(
+      (s) =>
+        (s.tourCount || 0) > 0 ||
+        (s.cities && s.cities.some((c) => (c._count?.journeys ?? 0) > 0))
+    )
+    .map((s) => ({
+      state: s,
+      cities: orderByDisplay(s.cities || []).filter(
+        (c) => (c._count?.journeys ?? 0) > 0 && c.slug !== s.slug
+      ),
+    }));
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -684,15 +694,13 @@ export default async function DestinationsPage() {
                           <span className="h-px min-w-[24px] flex-1 bg-slate-200" />
                         </div>
 
-                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-0.5">
-                          {cityList
-                            .filter((city) => city.slug !== state.slug)
-                            .map((city) => {
-                            const cityTours = city._count?.journeys ?? 0;
-                            const cityHref = `/tour-packages/${state.country?.slug}/${state.slug}/${city.slug}`;
-                            return (
-                              <li key={city.id}>
-                                {cityTours > 0 ? (
+                        {cityList.length > 0 && (
+                          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-0.5">
+                            {cityList.map((city) => {
+                              const cityTours = city._count?.journeys ?? 0;
+                              const cityHref = `/tour-packages/${state.country?.slug}/${state.slug}/${city.slug}`;
+                              return (
+                                <li key={city.id}>
                                   <Link
                                     href={cityHref}
                                     className="group flex items-center gap-2 py-1.5 text-[13px] font-semibold text-slate-600 hover:text-[#2E8B8B] transition-colors duration-200"
@@ -705,18 +713,11 @@ export default async function DestinationsPage() {
                                       {cityTours}
                                     </span>
                                   </Link>
-                                ) : (
-                                  // Listed but not linked. Still worth showing:
-                                  // the destination exists, the tours do not yet.
-                                  <span className="flex items-center gap-2 py-1.5 text-[13px] font-semibold text-slate-400">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />
-                                    <span className="truncate">{city.h1Title || city.title}</span>
-                                  </span>
-                                )}
-                              </li>
-                            );
-                          })}
-                        </ul>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        )}
                       </div>
                     </div>
                   );
