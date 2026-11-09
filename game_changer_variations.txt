@@ -1,6 +1,6 @@
 ================================================================================
    KOIKOI TRAVEL - 14 GAME-CHANGER HIGH INTENT ITINERARY VARIATIONS
-   (Private Tour, Luxury Tour, by Train, by Car, Best of Modifiers)
+   (Private Tour, Luxury Tour, Guided Safari, Best of Modifiers)
 ================================================================================
 Created Date: 2026-11-09
 Purpose: Targets high-converting international buyers searching for Luxury, Private,
@@ -33,12 +33,12 @@ TARGET KEYWORDS:
 [2/14] SLUG: 3-days-ranthambore-weekend-tour-from-delhi
 URL: https://koikoitravel.com/tour-packages/3-days-ranthambore-weekend-tour-from-delhi
 GSC STATUS: Pos 62.8 (6 Impressions, 0 Clicks)
-STRATEGY / MODIFIER: by Train
+STRATEGY / MODIFIER: Private Tiger Safari
 --------------------------------------------------------------------------------
 OLD TITLE (81 chars):
   3 Days Ranthambore Weekend Tour from Delhi – Train & Tiger Safari | KoiKoi Travel
-PROPOSED NEW TITLE (57 chars / Max 60):
-  Ranthambore Tiger Safari by Train: 3 Days | KoiKoi Travel
+PROPOSED NEW TITLE (59 chars / Max 60):
+  3 Days Ranthambore Private Tiger Safari | KoiKoi Travel
 
 OLD META DESCRIPTION (146 chars):
   Enjoy a 3 Days Ranthambore Weekend Tour from Delhi by train with jungle safari, wildlife spotting and a comfortable stay near Ranthambore National
@@ -52,12 +52,12 @@ TARGET KEYWORDS:
 [3/14] SLUG: 2-days-delhi-to-agra-weekend-tour
 URL: https://koikoitravel.com/tour-packages/2-days-delhi-to-agra-weekend-tour
 GSC STATUS: Pos 31.2 (15 Impressions, 0 Clicks)
-STRATEGY / MODIFIER: Private Tour / by Car
+STRATEGY / MODIFIER: Private Guided Tour
 --------------------------------------------------------------------------------
 OLD TITLE (75 chars):
   2 Days Delhi to Agra Weekend Tour: Taj Mahal & Fort Package | KoiKoi Travel
-PROPOSED NEW TITLE (57 chars / Max 60):
-  2 Days Agra Private Tour by Car from Delhi | KoiKoi Travel
+PROPOSED NEW TITLE (51 chars / Max 60):
+  2 Days Delhi to Agra Private Tour | KoiKoi Travel
 
 OLD META DESCRIPTION (163 chars):
   Plan a 2 Days Delhi to Agra Weekend Tour by private car. Visit the Taj Mahal at sunrise, explore Agra Fort and enjoy a relaxing weekend getaway with KoiKoi Travel.
@@ -71,12 +71,12 @@ TARGET KEYWORDS:
 [4/14] SLUG: 2-days-delhi-to-amritsar-weekend-tour
 URL: https://koikoitravel.com/tour-packages/2-days-delhi-to-amritsar-weekend-tour
 GSC STATUS: Pos 29.7 (19 Impressions, 1 Click)
-STRATEGY / MODIFIER: by Train (Shatabdi Express)
+STRATEGY / MODIFIER: Private Heritage Tour
 --------------------------------------------------------------------------------
 OLD TITLE (73 chars):
   2 Days Delhi to Amritsar Weekend Tour: Golden Temple Trip | KoiKoi Travel
-PROPOSED NEW TITLE (54 chars / Max 60):
-  2 Days Delhi to Amritsar Tour by Train | KoiKoi Travel
+PROPOSED NEW TITLE (55 chars / Max 60):
+  2 Days Delhi to Amritsar Private Tour | KoiKoi Travel
 
 OLD META DESCRIPTION (153 chars):
   Take a 2 Days Delhi to Amritsar Weekend Tour by train. Visit the Golden Temple, Wagah Border and Jallianwala Bagh on a memorable trip with KoiKoi Travel.
@@ -90,12 +90,12 @@ TARGET KEYWORDS:
 [5/14] SLUG: 8-days-golden-triangle-tour-with-ranthambore-tiger-safari-tour
 URL: https://koikoitravel.com/tour-packages/8-days-golden-triangle-tour-with-ranthambore-tiger-safari-tour
 GSC STATUS: Pos 36.2 (29 Impressions, 1 Click)
-STRATEGY / MODIFIER: Private Tour by Car
+STRATEGY / MODIFIER: Golden Triangle + Ranthambore Safari (Top Page 1 Target!)
 --------------------------------------------------------------------------------
 OLD TITLE (73 chars):
   8 Days Golden Triangle Tour with Ranthambore Tiger Safari | KoiKoi Travel
-PROPOSED NEW TITLE (58 chars / Max 60):
-  8 Days Golden Triangle & Tiger Safari by Car | KoiKoi Travel
+PROPOSED NEW TITLE (59 chars / Max 60):
+  8 Days Golden Triangle & Ranthambore Safari | KoiKoi Travel
 
 OLD META DESCRIPTION (160 chars):
   Book an 8 Days Golden Triangle Tour with Ranthambore Tiger Safari. Explore Delhi, Agra, Jaipur and Ranthambore National Park with private car and KoiKoi Travel.
@@ -242,12 +242,12 @@ TARGET KEYWORDS:
 [13/14] SLUG: 3-days-jim-corbett-wildlife-tour-from-delhi
 URL: https://koikoitravel.com/tour-packages/3-days-jim-corbett-wildlife-tour-from-delhi
 GSC STATUS: Pos 26.1 (42 Impressions, 1 Click)
-STRATEGY / MODIFIER: by Car / Private Jeep Safari
+STRATEGY / MODIFIER: Private Wildlife Safari
 --------------------------------------------------------------------------------
 OLD TITLE (82 chars):
   3 Days Jim Corbett Wildlife Tour from Delhi: Jungle Safari Package | KoiKoi Travel
-PROPOSED NEW TITLE (58 chars / Max 60):
-  3 Days Jim Corbett Safari by Car from Delhi | KoiKoi Travel
+PROPOSED NEW TITLE (60 chars / Max 60):
+  3 Days Jim Corbett Private Wildlife Safari | KoiKoi Travel
 
 OLD META DESCRIPTION (174 chars):
   Experience tiger spotting and nature with a 3 Days Jim Corbett Wildlife Tour from Delhi. Includes jeep safari, riverside resort stay and private transfers with KoiKoi Travel.
