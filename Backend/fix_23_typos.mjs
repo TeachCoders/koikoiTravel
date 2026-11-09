@@ -3,26 +3,23 @@ import { prisma } from "./utils/prismaConnection.js";
 async function main() {
   console.log("=== FIXING 23 TYPOS ACROSS DATABASE ===");
 
-  // ----------------------------------------------------
   // 1. 3 Days Golden Triangle (ID 2: 3-days-jaipur-agra-trip-from-delhi-golden-triangle)
   // ----------------------------------------------------
   console.log("\n[1/23] Fixing 3-days-jaipur-agra-trip-from-delhi-golden-triangle (ID 2)...");
+  const exclusions2 = await prisma.exclusion.findMany({ where: { journeyId: 2 } });
+  for (const excl of exclusions2) {
+    const fixed = excl.inclusionList.map((item) => item.replace(/\bPPersonal\b/g, "Personal"));
+    await prisma.exclusion.update({
+      where: { id: excl.id },
+      data: { inclusionList: fixed },
+    });
+    console.log("  - Fixed PPersonal in exclusion for Journey 2");
+  }
+
   const j2 = await prisma.journey.findUnique({
     where: { id: 2 },
-    include: { exclusion: true, days: true },
+    include: { days: true },
   });
-  if (j2) {
-    // A. PPersonal -> Personal in exclusions
-    if (j2.exclusion && Array.isArray(j2.exclusion.inclusionList)) {
-      const fixedExcl = j2.exclusion.inclusionList.map((item) =>
-        item.replace(/\bPPersonal\b/g, "Personal")
-      );
-      await prisma.exclusion.update({
-        where: { id: j2.exclusion.id },
-        data: { inclusionList: fixedExcl },
-      });
-      console.log("  - Fixed PPersonal in exclusions");
-    }
 
     // B. Toota vakya in overView (remove trailing `<p>Mughal heritage.</p>`)
     if (j2.overView) {
@@ -185,21 +182,23 @@ async function main() {
   // 5. 15 Days North India Wildlife (ID 109: 15-days-north-india-wildlife-cultural-tour)
   // ----------------------------------------------------
   console.log("\n[5/23] Fixing 15-days-north-india-wildlife-cultural-tour (ID 109)...");
+  const exclusions109 = await prisma.exclusion.findMany({ where: { journeyId: 109 } });
+  for (const excl of exclusions109) {
+    const fixed = excl.inclusionList.map((item) =>
+      item.replace(/beyond contr\b/gi, "beyond control")
+    );
+    await prisma.exclusion.update({
+      where: { id: excl.id },
+      data: { inclusionList: fixed },
+    });
+    console.log("  - Fixed 'beyond contr' -> 'beyond control' in exclusions for Journey 109");
+  }
+
   const j109 = await prisma.journey.findUnique({
     where: { id: 109 },
-    include: { exclusion: true, days: true },
+    include: { days: true },
   });
   if (j109) {
-    if (j109.exclusion && Array.isArray(j109.exclusion.inclusionList)) {
-      const fixedExcl = j109.exclusion.inclusionList.map((item) =>
-        item.replace(/beyond contr\b/gi, "beyond control")
-      );
-      await prisma.exclusion.update({
-        where: { id: j109.exclusion.id },
-        data: { inclusionList: fixedExcl },
-      });
-      console.log("  - Fixed 'beyond contr' -> 'beyond control' in exclusions");
-    }
 
     for (const d of j109.days) {
       let desc = d.description || "";
