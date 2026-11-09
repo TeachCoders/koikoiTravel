@@ -30,6 +30,11 @@ export const metadata: Metadata = {
     "India travel company",
     "KoiKoi Travel",
   ],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
   alternates: { canonical: "https://koikoitravel.com" },
   verification: { google: "El1jKO1piAq20XL3gueQKlsrPhBvrZFOUF-Jg6addow" },
   openGraph: {

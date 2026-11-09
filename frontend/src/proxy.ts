@@ -59,6 +59,13 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/tour-packages/india/uttar-pradesh", request.url), 301);
   }
 
+  // 301 redirect any legacy paginated /travel-experiences/*?page=... to the clean canonical URL
+  if (pathname.startsWith("/travel-experiences/") && request.nextUrl.searchParams.has("page")) {
+    const cleanUrl = request.nextUrl.clone();
+    cleanUrl.searchParams.delete("page");
+    return NextResponse.redirect(cleanUrl, 301);
+  }
+
   // Dashboard auth check
   if (pathname.startsWith("/dashboard")) {
     const session = request.cookies.get("connect.sid");
@@ -82,6 +89,7 @@ export const config = {
     "/tour-packages/10-days-south-india-itinerary",
     "/travel-experiences/nature",
     "/travel-experiences/beach-lake",
+    "/travel-experiences/:path*",
     "/tour-packages/india/uttar-pradesh/fatehpur-sikri",
   ],
 };

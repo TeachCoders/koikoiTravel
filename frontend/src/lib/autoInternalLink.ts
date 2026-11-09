@@ -5,7 +5,7 @@ export interface AutoLinkRule {
   href: string;
 }
 
-const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
+const RAW_KEYWORD_LINKS: { terms: string[]; href: string }[] = [
   // Core Travel Experiences
   {
     terms: ["Golden Triangle Tours India", "Golden Triangle Tour India", "Golden Triangle Tour", "Golden Triangle Tours", "Golden Triangle Itinerary", "Golden Triangle"],
@@ -100,10 +100,6 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
   {
     terms: ["Madhya Pradesh Tour Packages", "Madhya Pradesh Tours", "Madhya Pradesh"],
     href: "/tour-packages/india/madhya-pradesh",
-  },
-  {
-    terms: ["Maharashtra Tour Packages", "Maharashtra Tours", "Maharashtra"],
-    href: "/tour-packages/india/maharashtra",
   },
   {
     terms: ["Karnataka Tour Packages", "Karnataka Tours", "Karnataka"],
@@ -301,18 +297,21 @@ const KEYWORD_LINKS: { terms: string[]; href: string }[] = [
   { terms: ["India Tour Packages", "India Holiday Packages"], href: "/tour-packages" },
 ];
 
+const KEYWORD_LINKS: { terms: string[]; href: string }[] = RAW_KEYWORD_LINKS.filter((entry) => {
+  const match = entry.href.match(/^\/tour-packages\/india\/([a-z0-9-]+)\/([a-z0-9-]+)\/?$/i);
+  if (match) {
+    return isIndexableCity(match[1], match[2]);
+  }
+  if (entry.href === "/tour-packages/india/maharashtra") return false;
+  return true;
+});
+
 function escapeRegex(str: string): string {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 export function buildExperienceLinkRules(): AutoLinkRule[] {
-  return KEYWORD_LINKS.filter((entry) => {
-    const match = entry.href.match(/^\/tour-packages\/india\/([a-z0-9-]+)\/([a-z0-9-]+)\/?$/i);
-    if (match) {
-      return isIndexableCity(match[1], match[2]);
-    }
-    return true;
-  }).flatMap((entry) =>
+  return KEYWORD_LINKS.flatMap((entry) =>
     entry.terms.map((term) => ({ term, href: entry.href }))
   );
 }
@@ -611,6 +610,11 @@ export function linkTourPackageSections(params: LinkTourPackageParams): LinkTour
     const stateSlug = c?.state?.slug;
     const citySlug = c?.slug;
     if (!stateSlug || !citySlug) continue;
+
+    // Skip unindexed or thin city pages so they are never auto-linked in tour descriptions
+    if (citySlug !== stateSlug && !isIndexableCity(stateSlug, citySlug)) {
+      continue;
+    }
 
     const href =
       citySlug === stateSlug
