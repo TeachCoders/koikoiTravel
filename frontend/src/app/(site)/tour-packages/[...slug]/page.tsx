@@ -6,7 +6,7 @@ import CityDetail from "@/feature/destinations/components/CityDetail";
 import JourneyDetail from "@/feature/journey/components/JourneyDetail";
 import CmsFallbackPage from "@/feature/cms/components/CmsFallbackPage";
 import JsonLd from "@/components/shared/JsonLd";
-import { breadcrumbSchema, faqSchema, touristDestinationSchema, touristTripSchema, itemListSchema, graphSchema, buildTouristType } from "@/lib/jsonLd";
+import { breadcrumbSchema, faqSchema, touristDestinationSchema, touristTripSchema, webPageSchema, itemListSchema, graphSchema, buildTouristType } from "@/lib/jsonLd";
 import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
 import { stripHtml, truncateMeta, cleanSeoTitle } from "@/lib/utils";
 import { isIndexableCity } from "@/lib/cityValidation";
@@ -250,7 +250,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       const title = cleanSeoTitle(rawTitle);
       const seoDescription = truncateMeta(journey.seoDescription || journey.overView);
       const canonical = journeySlugCanonical(journey.slug, journey.canonical);
-      const ogImage = absoluteUrl(journey.thumbImg);
+      const ogImage = absoluteUrl(journey.thumbImg || journey.banner?.images?.[0]);
       return {
         title,
         description: seoDescription,
@@ -261,7 +261,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           title,
           description: seoDescription,
           url: canonical,
-          images: ogImage ? [{ url: ogImage, alt: journey.title }] : undefined,
+          images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: journey.title }] : undefined,
         },
         twitter: {
           card: "summary_large_image",
@@ -511,11 +511,11 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
         journeyText
       );
 
+      const tripImg = journey.thumbImg || journey.banner?.images?.[0] || undefined;
       const tourProductNode = touristTripSchema({
         name: journey.h1Title || journey.title,
         description: journey.seoDescription || journey.overView || undefined,
-        // Package ka apna thumbnail — destination banner nahi
-        image: journey.thumbImg || journey.banner?.images?.[0] || undefined,
+        image: tripImg,
         url: canonical,
         touristType,
         keywords: keywords.join(", ") || undefined,
@@ -524,8 +524,20 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
           description: d.seoDescription || undefined,
         })),
       });
+
+      const webPageNode = webPageSchema(
+        {
+          name: journey.h1Title || journey.title,
+          url: canonical,
+          description: journey.seoDescription || journey.overView || undefined,
+          image: tripImg,
+        },
+        "ItemPage"
+      );
+
       const schema = journey
         ? graphSchema([
+            ...(webPageNode ? [webPageNode] : []),
             ...(tourProductNode ? [tourProductNode] : []),
             breadcrumbSchema(breadcrumbItems),
             faqSchema(journeyFaqs),

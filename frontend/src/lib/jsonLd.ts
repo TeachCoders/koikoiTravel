@@ -130,11 +130,12 @@ interface TouristTripInput {
 }
 
 export function touristTripSchema(trip: TouristTripInput): Record<string, unknown> {
+  const imgUrl = absoluteImage(trip.image);
   return {
     "@type": "TouristTrip",
     name: trip.name,
     description: trip.description ? truncateMeta(trip.description) : undefined,
-    image: absoluteImage(trip.image),
+    image: imgUrl ? [imgUrl] : undefined,
     url: `${SITE_URL}${trip.url}`,
     provider: {
       "@type": "TravelAgency",
@@ -296,21 +297,32 @@ export function touristAttractionSchema(att: TouristAttractionInput): Record<str
   };
 }
 
-interface WebPageInput {
+export interface WebPageInput {
   name: string;
   url: string;
   description?: string;
+  image?: string;
 }
 
 export function webPageSchema(
   page: WebPageInput,
-  type: "AboutPage" | "ContactPage" | "WebPage"
+  type: "AboutPage" | "ContactPage" | "WebPage" | "ItemPage" = "WebPage"
 ): Record<string, unknown> {
+  const imgUrl = absoluteImage(page.image);
   return {
     "@type": type,
     name: page.name,
     description: page.description ? truncateMeta(page.description) : undefined,
     url: `${SITE_URL}${page.url}`,
     isPartOf: { "@type": "WebSite", name: "KoiKoi Travel", url: SITE_URL },
+    ...(imgUrl
+      ? {
+          primaryImageOfPage: {
+            "@type": "ImageObject",
+            url: imgUrl,
+          },
+          image: [imgUrl],
+        }
+      : {}),
   };
 }
