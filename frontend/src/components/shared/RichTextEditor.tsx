@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState, useCallback, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
+import apiClient from "@/lib/apiClient";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { Extension, Node, mergeAttributes } from "@tiptap/core";
 import { buildExperienceLinkRules, autoLinkKeywords } from "@/lib/autoInternalLink";
@@ -20,6 +21,21 @@ import {
   Pilcrow, Minus, X, Check, Crop, Table2, Rows3, Columns3, Trash2,
   SquarePlus, PaintBucket, ArrowUp, ArrowDown, XCircle,
 } from "lucide-react";
+
+async function uploadEditorImageFile(fileOrBlob: Blob, filename = "editor-image.webp"): Promise<string | null> {
+  try {
+    const fd = new FormData();
+    fd.append("file", fileOrBlob, filename);
+    fd.append("folder", "content");
+    const res = await apiClient.post("/upload", fd, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res.data?.url || null;
+  } catch (error) {
+    console.error("Failed to upload editor image:", error);
+    return null;
+  }
+}
 
 interface RichTextEditorProps {
   content: string;
@@ -233,7 +249,7 @@ export default function RichTextEditor({
       }),
       Underline,
       EditorShortcuts,
-      TiptapImage.configure({ inline: false, allowBase64: true }),
+      TiptapImage.configure({ inline: false, allowBase64: false }),
       Placeholder.configure({ placeholder }),
       Table.configure({ resizable: true }),
       TableRow,
@@ -241,6 +257,47 @@ export default function RichTextEditor({
       ColorableTableHeader,
       RteButton,
     ],
+    editorProps: {
+      handleDrop: (view, event, slice, moved) => {
+        if (!moved && event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+          const file = event.dataTransfer.files[0];
+          if (file.type.startsWith("image/")) {
+            event.preventDefault();
+            uploadEditorImageFile(file, file.name).then((url) => {
+              if (url && editor) {
+                editor.chain().focus().setImage({ src: url }).run();
+              }
+            });
+            return true;
+          }
+        }
+        return false;
+      },
+      handlePaste: (view, event) => {
+        const items = event.clipboardData?.items;
+        if (items) {
+          for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            if (item.type.startsWith("image/")) {
+              event.preventDefault();
+              const file = item.getAsFile();
+              if (file) {
+                uploadEditorImageFile(file, `pasted-${Date.now()}.png`).then((url) => {
+                  if (url && editor) {
+                    editor.chain().focus().setImage({ src: url }).run();
+                  }
+                });
+              }
+              return true;
+            }
+          }
+        }
+        return false;
+      },
+      transformPastedHTML: (html) => {
+        return html.replace(/src=["']data:image\/[^"']+["']/gi, 'src=""');
+      },
+    },
     content,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
@@ -528,18 +585,30 @@ export default function RichTextEditor({
     if (outH > 1080) { outW = Math.round((outW / outH) * 1080); outH = 1080; }
     const outCanvas = document.createElement("canvas"); outCanvas.width = outW; outCanvas.height = outH;
     outCanvas.getContext("2d")!.drawImage(img, sx, sy, sw, sh, 0, 0, outW, outH);
-    outCanvas.toBlob((blob) => {
+    outCanvas.toBlob(async (blob) => {
       if (!blob) return;
-      const r = new FileReader();
-      r.onload = () => { editor.chain().focus().setImage({ src: r.result as string }).run(); };
-      r.readAsDataURL(blob);
-      setCropOpen(false); setCropSrc(null);
+      try {
+        const url = await uploadEditorImageFile(blob, `cropped-${Date.now()}.jpg`);
+        if (url && editor) {
+          editor.chain().focus().setImage({ src: url }).run();
+        }
+      } catch (err) {
+        console.error("Failed to upload cropped image:", err);
+      } finally {
+        setCropOpen(false);
+        setCropSrc(null);
+      }
     }, "image/jpeg", 0.88);
   };
 
   const addImageFromUrl = () => {
     const url = window.prompt("Enter image URL:");
-    if (url && editor) editor.chain().focus().setImage({ src: url }).run();
+    if (!url || !editor) return;
+    if (url.startsWith("data:image")) {
+      window.alert("Base64 data URIs are not allowed. Please enter an image URL or use the upload button.");
+      return;
+    }
+    editor.chain().focus().setImage({ src: url }).run();
   };
 
   if (!editor) return null;

@@ -137,35 +137,25 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
   // For priority images (above-the-fold / hero), render instantly with no opacity lag.
   // For other images, use a subtle 150ms transition instead of an artificial delay.
   return (
-    <>
-      {!loaded && !isPriority && !placeholder && (
-        <div
-          className={`absolute inset-0 w-full h-full overflow-hidden pointer-events-none animate-pulse ${
-            theme === "dark" ? "bg-slate-800/80" : "bg-slate-100/80"
-          }`}
-          aria-hidden="true"
-        />
-      )}
-      <Image
-        src={imgSrc}
-        alt={alt}
-        className={className}
-        onLoad={() => setLoaded(true)}
-        onError={handleError}
-        unoptimized={unoptimized ?? shouldBeUnoptimized(imgSrc)}
-        fill={fill}
-        priority={isPriority}
-        fetchPriority={effectiveFetchPriority}
-        loading={effectiveLoading}
-        quality={quality}
-        sizes={computedSizes}
-        placeholder={placeholder}
-        blurDataURL={blurDataURL}
-        width={!fill ? (props.width ? Number(props.width) : 800) : undefined}
-        height={!fill ? (props.height ? Number(props.height) : 600) : undefined}
-        {...(props as any)}
-      />
-    </>
+    <Image
+      src={imgSrc}
+      alt={alt}
+      className={className}
+      onLoad={() => setLoaded(true)}
+      onError={handleError}
+      unoptimized={unoptimized ?? shouldBeUnoptimized(imgSrc)}
+      fill={fill}
+      priority={isPriority}
+      fetchPriority={effectiveFetchPriority}
+      loading={effectiveLoading}
+      quality={quality}
+      sizes={computedSizes}
+      placeholder={placeholder}
+      blurDataURL={blurDataURL}
+      width={!fill ? (props.width ? Number(props.width) : 800) : undefined}
+      height={!fill ? (props.height ? Number(props.height) : 600) : undefined}
+      {...(props as any)}
+    />
   );
 };
 

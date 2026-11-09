@@ -18,6 +18,7 @@ import { FaqSection } from "@/feature/home/components/FaqSection";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import TourPackageCard from "@/components/shared/TourPackageCard";
 import type { Journey } from "@/feature/journey/type";
+import { trimJourneyForListing } from "@/feature/journey/destinationJourneys";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 
@@ -172,7 +173,7 @@ async function fetchDestinations() {
     stateMap,
     states: orderedStates,
     cities: uniqueCities,
-    journeys: sortedJourneys.slice(0, 8),
+    journeys: sortedJourneys.slice(0, 8).map(trimJourneyForListing),
     totals: {
       countryCount: sortedCountries.length,
       stateCount: states.length,
