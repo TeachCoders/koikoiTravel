@@ -23,6 +23,8 @@ export interface SingleDestinationReusableCardProps {
   priority?: boolean;
   hideFooter?: boolean;
   variant?: "standard" | "overlay";
+  clickable?: boolean;
+  ctaText?: string;
 }
 
 /**
@@ -51,7 +53,10 @@ export function SingleDestinationReusableCard({
   priority = false,
   hideFooter = false,
   variant = "standard",
+  clickable = true,
+  ctaText,
 }: SingleDestinationReusableCardProps) {
+  const isClickable = clickable && Boolean(href);
   const rawEyebrow = eyebrow || tag;
   const displayEyebrow = rawEyebrow ? stripHtml(rawEyebrow) : undefined;
   const rawDesc = description || (typeof subtitle === "string" ? subtitle : null);
@@ -167,14 +172,16 @@ export function SingleDestinationReusableCard({
     <div
       className={cn(
         "group relative flex w-full flex-col overflow-hidden rounded-2xl border border-slate-200/70 bg-white text-left",
-        "shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-2xl hover:border-slate-300",
+        isClickable
+          ? "shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-2xl hover:border-slate-300"
+          : "shadow-[0_2px_12px_rgba(0,0,0,0.04)] cursor-default select-none",
         className
       )}
     >
       {/* 1. Photo area: linked separately when footer is visible */}
-      {href && !hideFooter ? (
+      {isClickable && !hideFooter ? (
         <Link
-          href={href}
+          href={href!}
           aria-label={`View ${title} tour packages`}
           className={cn("relative block w-full overflow-hidden bg-[#F4EBDD]", photoAspectClass)}
         >
@@ -196,9 +203,9 @@ export function SingleDestinationReusableCard({
 
         {/* 2. Title */}
         <h3 className="font-heading line-clamp-2 min-h-[2.4rem] sm:min-h-0 text-[14px] sm:text-lg md:text-xl font-bold leading-tight text-slate-900 break-words">
-          {href && !hideFooter ? (
+          {isClickable && !hideFooter ? (
             <Link
-              href={href}
+              href={href!}
               className="transition-colors duration-200 hover:text-[#F8904D] group-hover:text-[#F8904D]"
               dangerouslySetInnerHTML={{ __html: title }}
             />
@@ -217,36 +224,59 @@ export function SingleDestinationReusableCard({
         )}
 
         {/* 3. Footer / View tours CTA */}
-        {href && !hideFooter && (
-          <Link
-            href={href}
-            className="mt-auto flex items-center justify-between border-t border-slate-100 pt-2.5 sm:pt-3.5 transition-colors group/cta"
-          >
-            <span className="text-xs sm:text-sm font-semibold text-slate-900 transition-colors duration-200 group-hover:text-[#F8904D] group-hover/cta:text-[#F8904D]">
-              View tours
-            </span>
-            <span className="inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-[#F8904D] text-white shadow-xs transition-all duration-300 ease-out group-hover:bg-[#E87A36] group-hover:scale-105 group-hover:translate-x-1 group-hover:shadow-md">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#FFFFFF"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M5 12h14M13 6l6 6-6 6" />
-              </svg>
-            </span>
-          </Link>
+        {!hideFooter && (
+          isClickable ? (
+            <Link
+              href={href!}
+              className="mt-auto flex items-center justify-between border-t border-slate-100 pt-2.5 sm:pt-3.5 transition-colors group/cta"
+            >
+              <span className="text-xs sm:text-sm font-semibold text-slate-900 transition-colors duration-200 group-hover:text-[#F8904D] group-hover/cta:text-[#F8904D]">
+                {ctaText || "View tours"}
+              </span>
+              <span className="inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-[#F8904D] text-white shadow-xs transition-all duration-300 ease-out group-hover:bg-[#E87A36] group-hover:scale-105 group-hover:translate-x-1 group-hover:shadow-md">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#FFFFFF"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </span>
+            </Link>
+          ) : (
+            <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-2.5 sm:pt-3.5 select-none">
+              <span className="text-xs sm:text-sm font-semibold text-slate-500">
+                {ctaText || "Coming soon"}
+              </span>
+              <span className="inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-slate-100 text-slate-400 border border-slate-200">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </span>
+            </div>
+          )
         )}
 
         {/* 4. When footer is hidden, overlay a full card link */}
-        {href && hideFooter && (
+        {isClickable && hideFooter && (
           <Link
-            href={href}
+            href={href!}
             aria-label={`View ${title} tour packages`}
             className="absolute inset-0 z-10"
           />

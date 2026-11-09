@@ -38,7 +38,7 @@ export const PlanAdventureSection: React.FC<PlanAdventureSectionProps> = ({
   initialExperiences,
   initialJourneys,
 }) => {
-  const [activeTab, setActiveTab] = useState<"destination" | "experience">("destination");
+  const [activeTab, setActiveTab] = useState<"destination" | "experience" | "luxury-train">("destination");
 
   // Synchronously extract lists from server props so SSR immediately has access to items
   const initialStatesList = useMemo(() => {
@@ -305,12 +305,54 @@ export const PlanAdventureSection: React.FC<PlanAdventureSectionProps> = ({
     return merged.slice(0, 5);
   }, [travelExperiences, journeys]);
 
+  // 3. Curated Luxury Trains (Static preview cards: Palace on Wheels, Maharajas' Express, Deccan Odyssey, Golden Chariot)
+  const luxuryTrains = useMemo<DestinationItem[]>(() => [
+    {
+      id: "train-palace-on-wheels",
+      title: "Palace on Wheels",
+      image: "/content/5-days-delhi-agra-jaipur-golden-triangle-tour-by-train-holiday-7-1793846437902-617723.webp",
+      eyebrow: "ROYAL HERITAGE TRAIN",
+      description: "7-Night royal journey across Delhi, Jaipur, Sawai Madhopur, Udaipur, Jaisalmer, Jodhpur & Agra Taj Mahal",
+      tourCountText: "1 Itinerary",
+      href: "#",
+    },
+    {
+      id: "train-maharajas-express",
+      title: "Maharajas' Express",
+      image: "/content/7-days-heritage-tour-of-rajasthan-holiday-1-1793816916557-705e60.webp",
+      eyebrow: "WORLD'S LEADING LUXURY TRAIN",
+      description: "Opulent presidential suites & gourmet dining with 4 signature circuits across Rajasthan, Agra & Varanasi",
+      tourCountText: "4 Itineraries",
+      href: "#",
+    },
+    {
+      id: "train-deccan-odyssey",
+      title: "Deccan Odyssey",
+      image: "/content/mumbai-ajanta-caves-journey-1920x1018-1793940248362-172b7a.webp",
+      eyebrow: "5-STAR BLUE TRAIN OF INDIA",
+      description: "Luxury rail journeys through Maharashtra, Goa backwaters, Ajanta & Ellora UNESCO caves, and royal Gujarat",
+      tourCountText: "4 Itineraries",
+      href: "#",
+    },
+    {
+      id: "train-golden-chariot",
+      title: "Golden Chariot",
+      image: "/content/hampi-temple-journey-1920x1280-1793937853662-9a7f0c.webp",
+      eyebrow: "SOUTH INDIA'S LUXURY TRAIN",
+      description: "Royal exploration of Karnataka, Bandipur tiger reserve, Hampi UNESCO ruins, Mysore palace & Kerala backwaters",
+      tourCountText: "2 Itineraries",
+      href: "#",
+    },
+  ], []);
+
   const getViewAllLink = () => {
     switch (activeTab) {
       case "experience":
-        return { label: "All experiences", href: "/travel-experiences" };
+        return { label: "All experiences", href: "/travel-experiences", isLink: true };
+      case "luxury-train":
+        return { label: "Luxury rail journeys coming soon", href: "#", isLink: false };
       default:
-        return { label: "All destinations", href: "/tour-packages/india" };
+        return { label: "All destinations", href: "/tour-packages/india", isLink: true };
     }
   };
 
@@ -341,17 +383,18 @@ export const PlanAdventureSection: React.FC<PlanAdventureSectionProps> = ({
             <p
               dangerouslySetInnerHTML={{
                 __html:
-                  'Or choose <strong class="font-semibold text-slate-900">By Experience</strong> to enjoy relaxing <strong class="font-semibold text-slate-900">Ayurveda and Yoga</strong> retreats, exciting <strong class="font-semibold text-slate-900">wildlife adventures</strong> with jungle jeep safaris, <strong class="font-semibold text-slate-900">spiritual journeys</strong>, <strong class="font-semibold text-slate-900">family holidays</strong> and peaceful <strong class="font-semibold text-slate-900">hill station escapes</strong>. Find the holiday that suits your interests.',
+                  'Or choose <strong class="font-semibold text-slate-900">By Experience</strong> to enjoy relaxing <strong class="font-semibold text-slate-900">Ayurveda and Yoga</strong> retreats, exciting <strong class="font-semibold text-slate-900">wildlife adventures</strong> with jungle jeep safaris, <strong class="font-semibold text-slate-900">spiritual journeys</strong>, <strong class="font-semibold text-slate-900">family holidays</strong> and peaceful <strong class="font-semibold text-slate-900">hill station escapes</strong>. Or discover India\'s royal heritage aboard iconic <strong class="font-semibold text-slate-900">Luxury Trains</strong>.',
               }}
             />
           </div>
 
           {/* Tabs Switcher (Centered) */}
           <div className="mt-5 sm:mt-6 flex justify-center">
-            <CapsuleTabs<"destination" | "experience">
+            <CapsuleTabs<"destination" | "experience" | "luxury-train">
               tabs={[
                 { id: "destination", label: "By destination" },
                 { id: "experience", label: "By experience" },
+                { id: "luxury-train", label: "Luxury trains" },
               ]}
               activeTab={activeTab}
               onChange={setActiveTab}
@@ -361,7 +404,7 @@ export const PlanAdventureSection: React.FC<PlanAdventureSectionProps> = ({
 
         {/* =========================================================================
             100% SEO (VIEW SOURCE) GUARANTEE:
-            Both Destinations and Experiences are ALWAYS rendered directly into the HTML.
+            Destinations, Experiences and Luxury Trains are ALWAYS rendered directly into HTML.
             No skeleton pulse hides them during SSR.
             Active tab has "block", inactive has "hidden" so web crawlers index all card texts.
            ========================================================================= */}
@@ -400,15 +443,39 @@ export const PlanAdventureSection: React.FC<PlanAdventureSectionProps> = ({
           </div>
         </div>
 
+        {/* TAB 3: LUXURY TRAINS GRID */}
+        <div className={activeTab === "luxury-train" ? "block" : "hidden"} aria-hidden={activeTab !== "luxury-train"}>
+          <div className="grid grid-cols-1 min-[350px]:grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 animate-in fade-in duration-300">
+            {luxuryTrains.map((item) => (
+              <SingleDestinationReusableCard
+                key={item.id}
+                title={item.title}
+                image={item.image}
+                eyebrow={item.eyebrow}
+                description={item.description}
+                tourCountText={item.tourCountText}
+                clickable={false}
+                ctaText="Coming soon"
+              />
+            ))}
+          </div>
+        </div>
+
         {/* Bottom Centered CTA Button */}
         <div className="mt-7 sm:mt-9 flex justify-center">
-          <Link
-            href={viewAll.href}
-            className="group inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#F8904D] active:scale-95 cursor-pointer"
-          >
-            <span>{viewAll.label}</span>
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Link>
+          {viewAll.isLink ? (
+            <Link
+              href={viewAll.href}
+              className="group inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#F8904D] active:scale-95 cursor-pointer"
+            >
+              <span>{viewAll.label}</span>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          ) : (
+            <div className="inline-flex items-center gap-2 rounded-full bg-slate-100 border border-slate-200 px-6 py-2.5 text-sm font-semibold text-slate-500 cursor-default select-none">
+              <span>{viewAll.label}</span>
+            </div>
+          )}
         </div>
 
       </div>
