@@ -20,7 +20,7 @@ async function main() {
     where: { id: 2 },
     include: { days: true },
   });
-
+  if (j2) {
     // B. Toota vakya in overView (remove trailing `<p>Mughal heritage.</p>`)
     if (j2.overView) {
       let fixedOverview = j2.overView.replace(/<p>\s*Mughal heritage\.?\s*<\/p>\s*$/i, "").trim();
