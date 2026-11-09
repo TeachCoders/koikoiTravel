@@ -120,9 +120,9 @@ async function run() {
     }
   }
 
-  // 3. Day (Itinerary days)
-  console.log("\nChecking Day...");
-  const days = await prisma.day.findMany();
+  // 3. JourneyDay (Itinerary days)
+  console.log("\nChecking JourneyDay...");
+  const days = await prisma.journeyDay.findMany();
   for (const d of days) {
     let changed = false;
     let data = {};
@@ -137,9 +137,9 @@ async function run() {
       }
     }
     if (changed) {
-      await prisma.day.update({ where: { id: d.id }, data });
+      await prisma.journeyDay.update({ where: { id: d.id }, data });
       totalFixedRecords++;
-      console.log(`[Day] Updated day id: ${d.id} for journeyId: ${d.journeyId}`);
+      console.log(`[JourneyDay] Updated day id: ${d.id} for journeyId: ${d.journeyId}`);
     }
   }
 
