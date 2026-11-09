@@ -309,7 +309,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
       const trimmedCountryJourneys = countryJourneys.map(trimJourneyForListing);
       const trimmedCountry = {
         ...country,
-        journeys: ((country as any).journeys || []).map(trimJourneyForListing),
+        journeys: [],
       };
       const trimmedStates = initialStates
         ? {
@@ -370,7 +370,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
       const trimmedJourneys = allOrderedJourneys.map(trimJourneyForListing);
       const trimmedState = {
         ...state,
-        journeys: (state.journeys || []).map(trimJourneyForListing),
+        journeys: [],
         cities: (state.cities || []).map((c: any) => ({
           id: c.id,
           title: c.title,
@@ -425,7 +425,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
       const trimmedJourneys = cityJourneys.map(trimJourneyForListing);
       const trimmedCity = {
         ...city,
-        journeys: (city.journeys || []).map(trimJourneyForListing),
+        journeys: [],
         state: city.state
           ? {
               id: city.state.id,

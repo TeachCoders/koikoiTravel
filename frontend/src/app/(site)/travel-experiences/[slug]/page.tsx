@@ -103,7 +103,7 @@ export default async function TravelExperiencePage({ params }: Props) {
     trimmedJourneys = allOrderedJourneys.map(trimJourneyForListing);
     trimmedExperience = {
       ...data,
-      journeys: (data.journeys || []).map(trimJourneyForListing),
+      journeys: [],
     };
     const isGoldenTriangle = slug === "golden-triangle-tour-india" || slug === "golden-triangle" || data.slug === "golden-triangle-tour-india" || data.slug === "golden-triangle";
     const rawFaqs = isGoldenTriangle ? (GOLDEN_TRIANGLE_FAQS as any) : data.faqs;

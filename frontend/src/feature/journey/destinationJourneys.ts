@@ -206,13 +206,6 @@ export function trimJourneyForListing(j: any): Journey {
     displayOrder: j.displayOrder ?? 0,
     isBestSelling: Boolean(j.isBestSelling),
     badge: j.badge || null,
-    banner: j.banner
-      ? {
-          bannerTitle: j.banner.bannerTitle,
-          bannerTag: j.banner.bannerTag,
-          images: (j.banner.images || []).slice(0, 1),
-        }
-      : null,
     cities: (j.cities || []).map((c: any) => ({
       id: c.id,
       title: c.title,
