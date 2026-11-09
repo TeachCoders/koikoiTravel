@@ -192,7 +192,7 @@ async function main() {
   console.log(`\n[6/6] Updating ${blogUpdates.length} Blogs...`);
   let bCount = 0;
   for (const b of blogUpdates) {
-    const res = await prisma.blog.updateMany({
+    const res = await prisma.blogPost.updateMany({
       where: { slug: b.slug },
       data: { seoTitle: b.seoTitle }
     });
