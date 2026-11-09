@@ -367,32 +367,80 @@ async function main() {
     });
   }
 
-  // D. Blog posts, Country, State, City, CmsPage
-  await prisma.$executeRawUnsafe(`
-    UPDATE "BlogPost"
-    SET "moreDescription" = REPLACE("moreDescription", 'KoKoi', 'KoiKoi'),
-        "title" = REPLACE("title", 'KoKoi', 'KoiKoi')
-    WHERE "moreDescription" LIKE '%KoKoi%' OR "title" LIKE '%KoKoi%';
-  `);
-  await prisma.$executeRawUnsafe(`
-    UPDATE "Country"
-    SET "moreDescription" = REPLACE("moreDescription", 'KoKoi', 'KoiKoi'),
-        "overView" = REPLACE("overView", 'KoKoi', 'KoiKoi')
-    WHERE "moreDescription" LIKE '%KoKoi%' OR "overView" LIKE '%KoKoi%';
-  `);
-  await prisma.$executeRawUnsafe(`
-    UPDATE "State"
-    SET "moreDescription" = REPLACE("moreDescription", 'KoKoi', 'KoiKoi'),
-        "overView" = REPLACE("overView", 'KoKoi', 'KoiKoi')
-    WHERE "moreDescription" LIKE '%KoKoi%' OR "overView" LIKE '%KoKoi%';
-  `);
-  await prisma.$executeRawUnsafe(`
-    UPDATE "City"
-    SET "moreDescription" = REPLACE("moreDescription", 'KoKoi', 'KoiKoi'),
-        "overView" = REPLACE("overView", 'KoKoi', 'KoiKoi'),
-        "attractions" = REPLACE("attractions", 'KoKoi', 'KoiKoi')
-    WHERE "moreDescription" LIKE '%KoKoi%' OR "overView" LIKE '%KoKoi%' OR "attractions" LIKE '%KoKoi%';
-  `);
+  // D. Blog posts, Country, State, City, CmsPage using Prisma
+  const blogsWithKoKoi = await prisma.blogPost.findMany({
+    where: {
+      OR: [
+        { moreDescription: { contains: "KoKoi" } },
+        { title: { contains: "KoKoi" } },
+      ],
+    },
+  });
+  for (const b of blogsWithKoKoi) {
+    await prisma.blogPost.update({
+      where: { id: b.id },
+      data: {
+        title: b.title.replace(/\bKoKoi\b/g, "KoiKoi"),
+        moreDescription: b.moreDescription?.replace(/\bKoKoi\b/g, "KoiKoi"),
+      },
+    });
+  }
+
+  const countriesWithKoKoi = await prisma.country.findMany({
+    where: {
+      OR: [
+        { moreDescription: { contains: "KoKoi" } },
+        { overView: { contains: "KoKoi" } },
+      ],
+    },
+  });
+  for (const c of countriesWithKoKoi) {
+    await prisma.country.update({
+      where: { id: c.id },
+      data: {
+        moreDescription: c.moreDescription?.replace(/\bKoKoi\b/g, "KoiKoi"),
+        overView: c.overView?.replace(/\bKoKoi\b/g, "KoiKoi"),
+      },
+    });
+  }
+
+  const statesWithKoKoi = await prisma.state.findMany({
+    where: {
+      OR: [
+        { moreDescription: { contains: "KoKoi" } },
+        { overView: { contains: "KoKoi" } },
+      ],
+    },
+  });
+  for (const s of statesWithKoKoi) {
+    await prisma.state.update({
+      where: { id: s.id },
+      data: {
+        moreDescription: s.moreDescription?.replace(/\bKoKoi\b/g, "KoiKoi"),
+        overView: s.overView?.replace(/\bKoKoi\b/g, "KoiKoi"),
+      },
+    });
+  }
+
+  const citiesWithKoKoi = await prisma.city.findMany({
+    where: {
+      OR: [
+        { moreDescription: { contains: "KoKoi" } },
+        { overView: { contains: "KoKoi" } },
+        { attractions: { contains: "KoKoi" } },
+      ],
+    },
+  });
+  for (const ct of citiesWithKoKoi) {
+    await prisma.city.update({
+      where: { id: ct.id },
+      data: {
+        moreDescription: ct.moreDescription?.replace(/\bKoKoi\b/g, "KoiKoi"),
+        overView: ct.overView?.replace(/\bKoKoi\b/g, "KoiKoi"),
+        attractions: ct.attractions?.replace(/\bKoKoi\b/g, "KoiKoi"),
+      },
+    });
+  }
   console.log("  - Database-wide KoKoi cleanup completed.");
 
   // ----------------------------------------------------
