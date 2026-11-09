@@ -253,9 +253,9 @@ export default async function DestinationsPage() {
     )
     .map((s) => ({
       state: s,
-      cities: orderByDisplay(s.cities || []).filter(
-        (c) => (c._count?.journeys ?? 0) > 0 && c.slug !== s.slug
-      ),
+      cities: orderByDisplay(s.cities || [])
+        .filter((c) => (c._count?.journeys ?? 0) > 0 && c.slug !== s.slug)
+        .slice(0, 8),
     }));
 
   const jsonLd = {
