@@ -142,7 +142,7 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
     const newErrors: Record<string, string> = {};
     if (!formData.title.trim()) newErrors.title = "Title is required";
     if (!formData.seoDescription.trim()) newErrors.seoDescription = "Description is required";
-    if (formData.seoDescription.length > 500) newErrors.seoDescription = "Description must be under 500 characters";
+    if (formData.seoDescription.length > 160) newErrors.seoDescription = "Description must be under 160 characters";
     if (formData.overView.length > 1200) newErrors.overView = "Overview should be under 200 words";
     if (!formData.stateId) newErrors.stateId = "State is required";
     if (formData.isActive && journeyIds.length < 2) {

@@ -146,9 +146,20 @@ export default function SeoFields({
       <div className="p-6 pt-2 space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1.5">
-            <Label className="text-sm font-semibold text-slate-600">
-              SEO Title
-            </Label>
+            <div className="flex items-center justify-between">
+              <Label className="text-sm font-semibold text-slate-600">
+                SEO Title
+              </Label>
+              <span
+                className={`text-xs tabular-nums transition-colors ${
+                  (formData.seoTitle || "").length > 60
+                    ? "text-amber-600 font-semibold"
+                    : "text-slate-400"
+                }`}
+              >
+                {(formData.seoTitle || "").length} / 60
+              </span>
+            </div>
             <Input
               value={formData.seoTitle || ""}
               onChange={(e) => onFieldChange("seoTitle", e.target.value)}
@@ -239,19 +250,55 @@ export default function SeoFields({
         )}
 
         <div className="space-y-1.5">
-          <Label className="text-sm font-semibold text-slate-600">
-            SEO Meta Description <span className="text-red-500">*</span>
-          </Label>
+          <div className="flex items-center justify-between">
+            <Label className="text-sm font-semibold text-slate-600">
+              SEO Meta Description <span className="text-red-500">*</span>
+            </Label>
+            <span
+              className={`text-xs tabular-nums transition-colors ${
+                (formData.seoDescription || "").length > 155
+                  ? "text-red-600 font-bold"
+                  : "text-slate-400 font-medium"
+              }`}
+            >
+              {(formData.seoDescription || "").length} / 160
+            </span>
+          </div>
           <Textarea
-            value={formData.seoDescription}
-            onChange={(e) => onFieldChange("seoDescription", e.target.value)}
-            placeholder="Input under 200 words"
+            value={formData.seoDescription || ""}
+            maxLength={160}
+            onChange={(e) => {
+              const val = e.target.value.slice(0, 160);
+              onFieldChange("seoDescription", val);
+            }}
+            placeholder="Brief description for Google search results (max 160 characters)"
             rows={4}
-            className={errors.seoDescription ? "border-red-500" : ""}
+            className={`transition-colors ${
+              errors.seoDescription
+                ? "border-red-500"
+                : (formData.seoDescription || "").length > 155
+                ? "border-red-500 focus-visible:ring-red-500"
+                : ""
+            }`}
           />
-          <p className="text-[10px] text-slate-400">
-            Shown as the seoDescription in Google search results (up to ~160 characters).
-          </p>
+          <div className="flex items-center justify-between text-[10px]">
+            <p
+              className={
+                (formData.seoDescription || "").length > 155
+                  ? "text-red-600 font-medium"
+                  : "text-slate-400"
+              }
+            >
+              Shown as the seoDescription in Google search results (recommended 140–155, max 160 characters).
+            </p>
+            {(formData.seoDescription || "").length > 155 && (
+              <span className="text-red-600 font-semibold shrink-0 ml-2">
+                {(formData.seoDescription || "").length >= 160
+                  ? "Max 160 characters limit reached (typing stopped)"
+                  : `${160 - (formData.seoDescription || "").length} chars left`}
+              </span>
+            )}
+          </div>
           {errors.seoDescription && (
             <p className="text-xs text-red-500">{errors.seoDescription}</p>
           )}

@@ -269,7 +269,7 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
       slug: aiData.slug || prev.slug,
       h1Title: aiData.h1Title || aiData.title || prev.h1Title,
       seoTitle: aiData.seoTitle || prev.seoTitle,
-      seoDescription: aiData.seoDescription || prev.seoDescription,
+      seoDescription: aiData.seoDescription ? aiData.seoDescription.slice(0, 160) : prev.seoDescription,
       seoKeyword: aiData.seoKeyword || prev.seoKeyword,
       overView: overViewText || prev.overView,
       destination: aiData.destination || (aiData.routeCities ? aiData.routeCities.join("-") : prev.destination),
