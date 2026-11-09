@@ -370,9 +370,9 @@ async function main() {
   // D. Blog posts, Country, State, City, CmsPage
   await prisma.$executeRawUnsafe(`
     UPDATE "BlogPost"
-    SET "content" = REPLACE("content", 'KoKoi', 'KoiKoi'),
+    SET "moreDescription" = REPLACE("moreDescription", 'KoKoi', 'KoiKoi'),
         "title" = REPLACE("title", 'KoKoi', 'KoiKoi')
-    WHERE "content" LIKE '%KoKoi%' OR "title" LIKE '%KoKoi%';
+    WHERE "moreDescription" LIKE '%KoKoi%' OR "title" LIKE '%KoKoi%';
   `);
   await prisma.$executeRawUnsafe(`
     UPDATE "Country"
