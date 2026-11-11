@@ -31,6 +31,7 @@ import { resolveStateJourneys } from "@/feature/journey/destinationJourneys";
 import type { Country } from "@/feature/country/type";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
+import type { TravelExperience, PaginatedResponse as ExperiencePage } from "@/feature/travelExperience/type";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 
 // ============================================================================
@@ -236,11 +237,13 @@ export default function CountryDetail({
   initialCountry,
   initialStates,
   initialJourneys,
+  initialExperiences,
 }: {
   slug: string;
   initialCountry?: Country | null;
   initialStates?: StatePage<State> | null;
   initialJourneys?: JourneyPage<Journey> | null;
+  initialExperiences?: ExperiencePage<TravelExperience> | null;
 }) {
   const { country, isLoading } = useCountryBySlug(slug, initialCountry);
 
@@ -258,6 +261,7 @@ export default function CountryDetail({
       country={country}
       initialStates={initialStates}
       initialJourneys={initialJourneys}
+      initialExperiences={initialExperiences}
     />
   );
 }
@@ -266,10 +270,12 @@ function CountryContent({
   country,
   initialStates,
   initialJourneys,
+  initialExperiences,
 }: {
   country: Country;
   initialStates?: StatePage<State> | null;
   initialJourneys?: JourneyPage<Journey> | null;
+  initialExperiences?: ExperiencePage<TravelExperience> | null;
 }) {
   const [activeTab, setActiveTab] = useState<"destination" | "experience">("destination");
   const [isCityTableExpanded, setIsCityTableExpanded] = useState(false);
@@ -312,10 +318,19 @@ function CountryContent({
     initialStates
   );
 
-  const { travelExperiences = [] } = useGetTravelExperiences({
-    limit: 100,
-    isActive: "true",
-  });
+  const { travelExperiences: clientExperiences = [] } = useGetTravelExperiences(
+    {
+      limit: 100,
+      isActive: "true",
+    },
+    initialExperiences
+  );
+  const travelExperiences = useMemo(() => {
+    if (initialExperiences?.data && initialExperiences.data.length > 0) {
+      return initialExperiences.data;
+    }
+    return clientExperiences;
+  }, [initialExperiences, clientExperiences]);
 
   const { cities: apiCities = [] } = useGetCities({
     limit: 200,
@@ -334,10 +349,9 @@ function CountryContent({
   const journeys: Journey[] = hasInitialJourneys ? initialJourneysList : (clientJourneys && clientJourneys.length > 0 ? clientJourneys : []);
 
   const countryJourneys = useMemo<Journey[]>(() => {
-    return journeys.filter(
-      (j: Journey) => j.cities?.some((c) => c.state?.country?.id === country.id)
-    );
-  }, [journeys, country.id]);
+    if (journeys && journeys.length > 0) return journeys;
+    return initialJourneysList;
+  }, [journeys, initialJourneysList]);
 
   const journeyCountForState = (stateId: number) => {
     const s = states.find((st: State) => st.id === stateId);

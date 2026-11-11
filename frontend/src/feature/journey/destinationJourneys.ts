@@ -212,8 +212,12 @@ export function trimJourneyForListing(j: any): Journey {
       slug: c.slug,
       state: c.state
         ? {
+            id: c.state.id,
+            title: c.state.title,
             slug: c.state.slug,
-            country: c.state.country ? { slug: c.state.country.slug } : null,
+            country: c.state.country
+              ? { id: c.state.country.id, slug: c.state.country.slug, title: c.state.country.title }
+              : null,
           }
         : null,
     })),

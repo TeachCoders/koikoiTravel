@@ -16,6 +16,7 @@ import type { Country } from "@/feature/country/type";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
 import type { City } from "@/feature/city/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
+import type { TravelExperience, PaginatedResponse as ExperiencePage } from "@/feature/travelExperience/type";
 import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
 import {
   resolveStateJourneys,
@@ -298,11 +299,12 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
   switch (resolved.type) {
     case "country": {
       const { country } = resolved;
-      const [initialStates, initialJourneys] = await Promise.all([
+      const [initialStates, initialJourneys, initialExperiences] = await Promise.all([
         country
           ? fetchPublicJsonCached<StatePage<State>>(`/state?limit=100&countryId=${country.id}`)
           : null,
         fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true"),
+        fetchPublicJsonCached<ExperiencePage<TravelExperience>>("/holidays?limit=100&isActive=true"),
       ]);
 
       const countryJourneys = resolveCountryJourneys(initialJourneys?.data, country);
@@ -355,6 +357,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
               initialCountry={trimmedCountry as any}
               initialStates={trimmedStates as any}
               initialJourneys={{ data: trimmedCountryJourneys, total: trimmedCountryJourneys.length } as any}
+              initialExperiences={initialExperiences}
             />
           </main>
         </div>
