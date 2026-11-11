@@ -91,18 +91,24 @@ function ExperienceContent({
     experience.slug,
   ], [experience.slug]);
 
+  const initialList = initialJourneys?.data;
+  const hasInitial = Array.isArray(initialList) && initialList.length > 0;
+
   const { journeys, isLoading: journeysLoading } = useGetJourneys(
     {
       limit: 100,
       isActive: "true",
     },
-    initialJourneys ?? undefined
+    undefined,
+    { enabled: !hasInitial }
   );
 
-  const { experienceJourneys } = useMemo(
-    () => resolveTravelExperienceJourneys(journeys, experience),
-    [journeys, experience]
-  );
+  const { experienceJourneys } = useMemo(() => {
+    if (hasInitial) {
+      return { experienceJourneys: initialList };
+    }
+    return resolveTravelExperienceJourneys(journeys, experience);
+  }, [hasInitial, initialList, journeys, experience]);
 
   const [durSelected, setDurSelected] = useState<string[]>([]);
   const [citySelected, setCitySelected] = useState<string[]>([]);

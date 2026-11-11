@@ -84,17 +84,22 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   ], [countrySlug, state.slug]);
 
   const embeddedJourneys = state.journeys ?? [];
+  const initialList = initialJourneys?.data;
+  const hasInitial = Array.isArray(initialList) && initialList.length > 0;
+
   const { journeys, isLoading: journeysLoading } = useGetJourneys(
     { limit: 100, isActive: "true" },
-    initialJourneys ?? undefined,
-    { enabled: true }
+    undefined,
+    { enabled: !hasInitial }
   );
 
   // Resolved journeys using canonical destination resolver
-  const { stateJourneys } = useMemo(
-    () => resolveStateJourneys(journeys.length > 0 ? journeys : embeddedJourneys, state),
-    [journeys, embeddedJourneys, state]
-  );
+  const { stateJourneys } = useMemo(() => {
+    if (hasInitial) {
+      return { stateJourneys: initialList };
+    }
+    return resolveStateJourneys(journeys.length > 0 ? journeys : embeddedJourneys, state);
+  }, [hasInitial, initialList, journeys, embeddedJourneys, state]);
 
   // Filters for Tour Packages
   const [expSelected, setExpSelected] = useState<string[]>([]);

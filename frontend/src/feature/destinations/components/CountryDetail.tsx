@@ -323,13 +323,15 @@ function CountryContent({
     countryId: country.id,
   });
 
+  const hasInitialJourneys = initialJourneysList.length > 0;
   const { journeys: clientJourneys, isLoading: journeysLoading } = useGetJourneys(
     { limit: 100, isActive: "true" },
-    initialJourneys
+    undefined,
+    { enabled: !hasInitialJourneys }
   );
 
   const states: State[] = clientStates && clientStates.length > 0 ? clientStates : initialStatesList;
-  const journeys: Journey[] = clientJourneys && clientJourneys.length > 0 ? clientJourneys : initialJourneysList;
+  const journeys: Journey[] = hasInitialJourneys ? initialJourneysList : (clientJourneys && clientJourneys.length > 0 ? clientJourneys : []);
 
   const countryJourneys = useMemo<Journey[]>(() => {
     return journeys.filter(

@@ -38,13 +38,19 @@ export default function SeasonDetail({
   initialSeason: Season;
   initialJourneys?: PaginatedResponse<Journey> | null;
 }) {
+  const initialList = initialJourneys?.data;
+  const hasInitial = Array.isArray(initialList) && initialList.length > 0;
+
   const { journeys, isLoading: journeysLoading } = useGetJourneys(
     { limit: 100, isActive: "true" },
-    initialJourneys ?? undefined,
-    { enabled: true }
+    undefined,
+    { enabled: !hasInitial }
   );
 
-  const seasonJourneys = resolveSeasonJourneys(journeys, initialSeason);
+  const seasonJourneys = useMemo(() => {
+    if (hasInitial) return initialList;
+    return resolveSeasonJourneys(journeys, initialSeason);
+  }, [hasInitial, initialList, journeys, initialSeason]);
 
   const heroImages =
     initialSeason.banner?.images?.length

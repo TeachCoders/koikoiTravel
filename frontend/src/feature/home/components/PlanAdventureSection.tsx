@@ -65,6 +65,8 @@ export const PlanAdventureSection: React.FC<PlanAdventureSectionProps> = ({
     return [];
   }, [initialJourneys]);
 
+  const hasInitialJourneys = initialJourneysList.length > 0;
+
   // Fetch / Hydrate States (Destinations)
   const { states: clientStates } = useGetStates(
     {
@@ -90,13 +92,14 @@ export const PlanAdventureSection: React.FC<PlanAdventureSectionProps> = ({
       limit: 100,
       isActive: "true",
     },
-    initialJourneys
+    undefined,
+    { enabled: !hasInitialJourneys }
   );
 
   // Effective data sources (Server Props + React Query cache)
   const states = clientStates && clientStates.length > 0 ? clientStates : initialStatesList;
   const travelExperiences = clientExperiences && clientExperiences.length > 0 ? clientExperiences : initialExpList;
-  const journeys = clientJourneys && clientJourneys.length > 0 ? clientJourneys : initialJourneysList;
+  const journeys = hasInitialJourneys ? initialJourneysList : (clientJourneys && clientJourneys.length > 0 ? clientJourneys : []);
 
   // Helper to resolve accurate tour count for states (checks curated order first, then tagged/destination journeys)
   const getStateCount = (stateObj: any, fallbackCount: number = 0) => {

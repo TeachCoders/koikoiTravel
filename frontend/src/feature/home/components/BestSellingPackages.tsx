@@ -17,16 +17,20 @@ const GRID =
 export const BestSellingPackages: React.FC<{
   initialJourneys?: JourneyPage<Journey> | null;
 }> = ({ initialJourneys }) => {
+  const initialList = initialJourneys?.data || [];
+  const hasInitial = initialList.length > 0;
+
   const { journeys, isLoading } = useGetJourneys(
     {
       limit: 100,
       isActive: "true",
     },
-    initialJourneys
+    undefined,
+    { enabled: !hasInitial }
   );
 
   const packages = React.useMemo(() => {
-    const list = journeys && journeys.length > 0 ? journeys : (initialJourneys?.data || []);
+    const list = hasInitial ? initialList : (journeys && journeys.length > 0 ? journeys : []);
     const ordered = list
       .filter((j: any) => (j.displayOrder ?? 0) > 0)
       .sort((a: any, b: any) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
@@ -36,7 +40,7 @@ export const BestSellingPackages: React.FC<{
     const orderedIds = new Set(ordered.map((j: any) => j.id));
     const backfill = list.filter((j: any) => !orderedIds.has(j.id));
     return [...ordered, ...backfill].slice(0, MAX_PACKAGES);
-  }, [journeys, initialJourneys]);
+  }, [hasInitial, initialList, journeys]);
 
   return (
     <section

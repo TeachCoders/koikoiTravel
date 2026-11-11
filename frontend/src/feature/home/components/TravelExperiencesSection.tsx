@@ -23,13 +23,18 @@ export const TravelExperiencesSection: React.FC<{
     },
     initialExperiences
   );
-  const { journeys } = useGetJourneys(
+  const initialJourneysList = initialJourneys?.data || [];
+  const hasInitialJourneys = initialJourneysList.length > 0;
+
+  const { journeys: clientJourneys } = useGetJourneys(
     {
       limit: 100,
       isActive: "true",
     },
-    initialJourneys
+    undefined,
+    { enabled: !hasInitialJourneys }
   );
+  const journeys = hasInitialJourneys ? initialJourneysList : clientJourneys;
 
   const tourCount = (id: number) =>
     journeys.filter((j: any) =>

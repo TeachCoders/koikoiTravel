@@ -74,14 +74,20 @@ function CityContent({
     city.slug,
   ], [countrySlug, stateSlug, city.slug]);
 
+  const initialList = initialJourneys?.data;
+  const hasInitial = Array.isArray(initialList) && initialList.length > 0;
+
   const { journeys, isLoading: journeysLoading } = useGetJourneys(
     { limit: 100, isActive: "true" },
-    initialJourneys
+    undefined,
+    { enabled: !hasInitial }
   );
-  const cityJourneys = useMemo(
-    () => resolveCityJourneys(journeys, city),
-    [journeys, city]
-  );
+  const cityJourneys = useMemo(() => {
+    if (hasInitial) {
+      return initialList;
+    }
+    return resolveCityJourneys(journeys, city);
+  }, [hasInitial, initialList, journeys, city]);
 
   const [expSelected, setExpSelected] = useState<string[]>([]);
   const [durSelected, setDurSelected] = useState<string[]>([]);
