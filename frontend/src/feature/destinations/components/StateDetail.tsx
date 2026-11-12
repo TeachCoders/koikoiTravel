@@ -187,8 +187,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         c.showOnSite !== false &&
         c.slug !== state.slug &&
         (c.title ?? "").trim().toLowerCase() !== (state.title ?? "").trim().toLowerCase() &&
-        journeyCountFor(c.id) >= 2 &&
-        isIndexableCity(state.slug, c.slug)
+        journeyCountFor(c.id) >= 2
     )
     .sort((a, b) => {
     const aOrder = a.displayOrder ?? 0;
@@ -205,13 +204,12 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   const displayedCities = useMemo(() => {
     if (isTajMahal || isGoldenTriangle) return [];
 
-    // Show only valid indexable cities under this state that have at least 2 tours
+    // Show only valid cities under this state that have at least 2 tours
     return stateCities.filter(
       (c) =>
         c.isActive !== false &&
         c.showOnSite !== false &&
-        journeyCountFor(c.id) >= 2 &&
-        isIndexableCity(state.slug, c.slug)
+        journeyCountFor(c.id) >= 2
     );
   }, [stateCities, isTajMahal, isGoldenTriangle, state.slug]);
 

@@ -119,7 +119,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   cities.forEach((c: any) => {
-    if (!isIndexableCity(c.state?.slug, c.slug)) return;
+    const count = c.tourCount ?? (Array.isArray(c.journeys) ? c.journeys.length : 0);
+    if (!isIndexableCity(c.state?.slug, c.slug) && count < 2) return;
+    if (c.isActive === false || c.showOnSite === false) return;
     const countrySlug = c.state?.country?.slug || "india";
     entries.push(url(`/tour-packages/${countrySlug}/${c.state.slug}/${c.slug}`, c.updatedAt));
   });

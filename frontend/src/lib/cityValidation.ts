@@ -38,6 +38,7 @@ export const VALID_INDEXABLE_CITY_PAIRS = new Set<string>([
   "kerala/wayanad",
 
   // Ladakh
+  "ladakh/hemis-monastery",
   "ladakh/leh",
   "ladakh/nubra-valley",
   "ladakh/pangong-tso",

@@ -114,7 +114,7 @@ async function resolveSlug(slug: string[]): Promise<Resolved> {
 
   if (slug.length === 3) {
     const [countrySlug, stateSlug, citySlug] = slug;
-    if (stateSlug === citySlug || !isIndexableCity(stateSlug, citySlug)) {
+    if (stateSlug === citySlug) {
       return { type: "notfound" };
     }
     const city = await fetchBySlugCached<City>("/city/by-slug", citySlug);
