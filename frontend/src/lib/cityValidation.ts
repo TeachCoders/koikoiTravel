@@ -14,8 +14,13 @@
  */
 
 export const VALID_INDEXABLE_CITY_PAIRS = new Set<string>([
+  // Delhi
+  "delhi/delhi",
+
   // Himachal Pradesh
+  "himachal-pradesh/kufri",
   "himachal-pradesh/manali",
+  "himachal-pradesh/sarchu",
   "himachal-pradesh/shimla",
 
   // Jammu & Kashmir
@@ -32,9 +37,11 @@ export const VALID_INDEXABLE_CITY_PAIRS = new Set<string>([
   // Kerala
   "kerala/alleppey",
   "kerala/cochin",
+  "kerala/kovalam",
   "kerala/kumarakom",
   "kerala/munnar",
   "kerala/thekkady",
+  "kerala/trivandrum",
   "kerala/wayanad",
 
   // Ladakh
@@ -42,6 +49,10 @@ export const VALID_INDEXABLE_CITY_PAIRS = new Set<string>([
   "ladakh/leh",
   "ladakh/nubra-valley",
   "ladakh/pangong-tso",
+
+  // Maharashtra
+  "maharashtra/mumbai",
+  "maharashtra/nagpur",
 
   // Punjab
   "punjab/amritsar",
@@ -53,7 +64,9 @@ export const VALID_INDEXABLE_CITY_PAIRS = new Set<string>([
   "rajasthan/jaisalmer",
   "rajasthan/jodhpur",
   "rajasthan/pushkar",
+  "rajasthan/ranakpur",
   "rajasthan/ranthambore",
+  "rajasthan/sariska",
   "rajasthan/udaipur",
 
   // Tamil Nadu
