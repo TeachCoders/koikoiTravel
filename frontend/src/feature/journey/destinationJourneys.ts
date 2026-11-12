@@ -206,6 +206,16 @@ export function trimJourneyForListing(j: any): Journey {
     displayOrder: j.displayOrder ?? 0,
     isBestSelling: Boolean(j.isBestSelling),
     badge: j.badge || null,
+    destination: j.destination || null,
+    highlights: Array.isArray(j.highlights) ? j.highlights.slice(0, 3) : [],
+    route: Array.isArray(j.route)
+      ? j.route.map((r: any) => ({
+          id: r.id,
+          title: r.title,
+          slug: r.slug,
+          h1Title: r.h1Title,
+        }))
+      : [],
     cities: (j.cities || []).map((c: any) => ({
       id: c.id,
       title: c.title,

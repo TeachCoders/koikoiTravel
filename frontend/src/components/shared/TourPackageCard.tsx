@@ -165,7 +165,7 @@ export default function TourPackageCard({
         {!isCompact && (
           <>
             {/* Route / Destination in Teal */}
-            {(journey.destination || state || (journey.route && journey.route.length > 0)) && (
+            {(journey.destination || state || (journey.route && journey.route.length > 0) || (journey.cities && journey.cities.length > 0)) && (
               <div className="text-[13px] sm:text-[13.5px] text-[#2E8B8B] font-medium mb-3 truncate">
                 {formatRouteText(journey, state)}
               </div>
