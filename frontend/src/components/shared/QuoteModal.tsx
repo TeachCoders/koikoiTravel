@@ -75,15 +75,15 @@ export function QuoteModal({ children }: { children: ReactNode }) {
 
             <div className="mt-auto">
               <div className="flex items-center gap-4 mb-8">
-                <Link href="#" className="w-12 h-12 bg-[#E96A1E] text-white rounded-xl flex items-center justify-center hover:bg-[#d65f18] transition-colors shadow-md">
+                <a href="https://www.facebook.com/koikoiTravel/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-[#E96A1E] text-white rounded-xl flex items-center justify-center hover:bg-[#d65f18] transition-colors shadow-md">
                   <FacebookIcon />
-                </Link>
-                <Link href="#" className="w-12 h-12 bg-[#E96A1E] text-white rounded-xl flex items-center justify-center hover:bg-[#d65f18] transition-colors shadow-md">
-                  <TwitterIcon />
-                </Link>
-                <Link href="#" className="w-12 h-12 bg-[#E96A1E] text-white rounded-xl flex items-center justify-center hover:bg-[#d65f18] transition-colors shadow-md">
+                </a>
+                <a href="https://www.instagram.com/koikoi.travel/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-[#E96A1E] text-white rounded-xl flex items-center justify-center hover:bg-[#d65f18] transition-colors shadow-md">
                   <InstagramIcon />
-                </Link>
+                </a>
+                <a href="https://www.youtube.com/@KoiKoiTravel" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-[#E96A1E] text-white rounded-xl flex items-center justify-center hover:bg-[#d65f18] transition-colors shadow-md">
+                  <TwitterIcon />
+                </a>
               </div>
 
               <div className="w-full h-[1px] bg-slate-300 mb-6" />

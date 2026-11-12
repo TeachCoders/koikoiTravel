@@ -30,10 +30,15 @@ const TravelerMoments: React.FC = () => {
             </h2>
             <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-xl">Join thousands of happy travelers making memories for a lifetime.</p>
           </div>
-          <button className="btn-outline">
+          <a
+            href="https://www.instagram.com/koikoi.travel/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-outline inline-flex items-center gap-2"
+          >
             <InstagramIcon className="w-4 h-4 text-pink-600" />
             <span>Follow Us</span>
-          </button>
+          </a>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[220px]">

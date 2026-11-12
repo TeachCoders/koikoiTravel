@@ -1,0 +1,414 @@
+[
+  {
+    "type": "country",
+    "slug": "india",
+    "url": "/tour-packages/india",
+    "title": "Incredible India Tour Packages & Trips",
+    "desc": "Explore the beauty of India Tour - explore the diverse culture, historic monuments, and beautiful landscapes. Book the best India Tour tour packages with",
+    "desc_len": 153
+  },
+  {
+    "type": "state",
+    "slug": "rajasthan",
+    "url": "/tour-packages/india/rajasthan",
+    "title": "Rajasthan Tour Packages: Forts & Desert",
+    "desc": "Private tailor-made Rajasthan tour packages: Jaipur forts, Udaipur lakes, Jodhpur & Thar desert dunes. Dedicated chauffeur & 24/7 care. Get a free quote.",
+    "desc_len": 153
+  },
+  {
+    "type": "state",
+    "slug": "kerala",
+    "url": "/tour-packages/india/kerala",
+    "title": "Kerala Tour Packages: Backwaters & Hills",
+    "desc": "Handcrafted Kerala tour packages: private Alleppey houseboat cruises, misty Munnar tea hills & Kovalam beaches. Dedicated team in India. Get a free quote.",
+    "desc_len": 154
+  },
+  {
+    "type": "state",
+    "slug": "delhi",
+    "url": "/tour-packages/india/delhi",
+    "title": "Delhi Tour Packages & Heritage Sightseeing",
+    "desc": "Experience the magic of Delhi NCR - explore the historic Red Fort, India Gate, and the vibrant streets of Old Delhi. Book the best Delhi NCR tour packages in",
+    "desc_len": 157
+  },
+  {
+    "type": "state",
+    "slug": "uttar-pradesh",
+    "url": "/tour-packages/india/uttar-pradesh",
+    "title": "Uttar Pradesh Tour Packages & Heritage",
+    "desc": "Experience the magic of Uttar Pradesh - visit the iconic Taj Mahal, holy Ganges, and ancient heritage sites. Book the best Uttar Pradesh tour packages in",
+    "desc_len": 153
+  },
+  {
+    "type": "state",
+    "slug": "jammu-and-kashmir",
+    "url": "/tour-packages/india/jammu-and-kashmir",
+    "title": "Jammu & Kashmir Tour Packages",
+    "desc": "Witness the incredible Jammu and Kashmir - enjoy peaceful shikara rides, snowy mountains, and heavenly valleys. Book the best Jammu and Kashmir tour packages",
+    "desc_len": 157
+  },
+  {
+    "type": "state",
+    "slug": "ladakh",
+    "url": "/tour-packages/india/ladakh",
+    "title": "Ladakh Tour Packages: Pangong & Monasteries",
+    "desc": "Ladakh, the Land of High Passes, is a breathtaking high-altitude desert of turquoise lakes, ancient monasteries, snow-capped peaks and remote villages. From",
+    "desc_len": 156
+  },
+  {
+    "type": "state",
+    "slug": "himachal-pradesh",
+    "url": "/tour-packages/india/himachal-pradesh",
+    "title": "Himachal Pradesh Tour Packages & Hills",
+    "desc": "Discover the hidden wonders of Himachal Pradesh - relax in beautiful hill stations and enjoy thrilling snow adventures. Book the best Himachal Pradesh tour",
+    "desc_len": 155
+  },
+  {
+    "type": "state",
+    "slug": "punjab",
+    "url": "/tour-packages/india/punjab",
+    "title": "Punjab Tour Packages: Golden Temple & More",
+    "desc": "Discover the hidden wonders of Punjab - experience rich Sikh heritage, delicious food, and vibrant cultural festivals. Book the best Punjab tour packages in",
+    "desc_len": 156
+  },
+  {
+    "type": "state",
+    "slug": "uttarakhand",
+    "url": "/tour-packages/india/uttarakhand",
+    "title": "Uttarakhand Tour Packages & Hill Stations",
+    "desc": "Experience the magic of Uttarakhand - visit holy pilgrimage sites and trek through the majestic Himalayas. Book the best Uttarakhand tour packages in India",
+    "desc_len": 155
+  },
+  {
+    "type": "state",
+    "slug": "karnataka",
+    "url": "/tour-packages/india/karnataka",
+    "title": "Karnataka Tour Packages: Heritage & Hills",
+    "desc": "Handcrafted Karnataka tour packages: UNESCO ruins of Hampi, Mysore Palace, Coorg coffee estates, Kabini wildlife safaris and ancient Badami caves.",
+    "desc_len": 146
+  },
+  {
+    "type": "state",
+    "slug": "tamil-nadu",
+    "url": "/tour-packages/india/tamil-nadu",
+    "title": "Tamil Nadu Tour Packages: Temples & Heritage",
+    "desc": "Handcrafted Tamil Nadu tour packages. Explore Madurai Meenakshi Temple, Mahabalipuram shore temples, Brihadisvara, Chettinad mansions and Ooty hill station.",
+    "desc_len": 156
+  },
+  {
+    "type": "state",
+    "slug": "maharashtra",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "type": "state",
+    "slug": "goa",
+    "url": "/tour-packages/india/goa",
+    "title": "Goa Tour Packages | Private Beach Holidays & Chauffeur Tours",
+    "desc": "Experience Goa&#x27;s golden sandy beaches, UNESCO world heritage churches in Old Goa, Portuguese Latin quarters, spice plantations, and vibrant coastal culture",
+    "desc_len": 160
+  },
+  {
+    "type": "state",
+    "slug": "golden-triangle",
+    "url": "/tour-packages/india/golden-triangle",
+    "title": "Golden Triangle Tour Packages India",
+    "desc": "Private Golden Triangle tours connecting Delhi, Taj Mahal & Jaipur. Custom pace, verified chauffeurs & heritage stays. Get a free quote on WhatsApp.",
+    "desc_len": 148
+  },
+  {
+    "type": "experience",
+    "slug": "golden-triangle-tour-india",
+    "error": "HTTP Error 308: Permanent Redirect"
+  },
+  {
+    "type": "experience",
+    "slug": "wildlife",
+    "url": "/travel-experiences/wildlife",
+    "title": "India Wildlife Tour Packages & Safaris",
+    "desc": "Book top-rated wildlife tour packages in India. Experience tiger safaris in Jim Corbett, Ranthambore, Bandhavgarh, Kanha, and Tadoba National Parks.",
+    "desc_len": 148
+  },
+  {
+    "type": "experience",
+    "slug": "honeymoon",
+    "url": "/travel-experiences/honeymoon",
+    "title": "Honeymoon Tour Packages in India",
+    "desc": "Plan your dream romantic getaway with KoiKoi Travel. Book exclusive Honeymoon tour packages for Kerala, Kashmir, Udaipur, and Goa.",
+    "desc_len": 130
+  },
+  {
+    "type": "experience",
+    "slug": "ayurveda-yoga",
+    "url": "/travel-experiences/ayurveda-yoga",
+    "title": "Ayurveda & Yoga Tour Packages in India",
+    "desc": "Rejuvenate your mind and body. Book Ayurveda and Yoga tour packages to experience traditional healing in Kerala and spiritual wellness in Rishikesh.",
+    "desc_len": 148
+  },
+  {
+    "type": "experience",
+    "slug": "cultural-heritage-tours-in-india",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "type": "experience",
+    "slug": "beach-holidays",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "type": "experience",
+    "slug": "hill-stations",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "type": "experience",
+    "slug": "adventure",
+    "error": "HTTP Error 308: Permanent Redirect"
+  },
+  {
+    "type": "city",
+    "slug": "agra",
+    "url": "/tour-packages/india/uttar-pradesh/agra",
+    "title": "Agra Tour Packages: Taj Mahal & Fort",
+    "desc": "Witness the incredible Agra - experience the magic of the Taj Mahal and explore the grand Agra Fort. Book the best Agra tour packages in India with KoiKoi",
+    "desc_len": 154
+  },
+  {
+    "type": "city",
+    "slug": "jaipur",
+    "url": "/tour-packages/india/rajasthan/jaipur",
+    "title": "Jaipur Tour Packages: Forts & Palaces",
+    "desc": "Discover the hidden wonders of Jaipur - explore the majestic Amber Fort and vibrant pink city markets. Book the best Jaipur tour packages in India with",
+    "desc_len": 151
+  },
+  {
+    "type": "city",
+    "slug": "ranthambore",
+    "url": "/tour-packages/india/rajasthan/ranthambore",
+    "title": "Ranthambore Tour Packages: Tiger Safari",
+    "desc": "Explore the beauty of Ranthambore - enjoy a thrilling jungle safari and spot wild Bengal tigers. Book the best Ranthambore tour packages in India with KoiKoi",
+    "desc_len": 157
+  },
+  {
+    "type": "city",
+    "slug": "udaipur",
+    "url": "/tour-packages/india/rajasthan/udaipur",
+    "title": "Udaipur Tour Packages: Lakes & Palaces",
+    "desc": "Experience the magic of Udaipur - enjoy a romantic boat ride on Lake Pichola and visit the City Palace. Book the best Udaipur tour packages in India with",
+    "desc_len": 153
+  },
+  {
+    "type": "city",
+    "slug": "jodhpur",
+    "url": "/tour-packages/india/rajasthan/jodhpur",
+    "title": "Jodhpur Tour Packages: Mehrangarh Fort",
+    "desc": "Discover the hidden wonders of Jodhpur - explore the massive Mehrangarh Fort and the beautiful blue streets. Book the best Jodhpur tour packages in India",
+    "desc_len": 153
+  },
+  {
+    "type": "city",
+    "slug": "jaisalmer",
+    "url": "/tour-packages/india/rajasthan/jaisalmer",
+    "title": "Jaisalmer Tour Packages: Desert Safari",
+    "desc": "Experience the magic of Jaisalmer - enjoy a magical camel safari and camp under the stars in the Thar Desert. Book the best Jaisalmer tour packages in India",
+    "desc_len": 156
+  },
+  {
+    "type": "city",
+    "slug": "bikaner",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "type": "city",
+    "slug": "pushkar",
+    "url": "/tour-packages/india/rajasthan/pushkar",
+    "title": "Pushkar Tour Packages & Camel Safari",
+    "desc": "Explore the beauty of Pushkar - visit the holy Pushkar Lake and the world-famous Brahma Temple. Book the best Pushkar tour packages in India with KoiKoi",
+    "desc_len": 152
+  },
+  {
+    "type": "city",
+    "slug": "bharatpur",
+    "url": "/tour-packages/india/rajasthan/bharatpur",
+    "title": "Bharatpur Bird Sanctuary Tour Packages",
+    "desc": "Explore the beauty of Bharatpur - spot rare migratory birds at the Keoladeo National Park. Book the best Bharatpur tour packages in India with KoiKoi Travely",
+    "desc_len": 157
+  },
+  {
+    "type": "city",
+    "slug": "munnar",
+    "url": "/tour-packages/india/kerala/munnar",
+    "title": "Munnar Tour Packages: Tea Plantations",
+    "desc": "Book Munnar tour packages with KoiKoi Travel. Explore endless tea plantations, Eravikulam National Park (Nilgiri Tahr), Mattupetty Dam, and Cheeyappara",
+    "desc_len": 151
+  },
+  {
+    "type": "city",
+    "slug": "thekkady",
+    "url": "/tour-packages/india/kerala/thekkady",
+    "title": "Thekkady Tour Packages & Periyar Safari",
+    "desc": "Discover Thekkady (Periyar) tour packages with KoiKoi Travel. Enjoy Periyar Lake jungle boat safari, elephant rides, spice plantation tours, and",
+    "desc_len": 144
+  },
+  {
+    "type": "city",
+    "slug": "alleppey",
+    "url": "/tour-packages/india/kerala/alleppey",
+    "title": "Alleppey Tour Packages: Houseboat Cruise",
+    "desc": "Book Alleppey (Alappuzha) tour packages with KoiKoi Travel. Overnight deluxe houseboat stay with freshly cooked meals, canal cruises, and beach sunsets.",
+    "desc_len": 152
+  },
+  {
+    "type": "city",
+    "slug": "cochin",
+    "url": "/tour-packages/india/kerala/cochin",
+    "title": "Cochin Tour Packages: Fort Kochi Heritage",
+    "desc": "Book Cochin tour packages with KoiKoi Travel. Discover Fort Kochi, Chinese Fishing Nets, Mattancherry Palace, Jewish Synagogue, and Kathakali shows.",
+    "desc_len": 148
+  },
+  {
+    "type": "city",
+    "slug": "kumarakom",
+    "url": "/tour-packages/india/kerala/kumarakom",
+    "title": "Kumarakom Tour Packages: Backwater Resorts",
+    "desc": "Book Kumarakom tour packages with KoiKoi Travel. Relax at luxury resorts on Vembanad Lake, visit Kumarakom Bird Sanctuary, and enjoy sunset shikara cruises.",
+    "desc_len": 156
+  },
+  {
+    "type": "city",
+    "slug": "kovalam",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "type": "city",
+    "slug": "srinagar",
+    "url": "/tour-packages/india/jammu-and-kashmir/srinagar",
+    "title": "Srinagar Tour Packages: Dal Lake & Gardens",
+    "desc": "Witness the incredible Srinagar - enjoy a peaceful Shikara ride on the world-famous Dal Lake. Book the best Srinagar tour packages in India with FKoiKoi",
+    "desc_len": 152
+  },
+  {
+    "type": "city",
+    "slug": "gulmarg",
+    "url": "/tour-packages/india/jammu-and-kashmir/gulmarg",
+    "title": "Gulmarg Tour Packages: Gondola & Skiing",
+    "desc": "Witness the incredible Gulmarg - ride the famous Gondola cable car and enjoy world-class skiing. Book the best Gulmarg tour packages in India withKoiKoi",
+    "desc_len": 152
+  },
+  {
+    "type": "city",
+    "slug": "pahalgam",
+    "url": "/tour-packages/india/jammu-and-kashmir/pahalgam",
+    "title": "Pahalgam Tour Packages: Valleys & Trek",
+    "desc": "Explore the beauty of Pahalgam - ride horses through lush green valleys and visit Betaab Valley. Book the best Pahalgam tour packages in India with KoiKoi",
+    "desc_len": 154
+  },
+  {
+    "type": "city",
+    "slug": "sonamarg",
+    "url": "/tour-packages/india/jammu-and-kashmir/sonamarg",
+    "title": "Sonamarg Tour Packages: Thajiwas Glacier",
+    "desc": "Experience the magic of Sonamarg - trek to the stunning Thajiwas Glacier and enjoy the Meadow of Gold. Book the best Sonamarg tour packages in India with",
+    "desc_len": 153
+  },
+  {
+    "type": "city",
+    "slug": "leh",
+    "url": "/tour-packages/india/ladakh/leh",
+    "title": "Leh Ladakh Tour Packages: High Passes",
+    "desc": "Discover the hidden wonders of Leh - visit the majestic Leh Palace and explore vibrant Tibetan markets. Book the best Leh tour packages in India with KoiKoi",
+    "desc_len": 156
+  },
+  {
+    "type": "city",
+    "slug": "amritsar",
+    "url": "/tour-packages/india/punjab/amritsar",
+    "title": "Amritsar Tour Packages: Golden Temple",
+    "desc": "Explore the beauty of Amritsar - experience the divine beauty of the Golden Temple and Wagah Border. Book the best Amritsar tour packages in India with",
+    "desc_len": 151
+  },
+  {
+    "type": "city",
+    "slug": "shimla",
+    "url": "/tour-packages/india/himachal-pradesh/shimla",
+    "title": "Shimla Tour Packages: Mall Road & Hills",
+    "desc": "Experience the magic of Shimla - stroll down the historic Mall Road and enjoy the beautiful colonial architecture. Book the best Shimla tour packages in",
+    "desc_len": 152
+  },
+  {
+    "type": "city",
+    "slug": "manali",
+    "url": "/tour-packages/india/himachal-pradesh/manali",
+    "title": "Manali Tour Packages: Rohtang & Solang",
+    "desc": "Witness the incredible Manali - enjoy thrilling snow activities in Solang Valley and relax in the beautiful Himalayas. Book the best Manali tour packages in",
+    "desc_len": 156
+  },
+  {
+    "type": "city",
+    "slug": "rishikesh",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "type": "city",
+    "slug": "varanasi",
+    "url": "/tour-packages/india/uttar-pradesh/varanasi",
+    "title": "Varanasi Tour Packages: Ghats & Aarti",
+    "desc": "Experience the magic of Varanasi - witness the mesmerizing evening Ganga Aarti and explore ancient ghats. Book the best Varanasi tour packages in India with",
+    "desc_len": 156
+  },
+  {
+    "type": "city",
+    "slug": "mathura",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "type": "city",
+    "slug": "vrindavan",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "type": "city",
+    "slug": "coorg",
+    "url": "/tour-packages/india/karnataka/coorg",
+    "title": "Coorg Tour Packages: Coffee & Waterfalls",
+    "desc": "Book Coorg (Kodagu) hill station tour packages with KoiKoi Travel. Experience coffee plantation stays, Abbey Falls, Dubare Elephant Camp, and Raja&#x27;s Seat.",
+    "desc_len": 159
+  },
+  {
+    "type": "city",
+    "slug": "wayanad",
+    "url": "/tour-packages/india/kerala/wayanad",
+    "title": "Wayanad Tour Packages: Nature & Caves",
+    "desc": "Explore Wayanad tour packages with KoiKoi Travel. Visit Edakkal Caves prehistoric carvings, Banasura Sagar Dam, Chembra Peak heart lake, and wildlife",
+    "desc_len": 149
+  },
+  {
+    "type": "city",
+    "slug": "hassan",
+    "url": "/tour-packages/india/karnataka/hassan",
+    "title": "Hassan Tour Packages: Hoysala Temples",
+    "desc": "Discover Hassan tour packages with KoiKoi Travel. Visit Belur Chennakesava Temple, Halebidu Hoysaleswara Temple, and Shravanabelagola Bahubali Statue.",
+    "desc_len": 150
+  },
+  {
+    "type": "city",
+    "slug": "mahabalipuram",
+    "url": "/tour-packages/india/tamil-nadu/mahabalipuram",
+    "title": "Mahabalipuram Tour Packages: Shore Temples",
+    "desc": "Discover UNESCO World Heritage Mahabalipuram tour packages. Visit Shore Temple, Five Rathas, Arjuna&#x27;s Penance, and pristine coastal resorts with KoiKoi",
+    "desc_len": 156
+  },
+  {
+    "type": "city",
+    "slug": "madurai",
+    "url": "/tour-packages/india/tamil-nadu/madurai",
+    "title": "Madurai Tour Packages: Meenakshi Temple",
+    "desc": "Book Madurai tour packages featuring Meenakshi Amman Temple, Thirumalai Nayakkar Palace, night ceremony rituals, and famous Jigarthanda with KoiKoi Travel.",
+    "desc_len": 155
+  },
+  {
+    "type": "city",
+    "slug": "shirdi",
+    "error": "HTTP Error 404: Not Found"
+  }
+]

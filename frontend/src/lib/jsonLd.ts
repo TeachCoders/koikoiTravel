@@ -40,7 +40,8 @@ export const organizationSchema: Record<string, unknown> = {
   ],
   sameAs: [
     "https://www.facebook.com/koikoiTravel/",
-    "https://www.youtube.com/@KoiKoiTravel"
+    "https://www.youtube.com/@KoiKoiTravel",
+    "https://www.instagram.com/koikoi.travel/"
   ]
 };
 
