@@ -1,9 +1,16 @@
 "use client";
 
 import { useState, useEffect, useMemo, type ReactNode } from "react";
-import { Check, ChevronDown, X, SlidersHorizontal, Search } from "lucide-react";
+import { Check, ChevronDown, X, SlidersHorizontal, Search, ArrowUpDown } from "lucide-react";
 import * as Popover from "@radix-ui/react-popover";
 import { cn } from "@/lib/utils";
+
+export type SortOption = "days-asc" | "days-desc" | "popular";
+
+export interface SortConfig {
+  value: SortOption;
+  onChange: (value: SortOption) => void;
+}
 
 export interface FilterOption {
   value: string;
@@ -29,12 +36,14 @@ export default function FilterBar({
   onClearAll,
   resultCount,
   totalCount,
+  sortConfig,
 }: {
   sections: FilterSection[];
   activeCount: number;
   onClearAll: () => void;
   resultCount: number;
   totalCount: number;
+  sortConfig?: SortConfig;
 }) {
   return (
     <div className="bg-white/95 border border-slate-200/90 rounded-2xl p-2.5 sm:p-3 shadow-xs hover:shadow-sm transition-all flex items-center gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible md:gap-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden mb-6">
@@ -46,6 +55,10 @@ export default function FilterBar({
       {sections.map((s) => (
         <FilterSelect key={s.id} section={s} />
       ))}
+
+      {sortConfig && (
+        <SortSelect config={sortConfig} />
+      )}
 
       {activeCount > 0 && (
         <button
@@ -64,6 +77,79 @@ export default function FilterBar({
         </span>
       </span>
     </div>
+  );
+}
+
+const SORT_LABELS: Record<SortOption, { full: string; short: string }> = {
+  "days-asc": { full: "Duration: Short to Long", short: "Short to Long" },
+  "days-desc": { full: "Duration: Long to Short", short: "Long to Short" },
+  "popular": { full: "Most Popular", short: "Popular" },
+};
+
+function SortSelect({ config }: { config: SortConfig }) {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleScroll = () => setOpen(false);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [open]);
+
+  const currentLabel = SORT_LABELS[config.value] || SORT_LABELS["days-asc"];
+
+  return (
+    <Popover.Root open={open} onOpenChange={setOpen}>
+      <Popover.Trigger asChild>
+        <button
+          type="button"
+          className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold border border-slate-200/90 bg-slate-50/80 hover:bg-white text-slate-700 hover:border-slate-300 hover:text-slate-950 transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0 shadow-2xs"
+          title="Change tour package order"
+        >
+          <ArrowUpDown size={14} className="text-[#2E8B8B] shrink-0" />
+          <span className="sm:hidden truncate">{currentLabel.short}</span>
+          <span className="hidden sm:inline truncate">Sort: {currentLabel.short}</span>
+          <ChevronDown
+            size={14}
+            className={cn(
+              "text-slate-400 transition-transform duration-200 shrink-0",
+              open && "rotate-180"
+            )}
+          />
+        </button>
+      </Popover.Trigger>
+
+      <Popover.Portal>
+        <Popover.Content
+          align="start"
+          sideOffset={8}
+          className="z-40 w-[240px] rounded-2xl bg-white p-1.5 outline-none ring-1 ring-slate-200/70 shadow-xl border border-slate-100"
+        >
+          <div className="px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 mb-1">
+            Sort Packages By
+          </div>
+          {(["days-asc", "days-desc", "popular"] as SortOption[]).map((opt) => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => {
+                config.onChange(opt);
+                setOpen(false);
+              }}
+              className={cn(
+                "w-full flex items-center justify-between px-3 py-2 text-xs sm:text-[13px] rounded-xl font-medium transition-colors text-left cursor-pointer",
+                config.value === opt
+                  ? "bg-[#2E8B8B]/10 text-[#2E8B8B] font-bold"
+                  : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+              )}
+            >
+              <span>{SORT_LABELS[opt].full}</span>
+              {config.value === opt && <Check size={14} className="text-[#2E8B8B] stroke-[2.5]" />}
+            </button>
+          ))}
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
   );
 }
 

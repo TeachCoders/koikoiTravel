@@ -18,7 +18,7 @@ import { useHeroBanners } from "@/feature/heroBanner/api";
 import { FallbackImage } from "@/components/shared/FallbackImage";
 import DestinationGuideSection from "@/components/shared/DestinationGuideSection";
 import ToursSection from "@/components/shared/ToursSection";
-import FilterBar from "@/components/shared/FilterBar";
+import FilterBar, { type SortOption } from "@/components/shared/FilterBar";
 import {
   travelExperienceOptions,
   durationOptions,
@@ -28,7 +28,7 @@ import {
   journeyMatchesSeasons,
 } from "@/feature/journey/filterOptions";
 import { cn, stripHtml, formatToursH1 } from "@/lib/utils";
-import { resolveCityJourneys } from "@/feature/journey/destinationJourneys";
+import { resolveCityJourneys, sortByDaysAscending } from "@/feature/journey/destinationJourneys";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 
@@ -92,13 +92,26 @@ function CityContent({
   const [expSelected, setExpSelected] = useState<string[]>([]);
   const [durSelected, setDurSelected] = useState<string[]>([]);
   const [seasonSelected, setSeasonSelected] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<SortOption>("days-asc");
 
-  const filteredJourneys = cityJourneys.filter(
-    (j) =>
-      journeyMatchesExperiences(j, expSelected) &&
-      journeyMatchesDuration(j, durSelected) &&
-      journeyMatchesSeasons(j, seasonSelected)
-  );
+  const filteredJourneys = useMemo(() => {
+    let list = cityJourneys;
+    if (expSelected.length > 0 || durSelected.length > 0 || seasonSelected.length > 0) {
+      list = cityJourneys.filter(
+        (j) =>
+          journeyMatchesExperiences(j, expSelected) &&
+          journeyMatchesDuration(j, durSelected) &&
+          journeyMatchesSeasons(j, seasonSelected)
+      );
+    }
+    if (sortBy === "days-desc") {
+      return [...list].sort((a, b) => sortByDaysAscending(b, a));
+    }
+    if (sortBy === "popular") {
+      return [...list].sort((a, b) => (b.purchaseCount || 0) - (a.purchaseCount || 0));
+    }
+    return [...list].sort(sortByDaysAscending);
+  }, [cityJourneys, expSelected, durSelected, seasonSelected, sortBy]);
 
   const activeFilterCount = expSelected.length + durSelected.length + seasonSelected.length;
 
@@ -106,6 +119,7 @@ function CityContent({
     setExpSelected([]);
     setDurSelected([]);
     setSeasonSelected([]);
+    setSortBy("days-asc");
   };
 
   const { data: heroBannersData } = useHeroBanners("City", {
@@ -173,6 +187,7 @@ function CityContent({
       onClearAll={clearFilters}
       resultCount={filteredJourneys.length}
       totalCount={cityJourneys.length}
+      sortConfig={{ value: sortBy, onChange: setSortBy }}
     />
   );
 

@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import { MapPin, X, Loader2, Sparkles, CalendarDays, Globe, Sun } from "lucide-react";
 import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import type { Journey, PaginatedResponse } from "@/feature/journey/type";
-import FilterBar from "@/components/shared/FilterBar";
+import FilterBar, { type SortOption } from "@/components/shared/FilterBar";
 import TourPackageCard from "@/components/shared/TourPackageCard";
 import Pagination from "@/components/shared/Pagination";
 import { sortByDaysAscending } from "@/feature/journey/destinationJourneys";
@@ -44,6 +44,7 @@ export default function PackagesExplorer({
   const [selectedSeasons, setSelectedSeasons] = useState<string[]>([]);
   const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>(initialSearch);
+  const [sortBy, setSortBy] = useState<SortOption>("days-asc");
 
   const countries = useMemo(() => {
     const set = new Set<string>();
@@ -203,9 +204,14 @@ export default function PackagesExplorer({
       return true;
     });
 
-    list = [...list].sort(sortByDaysAscending);
-    return list;
-  }, [journeys, selectedCountries, selectedStates, selectedCities, selectedExperiences, selectedSeasons, selectedDurations, searchQuery]);
+    if (sortBy === "days-desc") {
+      return [...list].sort((a, b) => sortByDaysAscending(b, a));
+    }
+    if (sortBy === "popular") {
+      return [...list].sort((a, b) => (b.purchaseCount || 0) - (a.purchaseCount || 0));
+    }
+    return [...list].sort(sortByDaysAscending);
+  }, [journeys, selectedCountries, selectedStates, selectedCities, selectedExperiences, selectedSeasons, selectedDurations, searchQuery, sortBy]);
 
   const clearAll = () => {
     setSelectedCountries([]);
@@ -215,6 +221,7 @@ export default function PackagesExplorer({
     setSelectedSeasons([]);
     setSelectedDurations([]);
     setSearchQuery("");
+    setSortBy("days-asc");
   };
 
   const activeFilterCount =
@@ -307,6 +314,7 @@ export default function PackagesExplorer({
         onClearAll={clearAll}
         resultCount={filtered.length}
         totalCount={journeys.length}
+        sortConfig={{ value: sortBy, onChange: setSortBy }}
       />
 
       <div className="mt-8">

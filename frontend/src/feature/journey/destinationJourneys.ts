@@ -88,13 +88,14 @@ export function resolveStateJourneys(
 
   // Strictly show the curated/selected packages. Fall back to state journeys only if none selected.
   const finalJourneys = selectedJourneys.length > 0 ? selectedJourneys : stateJourneys;
+  const defaultSortedJourneys = [...finalJourneys].sort(sortByDaysAscending);
 
   return {
-    stateJourneys: finalJourneys,
-    featuredJourneys: finalJourneys,
+    stateJourneys: defaultSortedJourneys,
+    featuredJourneys: defaultSortedJourneys,
     otherJourneys: [],
     hasBothCategories: false,
-    allOrderedJourneys: finalJourneys,
+    allOrderedJourneys: defaultSortedJourneys,
   };
 }
 
@@ -122,9 +123,8 @@ export function resolveCityJourneys(
     selectedJourneys = embeddedJourneys;
   }
 
-  return selectedJourneys.length > 0
-    ? selectedJourneys
-    : allCityJourneys.sort(sortByDisplayOrderAndBestSelling);
+  const final = selectedJourneys.length > 0 ? selectedJourneys : allCityJourneys;
+  return [...final].sort(sortByDaysAscending);
 }
 
 export function resolveCountryJourneys(
@@ -133,7 +133,7 @@ export function resolveCountryJourneys(
 ) {
   return (allJourneys || [])
     .filter((j) => j.cities?.some((c) => c.state?.country?.id === country.id))
-    .sort(sortByDisplayOrderAndBestSelling);
+    .sort(sortByDaysAscending);
 }
 
 export function resolveTravelExperienceJourneys(
@@ -159,13 +159,14 @@ export function resolveTravelExperienceJourneys(
 
   // Strictly show the curated/selected packages. Fall back to tagged journeys only if none selected.
   const finalJourneys = selectedTours.length > 0 ? selectedTours : taggedJourneys;
+  const defaultSortedJourneys = [...finalJourneys].sort(sortByDaysAscending);
 
   return {
-    experienceJourneys: finalJourneys,
-    topTours: finalJourneys,
+    experienceJourneys: defaultSortedJourneys,
+    topTours: defaultSortedJourneys,
     otherTours: [],
     hasTabs: false,
-    allOrderedJourneys: finalJourneys,
+    allOrderedJourneys: defaultSortedJourneys,
   };
 }
 
@@ -175,7 +176,7 @@ export function resolveSeasonJourneys(
 ) {
   return (allJourneys || [])
     .filter((j) => j.months?.some((m) => m.id === season.id))
-    .sort(sortByDisplayOrderAndBestSelling);
+    .sort(sortByDaysAscending);
 }
 
 /**

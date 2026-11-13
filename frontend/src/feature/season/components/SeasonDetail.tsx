@@ -10,10 +10,10 @@ import { FallbackImage } from "@/components/shared/FallbackImage";
 import RichContent from "@/components/shared/RichContent";
 import ToursSection from "@/components/shared/ToursSection";
 import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
-import FilterBar from "@/components/shared/FilterBar";
+import FilterBar, { type SortOption } from "@/components/shared/FilterBar";
 import FaqSection from "@/feature/home/components/FaqSection";
 import { stripHtml } from "@/lib/utils";
-import { resolveSeasonJourneys } from "@/feature/journey/destinationJourneys";
+import { resolveSeasonJourneys, sortByDaysAscending } from "@/feature/journey/destinationJourneys";
 import {
   cityOptions,
   travelExperienceOptions,
@@ -82,13 +82,26 @@ export default function SeasonDetail({
   const [expSelected, setExpSelected] = useState<string[]>([]);
   const [durSelected, setDurSelected] = useState<string[]>([]);
   const [citySelected, setCitySelected] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<SortOption>("days-asc");
 
-  const filteredJourneys = seasonJourneys.filter(
-    (j) =>
-      journeyMatchesExperiences(j, expSelected) &&
-      journeyMatchesDuration(j, durSelected) &&
-      journeyMatchesCities(j, citySelected)
-  );
+  const filteredJourneys = useMemo(() => {
+    let list = seasonJourneys;
+    if (expSelected.length > 0 || durSelected.length > 0 || citySelected.length > 0) {
+      list = seasonJourneys.filter(
+        (j) =>
+          journeyMatchesExperiences(j, expSelected) &&
+          journeyMatchesDuration(j, durSelected) &&
+          journeyMatchesCities(j, citySelected)
+      );
+    }
+    if (sortBy === "days-desc") {
+      return [...list].sort((a, b) => sortByDaysAscending(b, a));
+    }
+    if (sortBy === "popular") {
+      return [...list].sort((a, b) => (b.purchaseCount || 0) - (a.purchaseCount || 0));
+    }
+    return [...list].sort(sortByDaysAscending);
+  }, [seasonJourneys, expSelected, durSelected, citySelected, sortBy]);
 
   const activeFilterCount = expSelected.length + durSelected.length + citySelected.length;
 
@@ -96,6 +109,7 @@ export default function SeasonDetail({
     setExpSelected([]);
     setDurSelected([]);
     setCitySelected([]);
+    setSortBy("days-asc");
   };
 
   const filterBar = (
@@ -130,6 +144,7 @@ export default function SeasonDetail({
       onClearAll={clearFilters}
       resultCount={filteredJourneys.length}
       totalCount={seasonJourneys.length}
+      sortConfig={{ value: sortBy, onChange: setSortBy }}
     />
   );
 

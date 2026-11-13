@@ -7,7 +7,7 @@ import { useGetJourneys } from "@/feature/journey/api/useJourney";
 import TourPackageCard from "@/components/shared/TourPackageCard";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import Pagination from "@/components/shared/Pagination";
-import FilterBar from "@/components/shared/FilterBar";
+import FilterBar, { type SortOption } from "@/components/shared/FilterBar";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
 import HeroBanner from "@/components/shared/HeroBanner";
 import { useCountryBySlug } from "@/feature/country/api/useCountry";
@@ -56,6 +56,7 @@ export default function TourPackagesList({
   const [selectedExperiences, setSelectedExperiences] = useState<string[]>([]);
   const [selectedSeasons, setSelectedSeasons] = useState<string[]>([]);
   const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<SortOption>("days-asc");
 
   const states = useMemo(() => {
     const set = new Set<string>();
@@ -104,9 +105,14 @@ export default function TourPackagesList({
       return true;
     });
 
-    list = [...list].sort(sortByDaysAscending);
-    return list;
-  }, [countryJourneys, selectedStates, selectedCities, selectedExperiences, selectedSeasons, selectedDurations]);
+    if (sortBy === "days-desc") {
+      return [...list].sort((a, b) => sortByDaysAscending(b, a));
+    }
+    if (sortBy === "popular") {
+      return [...list].sort((a, b) => (b.purchaseCount || 0) - (a.purchaseCount || 0));
+    }
+    return [...list].sort(sortByDaysAscending);
+  }, [countryJourneys, selectedStates, selectedCities, selectedExperiences, selectedSeasons, selectedDurations, sortBy]);
 
   const clearAll = () => {
     setSelectedStates([]);
@@ -114,6 +120,7 @@ export default function TourPackagesList({
     setSelectedExperiences([]);
     setSelectedSeasons([]);
     setSelectedDurations([]);
+    setSortBy("days-asc");
   };
 
   const activeFilterCount =
@@ -222,6 +229,7 @@ export default function TourPackagesList({
                 onClearAll={clearAll}
                 resultCount={filtered.length}
                 totalCount={countryJourneys.length}
+                sortConfig={{ value: sortBy, onChange: setSortBy }}
               />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

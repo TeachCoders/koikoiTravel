@@ -23,7 +23,7 @@ import { FallbackImage } from "@/components/shared/FallbackImage";
 import DestinationGuideSection from "@/components/shared/DestinationGuideSection";
 import ToursSection from "@/components/shared/ToursSection";
 import TourPackageCard from "@/components/shared/TourPackageCard";
-import FilterBar from "@/components/shared/FilterBar";
+import FilterBar, { type SortOption } from "@/components/shared/FilterBar";
 import {
   travelExperienceOptions,
   durationOptions,
@@ -36,7 +36,7 @@ import {
   journeyPackageHref,
 } from "@/feature/journey/filterOptions";
 import { cn, stripHtml, formatToursH1 } from "@/lib/utils";
-import { resolveStateJourneys } from "@/feature/journey/destinationJourneys";
+import { resolveStateJourneys, sortByDaysAscending } from "@/feature/journey/destinationJourneys";
 import type { State } from "@/feature/state/type";
 import type { Journey, PaginatedResponse } from "@/feature/journey/type";
 import CityCard from "./CityCard";
@@ -106,6 +106,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
   const [durSelected, setDurSelected] = useState<string[]>([]);
   const [citySelected, setCitySelected] = useState<string[]>([]);
   const [seasonSelected, setSeasonSelected] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<SortOption>("days-asc");
 
   const activeFilterCount =
     expSelected.length + durSelected.length + citySelected.length + seasonSelected.length;
@@ -115,18 +116,28 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
     setDurSelected([]);
     setCitySelected([]);
     setSeasonSelected([]);
+    setSortBy("days-asc");
   };
 
   const filteredCurrentJourneys = useMemo(() => {
-    if (activeFilterCount === 0) return stateJourneys;
-    return stateJourneys.filter(
-      (j) =>
-        journeyMatchesExperiences(j, expSelected) &&
-        journeyMatchesDuration(j, durSelected) &&
-        journeyMatchesCities(j, citySelected) &&
-        journeyMatchesSeasons(j, seasonSelected)
-    );
-  }, [stateJourneys, activeFilterCount, expSelected, durSelected, citySelected, seasonSelected]);
+    let list = stateJourneys;
+    if (activeFilterCount > 0) {
+      list = stateJourneys.filter(
+        (j) =>
+          journeyMatchesExperiences(j, expSelected) &&
+          journeyMatchesDuration(j, durSelected) &&
+          journeyMatchesCities(j, citySelected) &&
+          journeyMatchesSeasons(j, seasonSelected)
+      );
+    }
+    if (sortBy === "days-desc") {
+      return [...list].sort((a, b) => sortByDaysAscending(b, a));
+    }
+    if (sortBy === "popular") {
+      return [...list].sort((a, b) => (b.purchaseCount || 0) - (a.purchaseCount || 0));
+    }
+    return [...list].sort(sortByDaysAscending);
+  }, [stateJourneys, activeFilterCount, expSelected, durSelected, citySelected, seasonSelected, sortBy]);
 
   const { data: heroBannersData } = useHeroBanners("State", {
     slug: state.slug,
@@ -254,6 +265,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
       onClearAll={clearFilters}
       resultCount={filteredCurrentJourneys.length}
       totalCount={stateJourneys.length}
+      sortConfig={{ value: sortBy, onChange: setSortBy }}
     />
   );
 
@@ -316,7 +328,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         h1Title={formatToursH1(state.h1Title || state.title)}
         overView={state.overView ?? undefined}
         emptyLabel={`No tour packages found matching your criteria in ${cleanStateName}`}
-        filterBar={stateJourneys.length >= 8 ? filterBar : undefined}
+        filterBar={stateJourneys.length > 0 ? filterBar : undefined}
         onClearFilters={clearFilters}
         sectionClassName="py-8 sm:py-10 md:py-12 bg-section-tint border-y border-section-border"
         cardVariant="default"

@@ -22,7 +22,7 @@ import ExpandableRichContent from "@/components/shared/ExpandableRichContent";
 import ToursSection from "@/components/shared/ToursSection";
 import TourPackageCard from "@/components/shared/TourPackageCard";
 import TravelGuideCollapsible from "@/components/shared/TravelGuideCollapsible";
-import FilterBar from "@/components/shared/FilterBar";
+import FilterBar, { type SortOption } from "@/components/shared/FilterBar";
 import {
   travelExperienceOptions,
   durationOptions,
@@ -36,7 +36,7 @@ import {
   DURATION_BUCKETS,
 } from "@/feature/journey/filterOptions";
 import { cn, formatToursH1 } from "@/lib/utils";
-import { resolveTravelExperienceJourneys } from "@/feature/journey/destinationJourneys";
+import { resolveTravelExperienceJourneys, sortByDaysAscending } from "@/feature/journey/destinationJourneys";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
 import { GOLDEN_TRIANGLE_FAQS } from "../goldenTriangleFaqs";
@@ -113,6 +113,7 @@ function ExperienceContent({
   const [durSelected, setDurSelected] = useState<string[]>([]);
   const [citySelected, setCitySelected] = useState<string[]>([]);
   const [seasonSelected, setSeasonSelected] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<SortOption>("days-asc");
 
   const activeFilterCount = durSelected.length + citySelected.length + seasonSelected.length;
 
@@ -120,17 +121,27 @@ function ExperienceContent({
     setDurSelected([]);
     setCitySelected([]);
     setSeasonSelected([]);
+    setSortBy("days-asc");
   };
 
   const filteredJourneys = useMemo(() => {
-    if (activeFilterCount === 0) return experienceJourneys;
-    return experienceJourneys.filter(
-      (j) =>
-        journeyMatchesDuration(j, durSelected) &&
-        journeyMatchesCities(j, citySelected) &&
-        journeyMatchesSeasons(j, seasonSelected)
-    );
-  }, [experienceJourneys, activeFilterCount, durSelected, citySelected, seasonSelected]);
+    let list = experienceJourneys;
+    if (activeFilterCount > 0) {
+      list = experienceJourneys.filter(
+        (j) =>
+          journeyMatchesDuration(j, durSelected) &&
+          journeyMatchesCities(j, citySelected) &&
+          journeyMatchesSeasons(j, seasonSelected)
+      );
+    }
+    if (sortBy === "days-desc") {
+      return [...list].sort((a, b) => sortByDaysAscending(b, a));
+    }
+    if (sortBy === "popular") {
+      return [...list].sort((a, b) => (b.purchaseCount || 0) - (a.purchaseCount || 0));
+    }
+    return [...list].sort(sortByDaysAscending);
+  }, [experienceJourneys, activeFilterCount, durSelected, citySelected, seasonSelected, sortBy]);
 
   const { travelExperiences: allExperiences } = useGetTravelExperiences({ isActive: "true" });
   const otherExpsCount = (allExperiences || []).filter(
@@ -210,6 +221,7 @@ function ExperienceContent({
       onClearAll={clearFilters}
       resultCount={filteredJourneys.length}
       totalCount={experienceJourneys.length}
+      sortConfig={{ value: sortBy, onChange: setSortBy }}
     />
   );
 
