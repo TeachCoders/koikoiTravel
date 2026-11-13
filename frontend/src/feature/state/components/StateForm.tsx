@@ -480,6 +480,15 @@ export default function StateFormPage({ initialData, mode }: StateFormProps) {
               />
               Active
             </label>
+            <label className="flex items-center gap-2 text-sm font-semibold text-slate-600">
+              <input
+                type="checkbox"
+                checked={formData.showOnSite ?? true}
+                onChange={(e) => setFormData((prev) => ({ ...prev, showOnSite: e.target.checked }))}
+                className="rounded border-slate-300"
+              />
+              Show on Website
+            </label>
           </div>
           <div className="flex items-center gap-3">
             <Link

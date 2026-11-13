@@ -381,29 +381,40 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
         <FaqEditor faqs={faqs} setFaqs={setFaqs} />
 
         <div className="flex items-center justify-between gap-3 pb-8">
-          <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-6">
+            <div className="flex flex-col gap-1">
+              <label className="flex items-center gap-2 text-sm font-semibold text-slate-600">
+                <input
+                  type="checkbox"
+                  checked={formData.isActive}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    if (checked && journeyIds.length < 2) {
+                      errorToast("Cannot activate city: At least 2 tour itineraries are required before activating a city.");
+                      return;
+                    }
+                    setFormData((prev) => ({ ...prev, isActive: checked }));
+                  }}
+                  className="rounded border-slate-300"
+                />
+                Active
+              </label>
+              <p className="text-xs text-slate-400">
+                Requires at least 2 connected tour itineraries to be active.
+              </p>
+              {errors.isActive && (
+                <p className="text-xs text-red-500 font-medium">{errors.isActive}</p>
+              )}
+            </div>
             <label className="flex items-center gap-2 text-sm font-semibold text-slate-600">
               <input
                 type="checkbox"
-                checked={formData.isActive}
-                onChange={(e) => {
-                  const checked = e.target.checked;
-                  if (checked && journeyIds.length < 2) {
-                    errorToast("Cannot activate city: At least 2 tour itineraries are required before activating a city.");
-                    return;
-                  }
-                  setFormData((prev) => ({ ...prev, isActive: checked }));
-                }}
+                checked={formData.showOnSite ?? true}
+                onChange={(e) => setFormData((prev) => ({ ...prev, showOnSite: e.target.checked }))}
                 className="rounded border-slate-300"
               />
-              Active
+              Show on Website
             </label>
-            <p className="text-xs text-slate-400">
-              Requires at least 2 connected tour itineraries to be active.
-            </p>
-            {errors.isActive && (
-              <p className="text-xs text-red-500 font-medium">{errors.isActive}</p>
-            )}
           </div>
           <div className="flex items-center gap-3">
           <Link
