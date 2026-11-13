@@ -52,9 +52,7 @@ export const useCreateHeroBanner = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      const res = await apiClient.post("/hero-full-banner", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await apiClient.post("/hero-full-banner", formData);
       return res.data;
     },
     onSuccess: () => {
@@ -70,9 +68,7 @@ export const useUpdateHeroBanner = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, formData }: { id: number; formData: FormData }) => {
-      const res = await apiClient.put(`/hero-full-banner/${id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await apiClient.put(`/hero-full-banner/${id}`, formData);
       return res.data;
     },
     onSuccess: () => {

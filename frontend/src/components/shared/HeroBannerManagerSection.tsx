@@ -199,21 +199,51 @@ export default function HeroBannerManagerSection({
 
       if (desktopFile) {
         formData.append("image", desktopFile);
-      } else if (desktopPreview && !desktopPreview.startsWith("blob:")) {
-        formData.append("image", desktopPreview);
+      } else if (desktopPreview) {
+        if (desktopPreview.startsWith("blob:")) {
+          try {
+            const blobRes = await fetch(desktopPreview);
+            const blob = await blobRes.blob();
+            formData.append("image", blob, "desktop-banner.webp");
+          } catch {
+            formData.append("image", desktopPreview);
+          }
+        } else {
+          formData.append("image", desktopPreview);
+        }
       } else if (!editingBanner && (mobileFile || mobilePreview)) {
         // Fallback: If no desktop image, use mobile image as desktop fallback
         if (mobileFile) {
           formData.append("image", mobileFile);
-        } else if (mobilePreview && !mobilePreview.startsWith("blob:")) {
-          formData.append("image", mobilePreview);
+        } else if (mobilePreview) {
+          if (mobilePreview.startsWith("blob:")) {
+            try {
+              const blobRes = await fetch(mobilePreview);
+              const blob = await blobRes.blob();
+              formData.append("image", blob, "mobile-banner.webp");
+            } catch {
+              formData.append("image", mobilePreview);
+            }
+          } else {
+            formData.append("image", mobilePreview);
+          }
         }
       }
 
       if (mobileFile) {
         formData.append("mobileImage", mobileFile);
-      } else if (mobilePreview && !mobilePreview.startsWith("blob:")) {
-        formData.append("mobileImage", mobilePreview);
+      } else if (mobilePreview) {
+        if (mobilePreview.startsWith("blob:")) {
+          try {
+            const blobRes = await fetch(mobilePreview);
+            const blob = await blobRes.blob();
+            formData.append("mobileImage", blob, "mobile-banner.webp");
+          } catch {
+            formData.append("mobileImage", mobilePreview);
+          }
+        } else {
+          formData.append("mobileImage", mobilePreview);
+        }
       }
 
       if (removeMobileImage) {
@@ -568,6 +598,10 @@ export default function HeroBannerManagerSection({
                         setMediaTarget("desktop");
                         setMediaOpen(true);
                       }}
+                      onSelectExistingUrl={(url) => {
+                        setDesktopFile(null);
+                        setDesktopPreview(url);
+                      }}
                       maxWidth={1920}
                       maxHeight={600}
                       aspectRatioPreset="hero"
@@ -641,6 +675,11 @@ export default function HeroBannerManagerSection({
                       onBrowseLibrary={() => {
                         setMediaTarget("mobile");
                         setMediaOpen(true);
+                      }}
+                      onSelectExistingUrl={(url) => {
+                        setMobileFile(null);
+                        setMobilePreview(url);
+                        setRemoveMobileImage(false);
                       }}
                       maxWidth={750}
                       maxHeight={500}
