@@ -42,7 +42,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
     <HeroBanner
       slides={slides}
       align="left"
-      tag="Private luxury & group tours"
+      tag="Private Customized & Small Group Tour"
       alt="KoiKoi Travel"
       interval={7000}
       title={
@@ -55,7 +55,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ initialHeroBanners }) 
       }
       subtitle={
         <p className="hidden sm:block mt-3 sm:mt-4 text-[15px] sm:text-lg md:text-xl lg:text-[22px] max-w-3xl font-semibold leading-snug sm:leading-relaxed text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]">
-          Private luxury journeys and small-group tours across India, crafted with care and a personal trip manager by your side.
+          Private customized and small-group tours across India, crafted with care and a personal trip manager by your side.
         </p>
       }
       // subtitle="Handcrafted private journeys across India, thoughtfully tailored to your style and pace."
