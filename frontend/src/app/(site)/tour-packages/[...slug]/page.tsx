@@ -301,7 +301,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
       const { country } = resolved;
       const [initialStates, initialJourneys, initialExperiences] = await Promise.all([
         country
-          ? fetchPublicJsonCached<StatePage<State>>(`/state?limit=100&countryId=${country.id}`)
+          ? fetchPublicJsonCached<StatePage<State>>(`/state?limit=100&countryId=${country.id}&includeAll=true`)
           : null,
         fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true"),
         fetchPublicJsonCached<ExperiencePage<TravelExperience>>("/holidays?limit=100&isActive=true"),
@@ -322,7 +322,18 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
               slug: s.slug,
               thumbImg: s.thumbImg,
               tourCount: s.tourCount,
-              cities: (s.cities || []).map((c: any) => ({ id: c.id, title: c.title, slug: c.slug })),
+              isActive: s.isActive,
+              showOnSite: s.showOnSite,
+              displayOrder: s.displayOrder,
+              domesticDisplayOrder: s.domesticDisplayOrder,
+              banner: s.banner,
+              cities: (s.cities || []).map((c: any) => ({
+                id: c.id,
+                title: c.title,
+                slug: c.slug,
+                isActive: c.isActive,
+                showOnSite: c.showOnSite,
+              })),
             })),
           }
         : null;

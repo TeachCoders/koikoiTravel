@@ -362,27 +362,29 @@ function CountryContent({
     return Math.max(directCount, cityCount);
   };
 
-  const displayedStates = useMemo(() => {
+  // All active states / regions belonging to this country
+  const allActiveStates = useMemo(() => {
     return [...states]
+      .filter((s) => s.isActive !== false && s.showOnSite !== false)
+      .sort((a, b) => {
+        const aOrder = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 999;
+        const bOrder = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 999;
+        if (aOrder !== bOrder) return aOrder - bOrder;
+        return (a.title || "").localeCompare(b.title || "");
+      });
+  }, [states]);
+
+  // States eligible for featured destination cards
+  const displayedStates = useMemo(() => {
+    return allActiveStates
       .filter((s) => {
         const slug = (s.slug || "").toLowerCase().trim();
-        const title = (s.title || "").toLowerCase().trim();
-        // User requested: exclude Tamil Nadu, Karnataka & Punjab from India page
-        if (
-          slug === "tamil-nadu" ||
-          slug === "tamilnadu" ||
-          title.replace(/\s+/g, "").includes("tamilnadu") ||
-          slug === "karnataka" ||
-          title.replace(/\s+/g, "").includes("karnataka") ||
-          slug === "punjab" ||
-          title.replace(/\s+/g, "").includes("punjab")
-        ) {
+        // Exclude Tamil Nadu & Karnataka from separate cards because South India card represents the South India region
+        if (slug === "tamil-nadu" || slug === "karnataka") {
           return false;
         }
-        // Exclude states hidden from site or inactive
-        if (s.showOnSite === false || s.isActive === false) return false;
 
-        // Condition: jinke url / tours open nahi ho rahe unhe hide karo
+        // Condition: must have at least 1 tour
         const count = journeyCountForState(s.id);
         const hasCities = Boolean((s.cities && s.cities.length > 0) || (s._count?.cities && s._count.cities > 0));
         if (count === 0 && !hasCities) return false;
@@ -404,7 +406,7 @@ function CountryContent({
         if (aOrder !== bOrder) return aOrder - bOrder;
         return (a.title || "").localeCompare(b.title || "");
       });
-  }, [states, countryJourneys]);
+  }, [allActiveStates, countryJourneys]);
 
   const getDestinationImage = (s: State) => {
     if (s.thumbImg) return s.thumbImg;
@@ -463,6 +465,9 @@ function CountryContent({
 
   // ==========================================================================
   // 100% SSR-SAFE DESTINATION GROUPS (WITH RESOLVED CANONICAL PACKAGES)
+  // Per user request: Destinations with 2 or 3 itineraries (<= 3) do NOT get
+  // a large card with image ("unke card image waal stat mt bnnaa"), but are
+  // included in the complete states & cities directory below.
   // ==========================================================================
   const destinationGroups = useMemo(() => {
     return displayedStates
@@ -473,37 +478,58 @@ function CountryContent({
           journeys: stateJourneys,
         };
       })
-      .filter((g) => g.journeys.length > 0);
+      .filter((g) => g.journeys.length > 3);
   }, [displayedStates, countryJourneys]);
 
   // ==========================================================================
-  // TOP TOURIST CITIES FROM A-Z (100% DYNAMIC FROM API - NO STATIC FALLBACKS)
-  // Strict Filtering:
-  // 1. City must be explicitly active (isActive !== false && showOnSite !== false)
-  // 2. Parent state must exist, be active, belong to this country, and not be excluded
-  // 3. City must have at least 1 active tour/journey so its URL actually works and opens
+  // COMPLETE STATES & TOUR CITIES FROM A-Z (100% DYNAMIC FROM API)
+  // Strict Requirements:
+  // 1. ALL active states in this country (Punjab, Goa, MP, etc.) are included
+  // 2. ALL active cities with tours are included
+  // 3. States & cities are organized alphabetically A-Z for comprehensive discovery
   // ==========================================================================
-  const azCityGroups = useMemo(() => {
-    const map: Record<string, { title: string; slug: string; stateSlug: string }[]> = {};
+  const azDirectoryGroups = useMemo(() => {
+    const map: Record<
+      string,
+      {
+        title: string;
+        slug: string;
+        href: string;
+        type: "state" | "city";
+        stateSlug?: string;
+        tourCount?: number;
+      }[]
+    > = {};
 
-    // Excluded states for India page
-    const isExcludedState = (sSlug?: string, sTitle?: string) => {
-      const slug = (sSlug || "").toLowerCase().trim();
-      const title = (sTitle || "").toLowerCase().trim().replace(/\s+/g, "");
-      return (
-        slug === "tamil-nadu" ||
-        slug === "tamilnadu" ||
-        title.includes("tamilnadu") ||
-        slug === "karnataka" ||
-        title.includes("karnataka") ||
-        slug === "punjab" ||
-        title.includes("punjab")
-      );
-    };
+    const seenKeys = new Set<string>();
+
+    // 1. Add all active states / regions belonging to this country
+    allActiveStates.forEach((s) => {
+      if (!s.title || !s.slug) return;
+      const cleanTitle = s.title.replace(/\s*Tours?$/i, "").trim();
+      const firstLetter = cleanTitle.charAt(0).toUpperCase();
+      if (!firstLetter || !/[A-Z]/.test(firstLetter)) return;
+
+      const key = `state-${s.slug.toLowerCase().trim()}`;
+      if (seenKeys.has(key)) return;
+      seenKeys.add(key);
+
+      const count = journeyCountForState(s.id);
+      if (!map[firstLetter]) {
+        map[firstLetter] = [];
+      }
+      map[firstLetter].push({
+        title: cleanTitle,
+        slug: s.slug,
+        href: `/tour-packages/${country.slug}/${s.slug}`,
+        type: "state",
+        tourCount: count,
+      });
+    });
 
     // Lookup map of valid active parent states
     const validStateMap = new Map<number | string, State>();
-    displayedStates.forEach((s) => {
+    allActiveStates.forEach((s) => {
       if (s.id) validStateMap.set(s.id, s);
       if (s.slug) validStateMap.set(s.slug.toLowerCase(), s);
     });
@@ -511,7 +537,6 @@ function CountryContent({
     // Pool candidate cities from states and apiCities
     const candidateCities: any[] = [];
     states.forEach((s) => {
-      if (isExcludedState(s.slug, s.title)) return;
       if (s.isActive === false || s.showOnSite === false) return;
       (s.cities || []).forEach((c) => {
         candidateCities.push({ ...c, state: s });
@@ -525,34 +550,25 @@ function CountryContent({
       }
     });
 
-    const seenCitySlugs = new Set<string>();
-
+    // 2. Add all active cities with valid tours
     candidateCities.forEach((c) => {
       if (!c?.title || !c?.slug) return;
       const cSlug = c.slug.toLowerCase().trim();
-      if (seenCitySlugs.has(cSlug)) return;
+      const key = `city-${cSlug}`;
+      if (seenKeys.has(key)) return;
 
       const anyCity = c as any;
-
-      // 1. Disable check: do not show if city is disabled or hidden from site
       if (anyCity.isActive === false || anyCity.showOnSite === false) return;
 
-      // 2. Parent state check: must exist, be active, and not excluded
       const stateObj = anyCity.state;
       if (!stateObj || !stateObj.slug) return;
-      const sSlug = stateObj.slug.toLowerCase().trim();
-      const sTitle = stateObj.title || "";
-      if (isExcludedState(sSlug, sTitle)) return;
       if (stateObj.isActive === false || stateObj.showOnSite === false) return;
 
-      // 3. Country match
       const cCountryId = stateObj.country?.id || stateObj.countryId;
       const cCountrySlug = stateObj.country?.slug;
       if (cCountryId && cCountryId !== country.id) return;
       if (cCountrySlug && cCountrySlug !== country.slug) return;
 
-      // 4. Tour/journey check: City MUST have active journeys/tours
-      // Excludes cities like Chittorgarh that have 0 tours or inactive pages
       const journeyCount =
         (anyCity._count?.journeys && anyCity._count.journeys > 0) ||
         (anyCity.tourCount && anyCity.tourCount > 0) ||
@@ -562,15 +578,13 @@ function CountryContent({
         j.cities?.some((jc) => jc.id === c.id || jc.slug?.toLowerCase() === cSlug)
       );
 
-      if (!journeyCount && !hasJourneyInCountry) {
-        return;
-      }
+      if (!journeyCount && !hasJourneyInCountry) return;
 
       const cleanTitle = c.title.trim();
       const firstLetter = cleanTitle.charAt(0).toUpperCase();
       if (!firstLetter || !/[A-Z]/.test(firstLetter)) return;
 
-      seenCitySlugs.add(cSlug);
+      seenKeys.add(key);
 
       if (!map[firstLetter]) {
         map[firstLetter] = [];
@@ -578,22 +592,24 @@ function CountryContent({
       map[firstLetter].push({
         title: cleanTitle,
         slug: c.slug,
+        href: `/tour-packages/${country.slug}/${stateObj.slug}/${c.slug}`,
+        type: "city",
         stateSlug: stateObj.slug,
       });
     });
 
-    // Sort letters alphabetically and cities within each letter
+    // Sort letters alphabetically and items within each letter
     const sortedEntries = Object.entries(map).sort(([a], [b]) => a.localeCompare(b));
     sortedEntries.forEach(([, list]) => {
       list.sort((a, b) => a.title.localeCompare(b.title));
     });
 
     return sortedEntries;
-  }, [apiCities, states, displayedStates, countryJourneys, country.id, country.slug]);
+  }, [allActiveStates, apiCities, states, countryJourneys, country.id, country.slug]);
 
-  const totalCitiesCount = useMemo(() => {
-    return azCityGroups.reduce((acc, [, list]) => acc + list.length, 0);
-  }, [azCityGroups]);
+  const totalDirectoryItemsCount = useMemo(() => {
+    return azDirectoryGroups.reduce((acc, [, list]) => acc + list.length, 0);
+  }, [azDirectoryGroups]);
 
   // Hero Banners Data
   const { data: heroBannersData } = useHeroBanners("Country", {
@@ -734,16 +750,16 @@ function CountryContent({
               </p>
             </div>
 
-            {/* Expandable A-Z Tour Cities Directory (Inside Section - Default Collapsed, 100% SSR Safe) */}
-            {azCityGroups.length > 0 && (
+            {/* Expandable A-Z States & Tour Cities Directory (Inside Section - Default Collapsed, 100% SSR Safe) */}
+            {azDirectoryGroups.length > 0 && (
               <div className="mt-8 pt-6 border-t border-slate-200/80">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div>
                     <h3 className="text-base sm:text-lg font-bold text-slate-900">
-                      Explore {displayTitle} Tour Cities from A-Z
+                      Explore {displayTitle} States &amp; Tour Cities from A-Z
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-500">
-                      Browse our comprehensive directory of tourist cities across {displayTitle}.
+                      Browse our comprehensive directory of all states, union territories, and tourist cities across {displayTitle}.
                     </p>
                   </div>
                   <button
@@ -753,8 +769,8 @@ function CountryContent({
                   >
                     <span>
                       {isCityTableExpanded
-                        ? "Hide Cities List"
-                        : `Browse Cities from A-Z (${totalCitiesCount} cities)`}
+                        ? "Hide Directory List"
+                        : `Browse States & Cities from A-Z (${totalDirectoryItemsCount} destinations)`}
                     </span>
                     <ChevronDown
                       className={cn(
@@ -768,11 +784,44 @@ function CountryContent({
                 {/* 100% SSR SEO Guarantee: Rendered in HTML for Googlebot, toggled via CSS */}
                 <div
                   className={cn(
-                    "mt-4 transition-all duration-300",
+                    "mt-4 transition-all duration-300 space-y-4",
                     isCityTableExpanded ? "block" : "hidden"
                   )}
                   aria-hidden={!isCityTableExpanded}
                 >
+                  {/* Quick-Access States & Regions Bar */}
+                  {allActiveStates.length > 0 && (
+                    <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 mb-3">
+                        <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                          All States &amp; Tour Regions in {displayTitle} ({allActiveStates.length})
+                        </span>
+                        <span className="text-[11px] text-slate-500 font-medium">
+                          Click to view all tour packages for that state
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {allActiveStates.map((s) => {
+                          const clean = s.title.replace(/\s*Tours?$/i, "").trim();
+                          const count = journeyCountForState(s.id);
+                          return (
+                            <Link
+                              key={s.id}
+                              href={`/tour-packages/${country.slug}/${s.slug}`}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-[#FAF8F5] border border-slate-200 hover:border-[#F8904D]/50 text-xs sm:text-[13px] font-semibold text-slate-800 hover:text-[#F8904D] transition-colors shadow-2xs group"
+                            >
+                              <span>{clean}</span>
+                              <span className="text-[10px] text-slate-400 group-hover:text-[#F8904D] font-normal">
+                                ({count} {count === 1 ? "Tour" : "Tours"})
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* A-Z Alphabetical Directory Table */}
                   <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
                     <div className="overflow-x-auto">
                       <table className="w-full text-left border-collapse">
@@ -782,12 +831,12 @@ function CountryContent({
                               Letter
                             </th>
                             <th className="p-3 sm:p-3.5 pl-4 sm:pl-6 font-bold">
-                              City List
+                              States &amp; Cities List
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          {azCityGroups.map(([letter, cityList]) => (
+                          {azDirectoryGroups.map(([letter, itemList]) => (
                             <tr
                               key={letter}
                               className="border-b border-slate-200/70 last:border-b-0 hover:bg-slate-50/60 transition-colors"
@@ -796,22 +845,34 @@ function CountryContent({
                                 {letter}
                               </td>
                               <td className="p-3 sm:p-3.5 pl-4 sm:pl-6 align-top text-xs sm:text-[13.5px] leading-relaxed text-slate-600">
-                                {cityList.map((c, i) => {
-                                  const href = c.stateSlug
-                                    ? `/tour-packages/${country.slug}/${c.stateSlug}/${c.slug}`
-                                    : `/tour-packages?city=${c.slug}`;
+                                {itemList.map((item, i) => {
+                                  const isLast = i === itemList.length - 1;
+                                  if (item.type === "state") {
+                                    return (
+                                      <span key={`state-${item.slug}-${i}`} className="inline-flex items-center gap-1">
+                                        <Link
+                                          href={item.href}
+                                          className="text-slate-900 font-bold hover:text-[#F8904D] hover:underline underline-offset-2 transition-colors"
+                                        >
+                                          {item.title}
+                                        </Link>
+                                        <span className="text-[9.5px] font-bold text-white bg-[#2E8B8B] px-1.5 py-0.5 rounded-full uppercase tracking-wider leading-none shadow-2xs">
+                                          State
+                                        </span>
+                                        {!isLast && <span className="text-slate-400 mr-1.5">, </span>}
+                                      </span>
+                                    );
+                                  }
 
                                   return (
-                                    <span key={`${c.slug}-${i}`}>
+                                    <span key={`city-${item.slug}-${i}`}>
                                       <Link
-                                        href={href}
-                                        className="text-slate-800 hover:text-[#F8904D] hover:underline underline-offset-2 transition-colors font-medium"
+                                        href={item.href}
+                                        className="text-slate-700 hover:text-[#F8904D] hover:underline underline-offset-2 transition-colors font-medium"
                                       >
-                                        {c.title}
+                                        {item.title}
                                       </Link>
-                                      {i < cityList.length - 1 && (
-                                        <span className="text-slate-400 mr-1.5">, </span>
-                                      )}
+                                      {!isLast && <span className="text-slate-400 mr-1.5">, </span>}
                                     </span>
                                   );
                                 })}

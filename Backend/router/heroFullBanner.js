@@ -193,13 +193,13 @@ router.post("/", requireSalesOrAdmin, bannerUpload.any(), async (req, res) => {
     const desktopFile = files.find((f) => f.fieldname === "image");
     const mobileFile = files.find((f) => f.fieldname === "mobileImage");
 
-    const desktopImagePath = desktopFile
+    let desktopImagePath = desktopFile
       ? `/${desktopFile.path.replace(/^public[\\/]/, "").replace(/\\/g, "/")}`
       : req.body.image
       ? String(req.body.image).trim()
       : null;
 
-    const mobileImagePath = mobileFile
+    let mobileImagePath = mobileFile
       ? `/${mobileFile.path.replace(/^public[\\/]/, "").replace(/\\/g, "/")}`
       : req.body.mobileImage
       ? String(req.body.mobileImage).trim()
