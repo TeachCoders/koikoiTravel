@@ -13,7 +13,7 @@ export default async function HomeSections() {
     initialJourneys,
     initialHeroBanners,
   ] = await Promise.all([
-    fetchPublicJsonCached<StatePage<State>>("/state?limit=100&isActive=true"),
+    fetchPublicJsonCached<StatePage<State>>("/state?limit=100&isActive=true&includeAll=true"),
     fetchPublicJsonCached<ExperiencePage<TravelExperience>>("/holidays?limit=100&isActive=true"),
     fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true"),
     fetchHeroBannersServer("Home"),

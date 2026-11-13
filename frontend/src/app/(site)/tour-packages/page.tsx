@@ -8,7 +8,7 @@ import PackagesExplorer from "@/feature/journey/components/PackagesExplorer";
 import { fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import { journeyCardTitle, journeyPackageHref } from "@/feature/journey/filterOptions";
-import { trimJourneyForListing } from "@/feature/journey/destinationJourneys";
+import { trimJourneyForListing, sortByDaysAscending } from "@/feature/journey/destinationJourneys";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import { fetchHeroBannersServer } from "@/feature/heroBanner/api/server";
 import HeroBanner from "@/components/shared/HeroBanner";
@@ -86,7 +86,7 @@ export default async function TourPackagesPage({
   const heroSubtitle = customHero?.subtitle || "Tailor-Made Holiday Packages";
 
   const journeyItems = [...(initialJourneys?.data || [])]
-    .sort((a, b) => (b.purchaseCount || 0) - (a.purchaseCount || 0))
+    .sort(sortByDaysAscending)
     .slice(0, 16)
     .map((j) => ({
       name: journeyCardTitle(j),

@@ -35,13 +35,6 @@ export function sortByDaysAscending(a: any, b: any): number {
 }
 
 export function sortByDisplayOrderAndBestSelling(a: Journey, b: Journey): number {
-  const aOrder = a.displayOrder ?? 0;
-  const bOrder = b.displayOrder ?? 0;
-  if (aOrder > 0 && bOrder > 0) return aOrder - bOrder;
-  if (aOrder > 0) return -1;
-  if (bOrder > 0) return 1;
-  if (a.isBestSelling && !b.isBestSelling) return -1;
-  if (!a.isBestSelling && b.isBestSelling) return 1;
   return sortByDaysAscending(a, b);
 }
 

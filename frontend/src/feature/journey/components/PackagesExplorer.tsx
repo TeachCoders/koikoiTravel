@@ -7,6 +7,7 @@ import type { Journey, PaginatedResponse } from "@/feature/journey/type";
 import FilterBar from "@/components/shared/FilterBar";
 import TourPackageCard from "@/components/shared/TourPackageCard";
 import Pagination from "@/components/shared/Pagination";
+import { sortByDaysAscending } from "@/feature/journey/destinationJourneys";
 import {
   travelExperienceOptions,
   durationOptions,
@@ -202,7 +203,7 @@ export default function PackagesExplorer({
       return true;
     });
 
-    list = [...list].sort((a, b) => (b.purchaseCount || 0) - (a.purchaseCount || 0));
+    list = [...list].sort(sortByDaysAscending);
     return list;
   }, [journeys, selectedCountries, selectedStates, selectedCities, selectedExperiences, selectedSeasons, selectedDurations, searchQuery]);
 

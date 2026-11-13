@@ -18,7 +18,7 @@ import { FaqSection } from "@/feature/home/components/FaqSection";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import TourPackageCard from "@/components/shared/TourPackageCard";
 import type { Journey } from "@/feature/journey/type";
-import { trimJourneyForListing } from "@/feature/journey/destinationJourneys";
+import { trimJourneyForListing, sortByDaysAscending } from "@/feature/journey/destinationJourneys";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://koikoitravel.com";
 
@@ -161,12 +161,7 @@ async function fetchDestinations() {
       .find(Boolean) || undefined;
   const heroMobileImage = heroBanners?.[0]?.mobileImage || undefined;
 
-  const sortedJourneys = [...journeys].sort((a, b) => {
-    const ao = a.displayOrder && a.displayOrder > 0 ? a.displayOrder : 99999;
-    const bo = b.displayOrder && b.displayOrder > 0 ? b.displayOrder : 99999;
-    if (ao !== bo) return ao - bo;
-    return (b.purchaseCount || 0) - (a.purchaseCount || 0);
-  });
+  const sortedJourneys = [...journeys].sort(sortByDaysAscending);
 
   return {
     countries: sortedCountries,

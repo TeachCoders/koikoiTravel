@@ -13,6 +13,7 @@ import HeroBanner from "@/components/shared/HeroBanner";
 import { useCountryBySlug } from "@/feature/country/api/useCountry";
 import type { Journey } from "@/feature/journey/type";
 import type { Country } from "@/feature/country/type";
+import { sortByDaysAscending } from "@/feature/journey/destinationJourneys";
 import {
   travelExperienceOptions,
   durationOptions,
@@ -103,7 +104,7 @@ export default function TourPackagesList({
       return true;
     });
 
-    list = [...list].sort((a, b) => (b.purchaseCount || 0) - (a.purchaseCount || 0));
+    list = [...list].sort(sortByDaysAscending);
     return list;
   }, [countryJourneys, selectedStates, selectedCities, selectedExperiences, selectedSeasons, selectedDurations]);
 
