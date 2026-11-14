@@ -1,3 +1,10 @@
+import path from "path";
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
 import { prisma } from "../utils/prismaConnection.js";
 
 const LADAKH_STATE_ID = 9;
