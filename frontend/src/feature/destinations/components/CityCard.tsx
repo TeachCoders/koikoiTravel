@@ -3,6 +3,10 @@ import type { City } from "@/feature/city/type";
 import { stripHtml } from "@/lib/utils";
 
 const CITY_EYEBROWS: Record<string, string> = {
+  kedarnath: "12 JYOTIRLINGA DHAM",
+  badrinath: "HOLY VISHNU ABODE",
+  gangotri: "ORIGIN OF SACRED GANGA",
+  yamunotri: "SOURCE OF HOLY YAMUNA",
   jaipur: "The Pink City of India",
   udaipur: "City of Lakes of India",
   jodhpur: "The Blue City of India",
@@ -25,6 +29,10 @@ const CITY_EYEBROWS: Record<string, string> = {
 };
 
 const CITY_DESCRIPTIONS: Record<string, string> = {
+  kedarnath: "Visit the revered Himalayan Jyotirlinga temple of Lord Shiva surrounded by towering snow-clad peaks.",
+  badrinath: "Seek blessings at the sacred Char Dham temple of Lord Badri Narayan nestled in the Garhwal Himalayas.",
+  gangotri: "Worship at the high-altitude shrine where the holy River Bhagirathi descends amidst serene mountain valleys.",
+  yamunotri: "Begin the sacred Char Dham Yatra at the pristine thermal springs and ancient shrine of Goddess Yamuna.",
   jaipur: "Explore the Amber Fort, Hawa Mahal, royal palaces, and vibrant bazaars of the Pink City.",
   udaipur: "Discover shimmering Lake Pichola, fairy-tale marble palaces, and scenic sunset boat rides.",
   jodhpur: "Witness the majestic Mehrangarh Fort, blue-washed heritage streets, and royal cenotaphs.",
@@ -71,13 +79,20 @@ export default function CityCard({
     : undefined;
 
   const citySlug = (city.slug || "").toLowerCase().trim();
+  const isDham =
+    citySlug === "kedarnath" ||
+    citySlug === "badrinath" ||
+    citySlug === "gangotri" ||
+    citySlug === "yamunotri";
 
   const eyebrow =
+    (isDham && CITY_EYEBROWS[citySlug]) ||
     city.banner?.bannerTag?.trim() ||
     CITY_EYEBROWS[citySlug] ||
     (journeys >= 5 ? "POPULAR CIRCUIT" : "POPULAR DESTINATION");
 
   const description =
+    (isDham && CITY_DESCRIPTIONS[citySlug]) ||
     city.cardShortDescription ||
     CITY_DESCRIPTIONS[citySlug] ||
     (city.seoDescription ? stripHtml(city.seoDescription).slice(0, 115).trim() + "..." : null) ||

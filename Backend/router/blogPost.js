@@ -40,5 +40,6 @@ export default createCmsRouter({
     isActive: true,
     displayOrder: true,
     updatedAt: true,
+    contentUpdatedAt: true,
   },
 });

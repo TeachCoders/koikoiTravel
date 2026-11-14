@@ -31,6 +31,8 @@ interface JourneyBasicInfoProps {
   cities?: any[];
   missingRouteCities?: string[];
   onQuickCreateCityWithName?: (cityName: string) => void;
+  onDestinationChange?: (val: string) => void;
+  onAutoFillDestination?: () => void;
 }
 
 export default function JourneyBasicInfo({ 
@@ -40,7 +42,8 @@ export default function JourneyBasicInfo({
   seasonIds, setSeasonIds,
   travelExperienceIds, setTravelExperienceIds,
   quickCreateProps, quickCreatedOptions, initialData,
-  cities = [], missingRouteCities = [], onQuickCreateCityWithName
+  cities = [], missingRouteCities = [], onQuickCreateCityWithName,
+  onDestinationChange, onAutoFillDestination
 }: JourneyBasicInfoProps) {
 
   return (
@@ -50,13 +53,34 @@ export default function JourneyBasicInfo({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Destination Label</label>
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-gray-700">Destination Label</label>
+              {formData.cityIds?.length > 0 && onAutoFillDestination && (
+                <button
+                  type="button"
+                  onClick={onAutoFillDestination}
+                  className="text-xs text-brand-600 hover:text-brand-700 hover:underline font-medium cursor-pointer"
+                  title="Auto-fill destination from selected route cities"
+                >
+                  Auto-fill from cities
+                </button>
+              )}
+            </div>
             <input
               value={formData.destination || ""}
-              onChange={(e) => setFormData((prev: any) => ({ ...prev, destination: e.target.value }))}
-              placeholder="e.g. Jaipur - Jodhpur - Udaipur"
+              onChange={(e) => {
+                if (onDestinationChange) {
+                  onDestinationChange(e.target.value);
+                } else {
+                  setFormData((prev: any) => ({ ...prev, destination: e.target.value }));
+                }
+              }}
+              placeholder="e.g. Kedarnath - Badrinath or Jaipur - Jodhpur - Udaipur"
               className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
+            <p className="text-[11px] text-slate-400">
+              Manual input has top priority and appears directly on package cards and tour details.
+            </p>
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">Number of Days <span className="text-red-500">*</span></label>

@@ -14,9 +14,6 @@
  */
 
 export const VALID_INDEXABLE_CITY_PAIRS = new Set<string>([
-  // Delhi
-  "delhi/delhi",
-
   // Himachal Pradesh
   "himachal-pradesh/kufri",
   "himachal-pradesh/manali",

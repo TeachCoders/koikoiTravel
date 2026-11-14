@@ -13,6 +13,9 @@ Backend/back-image/
 *.docx
 *.docx#
 *.~lock.*#
+*.xlsx
+*.xls
+*.csv
 
 # ── Node ──
 node_modules/
@@ -46,7 +49,8 @@ next-env.d.ts
 # ── Content / itinerary docs (not source code) ──
 itnearylist/
 Weekend Tour/
-scripts/
+/scripts/
+!Backend/scripts/
 
 # ── Python scripts ──
 *.py

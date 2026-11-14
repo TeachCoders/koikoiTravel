@@ -757,6 +757,21 @@ export default function HeroBannerManagerSection({
                 </div>
               </div>
 
+              {/* Image Ready Prompt Notice */}
+              {Boolean(desktopPreview || mobilePreview) && (
+                <div className="p-3 bg-emerald-50 border-2 border-emerald-400 rounded-xl text-emerald-900 text-xs flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
+                    <span className="font-bold">
+                      Image Crop Ho Gayi Hai! Ab is banner ko save karne ke liye neeche bane &quot;Save Hero Banner&quot; button par click karein.
+                    </span>
+                  </div>
+                  <span className="text-[11px] font-bold text-white bg-emerald-600 px-2.5 py-1 rounded-lg shrink-0">
+                    Ready to Save
+                  </span>
+                </div>
+              )}
+
               {/* Action Buttons */}
               <div className="flex items-center justify-end gap-2.5 pt-2">
                 <button
@@ -771,17 +786,19 @@ export default function HeroBannerManagerSection({
                   type="button"
                   onClick={handleSave}
                   disabled={isSubmitting}
-                  className="inline-flex items-center gap-1.5 px-5 py-2 bg-[#2E8B8B] hover:bg-[#267373] text-white text-xs font-bold rounded-xl shadow-xs transition-colors disabled:opacity-60"
+                  className={`inline-flex items-center gap-2 px-6 py-2.5 bg-[#2E8B8B] hover:bg-[#267373] text-white text-xs font-extrabold rounded-xl shadow-md transition-all disabled:opacity-60 cursor-pointer ${
+                    desktopPreview || mobilePreview ? "ring-4 ring-emerald-400/50 shadow-emerald-200" : ""
+                  }`}
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 size={14} className="animate-spin" />
-                      <span>Saving...</span>
+                      <Loader2 size={15} className="animate-spin" />
+                      <span>Saving Banner...</span>
                     </>
                   ) : (
                     <>
-                      <Check size={14} />
-                      <span>{editingBanner ? "Update Banner" : "Save Hero Banner"}</span>
+                      <Check size={16} />
+                      <span>{editingBanner ? "Update Banner" : "Save Hero Banner (Yahan Click Karein)"}</span>
                     </>
                   )}
                 </button>

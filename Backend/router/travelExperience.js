@@ -62,6 +62,7 @@ export default createCmsRouter({
     displayOrder: true,
     featuredJourneyOrder: true,
     cityOrder: true,
+    contentUpdatedAt: true,
     cities: { select: citySelect },
   },
   relations: [

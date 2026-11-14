@@ -68,6 +68,7 @@ const router = createCmsRouter({
     domesticDisplayOrder: true,
     countryId: true,
     featuredJourneyOrder: true,
+    contentUpdatedAt: true,
   },
   parentInclude: { model: "country", select: { id: true, title: true, slug: true } },
   childInclude: {

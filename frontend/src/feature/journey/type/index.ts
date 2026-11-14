@@ -24,7 +24,7 @@ export interface Journey {
   h1Title?: string;
   thumbImg?: string;
   moreDescription?: string;
-  destination?: string;
+  destination?: string | null;
   duration?: string;
   noDays: number;
   pricePerPerson?: number;
@@ -98,7 +98,7 @@ export interface JourneyPayload {
   h1Title?: string;
   thumbImg?: string;
   moreDescription?: string;
-  destination?: string;
+  destination?: string | null;
   duration?: string;
   noDays: number;
   pricePerPerson?: number;

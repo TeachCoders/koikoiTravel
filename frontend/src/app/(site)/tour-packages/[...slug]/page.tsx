@@ -107,6 +107,10 @@ async function resolveSlug(slug: string[]): Promise<Resolved> {
       }
       return { type: "state", state };
     }
+    // Fallback: check if second segment is a journey package
+    const journey = await fetchBySlugCached<Journey>("/journey/by-slug", stateSlug);
+    if (journey) return { type: "journey", journey };
+
     const cms = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug.join("/"));
     if (cms) return { type: "cms", cms };
     return { type: "notfound" };
@@ -128,6 +132,10 @@ async function resolveSlug(slug: string[]): Promise<Resolved> {
       }
       return { type: "city", city };
     }
+    // Fallback: check if third segment is a journey package
+    const journey = await fetchBySlugCached<Journey>("/journey/by-slug", citySlug);
+    if (journey) return { type: "journey", journey };
+
     const cms = await fetchBySlugCached<CmsPage>("/cms/by-slug", slug.join("/"));
     if (cms) return { type: "cms", cms };
 

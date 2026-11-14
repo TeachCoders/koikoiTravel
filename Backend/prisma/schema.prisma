@@ -612,6 +612,7 @@ model Country {
   activeSnapshot  Json?
   displayOrder    Int       @default(0)
   states          State[]
+  contentUpdatedAt DateTime?
 
   @@index([isActive, displayOrder])
   @@map("country")
@@ -644,6 +645,7 @@ model State {
   cities      City[]
   journeys    Journey[]
   featuredJourneyOrder Int[] @default([])
+  contentUpdatedAt DateTime?
 
   @@index([countryId, isActive])
   @@index([isActive, displayOrder])
@@ -675,6 +677,7 @@ model City {
   journeys    Journey[]
   featuredJourneyOrder Int[] @default([])
   travelExperiences TravelExperience[]
+  contentUpdatedAt DateTime?
 
   @@index([stateId, isActive])
   @@index([isActive, displayOrder])
@@ -727,6 +730,7 @@ model TravelExperience {
   cityOrder   Int[]
   journeys    Journey[]
   featuredJourneyOrder Int[] @default([])
+  contentUpdatedAt DateTime?
 }
 
 model Faq {
@@ -766,6 +770,7 @@ model Journey {
   createdById   Int?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  contentUpdatedAt DateTime?
   cities        City[]
   cityOrder     Int[]         @default([])
   states        State[]
@@ -834,6 +839,7 @@ model CmsPage {
   displayOrder    Int      @default(0)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  contentUpdatedAt DateTime?
 }
 
 model BlogPost {
@@ -857,6 +863,7 @@ model BlogPost {
   displayOrder    Int      @default(0)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  contentUpdatedAt DateTime?
 }
 
 model BlogCategory {

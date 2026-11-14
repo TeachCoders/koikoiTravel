@@ -1029,8 +1029,8 @@ export default function ImageCropUpload({
                 <button type="button" onClick={() => { setCropOpen(false); setSrc(null); }}
                   className="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 bg-slate-200 hover:bg-slate-300">Cancel</button>
                 <button type="button" onClick={handleApply}
-                  className="btn-primary px-3.5 py-1.5 text-xs flex items-center gap-1">
-                  <Check size={14} /> Apply & Upload
+                  className="btn-primary px-4 py-1.5 text-xs flex items-center gap-1.5 font-bold shadow-xs">
+                  <Check size={14} /> Done / Apply Crop
                 </button>
               </div>
             </div>

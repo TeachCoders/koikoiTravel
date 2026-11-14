@@ -211,6 +211,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
 
   const isTajMahal = state.slug === "taj-mahal" || state.slug?.includes("taj-mahal");
   const isGoldenTriangle = state.slug === "golden-triangle" || state.slug?.includes("golden-triangle");
+  const isCharDham = state.slug === "chardham" || state.slug === "chardham-yatra" || state.slug?.includes("chardham");
 
   const displayedCities = useMemo(() => {
     if (isTajMahal || isGoldenTriangle) return [];
@@ -387,16 +388,26 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           <div className="flex items-end justify-between mb-6 sm:mb-8 flex-wrap gap-4">
             <div>
               <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                Top Destinations
+                {isCharDham ? "Sacred Pilgrimage Shrines" : "Top Destinations"}
               </span>
               <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-slate-900 mt-1.5 font-heading">
-                Cities in {cleanStateName} <span className="text-[#F8904D]">Tours</span>
+                {isCharDham ? (
+                  <>
+                    The 4 Sacred Dhams of <span className="text-[#F8904D]">{cleanStateName}</span>
+                  </>
+                ) : (
+                  <>
+                    Cities in {cleanStateName} <span className="text-[#F8904D]">Tours</span>
+                  </>
+                )}
                 <span className="ml-3 align-middle text-xs font-medium text-[#F8904D] bg-[#F8904D]/10 px-2.5 py-1 rounded-full font-sans">
-                  {cityCount} Cities
+                  {cityCount} {isCharDham ? "Sacred Dhams" : "Cities"}
                 </span>
               </h2>
               <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl leading-relaxed">
-                Discover iconic royal cities, peaceful lakes, desert landscapes, and historic forts across {cleanStateName}.
+                {isCharDham
+                  ? "Embark on a divine spiritual journey across the revered Himalayan shrines of Yamunotri, Gangotri, Kedarnath, and Badrinath."
+                  : `Discover iconic royal cities, peaceful lakes, desert landscapes, and historic forts across ${cleanStateName}.`}
               </p>
             </div>
             {!journeysLoading && canScroll && (
@@ -424,7 +435,7 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
           ) : displayedCities.length === 0 ? (
             <div className="text-center py-14">
               <MapPin size={40} className="mx-auto text-slate-300 mb-3" />
-              <p className="text-slate-500">No cities found in {state.title}</p>
+              <p className="text-slate-500">{isCharDham ? "No sacred dhams found" : `No cities found in ${state.title}`}</p>
             </div>
           ) : displayedCities.length <= 4 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">

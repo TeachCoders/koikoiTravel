@@ -40,7 +40,7 @@ const schema = z.object({
   canonical: z.string().optional(),
   thumbImg: z.string().optional(),
   moreDescription: z.string().optional(),
-  destination: z.string().optional(),
+  destination: z.string().nullable().optional(),
   duration: z.string().optional(),
   noDays: z.number().int().min(1, "Number of days is required"),
   pricePerPerson: z.number().optional(),
@@ -152,6 +152,7 @@ router.get("/", async (req, res) => {
       cityOrder: true,
       travelExperienceOrder: true,
       updatedAt: true,
+      contentUpdatedAt: true,
       cities: {
         select: {
           id: true,
@@ -537,6 +538,7 @@ router.post("/", requireTeamOrAdmin(["it"]), async (req, res) => {
       data: {
         ...rest,
         slug,
+        contentUpdatedAt: new Date(),
         highlights: highlights || [],
         cityOrder: cityIds || [],
         travelExperienceOrder: travelExperienceIds || [],
@@ -604,12 +606,35 @@ router.put("/:id", requireTeamOrAdmin(["it"]), async (req, res) => {
     const { days, inclusions, exclusions, whyChooseUs, bookingPolicy, faqs, highlights, cityIds, stateIds, monthIds, travelExperienceIds, ...rest } = parsed.data;
     const slug = rest.slug || (rest.title ? generateSlug(rest.title) : undefined);
 
+    const JOURNEY_CONTENT_FIELDS = new Set([
+      "title", "h1Title", "overView", "moreDescription", "destination",
+      "duration", "noDays", "pricePerPerson", "discountPrice", "thumbImg",
+      "hotelDetails", "carDetails", "guideDetails", "highlights"
+    ]);
+
+    const bannerParsed = z.object({
+      bannerTitle: z.string().max(200).optional(),
+      bannerTag: z.string().max(200).optional(),
+      bannerImages: z.array(z.string()).optional(),
+    }).safeParse(req.body);
+    const bannerData = bannerParsed.success ? bannerParsed.data : null;
+
+    const hasContentChange =
+      (days !== undefined) ||
+      (inclusions !== undefined) ||
+      (exclusions !== undefined) ||
+      (whyChooseUs !== undefined) ||
+      (bookingPolicy !== undefined) ||
+      (bannerData && bannerData.bannerImages && bannerData.bannerImages.length > 0) ||
+      Object.keys(rest).some((key) => JOURNEY_CONTENT_FIELDS.has(key));
+
     const item = await prisma.journey.update({
       where: { id },
       data: {
         ...rest,
         ...(slug && { slug }),
         ...(highlights && { highlights }),
+        ...(hasContentChange && { contentUpdatedAt: new Date() }),
         ...(cityIds !== undefined && {
           cities: { set: [...new Set(cityIds)].map((cid) => ({ id: cid })) },
           cityOrder: cityIds,
@@ -663,12 +688,6 @@ router.put("/:id", requireTeamOrAdmin(["it"]), async (req, res) => {
       }
     }
 
-    const bannerParsed = z.object({
-      bannerTitle: z.string().max(200).optional(),
-      bannerTag: z.string().max(200).optional(),
-      bannerImages: z.array(z.string()).optional(),
-    }).safeParse(req.body);
-    const bannerData = bannerParsed.success ? bannerParsed.data : null;
     const banner = await upsertBanner("Journey", id, bannerData);
     notifyRevalidate("journey", item);
 

@@ -12,6 +12,10 @@ const SLUG_REDIRECTS: Record<string, string> = {
     "/tour-packages/3-days-jaipur-agra-trip-from-delhi-golden-triangle",
   "/tour-packages/7-days-south-india-hill-stations-tour":
     "/tour-packages/7-days-south-india-hill-station-tour",
+  "/tour-packages/8-days-leh-ladakh-tour-package-from-delhi":
+    "/tour-packages/8-days-leh-ladakh-tour-with-tso-moriri-lake",
+  "/tour-packages/8-days-leh-ladakh-tso-moriri-tour":
+    "/tour-packages/8-days-leh-ladakh-tour-with-tso-moriri-lake",
 };
 
 const nextConfig: NextConfig = {

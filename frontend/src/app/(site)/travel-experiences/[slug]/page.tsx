@@ -98,7 +98,7 @@ export default async function TravelExperiencePage({ params }: Props) {
   let trimmedJourneys: Journey[] = [];
   let trimmedExperience: any = null;
   if (data) {
-    journeys = await fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=100&isActive=true");
+    journeys = await fetchPublicJsonCached<JourneyPage<Journey>>("/journey?limit=250&isActive=true");
     const { allOrderedJourneys } = resolveTravelExperienceJourneys(journeys?.data, data);
     trimmedJourneys = allOrderedJourneys.map(trimJourneyForListing);
     trimmedExperience = {

@@ -8,6 +8,14 @@ import { notifyRevalidate } from "../services/revalidateService.js";
 import { isPublicRequest } from "../utils/authHelpers.js";
 import { logger } from "./logger.js";
 
+const VISIBLE_CONTENT_FIELDS = new Set([
+  "title", "h1Title", "overView", "moreDescription", "cardShortDescription",
+  "thumbImg", "author", "videoUrl", "publishedAt", "tags",
+  "capital", "currency", "language", "timezone", "bestTimeToVisit", "dialCode",
+  "famousFor", "area", "attractions", "weather",
+  "type", "idealFor", "duration", "budgetRange", "highlights"
+]);
+
 const orderByList = (items = [], order = []) => {
   if (!Array.isArray(order) || order.length === 0) return items;
   const orderMap = new Map(order.map((id, i) => [id, i]));
@@ -608,7 +616,7 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
           )
         : {};
 
-      const item = await prisma[modelName].create({ data: { ...cleanRest, ...withDefaults, slug, ...relationOps } });
+      const item = await prisma[modelName].create({ data: { ...cleanRest, ...withDefaults, slug, ...relationOps, contentUpdatedAt: new Date() } });
       const banner = await upsertBanner(entityType, item.id, bannerData);
       
       const faqsInput = Array.isArray(req.body.faqs) ? req.body.faqs : [];
@@ -710,9 +718,18 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
         }
       }
 
+      const hasContentChange =
+        Object.keys(cleanRest).some((key) => VISIBLE_CONTENT_FIELDS.has(key)) ||
+        Boolean(bannerData?.bannerImages?.length);
+
       const item = await prisma[modelName].update({
         where: { id },
-        data: { ...cleanRest, ...(slug && { slug }), ...relationOps },
+        data: {
+          ...cleanRest,
+          ...(slug && { slug }),
+          ...relationOps,
+          ...(hasContentChange && { contentUpdatedAt: new Date() }),
+        },
       });
 
       // Bi-directional sync for Golden Triangle between State (id: 30) and TravelExperience (id: 6)

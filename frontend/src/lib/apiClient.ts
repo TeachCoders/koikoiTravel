@@ -32,6 +32,14 @@ export const fetchCsrfToken = async () => {
 export const getCsrfToken = () => csrfToken;
 
 apiClient.interceptors.request.use((req) => {
+  // Ensure FormData requests let browser/Axios compute the boundary header automatically
+  if (req.data instanceof FormData && req.headers) {
+    if (req.headers["Content-Type"] === "multipart/form-data" || req.headers["content-type"] === "multipart/form-data") {
+      delete req.headers["Content-Type"];
+      delete req.headers["content-type"];
+    }
+  }
+
   if (["post", "put", "patch", "delete"].includes(req.method || "") && csrfToken) {
     req.headers["X-CSRF-Token"] = csrfToken;
   }

@@ -105,13 +105,45 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
     displayOrder: initialData?.displayOrder || 0,
   });
 
+  // Manual input priority tracking: if destination exists or user manually edits, never auto-overwrite.
+  const isDestinationManualRef = React.useRef<boolean>(
+    Boolean(initialData?.destination && initialData.destination.trim())
+  );
+
   React.useEffect(() => {
+    // Top priority rule: manual user input always wins.
+    // Never auto-overwrite if user has typed/edited destination or if destination already has a value.
+    if (isDestinationManualRef.current) return;
+    if (formData.destination && formData.destination.trim() !== "") return;
+
     if (formData.cityIds.length > 0 && cities.length > 0) {
       const selectedCities = formData.cityIds
         .map((id) => cities.find((c) => c.id === id)?.title)
         .filter(Boolean);
       if (selectedCities.length > 0) {
-        setFormData((prev) => ({ ...prev, destination: selectedCities.join("-") }));
+        setFormData((prev) => {
+          if (isDestinationManualRef.current || (prev.destination && prev.destination.trim() !== "")) {
+            return prev;
+          }
+          return { ...prev, destination: selectedCities.join(" - ") };
+        });
+      }
+    }
+  }, [formData.cityIds, cities, formData.destination]);
+
+  const handleDestinationChange = React.useCallback((val: string) => {
+    isDestinationManualRef.current = true;
+    setFormData((prev) => ({ ...prev, destination: val }));
+  }, []);
+
+  const handleAutoFillDestination = React.useCallback(() => {
+    if (formData.cityIds.length > 0 && cities.length > 0) {
+      const selectedCities = formData.cityIds
+        .map((id) => cities.find((c) => c.id === id)?.title)
+        .filter(Boolean);
+      if (selectedCities.length > 0) {
+        isDestinationManualRef.current = true;
+        setFormData((prev) => ({ ...prev, destination: selectedCities.join(" - ") }));
       }
     }
   }, [formData.cityIds, cities]);
@@ -186,6 +218,9 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
   React.useEffect(() => {
     if (initialData && !initializedRef.current) {
       initializedRef.current = true;
+      if (initialData.destination && initialData.destination.trim()) {
+        isDestinationManualRef.current = true;
+      }
       setFormData({
         title: initialData.title || "",
         slug: initialData.slug || "",
@@ -421,12 +456,17 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
-    if (!formData.title.trim()) newErrors.title = "Title is required";
-    if (!formData.seoDescription.trim()) newErrors.seoDescription = "Description is required";
-    if (formData.cityIds.length === 0) newErrors.cityIds = "At least one city is required";
+    if (!formData.title.trim()) newErrors.title = "Package Title is required";
+    if (!formData.seoDescription.trim()) newErrors.seoDescription = "Short Description is required";
+    if (formData.cityIds.length === 0) newErrors.cityIds = "At least one City must be selected";
     if (!isBestSellingTab && (!formData.noDays || formData.noDays < 1)) newErrors.noDays = "Days must be at least 1";
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const hasError = Object.keys(newErrors).length > 0;
+    if (hasError) {
+      const firstError = Object.values(newErrors)[0];
+      errorToast(firstError || "Please fill in all required fields");
+    }
+    return !hasError;
   };
 
   const handleFieldChange = (name: string, value: string) => {
@@ -462,7 +502,7 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
           fd.append("filename", finalName);
           fd.append("label", finalName);
           fd.append("file", file);
-          const res = await apiClient.post("/upload", fd, { headers: { "Content-Type": "multipart/form-data" } });
+          const res = await apiClient.post("/upload", fd);
           const url = res.data?.url;
           if (url) merged[index] = url;
         }
@@ -484,7 +524,7 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
       noDays: Number(formData.noDays),
       cityIds: formData.cityIds,
       stateIds: filterStateIds.length > 0 ? filterStateIds : undefined,
-      destination: formData.destination.trim() || undefined,
+      destination: formData.destination.trim() ? formData.destination.trim() : (mode === "edit" ? "" : undefined),
       isActive: formData.isActive,
       isBestSelling: activeTab === "bestSelling" ? true : formData.isBestSelling,
       displayOrder: Number(formData.displayOrder) || 0,
@@ -618,6 +658,8 @@ export default function JourneyFormPage({ initialData, mode }: JourneyFormProps)
             cities={cities}
             missingRouteCities={missingRouteCities}
             onQuickCreateCityWithName={(name) => mergedQuickCreateProps.openQuickCreate("city", null, name)}
+            onDestinationChange={handleDestinationChange}
+            onAutoFillDestination={handleAutoFillDestination}
           />
           <JourneyItineraryBuilder 
             formData={formData}

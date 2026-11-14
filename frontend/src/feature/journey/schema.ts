@@ -10,7 +10,7 @@ export const journeySchema = z.object({
   h1Title: z.string().optional(),
   thumbImg: z.string().optional(),
   moreDescription: z.string().optional(),
-  destination: z.string().optional(),
+  destination: z.string().nullable().optional(),
   duration: z.string().optional(),
   noDays: z.number().min(1, "Must be at least 1 day"),
   pricePerPerson: z.number().optional(),
