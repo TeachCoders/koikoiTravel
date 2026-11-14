@@ -555,8 +555,7 @@ async function main() {
           entityType: "Journey",
           entityId: journeyId,
           ques: f.ques,
-          ans: f.ans,
-          order: f.order
+          ans: f.ans
         }))
       });
     }
