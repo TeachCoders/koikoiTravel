@@ -123,18 +123,12 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
 
       const next = !existing.isActive;
 
-      if (next === true && tourCountWhere) {
-        const minRequired = modelName === "city" ? 2 : 1;
-        const journeyCount = modelName === "city"
-          ? await prisma.journey.count({ where: { cities: { some: { id } }, isActive: true } })
-          : await prisma.journey.count({ where: tourCountWhere(id) });
-        if (journeyCount < minRequired) {
-          const msg = modelName === "city"
-            ? "Cannot activate city: At least 2 tour itineraries are required before activating a city."
-            : `Cannot activate ${modelName}. Please add at least one tour package first.`;
+      if (next === true && tourCountWhere && modelName !== "city") {
+        const journeyCount = await prisma.journey.count({ where: tourCountWhere(id) });
+        if (journeyCount < 1) {
           return res.status(400).json({
             success: false,
-            message: msg,
+            message: `Cannot activate ${modelName}. Please add at least one tour package first.`,
           });
         }
       }
@@ -560,25 +554,6 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       }).safeParse(req.body);
       const bannerData = bannerParsed.success ? bannerParsed.data : null;
 
-      if (modelName === "city" && parsed.data.isActive === true) {
-        let activeTourCount;
-        const jIdsRaw = req.body.journeyIds;
-        if (Array.isArray(jIdsRaw)) {
-          const validIds = jIdsRaw.map(Number).filter(Boolean);
-          activeTourCount = validIds.length > 0
-            ? await prisma.journey.count({ where: { id: { in: validIds }, isActive: true } })
-            : 0;
-        } else {
-          activeTourCount = await prisma.journey.count({ where: { cities: { some: { id } }, isActive: true } });
-        }
-        if (activeTourCount < 2) {
-          return res.status(400).json({
-            success: false,
-            message: "Cannot activate city: At least 2 tour itineraries are required before activating a city.",
-          });
-        }
-      }
-
       const { slug: inputSlug, ...rest } = parsed.data;
       const slug = inputSlug || generateSlug(rest.title);
 
@@ -660,25 +635,6 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
         bannerImages: z.array(z.string()).optional(),
       }).safeParse(req.body);
       const bannerData = bannerParsed.success ? bannerParsed.data : null;
-
-      if (modelName === "city" && parsed.data.isActive === true) {
-        let activeTourCount;
-        const jIdsRaw = req.body.journeyIds;
-        if (Array.isArray(jIdsRaw)) {
-          const validIds = jIdsRaw.map(Number).filter(Boolean);
-          activeTourCount = validIds.length > 0
-            ? await prisma.journey.count({ where: { id: { in: validIds }, isActive: true } })
-            : 0;
-        } else {
-          activeTourCount = await prisma.journey.count({ where: { cities: { some: { id } }, isActive: true } });
-        }
-        if (activeTourCount < 2) {
-          return res.status(400).json({
-            success: false,
-            message: "Cannot activate city: At least 2 tour itineraries are required before activating a city.",
-          });
-        }
-      }
 
       const { slug: inputSlug, ...rest } = parsed.data;
       const slug = inputSlug || (rest.title ? generateSlug(rest.title) : undefined);

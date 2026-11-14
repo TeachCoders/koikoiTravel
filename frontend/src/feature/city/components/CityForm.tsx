@@ -145,10 +145,6 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
     if (formData.seoDescription.length > 160) newErrors.seoDescription = "Description must be under 160 characters";
     if (formData.overView.length > 1200) newErrors.overView = "Overview should be under 200 words";
     if (!formData.stateId) newErrors.stateId = "State is required";
-    if (formData.isActive && journeyIds.length < 2) {
-      errorToast("Cannot activate city: At least 2 tour itineraries are required before activating a city.");
-      newErrors.isActive = "At least 2 tour itineraries are required before activating a city";
-    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -343,7 +339,7 @@ export default function CityForm({ initialData, mode }: CityFormProps) {
               const label = daysLabel ? `(${daysLabel}) ${mainTitle}${citiesSuffix}` : `${mainTitle}${citiesSuffix}`;
               return { id: j.id, title: label };
             })}
-            placeholder="Select Top Tour Packages *"
+            placeholder="Select Top Tour Packages (Optional)"
             searchPlaceholder="Search packages by title or duration..."
             onReorder={(fromId, toId) => {
               const arr = [...journeyIds];
