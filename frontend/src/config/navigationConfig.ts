@@ -24,6 +24,7 @@ export const STATIC_INDIA_TOURS: NavItemConfig[] = [
   { label: "Rajasthan Tours", href: "/tour-packages/india/rajasthan", enabled: true },
   { label: "Kerala Tours", href: "/tour-packages/india/kerala", enabled: true },
   { label: "South India Tours", href: "/tour-packages/india/south-india", enabled: true },
+  { label: "Char Dham Yaatra", href: "/tour-packages/india/chardham", enabled: true },
 ];
 
 export const getActiveIndiaTours = (): { label: string; href: string }[] =>
