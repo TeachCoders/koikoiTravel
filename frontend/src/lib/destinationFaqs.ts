@@ -573,5 +573,31 @@ export const BLOG_FAQS: Record<string, FaqItem[]> = {
       answer: "Couples must savor a traditional Wazwan meal (featuring Rogan Josh, Rista, and Gushtaba) or vegetarian Kashmiri Dum Aloo and Nadru Yakhni, followed by aromatic Saffron Kahwa. For souvenirs, look for certified Kashmiri GI-tagged Pashmina shawls, pure saffron from Pampore, walnut-wood carved keepsakes, hand-knotted silk carpets, and fresh Kashmiri almonds and walnuts.",
     },
   ],
+  "ayurveda-yoga": [
+    {
+      question: "What is the difference between an Ayurvedic retreat in Kerala and a yoga retreat in Rishikesh?",
+      answer: "Kerala is the traditional epicenter of Ayurvedic medicine, specializing in doctor-led Panchakarma, herbal body therapies, and monsoon rejuvenation treatments. Rishikesh, situated in the Himalayan foothills along the Ganges River, focuses predominantly on classical yogic studies, intensive asana practice, Pranayama breathwork, and meditation ashrams.",
+    },
+    {
+      question: "What happens during an initial Ayurvedic doctor consultation?",
+      answer: "A qualified Ayurvedic physician evaluates your unique physical constitution (Prakriti), pulse (Nadi Pariksha), tongue, digestion, and daily habits. Based on your doshic balance (Vata, Pitta, Kapha), the physician develops a personalized program of therapies, dietary guidelines, and herbal decoctions.",
+    },
+    {
+      question: "What is Panchakarma and who can undergo it?",
+      answer: "Panchakarma is Ayurveda's classical five-fold purification system comprising Vamana, Virechana, Basti, Nasya, and Raktamokshana. It is designed to remove accumulated metabolic residues and restore physiological balance. Specific program eligibility is determined by the consulting physician following clinical assessment.",
+    },
+    {
+      question: "How are therapies like Shirodhara and Abhyanga traditionally used?",
+      answer: "Abhyanga (warm herbal oil massage) and Shirodhara (gentle pouring of warm medicated oil across the forehead) are classical treatments traditionally used for deep physical and mental relaxation, easing bodily tension, and supporting healthy circulation. They are restorative wellness practices rather than medical treatments.",
+    },
+    {
+      question: "What kind of food is served during an Ayurveda and Yoga retreat?",
+      answer: "Retreats serve freshly cooked Satvik vegetarian meals prepared with mild digestive spices such as cumin, turmeric, and ginger. Menus emphasize seasonal, easily digestible ingredients and exclude processed foods, refined sugars, caffeine, and alcohol to support therapy outcomes.",
+    },
+    {
+      question: "What is the recommended duration for an authentic Ayurveda wellness retreat?",
+      answer: "A 7-day retreat provides stress relief and introduction to Ayurvedic living, while comprehensive Panchakarma and revitalization protocols typically require 14 to 21 days to complete the preparatory, cleansing, and restorative phases under medical guidance.",
+    },
+  ],
 };
 
