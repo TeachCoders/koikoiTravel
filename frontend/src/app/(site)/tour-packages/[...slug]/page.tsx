@@ -119,7 +119,7 @@ async function resolveSlug(slug: string[]): Promise<Resolved> {
   if (slug.length === 3) {
     const [countrySlug, stateSlug, citySlug] = slug;
     if (stateSlug === citySlug) {
-      return { type: "notfound" };
+      redirect(`/tour-packages/${countrySlug}/${stateSlug}`);
     }
     const city = await fetchBySlugCached<City>("/city/by-slug", citySlug);
     if (
