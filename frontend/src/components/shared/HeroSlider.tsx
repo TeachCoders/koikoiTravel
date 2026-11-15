@@ -79,7 +79,7 @@ export default function HeroSlider({ images, slides, alt = "", interval = 5000 }
         {normalizedSlides.map((slide, i) => (
           <div
             key={i}
-            className="relative h-full shrink-0 bg-slate-900 pointer-events-none"
+            className="relative h-full shrink-0 bg-transparent pointer-events-none"
             style={{ width: `${100 / normalizedSlides.length}%` }}
           >
             <SlideImage
@@ -170,7 +170,7 @@ function SlideImage({
     return (
       <>
         {/* Mobile Viewport */}
-        <div className="block sm:hidden absolute inset-0 bg-slate-900">
+        <div className="block sm:hidden absolute inset-0 bg-transparent">
           <FallbackImage
             src={mobileSrc}
             alt={alt}
@@ -184,7 +184,7 @@ function SlideImage({
           />
         </div>
         {/* Desktop & Tablet Viewport */}
-        <div className="hidden sm:block absolute inset-0 bg-slate-900">
+        <div className="hidden sm:block absolute inset-0 bg-transparent">
           <FallbackImage
             src={src}
             alt={alt}

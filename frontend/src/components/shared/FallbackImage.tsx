@@ -45,6 +45,12 @@ const FRONTEND_STATIC_FILES = new Set([
   "/apple-icon.png",
 ]);
 
+const DARK_HERO_BLUR =
+  "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%231e293b'/%3E%3Cstop offset='50%25' stop-color='%23334155'/%3E%3Cstop offset='100%25' stop-color='%230f172a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='16' height='9' fill='url(%23g)'/%3E%3Ccircle cx='8' cy='6' r='5' fill='%23F8904D' opacity='0.16'/%3E%3C/svg%3E";
+
+const LIGHT_BLUR =
+  "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f1f5f9'/%3E%3Cstop offset='100%25' stop-color='%23e2e8f0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='16' height='9' fill='url(%23g)'/%3E%3C/svg%3E";
+
 function shouldBeUnoptimized(src?: string | null): boolean {
   if (!src || typeof src !== "string") return true;
   if (FRONTEND_STATIC_FILES.has(src)) return true;
@@ -133,29 +139,43 @@ export const FallbackImage: React.FC<FallbackImageProps> = ({
   const effectiveFetchPriority = isPriority ? "high" : (fetchPriority ?? undefined);
   const computedSizes = sizes || (fill ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" : undefined);
 
-  // Next.js Image for fast, optimized loading
-  // For priority images (above-the-fold / hero), render instantly with no opacity lag.
-  // For other images, use a subtle 150ms transition instead of an artificial delay.
+  const isDark = theme === "dark";
+  const defaultBlur = isDark ? DARK_HERO_BLUR : LIGHT_BLUR;
+  const effectivePlaceholder = placeholder || "blur";
+  const effectiveBlurDataURL = blurDataURL || defaultBlur;
+
+  // Next.js Image for fast, optimized loading with instant SVG blur placeholder & shimmer skeleton
   return (
-    <Image
-      src={imgSrc}
-      alt={alt}
-      className={className}
-      onLoad={() => setLoaded(true)}
-      onError={handleError}
-      unoptimized={unoptimized ?? shouldBeUnoptimized(imgSrc)}
-      fill={fill}
-      priority={isPriority}
-      fetchPriority={effectiveFetchPriority}
-      loading={effectiveLoading}
-      quality={quality}
-      sizes={computedSizes}
-      placeholder={placeholder}
-      blurDataURL={blurDataURL}
-      width={!fill ? (props.width ? Number(props.width) : 800) : undefined}
-      height={!fill ? (props.height ? Number(props.height) : 600) : undefined}
-      {...(props as any)}
-    />
+    <>
+      {fill && !loaded && (
+        <div
+          className={`absolute inset-0 overflow-hidden pointer-events-none z-0 ${
+            isDark ? "bg-gradient-to-br from-[#1e293b] via-[#0f172a] to-[#1e1e24]" : "bg-slate-100"
+          }`}
+        >
+          <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/[0.08] to-transparent animate-shimmer-sweep" />
+        </div>
+      )}
+      <Image
+        src={imgSrc}
+        alt={alt}
+        className={`${className} transition-opacity duration-500 ease-out relative z-[1]`}
+        onLoad={() => setLoaded(true)}
+        onError={handleError}
+        unoptimized={unoptimized ?? shouldBeUnoptimized(imgSrc)}
+        fill={fill}
+        priority={isPriority}
+        fetchPriority={effectiveFetchPriority}
+        loading={effectiveLoading}
+        quality={quality}
+        sizes={computedSizes}
+        placeholder={effectivePlaceholder}
+        blurDataURL={effectiveBlurDataURL}
+        width={!fill ? (props.width ? Number(props.width) : 800) : undefined}
+        height={!fill ? (props.height ? Number(props.height) : 600) : undefined}
+        {...(props as any)}
+      />
+    </>
   );
 };
 

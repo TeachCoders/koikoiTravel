@@ -77,9 +77,18 @@ export default function HeroBanner({
   return (
     <section
       className={`relative w-full ${heightClass} overflow-hidden flex items-center justify-center ${
-        hasSlides || hasFallback ? "bg-slate-900" : "bg-slate-100"
+        hasSlides || hasFallback ? "bg-gradient-to-br from-[#1a2234] via-[#0f172a] to-[#161d2d]" : "bg-slate-100"
       } z-20 ${className}`}
     >
+      {/* 0. Ambient Skeleton & Shimmer Layer (instant warm preview while hero slides load on slow connections) */}
+      {(hasSlides || hasFallback) && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1e293b] via-[#0f172a] to-[#1e1e24]" />
+          <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/[0.09] to-transparent animate-shimmer-sweep" />
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-3/4 h-52 bg-[#F8904D]/12 blur-3xl rounded-full" />
+        </div>
+      )}
+
       {/* 1. Background Layer: Slides, Fallback, or Watermark */}
       {hasSlides ? (
         <HeroSlider slides={normalizedSlides} alt={alt} interval={interval} />
