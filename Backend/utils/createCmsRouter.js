@@ -364,6 +364,16 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
       });
       const bannerMap = new Map(banners.map((b) => [b.entityId, b]));
 
+      let faqCountMap = new Map();
+      if (entityType && ids.length) {
+        const faqCounts = await prisma.faq.groupBy({
+          by: ["entityId"],
+          where: { entityType, entityId: { in: ids } },
+          _count: { _all: true },
+        });
+        faqCountMap = new Map(faqCounts.map((f) => [f.entityId, f._count._all]));
+      }
+
       let tourCounts = new Map();
       if (tourCountWhere && ids.length) {
         if (modelName === "city") {
@@ -401,6 +411,7 @@ function createCmsRouter({ modelName, entityType, schema, searchFields, parentFi
           ...ordered,
           banner: bannerMap.get(item.id) || null,
           ...(tourCountWhere ? { tourCount } : {}),
+          customFaqCount: faqCountMap.get(item.id) || 0,
         };
       });
 

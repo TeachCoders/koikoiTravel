@@ -21,6 +21,38 @@ import type { Country } from "@/feature/country/type";
 import type { State } from "@/feature/state/type";
 import { loadCmsFilters, saveCmsFilters } from "@/lib/cmsFilterState";
 import SeoPendingBadge, { SeoCompleteBadge, hasMissingSeo, seoPendingRowClass } from "@/components/shared/SeoPendingBadge";
+import { CURATED_DESTINATION_FAQS } from "@/lib/destinationFaqs";
+
+function getFaqStatus(city: { slug?: string; customFaqCount?: number; faqs?: any[] }) {
+  const customCount = city.customFaqCount ?? (city.faqs ? city.faqs.length : 0);
+  if (customCount > 0) {
+    return {
+      type: "custom",
+      label: `Human (${customCount})`,
+      tooltip: `${customCount} human-written FAQ(s) saved in dashboard`,
+      className: "bg-emerald-50 text-emerald-700 border-emerald-200",
+      dotClass: "bg-emerald-500",
+    };
+  }
+  const normSlug = (city.slug || "").toLowerCase().trim();
+  if (CURATED_DESTINATION_FAQS[normSlug]) {
+    const count = CURATED_DESTINATION_FAQS[normSlug].length;
+    return {
+      type: "curated",
+      label: `Curated (${count})`,
+      tooltip: `${count} curated FAQ(s) in code`,
+      className: "bg-blue-50 text-blue-700 border-blue-200",
+      dotClass: "bg-blue-500",
+    };
+  }
+  return {
+    type: "generic",
+    label: "Auto Generic",
+    tooltip: "No human-written FAQs — currently using auto-generated generic template",
+    className: "bg-amber-50 text-amber-700 border-amber-200",
+    dotClass: "bg-amber-500",
+  };
+}
 
 export default function CityClient() {
   const [search, setSearch] = useState(() => loadCmsFilters("city").search || "");
@@ -30,6 +62,7 @@ export default function CityClient() {
   const [countries, setCountries] = useState<Country[]>([]);
   const [statesList, setStatesList] = useState<State[]>([]);
   const [isActive, setIsActive] = useState("");
+  const [faqFilter, setFaqFilter] = useState("");
 
   React.useEffect(() => {
     getCountries({ limit: 1000 }).then((res) => setCountries(res.data)).catch(() => {});
@@ -98,13 +131,17 @@ export default function CityClient() {
     });
   };
 
-  const handleToggle = (city: { id: number; title: string; isActive?: boolean; tourCount?: number }) => {
-    if (!city.isActive && (city.tourCount ?? 0) < 2) {
-      errorToast("Cannot activate city: At least 2 tour itineraries are required before activating a city.");
-      return;
-    }
+  const handleToggle = (city: { id: number; title: string; isActive?: boolean }) => {
     toggleCityActive(city.id);
   };
+
+  const displayedCities = React.useMemo(() => {
+    if (!faqFilter) return cities;
+    return cities.filter((city) => {
+      const status = getFaqStatus(city);
+      return status.type === faqFilter;
+    });
+  }, [cities, faqFilter]);
 
   const normalizedRole = (user?.role ?? "").toLowerCase().replace(/[\s-]+/g, "_");
   const isSuperAdmin = normalizedRole.includes("super") && normalizedRole.includes("admin");
@@ -176,6 +213,16 @@ export default function CityClient() {
             ],
             placeholder: "All Status",
           },
+          {
+            value: faqFilter,
+            onChange: (e) => setFaqFilter(e.target.value),
+            options: [
+              { value: "custom", label: "Human / Custom FAQs" },
+              { value: "curated", label: "Curated FAQs" },
+              { value: "generic", label: "Auto Generic (Needs FAQs)" },
+            ],
+            placeholder: "All FAQ Types",
+          },
         ]}
       />
 
@@ -193,7 +240,7 @@ export default function CityClient() {
         orderOnSave={handleSaveOrder}
         orderDirty={orderDirty}
         isLoading={isLoading}
-        isEmpty={cities.length === 0}
+        isEmpty={displayedCities.length === 0}
         emptyIcon={MapPin}
         emptyMessage="No cities found"
         emptyCreateLink="/dashboard/city/create"
@@ -201,7 +248,7 @@ export default function CityClient() {
         canEdit={canEdit}
       >
         <DirectoryTable
-          data={cities}
+          data={displayedCities}
           getRowClass={seoPendingRowClass}
           groupBy={(city) => ({
             id: city.state?.id || 0,
@@ -246,6 +293,23 @@ export default function CityClient() {
               className: "tbl-th-center",
               cellClassName: "px-4 py-3 text-center",
               render: (city) => hasMissingSeo(city) ? <SeoPendingBadge /> : <SeoCompleteBadge />,
+            },
+            {
+              header: "FAQ Status",
+              className: "tbl-th-center",
+              cellClassName: "px-4 py-3 text-center",
+              render: (city) => {
+                const status = getFaqStatus(city);
+                return (
+                  <span
+                    title={status.tooltip}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border ${status.className} shadow-2xs whitespace-nowrap cursor-help`}
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full ${status.dotClass}`} />
+                    {status.label}
+                  </span>
+                );
+              },
             },
 
             {

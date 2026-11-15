@@ -38,6 +38,7 @@ export interface City {
   displayOrder?: number;
   banner?: Banner | null;
   faqs?: { id?: number; ques: string; ans: string }[];
+  customFaqCount?: number;
   tourCount?: number;
   _count?: { journeys: number };
 }
