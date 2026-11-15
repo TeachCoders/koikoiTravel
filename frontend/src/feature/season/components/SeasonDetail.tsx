@@ -182,6 +182,7 @@ export default function SeasonDetail({
       <ToursSection
         journeys={filteredJourneys}
         isLoading={journeysLoading}
+        contextName={initialSeason.title}
         h1Title={pageH1}
         overView={initialSeason.overView ?? undefined}
         emptyLabel={`No tours found for ${initialSeason.title} yet`}

@@ -248,6 +248,7 @@ function CityContent({
         }
         journeys={filteredJourneys}
         isLoading={journeysLoading}
+        contextName={city.title}
         h1Title={formatToursH1(city.h1Title || city.title)}
         overView={city.overView ?? undefined}
         emptyLabel={`No tours found in ${city.h1Title || city.title} yet`}

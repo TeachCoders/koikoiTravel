@@ -5,6 +5,7 @@ import RichContent from "@/components/shared/RichContent";
 import TourPackageCard from "@/components/shared/TourPackageCard";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
+import EmptyToursCustomCta from "@/components/shared/EmptyToursCustomCta";
 import type { Journey } from "@/feature/journey/type";
 
 export interface ToursSectionProps {
@@ -47,6 +48,10 @@ export default function ToursSection({
   excludeHrefs,
 }: ToursSectionProps) {
   const hasFilters = Boolean(filterBar && onClearFilters);
+  const destName =
+    contextName ||
+    (h1Title ? h1Title.replace(/\s*Tour Packages.*$/i, "").trim() : "") ||
+    "this destination";
 
   return (
     <section id={id} className={`w-full relative ${sectionClassName}`}>
@@ -96,10 +101,7 @@ export default function ToursSection({
               </div>
             </div>
           ) : (
-            <div className="text-center py-14">
-              <MapPin size={40} className="mx-auto text-slate-300 mb-3" />
-              <p className="text-slate-500">{emptyLabel}</p>
-            </div>
+            <EmptyToursCustomCta destinationName={destName} className="mt-4" />
           )
         ) : (
           <div>

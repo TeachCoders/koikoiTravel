@@ -41,6 +41,7 @@ import DestinationsSkeleton from "@/feature/destinations/components/Destinations
 import FaqSection from "@/feature/home/components/FaqSection";
 import { GOLDEN_TRIANGLE_FAQS } from "../goldenTriangleFaqs";
 import { QuoteModal } from "@/components/shared/QuoteModal";
+import EmptyToursCustomCta from "@/components/shared/EmptyToursCustomCta";
 import type { TravelExperience, TravelExperienceCity } from "@/feature/travelExperience/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 
@@ -283,21 +284,19 @@ function ExperienceContent({
         excludeHrefs={excludeHrefs}
       >
         {filteredJourneys.length === 0 ? (
-          <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
-            <p className="text-slate-500">
-              {activeFilterCount > 0
-                ? "No tours match your filters"
-                : `No tours found for ${h1Title} yet`}
-            </p>
-            {activeFilterCount > 0 && (
+          activeFilterCount > 0 ? (
+            <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
+              <p className="text-slate-500">No tours match your filters</p>
               <button
                 onClick={clearFilters}
                 className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
               >
                 Clear all filters
               </button>
-            )}
-          </div>
+            </div>
+          ) : (
+            <EmptyToursCustomCta destinationName={h1Title} className="mt-4" />
+          )
         ) : (
           <>
             <div className={

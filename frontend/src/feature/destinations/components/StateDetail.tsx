@@ -23,6 +23,7 @@ import { FallbackImage } from "@/components/shared/FallbackImage";
 import DestinationGuideSection from "@/components/shared/DestinationGuideSection";
 import ToursSection from "@/components/shared/ToursSection";
 import TourPackageCard from "@/components/shared/TourPackageCard";
+import EmptyToursCustomCta from "@/components/shared/EmptyToursCustomCta";
 import FilterBar, { type SortOption } from "@/components/shared/FilterBar";
 import {
   travelExperienceOptions,
@@ -337,21 +338,19 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
         excludeHrefs={excludeHrefs}
       >
           {filteredCurrentJourneys.length === 0 ? (
-            <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
-              <p className="text-slate-500">
-                {activeFilterCount > 0
-                  ? "No tour packages match your filters"
-                  : `No tour packages found yet in ${cleanStateName}`}
-              </p>
-              {activeFilterCount > 0 && (
+            activeFilterCount > 0 ? (
+              <div className="text-center py-14 mt-6 bg-white border border-slate-200 rounded-2xl">
+                <p className="text-slate-500">No tour packages match your filters</p>
                 <button
                   onClick={clearFilters}
                   className="mt-3 text-sm font-semibold text-slate-600 hover:text-[#F8904D] transition-colors cursor-pointer"
                 >
                   Clear all filters
                 </button>
-              )}
-            </div>
+              </div>
+            ) : (
+              <EmptyToursCustomCta destinationName={cleanStateName} className="mt-4" />
+            )
           ) : (
             <>
               <div className={
