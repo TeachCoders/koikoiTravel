@@ -569,7 +569,7 @@ export default function JourneyDetail({
           {journey.highlights && journey.highlights.length > 0 && (
             <section>
               <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                Highlights
+                Key Experiences
               </span>
               <h2 className="text-lg sm:text-xl md:text-[22px] font-bold text-slate-900 tracking-tight mb-4 leading-snug">
                 {tourDisplayName} <span className="text-[#F8904D]">Highlights</span>
@@ -606,7 +606,7 @@ export default function JourneyDetail({
               <div className="flex flex-wrap items-end justify-between gap-4 mb-4">
                 <div>
                   <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
-                    Itinerary
+                    Day By Day Plan
                   </span>
                   <h2 className="text-lg sm:text-xl md:text-[22px] font-bold text-slate-900 tracking-tight leading-snug">
                     {tourDisplayName} <span className="text-[#F8904D]">Itinerary</span>
