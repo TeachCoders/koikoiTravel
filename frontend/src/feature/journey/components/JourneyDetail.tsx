@@ -54,6 +54,19 @@ import TourPackageCard from "@/components/shared/TourPackageCard";
 const JourneyLightbox = dynamic(() => import("./JourneyLightbox"), { ssr: false });
 const QuoteModal = dynamic(() => import("@/components/shared/QuoteModal").then((m) => m.QuoteModal), { ssr: false });
 
+function getTourDisplayName(title?: string | null): string {
+  if (!title) return "India Tour";
+  let cleaned = (title || "").split("|")[0].trim();
+  cleaned = cleaned.replace(/^\d+\s*(?:to|-)\s*\d+\s*(?:days?|nights?)\s*/i, "");
+  cleaned = cleaned.replace(/^\d+\s*(?:days?|nights?)\s*(?:\/\s*\d+\s*(?:days?|nights?)\s*)?[:\-–\s]*/i, "");
+  cleaned = cleaned.replace(/^[\s\-–:]+/, "").trim();
+
+  if (!/\b(?:tour|trip|yatra|safari|expedition|journey|holiday|vacation|getaway)\b/i.test(cleaned)) {
+    cleaned = `${cleaned} Tour`;
+  }
+  return cleaned;
+}
+
 export default function JourneyDetail({
   slug,
   initialJourney,
@@ -147,6 +160,7 @@ export default function JourneyDetail({
   const lightboxSlides = heroImages.map((src) => ({ src, alt: journey.title }));
 
   const isShimlaTest = slug === "10-days-golden-triangle-with-shimla-tour";
+  const tourDisplayName = getTourDisplayName(journey.title);
   const pageH1 = journey.h1Title || journey.title;
   const cleanJourneyTitle = (journey.title || "").split("|")[0].trim();
   const durationText =
@@ -557,8 +571,8 @@ export default function JourneyDetail({
               <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
                 Highlights
               </span>
-              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-4">
-                Key <span className="text-[#F8904D]">Experiences</span>
+              <h2 className="text-lg sm:text-xl md:text-[22px] font-bold text-slate-900 tracking-tight mb-4 leading-snug">
+                {tourDisplayName} <span className="text-[#F8904D]">Highlights</span>
               </h2>
               <div className="bg-teal-50/50 rounded-2xl md:rounded-3xl p-5 md:p-6 border border-teal-100/80">
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
@@ -578,8 +592,8 @@ export default function JourneyDetail({
               <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
                 Overview
               </span>
-              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-4">
-                About <span className="text-[#F8904D]">This Tour</span>
+              <h2 className="text-lg sm:text-xl md:text-[22px] font-bold text-slate-900 tracking-tight mb-4 leading-snug">
+                About this <span className="text-[#F8904D]">{tourDisplayName}</span>
               </h2>
               <div className="bg-white rounded-2xl md:rounded-3xl p-5 md:p-8 border border-slate-200/80 shadow-sm text-[15px] font-normal text-slate-600 leading-[1.8]">
                 <RichContent html={linkedOverview} autoLink={false} className="rich-text-plain-links" />
@@ -594,18 +608,9 @@ export default function JourneyDetail({
                   <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
                     Itinerary
                   </span>
-                  {isShimlaTest ? (
-                    <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight leading-snug">
-                      <span>Day By Day <span className="text-[#F8904D]">Itinerary</span></span>
-                      <span className="block text-sm sm:text-base font-medium text-slate-500 mt-1">
-                        10 Days Golden Triangle with Shimla Tour
-                      </span>
-                    </h2>
-                  ) : (
-                    <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight">
-                      Day By Day <span className="text-[#F8904D]">Itinerary</span>
-                    </h2>
-                  )}
+                  <h2 className="text-lg sm:text-xl md:text-[22px] font-bold text-slate-900 tracking-tight leading-snug">
+                    {tourDisplayName} <span className="text-[#F8904D]">Itinerary</span>
+                  </h2>
                 </div>
               </div>
               <div className="relative bg-white rounded-2xl md:rounded-3xl p-3 md:p-6 shadow-sm border border-slate-200/80">
@@ -663,8 +668,8 @@ export default function JourneyDetail({
               <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
                 Why Choose Us
               </span>
-              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-4">
-                Why Book With <span className="text-[#F8904D]">KoiKoi Travel</span>
+              <h2 className="text-lg sm:text-xl md:text-[22px] font-bold text-slate-900 tracking-tight mb-4 leading-snug">
+                Why Book {tourDisplayName} with <span className="text-[#F8904D]">KoiKoi Travel</span>
               </h2>
               <div className="relative rounded-2xl md:rounded-3xl bg-gradient-to-br from-white via-[#F8FAFA] to-[#EBF3F3] p-6 md:p-8 overflow-hidden shadow-sm border border-[#2E8B8B]/15">
                 {/* Background Watermark Icon */}
@@ -765,8 +770,8 @@ export default function JourneyDetail({
       {/* ===== FAQ SECTION (Placed Before Trip Guide) ===== */}
       <FaqSection
         faqs={journey.faqs}
-        heading={isShimlaTest ? "Frequently Asked Questions: Golden Triangle with Shimla Tour" : undefined}
-        contextName={isShimlaTest ? "Golden Triangle with Shimla Tour" : undefined}
+        heading={`Frequently Asked Questions: ${tourDisplayName}`}
+        contextName={tourDisplayName}
         sharedLinkedHrefs={pageLinkedHrefs}
         excludeHrefs={excludeHrefs}
       />
@@ -779,8 +784,8 @@ export default function JourneyDetail({
               <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
                 Trip Guide & Travel Tips
               </span>
-              <h2 className="text-xl sm:text-2xl md:text-[26px] font-bold text-slate-900 tracking-tight mb-4">
-                Essential Trip Guide: <span className="text-[#F8904D]">{journey.title}</span>
+              <h2 className="text-lg sm:text-xl md:text-[22px] font-bold text-slate-900 tracking-tight mb-4 leading-snug">
+                Essential Trip Guide: <span className="text-[#F8904D]">{tourDisplayName}</span>
               </h2>
               <ExpandableRichContent
                 html={linkedMoreDesc}
@@ -799,8 +804,8 @@ export default function JourneyDetail({
             <span className="inline-block text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#F8904D] mb-1.5">
               Destinations Visited
             </span>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-4">
-              Places Covered in this Tour
+            <h2 className="text-lg sm:text-xl md:text-[22px] font-bold text-slate-900 tracking-tight mb-4 leading-snug">
+              Places Covered in <span className="text-[#F8904D]">{tourDisplayName}</span>
             </h2>
             <div className="flex flex-wrap gap-2.5">
               {coveredCities.map((c) =>
@@ -903,10 +908,10 @@ function DayItem({
       className="day-accordion-item group relative py-1 md:py-2 border-b border-slate-100 last:border-b-0"
     >
       <summary className="flex items-center justify-between gap-3 py-2.5 md:py-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden select-none">
-        <span className="flex items-center gap-2 text-[15.5px] sm:text-[16.5px] font-semibold text-slate-900">
+        <h3 className="flex items-center gap-2 text-[15.5px] sm:text-[16.5px] font-semibold text-slate-900 m-0">
           <span className="text-[#F8904D] font-bold shrink-0">Day {index}:</span>
           <span className="text-slate-900 font-semibold">{dayTitle}</span>
-        </span>
+        </h3>
         <ChevronDown
           size={18}
           className="shrink-0 text-slate-400 group-hover:text-slate-700 transition-transform duration-300 group-open:rotate-180"
