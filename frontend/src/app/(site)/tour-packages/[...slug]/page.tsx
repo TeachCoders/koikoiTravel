@@ -10,7 +10,7 @@ import { breadcrumbSchema, faqSchema, touristDestinationSchema, touristTripSchem
 import { fetchBySlugCached, fetchPublicJsonCached } from "@/feature/destinations/api/public-server";
 import { stripHtml, truncateMeta, cleanSeoTitle } from "@/lib/utils";
 import { isIndexableCity } from "@/lib/cityValidation";
-import { getJourneyBreadcrumbState } from "@/lib/breadcrumbHelper";
+import { getJourneyBreadcrumbState, formatBreadcrumbTitle } from "@/lib/breadcrumbHelper";
 import { HOME_FAQS } from "@/lib/homeFaqs";
 import type { Country } from "@/feature/country/type";
 import type { State, PaginatedResponse as StatePage } from "@/feature/state/type";
@@ -362,7 +362,7 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
         breadcrumbSchema([
           { name: "Home", path: "/" },
           { name: "Tour Packages", path: "/tour-packages" },
-          { name: country.title.replace(/\s*Tour$/i, ""), path: `/tour-packages/${country.slug}` },
+          { name: formatBreadcrumbTitle(country.slug, country.title), path: `/tour-packages/${country.slug}` },
         ]),
         faqSchema(resolveFaqItems(country.faqs, country.slug, country.title, "Country")),
       ]);
@@ -422,9 +422,9 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
           { name: "Home", path: "/" },
           { name: "Tour Packages", path: "/tour-packages" },
           ...(state.country?.slug
-            ? [{ name: state.country.title.replace(/\s*Tour$/i, ""), path: `/tour-packages/${state.country.slug}` }]
+            ? [{ name: formatBreadcrumbTitle(state.country.slug, state.country.title), path: `/tour-packages/${state.country.slug}` }]
             : []),
-          { name: state.title, path: `/tour-packages/${state.country?.slug}/${state.slug}` },
+          { name: formatBreadcrumbTitle(state.slug, state.title), path: `/tour-packages/${state.country?.slug}/${state.slug}` },
         ]),
         faqSchema(resolveFaqItems(state.faqs, state.slug, state.title, "State")),
       ]);
@@ -474,12 +474,12 @@ export default async function TourPackageCatchAllPage({ params }: Props) {
           { name: "Home", path: "/" },
           { name: "Tour Packages", path: "/tour-packages" },
           ...(city.state?.country?.slug
-            ? [{ name: city.state.country.title.replace(/\s*Tour$/i, ""), path: `/tour-packages/${city.state.country.slug}` }]
+            ? [{ name: formatBreadcrumbTitle(city.state.country.slug, city.state.country.title), path: `/tour-packages/${city.state.country.slug}` }]
             : []),
           ...(city.state?.slug
-            ? [{ name: city.state.title, path: `/tour-packages/${city.state.country?.slug}/${city.state.slug}` }]
+            ? [{ name: formatBreadcrumbTitle(city.state.slug, city.state.title), path: `/tour-packages/${city.state.country?.slug}/${city.state.slug}` }]
             : []),
-          { name: city.title, path: `/tour-packages/${city.state?.country?.slug}/${city.state?.slug}/${city.slug}` },
+          { name: formatBreadcrumbTitle(city.slug, city.title), path: `/tour-packages/${city.state?.country?.slug}/${city.state?.slug}/${city.slug}` },
         ]),
         faqSchema(resolveFaqItems(city.faqs, city.slug, city.title, "City")),
       ]);

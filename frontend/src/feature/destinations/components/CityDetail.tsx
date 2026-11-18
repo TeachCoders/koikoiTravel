@@ -31,6 +31,7 @@ import { cn, stripHtml, formatToursH1 } from "@/lib/utils";
 import { resolveCityJourneys, sortByDaysAscending } from "@/feature/journey/destinationJourneys";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
+import { formatBreadcrumbTitle } from "@/lib/breadcrumbHelper";
 
 export default function CityDetail({
   citySlug,
@@ -219,7 +220,7 @@ function CityContent({
                 href={`/tour-packages/${state.country.slug}`}
                 className="hover:text-[#2E8B8B] transition-colors shrink-0 font-medium"
               >
-                {state.country.title.replace(/\s*Tour$/i, "")}
+                {formatBreadcrumbTitle(state.country.slug, state.country.title)}
               </Link>
             </>
           )}
@@ -230,12 +231,12 @@ function CityContent({
                 href={countrySlug ? `/tour-packages/${countrySlug}/${state.slug}` : `/tour-packages/${state.slug}`}
                 className="hover:text-[#2E8B8B] transition-colors shrink-0 font-medium capitalize"
               >
-                {(state as any)?.h1Title || state.title}
+                {formatBreadcrumbTitle(state.slug, state.title)}
               </Link>
             </>
           )}
           <ChevronRight size={14} className="text-slate-300 shrink-0" />
-          <span className="text-[#1C1C1C] font-semibold capitalize">{city.h1Title || city.title}</span>
+          <span className="text-[#1C1C1C] font-semibold capitalize">{formatBreadcrumbTitle(city.slug, city.title)}</span>
         </div>
       </nav>
 

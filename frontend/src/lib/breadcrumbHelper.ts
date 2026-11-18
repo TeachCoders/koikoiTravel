@@ -5,6 +5,42 @@ export interface JourneyBreadcrumbInfo {
   countryTitle: string;
 }
 
+/**
+ * Converts a slug into a clean, human-readable breadcrumb title.
+ * Examples:
+ *   "mathura" -> "Mathura"
+ *   "uttar-pradesh" -> "Uttar Pradesh"
+ *   "himachal-pradesh" -> "Himachal Pradesh"
+ *   "jim-corbett-national-park" -> "Jim Corbett National Park"
+ *   "jammu-and-kashmir" -> "Jammu & Kashmir"
+ */
+export function formatBreadcrumbTitle(slug?: string | null, fallbackTitle?: string | null): string {
+  // If clean title is already a short clean name (no "Tour", "Packages", long marketing text), use it
+  if (fallbackTitle && typeof fallbackTitle === "string") {
+    const trimmed = fallbackTitle.trim();
+    if (!/(?:tour|package|itinerary|holiday|discover|travel|[|–—:])/i.test(trimmed) && trimmed.length <= 30) {
+      return trimmed;
+    }
+  }
+
+  if (!slug) return (fallbackTitle || "").split(/[-–|:—]/)[0].trim();
+
+  // Convert slug to Title Case
+  const words = slug.split("-").filter(Boolean);
+  const minorWords = new Set(["and", "of", "the", "in", "with", "to"]);
+
+  const formatted = words
+    .map((word, index) => {
+      const lower = word.toLowerCase();
+      if (lower === "and") return "&";
+      if (index > 0 && minorWords.has(lower)) return lower;
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(" ");
+
+  return formatted;
+}
+
 export function getJourneyBreadcrumbState(journey: {
   title?: string | null;
   slug?: string | null;
@@ -41,7 +77,7 @@ export function getJourneyBreadcrumbState(journey: {
   if (isSouthIndia && !isPureKerala) {
     return {
       stateSlug: "south-india",
-      stateTitle: "South India Tours",
+      stateTitle: "South India",
       countrySlug: "india",
       countryTitle: "India",
     };
@@ -51,7 +87,7 @@ export function getJourneyBreadcrumbState(journey: {
   if (titleLower.includes("golden triangle") || slugLower.includes("golden-triangle")) {
     return {
       stateSlug: "golden-triangle",
-      stateTitle: "Golden Triangle Tours",
+      stateTitle: "Golden Triangle",
       countrySlug: "india",
       countryTitle: "India",
     };
@@ -68,7 +104,7 @@ export function getJourneyBreadcrumbState(journey: {
   ) {
     return {
       stateSlug: "taj-mahal",
-      stateTitle: "Taj Mahal Tours",
+      stateTitle: "Taj Mahal",
       countrySlug: "india",
       countryTitle: "India",
     };
@@ -78,15 +114,15 @@ export function getJourneyBreadcrumbState(journey: {
   const firstCity = cities[0];
   if (firstCity?.state?.slug && firstCity.state.title) {
     let sSlug = firstCity.state.slug;
-    let sTitle = firstCity.state.h1Title || firstCity.state.title;
+    let sTitle = formatBreadcrumbTitle(firstCity.state.slug, firstCity.state.title);
 
     if (sSlug === "tamil-nadu" || sSlug === "karnataka") {
       sSlug = "south-india";
-      sTitle = "South India Tours";
+      sTitle = "South India";
     }
 
     const cSlug = firstCity.state.country?.slug || "india";
-    const cTitle = (firstCity.state.country?.title || "India").replace(/\s*Tour$/i, "");
+    const cTitle = formatBreadcrumbTitle(cSlug, firstCity.state.country?.title || "India");
 
     return {
       stateSlug: sSlug,

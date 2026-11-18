@@ -28,6 +28,7 @@ import type { Journey, PaginatedResponse } from "@/feature/journey/type";
 import { useGetSeasons } from "@/feature/season/api/useSeason";
 import DestinationsSkeleton from "@/feature/destinations/components/DestinationsSkeleton";
 import DoodleBackground from "@/components/shared/DoodleBackground";
+import { formatBreadcrumbTitle } from "@/lib/breadcrumbHelper";
 
 export default function SeasonDetail({
   slug,
@@ -174,7 +175,7 @@ export default function SeasonDetail({
             Home
           </Link>
           <ChevronRight size={14} className="text-slate-300 shrink-0" />
-          <span className="text-[#1C1C1C] font-semibold">{initialSeason.title}</span>
+          <span className="text-[#1C1C1C] font-semibold">{formatBreadcrumbTitle(initialSeason.slug, initialSeason.title)}</span>
         </div>
       </nav>
 

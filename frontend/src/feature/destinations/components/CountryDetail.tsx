@@ -33,6 +33,7 @@ import type { State, PaginatedResponse as StatePage } from "@/feature/state/type
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 import type { TravelExperience, PaginatedResponse as ExperiencePage } from "@/feature/travelExperience/type";
 import DestinationsSkeleton from "./DestinationsSkeleton";
+import { formatBreadcrumbTitle } from "@/lib/breadcrumbHelper";
 
 // ============================================================================
 // INDIA TRAVEL FAQS (Fallback when CMS has no custom FAQs)
@@ -704,7 +705,7 @@ function CountryContent({
             Tour Packages
           </Link>
           <ChevronRight size={13} className="text-slate-400 shrink-0" />
-          <span className="text-slate-900 font-semibold">{country.h1Title || country.title}</span>
+          <span className="text-slate-900 font-semibold">{formatBreadcrumbTitle(country.slug, country.title)}</span>
         </div>
       </nav>
 

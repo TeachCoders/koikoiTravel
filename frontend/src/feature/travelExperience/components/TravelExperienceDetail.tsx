@@ -42,6 +42,7 @@ import FaqSection from "@/feature/home/components/FaqSection";
 import { GOLDEN_TRIANGLE_FAQS } from "../goldenTriangleFaqs";
 import { QuoteModal } from "@/components/shared/QuoteModal";
 import EmptyToursCustomCta from "@/components/shared/EmptyToursCustomCta";
+import { formatBreadcrumbTitle } from "@/lib/breadcrumbHelper";
 import type { TravelExperience, TravelExperienceCity } from "@/feature/travelExperience/type";
 import type { Journey, PaginatedResponse as JourneyPage } from "@/feature/journey/type";
 
@@ -264,7 +265,7 @@ function ExperienceContent({
             Travel Experiences
           </Link>
           <ChevronRight size={14} className="text-slate-300 shrink-0" />
-          <span className="text-[#1C1C1C] font-semibold">{h1Title}</span>
+          <span className="text-[#1C1C1C] font-semibold">{formatBreadcrumbTitle(experience.slug, experience.title)}</span>
         </div>
       </nav>
 

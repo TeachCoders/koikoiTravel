@@ -43,6 +43,7 @@ import type { Journey, PaginatedResponse } from "@/feature/journey/type";
 import CityCard from "./CityCard";
 import DestinationsSkeleton from "./DestinationsSkeleton";
 import FaqSection from "@/feature/home/components/FaqSection";
+import { formatBreadcrumbTitle } from "@/lib/breadcrumbHelper";
 import DoodleBackground from "@/components/shared/DoodleBackground";
 import { GOLDEN_TRIANGLE_FAQS } from "@/feature/travelExperience/goldenTriangleFaqs";
 import { SOUTH_INDIA_FAQS } from "../southIndiaFaqs";
@@ -312,12 +313,12 @@ function StateContent({ state, initialJourneys }: { state: State; initialJourney
                 href={`/tour-packages/${state.country.slug}`}
                 className="hover:text-[#2E8B8B] transition-colors shrink-0"
               >
-                {((state.country as any)?.h1Title || state.country.title).replace(/\s*Tour$/i, "")}
+                {formatBreadcrumbTitle(state.country.slug, state.country.title)}
               </Link>
             </>
           )}
           <ChevronRight size={13} className="text-slate-400 shrink-0" />
-          <span className="text-slate-900 font-semibold">{state.h1Title || state.title}</span>
+          <span className="text-slate-900 font-semibold">{formatBreadcrumbTitle(state.slug, state.title)}</span>
         </div>
       </nav>
 

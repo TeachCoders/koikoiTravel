@@ -39,7 +39,7 @@ import type { Journey } from "@/feature/journey/type";
 import { groupMonthsBySeason } from "@/components/shared/seasonUtils";
 import PageLoader from "@/components/shared/PageLoader";
 import { isIndexableCity } from "@/lib/cityValidation";
-import { getJourneyBreadcrumbState } from "@/lib/breadcrumbHelper";
+import { getJourneyBreadcrumbState, formatBreadcrumbTitle } from "@/lib/breadcrumbHelper";
 import TourBookingForm from "@/feature/leads/components/TourBookingForm";
 import { travelExperienceIcon } from "@/components/shared/TravelExperiencePills";
 import RichContent, { sanitizeHtml } from "@/components/shared/RichContent";
@@ -188,14 +188,14 @@ export default function JourneyDetail({
 
   if (countrySlug && countryTitle) {
     breadcrumbNavItems.push({
-      label: countryTitle,
+      label: formatBreadcrumbTitle(countrySlug, countryTitle),
       href: `/tour-packages/${countrySlug}`,
     });
   }
 
   if (stateSlug && stateTitle && countrySlug) {
     breadcrumbNavItems.push({
-      label: stateTitle,
+      label: formatBreadcrumbTitle(stateSlug, stateTitle),
       href: `/tour-packages/${countrySlug}/${stateSlug}`,
     });
   }
