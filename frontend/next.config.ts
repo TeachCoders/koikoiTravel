@@ -170,6 +170,10 @@ const nextConfig: NextConfig = {
         destination: "/luxury-train-demo/index.html",
       },
       {
+        source: "/luxury-train-demo/",
+        destination: "/luxury-train-demo/index.html",
+      },
+      {
         source: "/luxury-train-demo/:train(palace-on-wheels|maharajas-express|golden-chariot|deccan-odyssey)",
         destination: "/luxury-train-demo/:train/index.html",
       },
