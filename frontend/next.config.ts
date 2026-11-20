@@ -165,6 +165,26 @@ const nextConfig: NextConfig = {
       "hero-banners",
     ];
     return [
+      {
+        source: "/luxury-trains",
+        destination: "/luxury-trains/index.html",
+      },
+      {
+        source: "/luxury-trains/:train(palace-on-wheels|maharajas-express|golden-chariot|deccan-odyssey)",
+        destination: "/luxury-trains/:train/index.html",
+      },
+      {
+        source: "/luxury-trains/:train(palace-on-wheels|maharajas-express|golden-chariot|deccan-odyssey)/:tab(itinerary|departures|price|cabins|photo-gallery)",
+        destination: "/luxury-trains/:train/:tab.html",
+      },
+      {
+        source: "/luxury-train-demo/:train(palace-on-wheels|maharajas-express|golden-chariot|deccan-odyssey)",
+        destination: "/luxury-train-demo/:train/index.html",
+      },
+      {
+        source: "/luxury-train-demo/:train(palace-on-wheels|maharajas-express|golden-chariot|deccan-odyssey)/:tab(itinerary|departures|price|cabins|photo-gallery)",
+        destination: "/luxury-train-demo/:train/:tab.html",
+      },
       ...cdnFolders.map((folder) => ({
         source: `/${folder}/:path*`,
         destination: `${cdn}/${folder}/:path*`,
