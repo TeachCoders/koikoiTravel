@@ -342,7 +342,7 @@ export default function LuxuryTrainHomeView() {
                   <span className="bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium tracking-wide text-white">
                     {train.badge}
                   </span>
-                  <div className="absolute top-5 right-5 w-[72px] h-[72px] bg-white rounded-full flex items-center justify-center p-2 border-[2.5px] border-[#c59b27] shadow-[0_6px_18px_rgba(0,0,0,0.35)] z-10 transition-transform duration-200 hover:scale-105">
+                  <div className="absolute top-5 right-5 w-[72px] h-[72px] bg-white rounded-full overflow-hidden flex items-center justify-center p-[5px] border-[2.5px] border-[#c59b27] shadow-[0_6px_18px_rgba(0,0,0,0.35)] z-10 transition-transform duration-200 hover:scale-105">
                     <img
                       src={`/images/luxury-trains/${train.slug}/logo.png`}
                       alt={`${train.name} Logo`}

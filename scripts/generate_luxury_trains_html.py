@@ -93,7 +93,7 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 .card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;border:1px solid var(--line)}
 .card .photo{height:320px;display:flex;align-items:flex-end;padding:20px;color:#fff;font-family:'Playfair Display',serif;font-size:13px;background-size:cover;background-position:center;position:relative}
 @media(max-width:600px){.card .photo{height:250px}}
-.train-badge{position:absolute;top:20px;right:20px;width:72px;height:72px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;padding:7px;border:2.5px solid #c59b27;box-shadow:0 6px 18px rgba(0,0,0,.35);z-index:2;transition:transform .2s ease}
+.train-badge{position:absolute;top:20px;right:20px;width:72px;height:72px;background:#fff;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:5px;border:2.5px solid #c59b27;box-shadow:0 6px 18px rgba(0,0,0,.35);z-index:2;transition:transform .2s ease}
 .train-badge img{width:100%;height:100%;object-fit:contain}
 .card:hover .train-badge{transform:scale(1.06)}
 .card .photo span{background:rgba(0,0,0,.6);backdrop-filter:blur(4px);padding:5px 12px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;letter-spacing:.05em}
