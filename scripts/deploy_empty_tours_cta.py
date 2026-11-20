@@ -41,6 +41,7 @@ if __name__ == "__main__":
         "cp -rn /var/www/koikoitravel-app/frontend/public/images/luxury-trains/* /var/www/koikoitravel-app/Backend/public/images/luxury-trains/ 2>/dev/null || true && "
         "echo '=== STEP 2: BUILD FRONTEND ===' && "
         "cd /var/www/koikoitravel-app/frontend && "
+        "rm -rf .next/cache && "
         "npm run build && "
         "echo '=== STEP 3: RESTART PM2 ===' && "
         "pm2 restart koikoi-frontend && "

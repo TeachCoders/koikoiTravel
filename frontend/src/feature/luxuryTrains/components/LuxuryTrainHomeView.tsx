@@ -576,14 +576,14 @@ export default function LuxuryTrainHomeView() {
       {/* 2.5 PALACE ON WHEELS VIDEO SPOTLIGHT (SPLIT ROYAL LAYOUT) */}
       <section className="py-12 sm:py-16 bg-white">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 rounded-2xl overflow-hidden shadow-2xl border border-[#eee7de] bg-[#0f172a]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-[#262463]">
             {/* Left: Content */}
-            <div className="p-8 sm:p-12 flex flex-col justify-center text-white bg-[#0f172a]">
-              <div className="w-[76px] h-[76px] rounded-full bg-white p-1.5 border-[2.5px] border-[#F8904D] mb-6 flex items-center justify-center shadow-lg">
+            <div className="p-8 sm:p-12 flex flex-col justify-center text-white bg-[#262463]">
+              <div className="mb-5 inline-flex items-center">
                 <img
                   src="/images/luxury-trains/palace-on-wheels/logo.png"
                   alt="Palace on Wheels Logo"
-                  className="w-full h-full object-contain"
+                  className="h-16 w-auto max-w-[150px] object-contain drop-shadow-md rounded-lg"
                 />
               </div>
 
@@ -591,12 +591,12 @@ export default function LuxuryTrainHomeView() {
                 Palace on Wheels
               </h2>
 
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
-                World&apos;s leading heritage luxury train &mdash; Modelled along the personal royal saloons of the erstwhile Rajput Maharajas, the Palace on Wheels is a royal 5-star palace on tracks taking guests across Rajasthan, the golden dunes of Jaisalmer, the lake palaces of Udaipur, and the timeless Taj Mahal in Agra.
+              <p className="text-slate-200 text-sm sm:text-base leading-relaxed mb-4">
+                <strong className="text-white font-semibold">World&apos;s leading heritage luxury train</strong> &mdash; Modelled along the personal royal saloons of the erstwhile Rajput Maharajas, the Palace on Wheels is a royal 5-star palace on tracks taking guests across Rajasthan, the golden dunes of Jaisalmer, the lake palaces of Udaipur, and the timeless Taj Mahal in Agra.
               </p>
 
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
-                7 Nights &amp; 8 Days of imperial grandeur: In operation since 1982, this iconic train departs weekly from Delhi, traversing Jaipur, Ranthambore tiger safari, Chittorgarh, Udaipur, Jaisalmer, Jodhpur, and Bharatpur. Each deluxe saloon is serviced by dedicated personal Khidmatgars.
+              <p className="text-slate-200 text-sm sm:text-base leading-relaxed mb-6">
+                <strong className="text-white font-semibold">7 Nights &amp; 8 Days of imperial grandeur:</strong> In operation since 1982, this iconic train departs weekly from Delhi, traversing Jaipur, Ranthambore tiger safari, Chittorgarh, Udaipur, Jaisalmer, Jodhpur, and Bharatpur. Each deluxe saloon is serviced by dedicated personal Khidmatgars.
               </p>
 
               <div className="flex flex-wrap items-center gap-3.5">
