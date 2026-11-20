@@ -44,7 +44,7 @@ export default function SeoTextBlock() {
 
             <p className="mt-5 text-base font-semibold text-slate-800 max-w-xl">
               Share your dates and we&apos;ll send a custom itinerary and get quote
-              on WhatsApp & email within 12 hours.
+              on WhatsApp & email within 12–24 hours.
             </p>
 
             <div className="mt-6 flex items-center flex-wrap gap-3">

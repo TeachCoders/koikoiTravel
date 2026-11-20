@@ -99,27 +99,59 @@ function capitalizeWords(str: string): string {
 }
 
 export function formatRouteText(journey: Partial<Journey>, stateFallback?: string): string {
+  const cleanList = (arr: string[]): string[] => {
+    const deduped: string[] = [];
+    for (const item of arr) {
+      const cap = capitalizeWords(item.trim());
+      if (cap && (deduped.length === 0 || deduped[deduped.length - 1].toLowerCase() !== cap.toLowerCase())) {
+        deduped.push(cap);
+      }
+    }
+    return deduped;
+  };
+
   if (journey.destination && journey.destination.trim()) {
-    return journey.destination
+    const rawParts = journey.destination
       .split(/[-–—,→]/)
       .map((s) => s.trim())
-      .filter(Boolean)
-      .map((s) => capitalizeWords(s))
-      .join(" · ");
+      .filter(Boolean);
+    const deduped = cleanList(rawParts);
+
+    // If destination was e.g. "Delhi - Delhi", deduped is just ["Delhi"].
+    // If journey.cities has richer route info (e.g. Delhi and Varanasi / Corbett), use that instead.
+    if (deduped.length > 1) {
+      return deduped.join(" · ");
+    }
+    if (deduped.length === 1) {
+      const cityNames = (journey.cities || [])
+        .map((c: any) => c.h1Title || c.title || c.name || "")
+        .filter(Boolean);
+      const dedupedCities = cleanList(cityNames);
+      if (dedupedCities.length > 1) {
+        return dedupedCities.join(" · ");
+      }
+      return deduped[0];
+    }
   }
 
   if (journey.route && journey.route.length > 0) {
-    return journey.route
-      .map((c: any) => capitalizeWords(c.h1Title || c.title || c.name || ""))
-      .filter(Boolean)
-      .join(" · ");
+    const routeNames = journey.route
+      .map((c: any) => c.h1Title || c.title || c.name || "")
+      .filter(Boolean);
+    const deduped = cleanList(routeNames);
+    if (deduped.length > 0) {
+      return deduped.join(" · ");
+    }
   }
 
   if (journey.cities && journey.cities.length > 0) {
-    return journey.cities
-      .map((c: any) => capitalizeWords(c.h1Title || c.title || c.name || ""))
-      .filter(Boolean)
-      .join(" · ");
+    const cityNames = journey.cities
+      .map((c: any) => c.h1Title || c.title || c.name || "")
+      .filter(Boolean);
+    const deduped = cleanList(cityNames);
+    if (deduped.length > 0) {
+      return deduped.join(" · ");
+    }
   }
 
   return stateFallback ? capitalizeWords(stateFallback) : "";
