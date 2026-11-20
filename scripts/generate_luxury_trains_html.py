@@ -938,6 +938,10 @@ if (heroEl) {{
 
 def generate_all_for_base(base_dir, base_path):
     print(f"Generating site in {base_dir} with base path {base_path}...")
+    if os.path.exists(base_dir):
+        print(f"Deleting old directory {base_dir}...")
+        shutil.rmtree(base_dir)
+    os.makedirs(base_dir, exist_ok=True)
 
     # ================= 1. HOME PAGE (STATS SECTION REMOVED, USER HERO IMAGES APPLIED) =================
     home_content = f"""
@@ -3801,7 +3805,8 @@ function switchPriceCurrency(curr) {{
 
     # Also create flat .html files alongside directory/index.html
     for train in ["palace-on-wheels", "maharajas-express", "golden-chariot", "deccan-odyssey"]:
-        for tab in ["itinerary", "departures", "price", "cabins", "photo-gallery"]:
+        for tab in ["itinerary", "departures", "price", "cabins", "photo-gallery",
+                    "the-heritage-of-india", "the-indian-panorama", "the-indian-splendour", "treasures-of-india"]:
             src = f"{base_dir}/{train}/{tab}/index.html"
             dst = f"{base_dir}/{train}/{tab}.html"
             if os.path.exists(src):
@@ -3810,6 +3815,5 @@ function switchPriceCurrency(curr) {{
     print(f"Successfully generated all pages for {base_dir}!")
 
 if __name__ == "__main__":
-    generate_all_for_base("frontend/public/luxury-trains", "/luxury-trains")
     generate_all_for_base("frontend/public/luxury-train-demo", "/luxury-train-demo")
-    print("ALL STATIC PAGES GENERATED WITH LOCAL IMAGES & UPDATES!")
+    print("ALL STATIC PAGES GENERATED WITH LOCAL IMAGES & UPDATES FOR LUXURY-TRAIN-DEMO!")
