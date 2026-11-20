@@ -64,10 +64,17 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 @media(max-width:1020px){.nav ul{display:none}}
 
 /* hero */
-.hero{position:relative;color:#fff;padding:110px 0 100px;
+.hero{position:relative;color:#fff;padding:120px 0 110px;min-height:560px;display:flex;align-items:center;overflow:hidden;background:#091b2c;
   background:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),
-  url('https://koikoitravel.com/hero-banners/tajmahal-1820x600-desktop.webp') center/cover no-repeat;
+  url('/images/luxury-trains/palace-on-wheels/exterior.webp') center/cover no-repeat;
 }
+.hero-slides{position:absolute;inset:0;z-index:1}
+.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease-in-out, transform 7s ease-out;transform:scale(1.05)}
+.hero-slide.active{opacity:1;transform:scale(1)}
+.hero-controls{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;z-index:4}
+.hero-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.45);border:none;cursor:pointer;padding:0;transition:all .3s ease}
+.hero-dot.active{background:var(--accent);width:26px;border-radius:999px}
+.hero .wrap{position:relative;z-index:3}
 .hero .tag{display:inline-block;border:1px solid rgba(255,255,255,.4);padding:5px 16px;border-radius:999px;font-size:12px;letter-spacing:.08em;margin-bottom:18px;color:#f3d79b}
 .hero h1{color:#fff;font-size:clamp(30px,5vw,56px);max-width:820px;margin-bottom:16px}
 .hero p{max-width:640px;font-size:17px;color:#e8edf2;margin-bottom:28px}
@@ -339,6 +346,22 @@ def write_page(file_path, title, description, content_html, active_train=None, a
 {subnav}
 {content_html}
 {footer}
+<script>
+let curHeroSlide = 0;
+const hSlides = document.querySelectorAll('.hero-slide');
+const hDots = document.querySelectorAll('.hero-dot');
+function setHeroSlide(idx) {{
+  if (!hSlides.length) return;
+  hSlides[curHeroSlide]?.classList.remove('active');
+  hDots[curHeroSlide]?.classList.remove('active');
+  curHeroSlide = (idx + hSlides.length) % hSlides.length;
+  hSlides[curHeroSlide]?.classList.add('active');
+  hDots[curHeroSlide]?.classList.add('active');
+}}
+if (hSlides.length > 1) {{
+  setInterval(() => setHeroSlide(curHeroSlide + 1), 4500);
+}}
+</script>
 </body>
 </html>
 """
@@ -351,8 +374,18 @@ def generate_all_for_base(base_dir, base_path):
 
     # ================= 1. HOME PAGE (STATS SECTION REMOVED, USER HERO IMAGES APPLIED) =================
     home_content = f"""
-<!-- HERO -->
-<section class="hero">
+<!-- HERO SLIDER (2 IMAGES FROM EACH OF THE 4 TRAINS = 8 IMAGES) -->
+<section class="hero" id="heroSlider">
+  <div class="hero-slides">
+    <div class="hero-slide active" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/palace-on-wheels/exterior.webp')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/maharajas-express/hero.jpg')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/golden-chariot/hero.jpg')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/deccan-odyssey/hero.jpg')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/palace-on-wheels/hero.jpg')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/maharajas-express/dining-pink.jpg')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/golden-chariot/restaurant-1.jpg')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/deccan-odyssey/dining-lounge.jpg')"></div>
+  </div>
   <div class="wrap">
     <span class="tag">LUXURY TRAINS OF INDIA</span>
     <h1>Travel India Like Royalty, On Board a Palace on Wheels</h1>
@@ -361,6 +394,16 @@ def generate_all_for_base(base_dir, base_path):
       <a class="btn btn-gold" href="#trains">Explore the 4 Trains</a>
       <a class="btn btn-line" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20want%20a%20quote%20for%20a%20luxury%20train%20journey." target="_blank" rel="noopener">Get a Free Quote</a>
     </div>
+  </div>
+  <div class="hero-controls">
+    <button class="hero-dot active" onclick="setHeroSlide(0)" title="Palace on Wheels (Exterior)"></button>
+    <button class="hero-dot" onclick="setHeroSlide(1)" title="Maharajas Express (Exterior)"></button>
+    <button class="hero-dot" onclick="setHeroSlide(2)" title="Golden Chariot (Exterior)"></button>
+    <button class="hero-dot" onclick="setHeroSlide(3)" title="Deccan Odyssey (Exterior)"></button>
+    <button class="hero-dot" onclick="setHeroSlide(4)" title="Palace on Wheels (Interior)"></button>
+    <button class="hero-dot" onclick="setHeroSlide(5)" title="Maharajas Express (Dining)"></button>
+    <button class="hero-dot" onclick="setHeroSlide(6)" title="Golden Chariot (Dining)"></button>
+    <button class="hero-dot" onclick="setHeroSlide(7)" title="Deccan Odyssey (Lounge)"></button>
   </div>
 </section>
 
