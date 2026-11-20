@@ -154,8 +154,12 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 .facts li span:first-child{color:#64748b}
 .facts li span:last-child{text-align:right;font-weight:600;color:#0f172a}
 .links{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
-.links a{text-align:center;font-size:13px;font-weight:600;padding:10px 4px;border:1px solid #eee7de;border-radius:8px;color:#0f172a;transition:.2s;background:#faf8f5;font-family:'Outfit',sans-serif}
-.links a:hover{background:#F8904D;color:#fff;border-color:#F8904D}
+.links a{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;font-weight:600;padding:9px 6px;border:1px solid #e2e8f0;border-radius:8px;color:#0f172a;transition:all .2s ease;background:#faf8f5;font-family:'Outfit',sans-serif;text-decoration:none}
+.links a:hover{background:#F8904D;color:#fff;border-color:#F8904D;transform:translateY(-1px);box-shadow:0 3px 8px rgba(248,144,77,0.25)}
+.links a svg{flex-shrink:0;opacity:0.75;transition:opacity .2s}
+.links a:hover svg{opacity:1;stroke:#fff}
+.links a .link-arr{font-size:11px;opacity:0.6;transition:transform .2s,opacity .2s}
+.links a:hover .link-arr{opacity:1;transform:translateX(2px)}
 .card .btn{text-align:center;margin-top:auto;background:#F8904D;color:#fff;border-radius:999px;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;box-shadow:0 4px 14px rgba(248,144,77,.35)}
 .card .btn:hover{background:#e07b3b;transform:scale(1.02)}
 
@@ -185,7 +189,7 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 /* tables */
 .table-wrap{overflow-x:auto;border-radius:16px;box-shadow:0 4px 20px rgba(184,134,11,.1);background:#fffdfa;border:1.5px solid #e8d7b0}
 table{width:100%;border-collapse:collapse;min-width:760px;font-size:14px}
-th{background:linear-gradient(135deg,#fbf4e4 0%,#f5e7c8 100%);color:#6b4f10;text-align:left;padding:15px 18px;font-family:'Outfit',sans-serif;font-weight:700;border-bottom:2px solid #dfc384;letter-spacing:0.3px}
+th{background:#0f172a;color:#ffffff;text-align:left;padding:15px 18px;font-family:'Outfit',sans-serif;font-weight:700;border-bottom:2px solid #e8d7b0;letter-spacing:0.3px}
 td{padding:16px 18px;border-bottom:1px solid #f1e4c8;vertical-align:top;background:#ffffff}
 tbody tr:nth-child(even) td{background:#faf6ed}
 tbody tr:hover td{background:#f6eedb}

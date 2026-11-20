@@ -157,8 +157,12 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 .facts li span:first-child{color:#64748b}
 .facts li span:last-child{text-align:right;font-weight:600;color:#0f172a}
 .links{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
-.links a{text-align:center;font-size:13px;font-weight:600;padding:10px 4px;border:1px solid #eee7de;border-radius:8px;color:#0f172a;transition:.2s;background:#faf8f5;font-family:'Outfit',sans-serif}
-.links a:hover{background:#F8904D;color:#fff;border-color:#F8904D}
+.links a{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;font-weight:600;padding:9px 6px;border:1px solid #e2e8f0;border-radius:8px;color:#0f172a;transition:all .2s ease;background:#faf8f5;font-family:'Outfit',sans-serif;text-decoration:none}
+.links a:hover{background:#F8904D;color:#fff;border-color:#F8904D;transform:translateY(-1px);box-shadow:0 3px 8px rgba(248,144,77,0.25)}
+.links a svg{flex-shrink:0;opacity:0.75;transition:opacity .2s}
+.links a:hover svg{opacity:1;stroke:#fff}
+.links a .link-arr{font-size:11px;opacity:0.6;transition:transform .2s,opacity .2s}
+.links a:hover .link-arr{opacity:1;transform:translateX(2px)}
 .card .btn{text-align:center;margin-top:auto;background:#F8904D;color:#fff;border-radius:999px;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;box-shadow:0 4px 14px rgba(248,144,77,.35)}
 .card .btn:hover{background:#e07b3b;transform:scale(1.02)}
 
@@ -188,7 +192,7 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 /* tables */
 .table-wrap{overflow-x:auto;border-radius:16px;box-shadow:0 4px 20px rgba(184,134,11,.1);background:#fffdfa;border:1.5px solid #e8d7b0}
 table{width:100%;border-collapse:collapse;min-width:760px;font-size:14px}
-th{background:linear-gradient(135deg,#fbf4e4 0%,#f5e7c8 100%);color:#6b4f10;text-align:left;padding:15px 18px;font-family:'Outfit',sans-serif;font-weight:700;border-bottom:2px solid #dfc384;letter-spacing:0.3px}
+th{background:#0f172a;color:#ffffff;text-align:left;padding:15px 18px;font-family:'Outfit',sans-serif;font-weight:700;border-bottom:2px solid #e8d7b0;letter-spacing:0.3px}
 td{padding:16px 18px;border-bottom:1px solid #f1e4c8;vertical-align:top;background:#ffffff}
 tbody tr:nth-child(even) td{background:#faf6ed}
 tbody tr:hover td{background:#f6eedb}
@@ -1033,6 +1037,41 @@ def generate_all_for_base(base_dir, base_path):
         shutil.rmtree(base_dir)
     os.makedirs(base_dir, exist_ok=True)
 
+    def get_card_links(train_slug):
+        return f'''
+          <div class="links">
+            <a href="{base_path}/{train_slug}/itinerary">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="10" r="3"></circle><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path></svg>
+              <span>Itinerary</span>
+              <span class="link-arr">&rarr;</span>
+            </a>
+            <a href="{base_path}/{train_slug}/departures">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span>Departures</span>
+              <span class="link-arr">&rarr;</span>
+            </a>
+            <a href="{base_path}/{train_slug}/price">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+              <span>Price</span>
+              <span class="link-arr">&rarr;</span>
+            </a>
+            <a href="{base_path}/{train_slug}/cabins">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7v11m0-4h18m0-7v11M3 10h18M6 7a2 2 0 1 1 4 0v3H6V7z"></path></svg>
+              <span>Cabins</span>
+              <span class="link-arr">&rarr;</span>
+            </a>
+            <a href="{base_path}/{train_slug}/photo-gallery">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              <span>Photos</span>
+              <span class="link-arr">&rarr;</span>
+            </a>
+            <a href="{base_path}/{train_slug}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+              <span>Overview</span>
+              <span class="link-arr">&rarr;</span>
+            </a>
+          </div>'''
+
     # ================= 1. HOME PAGE (STATS SECTION REMOVED, USER HERO IMAGES APPLIED) =================
     home_content = f"""
 <!-- HERO BANNER (KOIKOI EXACT SLIDER & SIZE) -->
@@ -1139,6 +1178,18 @@ def generate_all_for_base(base_dir, base_path):
           <div class="sub" style="margin-bottom:12px">India's first luxury train, since 1982</div>
           <p>A week through the land of kings: forts, palaces, lakes and desert, ending at the Taj Mahal.</p>
 
+          <!-- Focused Lowest Starting Price Highlight -->
+          <div style="display:flex;align-items:center;justify-content:space-between;background:#fffdfa;border:1.5px solid #e8d7b0;border-radius:12px;padding:10px 16px;margin-bottom:16px;box-shadow:0 2px 10px rgba(184,134,11,0.06)">
+            <div>
+              <div style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px">Lowest Starting Tariff</div>
+              <div style="font-size:11.5px;color:#94a3b8">Per Person (Twin Sharing)</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-family:'Outfit',sans-serif;font-size:21px;font-weight:800;color:#d96b27;line-height:1.1">$3,950 <span style="font-size:12.5px;font-weight:600;color:#64748b">USD</span></div>
+              <div style="font-size:11px;color:#64748b;font-weight:600">approx. ₹3.28 Lakh</div>
+            </div>
+          </div>
+
           <!-- Journeys List (Chardham Table Style) -->
           <div class="card-journeys-list" style="margin-bottom:18px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#fff">
             <div style="background:#f8fafc;padding:8px 14px;border-bottom:1px solid #e2e8f0;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px">
@@ -1157,14 +1208,7 @@ def generate_all_for_base(base_dir, base_path):
             <li><span>Duration</span><span>7 Nights / 8 Days</span></li>
             <li><span>Route</span><span>Delhi · Jaipur · Ranthambore · Udaipur · Jaisalmer · Jodhpur · Agra</span></li>
           </ul>
-          <div class="links">
-            <a href="{base_path}/palace-on-wheels/itinerary">Itinerary</a>
-            <a href="{base_path}/palace-on-wheels/departures">Departures</a>
-            <a href="{base_path}/palace-on-wheels/price">Price</a>
-            <a href="{base_path}/palace-on-wheels/cabins">Cabins</a>
-            <a href="{base_path}/palace-on-wheels/photo-gallery">Photo Gallery</a>
-            <a href="{base_path}/palace-on-wheels">Overview</a>
-          </div>
+          {get_card_links('palace-on-wheels')}
           <a class="btn btn-dark" href="{base_path}/palace-on-wheels">View Palace on Wheels</a>
         </div>
       </article>
@@ -1182,6 +1226,18 @@ def generate_all_for_base(base_dir, base_path):
           <h3 style="margin-bottom:2px">Maharajas' Express</h3>
           <div class="sub" style="margin-bottom:12px">4 journeys · 23 coaches · 4 cabin types</div>
           <p>The most varied train: pick a short 4-day trip or a full week through Rajasthan, Orchha, Khajuraho and Varanasi.</p>
+
+          <!-- Focused Lowest Starting Price Highlight -->
+          <div style="display:flex;align-items:center;justify-content:space-between;background:#fffdfa;border:1.5px solid #e8d7b0;border-radius:12px;padding:10px 16px;margin-bottom:16px;box-shadow:0 2px 10px rgba(184,134,11,0.06)">
+            <div>
+              <div style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px">Lowest Starting Tariff</div>
+              <div style="font-size:11.5px;color:#94a3b8">Per Person (Twin Sharing)</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-family:'Outfit',sans-serif;font-size:21px;font-weight:800;color:#d96b27;line-height:1.1">$5,160 <span style="font-size:12.5px;font-weight:600;color:#64748b">USD</span></div>
+              <div style="font-size:11px;color:#64748b;font-weight:600">approx. ₹5.16 Lakh</div>
+            </div>
+          </div>
 
           <!-- Journeys List (Chardham Table Style) -->
           <div class="card-journeys-list" style="margin-bottom:18px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#fff">
@@ -1226,14 +1282,7 @@ def generate_all_for_base(base_dir, base_path):
             <li><span>Duration</span><span>3N / 4D or 6N / 7D</span></li>
             <li><span>Operating Routes</span><span>Delhi, Mumbai, Rajasthan, Agra, Varanasi</span></li>
           </ul>
-          <div class="links">
-            <a href="{base_path}/maharajas-express/itinerary">Itinerary</a>
-            <a href="{base_path}/maharajas-express/departures">Departures</a>
-            <a href="{base_path}/maharajas-express/price">Price</a>
-            <a href="{base_path}/maharajas-express/cabins">Cabins</a>
-            <a href="{base_path}/maharajas-express/photo-gallery">Photo Gallery</a>
-            <a href="{base_path}/maharajas-express">Overview</a>
-          </div>
+          {get_card_links('maharajas-express')}
           <a class="btn btn-dark" href="{base_path}/maharajas-express">View Maharajas' Express</a>
         </div>
       </article>
@@ -1251,6 +1300,18 @@ def generate_all_for_base(base_dir, base_path):
           <h3 style="margin-bottom:2px">Golden Chariot</h3>
           <div class="sub" style="margin-bottom:12px">South India's luxury train</div>
           <p>Mysore palaces, Hampi ruins, Bandipur wildlife and the beaches of Goa, all starting from Bengaluru.</p>
+
+          <!-- Focused Lowest Starting Price Highlight -->
+          <div style="display:flex;align-items:center;justify-content:space-between;background:#fffdfa;border:1.5px solid #e8d7b0;border-radius:12px;padding:10px 16px;margin-bottom:16px;box-shadow:0 2px 10px rgba(184,134,11,0.06)">
+            <div>
+              <div style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px">Lowest Starting Tariff</div>
+              <div style="font-size:11.5px;color:#94a3b8">Per Person (Twin Sharing)</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-family:'Outfit',sans-serif;font-size:21px;font-weight:800;color:#d96b27;line-height:1.1">$3,150 <span style="font-size:12.5px;font-weight:600;color:#64748b">USD</span></div>
+              <div style="font-size:11px;color:#64748b;font-weight:600">approx. ₹2.62 Lakh</div>
+            </div>
+          </div>
 
           <!-- Journeys List (Chardham Table Style) -->
           <div class="card-journeys-list" style="margin-bottom:18px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#fff">
@@ -1287,14 +1348,7 @@ def generate_all_for_base(base_dir, base_path):
             <li><span>Duration</span><span>3N / 4D or 5N / 6D</span></li>
             <li><span>Route</span><span>Bengaluru · Bandipur · Mysore · Hampi · Goa</span></li>
           </ul>
-          <div class="links">
-            <a href="{base_path}/golden-chariot/itinerary">Itinerary</a>
-            <a href="{base_path}/golden-chariot/departures">Departures</a>
-            <a href="{base_path}/golden-chariot/price">Price</a>
-            <a href="{base_path}/golden-chariot/cabins">Cabins</a>
-            <a href="{base_path}/golden-chariot/photo-gallery">Photo Gallery</a>
-            <a href="{base_path}/golden-chariot">Overview</a>
-          </div>
+          {get_card_links('golden-chariot')}
           <a class="btn btn-dark" href="{base_path}/golden-chariot">View Golden Chariot</a>
         </div>
       </article>
@@ -1313,18 +1367,23 @@ def generate_all_for_base(base_dir, base_path):
           <div class="sub" style="margin-bottom:12px">Six 7-night journeys</div>
           <p>Ajanta and Ellora caves, Goa, Udaipur, the Golden Triangle and even Tadoba tiger country, on one train.</p>
 
+          <!-- Focused Lowest Starting Price Highlight -->
+          <div style="display:flex;align-items:center;justify-content:space-between;background:#fffdfa;border:1.5px solid #e8d7b0;border-radius:12px;padding:10px 16px;margin-bottom:16px;box-shadow:0 2px 10px rgba(184,134,11,0.06)">
+            <div>
+              <div style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px">Lowest Starting Tariff</div>
+              <div style="font-size:11.5px;color:#94a3b8">Per Person (Twin Sharing)</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-family:'Outfit',sans-serif;font-size:21px;font-weight:800;color:#d96b27;line-height:1.1">$7,320 <span style="font-size:12.5px;font-weight:600;color:#64748b">USD</span></div>
+              <div style="font-size:11px;color:#64748b;font-weight:600">approx. ₹6.08 Lakh</div>
+            </div>
+          </div>
+
           <ul class="facts">
             <li><span>Duration</span><span>7 Nights / 8 Days</span></li>
             <li><span>Routes</span><span>Maharashtra, Gujarat &amp; Rajasthan Circuits</span></li>
           </ul>
-          <div class="links">
-            <a href="{base_path}/deccan-odyssey/itinerary">Itinerary</a>
-            <a href="{base_path}/deccan-odyssey/departures">Departures</a>
-            <a href="{base_path}/deccan-odyssey/price">Price</a>
-            <a href="{base_path}/deccan-odyssey/cabins">Cabins</a>
-            <a href="{base_path}/deccan-odyssey/photo-gallery">Photo Gallery</a>
-            <a href="{base_path}/deccan-odyssey">Overview</a>
-          </div>
+          {get_card_links('deccan-odyssey')}
           <a class="btn btn-dark" href="{base_path}/deccan-odyssey">View Deccan Odyssey</a>
         </div>
       </article>
