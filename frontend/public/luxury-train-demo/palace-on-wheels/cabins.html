@@ -756,6 +756,86 @@ footer a:hover{color:#F8904D}
   color: #94a3b8;
 }
 
+/* ================= KOIKOI TOUR PACKAGE ACCORDION ================= */
+.day-accordion-item {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 8px 0;
+}
+.day-accordion-item:last-child {
+  border-bottom: none;
+}
+.day-accordion-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  cursor: pointer;
+  list-style: none;
+  font-family: 'Outfit', sans-serif;
+  user-select: none;
+}
+.day-accordion-item summary::-webkit-details-marker {
+  display: none;
+}
+.day-accordion-item summary h3 {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.day-accordion-item summary .day-num {
+  color: #F8904D;
+  font-weight: 800;
+}
+.day-accordion-item summary .chevron {
+  width: 20px;
+  height: 20px;
+  color: #94a3b8;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+.day-accordion-item[open] summary .chevron {
+  transform: rotate(180deg);
+  color: #F8904D;
+}
+.day-accordion-content {
+  padding: 4px 0 16px;
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.75;
+}
+.day-accordion-content p {
+  margin: 0 0 10px;
+}
+.day-accordion-content p:last-child {
+  margin-bottom: 0;
+}
+.day-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin-top: 8px;
+}
+@media (max-width: 900px) {
+  .hero-inner-split {
+    grid-template-columns: 1fr !important;
+  }
+  .gallery-hero-grid {
+    height: 320px !important;
+  }
+}
+
 /* floating whatsapp */
 .wa{position:fixed;right:18px;bottom:18px;z-index:60;background:#25d366;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.25);display:flex;align-items:center;gap:6px}
 .wa:hover{background:#20ba5a}
@@ -934,6 +1014,13 @@ function loadTrainVideo(elId, videoId) {
   }
 }
 function loadPowVideo(elId) { loadTrainVideo(elId, 'HnY_2_BBbW4'); }
+
+function toggleAllDays() {
+  const items = document.querySelectorAll('.day-accordion-item');
+  if (!items.length) return;
+  const anyOpen = Array.from(items).some(item => item.open);
+  items.forEach(item => item.open = !anyOpen);
+}
 
 let heroTimer = setInterval(nextHeroSlide, 6000);
 const heroEl = document.getElementById('heroSlider');

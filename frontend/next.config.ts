@@ -166,18 +166,6 @@ const nextConfig: NextConfig = {
     ];
     return [
       {
-        source: "/luxury-trains",
-        destination: "/luxury-trains/index.html",
-      },
-      {
-        source: "/luxury-trains/:train(palace-on-wheels|maharajas-express|golden-chariot|deccan-odyssey)",
-        destination: "/luxury-trains/:train/index.html",
-      },
-      {
-        source: "/luxury-trains/:train(palace-on-wheels|maharajas-express|golden-chariot|deccan-odyssey)/:tab(itinerary|departures|price|cabins|photo-gallery)",
-        destination: "/luxury-trains/:train/:tab.html",
-      },
-      {
         source: "/luxury-train-demo",
         destination: "/luxury-train-demo/index.html",
       },

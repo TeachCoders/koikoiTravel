@@ -756,6 +756,86 @@ footer a:hover{color:#F8904D}
   color: #94a3b8;
 }
 
+/* ================= KOIKOI TOUR PACKAGE ACCORDION ================= */
+.day-accordion-item {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 8px 0;
+}
+.day-accordion-item:last-child {
+  border-bottom: none;
+}
+.day-accordion-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  cursor: pointer;
+  list-style: none;
+  font-family: 'Outfit', sans-serif;
+  user-select: none;
+}
+.day-accordion-item summary::-webkit-details-marker {
+  display: none;
+}
+.day-accordion-item summary h3 {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.day-accordion-item summary .day-num {
+  color: #F8904D;
+  font-weight: 800;
+}
+.day-accordion-item summary .chevron {
+  width: 20px;
+  height: 20px;
+  color: #94a3b8;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+.day-accordion-item[open] summary .chevron {
+  transform: rotate(180deg);
+  color: #F8904D;
+}
+.day-accordion-content {
+  padding: 4px 0 16px;
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.75;
+}
+.day-accordion-content p {
+  margin: 0 0 10px;
+}
+.day-accordion-content p:last-child {
+  margin-bottom: 0;
+}
+.day-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin-top: 8px;
+}
+@media (max-width: 900px) {
+  .hero-inner-split {
+    grid-template-columns: 1fr !important;
+  }
+  .gallery-hero-grid {
+    height: 320px !important;
+  }
+}
+
 /* floating whatsapp */
 .wa{position:fixed;right:18px;bottom:18px;z-index:60;background:#25d366;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.25);display:flex;align-items:center;gap:6px}
 .wa:hover{background:#20ba5a}
@@ -815,46 +895,70 @@ footer a:hover{color:#F8904D}
 
 
 
-<!-- Top Full-View Hero Section -->
-<div style="position:relative;background:#0f172a;color:#fff;overflow:hidden">
-  <div style="position:relative;height:520px;background:linear-gradient(180deg,rgba(15,23,42,0.3) 0%,rgba(15,23,42,0.85) 100%),url('/images/luxury-trains/maharajas-express/hero.jpg') center/cover no-repeat;display:flex;align-items:flex-end">
-    <div class="wrap" style="padding-bottom:52px;width:100%">
-      <div class="koikoi-breadcrumb" style="color:#cbd5e1;margin-bottom:12px">
-        <a href="/luxury-train-demo" style="color:#cbd5e1">Luxury Trains</a>
-        <span>›</span>
-        <span style="color:#F8904D;font-weight:600">Maharajas' Express</span>
+<!-- Top Full-View Clean Hero Banner (NO TEXT ON BANNER) -->
+<div style="position:relative;height:480px;background:url('/images/luxury-trains/maharajas-express/hero.jpg') center/cover no-repeat;overflow:hidden">
+</div>
+
+<!-- 4-Photo Full-View Visual Showcase Gallery Strip -->
+<div style="background:#0b1120;padding:16px 0">
+  <div class="wrap">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px" class="gallery-4-strip">
+      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
+        <img src="/images/luxury-trains/maharajas-express/hero.jpg" alt="Train Exterior" style="width:100%;height:100%;object-fit:cover">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Royal Exterior Livery</span>
       </div>
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
-        <span style="background:rgba(248,144,77,0.25);color:#F8904D;border:1px solid #F8904D;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:4px 14px;border-radius:999px">
-          WORLD'S LEADING LUXURY TRAIN (7x WINNER)
-        </span>
-        <span style="color:#e2e8f0;font-size:13.5px">★ 4.9 (184 Verified Travelers) · IRCTC Royal Train</span>
+      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
+        <img src="/images/luxury-trains/maharajas-express/dining-pink.jpg" alt="Rang Mahal Dining" style="width:100%;height:100%;object-fit:cover">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Rang Mahal Fine Dining</span>
       </div>
-      <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(30px,4.5vw,52px);font-weight:800;color:#fff;line-height:1.15;margin:0 0 14px;max-width:1050px">
-        Maharajas' Express Luxury Train Tour Packages
-      </h1>
-      <p style="color:#cbd5e1;font-size:clamp(15px,1.4vw,18px);max-width:980px;line-height:1.6;margin:0 0 22px">
-        Experience half a mile of royal opulence across India. 23 carriages, state-of-the-art pneumatic suspension, two five-star dining restaurants, and 4 legendary circuits connecting Mumbai, Delhi, Rajasthan, Agra, and Varanasi.
-      </p>
-      <div style="display:flex;gap:14px;flex-wrap:wrap">
-        <a href="#journeys" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14.5px;padding:12px 26px;border-radius:999px;text-decoration:none">
-          Explore 4 Journeys &rarr;
-        </a>
-        <a href="#departures" style="background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);color:#fff;border:1px solid rgba(255,255,255,0.3);font-family:'Outfit',sans-serif;font-weight:700;font-size:14.5px;padding:12px 26px;border-radius:999px;text-decoration:none">
-          Departure Dates
-        </a>
-        <a href="#fare" style="background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);color:#fff;border:1px solid rgba(255,255,255,0.3);font-family:'Outfit',sans-serif;font-weight:700;font-size:14.5px;padding:12px 26px;border-radius:999px;text-decoration:none">
-          Cabin Tariffs
-        </a>
+      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
+        <img src="/images/luxury-trains/maharajas-express/suite.jpg" alt="Royal Suite Salon" style="width:100%;height:100%;object-fit:cover">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Royal Suite Salon</span>
+      </div>
+      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
+        <img src="/images/luxury-trains/maharajas-express/deluxe-cabin.jpg" alt="Deluxe Cabin" style="width:100%;height:100%;object-fit:cover">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Deluxe Double Cabin</span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 4-Photo Full-View Visual Showcase Gallery -->
-<div style="background:#0b1120;padding:16px 0">
+<!-- Clean Editorial Title & Intro Section (BELOW BANNER) -->
+<div style="background:#ffffff;border-bottom:1px solid #e2e8f0;padding:40px 0 36px">
   <div class="wrap">
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px" class="gallery-4-strip">
+    <div class="koikoi-breadcrumb" style="margin-bottom:14px">
+      <a href="/luxury-train-demo" style="color:#64748b;text-decoration:none">Luxury Trains</a>
+      <span style="color:#94a3b8;margin:0 6px">›</span>
+      <span style="color:#0f172a;font-weight:600">Maharajas' Express</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+      <span style="background:rgba(248,144,77,0.12);color:#d96b27;border:1px solid rgba(248,144,77,0.25);font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:5px 14px;border-radius:999px">
+        WORLD'S LEADING LUXURY TRAIN (7x WINNER)
+      </span>
+      <span style="color:#64748b;font-size:13.5px;font-weight:500">★ 4.9 (184 Verified Travelers) · IRCTC Royal Train</span>
+    </div>
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(30px,4.2vw,48px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 14px;max-width:1100px">
+      Maharajas' Express Luxury Train Tour Packages
+    </h1>
+    <p style="color:#475569;font-size:clamp(15px,1.25vw,17.5px);max-width:1050px;line-height:1.7;margin:0 0 24px">
+      Experience half a mile of royal opulence across India. 23 carriages, state-of-the-art pneumatic suspension, two five-star dining restaurants, and 4 legendary circuits connecting Mumbai, Delhi, Rajasthan, Agra, and Varanasi.
+    </p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a href="#journeys" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 26px;border-radius:999px;text-decoration:none">
+        Explore 4 Journeys &rarr;
+      </a>
+      <a href="#departures" style="background:#fff;border:1px solid #cbd5e1;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 26px;border-radius:999px;text-decoration:none">
+        Departure Dates
+      </a>
+      <a href="#fare" style="background:#fff;border:1px solid #cbd5e1;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 26px;border-radius:999px;text-decoration:none">
+        Cabin Tariffs
+      </a>
+      <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20am%20interested%20in%20Maharajas%27%20Express%20luxury%20train%20tour%20packages." target="_blank" rel="noopener" style="background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none;display:inline-flex;align-items:center;gap:8px">
+        <span>Chat on WhatsApp</span>
+      </a>
+    </div>
+  </div>
+</div>
       <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
         <img src="/images/luxury-trains/maharajas-express/hero.jpg" alt="Train Exterior" style="width:100%;height:100%;object-fit:cover">
         <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Royal Exterior Livery</span>
@@ -1583,6 +1687,13 @@ function loadTrainVideo(elId, videoId) {
   }
 }
 function loadPowVideo(elId) { loadTrainVideo(elId, 'HnY_2_BBbW4'); }
+
+function toggleAllDays() {
+  const items = document.querySelectorAll('.day-accordion-item');
+  if (!items.length) return;
+  const anyOpen = Array.from(items).some(item => item.open);
+  items.forEach(item => item.open = !anyOpen);
+}
 
 let heroTimer = setInterval(nextHeroSlide, 6000);
 const heroEl = document.getElementById('heroSlider');

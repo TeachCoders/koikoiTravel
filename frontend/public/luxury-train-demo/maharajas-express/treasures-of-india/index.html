@@ -756,6 +756,86 @@ footer a:hover{color:#F8904D}
   color: #94a3b8;
 }
 
+/* ================= KOIKOI TOUR PACKAGE ACCORDION ================= */
+.day-accordion-item {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 8px 0;
+}
+.day-accordion-item:last-child {
+  border-bottom: none;
+}
+.day-accordion-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  cursor: pointer;
+  list-style: none;
+  font-family: 'Outfit', sans-serif;
+  user-select: none;
+}
+.day-accordion-item summary::-webkit-details-marker {
+  display: none;
+}
+.day-accordion-item summary h3 {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.day-accordion-item summary .day-num {
+  color: #F8904D;
+  font-weight: 800;
+}
+.day-accordion-item summary .chevron {
+  width: 20px;
+  height: 20px;
+  color: #94a3b8;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+.day-accordion-item[open] summary .chevron {
+  transform: rotate(180deg);
+  color: #F8904D;
+}
+.day-accordion-content {
+  padding: 4px 0 16px;
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.75;
+}
+.day-accordion-content p {
+  margin: 0 0 10px;
+}
+.day-accordion-content p:last-child {
+  margin-bottom: 0;
+}
+.day-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin-top: 8px;
+}
+@media (max-width: 900px) {
+  .hero-inner-split {
+    grid-template-columns: 1fr !important;
+  }
+  .gallery-hero-grid {
+    height: 320px !important;
+  }
+}
+
 /* floating whatsapp */
 .wa{position:fixed;right:18px;bottom:18px;z-index:60;background:#25d366;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.25);display:flex;align-items:center;gap:6px}
 .wa:hover{background:#20ba5a}
@@ -815,81 +895,255 @@ footer a:hover{color:#F8904D}
 
 
 
-<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:24px 0">
-  <div class="wrap">
-    <div class="koikoi-breadcrumb">
-      <a href="/luxury-train-demo">Luxury Trains</a>
-      <span>›</span>
-      <a href="/luxury-train-demo/maharajas-express">Maharajas' Express</a>
-      <span>›</span>
-      <span style="color:#0f172a;font-weight:600">Treasures of India</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap">
-      <span style="background:rgba(248,144,77,0.12);color:#d96b27;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:4px 12px;border-radius:999px">
-        CIRCUIT 4 · 4 DAYS / 3 NIGHTS
-      </span>
-      <span style="color:#64748b;font-size:13.5px">Golden Triangle Rail Tour · Starts $5,300 USD</span>
-    </div>
-    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
-      Treasures of India Itinerary (4 Days / 3 Nights)
-    </h1>
-    <div style="color:#2E8B8B;font-size:16px;font-weight:600;margin-bottom:12px">
-      Route: Delhi → Agra → Ranthambore → Jaipur → Delhi
-    </div>
-    <p style="color:#475569;font-size:15.5px;max-width:980px;line-height:1.65;margin:0">
-      The ultimate fast-paced luxury getaway. Covers the world-renowned Golden Triangle (Delhi, Agra Taj Mahal, Jaipur) combined with tiger safaris at Ranthambore National Park in 4 days.
-    </p>
+<div class="wrap" style="padding-top:28px;padding-bottom:12px">
+  <div class="koikoi-breadcrumb" style="margin-bottom:12px">
+    <a href="/luxury-train-demo" style="color:#64748b;text-decoration:none">Luxury Trains</a>
+    <span style="color:#94a3b8;margin:0 6px">›</span>
+    <a href="/luxury-train-demo/maharajas-express" style="color:#64748b;text-decoration:none">Maharajas' Express</a>
+    <span style="color:#94a3b8;margin:0 6px">›</span>
+    <span style="color:#0f172a;font-weight:600">Treasures of India</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+    <span style="background:rgba(248,144,77,0.12);color:#d96b27;border:1px solid rgba(248,144,77,0.25);font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;padding:4px 12px;border-radius:999px">
+      CIRCUIT 4 · 4 DAYS / 3 NIGHTS · 3 Nights / 4 Days
+    </span>
+    <span style="color:#64748b;font-size:13.5px;font-weight:500">Official IRCTC Circuit · Handcrafted by KoiKoi Travel</span>
+  </div>
+  <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+    Treasures of India Itinerary (4 Days / 3 Nights)
+  </h1>
+  <div style="color:#2E8B8B;font-size:15.5px;font-weight:600;margin-bottom:8px">
+    Route: Delhi → Agra → Ranthambore → Jaipur → Delhi
   </div>
 </div>
 
-<section style="padding:48px 0 80px">
-  <div class="wrap">
-    <div style="display:flex;gap:12px;margin-bottom:36px;flex-wrap:wrap">
-      <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20send%20quote%20for%20Treasures%20of%20India%20circuit." target="_blank" rel="noopener" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none">
-        Inquire / Get Quote &rarr;
-      </a>
-      <a href="/luxury-train-demo/maharajas-express#departures" style="background:#fff;border:1px solid #cbd5e1;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none">
-        View Departure Dates
-      </a>
-    </div>
-
-    <!-- Timeline Day by Day -->
-    <div class="timeline-wrap">
-      <div class="timeline-day">
-        <div class="timeline-dot"></div>
-        <div class="timeline-card">
-          <div class="timeline-header"><span class="timeline-badge">Day 1 · Sunday</span><div class="timeline-city">Delhi to Agra – Agra Fort</div><span class="timeline-meals">Lunch & Dinner Included</span></div>
-          <div class="timeline-body"><p>Boarding at Safdarjung Railway Station, welcome aboard, afternoon guided tour of Agra Fort, dinner on board.</p></div>
-          <div class="timeline-overnight"><span>Overnight aboard train at Agra</span></div>
-        </div>
+<div class="wrap" style="margin-bottom:44px">
+  <div style="display:grid;grid-template-columns:1.8fr 1.2fr;gap:24px" class="hero-inner-split">
+    
+    <!-- Left: 3-Photo Showcase -->
+    <div style="display:grid;grid-template-columns:1.2fr 1fr;grid-template-rows:repeat(2,1fr);gap:12px;height:460px" class="gallery-hero-grid">
+      <div style="grid-row:1 / -1;border-radius:20px;overflow:hidden;position:relative;background:#1e293b">
+        <img src="/images/luxury-trains/maharajas-express/hero.jpg" alt="Treasures of India" style="width:100%;height:100%;object-fit:cover">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:12px 16px;font-size:13px;font-weight:600">Maharajas' Express Train</span>
       </div>
-      <div class="timeline-day">
-        <div class="timeline-dot"></div>
-        <div class="timeline-card">
-          <div class="timeline-header"><span class="timeline-badge">Day 2 · Monday</span><div class="timeline-city">Agra to Ranthambore – Sunrise Taj Mahal & Fatehpur Sikri</div><span class="timeline-meals">Breakfast, Lunch & Dinner</span></div>
-          <div class="timeline-body"><p>Sunrise visit to the Taj Mahal followed by champagne breakfast at Taj Khema. Afternoon visit to Fatehpur Sikri, train journeys to Ranthambore.</p></div>
-          <div class="timeline-overnight"><span>Overnight aboard train at Sawai Madhopur</span></div>
-        </div>
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b">
+        <img src="/images/luxury-trains/maharajas-express/deluxe-cabin.jpg" alt="Treasures of India" style="width:100%;height:100%;object-fit:cover">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Deluxe Double Cabin</span>
       </div>
-      <div class="timeline-day">
-        <div class="timeline-dot"></div>
-        <div class="timeline-card">
-          <div class="timeline-header"><span class="timeline-badge">Day 3 · Tuesday</span><div class="timeline-city">Ranthambore to Jaipur – Tiger Safari & Amber Fort</div><span class="timeline-meals">Breakfast, Lunch & Dinner</span></div>
-          <div class="timeline-body"><p>Early morning open-top jeep safari in Ranthambore National Park, afternoon Amber Fort visit in Jaipur, gala royal dinner at heritage palace venue.</p></div>
-          <div class="timeline-overnight"><span>Overnight aboard train returning to Delhi</span></div>
-        </div>
-      </div>
-      <div class="timeline-day">
-        <div class="timeline-dot"></div>
-        <div class="timeline-card">
-          <div class="timeline-header"><span class="timeline-badge">Day 4 · Wednesday</span><div class="timeline-city">Jaipur to Delhi – Farewell Breakfast & Deboarding</div><span class="timeline-meals">Breakfast Included</span></div>
-          <div class="timeline-body"><p>Breakfast on board as train returns to Delhi Safdarjung Station (approx 12:30 hrs). Disembark with royal memories.</p></div>
-          <div class="timeline-overnight"><span>Tour Concludes in Delhi · Airport Transfers Arranged</span></div>
-        </div>
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b">
+        <img src="/images/luxury-trains/maharajas-express/dining-pink.jpg" alt="Treasures of India" style="width:100%;height:100%;object-fit:cover">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Mayur Mahal Dining</span>
       </div>
     </div>
 
-    <!-- Inclusions / Exclusions -->
+    <!-- Right: Tour Snapshot Card (Exact KoiKoi Tour Package Style) -->
+    <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:24px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid #f1f5f9;margin-bottom:16px">
+          <span style="width:5px;height:18px;border-radius:999px;background:#F8904D"></span>
+          <h3 style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0f172a;margin:0">Tour Snapshot</h3>
+        </div>
+        
+        <div style="margin-bottom:12px">
+          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Duration:</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:#0f172a">3 Nights / 4 Days</div>
+        </div>
+
+        <div style="margin-bottom:12px">
+          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Route:</div>
+          <div style="font-size:13.5px;font-weight:600;color:#1e293b;line-height:1.5">Delhi → Agra → Ranthambore → Jaipur → Delhi</div>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Starting Tariff:</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:#F8904D">Starts $5,300 USD / ₹5,16,750 INR</div>
+          <div style="font-size:11px;color:#64748b;margin-top:2px">Per Person (Deluxe Twin Sharing) · 5% GST extra</div>
+        </div>
+
+        <!-- Special Offer Tag Box (Like 8-days-golden-triangle Line 500) -->
+        <div style="background:linear-gradient(to right,rgba(248,144,77,0.08),rgba(251,191,36,0.06));border:1.5px dashed rgba(248,144,77,0.5);border-radius:14px;padding:10px 14px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+            <span style="background:linear-gradient(to right,#F8904D,#E96A1E);color:#fff;font-size:10px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:999px">Special Offer</span>
+            <span style="color:#d96b27;font-size:11px;font-weight:700">Pre/Post Extensions</span>
+          </div>
+          <div style="font-size:12px;color:#475569;line-height:1.4">Special discounts available on 5-star private hotel extensions & chauffeured airport transfers.</div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+          <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20send%20quote%20for%20Maharajas%20Express%20Treasures of India." target="_blank" rel="noopener" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px;border-radius:10px;text-align:center;text-decoration:none;display:block">
+            Request Quote &rarr;
+          </a>
+          <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20want%20to%20plan%20Treasures of India." target="_blank" rel="noopener" style="background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:10px;border-radius:10px;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">
+            <span>Chat on WhatsApp</span>
+          </a>
+        </div>
+
+        <!-- 4 Verified Trust Badges -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;border-top:1px solid #f1f5f9;padding-top:12px">
+          <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
+            <span style="color:#10b981;font-weight:800">✓</span> 100% Free Plan
+          </div>
+          <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
+            <span style="color:#10b981;font-weight:800">✓</span> Verified Guides
+          </div>
+          <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
+            <span style="color:#10b981;font-weight:800">✓</span> Personal Butler
+          </div>
+          <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
+            <span style="color:#10b981;font-weight:800">✓</span> 24/7 Concierge
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-bottom:80px">
+  <div style="display:grid;grid-template-columns:1fr;gap:40px">
+
+    <!-- 1. Highlights Section -->
+    <div>
+      <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">KEY SIGHTS</span>
+      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 16px">
+        Treasures of India <span style="color:#F8904D">Highlights</span>
+      </h2>
+      <div style="background:rgba(204,251,241,0.25);border:1px solid #ccfbf1;border-radius:24px;padding:24px">
+        <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;list-style:none;padding:0;margin:0">
+          <li style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#334155;line-height:1.5">
+  <svg style="color:#2E8B8B;margin-top:2px;flex-shrink:0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span>Delhi Safdarjung Station grand red-carpet welcome</span>
+</li><li style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#334155;line-height:1.5">
+  <svg style="color:#2E8B8B;margin-top:2px;flex-shrink:0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span>Sunrise tour of the Taj Mahal & Agra Fort exploration</span>
+</li><li style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#334155;line-height:1.5">
+  <svg style="color:#2E8B8B;margin-top:2px;flex-shrink:0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span>Historic Mughal capital of Fatehpur Sikri</span>
+</li><li style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#334155;line-height:1.5">
+  <svg style="color:#2E8B8B;margin-top:2px;flex-shrink:0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span>Early morning tiger safari in Ranthambore National Park</span>
+</li><li style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#334155;line-height:1.5">
+  <svg style="color:#2E8B8B;margin-top:2px;flex-shrink:0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span>Amber Fort and City Palace exploration in Pink City Jaipur</span>
+</li><li style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#334155;line-height:1.5">
+  <svg style="color:#2E8B8B;margin-top:2px;flex-shrink:0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span>Royal farewell dinner and cultural folk performances</span>
+</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2. Overview Section -->
+    <div>
+      <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">OVERVIEW</span>
+      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 16px">
+        About this <span style="color:#F8904D">Royal Circuit</span>
+      </h2>
+      <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:24px;padding:28px;color:#475569;font-size:15.5px;line-height:1.8">
+        The ultimate 4-day royal weekend tour covering India's world-famous Golden Triangle (Delhi, Agra, Jaipur) with an exhilarating tiger safari in Ranthambore. Designed for busy travelers seeking maximum royal luxury in minimum time.
+      </div>
+    </div>
+
+    <!-- 3. Day-by-Day Accordion -->
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+        <div>
+          <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">DETAILED PLAN</span>
+          <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0">
+            Treasures of India <span style="color:#F8904D">Itinerary</span>
+          </h2>
+        </div>
+        <button type="button" onclick="toggleAllDays()" style="background:#f1f5f9;border:1px solid #cbd5e1;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 16px;border-radius:999px;cursor:pointer">
+          Expand / Collapse All
+        </button>
+      </div>
+
+      <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:24px;padding:16px 24px;box-shadow:0 2px 10px rgba(0,0,0,0.02)">
+        <div class="day-accordion">
+          
+<details class="day-accordion-item" open>
+  <summary>
+    <h3>
+      <span class="day-num">Day 1:</span>
+      <span>Delhi to Agra – Agra Fort</span>
+    </h3>
+    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </summary>
+  <div class="day-accordion-content">
+    <p><strong>Morning:</strong> Boarding and royal welcome at Safdarjung Railway Station, Delhi.</p><p><strong>Afternoon:</strong> Arrive in Agra and visit the massive red sandstone Agra Fort. Welcome dinner on board.</p>
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:10px">
+      <div class="day-meta-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> Overnight aboard train at Agra</div>
+      <div class="day-meta-pill" style="margin-left:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg> Lunch & Dinner Included</div>
+    </div>
+  </div>
+</details>
+
+<details class="day-accordion-item" >
+  <summary>
+    <h3>
+      <span class="day-num">Day 2:</span>
+      <span>Agra to Ranthambore – Sunrise Taj Mahal & Fatehpur Sikri</span>
+    </h3>
+    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </summary>
+  <div class="day-accordion-content">
+    <p><strong>Early Morning:</strong> Sunrise visit to the Taj Mahal followed by champagne breakfast at Taj Khema.</p><p><strong>Afternoon:</strong> Guided tour of Emperor Akbar's Fatehpur Sikri. Train departs for Ranthambore.</p>
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:10px">
+      <div class="day-meta-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> Overnight aboard train at Sawai Madhopur</div>
+      <div class="day-meta-pill" style="margin-left:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg> Breakfast, Lunch & Dinner</div>
+    </div>
+  </div>
+</details>
+
+<details class="day-accordion-item" >
+  <summary>
+    <h3>
+      <span class="day-num">Day 3:</span>
+      <span>Ranthambore to Jaipur – Tiger Safari & Amber Fort</span>
+    </h3>
+    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </summary>
+  <div class="day-accordion-content">
+    <p><strong>Early Morning:</strong> Open-top jeep safari in Ranthambore National Park in search of Bengal tigers.</p><p><strong>Afternoon:</strong> Amber Fort excursion in Jaipur, followed by a royal dinner at a heritage palace venue.</p>
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:10px">
+      <div class="day-meta-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> Overnight aboard train returning to Delhi</div>
+      <div class="day-meta-pill" style="margin-left:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg> Breakfast, Lunch & Dinner</div>
+    </div>
+  </div>
+</details>
+
+<details class="day-accordion-item" >
+  <summary>
+    <h3>
+      <span class="day-num">Day 4:</span>
+      <span>Jaipur to Delhi – Farewell Breakfast & Deboarding</span>
+    </h3>
+    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </summary>
+  <div class="day-accordion-content">
+    <p><strong>Morning:</strong> Breakfast on board as the train returns to Delhi Safdarjung Station (approx 12:30 hrs).</p><p><strong>Afternoon:</strong> Disembark with royal memories. Seamless airport or hotel transfers arranged.</p>
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:10px">
+      <div class="day-meta-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> Tour Concludes in Delhi · Airport Transfers</div>
+      <div class="day-meta-pill" style="margin-left:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg> Breakfast Included</div>
+    </div>
+  </div>
+</details>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Inclusions & Exclusions -->
     
 <div class="inc-exc-grid" style="margin-top:32px">
   <div class="inc-box">
@@ -921,8 +1175,49 @@ footer a:hover{color:#F8904D}
   </div>
 </div>
 
+
+    <!-- 5. Why Choose Us -->
+    <div>
+      <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">WHY CHOOSE US</span>
+      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 16px">
+        Why Book with <span style="color:#F8904D">KoiKoi Travel</span>
+      </h2>
+      <div style="background:linear-gradient(135deg,#ffffff 0%,#f8fafa 50%,#ebf3f3 100%);border:1px solid rgba(46,139,139,0.2);border-radius:24px;padding:28px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div style="width:32px;height:32px;border-radius:50%;background:#ffffff;border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center;color:#2E8B8B;font-weight:800;flex-shrink:0;box-shadow:0 2px 4px rgba(0,0,0,0.04)">✓</div>
+            <div>
+              <h4 style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#0f172a;margin:0 0 4px">Official IRCTC Selling Agent Rates</h4>
+              <p style="font-size:13.5px;color:#475569;margin:0;line-height:1.5">Direct tariff guarantee without hidden booking surcharges or markup.</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div style="width:32px;height:32px;border-radius:50%;background:#ffffff;border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center;color:#2E8B8B;font-weight:800;flex-shrink:0;box-shadow:0 2px 4px rgba(0,0,0,0.04)">✓</div>
+            <div>
+              <h4 style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#0f172a;margin:0 0 4px">Bespoke Pre & Post Extensions</h4>
+              <p style="font-size:13.5px;color:#475569;margin:0;line-height:1.5">Extend your holiday with private chauffeur-driven luxury hotels in Delhi, Mumbai, or Varanasi.</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div style="width:32px;height:32px;border-radius:50%;background:#ffffff;border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center;color:#2E8B8B;font-weight:800;flex-shrink:0;box-shadow:0 2px 4px rgba(0,0,0,0.04)">✓</div>
+            <div>
+              <h4 style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#0f172a;margin:0 0 4px">Dedicated 24/7 Journey Concierge</h4>
+              <p style="font-size:13.5px;color:#475569;margin:0;line-height:1.5">From the moment you arrive in India until your departure flight, our dedicated team is at your service.</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div style="width:32px;height:32px;border-radius:50%;background:#ffffff;border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center;color:#2E8B8B;font-weight:800;flex-shrink:0;box-shadow:0 2px 4px rgba(0,0,0,0.04)">✓</div>
+            <div>
+              <h4 style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#0f172a;margin:0 0 4px">100% Free Planning & Flexible Deposit</h4>
+              <p style="font-size:13.5px;color:#475569;margin:0;line-height:1.5">Complimentary itinerary consultation and transparent deposit policies for complete peace of mind.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
-</section>
+</div>
 
 
 <footer>
@@ -996,6 +1291,13 @@ function loadTrainVideo(elId, videoId) {
   }
 }
 function loadPowVideo(elId) { loadTrainVideo(elId, 'HnY_2_BBbW4'); }
+
+function toggleAllDays() {
+  const items = document.querySelectorAll('.day-accordion-item');
+  if (!items.length) return;
+  const anyOpen = Array.from(items).some(item => item.open);
+  items.forEach(item => item.open = !anyOpen);
+}
 
 let heroTimer = setInterval(nextHeroSlide, 6000);
 const heroEl = document.getElementById('heroSlider');
