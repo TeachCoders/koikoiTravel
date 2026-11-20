@@ -332,7 +332,7 @@ export default function LuxuryTrainHomeView() {
               >
                 {/* Photo / Header Banner */}
                 <div
-                  className={`h-56 relative flex items-end p-5 text-white bg-gradient-to-br ${train.gradientClass}`}
+                  className={`h-72 sm:h-80 relative flex items-end p-5 text-white bg-gradient-to-br ${train.gradientClass}`}
                   style={{
                     backgroundImage: `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.55)), url('${train.image}')`,
                     backgroundPosition: "center",

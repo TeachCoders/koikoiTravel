@@ -84,7 +84,8 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 .grid-4{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
 @media(max-width:820px){.grid-4{grid-template-columns:1fr}}
 .card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;border:1px solid var(--line)}
-.card .photo{height:240px;display:flex;align-items:flex-end;padding:18px;color:#fff;font-family:'Playfair Display',serif;font-size:13px;background-size:cover;background-position:center;position:relative}
+.card .photo{height:320px;display:flex;align-items:flex-end;padding:20px;color:#fff;font-family:'Playfair Display',serif;font-size:13px;background-size:cover;background-position:center;position:relative}
+@media(max-width:600px){.card .photo{height:250px}}
 .card .photo span{background:rgba(0,0,0,.6);backdrop-filter:blur(4px);padding:5px 12px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;letter-spacing:.05em}
 .card .body{padding:24px;flex:1;display:flex;flex-direction:column}
 .card h3{font-size:24px;margin-bottom:4px}
