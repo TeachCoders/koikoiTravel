@@ -1108,49 +1108,6 @@ def generate_all_for_base(base_dir, base_path):
         <strong>Important Advisory &middot; Independent Booking &amp; Tour Support</strong>
         India&apos;s luxury trains are government-operated by state rail corporations and tourism boards (IRCTC, RTDC, KSTDC, and MTDC). While train tickets only cover the train journey from station to station, <strong>KoiKoi Travel designs your entire vacation</strong>: booking your ideal cabin, reserving pre- and post-tour 5-star heritage stays in Delhi or Mumbai, providing private chauffeured luxury airport transfers, and giving you dedicated 24/7 personal WhatsApp support throughout your holiday.
       </div>
-
-      <!-- Quick 4 Trains Guide -->
-      <h2 style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:700;color:#0f172a;margin:28px 0 16px">Which Luxury Train Is Best for You?</h2>
-
-      <div class="editorial-train-cards">
-        <div class="editorial-train-card">
-          <div class="editorial-train-card-title">1. Palace on Wheels <span>7 Nights / 8 Days</span></div>
-          <p><strong>Route:</strong> Delhi &rarr; Jaipur &rarr; Ranthambore (Tiger Safari) &rarr; Udaipur &rarr; Jaisalmer &rarr; Jodhpur &rarr; Agra (Taj Mahal) &rarr; Delhi</p>
-          <p><strong>Best for:</strong> First-time travelers who want the classic royal Rajasthan, desert dunes, and Taj Mahal experience.</p>
-        </div>
-
-        <div class="editorial-train-card">
-          <div class="editorial-train-card-title">2. Maharajas&apos; Express <span>3 Nights to 6 Nights</span></div>
-          <p><strong>Route:</strong> 4 flexible circuits across Rajasthan, Agra, Khajuraho temples, and the sacred river ghats of Varanasi.</p>
-          <p><strong>Best for:</strong> Travelers looking for highest-tier modern luxury, spacious suites, and flexible shorter 4-day or 7-day trips.</p>
-        </div>
-
-        <div class="editorial-train-card">
-          <div class="editorial-train-card-title">3. The Golden Chariot <span>3 Nights to 5 Nights</span></div>
-          <p><strong>Route:</strong> Bengaluru &rarr; Bandipur Safari &rarr; Mysore Palaces &rarr; Hampi UNESCO Ruins &rarr; Goa Beaches</p>
-          <p><strong>Best for:</strong> Travelers wanting to discover South India&apos;s ancient temples, rich nature, and tropical beaches.</p>
-        </div>
-
-        <div class="editorial-train-card">
-          <div class="editorial-train-card-title">4. Deccan Odyssey <span>7 Nights / 8 Days</span></div>
-          <p><strong>Route:</strong> 6 distinct journeys through Maharashtra, Gujarat, and Rajasthan, including Ajanta &amp; Ellora caves and Nashik wine country.</p>
-          <p><strong>Best for:</strong> History and art lovers who want to explore Western India&apos;s world-famous cave architecture.</p>
-        </div>
-      </div>
-
-      <div class="editorial-highlight">
-        &ldquo;A train ticket only takes you from station to station. KoiKoi Travel takes care of your entire vacation &mdash; from the moment you land at the airport until you fly back home safely.&rdquo;
-      </div>
-
-      <div class="editorial-ctas">
-        <a class="btn-koikoi-orange" href="#trains">
-          <span>Explore All 4 Trains Below</span>
-          <span>&darr;</span>
-        </a>
-        <a class="btn-koikoi-white" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20would%20like%20guidance%20on%20choosing%20the%20right%20luxury%20train." target="_blank" rel="noopener">
-          <span>Talk to a Specialist on WhatsApp</span>
-        </a>
-      </div>
     </div>
   </div>
 </section>
