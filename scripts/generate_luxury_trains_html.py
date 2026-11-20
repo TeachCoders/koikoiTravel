@@ -104,7 +104,7 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 .hero-dot-btn.active span{width:30px;background:#F8904D}
 
 /* Editorial / SEO Overview Section (Below Hero - Full Width KoiKoi Style) */
-.editorial-sec{background:#faf8f5;border-top:1px solid #ede8e1;border-bottom:1px solid #ede8e1;padding:64px 0;position:relative}
+.editorial-sec{background:#ffffff;border-top:1px solid #ede8e1;border-bottom:1px solid #ede8e1;padding:64px 0;position:relative}
 @media(max-width:768px){.editorial-sec{padding:42px 0}}
 .editorial-full{width:100%}
 
@@ -2468,19 +2468,19 @@ def generate_all_for_base(base_dir, base_path):
     # Image 1 Video Spotlight Split Box Component
     def get_me_video_spotlight_component():
         return f"""
-<div style="border-radius:20px;overflow:hidden;background:#1e255e;box-shadow:0 8px 30px rgba(0,0,0,0.12);margin-top:20px">
+<div style="border-radius:24px;overflow:hidden;background:#ffffff;border:1px solid #e2e8f0;box-shadow:0 8px 30px rgba(0,0,0,0.06);margin-top:20px">
   <div style="display:grid;grid-template-columns:1fr 1.25fr;min-height:460px" class="video-split-grid">
-    <div style="padding:48px 44px;display:flex;flex-direction:column;justify-content:center;background:#1e255e;color:#fff">
+    <div style="padding:48px 44px;display:flex;flex-direction:column;justify-content:center;background:#ffffff;color:#0f172a">
       <div style="margin-bottom:20px">
         <img src="/images/luxury-trains/maharajas-express/logo.png" alt="Maharajas' Express Official Logo" style="max-height:85px;width:auto">
       </div>
-      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,2.8vw,36px);font-weight:800;color:#fff;line-height:1.2;margin:0 0 16px">
+      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,2.8vw,36px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 16px">
         Maharajas Express
       </h2>
-      <p style="color:#cbd5e1;font-size:14.5px;line-height:1.7;margin:0 0 14px">
+      <p style="color:#475569;font-size:14.5px;line-height:1.7;margin:0 0 14px">
         World's leading luxury trains Maharaja Express Ticket Booking - Promoted by IRCTC, the catering wing of the Indian Railways, the Maharajas Express has been voted as the best royal train of India.
       </p>
-      <p style="color:#cbd5e1;font-size:14.5px;line-height:1.7;margin:0 0 24px">
+      <p style="color:#475569;font-size:14.5px;line-height:1.7;margin:0 0 24px">
         It is perhaps the only royal train to offer 4 itineraries to cover destinations as far apart as Mumbai and Khajuraho over periods stretching from a week or so to two weeks and more. Visit us to check out Maharaja Express ticket price.
       </p>
       <div>
@@ -2524,30 +2524,6 @@ def generate_all_for_base(base_dir, base_path):
 <div style="position:relative;height:480px;background:url('/images/luxury-trains/maharajas-express/hero.jpg') center/cover no-repeat;overflow:hidden">
 </div>
 
-<!-- 4-Photo Full-View Visual Showcase Gallery Strip -->
-<div style="background:#0b1120;padding:16px 0">
-  <div class="wrap">
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px" class="gallery-4-strip">
-      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
-        <img src="/images/luxury-trains/maharajas-express/hero.jpg" alt="Train Exterior" style="width:100%;height:100%;object-fit:cover">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Royal Exterior Livery</span>
-      </div>
-      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
-        <img src="/images/luxury-trains/maharajas-express/dining-pink.jpg" alt="Rang Mahal Dining" style="width:100%;height:100%;object-fit:cover">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Rang Mahal Fine Dining</span>
-      </div>
-      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
-        <img src="/images/luxury-trains/maharajas-express/suite.jpg" alt="Royal Suite Salon" style="width:100%;height:100%;object-fit:cover">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Royal Suite Salon</span>
-      </div>
-      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
-        <img src="/images/luxury-trains/maharajas-express/deluxe-cabin.jpg" alt="Deluxe Cabin" style="width:100%;height:100%;object-fit:cover">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Deluxe Double Cabin</span>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Clean Editorial Title & Intro Section (BELOW BANNER) -->
 <div style="background:#ffffff;border-bottom:1px solid #e2e8f0;padding:40px 0 36px">
   <div class="wrap">
@@ -2565,42 +2541,9 @@ def generate_all_for_base(base_dir, base_path):
     <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(30px,4.2vw,48px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 14px;max-width:1100px">
       Maharajas' Express Luxury Train Tour Packages
     </h1>
-    <p style="color:#475569;font-size:clamp(15px,1.25vw,17.5px);max-width:1050px;line-height:1.7;margin:0 0 24px">
+    <p style="color:#475569;font-size:clamp(15px,1.25vw,17.5px);max-width:1050px;line-height:1.7;margin:0">
       Experience half a mile of royal opulence across India. 23 carriages, state-of-the-art pneumatic suspension, two five-star dining restaurants, and 4 legendary circuits connecting Mumbai, Delhi, Rajasthan, Agra, and Varanasi.
     </p>
-    <div style="display:flex;gap:14px;flex-wrap:wrap">
-      <a href="#journeys" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 26px;border-radius:999px;text-decoration:none">
-        Explore 4 Journeys &rarr;
-      </a>
-      <a href="#departures" style="background:#fff;border:1px solid #cbd5e1;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 26px;border-radius:999px;text-decoration:none">
-        Departure Dates
-      </a>
-      <a href="#fare" style="background:#fff;border:1px solid #cbd5e1;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 26px;border-radius:999px;text-decoration:none">
-        Cabin Tariffs
-      </a>
-      <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20am%20interested%20in%20Maharajas%27%20Express%20luxury%20train%20tour%20packages." target="_blank" rel="noopener" style="background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none;display:inline-flex;align-items:center;gap:8px">
-        <span>Chat on WhatsApp</span>
-      </a>
-    </div>
-  </div>
-</div>
-      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
-        <img src="/images/luxury-trains/maharajas-express/hero.jpg" alt="Train Exterior" style="width:100%;height:100%;object-fit:cover">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Royal Exterior Livery</span>
-      </div>
-      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
-        <img src="/images/luxury-trains/maharajas-express/dining-pink.jpg" alt="Rang Mahal Dining" style="width:100%;height:100%;object-fit:cover">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Rang Mahal Fine Dining</span>
-      </div>
-      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
-        <img src="/images/luxury-trains/maharajas-express/suite.jpg" alt="Royal Suite Salon" style="width:100%;height:100%;object-fit:cover">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Royal Suite Salon</span>
-      </div>
-      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
-        <img src="/images/luxury-trains/maharajas-express/deluxe-cabin.jpg" alt="Deluxe Cabin" style="width:100%;height:100%;object-fit:cover">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Deluxe Double Cabin</span>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -2788,7 +2731,7 @@ function switchPriceCurrency(curr) {{
     <span style="background:rgba(248,144,77,0.12);color:#d96b27;border:1px solid rgba(248,144,77,0.25);font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;padding:4px 12px;border-radius:999px">
       {circuit_tag} · {duration}
     </span>
-    <span style="color:#64748b;font-size:13.5px;font-weight:500">Official IRCTC Circuit · Handcrafted by KoiKoi Travel</span>
+    <span style="color:#64748b;font-size:13.5px;font-weight:500">Signature Luxury Circuit · Handcrafted by KoiKoi Travel</span>
   </div>
   <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
     {title}
@@ -2932,47 +2875,6 @@ function switchPriceCurrency(curr) {{
 
     <!-- 4. Inclusions & Exclusions -->
     {inc_exc_snippet}
-
-    <!-- 5. Why Choose Us -->
-    <div>
-      <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">WHY CHOOSE US</span>
-      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 16px">
-        Why Book with <span style="color:#F8904D">KoiKoi Travel</span>
-      </h2>
-      <div style="background:linear-gradient(135deg,#ffffff 0%,#f8fafa 50%,#ebf3f3 100%);border:1px solid rgba(46,139,139,0.2);border-radius:24px;padding:28px">
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
-          <div style="display:flex;align-items:flex-start;gap:12px">
-            <div style="width:32px;height:32px;border-radius:50%;background:#ffffff;border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center;color:#2E8B8B;font-weight:800;flex-shrink:0;box-shadow:0 2px 4px rgba(0,0,0,0.04)">✓</div>
-            <div>
-              <h4 style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#0f172a;margin:0 0 4px">Official IRCTC Selling Agent Rates</h4>
-              <p style="font-size:13.5px;color:#475569;margin:0;line-height:1.5">Direct tariff guarantee without hidden booking surcharges or markup.</p>
-            </div>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:12px">
-            <div style="width:32px;height:32px;border-radius:50%;background:#ffffff;border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center;color:#2E8B8B;font-weight:800;flex-shrink:0;box-shadow:0 2px 4px rgba(0,0,0,0.04)">✓</div>
-            <div>
-              <h4 style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#0f172a;margin:0 0 4px">Bespoke Pre & Post Extensions</h4>
-              <p style="font-size:13.5px;color:#475569;margin:0;line-height:1.5">Extend your holiday with private chauffeur-driven luxury hotels in Delhi, Mumbai, or Varanasi.</p>
-            </div>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:12px">
-            <div style="width:32px;height:32px;border-radius:50%;background:#ffffff;border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center;color:#2E8B8B;font-weight:800;flex-shrink:0;box-shadow:0 2px 4px rgba(0,0,0,0.04)">✓</div>
-            <div>
-              <h4 style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#0f172a;margin:0 0 4px">Dedicated 24/7 Journey Concierge</h4>
-              <p style="font-size:13.5px;color:#475569;margin:0;line-height:1.5">From the moment you arrive in India until your departure flight, our dedicated team is at your service.</p>
-            </div>
-          </div>
-          <div style="display:flex;align-items:flex-start;gap:12px">
-            <div style="width:32px;height:32px;border-radius:50%;background:#ffffff;border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center;color:#2E8B8B;font-weight:800;flex-shrink:0;box-shadow:0 2px 4px rgba(0,0,0,0.04)">✓</div>
-            <div>
-              <h4 style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#0f172a;margin:0 0 4px">100% Free Planning & Flexible Deposit</h4>
-              <p style="font-size:13.5px;color:#475569;margin:0;line-height:1.5">Complimentary itinerary consultation and transparent deposit policies for complete peace of mind.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 """
