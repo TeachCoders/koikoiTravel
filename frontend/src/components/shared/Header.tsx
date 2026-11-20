@@ -255,7 +255,7 @@ export const Header: React.FC = () => {
               width={685}
               height={222}
               priority
-              className="w-[120px] sm:w-[135px] md:w-[145px] lg:w-[148px] xl:w-[165px] 2xl:w-[175px] h-auto object-contain"
+              className="w-[120px] sm:w-[135px] md:w-[145px] lg:h-[57px] lg:w-auto h-auto object-contain"
             />
           </Link>
 

@@ -56,8 +56,9 @@ section{padding:72px 0}
 
 /* header */
 header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #e2e8f0}
-.nav{display:flex;align-items:center;justify-content:space-between;height:72px}
-.nav img{height:38px;width:auto}
+.nav{display:flex;align-items:center;justify-content:space-between;min-height:76px;padding:8px 0}
+.nav img{height:57px;width:auto}
+@media(max-width:640px){.nav img{height:40px}}
 .nav ul{display:flex;gap:28px;list-style:none;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600}
 .nav ul a{color:#1e293b;transition:.2s}
 .nav ul a:hover,.nav ul a.on{color:#F8904D}
@@ -185,14 +186,16 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 .video-caption-pill{position:absolute;bottom:16px;left:20px;z-index:2;background:rgba(2,6,23,.75);backdrop-filter:blur(6px);color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;padding:5px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.15)}
 
 /* tables */
-.table-wrap{overflow-x:auto;border-radius:16px;box-shadow:0 4px 18px rgba(0,0,0,.04);background:#fff;border:1px solid #eee7de}
+.table-wrap{overflow-x:auto;border-radius:16px;box-shadow:0 4px 20px rgba(184,134,11,.1);background:#fffdfa;border:1.5px solid #e8d7b0}
 table{width:100%;border-collapse:collapse;min-width:760px;font-size:14px}
-th{background:#0f172a;color:#fff;text-align:left;padding:14px 18px;font-family:'Outfit',sans-serif;font-weight:700}
-td{padding:14px 18px;border-bottom:1px solid #eee7de;vertical-align:top}
+th{background:linear-gradient(135deg,#fbf4e4 0%,#f5e7c8 100%);color:#6b4f10;text-align:left;padding:15px 18px;font-family:'Outfit',sans-serif;font-weight:700;border-bottom:2px solid #dfc384;letter-spacing:0.3px}
+td{padding:16px 18px;border-bottom:1px solid #f1e4c8;vertical-align:top;background:#ffffff}
+tbody tr:nth-child(even) td{background:#faf6ed}
+tbody tr:hover td{background:#f6eedb}
 td:first-child{font-weight:600;color:#0f172a}
 tr:last-child td{border-bottom:0}
-.table-link-btn{display:inline-flex;align-items:center;gap:4px;color:#F8904D;font-weight:700;font-size:13px;text-decoration:none;transition:.2s}
-.table-link-btn:hover{color:#e07b3b;text-decoration:underline}
+.table-link-btn{display:inline-flex;align-items:center;gap:4px;color:#b86e00;font-weight:700;font-size:13px;text-decoration:none;transition:.2s}
+.table-link-btn:hover{color:#8a5200;text-decoration:underline}
 
 .departure-cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:24px}
 @media(max-width:960px){.departure-cards-grid{grid-template-columns:1fr}}
@@ -1366,7 +1369,7 @@ def generate_all_for_base(base_dir, base_path):
 </section>
 
 <!-- COMPARE & OFFICIAL DEPARTURES -->
-<section id="compare" style="background:#faf8f5;border-top:1px solid #eee7de;border-bottom:1px solid #eee7de;padding:64px 0">
+<section id="compare" style="background:#ffffff;border-top:1px solid #eee7de;border-bottom:1px solid #eee7de;padding:64px 0">
   <div class="wrap">
     <div class="sec-head">
       <div class="eyebrow">Quick Compare &amp; Departure Schedule</div>
