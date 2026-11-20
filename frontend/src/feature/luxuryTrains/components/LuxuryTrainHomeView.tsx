@@ -25,6 +25,7 @@ export default function LuxuryTrainHomeView() {
 
   // Accordion state for FAQs
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [isPowVideoPlaying, setIsPowVideoPlaying] = useState<boolean>(false);
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -497,7 +498,7 @@ export default function LuxuryTrainHomeView() {
               >
                 {/* Photo / Header Banner */}
                 <div
-                  className={`h-72 sm:h-80 relative flex items-end p-5 text-white bg-gradient-to-br ${train.gradientClass}`}
+                  className={`h-80 sm:h-96 md:h-[420px] relative flex items-end p-6 text-white bg-gradient-to-br ${train.gradientClass}`}
                   style={{
                     backgroundImage: `linear-gradient(rgba(0,0,0,0.12), rgba(0,0,0,0.26)), url('${train.image}')`,
                     backgroundPosition: "center",
@@ -568,6 +569,90 @@ export default function LuxuryTrainHomeView() {
                 </div>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 2.5 PALACE ON WHEELS VIDEO SPOTLIGHT (SPLIT ROYAL LAYOUT) */}
+      <section className="py-12 sm:py-16 bg-white">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 rounded-2xl overflow-hidden shadow-2xl border border-[#eee7de] bg-[#0f172a]">
+            {/* Left: Content */}
+            <div className="p-8 sm:p-12 flex flex-col justify-center text-white bg-[#0f172a]">
+              <div className="w-[76px] h-[76px] rounded-full bg-white p-1.5 border-[2.5px] border-[#F8904D] mb-6 flex items-center justify-center shadow-lg">
+                <img
+                  src="/images/luxury-trains/palace-on-wheels/logo.png"
+                  alt="Palace on Wheels Logo"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl font-outfit font-bold text-white mb-4">
+                Palace on Wheels
+              </h2>
+
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+                World&apos;s leading heritage luxury train &mdash; Modelled along the personal royal saloons of the erstwhile Rajput Maharajas, the Palace on Wheels is a royal 5-star palace on tracks taking guests across Rajasthan, the golden dunes of Jaisalmer, the lake palaces of Udaipur, and the timeless Taj Mahal in Agra.
+              </p>
+
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                7 Nights &amp; 8 Days of imperial grandeur: In operation since 1982, this iconic train departs weekly from Delhi, traversing Jaipur, Ranthambore tiger safari, Chittorgarh, Udaipur, Jaisalmer, Jodhpur, and Bharatpur. Each deluxe saloon is serviced by dedicated personal Khidmatgars.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3.5">
+                <Link
+                  href="/luxury-trains/palace-on-wheels/itinerary"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-bold text-sm sm:text-base transition-all shadow-md hover:scale-105 active:scale-95 font-outfit"
+                >
+                  <span>View 7-Night Itinerary</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-slate-100 text-[#0f172a] font-bold text-sm sm:text-base transition-all shadow-md hover:scale-105 active:scale-95 font-outfit"
+                >
+                  <span>Get a Free Quote</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Right: Video Player / Facade */}
+            <div className="relative w-full min-h-[340px] sm:min-h-[420px] bg-black flex items-center justify-center overflow-hidden">
+              {!isPowVideoPlaying ? (
+                <div
+                  className="relative w-full h-full min-h-[340px] sm:min-h-[420px] cursor-pointer group"
+                  onClick={() => setIsPowVideoPlaying(true)}
+                >
+                  <Image
+                    src="https://img.youtube.com/vi/HnY_2_BBbW4/maxresdefault.jpg"
+                    alt="Palace on Wheels Video Preview"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/35 transition-colors group-hover:bg-black/20" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#F8904D] text-white flex items-center justify-center shadow-2xl transition-transform group-hover:scale-110">
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="ml-1">
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                      </svg>
+                    </div>
+                  </div>
+                  <span className="absolute bottom-4 left-4 z-10 bg-black/75 backdrop-blur-md text-white text-xs font-semibold px-3.5 py-1.5 rounded-full border border-white/20">
+                    Palace on Wheels · Experience Video
+                  </span>
+                </div>
+              ) : (
+                <iframe
+                  src="https://www.youtube-nocookie.com/embed/HnY_2_BBbW4?autoplay=1&rel=0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full border-0"
+                />
+              )}
+            </div>
           </div>
         </div>
       </section>
