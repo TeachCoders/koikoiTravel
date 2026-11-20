@@ -347,11 +347,20 @@ export default function LuxuryTrainHomeView() {
                 {/* Body Content */}
                 <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-serif text-2xl font-bold text-[#0f2a43] mb-1">
-                      {train.name}
-                    </h3>
-                    <div className="text-[#a87c28] font-semibold text-xs sm:text-sm mb-3">
-                      {train.subtitle}
+                    <div className="flex items-center justify-between gap-3 mb-2">
+                      <div>
+                        <h3 className="font-serif text-2xl font-bold text-[#0f2a43] mb-0.5">
+                          {train.name}
+                        </h3>
+                        <div className="text-[#a87c28] font-semibold text-xs sm:text-sm">
+                          {train.subtitle}
+                        </div>
+                      </div>
+                      <img
+                        src={`/images/luxury-trains/${train.slug}/logo.png`}
+                        alt={`${train.name} Logo`}
+                        className="h-10 max-w-[110px] object-contain"
+                      />
                     </div>
                     <p className="text-slate-600 text-sm leading-relaxed mb-4">
                       {train.description}
