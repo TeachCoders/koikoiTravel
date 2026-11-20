@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Maharajas' Express Ticket Prices & Cabin Tariffs | KoiKoi Travel</title>
-<meta name="description" content="Official 2025-2026 tariff and prices for Maharajas' Express Deluxe Cabins, Junior Suites, Executive Suites, and Presidential Suite in USD and INR.">
+<title>Maharajas' Express Ticket Prices & Fare Tariffs 2026-2027 | KoiKoi Travel</title>
+<meta name="description" content="Official 2026-2027 tariffs for Maharajas' Express across Deluxe Cabin, Junior Suite, Suite, and Presidential Suite in USD and INR.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -815,209 +815,281 @@ footer a:hover{color:#F8904D}
 
 
 
-<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:20px 0">
+<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:24px 0">
   <div class="wrap">
     <div class="koikoi-breadcrumb">
       <a href="/luxury-train-demo">Luxury Trains</a>
       <span>›</span>
       <a href="/luxury-train-demo/maharajas-express">Maharajas' Express</a>
       <span>›</span>
-      <span style="color:#0f172a;font-weight:600">Tariff & Prices</span>
+      <span style="color:#0f172a;font-weight:600">Price & Fare</span>
     </div>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap">
-      <span style="background:rgba(248,144,77,0.12);color:#d96b27;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:4px 12px;border-radius:999px">
-        Transparent Pricing · Zero Hidden Fees
-      </span>
-      <span style="color:#64748b;font-size:13.5px">Official IRCTC / Government Tariffs</span>
-    </div>
-    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,40px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
-      Maharajas' Express Ticket Prices & Cabin Tariffs (2025–2026)
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+      Maharajas' Express Ticket Prices & Cabin Tariffs (2026–2027)
     </h1>
-    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.6;margin:0">
-      Official cabin tariffs for all four journeys of Maharajas' Express in USD and Indian Rupees (INR). All prices include luxury cabin accommodation, gourmet dining, house spirits, guided sightseeing, and monument entrances.
+    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.65;margin:0">
+      Official cabin tariffs for all four journeys of Maharajas' Express in USD and Indian Rupees (INR).
     </p>
   </div>
 </div>
 
 <section style="padding:48px 0 80px">
   <div class="wrap">
-    <div class="tour-package-layout">
-      <!-- Left Column -->
-      <div class="package-main">
-        <div style="margin-bottom:44px">
-          <h2 style="font-size:26px;color:#0f172a;margin-bottom:8px">1. 7-Day Journeys Tariff (6 Nights / 7 Days)</h2>
-          <p style="color:#64748b;font-size:14.5px;margin-bottom:18px">
-            Applies to <em>The Heritage of India</em>, <em>The Indian Panorama</em>, and <em>The Indian Splendour</em>.
-          </p>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Cabin Category</th>
-                  <th>Per Person Twin Sharing (USD)</th>
-                  <th>Single Occupancy (USD)</th>
-                  <th>Approximate INR</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Deluxe Cabin</strong></td>
-                  <td>$8,000 USD</td>
-                  <td>$12,400 USD</td>
-                  <td>₹6,70,000 per person</td>
-                </tr>
-                <tr>
-                  <td><strong>Junior Suite</strong></td>
-                  <td>$10,650 USD</td>
-                  <td>$19,170 USD</td>
-                  <td>₹8,90,000 per person</td>
-                </tr>
-                <tr>
-                  <td><strong>Executive Suite</strong></td>
-                  <td>$16,000 USD</td>
-                  <td>$16,000 USD</td>
-                  <td>₹13,40,000 (Private Car Included)</td>
-                </tr>
-                <tr>
-                  <td><strong>Presidential Suite</strong></td>
-                  <td>$25,800 USD (Full Suite)</td>
-                  <td>$25,800 USD</td>
-                  <td>₹21,60,000 (Entire 448 sq.ft Carriage)</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+    
+<div style="margin-top:20px">
+  <!-- Currency Switcher Tabs -->
+  <div style="display:flex;gap:10px;margin-bottom:18px">
+    <button id="priceTabUsdBtn" onclick="switchPriceCurrency('usd')" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;padding:9px 20px;border-radius:999px;background:#0f172a;color:#fff;border:none;cursor:pointer">
+      USD Tariffs ($)
+    </button>
+    <button id="priceTabInrBtn" onclick="switchPriceCurrency('inr')" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;padding:9px 20px;border-radius:999px;background:#fff;border:1px solid #cbd5e1;color:#64748b;cursor:pointer">
+      INR Tariffs (₹)
+    </button>
+  </div>
 
-        <div style="margin-bottom:44px">
-          <h2 style="font-size:26px;color:#0f172a;margin-bottom:8px">2. Treasures of India Tariff (3 Nights / 4 Days)</h2>
-          <p style="color:#64748b;font-size:14.5px;margin-bottom:18px">
-            The Golden Triangle royal rail circuit (Delhi – Agra – Ranthambore – Jaipur – Delhi).
-          </p>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Cabin Category</th>
-                  <th>Per Person Twin Sharing (USD)</th>
-                  <th>Single Occupancy (USD)</th>
-                  <th>Approximate INR</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Deluxe Cabin</strong></td>
-                  <td>$4,890 USD</td>
-                  <td>$7,580 USD</td>
-                  <td>₹4,10,000 per person</td>
-                </tr>
-                <tr>
-                  <td><strong>Junior Suite</strong></td>
-                  <td>$5,950 USD</td>
-                  <td>$10,710 USD</td>
-                  <td>₹4,98,000 per person</td>
-                </tr>
-                <tr>
-                  <td><strong>Executive Suite</strong></td>
-                  <td>$8,990 USD</td>
-                  <td>$8,990 USD</td>
-                  <td>₹7,52,000 (Private Car Included)</td>
-                </tr>
-                <tr>
-                  <td><strong>Presidential Suite</strong></td>
-                  <td>$14,800 USD (Full Suite)</td>
-                  <td>$14,800 USD</td>
-                  <td>₹12,40,000 (Entire 448 sq.ft Carriage)</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+  <!-- USD Price Table -->
+  <div id="priceTableUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04)">
+    <div style="padding:16px 20px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <h3 style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:700;color:#0f172a;margin:0">
+        Maharajas' Express Packages for Season 2026-27 (USD)
+      </h3>
+      <span style="font-size:12.5px;color:#64748b;font-weight:600">Official IRCTC Fares</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;text-align:center;font-size:13.5px">
+        <thead>
+          <tr style="background:#991b1b;color:#fff;font-family:'Outfit',sans-serif;font-size:14px">
+            <th style="padding:14px;text-align:left;border-right:1px solid rgba(255,255,255,0.15)">Itinerary</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Rooming</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Deluxe Cabin</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Junior Suite</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Suite</th>
+            <th style="padding:14px">Presidential Suite</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- The Indian Splendour -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Indian Splendour<br><small style="color:#64748b;font-weight:400">(6 Nights/ 7 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$8,400</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$10,700</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$15,600</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">$26,800</td>
+          </tr>
+          <tr style="border-bottom:2px solid #e2e8f0;background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$6,300</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$9,700</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$15,600</td>
+            <td style="padding:12px;color:#64748b">$26,800</td>
+          </tr>
 
-        <div style="margin-bottom:44px">
-          
-<div class="inc-exc-grid">
+          <!-- The Heritage of India -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Heritage of India<br><small style="color:#64748b;font-weight:400">(6 Nights/ 7 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$8,800</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$11,200</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$15,600</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">$26,800</td>
+          </tr>
+          <tr style="border-bottom:2px solid #e2e8f0;background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$6,600</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$10,100</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$15,600</td>
+            <td style="padding:12px;color:#64748b">$26,800</td>
+          </tr>
+
+          <!-- The Indian Panorama -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Indian Panorama<br><small style="color:#64748b;font-weight:400">(6 Nights/ 7 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$8,400</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$10,700</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$15,600</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">$26,800</td>
+          </tr>
+          <tr style="border-bottom:2px solid #e2e8f0;background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$6,300</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$9,700</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$15,600</td>
+            <td style="padding:12px;color:#64748b">$26,800</td>
+          </tr>
+
+          <!-- Treasures of India -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              Treasures of India<br><small style="color:#64748b;font-weight:400">(3 Nights/ 4 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$5,300</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$5,700</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$8,600</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">$14,600</td>
+          </tr>
+          <tr style="background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$4,000</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$5,200</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$8,600</td>
+            <td style="padding:12px;color:#64748b">$14,600</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- INR Price Table -->
+  <div id="priceTableInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04)">
+    <div style="padding:16px 20px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <h3 style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:700;color:#0f172a;margin:0">
+        Maharajas' Express Packages for Season 2026-27 (INR)
+      </h3>
+      <span style="font-size:12.5px;color:#64748b;font-weight:600">Official IRCTC Fares in Indian Rupees</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;text-align:center;font-size:13.5px">
+        <thead>
+          <tr style="background:#991b1b;color:#fff;font-family:'Outfit',sans-serif;font-size:14px">
+            <th style="padding:14px;text-align:left;border-right:1px solid rgba(255,255,255,0.15)">Itinerary</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Rooming</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Deluxe Cabin</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Junior Suite</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Suite</th>
+            <th style="padding:14px">Presidential Suite</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- The Indian Splendour -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Indian Splendour<br><small style="color:#64748b;font-weight:400">(6 Nights/ 7 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹8,19,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹10,43,250</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹15,21,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">₹26,13,000</td>
+          </tr>
+          <tr style="border-bottom:2px solid #e2e8f0;background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹6,14,250</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹9,45,750</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹15,21,000</td>
+            <td style="padding:12px;color:#64748b">₹26,13,000</td>
+          </tr>
+
+          <!-- The Heritage of India -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Heritage of India<br><small style="color:#64748b;font-weight:400">(6 Nights/ 7 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹8,58,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹10,92,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹15,21,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">₹26,13,000</td>
+          </tr>
+          <tr style="border-bottom:2px solid #e2e8f0;background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹6,43,500</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹9,84,750</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹15,21,000</td>
+            <td style="padding:12px;color:#64748b">₹26,13,000</td>
+          </tr>
+
+          <!-- The Indian Panorama -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Indian Panorama<br><small style="color:#64748b;font-weight:400">(6 Nights/ 7 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹8,19,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹10,43,250</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹15,21,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">₹26,13,000</td>
+          </tr>
+          <tr style="border-bottom:2px solid #e2e8f0;background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹6,14,250</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹9,45,750</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹15,21,000</td>
+            <td style="padding:12px;color:#64748b">₹26,13,000</td>
+          </tr>
+
+          <!-- Treasures of India -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Treasures of India<br><small style="color:#64748b;font-weight:400">(3 Nights/ 4 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹5,16,750</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹5,55,750</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹8,38,500</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">₹14,23,500</td>
+          </tr>
+          <tr style="background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹3,90,000</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹5,07,000</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹8,38,500</td>
+            <td style="padding:12px;color:#64748b">₹14,23,500</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="margin-top:14px;padding:12px 18px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+    <div style="font-size:12.5px;color:#64748b">
+      • 5% Govt. Service Tax (GST) extra · INR tariffs subject to periodic revision · Single supplement applies to solo travelers in a cabin
+    </div>
+    <a href="/luxury-train-demo/maharajas-express/price" style="color:#2E8B8B;font-weight:700;font-size:13px;text-decoration:none">
+      View Detailed Fare Inclusions & Terms &rarr;
+    </a>
+  </div>
+</div>
+
+    
+<div class="inc-exc-grid" style="margin-top:32px">
   <div class="inc-box">
     <h3>
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="16 9 10 15 7 12"></polyline></svg>
-      What's Included Aboard Maharajas' Express
+      What's Included in This Journey
     </h3>
     <ul>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Accommodation in chosen luxury cabin or suite with en-suite bathroom and personal butler</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All gourmet meals on board at Rang Mahal and Mayur Mahal fine-dining restaurants</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>House brands of wine, beer, and spirits served complimentary in lounge bars and at dinner</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Guided off-train excursions in deluxe AC coaches (Private luxury car for Suite & Presidential Suite)</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All monument entrance fees, national park safaris, Lake Pichola boat rides & camera permits</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Exclusive royal dining experiences: Sand dunes dinner at Bikaner, gala dinner at Hanwant Mahal Jodhpur</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>24/7 dedicated butler service, electronic safe, climate control & complimentary Wi-Fi</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Luxury cabin accommodation with en-suite private bathroom & 24/7 personal butler</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All gourmet meals on board at Rang Mahal and Mayur Mahal fine-dining restaurants</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Complimentary house brands of wines, beers, and spirits throughout the rail journey</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All guided off-train excursions in deluxe coaches (Private luxury car for Suite guests)</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All monument entrance fees, national park jungle safaris, and boat rides</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Exclusive royal dining events (Desert dunes gala dinner, palace receptions)</span></li>
     </ul>
   </div>
   <div class="exc-box">
     <h3>
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-      What's Excluded (Curated Separately by KoiKoi)
+      What's Excluded
     </h3>
     <ul>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Pre-train and post-train 5-star hotel stays (Tailored by KoiKoi at preferential contracted rates)</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>International & domestic airfare to/from starting and concluding cities</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Premium imported vintage liquors and rare wines (House selection is fully complimentary)</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Personal expenses: Onboard spa therapies, laundry, and international phone calls</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Gratuities and tipping for train attendants, chauffeurs, and local city guides</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Indian visa fees & personal travel insurance</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Pre and post-train 5-star hotel stays (Curated separately by KoiKoi Travel)</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>International & domestic airfare</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Premium vintage imported liquors & wines</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Onboard spa treatments, laundry, and telephone calls</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Gratuities for train attendants and off-train local guides</span></li>
     </ul>
   </div>
 </div>
 
-        </div>
-      </div>
-
-      <!-- Right Column -->
-      <div class="package-sidebar">
-        
-<div class="sticky-curator-card">
-  <div class="badge-offer">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-    <span>Special Offer · 2025–2026 Inquiries Open</span>
-  </div>
-  <div class="price-tag">
-    $4,890 <span style="font-size:18px;font-weight:600;color:#64748b">/ person</span>
-    <small>Starting tariff (Treasures of India, Deluxe Cabin sharing) · Approx ₹4,10,000</small>
-  </div>
-  <p style="font-size:13px;color:#64748b;margin:12px 0 0;line-height:1.5">
-    Choose from <strong>4 distinct circuits</strong> (3 Nights / 4 Days or 6 Nights / 7 Days). Book with official guarantees and bespoke pre/post 5-star extensions.
-  </p>
-  <a class="btn-wa" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20am%20interested%20in%20the%20Maharajas%27%20Express%20luxury%20train.%20Please%20share%20circuit%20options%2C%20cabins%2C%20and%20availabilities." target="_blank" rel="noopener">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-    Chat on WhatsApp
-  </a>
-  <a class="btn-quote-main" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20send%20me%20a%20custom%20quote%20for%20Maharajas%27%20Express." target="_blank" rel="noopener">
-    Request a Custom Quote
-  </a>
-  <div style="margin-top:14px;background:#f8fafc;padding:10px 14px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;color:#475569">
-    ✦ 100% Tailored Extensions · Handpicked 5-Star Palaces
-  </div>
-  <ul class="trust-list">
-    <li class="trust-item">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-      <div><strong>Dedicated Rail Concierge:</strong> One trip manager on WhatsApp before, during, and after your rail journey.</div>
-    </li>
-    <li class="trust-item">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-      <div><strong>Handpicked 5-Star Stays:</strong> Curated pre/post nights at The Oberoi, Taj Mahal Palace & The Leela.</div>
-    </li>
-    <li class="trust-item">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="8" rx="2"></rect><circle cx="7" cy="19" r="2"></circle><circle cx="17" cy="19" r="2"></circle><path d="M5 11l2-5h10l2 5"></path></svg>
-      <div><strong>Private Chauffeur Transfers:</strong> Seamless airport VIP meet & greet in private Mercedes/Innova Crysta.</div>
-    </li>
-    <li class="trust-item">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-      <div><strong>Impartial Route Advice:</strong> Neutral guidance on all 4 circuits and cabins to match your travel season.</div>
-    </li>
-  </ul>
-</div>
-
-      </div>
-    </div>
   </div>
 </section>
 

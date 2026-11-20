@@ -1868,63 +1868,17 @@ def generate_all_for_base(base_dir, base_path):
         "banner": "/images/luxury-trains/maharajas-express/hero.jpg",
     }
 
-    # Common Sticky Curator / Booking Card Component
-    def get_me_sticky_card():
+    # 4 Signature Journey Cards Component (KoiKoi Signature Style)
+    def get_me_cards_component():
         return f"""
-<div class="sticky-curator-card">
-  <div class="badge-offer">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-    <span>Special Offer · 2025–2026 Inquiries Open</span>
-  </div>
-  <div class="price-tag">
-    $4,890 <span style="font-size:18px;font-weight:600;color:#64748b">/ person</span>
-    <small>Starting tariff (Treasures of India, Deluxe Cabin sharing) · Approx ₹4,10,000</small>
-  </div>
-  <p style="font-size:13px;color:#64748b;margin:12px 0 0;line-height:1.5">
-    Choose from <strong>4 distinct circuits</strong> (3 Nights / 4 Days or 6 Nights / 7 Days). Book with official guarantees and bespoke pre/post 5-star extensions.
-  </p>
-  <a class="btn-wa" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20am%20interested%20in%20the%20Maharajas%27%20Express%20luxury%20train.%20Please%20share%20circuit%20options%2C%20cabins%2C%20and%20availabilities." target="_blank" rel="noopener">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-    Chat on WhatsApp
-  </a>
-  <a class="btn-quote-main" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20send%20me%20a%20custom%20quote%20for%20Maharajas%27%20Express." target="_blank" rel="noopener">
-    Request a Custom Quote
-  </a>
-  <div style="margin-top:14px;background:#f8fafc;padding:10px 14px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;color:#475569">
-    ✦ 100% Tailored Extensions · Handpicked 5-Star Palaces
-  </div>
-  <ul class="trust-list">
-    <li class="trust-item">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-      <div><strong>Dedicated Rail Concierge:</strong> One trip manager on WhatsApp before, during, and after your rail journey.</div>
-    </li>
-    <li class="trust-item">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-      <div><strong>Handpicked 5-Star Stays:</strong> Curated pre/post nights at The Oberoi, Taj Mahal Palace & The Leela.</div>
-    </li>
-    <li class="trust-item">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="8" rx="2"></rect><circle cx="7" cy="19" r="2"></circle><circle cx="17" cy="19" r="2"></circle><path d="M5 11l2-5h10l2 5"></path></svg>
-      <div><strong>Private Chauffeur Transfers:</strong> Seamless airport VIP meet & greet in private Mercedes/Innova Crysta.</div>
-    </li>
-    <li class="trust-item">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-      <div><strong>Impartial Route Advice:</strong> Neutral guidance on all 4 circuits and cabins to match your travel season.</div>
-    </li>
-  </ul>
-</div>
-"""
-
-    # Common 4 Signature Tour Package Cards Component (KoiKoi Signature Style)
-    def get_me_4_journeys_cards():
-        return f"""
-<div class="koikoi-card-grid">
+<div class="koikoi-card-grid" style="margin-top:24px">
   <!-- Card 1: The Heritage of India -->
   <div class="koikoi-tour-card" id="card-heritage">
-    <a href="{base_path}/maharajas-express/itinerary#heritage-of-india" class="koikoi-card-img-wrap">
+    <a href="{base_path}/maharajas-express/the-heritage-of-india" class="koikoi-card-img-wrap">
       <img src="/images/luxury-trains/maharajas-express/hero.jpg" alt="The Heritage of India - Maharajas' Express Tour Package | KoiKoi Travel">
     </a>
     <div class="koikoi-card-body">
-      <a href="{base_path}/maharajas-express/itinerary#heritage-of-india" class="koikoi-card-title">
+      <a href="{base_path}/maharajas-express/the-heritage-of-india" class="koikoi-card-title">
         7 Days - The Heritage of India Luxury Rail Tour
       </a>
       <div class="koikoi-card-route">
@@ -1952,7 +1906,7 @@ def generate_all_for_base(base_dir, base_path):
           <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20a%20quote%20for%20Maharajas%27%20Express%20-%20The%20Heritage%20of%20India%20(Mumbai%20to%20Delhi%2C%207%20Days)." target="_blank" rel="noopener">
             Get a quote
           </a>
-          <a class="koikoi-btn-details" href="{base_path}/maharajas-express/itinerary#heritage-of-india">
+          <a class="koikoi-btn-details" href="{base_path}/maharajas-express/the-heritage-of-india">
             Details
           </a>
         </div>
@@ -1962,11 +1916,11 @@ def generate_all_for_base(base_dir, base_path):
 
   <!-- Card 2: The Indian Panorama -->
   <div class="koikoi-tour-card" id="card-panorama">
-    <a href="{base_path}/maharajas-express/itinerary#indian-panorama" class="koikoi-card-img-wrap">
+    <a href="{base_path}/maharajas-express/the-indian-panorama" class="koikoi-card-img-wrap">
       <img src="/images/luxury-trains/maharajas-express/dining-pink.jpg" alt="The Indian Panorama - Maharajas' Express Tour Package | KoiKoi Travel">
     </a>
     <div class="koikoi-card-body">
-      <a href="{base_path}/maharajas-express/itinerary#indian-panorama" class="koikoi-card-title">
+      <a href="{base_path}/maharajas-express/the-indian-panorama" class="koikoi-card-title">
         7 Days - The Indian Panorama Luxury Rail Tour
       </a>
       <div class="koikoi-card-route">
@@ -1994,7 +1948,7 @@ def generate_all_for_base(base_dir, base_path):
           <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20a%20quote%20for%20Maharajas%27%20Express%20-%20The%20Indian%20Panorama%20(Delhi%20to%20Delhi%2C%207%20Days)." target="_blank" rel="noopener">
             Get a quote
           </a>
-          <a class="koikoi-btn-details" href="{base_path}/maharajas-express/itinerary#indian-panorama">
+          <a class="koikoi-btn-details" href="{base_path}/maharajas-express/the-indian-panorama">
             Details
           </a>
         </div>
@@ -2004,11 +1958,11 @@ def generate_all_for_base(base_dir, base_path):
 
   <!-- Card 3: The Indian Splendour -->
   <div class="koikoi-tour-card" id="card-splendour">
-    <a href="{base_path}/maharajas-express/itinerary#indian-splendour" class="koikoi-card-img-wrap">
+    <a href="{base_path}/maharajas-express/the-indian-splendour" class="koikoi-card-img-wrap">
       <img src="/images/luxury-trains/maharajas-express/suite.jpg" alt="The Indian Splendour - Maharajas' Express Tour Package | KoiKoi Travel">
     </a>
     <div class="koikoi-card-body">
-      <a href="{base_path}/maharajas-express/itinerary#indian-splendour" class="koikoi-card-title">
+      <a href="{base_path}/maharajas-express/the-indian-splendour" class="koikoi-card-title">
         7 Days - The Indian Splendour Luxury Rail Tour
       </a>
       <div class="koikoi-card-route">
@@ -2036,7 +1990,7 @@ def generate_all_for_base(base_dir, base_path):
           <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20a%20quote%20for%20Maharajas%27%20Express%20-%20The%20Indian%20Splendour%20(Delhi%20to%20Mumbai%2C%207%20Days)." target="_blank" rel="noopener">
             Get a quote
           </a>
-          <a class="koikoi-btn-details" href="{base_path}/maharajas-express/itinerary#indian-splendour">
+          <a class="koikoi-btn-details" href="{base_path}/maharajas-express/the-indian-splendour">
             Details
           </a>
         </div>
@@ -2046,11 +2000,11 @@ def generate_all_for_base(base_dir, base_path):
 
   <!-- Card 4: Treasures of India -->
   <div class="koikoi-tour-card" id="card-treasures">
-    <a href="{base_path}/maharajas-express/itinerary#treasures-of-india" class="koikoi-card-img-wrap">
+    <a href="{base_path}/maharajas-express/treasures-of-india" class="koikoi-card-img-wrap">
       <img src="/images/luxury-trains/maharajas-express/deluxe-cabin.jpg" alt="Treasures of India - Maharajas' Express Tour Package | KoiKoi Travel">
     </a>
     <div class="koikoi-card-body">
-      <a href="{base_path}/maharajas-express/itinerary#treasures-of-india" class="koikoi-card-title">
+      <a href="{base_path}/maharajas-express/treasures-of-india" class="koikoi-card-title">
         4 Days - Treasures of India Golden Triangle Tour
       </a>
       <div class="koikoi-card-route">
@@ -2078,7 +2032,7 @@ def generate_all_for_base(base_dir, base_path):
           <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20a%20quote%20for%20Maharajas%27%20Express%20-%20Treasures%20of%20India%20(4%20Days%20Golden%20Triangle)." target="_blank" rel="noopener">
             Get a quote
           </a>
-          <a class="koikoi-btn-details" href="{base_path}/maharajas-express/itinerary#treasures-of-india">
+          <a class="koikoi-btn-details" href="{base_path}/maharajas-express/treasures-of-india">
             Details
           </a>
         </div>
@@ -2088,1278 +2042,1180 @@ def generate_all_for_base(base_dir, base_path):
 </div>
 """
 
-    # Inclusions & Exclusions Box Component
-    def get_me_inclusions_exclusions():
+    # Image 2 Departure Dates Table Component (2026-27 Schedules)
+    def get_me_departures_table_component():
         return f"""
-<div class="inc-exc-grid">
+<div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04);margin-top:20px">
+  <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;text-align:center;font-size:14px">
+      <thead>
+        <tr style="background:#1e255e;color:#fff;font-family:'Outfit',sans-serif">
+          <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15);font-size:15px">Season 2026-27</th>
+          <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
+            <div style="font-size:15px;font-weight:700">Treasures of India</div>
+            <div style="font-size:12.5px;color:#cbd5e1;font-weight:400;margin-top:2px">(3 Nights/4 Days)</div>
+          </th>
+          <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
+            <div style="font-size:15px;font-weight:700">The Indian Panorama</div>
+            <div style="font-size:12.5px;color:#cbd5e1;font-weight:400;margin-top:2px">(6 Nights/7 Days)</div>
+          </th>
+          <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
+            <div style="font-size:15px;font-weight:700">The Indian Splendour</div>
+            <div style="font-size:12.5px;color:#cbd5e1;font-weight:400;margin-top:2px">(6 Nights/7 Days)</div>
+          </th>
+          <th style="padding:16px 14px">
+            <div style="font-size:15px;font-weight:700">The Heritage of India</div>
+            <div style="font-size:12.5px;color:#cbd5e1;font-weight:400;margin-top:2px">(6 Nights/7 Days)</div>
+          </th>
+        </tr>
+        <tr style="background:#f8fafc;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;border-bottom:2px solid #e2e8f0;font-size:13px">
+          <td style="padding:10px 14px;border-right:1px solid #e2e8f0;color:#64748b">Month / Day</td>
+          <td style="padding:10px 14px;border-right:1px solid #e2e8f0;color:#2E8B8B">Wednesday / Sunday</td>
+          <td style="padding:10px 14px;border-right:1px solid #e2e8f0;color:#2E8B8B">Sunday</td>
+          <td style="padding:10px 14px;border-right:1px solid #e2e8f0;color:#2E8B8B">Sunday</td>
+          <td style="padding:10px 14px;color:#2E8B8B">Sunday</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #f1f5f9">
+          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Sept. 2026</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">30</td>
+          <td style="padding:13px 14px;color:#94a3b8;border-right:1px solid #f1f5f9">-</td>
+          <td style="padding:13px 14px;color:#94a3b8;border-right:1px solid #f1f5f9">-</td>
+          <td style="padding:13px 14px;color:#94a3b8">-</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;background:#fcfcfd">
+          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Oct. 2026</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">25</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">4</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">11</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a">18</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9">
+          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Nov. 2026</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">22</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">1, 29</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">8</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a">15</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;background:#fcfcfd">
+          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Dec. 2026</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">20</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">27</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">6</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a">13</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9">
+          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Jan. 2027</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">17</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">24</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">3, 31</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a">10</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;background:#fcfcfd">
+          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Feb. 2027</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">14</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">21</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">28</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a">7</td>
+        </tr>
+        <tr style="border-bottom:2px solid #e2e8f0">
+          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Mar. 2027</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">14</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">21</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">28</td>
+          <td style="padding:13px 14px;font-weight:600;color:#0f172a">7</td>
+        </tr>
+        <tr style="background:#f8fafc;font-family:'Outfit',sans-serif;font-weight:700">
+          <td style="padding:14px;color:#0f172a;border-right:1px solid #e2e8f0">Trips Total</td>
+          <td style="padding:14px;color:#F8904D;border-right:1px solid #e2e8f0;font-size:15px">7 Trips</td>
+          <td style="padding:14px;color:#F8904D;border-right:1px solid #e2e8f0;font-size:15px">7 Trips</td>
+          <td style="padding:14px;color:#F8904D;border-right:1px solid #e2e8f0;font-size:15px">7 Trips</td>
+          <td style="padding:14px;color:#F8904D;font-size:15px">6 Trips</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="padding:16px 24px;background:#fdfcfb;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+    <div style="font-size:13.5px;color:#64748b">
+      ✦ Also available: <a href="{base_path}/maharajas-express/departures" style="color:#2E8B8B;font-weight:600">Full 2025–2026 & 2026–2027 Departure Calendars &rarr;</a>
+    </div>
+    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20scheduled%20dates." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:8px 18px;border-radius:999px;text-decoration:none">
+      Inquire Dates on WhatsApp &rarr;
+    </a>
+  </div>
+</div>
+"""
+
+    # Image 3 Fare / Price Tables Component (Season 2026-27 USD & INR)
+    def get_me_price_tables_component():
+        return f"""
+<div style="margin-top:20px">
+  <!-- Currency Switcher Tabs -->
+  <div style="display:flex;gap:10px;margin-bottom:18px">
+    <button id="priceTabUsdBtn" onclick="switchPriceCurrency('usd')" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;padding:9px 20px;border-radius:999px;background:#0f172a;color:#fff;border:none;cursor:pointer">
+      USD Tariffs ($)
+    </button>
+    <button id="priceTabInrBtn" onclick="switchPriceCurrency('inr')" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;padding:9px 20px;border-radius:999px;background:#fff;border:1px solid #cbd5e1;color:#64748b;cursor:pointer">
+      INR Tariffs (₹)
+    </button>
+  </div>
+
+  <!-- USD Price Table -->
+  <div id="priceTableUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04)">
+    <div style="padding:16px 20px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <h3 style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:700;color:#0f172a;margin:0">
+        Maharajas' Express Packages for Season 2026-27 (USD)
+      </h3>
+      <span style="font-size:12.5px;color:#64748b;font-weight:600">Official IRCTC Fares</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;text-align:center;font-size:13.5px">
+        <thead>
+          <tr style="background:#991b1b;color:#fff;font-family:'Outfit',sans-serif;font-size:14px">
+            <th style="padding:14px;text-align:left;border-right:1px solid rgba(255,255,255,0.15)">Itinerary</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Rooming</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Deluxe Cabin</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Junior Suite</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Suite</th>
+            <th style="padding:14px">Presidential Suite</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- The Indian Splendour -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Indian Splendour<br><small style="color:#64748b;font-weight:400">(6 Nights/ 7 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$8,400</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$10,700</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$15,600</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">$26,800</td>
+          </tr>
+          <tr style="border-bottom:2px solid #e2e8f0;background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$6,300</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$9,700</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$15,600</td>
+            <td style="padding:12px;color:#64748b">$26,800</td>
+          </tr>
+
+          <!-- The Heritage of India -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Heritage of India<br><small style="color:#64748b;font-weight:400">(6 Nights/ 7 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$8,800</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$11,200</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$15,600</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">$26,800</td>
+          </tr>
+          <tr style="border-bottom:2px solid #e2e8f0;background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$6,600</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$10,100</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$15,600</td>
+            <td style="padding:12px;color:#64748b">$26,800</td>
+          </tr>
+
+          <!-- The Indian Panorama -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Indian Panorama<br><small style="color:#64748b;font-weight:400">(6 Nights/ 7 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$8,400</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$10,700</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$15,600</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">$26,800</td>
+          </tr>
+          <tr style="border-bottom:2px solid #e2e8f0;background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$6,300</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$9,700</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$15,600</td>
+            <td style="padding:12px;color:#64748b">$26,800</td>
+          </tr>
+
+          <!-- Treasures of India -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              Treasures of India<br><small style="color:#64748b;font-weight:400">(3 Nights/ 4 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$5,300</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$5,700</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$8,600</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">$14,600</td>
+          </tr>
+          <tr style="background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$4,000</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$5,200</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">$8,600</td>
+            <td style="padding:12px;color:#64748b">$14,600</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- INR Price Table -->
+  <div id="priceTableInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04)">
+    <div style="padding:16px 20px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <h3 style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:700;color:#0f172a;margin:0">
+        Maharajas' Express Packages for Season 2026-27 (INR)
+      </h3>
+      <span style="font-size:12.5px;color:#64748b;font-weight:600">Official IRCTC Fares in Indian Rupees</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;text-align:center;font-size:13.5px">
+        <thead>
+          <tr style="background:#991b1b;color:#fff;font-family:'Outfit',sans-serif;font-size:14px">
+            <th style="padding:14px;text-align:left;border-right:1px solid rgba(255,255,255,0.15)">Itinerary</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Rooming</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Deluxe Cabin</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Junior Suite</th>
+            <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Suite</th>
+            <th style="padding:14px">Presidential Suite</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- The Indian Splendour -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Indian Splendour<br><small style="color:#64748b;font-weight:400">(6 Nights/ 7 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹8,19,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹10,43,250</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹15,21,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">₹26,13,000</td>
+          </tr>
+          <tr style="border-bottom:2px solid #e2e8f0;background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹6,14,250</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹9,45,750</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹15,21,000</td>
+            <td style="padding:12px;color:#64748b">₹26,13,000</td>
+          </tr>
+
+          <!-- The Heritage of India -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Heritage of India<br><small style="color:#64748b;font-weight:400">(6 Nights/ 7 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹8,58,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹10,92,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹15,21,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">₹26,13,000</td>
+          </tr>
+          <tr style="border-bottom:2px solid #e2e8f0;background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹6,43,500</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹9,84,750</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹15,21,000</td>
+            <td style="padding:12px;color:#64748b">₹26,13,000</td>
+          </tr>
+
+          <!-- The Indian Panorama -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Indian Panorama<br><small style="color:#64748b;font-weight:400">(6 Nights/ 7 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹8,19,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹10,43,250</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹15,21,000</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">₹26,13,000</td>
+          </tr>
+          <tr style="border-bottom:2px solid #e2e8f0;background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹6,14,250</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹9,45,750</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹15,21,000</td>
+            <td style="padding:12px;color:#64748b">₹26,13,000</td>
+          </tr>
+
+          <!-- Treasures of India -->
+          <tr style="border-bottom:1px solid #f1f5f9">
+            <td rowspan="2" style="padding:14px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #e2e8f0;background:#fafafa">
+              The Treasures of India<br><small style="color:#64748b;font-weight:400">(3 Nights/ 4 Days)</small>
+            </td>
+            <td style="padding:12px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">Adult (Twin Sharing)</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹5,16,750</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹5,55,750</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹8,38,500</td>
+            <td style="padding:12px;font-weight:700;color:#0f172a">₹14,23,500</td>
+          </tr>
+          <tr style="background:#fcfcfd">
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">Single Supplement</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹3,90,000</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹5,07,000</td>
+            <td style="padding:12px;color:#64748b;border-right:1px solid #f1f5f9">₹8,38,500</td>
+            <td style="padding:12px;color:#64748b">₹14,23,500</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="margin-top:14px;padding:12px 18px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+    <div style="font-size:12.5px;color:#64748b">
+      • 5% Govt. Service Tax (GST) extra · INR tariffs subject to periodic revision · Single supplement applies to solo travelers in a cabin
+    </div>
+    <a href="{base_path}/maharajas-express/price" style="color:#2E8B8B;font-weight:700;font-size:13px;text-decoration:none">
+      View Detailed Fare Inclusions & Terms &rarr;
+    </a>
+  </div>
+</div>
+"""
+
+    # Image 1 Video Spotlight Split Box Component
+    def get_me_video_spotlight_component():
+        return f"""
+<div style="border-radius:20px;overflow:hidden;background:#1e255e;box-shadow:0 8px 30px rgba(0,0,0,0.12);margin-top:20px">
+  <div style="display:grid;grid-template-columns:1fr 1.25fr;min-height:460px" class="video-split-grid">
+    <div style="padding:48px 44px;display:flex;flex-direction:column;justify-content:center;background:#1e255e;color:#fff">
+      <div style="margin-bottom:20px">
+        <img src="/images/luxury-trains/maharajas-express/logo.png" alt="Maharajas' Express Official Logo" style="max-height:85px;width:auto">
+      </div>
+      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,2.8vw,36px);font-weight:800;color:#fff;line-height:1.2;margin:0 0 16px">
+        Maharajas Express
+      </h2>
+      <p style="color:#cbd5e1;font-size:14.5px;line-height:1.7;margin:0 0 14px">
+        World's leading luxury trains Maharaja Express Ticket Booking - Promoted by IRCTC, the catering wing of the Indian Railways, the Maharajas Express has been voted as the best royal train of India.
+      </p>
+      <p style="color:#cbd5e1;font-size:14.5px;line-height:1.7;margin:0 0 24px">
+        It is perhaps the only royal train to offer 4 itineraries to cover destinations as far apart as Mumbai and Khajuraho over periods stretching from a week or so to two weeks and more. Visit us to check out Maharaja Express ticket price.
+      </p>
+      <div>
+        <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20watched%20the%20Maharajas%27%20Express%20video%20and%20want%20to%20inquire%20about%20booking." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none">
+          Inquire Now on WhatsApp &rarr;
+        </a>
+      </div>
+    </div>
+    <div style="position:relative;background:#000;min-height:360px" id="meVideoBox">
+      <div class="video-facade" onclick="loadTrainVideo('meVideoBox', 'p0MNgGI17Pw')" style="position:absolute;inset:0;background:url('https://img.youtube.com/vi/p0MNgGI17Pw/maxresdefault.jpg') center/cover no-repeat;cursor:pointer;display:flex;align-items:center;justify-content:center">
+        <div style="width:72px;height:72px;border-radius:50%;background:#F8904D;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 10px rgba(248,144,77,0.3);transition:transform .3s">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" style="margin-left:4px"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+"""
+
+    # Image 7 Photo Gallery Section Component (Placed at the very bottom)
+    def get_me_gallery_component():
+        return f"""
+<div style="margin-top:20px">
+  <div class="gallery-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+    <div class="g-item" style="height:240px"><img src="/images/luxury-trains/maharajas-express/hero.jpg" alt="Maharajas' Express Train Exterior"><span>Royal Train Exterior</span></div>
+    <div class="g-item" style="height:240px"><img src="/images/luxury-trains/maharajas-express/dining-pink.jpg" alt="Rang Mahal Dining Car"><span>Rang Mahal Dining Restaurant</span></div>
+    <div class="g-item" style="height:240px"><img src="/images/luxury-trains/maharajas-express/suite.jpg" alt="Royal Suite Living Room"><span>Royal Suite Living Salon</span></div>
+    <div class="g-item" style="height:240px"><img src="/images/luxury-trains/maharajas-express/deluxe-cabin.jpg" alt="Deluxe Double Cabin"><span>Deluxe Twin/Double Cabin</span></div>
+  </div>
+  <div style="text-align:center;margin-top:24px">
+    <a href="{base_path}/maharajas-express/photo-gallery" style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #cbd5e1;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:10px 24px;border-radius:999px;text-decoration:none">
+      View Full Photo Gallery (40+ Photos) &rarr;
+    </a>
+  </div>
+</div>
+"""
+
+    # ================= 1. MAHARAJAS' EXPRESS INDEX PAGE =================
+    me_index_html = f"""
+<!-- Top Full-View Hero Section -->
+<div style="position:relative;background:#0f172a;color:#fff;overflow:hidden">
+  <div style="position:relative;height:520px;background:linear-gradient(180deg,rgba(15,23,42,0.3) 0%,rgba(15,23,42,0.85) 100%),url('/images/luxury-trains/maharajas-express/hero.jpg') center/cover no-repeat;display:flex;align-items:flex-end">
+    <div class="wrap" style="padding-bottom:52px;width:100%">
+      <div class="koikoi-breadcrumb" style="color:#cbd5e1;margin-bottom:12px">
+        <a href="{base_path}" style="color:#cbd5e1">Luxury Trains</a>
+        <span>›</span>
+        <span style="color:#F8904D;font-weight:600">Maharajas' Express</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+        <span style="background:rgba(248,144,77,0.25);color:#F8904D;border:1px solid #F8904D;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:4px 14px;border-radius:999px">
+          WORLD'S LEADING LUXURY TRAIN (7x WINNER)
+        </span>
+        <span style="color:#e2e8f0;font-size:13.5px">★ 4.9 (184 Verified Travelers) · IRCTC Royal Train</span>
+      </div>
+      <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(30px,4.5vw,52px);font-weight:800;color:#fff;line-height:1.15;margin:0 0 14px;max-width:1050px">
+        Maharajas' Express Luxury Train Tour Packages
+      </h1>
+      <p style="color:#cbd5e1;font-size:clamp(15px,1.4vw,18px);max-width:980px;line-height:1.6;margin:0 0 22px">
+        Experience half a mile of royal opulence across India. 23 carriages, state-of-the-art pneumatic suspension, two five-star dining restaurants, and 4 legendary circuits connecting Mumbai, Delhi, Rajasthan, Agra, and Varanasi.
+      </p>
+      <div style="display:flex;gap:14px;flex-wrap:wrap">
+        <a href="#journeys" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14.5px;padding:12px 26px;border-radius:999px;text-decoration:none">
+          Explore 4 Journeys &rarr;
+        </a>
+        <a href="#departures" style="background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);color:#fff;border:1px solid rgba(255,255,255,0.3);font-family:'Outfit',sans-serif;font-weight:700;font-size:14.5px;padding:12px 26px;border-radius:999px;text-decoration:none">
+          Departure Dates
+        </a>
+        <a href="#fare" style="background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);color:#fff;border:1px solid rgba(255,255,255,0.3);font-family:'Outfit',sans-serif;font-weight:700;font-size:14.5px;padding:12px 26px;border-radius:999px;text-decoration:none">
+          Cabin Tariffs
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4-Photo Full-View Visual Showcase Gallery -->
+<div style="background:#0b1120;padding:16px 0">
+  <div class="wrap">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px" class="gallery-4-strip">
+      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
+        <img src="/images/luxury-trains/maharajas-express/hero.jpg" alt="Train Exterior" style="width:100%;height:100%;object-fit:cover">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Royal Exterior Livery</span>
+      </div>
+      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
+        <img src="/images/luxury-trains/maharajas-express/dining-pink.jpg" alt="Rang Mahal Dining" style="width:100%;height:100%;object-fit:cover">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Rang Mahal Fine Dining</span>
+      </div>
+      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
+        <img src="/images/luxury-trains/maharajas-express/suite.jpg" alt="Royal Suite Salon" style="width:100%;height:100%;object-fit:cover">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Royal Suite Salon</span>
+      </div>
+      <div style="position:relative;height:180px;border-radius:12px;overflow:hidden;background:#1e293b">
+        <img src="/images/luxury-trains/maharajas-express/deluxe-cabin.jpg" alt="Deluxe Cabin" style="width:100%;height:100%;object-fit:cover">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">Deluxe Double Cabin</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Body Section (FULL WIDTH - NO SIDEBAR - NO INCLUSIONS/EXCLUSIONS ON INDEX) -->
+<section style="padding:56px 0 80px;background:#fcfbf9">
+  <div class="wrap">
+    
+    <!-- 1. The 4 Signature Journeys -->
+    <div id="journeys" style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:12px">
+        <div class="eyebrow">Choose Your Royal Circuit</div>
+        <h2 style="font-size:clamp(26px,3vw,36px)">The 4 Signature Journeys of Maharajas' Express</h2>
+        <p style="max-width:860px;margin:0 auto">
+          From a high-energy 4-day Golden Triangle royal weekend to week-long grand odysseys connecting Mumbai, Delhi, Rajasthan, and Varanasi. Each journey features its own separate complete day-by-day itinerary.
+        </p>
+      </div>
+      {get_me_cards_component()}
+    </div>
+
+    <!-- 2. Departure Dates (Image 2 Style) -->
+    <div id="departures" style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:8px">
+        <div class="eyebrow">Schedules</div>
+        <h2 style="font-size:clamp(26px,3vw,36px)">Departure Dates</h2>
+        <p style="max-width:860px;margin:0 auto">
+          Following are the Scheduled Departures of Train Maharaja Express for 2026 – 2027.
+        </p>
+      </div>
+      {get_me_departures_table_component()}
+    </div>
+
+    <!-- 3. Price & Fares (Image 3 Style) -->
+    <div id="fare" style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:8px">
+        <div class="eyebrow">Official Tariffs</div>
+        <h2 style="font-size:clamp(26px,3vw,36px)">Maharajas' Express Fare & Cabin Tariffs</h2>
+        <p style="max-width:860px;margin:0 auto">
+          Official tariff per person across all 4 cabin categories in USD and INR for Season 2026-27.
+        </p>
+      </div>
+      {get_me_price_tables_component()}
+    </div>
+
+    <!-- 4. Video Spotlight Section (Image 1 Style Full Section Split Box) -->
+    <div id="video" style="margin-bottom:64px">
+      {get_me_video_spotlight_component()}
+    </div>
+
+    <!-- 5. Photo Gallery Section (At the very bottom) -->
+    <div id="gallery">
+      <div class="sec-head" style="margin-bottom:8px">
+        <div class="eyebrow">Photo Gallery</div>
+        <h2 style="font-size:clamp(26px,3vw,36px)">Glimpse Inside Maharajas' Express</h2>
+        <p style="max-width:860px;margin:0 auto">
+          High-resolution photos of dining carriages, lounge bars, presidential suites, and royal excursions.
+        </p>
+      </div>
+      {get_me_gallery_component()}
+    </div>
+
+  </div>
+</section>
+
+<script>
+function switchPriceCurrency(curr) {{
+  const usdTable = document.getElementById('priceTableUsd');
+  const inrTable = document.getElementById('priceTableInr');
+  const usdBtn = document.getElementById('priceTabUsdBtn');
+  const inrBtn = document.getElementById('priceTabInrBtn');
+
+  if (curr === 'usd') {{
+    if (usdTable) usdTable.style.display = 'block';
+    if (inrTable) inrTable.style.display = 'none';
+    if (usdBtn) {{
+      usdBtn.style.background = '#0f172a';
+      usdBtn.style.color = '#fff';
+      usdBtn.style.border = 'none';
+    }}
+    if (inrBtn) {{
+      inrBtn.style.background = '#fff';
+      inrBtn.style.color = '#64748b';
+      inrBtn.style.border = '1px solid #cbd5e1';
+    }}
+  }} else {{
+    if (usdTable) usdTable.style.display = 'none';
+    if (inrTable) inrTable.style.display = 'block';
+    if (inrBtn) {{
+      inrBtn.style.background = '#0f172a';
+      inrBtn.style.color = '#fff';
+      inrBtn.style.border = 'none';
+    }}
+    if (usdBtn) {{
+      usdBtn.style.background = '#fff';
+      usdBtn.style.color = '#64748b';
+      usdBtn.style.border = '1px solid #cbd5e1';
+    }}
+  }}
+}}
+</script>
+"""
+    write_page(f"{base_dir}/maharajas-express/index.html", 
+               "Maharajas' Express Luxury Train Tour Package | 4 Royal Journeys | KoiKoi Travel",
+               "Discover the 4 iconic journeys of Maharajas' Express luxury train: Heritage of India, Indian Panorama, Indian Splendour, and Treasures of India with day-by-day itineraries and 2026-27 tariffs.",
+               me_index_html, active_train="maharajas-express", active_tab="overview", base_path=base_path)
+
+    # ================= 2. SEPARATE ITINERARY DETAIL PAGES =================
+    # Common Inclusions/Exclusions for separate itinerary pages
+    inc_exc_snippet = f"""
+<div class="inc-exc-grid" style="margin-top:32px">
   <div class="inc-box">
     <h3>
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="16 9 10 15 7 12"></polyline></svg>
-      What's Included Aboard Maharajas' Express
+      What's Included in This Journey
     </h3>
     <ul>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Accommodation in chosen luxury cabin or suite with en-suite bathroom and personal butler</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All gourmet meals on board at Rang Mahal and Mayur Mahal fine-dining restaurants</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>House brands of wine, beer, and spirits served complimentary in lounge bars and at dinner</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Guided off-train excursions in deluxe AC coaches (Private luxury car for Suite & Presidential Suite)</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All monument entrance fees, national park safaris, Lake Pichola boat rides & camera permits</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Exclusive royal dining experiences: Sand dunes dinner at Bikaner, gala dinner at Hanwant Mahal Jodhpur</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg><span>24/7 dedicated butler service, electronic safe, climate control & complimentary Wi-Fi</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Luxury cabin accommodation with en-suite private bathroom & 24/7 personal butler</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All gourmet meals on board at Rang Mahal and Mayur Mahal fine-dining restaurants</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Complimentary house brands of wines, beers, and spirits throughout the rail journey</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All guided off-train excursions in deluxe coaches (Private luxury car for Suite guests)</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All monument entrance fees, national park jungle safaris, and boat rides</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Exclusive royal dining events (Desert dunes gala dinner, palace receptions)</span></li>
     </ul>
   </div>
   <div class="exc-box">
     <h3>
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-      What's Excluded (Curated Separately by KoiKoi)
+      What's Excluded
     </h3>
     <ul>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Pre-train and post-train 5-star hotel stays (Tailored by KoiKoi at preferential contracted rates)</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>International & domestic airfare to/from starting and concluding cities</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Premium imported vintage liquors and rare wines (House selection is fully complimentary)</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Personal expenses: Onboard spa therapies, laundry, and international phone calls</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Gratuities and tipping for train attendants, chauffeurs, and local city guides</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" style="shrink:0;margin-top:2px"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Indian visa fees & personal travel insurance</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Pre and post-train 5-star hotel stays (Curated separately by KoiKoi Travel)</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>International & domestic airfare</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Premium vintage imported liquors & wines</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Onboard spa treatments, laundry, and telephone calls</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Gratuities for train attendants and off-train local guides</span></li>
     </ul>
   </div>
 </div>
 """
 
-    # 1. MAHARAJAS' EXPRESS OVERVIEW PAGE (Main Tour Package Master View)
-    me_overview = f"""
-<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:20px 0">
-  <div class="wrap">
-    <div class="koikoi-breadcrumb">
-      <a href="{base_path}">Luxury Trains</a>
-      <span>›</span>
-      <span style="color:#0f172a;font-weight:600">Maharajas' Express</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap">
-      <span style="background:rgba(248,144,77,0.12);color:#d96b27;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:4px 12px;border-radius:999px">
-        4 Royal Circuits · 3N/4D & 6N/7D
-      </span>
-      <span style="color:#64748b;font-size:13.5px">★ 4.9 (184 Verified Travelers) · World's Leading Luxury Train (7x Winner)</span>
-    </div>
-    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,40px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
-      Maharajas' Express Luxury Train Tour Packages
-    </h1>
-    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.6;margin:0">
-      Experience the benchmark of royal train travel across India. Featuring state-of-the-art pneumatic suspension, two fine-dining restaurants, and 4 legendary journeys linking Mumbai, Delhi, Rajasthan, Agra, Khajuraho, and Varanasi.
-    </p>
-  </div>
-</div>
-
-<section style="padding:48px 0 80px">
-  <div class="wrap">
-    <div class="tour-package-layout">
-      <!-- Left Main Content Column -->
-      <div class="package-main">
-        <!-- Media Preview Grid -->
-        <div style="display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:36px;border-radius:18px;overflow:hidden">
-          <div style="height:380px;background:url('/images/luxury-trains/maharajas-express/hero.jpg') center/cover no-repeat;border-radius:14px"></div>
-          <div style="display:grid;grid-template-rows:1fr 1fr;gap:14px">
-            <div style="background:url('/images/luxury-trains/maharajas-express/dining-pink.jpg') center/cover no-repeat;border-radius:14px"></div>
-            <div style="background:url('/images/luxury-trains/maharajas-express/suite.jpg') center/cover no-repeat;border-radius:14px"></div>
-          </div>
-        </div>
-
-        <!-- Section 1: The 4 Signature Journeys -->
-        <div style="margin-bottom:52px">
-          <div class="eyebrow">Choose Your Royal Circuit</div>
-          <h2 style="font-size:28px;margin-bottom:12px">The 4 Signature Journeys of Maharajas' Express</h2>
-          <p style="color:#64748b;font-size:15px;line-height:1.65;margin-bottom:24px">
-            Whether you want a high-paced 4-day Golden Triangle weekend or an epic 7-day royal odyssey between Delhi and Mumbai or Varanasi, Maharajas' Express offers four meticulously planned itineraries. Click <strong>Details</strong> to view full day-by-day itineraries.
-          </p>
-          {get_me_4_journeys_cards()}
-        </div>
-
-        <!-- Section 2: Inclusions & Exclusions -->
-        <div style="margin-bottom:52px">
-          <div class="eyebrow">Transparent Value</div>
-          <h2 style="font-size:28px;margin-bottom:8px">Inclusions & Exclusions</h2>
-          <p style="color:#64748b;font-size:15px">Everything you need to know about what is included on board and what KoiKoi Travel coordinates for you.</p>
-          {get_me_inclusions_exclusions()}
-        </div>
-
-        <!-- Section 3: Cabins & Suites -->
-        <div style="margin-bottom:52px">
-          <div class="eyebrow">Palatial Living Quarters</div>
-          <h2 style="font-size:28px;margin-bottom:8px">4 Categories of Luxury Cabins & Suites</h2>
-          <p style="color:#64748b;font-size:15px;line-height:1.65;margin-bottom:24px">
-            All 23 carriages feature pneumatic air suspension for smooth overnight rail gliding, individual climate control, electronic RFID keys, and 24/7 dedicated butler service.
-          </p>
-          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px">
-            <div class="cabin-card">
-              <div class="cabin-photo" style="background-image:url('/images/luxury-trains/maharajas-express/deluxe-cabin.jpg')"></div>
-              <div class="cabin-body">
-                <span class="cabin-size">112 sq. ft. · 20 Cabins</span>
-                <h3>Deluxe Cabin</h3>
-                <p>Available in Twin or Double bed arrangements. Features an en-suite bathroom with shower stall, electronic safe, panoramic picture window, and dedicated butler.</p>
-                <ul class="cabin-features">
-                  <li>Choice of Twin Beds or Large Double Bed</li>
-                  <li>En-suite bathroom with hot/cold shower & bath amenities</li>
-                  <li>Complimentary Wi-Fi & 24/7 personal butler</li>
-                </ul>
-              </div>
-            </div>
-            <div class="cabin-card">
-              <div class="cabin-photo" style="background-image:url('/images/luxury-trains/maharajas-express/suite.jpg')"></div>
-              <div class="cabin-body">
-                <span class="cabin-size">150 sq. ft. · 18 Cabins</span>
-                <h3>Junior Suite</h3>
-                <p>Spacious accommodation featuring a seating lounge area, writing desk, large picture windows, and round-the-clock personal valet assistance.</p>
-                <ul class="cabin-features">
-                  <li>Separate seating lounge by the panoramic window</li>
-                  <li>Writing desk with stationery and electronic safe</li>
-                  <li>Complimentary minibar and 24/7 butler service</li>
-                </ul>
-              </div>
-            </div>
-            <div class="cabin-card">
-              <div class="cabin-photo" style="background-image:url('/images/luxury-trains/maharajas-express/suite.jpg')"></div>
-              <div class="cabin-body">
-                <span class="cabin-size">220 sq. ft. · 4 Suites</span>
-                <h3>Executive Suite</h3>
-                <p>Features a spacious private living room salon, separate master bedroom, complimentary stocked minibar, and a private luxury car for all off-train tours.</p>
-                <ul class="cabin-features">
-                  <li>Separate living room salon + master double bedroom</li>
-                  <li>Private chauffeured car for all off-train excursions</li>
-                  <li>Exclusive personal guide & round-the-clock butler</li>
-                </ul>
-              </div>
-            </div>
-            <div class="cabin-card">
-              <div class="cabin-photo" style="background-image:url('/images/luxury-trains/maharajas-express/hero.jpg')"></div>
-              <div class="cabin-body">
-                <span class="cabin-size">448 sq. ft. · Entire Carriage</span>
-                <h3>Navratna Presidential Suite</h3>
-                <p>The only train suite in the world occupying an entire carriage! 2 master bedrooms, 2 full en-suite bathrooms with a private full-size bathtub, living room, and private car.</p>
-                <ul class="cabin-features">
-                  <li>Occupies an entire 23-meter train coach (448 sq.ft)</li>
-                  <li>2 Master Bedrooms & private full-size soaking bathtub</li>
-                  <li>Private luxury chauffeur car & dedicated 24/7 royal butler team</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Section 4: Tariffs & Price Summary -->
-        <div style="margin-bottom:52px">
-          <div class="eyebrow">Official 2025–2026 Tariffs</div>
-          <h2 style="font-size:28px;margin-bottom:8px">Tariff & Cabin Price Comparison</h2>
-          <p style="color:#64748b;font-size:15px;line-height:1.65;margin-bottom:20px">
-            Rates are per person on twin-sharing basis (or full suite for Presidential Suite) and include all meals, house spirits, guided sightseeing, and monument entrances.
-          </p>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Cabin Category</th>
-                  <th>Treasures of India (3N/4D)</th>
-                  <th>7-Day Journeys (6N/7D)</th>
-                  <th>Approx INR (7D)</th>
-                  <th>Key Privilege</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Deluxe Cabin</strong></td>
-                  <td>$4,890 USD</td>
-                  <td>$8,000 USD</td>
-                  <td>₹6,70,000</td>
-                  <td>Twin/Double, en-suite bathroom, 24/7 butler</td>
-                </tr>
-                <tr>
-                  <td><strong>Junior Suite</strong></td>
-                  <td>$5,950 USD</td>
-                  <td>$10,650 USD</td>
-                  <td>₹8,90,000</td>
-                  <td>Larger area, picture windows, writing desk</td>
-                </tr>
-                <tr>
-                  <td><strong>Executive Suite</strong></td>
-                  <td>$8,990 USD</td>
-                  <td>$16,000 USD</td>
-                  <td>₹13,40,000</td>
-                  <td>Living room + master bedroom + private car</td>
-                </tr>
-                <tr>
-                  <td><strong>Presidential Suite</strong></td>
-                  <td>$14,800 USD</td>
-                  <td>$25,800 USD</td>
-                  <td>₹21,60,000</td>
-                  <td>Entire carriage (448 sq.ft), 2 bedrooms, bathtub</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Section 5: Why Plan With KoiKoi Travel -->
-        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:32px;box-shadow:0 4px 20px rgba(0,0,0,0.04)">
-          <div class="eyebrow">The KoiKoi Curator Difference</div>
-          <h2 style="font-size:26px;margin-bottom:12px">Why Book Maharajas' Express Through KoiKoi Travel?</h2>
-          <p style="color:#475569;font-size:15px;line-height:1.65;margin-bottom:24px">
-            A luxury train ticket only takes you from station to station. KoiKoi Travel designs your entire seamless vacation—from the minute you touch down at the airport until you fly home safely.
-          </p>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-            <div style="display:flex;gap:12px;align-items:flex-start">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E8B8B" stroke-width="2.5" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <div>
-                <strong style="color:#0f172a;display:block;margin-bottom:4px">Bespoke 5-Star Hotel Extensions</strong>
-                <span style="color:#64748b;font-size:13.5px;line-height:1.5">Curated pre and post-train suites at legendary hotels like The Oberoi Amarvilas (Agra), The Taj Mahal Palace (Mumbai), and The Leela Palace (Delhi).</span>
-              </div>
-            </div>
-            <div style="display:flex;gap:12px;align-items:flex-start">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E8B8B" stroke-width="2.5" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <div>
-                <strong style="color:#0f172a;display:block;margin-bottom:4px">VIP Airport Transfers & Chauffeur</strong>
-                <span style="color:#64748b;font-size:13.5px;line-height:1.5">Private air-conditioned Mercedes or Innova Crysta transfers with meet & greet at Delhi and Mumbai international airports.</span>
-              </div>
-            </div>
-            <div style="display:flex;gap:12px;align-items:flex-start">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E8B8B" stroke-width="2.5" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <div>
-                <strong style="color:#0f172a;display:block;margin-bottom:4px">Impartial Route & Cabin Advice</strong>
-                <span style="color:#64748b;font-size:13.5px;line-height:1.5">We don't push one circuit over another. We match your calendar and preferences to the best suited route and cabin layout.</span>
-              </div>
-            </div>
-            <div style="display:flex;gap:12px;align-items:flex-start">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E8B8B" stroke-width="2.5" style="shrink:0;margin-top:2px"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <div>
-                <strong style="color:#0f172a;display:block;margin-bottom:4px">One 24/7 WhatsApp Concierge</strong>
-                <span style="color:#64748b;font-size:13.5px;line-height:1.5">You have one dedicated luxury travel specialist assisting you with booking, special dietary requests, and emergency support anytime.</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Sticky Curator / Booking Column -->
-      <div class="package-sidebar">
-        {get_me_sticky_card()}
-      </div>
-    </div>
-  </div>
-</section>
-"""
-    write_page(f"{base_dir}/maharajas-express/index.html", 
-               "Maharajas' Express Luxury Train Tour Package | 4 Royal Journeys | KoiKoi Travel",
-               "Discover the 4 iconic journeys of Maharajas' Express luxury train: Heritage of India, Indian Panorama, Indian Splendour, and Treasures of India with day-by-day itineraries and 2025-26 tariffs.",
-               me_overview, active_train="maharajas-express", active_tab="overview", base_path=base_path)
-
-    # 2. MAHARAJAS' EXPRESS ITINERARY PAGE (All 4 Journeys Day-by-Day Comprehensive Plan)
-    me_itinerary = f"""
-<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:20px 0">
+    # Detail Page 1: The Heritage of India (Mumbai to Delhi · 6N/7D)
+    me_heritage_html = f"""
+<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:24px 0">
   <div class="wrap">
     <div class="koikoi-breadcrumb">
       <a href="{base_path}">Luxury Trains</a>
       <span>›</span>
       <a href="{base_path}/maharajas-express">Maharajas' Express</a>
       <span>›</span>
-      <span style="color:#0f172a;font-weight:600">Itineraries</span>
+      <span style="color:#0f172a;font-weight:600">The Heritage of India</span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap">
       <span style="background:rgba(248,144,77,0.12);color:#d96b27;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:4px 12px;border-radius:999px">
-        All 4 Royal Journeys Detailed
+        CIRCUIT 1 · 7 DAYS / 6 NIGHTS
       </span>
-      <span style="color:#64748b;font-size:13.5px">3 Nights / 4 Days & 6 Nights / 7 Days Circuits</span>
+      <span style="color:#64748b;font-size:13.5px">Mumbai to Delhi · Starts $8,800 USD</span>
     </div>
-    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,40px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
-      Maharajas' Express Day-by-Day Itineraries
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+      The Heritage of India Itinerary (Mumbai to Delhi)
     </h1>
-    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.6;margin:0">
-      Explore complete, verified day-by-day schedules for all four signature Maharajas' Express journeys. Choose your circuit below to view detailed morning, afternoon, and evening experiences.
+    <div style="color:#2E8B8B;font-size:16px;font-weight:600;margin-bottom:12px">
+      Route: Mumbai → Udaipur → Jodhpur → Bikaner → Jaipur → Ranthambore → Fatehpur Sikri → Agra → Delhi
+    </div>
+    <p style="color:#475569;font-size:15.5px;max-width:980px;line-height:1.65;margin:0">
+      Departing from India's commercial capital Mumbai, this flagship journey winds through royal Rajasthan's lake palaces, desert citadels, and tiger reserves, before reaching the Taj Mahal and capital city Delhi.
     </p>
   </div>
 </div>
 
 <section style="padding:48px 0 80px">
   <div class="wrap">
-    <div class="tour-package-layout">
-      <!-- Left Main Content Column -->
-      <div class="package-main">
-        <!-- 4 Journey Summary Cards -->
-        <div style="margin-bottom:36px">
-          <div class="eyebrow">Signature Circuits</div>
-          <h2 style="font-size:26px;margin-bottom:8px">Select a Circuit to Explore</h2>
-          <p style="color:#64748b;font-size:15px;margin-bottom:20px">
-            Click on any circuit card below or use the tabs to switch between day-by-day plans.
-          </p>
-          {get_me_4_journeys_cards()}
-        </div>
+    <div style="display:flex;gap:12px;margin-bottom:36px;flex-wrap:wrap">
+      <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20send%20quote%20for%20The%20Heritage%20of%20India%20circuit." target="_blank" rel="noopener" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none">
+        Inquire / Get Quote &rarr;
+      </a>
+      <a href="{base_path}/maharajas-express#departures" style="background:#fff;border:1px solid #cbd5e1;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none">
+        View Departure Dates
+      </a>
+    </div>
 
-        <!-- Circuit Tabs Navigation -->
-        <div class="circuit-tabs-nav" id="circuitTabs">
-          <button class="circuit-tab-btn active" onclick="switchCircuit('heritage', this)">
-            1. The Heritage of India (7D / 6N)
-          </button>
-          <button class="circuit-tab-btn" onclick="switchCircuit('panorama', this)">
-            2. The Indian Panorama (7D / 6N)
-          </button>
-          <button class="circuit-tab-btn" onclick="switchCircuit('splendour', this)">
-            3. The Indian Splendour (7D / 6N)
-          </button>
-          <button class="circuit-tab-btn" onclick="switchCircuit('treasures', this)">
-            4. Treasures of India (4D / 3N)
-          </button>
-        </div>
-
-        <!-- CIRCUIT 1: The Heritage of India -->
-        <div id="circuit-heritage" class="circuit-panel" style="display:block">
-          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;margin-bottom:28px">
-            <span style="display:inline-block;background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;margin-bottom:8px">CIRCUIT 1 · 7 DAYS / 6 NIGHTS</span>
-            <h2 style="font-size:24px;color:#0f172a;margin-bottom:6px" id="heritage-of-india">The Heritage of India: Mumbai to Delhi</h2>
-            <div style="color:#2E8B8B;font-size:14.5px;font-weight:600;margin-bottom:10px">
-              Route: Mumbai → Udaipur → Jodhpur → Bikaner → Jaipur → Ranthambore → Fatehpur Sikri → Agra → Delhi
-            </div>
-            <p style="color:#475569;font-size:14.5px;line-height:1.6;margin:0">
-              The grand trans-India expedition departing Mumbai and crossing the princely kingdoms of Rajasthan, tiger territory of Ranthambore, and the Mughal marvels of Agra before culminating in Delhi.
-            </p>
+    <!-- Timeline Day by Day -->
+    <div class="timeline-wrap">
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 1 · Sunday</span>
+            <div class="timeline-city">Mumbai – Welcome Ceremony & Boarding at CSMT</div>
+            <span class="timeline-meals">Dinner Included</span>
           </div>
-
-          <div class="timeline-wrap">
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 1 · Sunday</span>
-                  <div class="timeline-city">Mumbai – Welcome & Royal Boarding</div>
-                  <span class="timeline-meals">Dinner Included</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Afternoon:</strong> Check-in registration at the iconic Chhatrapati Shivaji Maharaj Terminus (CSMT), Mumbai. Experience a traditional royal garland and tikka welcome ceremony with Indian folk drummers.</p>
-                  <p><strong>Evening:</strong> Board the Maharajas' Express and settle into your palatial private cabin. Introduction to your dedicated 24/7 personal butler. The train departs Mumbai as you enjoy a gourmet welcome dinner at Rang Mahal or Mayur Mahal restaurant.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard Maharajas' Express en route to Udaipur</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 2 · Monday</span>
-                  <div class="timeline-city">Udaipur – City of Lakes & Lake Pichola Cruise</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Arrive in picturesque Udaipur, the Venice of the East. After a breakfast on board, embark on a private motorboat cruise across the tranquil waters of Lake Pichola.</p>
-                  <p><strong>Afternoon:</strong> Guided tour of the magnificent City Palace complex and the world-famous Crystal Gallery. Enjoy a lavish royal lunch at Satkar Hall of Fateh Prakash Palace or on board.</p>
-                  <p><strong>Evening:</strong> Optional walking tour through Udaipur's old artisan bazaars or indulge in an Ayurvedic wellness spa session at a luxury hotel before returning to the train for dinner.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard Maharajas' Express rolling toward Jodhpur</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 3 · Tuesday</span>
-                  <div class="timeline-city">Jodhpur – Mehrangarh Fort & Royal Gala Evening</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Arrive in the "Blue City" of Jodhpur. Enjoy breakfast on board, followed by a private guided tour of the impregnable Mehrangarh Fort towering 400 feet above the city skyline.</p>
-                  <p><strong>Afternoon:</strong> Visit Jaswant Thada, a graceful white marble cenotaph built in memory of Maharaja Jaswant Singh II. Stroll through the bustling clock tower spice market.</p>
-                  <p><strong>Evening:</strong> Exclusive royal cocktail reception and private gala dinner with traditional Marwari cuisine at the enchanting Hanwant Mahal / royal venue overlooking Umaid Bhawan Palace.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard Maharajas' Express departing for Bikaner</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 4 · Wednesday</span>
-                  <div class="timeline-city">Bikaner – Desert Citadel & Thar Sand Dunes Banquet</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Arrive in Bikaner. Visit the formidable Junagarh Fort, an unvanquished fortress boasting exquisite courtyards, gold leaf murals, and ancient weaponry.</p>
-                  <p><strong>Afternoon:</strong> Relax on board with gourmet lunch or explore the unique Lalgarh Palace museum.</p>
-                  <p><strong>Evening:</strong> Camel cart procession into the undulating sand dunes of the Thar Desert. Relish a magical sundowner cocktail followed by a royal barbecue banquet under desert stars with Kalbeliya dancers and folk musicians.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard Maharajas' Express to Jaipur</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 5 · Thursday</span>
-                  <div class="timeline-city">Jaipur – The Pink City, Amber Fort & Royal Lunch</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Arrive in Jaipur. Excursion to the hilltop Amber Fort with a royal jeep ride, exploring Sheesh Mahal (Mirror Palace) and royal courtyards.</p>
-                  <p><strong>Afternoon:</strong> Savor a bespoke 5-star lunch at an exclusive palace hotel (Rambagh Palace / Jai Mahal Palace). Photo stop at the iconic facade of Hawa Mahal (Palace of Winds).</p>
-                  <p><strong>Evening:</strong> Visit the UNESCO-listed Jantar Mantar astronomical observatory and City Palace museum. Time for shopping Jaipur's renowned blue pottery and gemstones. Dinner on board.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard Maharajas' Express toward Sawai Madhopur</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 6 · Friday</span>
-                  <div class="timeline-city">Ranthambore Tiger Safari & UNESCO Fatehpur Sikri</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Early Morning:</strong> Early morning wildlife game drive in an open safari vehicle through Ranthambore National Park in search of the elusive Royal Bengal Tiger, leopards, and sambar deer.</p>
-                  <p><strong>Afternoon:</strong> Return to the train for a hearty breakfast as the train journeys to Fatehpur Sikri. Enjoy lunch on board, followed by a guided walking tour of Emperor Akbar's deserted red sandstone Mughal capital.</p>
-                  <p><strong>Evening:</strong> Return to the train for a celebratory gala dinner featuring chef's signature Indian and Continental creations in the Rang Mahal dining car.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard Maharajas' Express parked at Agra</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 7 · Saturday</span>
-                  <div class="timeline-city">Agra & Delhi – Sunrise at Taj Mahal & Royal Farewell</div>
-                  <span class="timeline-meals">Breakfast & Lunch</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Early Morning:</strong> Unforgettable sunrise tour of the Taj Mahal, the world's most breathtaking monument to eternal love. Savor a lavish champagne breakfast overlooking the Taj Mahal at Taj Khema.</p>
-                  <p><strong>Afternoon:</strong> Visit the formidable Agra Fort before boarding the train for lunch as the Maharajas' Express glides on its final leg toward the national capital.</p>
-                  <p><strong>Evening:</strong> Arrive at Safdarjung Railway Station, Delhi (approx 15:30 hrs). Disembark with royal farewell ceremonies. KoiKoi Travel private chauffeur transfers you safely to your luxury hotel or airport.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E8B8B" stroke-width="2.5"><path d="M5 13l4 4L19 7"></path></svg>
-                  <span>Tour Concludes in Delhi · KoiKoi VIP Hotel/Airport Transfer Arranged</span>
-                </div>
-              </div>
-            </div>
+          <div class="timeline-body">
+            <p><strong>Afternoon:</strong> Registration at the magnificent Chhatrapati Shivaji Maharaj Terminus (CSMT), Mumbai. Traditional garland welcome with Indian sweets and royal shehnai music.</p>
+            <p><strong>Evening:</strong> Board Maharajas' Express and meet your personal butler. Enjoy dinner as the train journeys toward Udaipur.</p>
           </div>
-        </div>
-
-        <!-- CIRCUIT 2: The Indian Panorama -->
-        <div id="circuit-panorama" class="circuit-panel" style="display:none">
-          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;margin-bottom:28px">
-            <span style="display:inline-block;background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;margin-bottom:8px">CIRCUIT 2 · 7 DAYS / 6 NIGHTS</span>
-            <h2 style="font-size:24px;color:#0f172a;margin-bottom:6px" id="indian-panorama">The Indian Panorama: Delhi to Delhi</h2>
-            <div style="color:#2E8B8B;font-size:14.5px;font-weight:600;margin-bottom:10px">
-              Route: Delhi → Jaipur → Ranthambore → Fatehpur Sikri → Agra → Orchha → Khajuraho → Varanasi → Delhi
-            </div>
-            <p style="color:#475569;font-size:14.5px;line-height:1.6;margin:0">
-              An incomparable cultural deep-dive connecting Rajasthan's royal heritage, the tiger wilderness of Ranthambore, the eternal Taj Mahal, the UNESCO erotic temples of Khajuraho, and the sacred river ghats of Varanasi.
-            </p>
-          </div>
-
-          <div class="timeline-wrap">
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 1 · Sunday</span>
-                  <div class="timeline-city">Delhi – Welcome Ceremony & Train Departure</div>
-                  <span class="timeline-meals">Dinner Included</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Afternoon:</strong> Check-in registration at Safdarjung Railway Station, New Delhi. Enjoy warm traditional welcome with marigold garlands, folded hands, and shehnai melodies.</p>
-                  <p><strong>Evening:</strong> Board Maharajas' Express and meet your personal butler. The train sets off toward Jaipur. Enjoy fine wine and gourmet dining at Rang Mahal.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard Maharajas' Express en route to Jaipur</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 2 · Monday</span>
-                  <div class="timeline-city">Jaipur – Amber Fort & Palace Heritage Feast</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Breakfast on board. Excursion to Amber Fort with private jeep climb, touring the Hall of Mirrors (Sheesh Mahal) and royal apartments.</p>
-                  <p><strong>Afternoon:</strong> Lunch at an exclusive luxury palace hotel. Visit the City Palace and royal astronomical observatory of Jantar Mantar.</p>
-                  <p><strong>Evening:</strong> Enjoy leisure time in Jaipur's colourful markets or relax in the Safari Bar lounge before dinner on board.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard train heading to Ranthambore</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 3 · Tuesday</span>
-                  <div class="timeline-city">Ranthambore Tiger Safari & Fatehpur Sikri</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Early morning game drive in Ranthambore Tiger Reserve. Spot wildlife in their natural habitat followed by breakfast on board.</p>
-                  <p><strong>Afternoon:</strong> Arrive at Fatehpur Sikri and explore Emperor Akbar's 16th-century red sandstone architectural marvel.</p>
-                  <p><strong>Evening:</strong> Savor a themed dinner as the train journeys into Agra.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard Maharajas' Express at Agra</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 4 · Wednesday</span>
-                  <div class="timeline-city">Agra – Sunrise at Taj Mahal & Agra Fort</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Sunrise visit to the Taj Mahal followed by champagne breakfast atop Taj Khema. Return to the train for freshening up.</p>
-                  <p><strong>Afternoon:</strong> Visit the UNESCO Agra Fort. Lunch served in the Mayur Mahal dining car.</p>
-                  <p><strong>Evening:</strong> The train rolls south-eastward into Madhya Pradesh toward Orchha and Khajuraho.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard Maharajas' Express en route to Orchha</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 5 · Thursday</span>
-                  <div class="timeline-city">Orchha Fort & UNESCO Khajuraho Temples</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Explore the medieval riverside fortress of Orchha, visiting Jahangir Mahal and Raj Mahal with its vibrant murals.</p>
-                  <p><strong>Afternoon:</strong> Journey to Khajuraho. After lunch, visit the world-renowned Western Group of Temples, celebrated for their exquisite erotic sculptures and soaring nagara architecture.</p>
-                  <p><strong>Evening:</strong> Optional evening sound & light show or classical dance performance before returning to the train for dinner.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard Maharajas' Express to Varanasi</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 6 · Friday</span>
-                  <div class="timeline-city">Varanasi – Sarnath & Ganges Sunset Maha Aarti</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Arrive in Varanasi, the eternal spiritual city. Excursion to sacred Sarnath, where Lord Buddha gave his first sermon. Visit the Dhamek Stupa and museum.</p>
-                  <p><strong>Afternoon:</strong> Return to the train for lunch and relaxation. Visit a silk weaving cooperative known for world-famous Banarasi silk sarees.</p>
-                  <p><strong>Evening:</strong> Sunset boat cruise on the River Ganges. Witness the unforgettable spectacle of the grand Maha Ganga Aarti with chanting, brass lamps, and river diyas.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard Maharajas' Express returning to Delhi</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 7 · Saturday</span>
-                  <div class="timeline-city">Delhi – Farewell Breakfast & Deboarding</div>
-                  <span class="timeline-meals">Breakfast Included</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Savor a leisurely farewell breakfast on board as the train glides into Delhi.</p>
-                  <p><strong>Midday:</strong> Disembark at Safdarjung Railway Station, New Delhi (approx 12:30 hrs). KoiKoi Travel private transfer meets you for your onward journey or luxury hotel extension.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E8B8B" stroke-width="2.5"><path d="M5 13l4 4L19 7"></path></svg>
-                  <span>Tour Concludes in Delhi · Seamless Airport Transfers Arranged</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CIRCUIT 3: The Indian Splendour -->
-        <div id="circuit-splendour" class="circuit-panel" style="display:none">
-          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;margin-bottom:28px">
-            <span style="display:inline-block;background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;margin-bottom:8px">CIRCUIT 3 · 7 DAYS / 6 NIGHTS</span>
-            <h2 style="font-size:24px;color:#0f172a;margin-bottom:6px" id="indian-splendour">The Indian Splendour: Delhi to Mumbai</h2>
-            <div style="color:#2E8B8B;font-size:14.5px;font-weight:600;margin-bottom:10px">
-              Route: Delhi → Agra → Ranthambore → Jaipur → Bikaner → Jodhpur → Udaipur → Mumbai
-            </div>
-            <p style="color:#475569;font-size:14.5px;line-height:1.6;margin:0">
-              The reverse classic royal expedition starting from the capital city of Delhi and winding through Agra, the desert forts and sand dunes of Rajasthan, and concluding in glamorous Mumbai.
-            </p>
-          </div>
-
-          <div class="timeline-wrap">
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 1 · Sunday</span>
-                  <div class="timeline-city">Delhi – Departure to Agra</div>
-                  <span class="timeline-meals">Dinner Included</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Afternoon:</strong> Check-in at Delhi Safdarjung Station, welcome drink and registration. The train departs for the Mughal city of Agra. Welcome dinner on board.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard Maharajas' Express at Agra</span>
-                </div>
-              </div>
-            </div>
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 2 · Monday</span>
-                  <div class="timeline-city">Agra – Taj Mahal & Agra Fort</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Sunrise visit to the Taj Mahal followed by champagne breakfast at Taj Khema. Explore the palatial red sandstone Agra Fort.</p>
-                  <p><strong>Afternoon:</strong> Lunch on board as the train departs toward Ranthambore.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard train parked at Sawai Madhopur</span>
-                </div>
-              </div>
-            </div>
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 3 · Tuesday</span>
-                  <div class="timeline-city">Ranthambore & Jaipur</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Early morning wildlife safari in Ranthambore National Park. Breakfast on board, proceed to Jaipur.</p>
-                  <p><strong>Afternoon:</strong> Amber Fort excursion with jeep ride, City Palace, and royal banquet dinner at an exclusive heritage hotel.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard train to Bikaner</span>
-                </div>
-              </div>
-            </div>
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 4 · Wednesday</span>
-                  <div class="timeline-city">Bikaner – Junagarh & Desert Dunes Barbecue</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Tour Junagarh Fort in Bikaner. Afternoon relaxation on the train.</p>
-                  <p><strong>Evening:</strong> Camel cart ride to Thar sand dunes with folk dances, music, and royal barbecue dinner.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard train to Jodhpur</span>
-                </div>
-              </div>
-            </div>
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 5 · Thursday</span>
-                  <div class="timeline-city">Jodhpur – Mehrangarh Fort & Royal Dinner</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Mehrangarh Fort exploration and Jaswant Thada visit. Walking tour of blue city markets.</p>
-                  <p><strong>Evening:</strong> Royal cocktail and gala dinner at Hanwant Mahal overlooking the lighted fort.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard train to Udaipur</span>
-                </div>
-              </div>
-            </div>
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 6 · Friday</span>
-                  <div class="timeline-city">Udaipur – Lake Pichola Boat Cruise & City Palace</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Boat ride on Lake Pichola, visit City Palace and Crystal Gallery. Royal lunch at Fateh Prakash Palace.</p>
-                  <p><strong>Evening:</strong> Farewell dinner on board as the train journeys toward Maharashtra.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard train to Mumbai</span>
-                </div>
-              </div>
-            </div>
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 7 · Saturday</span>
-                  <div class="timeline-city">Mumbai – Deboarding at CSMT</div>
-                  <span class="timeline-meals">Breakfast Included</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Breakfast on board. Disembark at Mumbai CSMT Station (approx 08:30 hrs). KoiKoi private transfer to your hotel or airport.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E8B8B" stroke-width="2.5"><path d="M5 13l4 4L19 7"></path></svg>
-                  <span>Tour Concludes in Mumbai · Hotel & Airport Extensions Arranged</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CIRCUIT 4: Treasures of India -->
-        <div id="circuit-treasures" class="circuit-panel" style="display:none">
-          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;margin-bottom:28px">
-            <span style="display:inline-block;background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;margin-bottom:8px">CIRCUIT 4 · 4 DAYS / 3 NIGHTS</span>
-            <h2 style="font-size:24px;color:#0f172a;margin-bottom:6px" id="treasures-of-india">Treasures of India: Golden Triangle Tour</h2>
-            <div style="color:#2E8B8B;font-size:14.5px;font-weight:600;margin-bottom:10px">
-              Route: Delhi → Agra → Ranthambore → Jaipur → Delhi
-            </div>
-            <p style="color:#475569;font-size:14.5px;line-height:1.6;margin:0">
-              The ultimate 4-day royal whirlwind covering the Golden Triangle and tiger wilderness of Ranthambore. Ideal for international travelers seeking high luxury in a condensed timeframe.
-            </p>
-          </div>
-
-          <div class="timeline-wrap">
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 1 · Sunday</span>
-                  <div class="timeline-city">Delhi to Agra – Boarding & Agra Fort</div>
-                  <span class="timeline-meals">Lunch & Dinner Included</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Check-in at Safdarjung Railway Station, Delhi (approx 08:30 hrs). Traditional royal welcome and train departs for Agra.</p>
-                  <p><strong>Afternoon:</strong> Enjoy lunch on board. Guided afternoon exploration of the formidable red sandstone Agra Fort.</p>
-                  <p><strong>Evening:</strong> Return to the train for dinner and restful overnight stay in Agra.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard Maharajas' Express parked at Agra</span>
-                </div>
-              </div>
-            </div>
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 2 · Monday</span>
-                  <div class="timeline-city">Agra to Ranthambore – Sunrise Taj Mahal & Fatehpur Sikri</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Magical sunrise visit to the Taj Mahal followed by champagne breakfast at Taj Khema.</p>
-                  <p><strong>Afternoon:</strong> Visit the UNESCO deserted Mughal citadel of Fatehpur Sikri. Lunch on board as the train departs for Sawai Madhopur.</p>
-                  <p><strong>Evening:</strong> Settle in for dinner as you arrive at the gateway of Ranthambore Tiger Reserve.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard train at Sawai Madhopur</span>
-                </div>
-              </div>
-            </div>
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 3 · Tuesday</span>
-                  <div class="timeline-city">Ranthambore to Jaipur – Tiger Safari & Amber Fort</div>
-                  <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Early Morning:</strong> Thrilling open-top jeep/canter safari in Ranthambore National Park in search of wild tigers.</p>
-                  <p><strong>Afternoon:</strong> Breakfast on board, train arrives in Jaipur. Visit Amber Fort with royal jeep ascent.</p>
-                  <p><strong>Evening:</strong> Gala royal dinner at an exclusive palace heritage hotel with cultural Rajasthani performances.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8904D" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                  <span>Overnight aboard train at Jaipur / returning to Delhi</span>
-                </div>
-              </div>
-            </div>
-            <div class="timeline-day">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <div class="timeline-header">
-                  <span class="timeline-badge">Day 4 · Wednesday</span>
-                  <div class="timeline-city">Jaipur to Delhi – Farewell Breakfast & Deboarding</div>
-                  <span class="timeline-meals">Breakfast Included</span>
-                </div>
-                <div class="timeline-body">
-                  <p><strong>Morning:</strong> Leisurely breakfast on board as Maharajas' Express glides back into Delhi.</p>
-                  <p><strong>Midday:</strong> Deboard at Safdarjung Railway Station (approx 12:30 hrs). KoiKoi private transfers take care of your onward travel.</p>
-                </div>
-                <div class="timeline-overnight">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E8B8B" stroke-width="2.5"><path d="M5 13l4 4L19 7"></path></svg>
-                  <span>Tour Concludes in Delhi · Seamless Airport Transfers Arranged</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Inclusions & Exclusions Section -->
-        <div style="margin-top:48px">
-          <div class="eyebrow">Clear Package Value</div>
-          <h2 style="font-size:26px;margin-bottom:8px">Inclusions & Exclusions Across All Circuits</h2>
-          {get_me_inclusions_exclusions()}
+          <div class="timeline-overnight"><span>Overnight aboard Maharajas' Express en route to Udaipur</span></div>
         </div>
       </div>
-
-      <!-- Right Sticky Curator / Booking Column -->
-      <div class="package-sidebar">
-        {get_me_sticky_card()}
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 2 · Monday</span>
+            <div class="timeline-city">Udaipur – Lake Pichola Boat Cruise & City Palace</div>
+            <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
+          </div>
+          <div class="timeline-body">
+            <p><strong>Morning:</strong> Boat cruise across Lake Pichola. Visit City Palace and the famous Crystal Gallery.</p>
+            <p><strong>Afternoon:</strong> Royal lunch at Satkar Hall of Fateh Prakash Palace or on board. Stroll through the local bazaars.</p>
+          </div>
+          <div class="timeline-overnight"><span>Overnight aboard Maharajas' Express departing for Jodhpur</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 3 · Tuesday</span>
+            <div class="timeline-city">Jodhpur – Mehrangarh Fort & Royal Gala at Hanwant Mahal</div>
+            <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
+          </div>
+          <div class="timeline-body">
+            <p><strong>Morning:</strong> Explore Mehrangarh Fort and Jaswant Thada cenotaphs.</p>
+            <p><strong>Evening:</strong> Private royal cocktail reception and Marwari banquet dinner at Hanwant Mahal overlooking illuminated Umaid Bhawan Palace.</p>
+          </div>
+          <div class="timeline-overnight"><span>Overnight aboard Maharajas' Express to Bikaner</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 4 · Wednesday</span>
+            <div class="timeline-city">Bikaner – Junagarh Fort & Thar Sand Dunes Banquet</div>
+            <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
+          </div>
+          <div class="timeline-body">
+            <p><strong>Morning:</strong> Tour the unvanquished Junagarh Fort and museum.</p>
+            <p><strong>Evening:</strong> Camel cart procession into Thar Desert sand dunes with sundowner drinks, Kalbeliya folk dances, and open-air barbecue banquet.</p>
+          </div>
+          <div class="timeline-overnight"><span>Overnight aboard train to Jaipur</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 5 · Thursday</span>
+            <div class="timeline-city">Jaipur – The Pink City, Amber Fort & Royal Lunch</div>
+            <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
+          </div>
+          <div class="timeline-body">
+            <p><strong>Morning:</strong> Hilltop Amber Fort excursion with royal jeep ascent, Sheesh Mahal.</p>
+            <p><strong>Afternoon:</strong> Exclusive lunch at a 5-star palace hotel. Visit Jantar Mantar and City Palace.</p>
+          </div>
+          <div class="timeline-overnight"><span>Overnight aboard train to Sawai Madhopur</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 6 · Friday</span>
+            <div class="timeline-city">Ranthambore Tiger Safari & UNESCO Fatehpur Sikri</div>
+            <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
+          </div>
+          <div class="timeline-body">
+            <p><strong>Early Morning:</strong> Thrilling jungle game drive in Ranthambore Tiger Reserve in search of Bengal tigers.</p>
+            <p><strong>Afternoon:</strong> Walking tour of Emperor Akbar's abandoned red sandstone citadel at Fatehpur Sikri.</p>
+          </div>
+          <div class="timeline-overnight"><span>Overnight aboard train parked at Agra</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 7 · Saturday</span>
+            <div class="timeline-city">Agra & Delhi – Sunrise Taj Mahal & Farewell at Delhi</div>
+            <span class="timeline-meals">Breakfast & Lunch</span>
+          </div>
+          <div class="timeline-body">
+            <p><strong>Early Morning:</strong> Unforgettable sunrise visit to the Taj Mahal followed by champagne breakfast at Taj Khema.</p>
+            <p><strong>Afternoon:</strong> Explore Agra Fort. Lunch on board as the train returns to Delhi Safdarjung Station (approx 15:30 hrs). Disembark with royal farewell.</p>
+          </div>
+          <div class="timeline-overnight"><span>Tour Concludes in Delhi · Seamless Airport Transfers</span></div>
+        </div>
       </div>
     </div>
+
+    <!-- Inclusions / Exclusions -->
+    {inc_exc_snippet}
   </div>
 </section>
+"""
+    write_page(f"{base_dir}/maharajas-express/the-heritage-of-india/index.html", 
+               "The Heritage of India Itinerary (Mumbai to Delhi · 7D/6N) | Maharajas' Express | KoiKoi Travel",
+               "Day-by-day itinerary for The Heritage of India journey aboard Maharajas' Express: Mumbai, Udaipur, Jodhpur, Bikaner, Jaipur, Ranthambore, Agra, Delhi.",
+               me_heritage_html, active_train="maharajas-express", active_tab="itinerary", base_path=base_path)
 
-<script>
-function switchCircuit(circuitId, btn) {{
-  document.querySelectorAll('.circuit-panel').forEach(function(el) {{
-    el.style.display = 'none';
-  }});
-  document.querySelectorAll('.circuit-tab-btn').forEach(function(b) {{
-    b.classList.remove('active');
-  }});
-  const target = document.getElementById('circuit-' + circuitId);
-  if (target) {{
-    target.style.display = 'block';
-  }}
-  if (btn) {{
-    btn.classList.add('active');
-  }}
-}}
+    # Detail Page 2: The Indian Panorama (Delhi to Delhi · 6N/7D)
+    me_panorama_html = f"""
+<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:24px 0">
+  <div class="wrap">
+    <div class="koikoi-breadcrumb">
+      <a href="{base_path}">Luxury Trains</a>
+      <span>›</span>
+      <a href="{base_path}/maharajas-express">Maharajas' Express</a>
+      <span>›</span>
+      <span style="color:#0f172a;font-weight:600">The Indian Panorama</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap">
+      <span style="background:rgba(248,144,77,0.12);color:#d96b27;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:4px 12px;border-radius:999px">
+        CIRCUIT 2 · 7 DAYS / 6 NIGHTS
+      </span>
+      <span style="color:#64748b;font-size:13.5px">Delhi to Delhi · Starts $8,400 USD</span>
+    </div>
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+      The Indian Panorama Itinerary (Delhi to Delhi)
+    </h1>
+    <div style="color:#2E8B8B;font-size:16px;font-weight:600;margin-bottom:12px">
+      Route: Delhi → Jaipur → Ranthambore → Fatehpur Sikri → Agra → Orchha → Khajuraho → Varanasi → Delhi
+    </div>
+    <p style="color:#475569;font-size:15.5px;max-width:980px;line-height:1.65;margin:0">
+      A cultural deep-dive connecting Rajasthan's royal heritage, the tiger wilderness of Ranthambore, the Taj Mahal, the UNESCO erotic temples of Khajuraho, and the sacred river ghats of Varanasi.
+    </p>
+  </div>
+</div>
 
-// Auto-switch tab if URL hash is present
-window.addEventListener('DOMContentLoaded', function() {{
-  const hash = window.location.hash;
-  if (hash === '#heritage-of-india') {{
-    switchCircuit('heritage', document.querySelectorAll('.circuit-tab-btn')[0]);
-  }} else if (hash === '#indian-panorama') {{
-    switchCircuit('panorama', document.querySelectorAll('.circuit-tab-btn')[1]);
-  }} else if (hash === '#indian-splendour') {{
-    switchCircuit('splendour', document.querySelectorAll('.circuit-tab-btn')[2]);
-  }} else if (hash === '#treasures-of-india') {{
-    switchCircuit('treasures', document.querySelectorAll('.circuit-tab-btn')[3]);
-  }}
-}});
-</script>
+<section style="padding:48px 0 80px">
+  <div class="wrap">
+    <div style="display:flex;gap:12px;margin-bottom:36px;flex-wrap:wrap">
+      <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20send%20quote%20for%20The%20Indian%20Panorama%20circuit." target="_blank" rel="noopener" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none">
+        Inquire / Get Quote &rarr;
+      </a>
+      <a href="{base_path}/maharajas-express#departures" style="background:#fff;border:1px solid #cbd5e1;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none">
+        View Departure Dates
+      </a>
+    </div>
+
+    <!-- Timeline Day by Day -->
+    <div class="timeline-wrap">
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 1 · Sunday</span>
+            <div class="timeline-city">Delhi – Departure to Jaipur</div>
+            <span class="timeline-meals">Dinner Included</span>
+          </div>
+          <div class="timeline-body"><p>Check-in registration at Safdarjung Railway Station, traditional royal welcome, welcome dinner as train departs for Jaipur.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard Maharajas' Express en route to Jaipur</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 2 · Monday</span>
+            <div class="timeline-city">Jaipur – Amber Fort & Palace Heritage Feast</div>
+            <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
+          </div>
+          <div class="timeline-body"><p>Amber Fort excursion with private jeep climb, City Palace, royal lunch at luxury palace hotel, evening shopping.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train heading to Ranthambore</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 3 · Tuesday</span>
+            <div class="timeline-city">Ranthambore Tiger Safari & Fatehpur Sikri</div>
+            <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
+          </div>
+          <div class="timeline-body"><p>Early morning game drive in Ranthambore Tiger Reserve, afternoon walking tour of UNESCO Fatehpur Sikri.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train at Agra</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 4 · Wednesday</span>
+            <div class="timeline-city">Agra – Sunrise at Taj Mahal & Agra Fort</div>
+            <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
+          </div>
+          <div class="timeline-body"><p>Sunrise visit to Taj Mahal followed by champagne breakfast at Taj Khema, Agra Fort visit, dinner as train journeys into Central India.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train to Orchha</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 5 · Thursday</span>
+            <div class="timeline-city">Orchha Fort & UNESCO Khajuraho Temples</div>
+            <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
+          </div>
+          <div class="timeline-body"><p>Morning visit to medieval Orchha Fort & Jahangir Mahal, afternoon UNESCO Khajuraho Western Group of Temples, light and sound show.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train to Varanasi</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 6 · Friday</span>
+            <div class="timeline-city">Varanasi – Sarnath & Ganges Sunset Maha Aarti</div>
+            <span class="timeline-meals">Breakfast, Lunch & Dinner</span>
+          </div>
+          <div class="timeline-body"><p>Morning excursion to Sarnath Buddhist ruins, evening sunset boat cruise on river Ganges with spectacular Maha Ganga Aarti ceremony.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train returning to Delhi</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <span class="timeline-badge">Day 7 · Saturday</span>
+            <div class="timeline-city">Delhi – Farewell Breakfast & Deboarding</div>
+            <span class="timeline-meals">Breakfast Included</span>
+          </div>
+          <div class="timeline-body"><p>Farewell breakfast as train arrives at Delhi Safdarjung Station (approx 12:30 hrs). Disembark with royal memories.</p></div>
+          <div class="timeline-overnight"><span>Tour Concludes in Delhi · Airport Transfers</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inclusions / Exclusions -->
+    {inc_exc_snippet}
+  </div>
+</section>
+"""
+    write_page(f"{base_dir}/maharajas-express/the-indian-panorama/index.html", 
+               "The Indian Panorama Itinerary (Delhi to Delhi · 7D/6N) | Maharajas' Express | KoiKoi Travel",
+               "Day-by-day itinerary for The Indian Panorama journey aboard Maharajas' Express: Delhi, Jaipur, Ranthambore, Agra, Orchha, Khajuraho, Varanasi, Delhi.",
+               me_panorama_html, active_train="maharajas-express", active_tab="itinerary", base_path=base_path)
+
+    # Detail Page 3: The Indian Splendour (Delhi to Mumbai · 6N/7D)
+    me_splendour_html = f"""
+<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:24px 0">
+  <div class="wrap">
+    <div class="koikoi-breadcrumb">
+      <a href="{base_path}">Luxury Trains</a>
+      <span>›</span>
+      <a href="{base_path}/maharajas-express">Maharajas' Express</a>
+      <span>›</span>
+      <span style="color:#0f172a;font-weight:600">The Indian Splendour</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap">
+      <span style="background:rgba(248,144,77,0.12);color:#d96b27;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:4px 12px;border-radius:999px">
+        CIRCUIT 3 · 7 DAYS / 6 NIGHTS
+      </span>
+      <span style="color:#64748b;font-size:13.5px">Delhi to Mumbai · Starts $8,400 USD</span>
+    </div>
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+      The Indian Splendour Itinerary (Delhi to Mumbai)
+    </h1>
+    <div style="color:#2E8B8B;font-size:16px;font-weight:600;margin-bottom:12px">
+      Route: Delhi → Agra → Ranthambore → Jaipur → Bikaner → Jodhpur → Udaipur → Mumbai
+    </div>
+    <p style="color:#475569;font-size:15.5px;max-width:980px;line-height:1.65;margin:0">
+      The classic reverse royal tour from Delhi across Agra, Ranthambore, Jaipur, Bikaner sand dunes, Mehrangarh Fort, Lake Pichola, culminating in Mumbai.
+    </p>
+  </div>
+</div>
+
+<section style="padding:48px 0 80px">
+  <div class="wrap">
+    <div style="display:flex;gap:12px;margin-bottom:36px;flex-wrap:wrap">
+      <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20send%20quote%20for%20The%20Indian%20Splendour%20circuit." target="_blank" rel="noopener" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none">
+        Inquire / Get Quote &rarr;
+      </a>
+      <a href="{base_path}/maharajas-express#departures" style="background:#fff;border:1px solid #cbd5e1;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none">
+        View Departure Dates
+      </a>
+    </div>
+
+    <!-- Timeline Day by Day -->
+    <div class="timeline-wrap">
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header"><span class="timeline-badge">Day 1 · Sunday</span><div class="timeline-city">Delhi to Agra</div><span class="timeline-meals">Dinner Included</span></div>
+          <div class="timeline-body"><p>Boarding at Safdarjung Railway Station, welcome dinner as train journeys to Agra.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train at Agra</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header"><span class="timeline-badge">Day 2 · Monday</span><div class="timeline-city">Agra – Taj Mahal & Agra Fort</div><span class="timeline-meals">Breakfast, Lunch & Dinner</span></div>
+          <div class="timeline-body"><p>Sunrise visit to Taj Mahal, champagne breakfast at Taj Khema, Agra Fort visit, afternoon departure to Ranthambore.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train at Sawai Madhopur</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header"><span class="timeline-badge">Day 3 · Tuesday</span><div class="timeline-city">Ranthambore & Jaipur</div><span class="timeline-meals">Breakfast, Lunch & Dinner</span></div>
+          <div class="timeline-body"><p>Early morning wildlife safari in Ranthambore, Amber Fort excursion in Jaipur, gala royal dinner at palace hotel.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train to Bikaner</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header"><span class="timeline-badge">Day 4 · Wednesday</span><div class="timeline-city">Bikaner – Junagarh & Desert Dunes Barbecue</div><span class="timeline-meals">Breakfast, Lunch & Dinner</span></div>
+          <div class="timeline-body"><p>Explore Junagarh Fort, camel cart ride to Thar sand dunes with folk dances and royal barbecue dinner.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train to Jodhpur</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header"><span class="timeline-badge">Day 5 · Thursday</span><div class="timeline-city">Jodhpur – Mehrangarh Fort & Royal Dinner</div><span class="timeline-meals">Breakfast, Lunch & Dinner</span></div>
+          <div class="timeline-body"><p>Mehrangarh Fort exploration, Jaswant Thada, royal cocktail and dinner at Hanwant Mahal.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train to Udaipur</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header"><span class="timeline-badge">Day 6 · Friday</span><div class="timeline-city">Udaipur – Lake Pichola Boat Cruise & City Palace</div><span class="timeline-meals">Breakfast, Lunch & Dinner</span></div>
+          <div class="timeline-body"><p>Boat cruise on Lake Pichola, visit City Palace, royal lunch at Fateh Prakash Palace, farewell dinner on board.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train to Mumbai</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header"><span class="timeline-badge">Day 7 · Saturday</span><div class="timeline-city">Mumbai – Deboarding at CSMT</div><span class="timeline-meals">Breakfast Included</span></div>
+          <div class="timeline-body"><p>Breakfast on board, disembark at Mumbai CSMT Station (approx 08:30 hrs). KoiKoi private transfer to your hotel or airport.</p></div>
+          <div class="timeline-overnight"><span>Tour Concludes in Mumbai · Hotel & Airport Extensions</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inclusions / Exclusions -->
+    {inc_exc_snippet}
+  </div>
+</section>
+"""
+    write_page(f"{base_dir}/maharajas-express/the-indian-splendour/index.html", 
+               "The Indian Splendour Itinerary (Delhi to Mumbai · 7D/6N) | Maharajas' Express | KoiKoi Travel",
+               "Day-by-day itinerary for The Indian Splendour journey aboard Maharajas' Express: Delhi, Agra, Ranthambore, Jaipur, Bikaner, Jodhpur, Udaipur, Mumbai.",
+               me_splendour_html, active_train="maharajas-express", active_tab="itinerary", base_path=base_path)
+
+    # Detail Page 4: Treasures of India (Delhi to Delhi · 3N/4D)
+    me_treasures_html = f"""
+<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:24px 0">
+  <div class="wrap">
+    <div class="koikoi-breadcrumb">
+      <a href="{base_path}">Luxury Trains</a>
+      <span>›</span>
+      <a href="{base_path}/maharajas-express">Maharajas' Express</a>
+      <span>›</span>
+      <span style="color:#0f172a;font-weight:600">Treasures of India</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap">
+      <span style="background:rgba(248,144,77,0.12);color:#d96b27;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:4px 12px;border-radius:999px">
+        CIRCUIT 4 · 4 DAYS / 3 NIGHTS
+      </span>
+      <span style="color:#64748b;font-size:13.5px">Golden Triangle Rail Tour · Starts $5,300 USD</span>
+    </div>
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+      Treasures of India Itinerary (4 Days / 3 Nights)
+    </h1>
+    <div style="color:#2E8B8B;font-size:16px;font-weight:600;margin-bottom:12px">
+      Route: Delhi → Agra → Ranthambore → Jaipur → Delhi
+    </div>
+    <p style="color:#475569;font-size:15.5px;max-width:980px;line-height:1.65;margin:0">
+      The ultimate fast-paced luxury getaway. Covers the world-renowned Golden Triangle (Delhi, Agra Taj Mahal, Jaipur) combined with tiger safaris at Ranthambore National Park in 4 days.
+    </p>
+  </div>
+</div>
+
+<section style="padding:48px 0 80px">
+  <div class="wrap">
+    <div style="display:flex;gap:12px;margin-bottom:36px;flex-wrap:wrap">
+      <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20send%20quote%20for%20Treasures%20of%20India%20circuit." target="_blank" rel="noopener" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none">
+        Inquire / Get Quote &rarr;
+      </a>
+      <a href="{base_path}/maharajas-express#departures" style="background:#fff;border:1px solid #cbd5e1;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none">
+        View Departure Dates
+      </a>
+    </div>
+
+    <!-- Timeline Day by Day -->
+    <div class="timeline-wrap">
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header"><span class="timeline-badge">Day 1 · Sunday</span><div class="timeline-city">Delhi to Agra – Agra Fort</div><span class="timeline-meals">Lunch & Dinner Included</span></div>
+          <div class="timeline-body"><p>Boarding at Safdarjung Railway Station, welcome aboard, afternoon guided tour of Agra Fort, dinner on board.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train at Agra</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header"><span class="timeline-badge">Day 2 · Monday</span><div class="timeline-city">Agra to Ranthambore – Sunrise Taj Mahal & Fatehpur Sikri</div><span class="timeline-meals">Breakfast, Lunch & Dinner</span></div>
+          <div class="timeline-body"><p>Sunrise visit to the Taj Mahal followed by champagne breakfast at Taj Khema. Afternoon visit to Fatehpur Sikri, train journeys to Ranthambore.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train at Sawai Madhopur</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header"><span class="timeline-badge">Day 3 · Tuesday</span><div class="timeline-city">Ranthambore to Jaipur – Tiger Safari & Amber Fort</div><span class="timeline-meals">Breakfast, Lunch & Dinner</span></div>
+          <div class="timeline-body"><p>Early morning open-top jeep safari in Ranthambore National Park, afternoon Amber Fort visit in Jaipur, gala royal dinner at heritage palace venue.</p></div>
+          <div class="timeline-overnight"><span>Overnight aboard train returning to Delhi</span></div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header"><span class="timeline-badge">Day 4 · Wednesday</span><div class="timeline-city">Jaipur to Delhi – Farewell Breakfast & Deboarding</div><span class="timeline-meals">Breakfast Included</span></div>
+          <div class="timeline-body"><p>Breakfast on board as train returns to Delhi Safdarjung Station (approx 12:30 hrs). Disembark with royal memories.</p></div>
+          <div class="timeline-overnight"><span>Tour Concludes in Delhi · Airport Transfers Arranged</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inclusions / Exclusions -->
+    {inc_exc_snippet}
+  </div>
+</section>
+"""
+    write_page(f"{base_dir}/maharajas-express/treasures-of-india/index.html", 
+               "Treasures of India Itinerary (Golden Triangle · 4D/3N) | Maharajas' Express | KoiKoi Travel",
+               "Day-by-day itinerary for Treasures of India journey aboard Maharajas' Express: Delhi, Agra Taj Mahal, Ranthambore, Jaipur, Delhi.",
+               me_treasures_html, active_train="maharajas-express", active_tab="itinerary", base_path=base_path)
+
+    # Master Itinerary Page (/maharajas-express/itinerary/index.html)
+    me_master_itinerary_html = f"""
+<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:24px 0">
+  <div class="wrap">
+    <div class="koikoi-breadcrumb">
+      <a href="{base_path}">Luxury Trains</a>
+      <span>›</span>
+      <a href="{base_path}/maharajas-express">Maharajas' Express</a>
+      <span>›</span>
+      <span style="color:#0f172a;font-weight:600">All Itineraries</span>
+    </div>
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+      Maharajas' Express 4 Signature Journeys
+    </h1>
+    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.65;margin:0">
+      Choose any of the 4 royal circuits below to view detailed itineraries, route maps, and day-by-day breakdown.
+    </p>
+  </div>
+</div>
+
+<section style="padding:48px 0 80px">
+  <div class="wrap">
+    {get_me_cards_component()}
+    {inc_exc_snippet}
+  </div>
+</section>
 """
     write_page(f"{base_dir}/maharajas-express/itinerary/index.html", 
-               "Maharajas' Express Itinerary | All 4 Journeys Day-by-Day | KoiKoi Travel",
-               "Complete day-by-day itineraries for all 4 Maharajas' Express circuits: Heritage of India, Indian Panorama, Indian Splendour, and Treasures of India.",
-               me_itinerary, active_train="maharajas-express", active_tab="itinerary", base_path=base_path)
+               "Maharajas' Express 4 Royal Journeys & Itineraries | KoiKoi Travel",
+               "Explore the 4 signature itineraries of Maharajas' Express luxury train: The Heritage of India, The Indian Panorama, The Indian Splendour, and Treasures of India.",
+               me_master_itinerary_html, active_train="maharajas-express", active_tab="itinerary", base_path=base_path)
 
-    # 3. MAHARAJAS' EXPRESS DEPARTURES PAGE (2025–2026 Calendar)
-    me_departures = f"""
-<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:20px 0">
+    # ================= 3. SEPARATE DEPARTURES PAGE =================
+    me_departures_page_html = f"""
+<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:24px 0">
   <div class="wrap">
     <div class="koikoi-breadcrumb">
       <a href="{base_path}">Luxury Trains</a>
       <span>›</span>
       <a href="{base_path}/maharajas-express">Maharajas' Express</a>
       <span>›</span>
-      <span style="color:#0f172a;font-weight:600">Departures Calendar</span>
+      <span style="color:#0f172a;font-weight:600">Departures</span>
     </div>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap">
-      <span style="background:rgba(248,144,77,0.12);color:#d96b27;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:4px 12px;border-radius:999px">
-        Official 2025–2026 Schedules
-      </span>
-      <span style="color:#64748b;font-size:13.5px">Early Inquiries & Cabin Allocation</span>
-    </div>
-    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,40px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
-      Maharajas' Express Official Departure Dates (2025–2026)
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+      Maharajas' Express Scheduled Departure Dates (2026–2027)
     </h1>
-    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.6;margin:0">
-      Maharajas' Express operates strictly between October and April when weather across North and Central India is pleasantly cool. Browse confirmed departures across all 4 circuits.
+    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.65;margin:0">
+      Official schedules for Maharajas' Express across all 4 journeys. The train operates between September and April when the Indian winter climate is at its most pleasant.
     </p>
   </div>
 </div>
 
 <section style="padding:48px 0 80px">
   <div class="wrap">
-    <div class="tour-package-layout">
-      <!-- Left Main Column -->
-      <div class="package-main">
-        <div style="margin-bottom:40px">
-          <h2 style="font-size:24px;color:#0f172a;margin-bottom:14px">The Heritage of India (Mumbai to Delhi · 6N/7D)</h2>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Departure Date</th><th>Season</th><th>Availability Status</th><th>Action</th></tr></thead>
-              <tbody>
-                <tr><td><strong>October 12, 2025</strong></td><td>Autumn Regular</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Heritage%20of%20India%20Oct%2012%202025" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>November 09, 2025</strong></td><td>Peak Season</td><td><span style="color:#F8904D;font-weight:700">Fast Filling</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Heritage%20of%20India%20Nov%2009%202025" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>December 07, 2025</strong></td><td>Peak Season</td><td><span style="color:#F8904D;font-weight:700">Fast Filling</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Heritage%20of%20India%20Dec%2007%202025" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>January 04, 2026</strong></td><td>New Year Peak</td><td><span style="color:#ef4444;font-weight:700">Limited Cabins</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Heritage%20of%20India%20Jan%2004%202026" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>February 01, 2026</strong></td><td>Winter Prime</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Heritage%20of%20India%20Feb%2001%202026" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>March 01, 2026</strong></td><td>Spring Season</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Heritage%20of%20India%20Mar%2001%202026" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>March 29, 2026</strong></td><td>Spring Finale</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Heritage%20of%20India%20Mar%2029%202026" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div style="margin-bottom:40px">
-          <h2 style="font-size:24px;color:#0f172a;margin-bottom:14px">The Indian Panorama (Delhi to Delhi · 6N/7D)</h2>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Departure Date</th><th>Season</th><th>Availability Status</th><th>Action</th></tr></thead>
-              <tbody>
-                <tr><td><strong>October 05, 2025</strong></td><td>Season Opener</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Indian%20Panorama%20Oct%2005%202025" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>November 02, 2025</strong></td><td>Peak Season</td><td><span style="color:#F8904D;font-weight:700">Fast Filling</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Indian%20Panorama%20Nov%2002%202025" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>November 30, 2025</strong></td><td>Winter Prime</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Indian%20Panorama%20Nov%2030%202025" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>December 28, 2025</strong></td><td>Christmas / NYE</td><td><span style="color:#ef4444;font-weight:700">High Demand</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Indian%20Panorama%20Dec%2028%202025" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>January 25, 2026</strong></td><td>Winter Prime</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Indian%20Panorama%20Jan%2025%202026" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>February 22, 2026</strong></td><td>Winter Prime</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Indian%20Panorama%20Feb%2022%202026" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>March 22, 2026</strong></td><td>Spring Season</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Indian%20Panorama%20Mar%2022%202026" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>April 12, 2026</strong></td><td>Season Finale</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Indian%20Panorama%20Apr%2012%202026" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div style="margin-bottom:40px">
-          <h2 style="font-size:24px;color:#0f172a;margin-bottom:14px">Treasures of India (Delhi to Delhi · 3N/4D)</h2>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Departure Date</th><th>Season</th><th>Availability Status</th><th>Action</th></tr></thead>
-              <tbody>
-                <tr><td><strong>October 26, 2025</strong></td><td>Autumn Regular</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Treasures%20of%20India%20Oct%2026%202025" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>November 23, 2025</strong></td><td>Peak Season</td><td><span style="color:#F8904D;font-weight:700">Fast Filling</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Treasures%20of%20India%20Nov%2023%202025" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>December 21, 2025</strong></td><td>Christmas Holiday</td><td><span style="color:#ef4444;font-weight:700">Limited Cabins</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Treasures%20of%20India%20Dec%2021%202025" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>January 18, 2026</strong></td><td>Winter Prime</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Treasures%20of%20India%20Jan%2018%202026" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>February 15, 2026</strong></td><td>Winter Prime</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Treasures%20of%20India%20Feb%2015%202026" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-                <tr><td><strong>March 15, 2026</strong></td><td>Spring Season</td><td><span style="color:#2E8B8B;font-weight:700">Open for Booking</span></td><td><a href="https://wa.me/919136739178?text=Inquire%20Treasures%20of%20India%20Mar%2015%202026" target="_blank" class="table-link-btn">Inquire Date &rarr;</a></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Sticky Column -->
-      <div class="package-sidebar">
-        {get_me_sticky_card()}
-      </div>
-    </div>
+    {get_me_departures_table_component()}
   </div>
 </section>
 """
     write_page(f"{base_dir}/maharajas-express/departures/index.html", 
-               "Maharajas' Express Departures 2025–2026 | Official Calendar | KoiKoi Travel",
-               "Official 2025-2026 departure dates for Maharajas' Express across all 4 journeys. Check live cabin availability and early booking privileges.",
-               me_departures, active_train="maharajas-express", active_tab="departures", base_path=base_path)
+               "Maharajas' Express Departure Dates 2026-2027 | Official Calendar | KoiKoi Travel",
+               "Official scheduled departure dates for Maharajas' Express luxury train across all 4 circuits for season 2026-27.",
+               me_departures_page_html, active_train="maharajas-express", active_tab="departures", base_path=base_path)
 
-    # 4. MAHARAJAS' EXPRESS PRICE & TARIFFS PAGE
-    me_price = f"""
-<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:20px 0">
+    # ================= 4. SEPARATE PRICE PAGE =================
+    me_price_page_html = f"""
+<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:24px 0">
   <div class="wrap">
     <div class="koikoi-breadcrumb">
       <a href="{base_path}">Luxury Trains</a>
       <span>›</span>
       <a href="{base_path}/maharajas-express">Maharajas' Express</a>
       <span>›</span>
-      <span style="color:#0f172a;font-weight:600">Tariff & Prices</span>
+      <span style="color:#0f172a;font-weight:600">Price & Fare</span>
     </div>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap">
-      <span style="background:rgba(248,144,77,0.12);color:#d96b27;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:4px 12px;border-radius:999px">
-        Transparent Pricing · Zero Hidden Fees
-      </span>
-      <span style="color:#64748b;font-size:13.5px">Official IRCTC / Government Tariffs</span>
-    </div>
-    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,40px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
-      Maharajas' Express Ticket Prices & Cabin Tariffs (2025–2026)
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+      Maharajas' Express Ticket Prices & Cabin Tariffs (2026–2027)
     </h1>
-    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.6;margin:0">
-      Official cabin tariffs for all four journeys of Maharajas' Express in USD and Indian Rupees (INR). All prices include luxury cabin accommodation, gourmet dining, house spirits, guided sightseeing, and monument entrances.
+    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.65;margin:0">
+      Official cabin tariffs for all four journeys of Maharajas' Express in USD and Indian Rupees (INR).
     </p>
   </div>
 </div>
 
 <section style="padding:48px 0 80px">
   <div class="wrap">
-    <div class="tour-package-layout">
-      <!-- Left Column -->
-      <div class="package-main">
-        <div style="margin-bottom:44px">
-          <h2 style="font-size:26px;color:#0f172a;margin-bottom:8px">1. 7-Day Journeys Tariff (6 Nights / 7 Days)</h2>
-          <p style="color:#64748b;font-size:14.5px;margin-bottom:18px">
-            Applies to <em>The Heritage of India</em>, <em>The Indian Panorama</em>, and <em>The Indian Splendour</em>.
-          </p>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Cabin Category</th>
-                  <th>Per Person Twin Sharing (USD)</th>
-                  <th>Single Occupancy (USD)</th>
-                  <th>Approximate INR</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Deluxe Cabin</strong></td>
-                  <td>$8,000 USD</td>
-                  <td>$12,400 USD</td>
-                  <td>₹6,70,000 per person</td>
-                </tr>
-                <tr>
-                  <td><strong>Junior Suite</strong></td>
-                  <td>$10,650 USD</td>
-                  <td>$19,170 USD</td>
-                  <td>₹8,90,000 per person</td>
-                </tr>
-                <tr>
-                  <td><strong>Executive Suite</strong></td>
-                  <td>$16,000 USD</td>
-                  <td>$16,000 USD</td>
-                  <td>₹13,40,000 (Private Car Included)</td>
-                </tr>
-                <tr>
-                  <td><strong>Presidential Suite</strong></td>
-                  <td>$25,800 USD (Full Suite)</td>
-                  <td>$25,800 USD</td>
-                  <td>₹21,60,000 (Entire 448 sq.ft Carriage)</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div style="margin-bottom:44px">
-          <h2 style="font-size:26px;color:#0f172a;margin-bottom:8px">2. Treasures of India Tariff (3 Nights / 4 Days)</h2>
-          <p style="color:#64748b;font-size:14.5px;margin-bottom:18px">
-            The Golden Triangle royal rail circuit (Delhi – Agra – Ranthambore – Jaipur – Delhi).
-          </p>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Cabin Category</th>
-                  <th>Per Person Twin Sharing (USD)</th>
-                  <th>Single Occupancy (USD)</th>
-                  <th>Approximate INR</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Deluxe Cabin</strong></td>
-                  <td>$4,890 USD</td>
-                  <td>$7,580 USD</td>
-                  <td>₹4,10,000 per person</td>
-                </tr>
-                <tr>
-                  <td><strong>Junior Suite</strong></td>
-                  <td>$5,950 USD</td>
-                  <td>$10,710 USD</td>
-                  <td>₹4,98,000 per person</td>
-                </tr>
-                <tr>
-                  <td><strong>Executive Suite</strong></td>
-                  <td>$8,990 USD</td>
-                  <td>$8,990 USD</td>
-                  <td>₹7,52,000 (Private Car Included)</td>
-                </tr>
-                <tr>
-                  <td><strong>Presidential Suite</strong></td>
-                  <td>$14,800 USD (Full Suite)</td>
-                  <td>$14,800 USD</td>
-                  <td>₹12,40,000 (Entire 448 sq.ft Carriage)</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div style="margin-bottom:44px">
-          {get_me_inclusions_exclusions()}
-        </div>
-      </div>
-
-      <!-- Right Column -->
-      <div class="package-sidebar">
-        {get_me_sticky_card()}
-      </div>
-    </div>
+    {get_me_price_tables_component()}
+    {inc_exc_snippet}
   </div>
 </section>
 """
     write_page(f"{base_dir}/maharajas-express/price/index.html", 
-               "Maharajas' Express Ticket Prices & Cabin Tariffs | KoiKoi Travel",
-               "Official 2025-2026 tariff and prices for Maharajas' Express Deluxe Cabins, Junior Suites, Executive Suites, and Presidential Suite in USD and INR.",
-               me_price, active_train="maharajas-express", active_tab="price", base_path=base_path)
+               "Maharajas' Express Ticket Prices & Fare Tariffs 2026-2027 | KoiKoi Travel",
+               "Official 2026-2027 tariffs for Maharajas' Express across Deluxe Cabin, Junior Suite, Suite, and Presidential Suite in USD and INR.",
+               me_price_page_html, active_train="maharajas-express", active_tab="price", base_path=base_path)
 
-    # 5. MAHARAJAS' EXPRESS CABINS & SUITES PAGE
-    me_cabins = f"""
-<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:20px 0">
-  <div class="wrap">
-    <div class="koikoi-breadcrumb">
-      <a href="{base_path}">Luxury Trains</a>
-      <span>›</span>
-      <a href="{base_path}/maharajas-express">Maharajas' Express</a>
-      <span>›</span>
-      <span style="color:#0f172a;font-weight:600">Cabins & Suites</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap">
-      <span style="background:rgba(248,144,77,0.12);color:#d96b27;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:4px 12px;border-radius:999px">
-        4 Regal Accommodation Tiers
-      </span>
-      <span style="color:#64748b;font-size:13.5px">Air Suspension · 24/7 Butler · Private Bathrooms</span>
-    </div>
-    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,40px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
-      Maharajas' Express Cabins & Presidential Suite
-    </h1>
-    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.6;margin:0">
-      Every cabin aboard Maharajas' Express is an oasis of comfort, blending nostalgic royal design with state-of-the-art amenities including electronic safes, RFID door locks, en-suite bathrooms, and personal valets.
-    </p>
-  </div>
-</div>
-
-<section style="padding:48px 0 80px">
-  <div class="wrap">
-    <div class="tour-package-layout">
-      <!-- Left Column -->
-      <div class="package-main">
-        <div style="display:grid;grid-template-columns:1fr;gap:36px;margin-bottom:48px">
-          <!-- Deluxe Cabin -->
-          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.04)">
-            <div style="height:320px;background:url('/images/luxury-trains/maharajas-express/deluxe-cabin.jpg') center/cover no-repeat"></div>
-            <div style="padding:28px">
-              <span class="cabin-size">112 sq. ft. · 20 Cabins Available</span>
-              <h2 style="font-size:26px;color:#0f172a;margin-bottom:8px">Deluxe Cabin</h2>
-              <p style="color:#64748b;font-size:15px;line-height:1.65;margin-bottom:16px">
-                The classic luxury entry to the train. Features a choice of Twin beds or a Double bed with premium linens, large panoramic picture window, electronic RFID locks, individual climate control, and a modern en-suite bathroom with shower stall and branded toiletries.
-              </p>
-              <ul class="cabin-features">
-                <li>Twin or Double bed setup with ergonomic orthopedic mattresses</li>
-                <li>Private en-suite bathroom with shower cubicle, hot/cold water, and hairdryer</li>
-                <li>Electronic safe, RFID locks, LCD television, and high-speed Wi-Fi</li>
-                <li>24/7 dedicated butler catering to all personal requests</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Junior Suite -->
-          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.04)">
-            <div style="height:320px;background:url('/images/luxury-trains/maharajas-express/suite.jpg') center/cover no-repeat"></div>
-            <div style="padding:28px">
-              <span class="cabin-size">150 sq. ft. · 18 Cabins Available</span>
-              <h2 style="font-size:26px;color:#0f172a;margin-bottom:8px">Junior Suite</h2>
-              <p style="color:#64748b;font-size:15px;line-height:1.65;margin-bottom:16px">
-                Generously proportioned with extra space for a relaxing seating area. Enjoy morning tea by your large picture window while watching the Indian countryside glide by.
-              </p>
-              <ul class="cabin-features">
-                <li>Spacious seating area with comfortable upholstered armchairs</li>
-                <li>Writing desk with stationery and electronic safe</li>
-                <li>Complimentary in-cabin minibar and fine teas</li>
-                <li>Round-the-clock dedicated butler service</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Executive Suite -->
-          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.04)">
-            <div style="height:320px;background:url('/images/luxury-trains/maharajas-express/suite.jpg') center/cover no-repeat"></div>
-            <div style="padding:28px">
-              <span class="cabin-size">220 sq. ft. · 4 Suites Available</span>
-              <h2 style="font-size:26px;color:#0f172a;margin-bottom:8px">Executive Suite</h2>
-              <p style="color:#64748b;font-size:15px;line-height:1.65;margin-bottom:16px">
-                True palatial living on rails. Includes a separate master bedroom and a stylish private living room salon. Suite guests enjoy a private luxury chauffeur-driven car (Mercedes/Innova Crysta) for all off-train excursions.
-              </p>
-              <ul class="cabin-features">
-                <li>Separate living salon and master double bedroom</li>
-                <li>Private luxury car and chauffeur for all off-train excursions</li>
-                <li>Exclusive private English-speaking tour guide at monuments</li>
-                <li>Complimentary stocked minibar with premium beverages</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Navratna Presidential Suite -->
-          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.04)">
-            <div style="height:320px;background:url('/images/luxury-trains/maharajas-express/hero.jpg') center/cover no-repeat"></div>
-            <div style="padding:28px">
-              <span class="cabin-size">448 sq. ft. · Entire Train Carriage</span>
-              <h2 style="font-size:26px;color:#0f172a;margin-bottom:8px">Navratna Presidential Suite</h2>
-              <p style="color:#64748b;font-size:15px;line-height:1.65;margin-bottom:16px">
-                Named "Navratna" (Nine Gems), this is the undisputed pinnacle of luxury train travel worldwide. Spanning an entire 23-meter train coach, it offers two bedrooms, two full en-suite bathrooms with a private full-size bathtub, spacious salon, dining area, and round-the-clock private butler team.
-              </p>
-              <ul class="cabin-features">
-                <li>Occupies an entire 448 sq.ft train carriage with private entrance</li>
-                <li>Two full master bedrooms (One Double Bed, One Twin Beds)</li>
-                <li>Two lavish bathrooms featuring a private full-size soaking bathtub</li>
-                <li>Dedicated team of private royal butlers and private luxury car throughout</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column -->
-      <div class="package-sidebar">
-        {get_me_sticky_card()}
-      </div>
-    </div>
-  </div>
-</section>
-"""
-    write_page(f"{base_dir}/maharajas-express/cabins/index.html", 
-               "Maharajas' Express Cabins & Presidential Suite Layout | KoiKoi Travel",
-               "Explore Deluxe Cabins, Junior Suites, Executive Suites, and the world-famous 448 sq.ft Navratna Presidential Suite aboard Maharajas' Express.",
-               me_cabins, active_train="maharajas-express", active_tab="cabins", base_path=base_path)
-
-    # 6. MAHARAJAS' EXPRESS PHOTO GALLERY PAGE
-    me_gallery = f"""
-<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:20px 0">
+    # ================= 5. SEPARATE PHOTO GALLERY PAGE =================
+    me_gallery_page_html = f"""
+<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:24px 0">
   <div class="wrap">
     <div class="koikoi-breadcrumb">
       <a href="{base_path}">Luxury Trains</a>
@@ -3368,32 +3224,24 @@ window.addEventListener('DOMContentLoaded', function() {{
       <span>›</span>
       <span style="color:#0f172a;font-weight:600">Photo Gallery</span>
     </div>
-    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,40px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
       Maharajas' Express Photo Gallery
     </h1>
-    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.6;margin:0">
-      Visual highlights of life aboard the World's Leading Luxury Train: fine-dining restaurant cars, palatial suites, and off-train excursions.
+    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.65;margin:0">
+      Explore high-resolution photographs of Maharajas' Express royal train: the carriages, suites, dining halls, lounge bars, and destination excursions.
     </p>
   </div>
 </div>
 
 <section style="padding:48px 0 80px">
   <div class="wrap">
-    <div class="tour-package-layout">
-      <!-- Left Column -->
-      <div class="package-main">
-        <div class="gallery-grid">
-          <div class="g-item"><img src="/images/luxury-trains/maharajas-express/hero.jpg" alt="Maharajas' Express Luxury Train Exterior"><span>Maharajas' Express Royal Exterior</span></div>
-          <div class="g-item"><img src="/images/luxury-trains/maharajas-express/dining-pink.jpg" alt="Rang Mahal Fine Dining Restaurant"><span>Rang Mahal Dining Restaurant</span></div>
-          <div class="g-item"><img src="/images/luxury-trains/maharajas-express/suite.jpg" alt="Executive Suite Bedroom"><span>Royal Suite Bedroom</span></div>
-          <div class="g-item"><img src="/images/luxury-trains/maharajas-express/deluxe-cabin.jpg" alt="Deluxe Double Cabin"><span>Deluxe Cabin Layout</span></div>
-        </div>
-      </div>
-
-      <!-- Right Column -->
-      <div class="package-sidebar">
-        {get_me_sticky_card()}
-      </div>
+    <div class="gallery-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div class="g-item" style="height:260px"><img src="/images/luxury-trains/maharajas-express/hero.jpg" alt="Maharajas' Express Royal Train Exterior"><span>Royal Train Exterior</span></div>
+      <div class="g-item" style="height:260px"><img src="/images/luxury-trains/maharajas-express/dining-pink.jpg" alt="Rang Mahal Fine Dining Restaurant"><span>Rang Mahal Dining Restaurant</span></div>
+      <div class="g-item" style="height:260px"><img src="/images/luxury-trains/maharajas-express/suite.jpg" alt="Executive Suite Bedroom"><span>Royal Suite Bedroom</span></div>
+      <div class="g-item" style="height:260px"><img src="/images/luxury-trains/maharajas-express/deluxe-cabin.jpg" alt="Deluxe Double Cabin"><span>Deluxe Twin/Double Cabin</span></div>
+      <div class="g-item" style="height:260px"><img src="/images/luxury-trains/maharajas-express/suite.jpg" alt="Executive Suite Salon"><span>Executive Suite Living Room</span></div>
+      <div class="g-item" style="height:260px"><img src="/images/luxury-trains/maharajas-express/hero.jpg" alt="Presidential Suite Carriage"><span>Navratna Presidential Suite</span></div>
     </div>
   </div>
 </section>
@@ -3401,7 +3249,91 @@ window.addEventListener('DOMContentLoaded', function() {{
     write_page(f"{base_dir}/maharajas-express/photo-gallery/index.html", 
                "Maharajas' Express Photo Gallery | Interiors & Cabins | KoiKoi Travel",
                "High resolution photos of Maharajas' Express luxury train: restaurants Rang Mahal & Mayur Mahal, lounge bars, suites and royal excursions.",
-               me_gallery, active_train="maharajas-express", active_tab="photo-gallery", base_path=base_path)
+               me_gallery_page_html, active_train="maharajas-express", active_tab="photo-gallery", base_path=base_path)
+
+    # ================= 6. SEPARATE CABINS PAGE =================
+    me_cabins_page_html = f"""
+<div style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:24px 0">
+  <div class="wrap">
+    <div class="koikoi-breadcrumb">
+      <a href="{base_path}">Luxury Trains</a>
+      <span>›</span>
+      <a href="{base_path}/maharajas-express">Maharajas' Express</a>
+      <span>›</span>
+      <span style="color:#0f172a;font-weight:600">Cabins & Suites</span>
+    </div>
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+      Maharajas' Express Cabins & Presidential Suite
+    </h1>
+    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.65;margin:0">
+      Discover the 4 palatial cabin categories: Deluxe Cabin, Junior Suite, Suite, and the full-carriage Navratna Presidential Suite.
+    </p>
+  </div>
+</div>
+
+<section style="padding:48px 0 80px">
+  <div class="wrap">
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px" class="cabin-2x2-grid">
+      <div class="cabin-card">
+        <div class="cabin-photo" style="background-image:url('/images/luxury-trains/maharajas-express/deluxe-cabin.jpg')"></div>
+        <div class="cabin-body">
+          <span class="cabin-size">112 sq. ft. · 20 Cabins</span>
+          <h3>Deluxe Cabin</h3>
+          <p>Twin or Double bed. En-suite bathroom with shower stall, electronic safe, panoramic picture window, and dedicated butler.</p>
+          <ul class="cabin-features">
+            <li>Choice of Twin Beds or Large Double Bed</li>
+            <li>En-suite bathroom with hot/cold shower & bath amenities</li>
+            <li>Complimentary Wi-Fi & 24/7 personal butler</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cabin-card">
+        <div class="cabin-photo" style="background-image:url('/images/luxury-trains/maharajas-express/suite.jpg')"></div>
+        <div class="cabin-body">
+          <span class="cabin-size">150 sq. ft. · 18 Cabins</span>
+          <h3>Junior Suite</h3>
+          <p>Features seating lounge area, writing desk, large picture windows, and round-the-clock personal valet assistance.</p>
+          <ul class="cabin-features">
+            <li>Separate seating lounge by the panoramic window</li>
+            <li>Writing desk with stationery and electronic safe</li>
+            <li>Complimentary minibar and 24/7 butler service</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cabin-card">
+        <div class="cabin-photo" style="background-image:url('/images/luxury-trains/maharajas-express/suite.jpg')"></div>
+        <div class="cabin-body">
+          <span class="cabin-size">220 sq. ft. · 4 Suites</span>
+          <h3>Executive Suite</h3>
+          <p>Features a spacious private living salon, master bedroom, complimentary stocked minibar, and private luxury car for tours.</p>
+          <ul class="cabin-features">
+            <li>Separate living room salon + master double bedroom</li>
+            <li>Private chauffeured car for all off-train excursions</li>
+            <li>Exclusive personal guide & round-the-clock butler</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cabin-card">
+        <div class="cabin-photo" style="background-image:url('/images/luxury-trains/maharajas-express/hero.jpg')"></div>
+        <div class="cabin-body">
+          <span class="cabin-size">448 sq. ft. · Entire Carriage</span>
+          <h3>Navratna Presidential Suite</h3>
+          <p>The only train suite in the world occupying an entire carriage! 2 master bedrooms, 2 full bathrooms with soaking bathtub, living room, and private car.</p>
+          <ul class="cabin-features">
+            <li>Occupies an entire 23-meter train coach (448 sq.ft)</li>
+            <li>2 Master Bedrooms & private full-size soaking bathtub</li>
+            <li>Private luxury chauffeur car & dedicated royal butler team</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+"""
+    write_page(f"{base_dir}/maharajas-express/cabins/index.html", 
+               "Maharajas' Express Cabins & Presidential Suite Layout | KoiKoi Travel",
+               "Explore Deluxe Cabins, Junior Suites, Executive Suites, and the world-famous 448 sq.ft Navratna Presidential Suite aboard Maharajas' Express.",
+               me_cabins_page_html, active_train="maharajas-express", active_tab="cabins", base_path=base_path)
 
 # ================= 4. GOLDEN CHARIOT SUBPAGES =================
     gc_data = {
