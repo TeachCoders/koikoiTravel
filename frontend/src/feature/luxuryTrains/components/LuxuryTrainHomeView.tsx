@@ -40,7 +40,7 @@ export default function LuxuryTrainHomeView() {
       description:
         "A week through the land of kings: forts, palaces, lakes and desert, ending at the Taj Mahal.",
       gradientClass: "from-[#7a2e3a] via-[#94424e] to-[#c9973b]",
-      image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80",
+      image: "/images/luxury-trains/palace-on-wheels/hero.jpg",
       facts: [
         { label: "Duration", value: "7 Nights / 8 Days" },
         {
@@ -51,12 +51,12 @@ export default function LuxuryTrainHomeView() {
         { label: "Best season", value: "October to March" },
       ],
       sublinks: [
-        { label: "Itinerary", href: "#itinerary-pow" },
-        { label: "Departures", href: "#departures-pow" },
-        { label: "Price", href: "#price-pow" },
-        { label: "Cabins", href: "#cabins-pow" },
-        { label: "Photo Gallery", href: "#gallery-pow" },
-        { label: "Overview", href: "#overview-pow" },
+        { label: "Itinerary", href: "/luxury-trains/palace-on-wheels/itinerary" },
+        { label: "Departures", href: "/luxury-trains/palace-on-wheels/departures" },
+        { label: "Price", href: "/luxury-trains/palace-on-wheels/price" },
+        { label: "Cabins", href: "/luxury-trains/palace-on-wheels/cabins" },
+        { label: "Photo Gallery", href: "/luxury-trains/palace-on-wheels/photo-gallery" },
+        { label: "Overview", href: "/luxury-trains/palace-on-wheels" },
       ],
     },
     {
@@ -68,7 +68,7 @@ export default function LuxuryTrainHomeView() {
       description:
         "The most varied train: pick a short 4-day trip or a full week through Rajasthan, Orchha, Khajuraho and Varanasi.",
       gradientClass: "from-[#1c2f5a] via-[#2d477e] to-[#8c6bb1]",
-      image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+      image: "/images/luxury-trains/maharajas-express/hero.jpg",
       facts: [
         { label: "Duration", value: "3N / 4D or 6N / 7D" },
         {
@@ -79,12 +79,12 @@ export default function LuxuryTrainHomeView() {
         { label: "Best season", value: "October to April" },
       ],
       sublinks: [
-        { label: "Itinerary", href: "#itinerary-me" },
-        { label: "Departures", href: "#departures-me" },
-        { label: "Price", href: "#price-me" },
-        { label: "Cabins", href: "#cabins-me" },
-        { label: "Photo Gallery", href: "#gallery-me" },
-        { label: "Overview", href: "#overview-me" },
+        { label: "Itinerary", href: "/luxury-trains/maharajas-express/itinerary" },
+        { label: "Departures", href: "/luxury-trains/maharajas-express/departures" },
+        { label: "Price", href: "/luxury-trains/maharajas-express/price" },
+        { label: "Cabins", href: "/luxury-trains/maharajas-express/cabins" },
+        { label: "Photo Gallery", href: "/luxury-trains/maharajas-express/photo-gallery" },
+        { label: "Overview", href: "/luxury-trains/maharajas-express" },
       ],
     },
     {
@@ -96,7 +96,7 @@ export default function LuxuryTrainHomeView() {
       description:
         "Mysore palaces, Hampi ruins, Bandipur wildlife and the beaches of Goa, all starting from Bengaluru.",
       gradientClass: "from-[#1f5a46] via-[#2c775e] to-[#d9b64a]",
-      image: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=800&q=80",
+      image: "/images/luxury-trains/golden-chariot/hero.jpg",
       facts: [
         { label: "Duration", value: "3N / 4D or 5N / 6D" },
         {
@@ -106,12 +106,12 @@ export default function LuxuryTrainHomeView() {
         { label: "Best season", value: "October to March" },
       ],
       sublinks: [
-        { label: "Itinerary", href: "#itinerary-gc" },
-        { label: "Departures", href: "#departures-gc" },
-        { label: "Price", href: "#price-gc" },
-        { label: "Cabins", href: "#cabins-gc" },
-        { label: "Photo Gallery", href: "#gallery-gc" },
-        { label: "Overview", href: "#overview-gc" },
+        { label: "Itinerary", href: "/luxury-trains/golden-chariot/itinerary" },
+        { label: "Departures", href: "/luxury-trains/golden-chariot/departures" },
+        { label: "Price", href: "/luxury-trains/golden-chariot/price" },
+        { label: "Cabins", href: "/luxury-trains/golden-chariot/cabins" },
+        { label: "Photo Gallery", href: "/luxury-trains/golden-chariot/photo-gallery" },
+        { label: "Overview", href: "/luxury-trains/golden-chariot" },
       ],
     },
     {
@@ -123,7 +123,7 @@ export default function LuxuryTrainHomeView() {
       description:
         "Ajanta and Ellora caves, Goa, Udaipur, the Golden Triangle and even Tadoba tiger country, on one train.",
       gradientClass: "from-[#16465f] via-[#235f80] to-[#c4683a]",
-      image: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=800&q=80",
+      image: "/images/luxury-trains/deccan-odyssey/hero.jpg",
       facts: [
         { label: "Duration", value: "7 Nights / 8 Days" },
         {
@@ -134,12 +134,12 @@ export default function LuxuryTrainHomeView() {
         { label: "Best season", value: "September to May" },
       ],
       sublinks: [
-        { label: "Itinerary", href: "#itinerary-do" },
-        { label: "Departures", href: "#departures-do" },
-        { label: "Price", href: "#price-do" },
-        { label: "Cabins", href: "#cabins-do" },
-        { label: "Photo Gallery", href: "#gallery-do" },
-        { label: "Overview", href: "#overview-do" },
+        { label: "Itinerary", href: "/luxury-trains/deccan-odyssey/itinerary" },
+        { label: "Departures", href: "/luxury-trains/deccan-odyssey/departures" },
+        { label: "Price", href: "/luxury-trains/deccan-odyssey/price" },
+        { label: "Cabins", href: "/luxury-trains/deccan-odyssey/cabins" },
+        { label: "Photo Gallery", href: "/luxury-trains/deccan-odyssey/photo-gallery" },
+        { label: "Overview", href: "/luxury-trains/deccan-odyssey" },
       ],
     },
   ];
@@ -304,22 +304,6 @@ export default function LuxuryTrainHomeView() {
               <span>WhatsApp Us</span>
             </a>
           </div>
-
-          {/* Stats Row */}
-          <div className="flex flex-wrap gap-8 sm:gap-14 mt-12 pt-7 border-t border-white/20">
-            <div>
-              <b className="block font-serif text-3xl sm:text-4xl text-[#c9973b]">4</b>
-              <span className="text-xs sm:text-sm text-slate-300">Luxury trains</span>
-            </div>
-            <div>
-              <b className="block font-serif text-3xl sm:text-4xl text-[#c9973b]">14+</b>
-              <span className="text-xs sm:text-sm text-slate-300">Journeys to choose from</span>
-            </div>
-            <div>
-              <b className="block font-serif text-3xl sm:text-4xl text-[#c9973b]">12–24 hrs</b>
-              <span className="text-xs sm:text-sm text-slate-300">Quote on WhatsApp &amp; email</span>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -350,12 +334,12 @@ export default function LuxuryTrainHomeView() {
                 <div
                   className={`h-56 relative flex items-end p-5 text-white bg-gradient-to-br ${train.gradientClass}`}
                   style={{
-                    backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('${train.image}')`,
+                    backgroundImage: `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.55)), url('${train.image}')`,
                     backgroundPosition: "center",
                     backgroundSize: "cover",
                   }}
                 >
-                  <span className="bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium tracking-wide text-white">
+                  <span className="bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium tracking-wide text-white">
                     {train.badge}
                   </span>
                 </div>
@@ -391,27 +375,24 @@ export default function LuxuryTrainHomeView() {
                     {/* Subpage Quick Links */}
                     <div className="grid grid-cols-3 gap-2 mb-5">
                       {train.sublinks.map((link, lIdx) => (
-                        <QuoteModal key={lIdx}>
-                          <button
-                            type="button"
-                            className="w-full text-center text-xs font-semibold py-2 px-1 border border-[#e6e1d8] rounded-lg text-[#0f2a43] hover:bg-[#0f2a43] hover:text-white hover:border-[#0f2a43] transition-all cursor-pointer"
-                          >
-                            {link.label}
-                          </button>
-                        </QuoteModal>
+                        <Link
+                          key={lIdx}
+                          href={link.href}
+                          className="w-full block text-center text-xs font-semibold py-2 px-1 border border-[#e6e1d8] rounded-lg text-[#0f2a43] hover:bg-[#0f2a43] hover:text-white hover:border-[#0f2a43] transition-all cursor-pointer"
+                        >
+                          {link.label}
+                        </Link>
                       ))}
                     </div>
                   </div>
 
                   {/* Main Train CTA */}
-                  <QuoteModal>
-                    <button
-                      type="button"
-                      className="w-full block text-center py-3 px-6 rounded-full bg-[#0f2a43] hover:bg-[#091b2c] text-white font-semibold text-sm transition-all duration-200 cursor-pointer shadow-sm"
-                    >
-                      View {train.name}
-                    </button>
-                  </QuoteModal>
+                  <Link
+                    href={`/luxury-trains/${train.slug}`}
+                    className="w-full block text-center py-3 px-6 rounded-full bg-[#0f2a43] hover:bg-[#091b2c] text-white font-semibold text-sm transition-all duration-200 cursor-pointer shadow-sm"
+                  >
+                    View {train.name}
+                  </Link>
                 </div>
               </article>
             ))}
