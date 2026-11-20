@@ -1246,7 +1246,10 @@ def generate_all_for_base(base_dir, base_path):
             </div>
             
             <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:12px">
-              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">The Heritage of India</div>
+              <div>
+                <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">The Heritage of India</div>
+                <div style="font-size:11px;color:#64748b;margin-top:2px;line-height:1.35">Mumbai &rarr; Udaipur &rarr; Jodhpur &rarr; Bikaner &rarr; Jaipur &rarr; Ranthambore &rarr; Agra &rarr; Delhi</div>
+              </div>
               <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
                 <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">6N / 7D</span>
                 <a href="{base_path}/maharajas-express/the-heritage-of-india" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
@@ -1254,7 +1257,10 @@ def generate_all_for_base(base_dir, base_path):
             </div>
 
             <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:12px">
-              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">The Indian Panorama</div>
+              <div>
+                <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">The Indian Panorama</div>
+                <div style="font-size:11px;color:#64748b;margin-top:2px;line-height:1.35">Delhi &rarr; Jaipur &rarr; Ranthambore &rarr; Agra &rarr; Orchha &rarr; Khajuraho &rarr; Varanasi &rarr; Delhi</div>
+              </div>
               <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
                 <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">6N / 7D</span>
                 <a href="{base_path}/maharajas-express/the-indian-panorama" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
@@ -1262,7 +1268,10 @@ def generate_all_for_base(base_dir, base_path):
             </div>
 
             <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:12px">
-              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">The Indian Splendour</div>
+              <div>
+                <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">The Indian Splendour</div>
+                <div style="font-size:11px;color:#64748b;margin-top:2px;line-height:1.35">Delhi &rarr; Agra &rarr; Ranthambore &rarr; Jaipur &rarr; Bikaner &rarr; Jodhpur &rarr; Udaipur &rarr; Mumbai</div>
+              </div>
               <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
                 <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">6N / 7D</span>
                 <a href="{base_path}/maharajas-express/the-indian-splendour" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
@@ -1270,7 +1279,10 @@ def generate_all_for_base(base_dir, base_path):
             </div>
 
             <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:12px">
-              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Treasures of India</div>
+              <div>
+                <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Treasures of India</div>
+                <div style="font-size:11px;color:#64748b;margin-top:2px;line-height:1.35">Delhi &rarr; Agra &rarr; Ranthambore &rarr; Jaipur &rarr; Delhi</div>
+              </div>
               <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
                 <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">3N / 4D</span>
                 <a href="{base_path}/maharajas-express/treasures-of-india" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
@@ -1278,10 +1290,6 @@ def generate_all_for_base(base_dir, base_path):
             </div>
           </div>
 
-          <ul class="facts">
-            <li><span>Duration</span><span>3N / 4D or 6N / 7D</span></li>
-            <li><span>Operating Routes</span><span>Delhi, Mumbai, Rajasthan, Agra, Varanasi</span></li>
-          </ul>
           {get_card_links('maharajas-express')}
           <a class="btn btn-dark" href="{base_path}/maharajas-express">View Maharajas' Express</a>
         </div>
@@ -1320,7 +1328,10 @@ def generate_all_for_base(base_dir, base_path):
             </div>
 
             <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:12px">
-              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Pride of Karnataka</div>
+              <div>
+                <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Pride of Karnataka</div>
+                <div style="font-size:11px;color:#64748b;margin-top:2px;line-height:1.35">Bengaluru &rarr; Bandipur &rarr; Mysore &rarr; Halebidu &rarr; Hampi &rarr; Goa &rarr; Bengaluru</div>
+              </div>
               <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
                 <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">5N / 6D</span>
                 <a href="{base_path}/golden-chariot/itinerary" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
@@ -1328,7 +1339,10 @@ def generate_all_for_base(base_dir, base_path):
             </div>
 
             <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:12px">
-              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Jewels of South</div>
+              <div>
+                <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Jewels of South</div>
+                <div style="font-size:11px;color:#64748b;margin-top:2px;line-height:1.35">Bengaluru &rarr; Mysore &rarr; Hampi &rarr; Mahabalipuram &rarr; Thanjavur &rarr; Chettinad &rarr; Cochin &rarr; Bengaluru</div>
+              </div>
               <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
                 <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">5N / 6D</span>
                 <a href="{base_path}/golden-chariot/itinerary" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
@@ -1336,7 +1350,10 @@ def generate_all_for_base(base_dir, base_path):
             </div>
 
             <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:12px">
-              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Glimpses of Karnataka</div>
+              <div>
+                <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Glimpses of Karnataka</div>
+                <div style="font-size:11px;color:#64748b;margin-top:2px;line-height:1.35">Bengaluru &rarr; Bandipur &rarr; Mysore &rarr; Hampi &rarr; Bengaluru</div>
+              </div>
               <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
                 <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">3N / 4D</span>
                 <a href="{base_path}/golden-chariot/itinerary" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
@@ -1344,10 +1361,6 @@ def generate_all_for_base(base_dir, base_path):
             </div>
           </div>
 
-          <ul class="facts">
-            <li><span>Duration</span><span>3N / 4D or 5N / 6D</span></li>
-            <li><span>Route</span><span>Bengaluru · Bandipur · Mysore · Hampi · Goa</span></li>
-          </ul>
           {get_card_links('golden-chariot')}
           <a class="btn btn-dark" href="{base_path}/golden-chariot">View Golden Chariot</a>
         </div>
