@@ -1134,9 +1134,23 @@ def generate_all_for_base(base_dir, base_path):
           <h3 style="margin-bottom:2px">Palace on Wheels</h3>
           <div class="sub" style="margin-bottom:12px">India's first luxury train, since 1982</div>
           <p>A week through the land of kings: forts, palaces, lakes and desert, ending at the Taj Mahal.</p>
+
+          <!-- Journeys List (Chardham Table Style) -->
+          <div class="card-journeys-list" style="margin-bottom:18px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#fff">
+            <div style="background:#f8fafc;padding:8px 14px;border-bottom:1px solid #e2e8f0;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px">
+              Curated Royal Circuit
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:12px">
+              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Classic Rajasthan &amp; Taj Mahal Circuit</div>
+              <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">7N / 8D</span>
+                <a href="{base_path}/palace-on-wheels/itinerary" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
+              </div>
+            </div>
+          </div>
+
           <ul class="facts">
-            <li><span>Duration</span><span>7 Nights / 8 Days</span></li>
-            <li><span>Route</span><span>Delhi · Jaipur · Ranthambore · Chittorgarh · Udaipur · Jaisalmer · Jodhpur · Bharatpur · Agra</span></li>
+            <li><span>Route</span><span>Delhi · Jaipur · Ranthambore · Udaipur · Jaisalmer · Jodhpur · Agra</span></li>
             <li><span>Best season</span><span>October to March</span></li>
           </ul>
           <div class="links">
@@ -1163,9 +1177,48 @@ def generate_all_for_base(base_dir, base_path):
           <h3 style="margin-bottom:2px">Maharajas' Express</h3>
           <div class="sub" style="margin-bottom:12px">4 journeys · 23 coaches · 4 cabin types</div>
           <p>The most varied train: pick a short 4-day trip or a full week through Rajasthan, Orchha, Khajuraho and Varanasi.</p>
+
+          <!-- Journeys List (Chardham Table Style) -->
+          <div class="card-journeys-list" style="margin-bottom:18px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#fff">
+            <div style="background:#f8fafc;padding:8px 14px;border-bottom:1px solid #e2e8f0;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px">
+              4 Curated Royal Journeys
+            </div>
+            
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:12px">
+              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">The Heritage of India</div>
+              <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">6N / 7D</span>
+                <a href="{base_path}/maharajas-express/the-heritage-of-india" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:12px">
+              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">The Indian Panorama</div>
+              <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">6N / 7D</span>
+                <a href="{base_path}/maharajas-express/the-indian-panorama" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:12px">
+              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">The Indian Splendour</div>
+              <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">6N / 7D</span>
+                <a href="{base_path}/maharajas-express/the-indian-splendour" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:12px">
+              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Treasures of India</div>
+              <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">3N / 4D</span>
+                <a href="{base_path}/maharajas-express/treasures-of-india" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
+              </div>
+            </div>
+          </div>
+
           <ul class="facts">
-            <li><span>Duration</span><span>3N / 4D or 6N / 7D</span></li>
-            <li><span>Journeys</span><span>Treasures of India · Indian Panorama · Indian Splendour · Heritage of India</span></li>
+            <li><span>Operating Routes</span><span>Delhi, Mumbai, Rajasthan, Agra, Varanasi</span></li>
             <li><span>Best season</span><span>October to April</span></li>
           </ul>
           <div class="links">
@@ -1192,9 +1245,40 @@ def generate_all_for_base(base_dir, base_path):
           <h3 style="margin-bottom:2px">Golden Chariot</h3>
           <div class="sub" style="margin-bottom:12px">South India's luxury train</div>
           <p>Mysore palaces, Hampi ruins, Bandipur wildlife and the beaches of Goa, all starting from Bengaluru.</p>
+
+          <!-- Journeys List (Chardham Table Style) -->
+          <div class="card-journeys-list" style="margin-bottom:18px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#fff">
+            <div style="background:#f8fafc;padding:8px 14px;border-bottom:1px solid #e2e8f0;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px">
+              3 Curated Southern Circuits
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:12px">
+              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Pride of Karnataka</div>
+              <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">5N / 6D</span>
+                <a href="{base_path}/golden-chariot/itinerary" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:12px">
+              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Jewels of South</div>
+              <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">5N / 6D</span>
+                <a href="{base_path}/golden-chariot/itinerary" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:12px">
+              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Glimpses of Karnataka</div>
+              <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">3N / 4D</span>
+                <a href="{base_path}/golden-chariot/itinerary" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
+              </div>
+            </div>
+          </div>
+
           <ul class="facts">
-            <li><span>Duration</span><span>3N / 4D or 5N / 6D</span></li>
-            <li><span>Journeys</span><span>Glimpses of Karnataka · Pride of Karnataka · Jewels of South</span></li>
+            <li><span>Starting Point</span><span>Bengaluru (Yeshwantpur)</span></li>
             <li><span>Best season</span><span>October to March</span></li>
           </ul>
           <div class="links">
@@ -1221,9 +1305,48 @@ def generate_all_for_base(base_dir, base_path):
           <h3 style="margin-bottom:2px">Deccan Odyssey</h3>
           <div class="sub" style="margin-bottom:12px">Six 7-night journeys</div>
           <p>Ajanta and Ellora caves, Goa, Udaipur, the Golden Triangle and even Tadoba tiger country, on one train.</p>
+
+          <!-- Journeys List (Chardham Table Style) -->
+          <div class="card-journeys-list" style="margin-bottom:18px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#fff">
+            <div style="background:#f8fafc;padding:8px 14px;border-bottom:1px solid #e2e8f0;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px">
+              6 Curated Western Circuits
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:12px">
+              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Maharashtra Splendour</div>
+              <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">7N / 8D</span>
+                <a href="{base_path}/deccan-odyssey/itinerary" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:12px">
+              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Indian Odyssey</div>
+              <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">7N / 8D</span>
+                <a href="{base_path}/deccan-odyssey/itinerary" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f1f5f9;gap:12px">
+              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Maharashtra Wild Trail</div>
+              <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">7N / 8D</span>
+                <a href="{base_path}/deccan-odyssey/itinerary" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:12px">
+              <div style="font-weight:600;font-size:13.5px;color:#0f172a;line-height:1.3">Cultural Odyssey &amp; More (3 Circuits)</div>
+              <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+                <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#d96b27;background:rgba(248,144,77,0.12);padding:3px 8px;border-radius:6px;white-space:nowrap">7N / 8D</span>
+                <a href="{base_path}/deccan-odyssey/itinerary" style="background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:6px;text-decoration:none">More</a>
+              </div>
+            </div>
+          </div>
+
           <ul class="facts">
-            <li><span>Duration</span><span>7 Nights / 8 Days</span></li>
-            <li><span>Journeys</span><span>Maharashtra Splendour · Wild Trail · Indian Odyssey · Indian Sojourn · Cultural Odyssey · Heritage Odyssey</span></li>
+            <li><span>Operating Hubs</span><span>Mumbai &amp; Delhi</span></li>
             <li><span>Best season</span><span>September to May</span></li>
           </ul>
           <div class="links">
