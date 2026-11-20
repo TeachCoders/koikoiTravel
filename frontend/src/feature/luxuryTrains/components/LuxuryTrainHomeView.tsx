@@ -266,13 +266,13 @@ export default function LuxuryTrainHomeView() {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-6">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <span className="inline-flex items-center gap-2 border border-white/30 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-5 text-white/90 bg-black/40 backdrop-blur-md">
             <span className="w-1.5 h-1.5 rounded-full bg-[#F8904D] shadow-[0_0_8px_#F8904D]"></span>
             <span>Curated Heritage Rail Journeys</span>
           </span>
 
-          <div className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-white max-w-3xl leading-[1.12] mb-4 drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
+          <div className="text-3xl sm:text-5xl lg:text-6xl font-outfit font-bold text-white max-w-4xl leading-[1.1] mb-4 drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]">
             <span className="block">Travel India, </span>
             <span className="block">like Royalty</span>
           </div>
@@ -292,7 +292,7 @@ export default function LuxuryTrainHomeView() {
             <QuoteModal>
               <button
                 type="button"
-                className="inline-block px-6 py-3 rounded-full bg-white hover:bg-slate-100 text-[#0f2a43] font-bold text-sm sm:text-base transition-all duration-200 cursor-pointer shadow-md hover:scale-105 active:scale-95"
+                className="inline-block px-6 py-3 rounded-full bg-white hover:bg-slate-100 text-[#0f172a] font-bold text-sm sm:text-base transition-all duration-200 cursor-pointer shadow-md hover:scale-105 active:scale-95"
               >
                 Plan My Journey
               </button>
@@ -311,8 +311,8 @@ export default function LuxuryTrainHomeView() {
       </section>
 
       {/* DEDICATED SEO & EDITORIAL SECTION (BELOW HERO) */}
-      <section className="bg-[#faf8f5] border-y border-[#ede8e1] py-14 sm:py-16 md:py-20 relative">
-        <div className="max-w-[1240px] mx-auto px-5 sm:px-8">
+      <section className="bg-[#faf8f5] border-y border-[#eee7de] py-14 sm:py-16 md:py-20 relative">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             {/* Left: Text & Editorial narrative */}
             <div className="lg:col-span-7">
@@ -321,7 +321,7 @@ export default function LuxuryTrainHomeView() {
                 <span>Bespoke Heritage Rail Expeditions</span>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-[#0f2a43] tracking-tight leading-tight mb-3">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-outfit font-bold text-[#0f172a] tracking-tight leading-tight mb-3">
                 <span className="text-[#F8904D]">Luxury Train Journeys in India</span>: Handcrafted Royal Expeditions
               </h1>
 
@@ -334,8 +334,8 @@ export default function LuxuryTrainHomeView() {
                 Stepping aboard one of India&apos;s legendary luxury trains is a journey back to the golden era of rail travel. Far beyond ordinary transit, each voyage is an immersive five-star sanctuary where panoramic observation windows frame Rajput hill forts, untamed wildlife sanctuaries, and golden desert dunes—accompanied by white-gloved butler service, fine dining salons, and curated private excursions.
               </p>
 
-              <div className="bg-[#c59b27]/10 border border-[#c59b27]/30 rounded-xl p-4 sm:p-5 mb-5 text-xs sm:text-sm text-[#553f0c] leading-relaxed">
-                <strong className="text-[#0f2a43] block font-bold mb-1 text-sm sm:text-base">
+              <div className="bg-[#F8904D]/5 border border-[#F8904D]/25 rounded-xl p-4 sm:p-5 mb-5 text-xs sm:text-sm text-[#78350f] leading-relaxed">
+                <strong className="text-[#0f172a] block font-bold mb-1 text-sm sm:text-base">
                   Independent Luxury Travel Curator &amp; Advisory Notice
                 </strong>
                 KoiKoi Travel is an independent boutique luxury tour designer. India&apos;s four luxury trains are operated by their respective state rail corporations and tourism boards (IRCTC, RTDC, KSTDC, and MTDC). While train operators provide only station-to-station rail tickets, KoiKoi Travel crafts the complete, seamless vacation around your train voyage: securing your preferred cabin class, managing departure logistics, providing private chauffeured luxury transfers, arranging handpicked 5-star heritage palace stays in Delhi and Mumbai, and designing private guided pre- and post-rail excursions.
@@ -402,7 +402,7 @@ export default function LuxuryTrainHomeView() {
                 {/* Decorative offset frame */}
                 <div
                   aria-hidden="true"
-                  className="absolute inset-0 translate-x-3 translate-y-3 rounded-2xl bg-gradient-to-br from-[#F8904D] to-[#c59b27] shadow-lg transition-transform duration-300 group-hover:translate-x-4 group-hover:translate-y-4"
+                  className="absolute inset-0 translate-x-3 translate-y-3 rounded-2xl bg-gradient-to-br from-[#F8904D] to-[#e07b3b] shadow-lg transition-transform duration-300 group-hover:translate-x-4 group-hover:translate-y-4"
                 />
 
                 {/* Main Card */}
@@ -416,13 +416,13 @@ export default function LuxuryTrainHomeView() {
                       className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/30" />
-                    <span className="absolute top-4 left-4 inline-block bg-[#0f2a43]/85 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                    <span className="absolute top-4 left-4 inline-block bg-[#0f172a]/85 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                       THE KOIKOI CURATOR PROMISE
                     </span>
                   </div>
 
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-[#0f2a43] mb-4">
+                    <h3 className="text-lg font-bold text-[#0f172a] font-outfit mb-4">
                       Why Plan Your Rail Journey With Us
                     </h3>
                     <ul className="space-y-3.5 text-xs sm:text-sm text-slate-600">
@@ -472,13 +472,14 @@ export default function LuxuryTrainHomeView() {
       </section>
 
       {/* 2. CHOOSE YOUR TRAIN - 4 CARDS */}
-      <section id="trains" className="py-16 sm:py-20 bg-[#f6f3ee]">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-6">
+      <section id="trains" className="py-16 sm:py-20 bg-white">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className="max-w-2xl mx-auto text-center mb-12">
-            <div className="text-xs font-bold uppercase tracking-widest text-[#a87c28] mb-2">
-              Choose Your Train
+            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#0f172a] mb-2">
+              <span className="w-2 h-2 rounded-full bg-[#F8904D]"></span>
+              <span>Choose Your Train</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#0f2a43] mb-3">
+            <h2 className="text-3xl sm:text-4xl font-outfit font-bold text-[#0f172a] mb-3">
               India&apos;s Luxury Trains
             </h2>
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -487,12 +488,12 @@ export default function LuxuryTrainHomeView() {
           </div>
 
           {/* Grid of 4 Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {trains.map((train) => (
               <article
                 key={train.id}
                 id={train.id}
-                className="bg-white rounded-[14px] overflow-hidden shadow-[0_8px_28px_rgba(15,42,67,0.08)] border border-[#e6e1d8] flex flex-col justify-between"
+                className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-[#eee7de] flex flex-col justify-between"
               >
                 {/* Photo / Header Banner */}
                 <div
@@ -503,10 +504,10 @@ export default function LuxuryTrainHomeView() {
                     backgroundSize: "cover",
                   }}
                 >
-                  <span className="bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium tracking-wide text-white">
+                  <span className="bg-black/60 backdrop-blur-sm px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide text-white">
                     {train.badge}
                   </span>
-                  <div className="absolute top-5 right-5 w-[72px] h-[72px] bg-white rounded-full overflow-hidden flex items-center justify-center p-[5px] border-[2.5px] border-[#c59b27] shadow-[0_6px_18px_rgba(0,0,0,0.35)] z-10 transition-transform duration-200 hover:scale-105">
+                  <div className="absolute top-5 right-5 w-[72px] h-[72px] bg-white rounded-full overflow-hidden flex items-center justify-center p-[5px] border-[2.5px] border-[#F8904D] shadow-[0_6px_18px_rgba(0,0,0,0.25)] z-10 transition-transform duration-200 hover:scale-105">
                     <img
                       src={`/images/luxury-trains/${train.slug}/logo.png`}
                       alt={`${train.name} Logo`}
@@ -516,27 +517,27 @@ export default function LuxuryTrainHomeView() {
                 </div>
 
                 {/* Body Content */}
-                <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
+                <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-serif text-2xl font-bold text-[#0f2a43] mb-0.5">
+                    <h3 className="font-outfit text-2xl font-bold text-[#0f172a] mb-1">
                       {train.name}
                     </h3>
-                    <div className="text-[#a87c28] font-semibold text-xs sm:text-sm mb-3">
+                    <div className="text-[#F8904D] font-semibold text-xs sm:text-sm uppercase tracking-wide mb-3">
                       {train.subtitle}
                     </div>
-                    <p className="text-slate-600 text-sm leading-relaxed mb-4">
+                    <p className="text-slate-600 text-sm leading-relaxed mb-5">
                       {train.description}
                     </p>
 
                     {/* Facts List */}
-                    <ul className="border-t border-[#e6e1d8] mb-5">
+                    <ul className="border-t border-[#eee7de] mb-6">
                       {train.facts.map((fact, fIdx) => (
                         <li
                           key={fIdx}
-                          className="flex justify-between gap-4 py-2.5 border-b border-[#e6e1d8] text-xs sm:text-sm"
+                          className="flex justify-between gap-4 py-2.5 border-b border-[#eee7de] text-xs sm:text-sm"
                         >
                           <span className="text-slate-500">{fact.label}</span>
-                          <span className="text-right font-medium text-slate-800 max-w-[65%]">
+                          <span className="text-right font-semibold text-[#0f172a] max-w-[65%]">
                             {fact.value}
                           </span>
                         </li>
@@ -544,12 +545,12 @@ export default function LuxuryTrainHomeView() {
                     </ul>
 
                     {/* Subpage Quick Links */}
-                    <div className="grid grid-cols-3 gap-2 mb-5">
+                    <div className="grid grid-cols-3 gap-2 mb-6">
                       {train.sublinks.map((link, lIdx) => (
                         <Link
                           key={lIdx}
                           href={link.href}
-                          className="w-full block text-center text-xs font-semibold py-2 px-1 border border-[#e6e1d8] rounded-lg text-[#0f2a43] hover:bg-[#0f2a43] hover:text-white hover:border-[#0f2a43] transition-all cursor-pointer"
+                          className="w-full block text-center text-xs font-semibold py-2.5 px-1 border border-[#eee7de] rounded-lg text-[#0f172a] bg-[#faf8f5] hover:bg-[#F8904D] hover:text-white hover:border-[#F8904D] transition-all cursor-pointer font-outfit"
                         >
                           {link.label}
                         </Link>
@@ -560,7 +561,7 @@ export default function LuxuryTrainHomeView() {
                   {/* Main Train CTA */}
                   <Link
                     href={`/luxury-trains/${train.slug}`}
-                    className="w-full block text-center py-3 px-6 rounded-full bg-[#0f2a43] hover:bg-[#091b2c] text-white font-semibold text-sm transition-all duration-200 cursor-pointer shadow-sm"
+                    className="w-full block text-center py-3.5 px-6 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-bold text-sm transition-all duration-200 cursor-pointer shadow-md hover:scale-[1.02] active:scale-95 font-outfit"
                   >
                     View {train.name}
                   </Link>
@@ -572,13 +573,14 @@ export default function LuxuryTrainHomeView() {
       </section>
 
       {/* 3. QUICK COMPARE TABLE */}
-      <section id="compare" className="py-16 sm:py-20 bg-white">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-6">
+      <section id="compare" className="py-16 sm:py-20 bg-[#faf8f5] border-y border-[#eee7de]">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className="max-w-2xl mb-10">
-            <div className="text-xs font-bold uppercase tracking-widest text-[#a87c28] mb-2">
-              Quick Compare
+            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#0f172a] mb-2">
+              <span className="w-2 h-2 rounded-full bg-[#F8904D]"></span>
+              <span>Quick Compare</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#0f2a43] mb-3">
+            <h2 className="text-3xl sm:text-4xl font-outfit font-bold text-[#0f172a] mb-3">
               Which Train Is Right for You?
             </h2>
             <p className="text-slate-600 text-sm sm:text-base">
@@ -587,22 +589,22 @@ export default function LuxuryTrainHomeView() {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto rounded-[14px] shadow-[0_8px_28px_rgba(15,42,67,0.08)] bg-white border border-[#e6e1d8]">
+          <div className="overflow-x-auto rounded-2xl shadow-sm bg-white border border-[#eee7de]">
             <table className="w-full border-collapse min-w-[760px] text-sm text-left">
               <thead>
-                <tr className="bg-[#0f2a43] text-white text-xs uppercase tracking-wider">
-                  <th className="py-3.5 px-5 font-semibold">Train</th>
-                  <th className="py-3.5 px-5 font-semibold">Region</th>
-                  <th className="py-3.5 px-5 font-semibold">Journeys</th>
-                  <th className="py-3.5 px-5 font-semibold">Duration</th>
-                  <th className="py-3.5 px-5 font-semibold">Season</th>
-                  <th className="py-3.5 px-5 font-semibold">Starts from</th>
+                <tr className="bg-[#0f172a] text-white text-xs uppercase tracking-wider font-outfit">
+                  <th className="py-3.5 px-5 font-bold">Train</th>
+                  <th className="py-3.5 px-5 font-bold">Region</th>
+                  <th className="py-3.5 px-5 font-bold">Journeys</th>
+                  <th className="py-3.5 px-5 font-bold">Duration</th>
+                  <th className="py-3.5 px-5 font-bold">Season</th>
+                  <th className="py-3.5 px-5 font-bold">Starts from</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#e6e1d8]">
+              <tbody className="divide-y divide-[#eee7de]">
                 {compareRows.map((row, idx) => (
                   <tr key={idx} className="hover:bg-slate-50 transition-colors">
-                    <td className="py-4 px-5 font-bold text-[#0f2a43]">{row.train}</td>
+                    <td className="py-4 px-5 font-bold text-[#0f172a]">{row.train}</td>
                     <td className="py-4 px-5 text-slate-700">{row.region}</td>
                     <td className="py-4 px-5 text-slate-700">{row.journeys}</td>
                     <td className="py-4 px-5 text-slate-700 whitespace-nowrap">{row.duration}</td>
@@ -617,13 +619,14 @@ export default function LuxuryTrainHomeView() {
       </section>
 
       {/* 4. WHY KOIKOI TRAVEL */}
-      <section className="py-16 sm:py-20 bg-[#f6f3ee]">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-6">
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className="max-w-2xl mb-10">
-            <div className="text-xs font-bold uppercase tracking-widest text-[#a87c28] mb-2">
-              Why KoiKoi Travel
+            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#0f172a] mb-2">
+              <span className="w-2 h-2 rounded-full bg-[#F8904D]"></span>
+              <span>Why KoiKoi Travel</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#0f2a43] mb-3">
+            <h2 className="text-3xl sm:text-4xl font-outfit font-bold text-[#0f172a] mb-3">
               We Plan It Like It&apos;s Our Own Trip
             </h2>
             <p className="text-slate-600 text-sm sm:text-base">
@@ -635,7 +638,7 @@ export default function LuxuryTrainHomeView() {
             {whyChooseUs.map((card, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-[14px] border border-[#e6e1d8] overflow-hidden pb-6 shadow-sm hover:shadow-md transition-shadow"
+                className="bg-white rounded-2xl border border-[#eee7de] overflow-hidden pb-6 shadow-xs hover:shadow-lg transition-all duration-300"
               >
                 <div className="w-full h-44 relative bg-slate-200">
                   <Image
@@ -647,7 +650,7 @@ export default function LuxuryTrainHomeView() {
                   />
                 </div>
                 <div className="p-5">
-                  <h3 className="font-serif text-lg font-bold text-[#0f2a43] mb-2">
+                  <h3 className="font-outfit text-lg font-bold text-[#0f172a] mb-2">
                     {card.title}
                   </h3>
                   <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
@@ -661,13 +664,14 @@ export default function LuxuryTrainHomeView() {
       </section>
 
       {/* 5. HOW IT WORKS (3 SIMPLE STEPS) */}
-      <section className="py-16 sm:py-20 bg-[#0f2a43] text-white">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-6">
+      <section className="py-16 sm:py-20 bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-white">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className="max-w-2xl mb-12">
-            <div className="text-xs font-bold uppercase tracking-widest text-[#c9973b] mb-2">
-              How It Works
+            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-300 mb-2">
+              <span className="w-2 h-2 rounded-full bg-[#F8904D]"></span>
+              <span>How It Works</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-3">
+            <h2 className="text-3xl sm:text-4xl font-outfit font-bold text-white mb-3">
               3 Simple Steps
             </h2>
             <p className="text-slate-300 text-sm sm:text-base">
@@ -679,12 +683,12 @@ export default function LuxuryTrainHomeView() {
             {steps.map((step, idx) => (
               <div
                 key={idx}
-                className="border border-white/20 rounded-[14px] p-7 bg-white/5 backdrop-blur-sm"
+                className="border border-white/15 rounded-2xl p-7 bg-white/5 backdrop-blur-sm"
               >
-                <div className="font-serif text-4xl text-[#c9973b] leading-none mb-3 font-bold">
+                <div className="font-outfit text-4xl text-[#F8904D] leading-none mb-3 font-extrabold">
                   {step.num}
                 </div>
-                <h3 className="text-xl font-serif font-bold text-white mb-2">
+                <h3 className="text-xl font-outfit font-bold text-white mb-2">
                   {step.title}
                 </h3>
                 <p className="text-slate-300 text-sm leading-relaxed">
@@ -698,28 +702,29 @@ export default function LuxuryTrainHomeView() {
 
       {/* 6. FAQS */}
       <section className="py-16 sm:py-20 bg-white">
-        <div className="max-w-[820px] mx-auto px-5 sm:px-6">
+        <div className="max-w-[1000px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className="text-center mb-10">
-            <div className="text-xs font-bold uppercase tracking-widest text-[#a87c28] mb-2">
-              FAQs
+            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#0f172a] mb-2">
+              <span className="w-2 h-2 rounded-full bg-[#F8904D]"></span>
+              <span>FAQs</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#0f2a43]">
+            <h2 className="text-3xl sm:text-4xl font-outfit font-bold text-[#0f172a]">
               Luxury Train Questions
             </h2>
           </div>
 
-          <div className="divide-y divide-[#e6e1d8]">
+          <div className="divide-y divide-[#eee7de]">
             {faqs.map((faq, idx) => {
               const isOpen = openFaq === idx;
               return (
-                <div key={idx} className="py-4.5">
+                <div key={idx} className="py-5">
                   <button
                     type="button"
                     onClick={() => toggleFaq(idx)}
-                    className="w-full text-left flex items-center justify-between gap-4 font-semibold text-base sm:text-lg text-[#0f2a43] cursor-pointer hover:text-[#a87c28] transition-colors"
+                    className="w-full text-left flex items-center justify-between gap-4 font-bold text-base sm:text-lg text-[#0f172a] cursor-pointer hover:text-[#F8904D] transition-colors font-outfit"
                   >
                     <span>{faq.question}</span>
-                    <span className="text-2xl text-[#a87c28] shrink-0 font-light leading-none">
+                    <span className="text-2xl text-[#F8904D] shrink-0 font-light leading-none">
                       {isOpen ? "−" : "+"}
                     </span>
                   </button>
@@ -736,19 +741,19 @@ export default function LuxuryTrainHomeView() {
       </section>
 
       {/* 7. CTA BAND */}
-      <section className="py-16 sm:py-20 bg-gradient-to-r from-[#0f2a43] to-[#1d4468] text-white text-center">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-6">
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-3">
+      <section className="py-16 sm:py-20 bg-gradient-to-r from-[#0f172a] to-[#1e293b] text-white text-center">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
+          <h2 className="text-3xl sm:text-4xl font-outfit font-bold text-white mb-3">
             Ready to Ride the Rails Like a Maharaja?
           </h2>
           <p className="max-w-xl mx-auto text-sm sm:text-base text-slate-200 mb-7">
             Share your dates and we will send your custom luxury train plan on WhatsApp and email within 12–24 hours.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-3.5">
             <QuoteModal>
               <button
                 type="button"
-                className="inline-block px-7 py-3.5 rounded-full bg-[#c9973b] hover:bg-[#a87c28] text-white font-semibold text-sm sm:text-base transition-all duration-200 shadow-md cursor-pointer"
+                className="inline-block px-7 py-3.5 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-bold text-sm sm:text-base transition-all duration-200 shadow-md cursor-pointer hover:scale-105 active:scale-95 font-outfit"
               >
                 Get My Free Quote
               </button>
@@ -757,7 +762,7 @@ export default function LuxuryTrainHomeView() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm sm:text-base transition-all shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm sm:text-base transition-all shadow-md hover:scale-105 active:scale-95 font-outfit"
             >
               <MessageCircle className="w-4 h-4" />
               <span>Chat on WhatsApp</span>
