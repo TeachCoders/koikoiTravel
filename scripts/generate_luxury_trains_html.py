@@ -103,39 +103,31 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 .hero-dot-btn span{display:block;height:7px;width:10px;border-radius:999px;background:rgba(255,255,255,.6);transition:all .3s ease}
 .hero-dot-btn.active span{width:30px;background:#F8904D}
 
-/* Editorial / SEO Overview Section (Below Hero - KoiKoi Style) */
+/* Editorial / SEO Overview Section (Below Hero - Full Width KoiKoi Style) */
 .editorial-sec{background:#faf8f5;border-top:1px solid #ede8e1;border-bottom:1px solid #ede8e1;padding:64px 0;position:relative}
 @media(max-width:768px){.editorial-sec{padding:42px 0}}
-.editorial-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:48px;align-items:center}
-@media(max-width:992px){.editorial-grid{grid-template-columns:1fr;gap:36px}}
+.editorial-full{width:100%}
 
 .editorial-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:999px;background:rgba(248,144,77,.12);border:1px solid rgba(248,144,77,.35);color:#d96b27;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
-.editorial-sec h1{font-family:'Playfair Display',serif;font-size:clamp(26px,3.2vw,40px);font-weight:700;color:#0f2a43;line-height:1.22;margin-bottom:12px;letter-spacing:-.01em}
+.editorial-sec h1{font-family:'Outfit',sans-serif;font-size:clamp(28px,3vw,42px);font-weight:700;color:#0f172a;line-height:1.25;margin-bottom:12px;letter-spacing:-.01em}
 .editorial-sec h1 span{color:#F8904D}
-.editorial-sub{font-size:clamp(16px,1.6vw,20px);font-weight:600;color:#1e293b;margin-bottom:16px;line-height:1.4}
+.editorial-sub{font-size:clamp(16px,1.5vw,20px);font-weight:600;color:#334155;margin-bottom:18px;line-height:1.45}
 .editorial-sub span{color:#F8904D}
-.editorial-p{color:#475569;font-size:15px;line-height:1.75;margin-bottom:16px}
-.editorial-train-points{list-style:none;padding:0;margin:16px 0 20px}
-.editorial-train-points li{position:relative;padding-left:22px;margin-bottom:12px;font-size:14px;line-height:1.65;color:#475569}
-.editorial-train-points li::before{content:'•';position:absolute;left:6px;top:0;color:#F8904D;font-size:18px;line-height:1}
-.editorial-train-points li strong{color:#0f2a43}
-.editorial-highlight{border-left:4px solid #F8904D;background:#fff;padding:14px 18px;border-radius:0 12px 12px 0;margin:18px 0;box-shadow:0 2px 10px rgba(0,0,0,.03);font-size:14px;color:#334155;line-height:1.65;font-style:italic}
-.editorial-notice{background:rgba(197,155,39,.08);border:1px solid rgba(197,155,39,.35);border-radius:10px;padding:14px 16px;margin:18px 0;font-size:13px;color:#553f0c;line-height:1.65}
-.editorial-notice strong{color:#0f2a43;display:block;margin-bottom:4px;font-size:13.5px}
-.editorial-ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px}
+.editorial-p{color:#475569;font-size:15px;line-height:1.8;margin-bottom:16px}
+.editorial-train-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin:18px 0 24px}
+@media(max-width:768px){.editorial-train-cards{grid-template-columns:1fr}}
+.editorial-train-card{background:#ffffff;border:1px solid #eee7de;border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.03);transition:transform .2s ease,box-shadow .2s ease}
+.editorial-train-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.06)}
+.editorial-train-card-title{font-family:'Outfit',sans-serif;font-size:16.5px;font-weight:700;color:#0f172a;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px}
+.editorial-train-card-title span{font-size:13px;font-weight:600;color:#F8904D}
+.editorial-train-card p{font-size:13.5px;color:#475569;line-height:1.65;margin-bottom:6px}
+.editorial-train-card p:last-child{margin-bottom:0}
+.editorial-train-card p strong{color:#0f172a}
 
-/* Visual Media / Feature Card on Right Side */
-.editorial-card{position:relative}
-.editorial-card-frame{position:absolute;inset:0;transform:translate(12px,12px);border-radius:18px;background:linear-gradient(135deg,#F8904D 0%,#c59b27 100%);z-index:0;transition:.3s}
-.editorial-card-inner{position:relative;z-index:1;background:#fff;border-radius:18px;overflow:hidden;border:2px solid #fff;box-shadow:0 16px 40px rgba(15,42,67,.12)}
-.editorial-card-img{height:250px;background-size:cover;background-position:center;position:relative}
-.editorial-card-badge{position:absolute;top:14px;left:14px;background:rgba(15,42,67,.85);backdrop-filter:blur(6px);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:.05em}
-.editorial-card-body{padding:24px}
-.editorial-card-title{font-size:18px;font-weight:700;color:#0f2a43;margin-bottom:14px}
-.editorial-checklist{list-style:none;padding:0;margin:0}
-.editorial-checklist li{display:flex;align-items:flex-start;gap:10px;padding:9px 0;font-size:13.5px;color:#334155;line-height:1.5;border-bottom:1px solid #f1f5f9}
-.editorial-checklist li:last-child{border-bottom:none}
-.editorial-checklist li .icon-chk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#eaf7ee;color:#16a34a;font-weight:bold;font-size:12px;flex-shrink:0;margin-top:2px}
+.editorial-highlight{border-left:4px solid #F8904D;background:#fff;padding:16px 22px;border-radius:0 12px 12px 0;margin:22px 0;box-shadow:0 2px 12px rgba(0,0,0,.03);font-size:14.5px;color:#1e293b;line-height:1.7;font-style:italic}
+.editorial-notice{background:#faf5eb;border:1px solid #ebd9b8;border-radius:12px;padding:18px 22px;margin:22px 0;font-size:14px;color:#553f0c;line-height:1.75}
+.editorial-notice strong{color:#0f172a;display:block;margin-bottom:4px;font-size:14px}
+.editorial-ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px}
 
 /* sub-nav tabs for train pages */
 .train-subnav{background:#0f172a;color:#fff;border-bottom:1px solid rgba(255,255,255,.12);position:sticky;top:72px;z-index:40}
@@ -199,6 +191,21 @@ th{background:#0f172a;color:#fff;text-align:left;padding:14px 18px;font-family:'
 td{padding:14px 18px;border-bottom:1px solid #eee7de;vertical-align:top}
 td:first-child{font-weight:600;color:#0f172a}
 tr:last-child td{border-bottom:0}
+.table-link-btn{display:inline-flex;align-items:center;gap:4px;color:#F8904D;font-weight:700;font-size:13px;text-decoration:none;transition:.2s}
+.table-link-btn:hover{color:#e07b3b;text-decoration:underline}
+
+.departure-cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:24px}
+@media(max-width:960px){.departure-cards-grid{grid-template-columns:1fr}}
+.dep-card{background:#fff;border:1px solid #eee7de;border-radius:16px;padding:22px;box-shadow:0 4px 18px rgba(0,0,0,.04);display:flex;flex-direction:column}
+.dep-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f1f5f9;gap:10px;flex-wrap:wrap}
+.dep-card-head h3{font-family:'Outfit',sans-serif;font-size:17.5px;font-weight:700;color:#0f172a;margin:0}
+.dep-card-badge{font-size:11.5px;font-weight:600;color:#F8904D;background:rgba(248,144,77,.1);padding:4px 10px;border-radius:999px;border:1px solid rgba(248,144,77,.25)}
+.dep-card-list{list-style:none;padding:0;margin:0 0 16px;font-size:13px;color:#475569}
+.dep-card-list li{margin-bottom:10px;line-height:1.6;padding-bottom:10px;border-bottom:1px dashed #f1f5f9}
+.dep-card-list li:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.dep-card-list li strong{color:#0f172a;display:block;margin-bottom:2px}
+.dep-card-footer{margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid #eee7de;gap:8px;flex-wrap:wrap}
+.dep-card-footer a{font-size:13px;font-weight:600;font-family:'Outfit',sans-serif}
 
 /* itinerary day cards */
 .day-card{background:#fff;border:1px solid #eee7de;border-radius:16px;padding:26px;margin-bottom:20px;box-shadow:0 4px 14px rgba(0,0,0,.03)}
@@ -538,89 +545,68 @@ def generate_all_for_base(base_dir, base_path):
   </div>
 </section>
 
-<!-- DEDICATED SEO & EDITORIAL SECTION (BELOW HERO) -->
+<!-- DEDICATED OVERVIEW SECTION (SIMPLE & EASY) -->
 <section class="editorial-sec">
   <div class="wrap">
-    <div class="editorial-grid">
-      <!-- Left: Story & Expert Overview -->
-      <div>
-        <div class="editorial-tag">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-          <span>Bespoke Heritage Rail Expeditions</span>
+    <div class="editorial-full">
+      <div class="editorial-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        <span>Independent Travel Curator</span>
+      </div>
+
+      <h1><span>Luxury Train Journeys in India</span>: Royal Rail Holidays</h1>
+
+      <p class="editorial-sub">Explore India aboard 4 iconic luxury trains &mdash; with private airport transfers, 5-star heritage hotels, and personalized trip planning by <span>KoiKoi Travel</span>.</p>
+
+      <p class="editorial-p">A luxury train journey is the most relaxing and royal way to experience India. Instead of repacking bags and rushing for flights every morning, your 5-star private hotel travels with you on rails. Enjoy private ensuite cabins, gourmet dining cars, panoramic lounge bars, and daily guided sightseeing to world-famous palaces, desert dunes, and tiger reserves.</p>
+
+      <!-- Transparent Advisory Notice -->
+      <div class="editorial-notice">
+        <strong>Important Advisory &middot; Independent Booking &amp; Tour Support</strong>
+        India&apos;s luxury trains are government-operated by state rail corporations and tourism boards (IRCTC, RTDC, KSTDC, and MTDC). While train tickets only cover the train journey from station to station, <strong>KoiKoi Travel designs your entire vacation</strong>: booking your ideal cabin, reserving pre- and post-tour 5-star heritage stays in Delhi or Mumbai, providing private chauffeured luxury airport transfers, and giving you dedicated 24/7 personal WhatsApp support throughout your holiday.
+      </div>
+
+      <!-- Quick 4 Trains Guide -->
+      <h2 style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:700;color:#0f172a;margin:28px 0 16px">Which Luxury Train Is Best for You?</h2>
+
+      <div class="editorial-train-cards">
+        <div class="editorial-train-card">
+          <div class="editorial-train-card-title">1. Palace on Wheels <span>7 Nights / 8 Days</span></div>
+          <p><strong>Route:</strong> Delhi &rarr; Jaipur &rarr; Ranthambore (Tiger Safari) &rarr; Udaipur &rarr; Jaisalmer &rarr; Jodhpur &rarr; Agra (Taj Mahal) &rarr; Delhi</p>
+          <p><strong>Best for:</strong> First-time travelers who want the classic royal Rajasthan, desert dunes, and Taj Mahal experience.</p>
         </div>
 
-        <h1><span>Luxury Train Journeys in India</span>: Handcrafted Royal Expeditions</h1>
-
-        <p class="editorial-sub">Experience the Subcontinent Aboard India's 4 Iconic Palaces on Wheels, Planned by <span>Independent Travel Specialists</span></p>
-
-        <p class="editorial-p">Stepping aboard one of India's legendary luxury trains is a journey back to the golden era of rail travel. Far beyond ordinary transit, each voyage is an immersive five-star sanctuary where panoramic observation windows frame Rajput hill forts, untamed wildlife sanctuaries, and golden desert dunes—accompanied by white-gloved butler service, fine dining salons, and curated private excursions.</p>
-
-        <div class="editorial-notice">
-          <strong>Independent Luxury Travel Curator &amp; Advisory Notice</strong>
-          KoiKoi Travel is an independent bespoke luxury tour designer. India's four luxury trains are operated by their respective state rail corporations and tourism boards (IRCTC, RTDC, KSTDC, and MTDC). While train operators provide only station-to-station rail tickets, KoiKoi Travel crafts the complete, seamless vacation around your train voyage: securing your preferred cabin class, managing departure logistics, providing private chauffeured luxury transfers, arranging handpicked 5-star heritage palace stays in Delhi and Mumbai, and designing private guided pre- and post-rail excursions.
+        <div class="editorial-train-card">
+          <div class="editorial-train-card-title">2. Maharajas&apos; Express <span>3 Nights to 6 Nights</span></div>
+          <p><strong>Route:</strong> 4 flexible circuits across Rajasthan, Agra, Khajuraho temples, and the sacred river ghats of Varanasi.</p>
+          <p><strong>Best for:</strong> Travelers looking for highest-tier modern luxury, spacious suites, and flexible shorter 4-day or 7-day trips.</p>
         </div>
 
-        <p class="editorial-p">Choosing between India's four legendary trains depends on your travel season, preferred pace, and the regions you wish to discover:</p>
-
-        <ul class="editorial-train-points">
-          <li>
-            <strong>Palace on Wheels (7 Nights / 8 Days)</strong>: India's original luxury train (operating since 1982). A classic circuit through the royal heart of Rajasthan—Jaipur's Pink City, Ranthambore tiger safari, Chittorgarh fort, Udaipur's lakes, Jaisalmer's Thar desert dunes, and Jodhpur—culminating at Agra's Taj Mahal. Ideal for first-time visitors seeking timeless Rajputana romance.
-          </li>
-          <li>
-            <strong>Maharajas' Express (3 to 6 Nights)</strong>: India's most modern and opulent luxury train, featuring pneumatic suspension, twin fine-dining restaurants (Mayur Mahal &amp; Rang Mahal), and Presidential Suites spanning entire carriages. Offers four distinct routes connecting Delhi, Agra, and Rajasthan with the temple carvings of Khajuraho and the sacred ghats of Varanasi.
-          </li>
-          <li>
-            <strong>The Golden Chariot (3 to 5 Nights)</strong>: South India's premier luxury train gliding from Bengaluru through the boulder-strewn UNESCO World Heritage ruins of Hampi, Mysore's ornate palaces, Bandipur tiger reserve, and the sunlit beaches of Goa. Best for travelers seeking southern architecture, culture, and nature.
-          </li>
-          <li>
-            <strong>Deccan Odyssey (7 Nights / 8 Days)</strong>: The royal blue train of Western India, navigating Maharashtra, Gujarat, and Rajasthan. Highlights include the awe-inspiring rock-cut UNESCO caves of Ajanta and Ellora, Nashik's vineyard valleys, and vibrant coastal heritage.
-          </li>
-        </ul>
-
-        <div class="editorial-highlight">
-          "A train ticket gets you between stations. A handcrafted journey with KoiKoi Travel ensures you are met at the aircraft door, chauffeured in private luxury, housed in legendary palace hotels, and supported by a dedicated 24/7 personal trip manager throughout India."
+        <div class="editorial-train-card">
+          <div class="editorial-train-card-title">3. The Golden Chariot <span>3 Nights to 5 Nights</span></div>
+          <p><strong>Route:</strong> Bengaluru &rarr; Bandipur Safari &rarr; Mysore Palaces &rarr; Hampi UNESCO Ruins &rarr; Goa Beaches</p>
+          <p><strong>Best for:</strong> Travelers wanting to discover South India&apos;s ancient temples, rich nature, and tropical beaches.</p>
         </div>
 
-        <div class="editorial-ctas">
-          <a class="btn-koikoi-orange" href="#trains">
-            <span>Explore the 4 Trains Below</span>
-            <span>&darr;</span>
-          </a>
-          <a class="btn-koikoi-white" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20would%20like%20expert%20guidance%20on%20choosing%20the%20right%20luxury%20train%20in%20India." target="_blank" rel="noopener">
-            <span>Speak with a Rail Specialist</span>
-          </a>
+        <div class="editorial-train-card">
+          <div class="editorial-train-card-title">4. Deccan Odyssey <span>7 Nights / 8 Days</span></div>
+          <p><strong>Route:</strong> 6 distinct journeys through Maharashtra, Gujarat, and Rajasthan, including Ajanta &amp; Ellora caves and Nashik wine country.</p>
+          <p><strong>Best for:</strong> History and art lovers who want to explore Western India&apos;s world-famous cave architecture.</p>
         </div>
       </div>
 
-      <!-- Right: Visual Curator & Commitment Card -->
-      <div class="editorial-card">
-        <div class="editorial-card-frame"></div>
-        <div class="editorial-card-inner">
-          <div class="editorial-card-img" style="background-image:url('/images/luxury-trains/maharajas-express/dining-pink.jpg')">
-            <span class="editorial-card-badge">THE KOIKOI CURATOR PROMISE</span>
-          </div>
-          <div class="editorial-card-body">
-            <h3 class="editorial-card-title">Why Plan Your Rail Journey With Us</h3>
-            <ul class="editorial-checklist">
-              <li>
-                <span class="icon-chk">&#10003;</span>
-                <div><strong>Impartial Route &amp; Cabin Guidance:</strong> Unbiased advice on train seasons (October to April), routes, and cabin layouts (Deluxe vs Junior Suite vs Presidential Suite).</div>
-              </li>
-              <li>
-                <span class="icon-chk">&#10003;</span>
-                <div><strong>Bespoke Pre &amp; Post Extensions:</strong> Tailored Golden Triangle tours, private chauffeured Mercedes/Innova Crysta cars, and airport VIP meet-and-greets.</div>
-              </li>
-              <li>
-                <span class="icon-chk">&#10003;</span>
-                <div><strong>Handpicked 5-Star Heritage Stays:</strong> Curated suites and preferential arrangements at legendary palace hotels (The Oberoi, Taj Mahal Palace, The Leela).</div>
-              </li>
-              <li>
-                <span class="icon-chk">&#10003;</span>
-                <div><strong>Dedicated 24/7 Concierge:</strong> One trip manager on WhatsApp before, during, and after your journey until you return home safely.</div>
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="editorial-highlight">
+        &ldquo;A train ticket only takes you from station to station. KoiKoi Travel takes care of your entire vacation &mdash; from the moment you land at the airport until you fly back home safely.&rdquo;
+      </div>
+
+      <div class="editorial-ctas">
+        <a class="btn-koikoi-orange" href="#trains">
+          <span>Explore All 4 Trains Below</span>
+          <span>&darr;</span>
+        </a>
+        <a class="btn-koikoi-white" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20would%20like%20guidance%20on%20choosing%20the%20right%20luxury%20train." target="_blank" rel="noopener">
+          <span>Talk to a Specialist on WhatsApp</span>
+        </a>
       </div>
     </div>
   </div>
@@ -757,67 +743,210 @@ def generate_all_for_base(base_dir, base_path):
   </div>
 </section>
 
-<!-- PALACE ON WHEELS VIDEO SPOTLIGHT (SPLIT ROYAL LAYOUT) -->
-<section class="train-video-sec">
-  <div class="wrap">
-    <div class="train-video-box">
-      <!-- Left: Train Details & Logo -->
-      <div class="train-video-content">
-        <div class="train-video-logo">
-          <img src="/images/luxury-trains/palace-on-wheels/logo.png" alt="Palace on Wheels Logo">
-        </div>
-        <h2 class="train-video-title">Palace on Wheels</h2>
-        <p class="train-video-desc">
-          World&apos;s leading heritage luxury train &mdash; Modelled along the personal royal saloons of the erstwhile Rajput Maharajas, the Palace on Wheels is a royal 5-star palace on tracks taking guests across Rajasthan, the golden dunes of Jaisalmer, the lake palaces of Udaipur, and the timeless Taj Mahal in Agra.
-        </p>
-        <p class="train-video-desc">
-          7 Nights &amp; 8 Days of imperial grandeur: In operation since 1982, this iconic train departs weekly from Delhi, traversing Jaipur, Ranthambore tiger safari, Chittorgarh, Udaipur, Jaisalmer, Jodhpur, and Bharatpur. Each deluxe saloon is serviced by dedicated personal Khidmatgars.
-        </p>
-        <div class="train-video-ctas">
-          <a class="btn-koikoi-orange" href="{base_path}/palace-on-wheels/itinerary">
-            <span>View 7-Night Itinerary</span>
-            <span>&rarr;</span>
-          </a>
-          <a class="btn-koikoi-white" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20am%20interested%20in%20the%20Palace%20on%20Wheels%20journey." target="_blank" rel="noopener">
-            <span>Get a Quote</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- Right: YouTube Video Player -->
-      <div class="train-video-player" id="powHomeVideoBox">
-        <div class="video-facade" onclick="loadPowVideo('powHomeVideoBox')" style="background-image:url('https://img.youtube.com/vi/HnY_2_BBbW4/maxresdefault.jpg')">
-          <div class="video-facade-overlay"></div>
-          <div class="video-play-btn" aria-label="Play Palace on Wheels Video">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" style="margin-left:3px"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-          </div>
-          <span class="video-caption-pill">Palace on Wheels &middot; Experience Video</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- COMPARE -->
-<section id="compare">
+<!-- COMPARE & OFFICIAL DEPARTURES -->
+<section id="compare" style="background:#faf8f5;border-top:1px solid #eee7de;border-bottom:1px solid #eee7de;padding:64px 0">
   <div class="wrap">
     <div class="sec-head">
-      <div class="eyebrow">Quick Compare</div>
+      <div class="eyebrow">Quick Compare &amp; Departure Schedule</div>
       <h2>Which Train Is Right for You?</h2>
-      <p>Not sure where to start? This table shows the main differences. Or just message us and we will suggest one.</p>
+      <p>Compare regions, durations, operating seasons, and official upcoming departure schedules for all 4 luxury trains.</p>
     </div>
+
+    <!-- Responsive Comparison Table -->
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Train</th><th>Region</th><th>Journeys</th><th>Duration</th><th>Season</th><th>Starts from</th></tr>
+          <tr>
+            <th>Train</th>
+            <th>Region</th>
+            <th>Journeys &amp; Duration</th>
+            <th>Operating Season</th>
+            <th>Official Departure Dates</th>
+            <th>Action</th>
+          </tr>
         </thead>
         <tbody>
-          <tr><td>Palace on Wheels</td><td>Rajasthan &amp; Agra</td><td>1</td><td>7N / 8D</td><td>Oct – Mar (peak)</td><td>Delhi</td></tr>
-          <tr><td>Maharajas' Express</td><td>Rajasthan, Central &amp; North India</td><td>4</td><td>3N / 4D, 6N / 7D</td><td>Oct – Apr</td><td>Delhi or Mumbai</td></tr>
-          <tr><td>Golden Chariot</td><td>Karnataka, Goa, Tamil Nadu, Kerala</td><td>3</td><td>3N / 4D, 5N / 6D</td><td>Oct – Mar</td><td>Bengaluru</td></tr>
-          <tr><td>Deccan Odyssey</td><td>Maharashtra, Rajasthan, Gujarat, Golden Triangle</td><td>6</td><td>7N / 8D</td><td>Sep – May</td><td>Mumbai or Delhi</td></tr>
+          <tr>
+            <td>
+              <div style="font-weight:700;color:#0f172a">Palace on Wheels</div>
+              <div style="font-size:12px;color:#64748b">Starts from Delhi</div>
+            </td>
+            <td>Rajasthan &amp; Agra</td>
+            <td>1 Classic Circuit<br><span style="font-size:12px;color:#F8904D;font-weight:600">7 Nights / 8 Days</span></td>
+            <td>Sep – Apr<br><span style="font-size:12px;color:#64748b">(Peak: Oct – Mar)</span></td>
+            <td>
+              <strong style="color:#0f172a">Every Wednesday</strong>
+              <div style="font-size:12px;color:#64748b;margin-top:2px">Oct: 01, 08, 15, 22, 29 &middot; Nov: 05, 12, 19, 26 &middot; Dec: 03, 10, 17, 24, 31</div>
+            </td>
+            <td><a href="{base_path}/palace-on-wheels/departures" class="table-link-btn">Full Calendar &rarr;</a></td>
+          </tr>
+          <tr>
+            <td>
+              <div style="font-weight:700;color:#0f172a">Maharajas' Express</div>
+              <div style="font-size:12px;color:#64748b">Delhi or Mumbai</div>
+            </td>
+            <td>Rajasthan, Central &amp; North India</td>
+            <td>4 Distinct Circuits<br><span style="font-size:12px;color:#F8904D;font-weight:600">3N / 4D or 6N / 7D</span></td>
+            <td>Oct – Apr</td>
+            <td>
+              <strong style="color:#0f172a">Selected Weekends</strong>
+              <div style="font-size:12px;color:#64748b;margin-top:2px">Heritage: 11 Oct, 08 Nov &middot; Panorama: 25 Oct, 22 Nov &middot; Splendour: 18 Oct, 15 Nov</div>
+            </td>
+            <td><a href="{base_path}/maharajas-express/departures" class="table-link-btn">Full Calendar &rarr;</a></td>
+          </tr>
+          <tr>
+            <td>
+              <div style="font-weight:700;color:#0f172a">The Golden Chariot</div>
+              <div style="font-size:12px;color:#64748b">Starts from Bengaluru</div>
+            </td>
+            <td>Karnataka, Goa, Kerala, TN</td>
+            <td>3 Southern Circuits<br><span style="font-size:12px;color:#F8904D;font-weight:600">3N / 4D or 5N / 6D</span></td>
+            <td>Oct – Mar</td>
+            <td>
+              <strong style="color:#0f172a">Alternate Saturdays</strong>
+              <div style="font-size:12px;color:#64748b;margin-top:2px">Pride: 18 Oct, 15 Nov, 13 Dec &middot; Jewels: 01 Nov, 29 Nov &middot; Glimpses: 08 Nov, 06 Dec</div>
+            </td>
+            <td><a href="{base_path}/golden-chariot/departures" class="table-link-btn">Full Calendar &rarr;</a></td>
+          </tr>
+          <tr>
+            <td>
+              <div style="font-weight:700;color:#0f172a">Deccan Odyssey</div>
+              <div style="font-size:12px;color:#64748b">Mumbai or Delhi</div>
+            </td>
+            <td>Maharashtra, Gujarat, Rajasthan</td>
+            <td>6 Western Circuits<br><span style="font-size:12px;color:#F8904D;font-weight:600">7 Nights / 8 Days</span></td>
+            <td>Sep – May</td>
+            <td>
+              <strong style="color:#0f172a">Selected Saturdays</strong>
+              <div style="font-size:12px;color:#64748b;margin-top:2px">Maharashtra Splendour: 04 Oct, 01 Nov &middot; Indian Odyssey: 18 Oct, 15 Nov</div>
+            </td>
+            <td><a href="{base_path}/deccan-odyssey/departures" class="table-link-btn">Full Calendar &rarr;</a></td>
+          </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Official Departure Schedule Cards (100% Mobile & Tablet Responsive) -->
+    <div style="margin-top:48px">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+        <div>
+          <h3 style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:700;color:#0f172a;margin:0 0 4px">Official 2025–2026 Departure Calendars</h3>
+          <p style="font-size:14px;color:#64748b;margin:0">Verified official dates by train. Peak winter departures (October to February) book out early.</p>
+        </div>
+        <a class="btn-koikoi-white" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20live%20luxury%20train%20departure%20dates%20for%20me." target="_blank" rel="noopener" style="font-size:13px;padding:9px 18px">
+          <span>Inquire Live Dates on WhatsApp</span>
+        </a>
+      </div>
+
+      <div class="departure-cards-grid">
+        <!-- Card 1: Palace on Wheels -->
+        <div class="dep-card">
+          <div class="dep-card-head">
+            <h3>Palace on Wheels</h3>
+            <span class="dep-card-badge">Departs Every Wednesday</span>
+          </div>
+          <ul class="dep-card-list">
+            <li>
+              <strong>Operating Season &amp; Route</strong>
+              September to April &middot; 7 Nights / 8 Days circular journey starting &amp; ending in Delhi (Safdarjung Station).
+            </li>
+            <li>
+              <strong>2025–2026 Peak Departure Dates</strong>
+              Oct: 01, 08, 15, 22, 29 &middot; Nov: 05, 12, 19, 26 &middot; Dec: 03, 10, 17, 24, 31 (Holiday Gala) &middot; Jan: 07, 14, 21, 28 &middot; Feb: 04, 11, 18, 25 &middot; Mar: 04, 11, 18, 25
+            </li>
+            <li>
+              <strong>Lean Season Dates (Special Lower Tariff)</strong>
+              September 2025: 03, 10, 17, 24 Sep &middot; April 2026: 01, 08, 15, 22, 29 Apr
+            </li>
+          </ul>
+          <div class="dep-card-footer">
+            <a class="table-link-btn" href="{base_path}/palace-on-wheels/departures">View Official POW Schedule &rarr;</a>
+            <a class="table-link-btn" href="{base_path}/palace-on-wheels/price" style="color:#64748b">Check Tariffs &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Card 2: Maharajas' Express -->
+        <div class="dep-card">
+          <div class="dep-card-head">
+            <h3>Maharajas' Express</h3>
+            <span class="dep-card-badge">4 Distinct Circuits</span>
+          </div>
+          <ul class="dep-card-list">
+            <li>
+              <strong>The Heritage of India (6N / 7D &middot; Mumbai to Delhi)</strong>
+              11 Oct, 08 Nov, 06 Dec 2025 &middot; 03 Jan, 31 Jan, 28 Feb 2026
+            </li>
+            <li>
+              <strong>The Indian Panorama (6N / 7D &middot; Delhi to Delhi)</strong>
+              25 Oct, 22 Nov, 20 Dec 2025 &middot; 17 Jan, 14 Feb, 14 Mar 2026
+            </li>
+            <li>
+              <strong>The Indian Splendour (6N / 7D &middot; Delhi to Mumbai)</strong>
+              18 Oct, 15 Nov, 13 Dec 2025 &middot; 10 Jan, 07 Feb, 07 Mar 2026
+            </li>
+            <li>
+              <strong>Treasures of India (3N / 4D Golden Triangle)</strong>
+              02 Nov, 30 Nov, 28 Dec 2025 &middot; 25 Jan, 22 Feb, 22 Mar 2026
+            </li>
+          </ul>
+          <div class="dep-card-footer">
+            <a class="table-link-btn" href="{base_path}/maharajas-express/departures">View Official ME Schedule &rarr;</a>
+            <a class="table-link-btn" href="{base_path}/maharajas-express/price" style="color:#64748b">Check Tariffs &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Card 3: The Golden Chariot -->
+        <div class="dep-card">
+          <div class="dep-card-head">
+            <h3>The Golden Chariot</h3>
+            <span class="dep-card-badge">South India Heritage</span>
+          </div>
+          <ul class="dep-card-list">
+            <li>
+              <strong>Pride of Karnataka (5N / 6D &middot; Bengaluru to Bengaluru)</strong>
+              18 Oct, 15 Nov, 13 Dec 2025 &middot; 03 Jan, 31 Jan, 28 Feb 2026
+            </li>
+            <li>
+              <strong>Jewels of South (5N / 6D &middot; Bengaluru to Bengaluru via Kerala)</strong>
+              01 Nov, 29 Nov, 27 Dec 2025 &middot; 17 Jan, 14 Feb, 14 Mar 2026
+            </li>
+            <li>
+              <strong>Glimpses of Karnataka (3N / 4D Short Circuit)</strong>
+              08 Nov, 06 Dec, 20 Dec 2025 &middot; 24 Jan, 21 Feb 2026
+            </li>
+          </ul>
+          <div class="dep-card-footer">
+            <a class="table-link-btn" href="{base_path}/golden-chariot/departures">View Official GC Schedule &rarr;</a>
+            <a class="table-link-btn" href="{base_path}/golden-chariot/price" style="color:#64748b">Check Tariffs &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Card 4: Deccan Odyssey -->
+        <div class="dep-card">
+          <div class="dep-card-head">
+            <h3>Deccan Odyssey</h3>
+            <span class="dep-card-badge">6 Royal Circuits</span>
+          </div>
+          <ul class="dep-card-list">
+            <li>
+              <strong>Maharashtra Splendour (7N / 8D &middot; Mumbai to Mumbai)</strong>
+              04 Oct, 01 Nov, 06 Dec 2025 &middot; 03 Jan, 31 Jan, 28 Feb 2026
+            </li>
+            <li>
+              <strong>Indian Odyssey (7N / 8D &middot; Delhi to Mumbai)</strong>
+              18 Oct, 15 Nov, 13 Dec 2025 &middot; 17 Jan, 14 Feb, 14 Mar 2026
+            </li>
+            <li>
+              <strong>Maharashtra Wild Trail (7N / 8D &middot; Tadoba &amp; Pench)</strong>
+              25 Oct, 22 Nov, 20 Dec 2025 &middot; 24 Jan, 21 Feb, 21 Mar 2026
+            </li>
+          </ul>
+          <div class="dep-card-footer">
+            <a class="table-link-btn" href="{base_path}/deccan-odyssey/departures">View Official DO Schedule &rarr;</a>
+            <a class="table-link-btn" href="{base_path}/deccan-odyssey/price" style="color:#64748b">Check Tariffs &rarr;</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>

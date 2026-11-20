@@ -25,7 +25,6 @@ export default function LuxuryTrainHomeView() {
 
   // Accordion state for FAQs
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [isPowVideoPlaying, setIsPowVideoPlaying] = useState<boolean>(false);
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -148,35 +147,47 @@ export default function LuxuryTrainHomeView() {
   const compareRows = [
     {
       train: "Palace on Wheels",
+      slug: "palace-on-wheels",
       region: "Rajasthan & Agra",
-      journeys: "1",
+      journeys: "1 Classic Circuit",
       duration: "7N / 8D",
-      season: "Oct – Mar (peak)",
+      season: "Sep – Apr (Peak: Oct–Mar)",
       startsFrom: "Delhi",
+      departures: "Every Wednesday",
+      datesPreview: "Oct: 01, 08, 15, 22, 29 · Nov: 05, 12, 19, 26 · Dec: 03, 10, 17, 24, 31",
     },
     {
       train: "Maharajas' Express",
+      slug: "maharajas-express",
       region: "Rajasthan, Central & North India",
-      journeys: "4",
-      duration: "3N / 4D, 6N / 7D",
+      journeys: "4 Distinct Circuits",
+      duration: "3N / 4D or 6N / 7D",
       season: "Oct – Apr",
       startsFrom: "Delhi or Mumbai",
+      departures: "Selected Weekends",
+      datesPreview: "Heritage: 11 Oct, 08 Nov · Panorama: 25 Oct, 22 Nov · Splendour: 18 Oct, 15 Nov",
     },
     {
-      train: "Golden Chariot",
-      region: "Karnataka, Goa, Tamil Nadu, Kerala",
-      journeys: "3",
-      duration: "3N / 4D, 5N / 6D",
+      train: "The Golden Chariot",
+      slug: "golden-chariot",
+      region: "Karnataka, Goa, Kerala, TN",
+      journeys: "3 Southern Circuits",
+      duration: "3N / 4D or 5N / 6D",
       season: "Oct – Mar",
       startsFrom: "Bengaluru",
+      departures: "Alternate Saturdays",
+      datesPreview: "Pride: 18 Oct, 15 Nov, 13 Dec · Jewels: 01 Nov, 29 Nov · Glimpses: 08 Nov, 06 Dec",
     },
     {
       train: "Deccan Odyssey",
-      region: "Maharashtra, Rajasthan, Gujarat, Golden Triangle",
-      journeys: "6",
+      slug: "deccan-odyssey",
+      region: "Maharashtra, Gujarat, Rajasthan",
+      journeys: "6 Western Circuits",
       duration: "7N / 8D",
       season: "Sep – May",
       startsFrom: "Mumbai or Delhi",
+      departures: "Selected Saturdays",
+      datesPreview: "Maharashtra Splendour: 04 Oct, 01 Nov · Indian Odyssey: 18 Oct, 15 Nov",
     },
   ];
 
@@ -311,162 +322,116 @@ export default function LuxuryTrainHomeView() {
         </div>
       </section>
 
-      {/* DEDICATED SEO & EDITORIAL SECTION (BELOW HERO) */}
+      {/* DEDICATED SEO & EDITORIAL SECTION (BELOW HERO - FULL WIDTH) */}
       <section className="bg-[#faf8f5] border-y border-[#eee7de] py-14 sm:py-16 md:py-20 relative">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-            {/* Left: Text & Editorial narrative */}
-            <div className="lg:col-span-7">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#F8904D]/10 border border-[#F8904D]/30 text-[#d96b27] text-xs font-bold uppercase tracking-wider mb-4">
-                <Sparkles className="w-3.5 h-3.5 text-[#F8904D]" />
-                <span>Bespoke Heritage Rail Expeditions</span>
+          <div className="w-full">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#F8904D]/10 border border-[#F8904D]/30 text-[#d96b27] text-xs font-bold uppercase tracking-wider mb-4">
+              <Sparkles className="w-3.5 h-3.5 text-[#F8904D]" />
+              <span>Independent Travel Curator</span>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-outfit font-bold text-[#0f172a] tracking-tight leading-tight mb-3">
+              <span className="text-[#F8904D]">Luxury Train Journeys in India</span>: Royal Rail Holidays
+            </h1>
+
+            <p className="text-base sm:text-lg font-semibold text-slate-800 mb-4 leading-snug">
+              Explore India aboard 4 iconic luxury trains &mdash; with private airport transfers, 5-star heritage hotels, and personalized trip planning by{" "}
+              <span className="text-[#F8904D]">KoiKoi Travel</span>.
+            </p>
+
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-4">
+              A luxury train journey is the most relaxing and royal way to experience India. Instead of repacking bags and rushing for flights every morning, your 5-star private hotel travels with you on rails. Enjoy private ensuite cabins, gourmet dining cars, panoramic lounge bars, and daily guided sightseeing to world-famous palaces, desert dunes, and tiger reserves.
+            </p>
+
+            {/* Transparent Advisory Notice */}
+            <div className="bg-[#faf5eb] border border-[#ebd9b8] rounded-xl p-4 sm:p-5 mb-6 text-xs sm:text-sm text-[#553f0c] leading-relaxed">
+              <strong className="text-[#0f172a] block font-bold mb-1 text-sm sm:text-base">
+                Important Advisory &middot; Independent Booking &amp; Tour Support
+              </strong>
+              India&apos;s luxury trains are government-operated by state rail corporations and tourism boards (IRCTC, RTDC, KSTDC, and MTDC). While train tickets only cover the train journey from station to station, <strong>KoiKoi Travel designs your entire vacation</strong>: booking your ideal cabin, reserving pre- and post-tour 5-star heritage stays in Delhi or Mumbai, providing private chauffeured luxury airport transfers, and giving you dedicated 24/7 personal WhatsApp support throughout your holiday.
+            </div>
+
+            {/* Quick 4 Trains Cards */}
+            <h2 className="text-xl sm:text-2xl font-bold font-outfit text-[#0f172a] mb-4">
+              Which Luxury Train Is Best for You?
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div className="bg-white border border-[#eee7de] rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+                  <h3 className="font-outfit font-bold text-base text-[#0f172a]">1. Palace on Wheels</h3>
+                  <span className="text-xs font-semibold text-[#F8904D]">7 Nights / 8 Days</span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-600 mb-1.5 leading-relaxed">
+                  <strong className="text-slate-900 font-semibold">Route:</strong> Delhi &rarr; Jaipur &rarr; Ranthambore (Tiger Safari) &rarr; Udaipur &rarr; Jaisalmer &rarr; Jodhpur &rarr; Agra (Taj Mahal) &rarr; Delhi
+                </p>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  <strong className="text-slate-900 font-semibold">Best for:</strong> First-time visitors to India who want the classic royal Rajasthan, desert dunes, and Taj Mahal experience.
+                </p>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-outfit font-bold text-[#0f172a] tracking-tight leading-tight mb-3">
-                <span className="text-[#F8904D]">Luxury Train Journeys in India</span>: Handcrafted Royal Expeditions
-              </h1>
-
-              <p className="text-base sm:text-lg font-semibold text-slate-800 mb-4 leading-snug">
-                Experience the Subcontinent Aboard India&apos;s 4 Iconic Palaces on Wheels, Planned by{" "}
-                <span className="text-[#F8904D]">Independent Travel Specialists</span>
-              </p>
-
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-4">
-                Stepping aboard one of India&apos;s legendary luxury trains is a journey back to the golden era of rail travel. Far beyond ordinary transit, each voyage is an immersive five-star sanctuary where panoramic observation windows frame Rajput hill forts, untamed wildlife sanctuaries, and golden desert dunes—accompanied by white-gloved butler service, fine dining salons, and curated private excursions.
-              </p>
-
-              <div className="bg-[#F8904D]/5 border border-[#F8904D]/25 rounded-xl p-4 sm:p-5 mb-5 text-xs sm:text-sm text-[#78350f] leading-relaxed">
-                <strong className="text-[#0f172a] block font-bold mb-1 text-sm sm:text-base">
-                  Independent Luxury Travel Curator &amp; Advisory Notice
-                </strong>
-                KoiKoi Travel is an independent boutique luxury tour designer. India&apos;s four luxury trains are operated by their respective state rail corporations and tourism boards (IRCTC, RTDC, KSTDC, and MTDC). While train operators provide only station-to-station rail tickets, KoiKoi Travel crafts the complete, seamless vacation around your train voyage: securing your preferred cabin class, managing departure logistics, providing private chauffeured luxury transfers, arranging handpicked 5-star heritage palace stays in Delhi and Mumbai, and designing private guided pre- and post-rail excursions.
+              <div className="bg-white border border-[#eee7de] rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+                  <h3 className="font-outfit font-bold text-base text-[#0f172a]">2. Maharajas&apos; Express</h3>
+                  <span className="text-xs font-semibold text-[#F8904D]">3 Nights to 6 Nights</span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-600 mb-1.5 leading-relaxed">
+                  <strong className="text-slate-900 font-semibold">Route:</strong> 4 flexible circuits across Rajasthan, Agra, Khajuraho temples, and the sacred river ghats of Varanasi.
+                </p>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  <strong className="text-slate-900 font-semibold">Best for:</strong> Travelers looking for highest-tier modern luxury, spacious suites, and flexible shorter 4-day or 7-day trips.
+                </p>
               </div>
 
-              <p className="text-slate-700 text-sm sm:text-base font-medium mb-3">
-                Choosing between India&apos;s four legendary trains depends on your travel season, preferred pace, and the regions you wish to discover:
-              </p>
-
-              <ul className="space-y-3 mb-6 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#F8904D] text-lg leading-none mt-0.5">•</span>
-                  <span>
-                    <strong className="text-slate-900">Palace on Wheels (7N / 8D)</strong>: India&apos;s original luxury train (operating since 1982). A classic circuit through the royal heart of Rajasthan—Jaipur&apos;s Pink City, Ranthambore tiger safari, Chittorgarh fort, Udaipur&apos;s lakes, Jaisalmer&apos;s Thar desert dunes, and Jodhpur—culminating at Agra&apos;s Taj Mahal. Ideal for first-time visitors seeking timeless Rajputana romance.
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#F8904D] text-lg leading-none mt-0.5">•</span>
-                  <span>
-                    <strong className="text-slate-900">Maharajas&apos; Express (3N to 6N)</strong>: India&apos;s most modern and opulent luxury train, featuring pneumatic suspension, twin fine-dining restaurants (Mayur Mahal &amp; Rang Mahal), and Presidential Suites spanning entire carriages. Offers four distinct routes connecting Delhi, Agra, and Rajasthan with the temple carvings of Khajuraho and the sacred ghats of Varanasi.
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#F8904D] text-lg leading-none mt-0.5">•</span>
-                  <span>
-                    <strong className="text-slate-900">The Golden Chariot (3N to 5N)</strong>: South India&apos;s premier luxury train gliding from Bengaluru through the boulder-strewn UNESCO World Heritage ruins of Hampi, Mysore&apos;s ornate palaces, Bandipur tiger reserve, and the sunlit beaches of Goa. Best for travelers seeking southern architecture, culture, and nature.
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#F8904D] text-lg leading-none mt-0.5">•</span>
-                  <span>
-                    <strong className="text-slate-900">Deccan Odyssey (7N / 8D)</strong>: The royal blue train of Western India, navigating Maharashtra, Gujarat, and Rajasthan. Highlights include the awe-inspiring rock-cut UNESCO caves of Ajanta and Ellora, Nashik&apos;s vineyard valleys, and vibrant coastal heritage.
-                  </span>
-                </li>
-              </ul>
-
-              <div className="border-l-4 border-[#F8904D] bg-white p-4 rounded-r-xl shadow-sm text-xs sm:text-sm text-slate-700 italic leading-relaxed mb-6">
-                &ldquo;A train ticket gets you between stations. A handcrafted journey with KoiKoi Travel ensures you are met at the aircraft door, chauffeured in private luxury, housed in legendary palace hotels, and supported by a dedicated 24/7 personal trip manager throughout India.&rdquo;
+              <div className="bg-white border border-[#eee7de] rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+                  <h3 className="font-outfit font-bold text-base text-[#0f172a]">3. The Golden Chariot</h3>
+                  <span className="text-xs font-semibold text-[#F8904D]">3 Nights to 5 Nights</span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-600 mb-1.5 leading-relaxed">
+                  <strong className="text-slate-900 font-semibold">Route:</strong> Bengaluru &rarr; Bandipur Safari &rarr; Mysore Palaces &rarr; Hampi UNESCO Ruins &rarr; Goa Beaches
+                </p>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  <strong className="text-slate-900 font-semibold">Best for:</strong> Travelers wanting to discover South India&apos;s ancient temples, rich nature, and tropical beaches.
+                </p>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3.5">
-                <a
-                  href="#trains"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-semibold text-xs sm:text-sm transition-all shadow-md hover:scale-105 active:scale-95"
-                >
-                  <span>Explore the 4 Trains Below</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors"
-                >
-                  <MessageCircle className="w-4 h-4 text-emerald-600" />
-                  <span>Speak with a Rail Specialist</span>
-                </a>
+              <div className="bg-white border border-[#eee7de] rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+                  <h3 className="font-outfit font-bold text-base text-[#0f172a]">4. Deccan Odyssey</h3>
+                  <span className="text-xs font-semibold text-[#F8904D]">7 Nights / 8 Days</span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-600 mb-1.5 leading-relaxed">
+                  <strong className="text-slate-900 font-semibold">Route:</strong> 6 distinct journeys through Maharashtra, Gujarat, and Rajasthan, including Ajanta &amp; Ellora caves and Nashik wine country.
+                </p>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  <strong className="text-slate-900 font-semibold">Best for:</strong> History and art lovers who want to explore Western India&apos;s world-famous cave architecture.
+                </p>
               </div>
             </div>
 
-            {/* Right: Visual Feature Card */}
-            <div className="lg:col-span-5">
-              <div className="relative group">
-                {/* Decorative offset frame */}
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 translate-x-3 translate-y-3 rounded-2xl bg-gradient-to-br from-[#F8904D] to-[#e07b3b] shadow-lg transition-transform duration-300 group-hover:translate-x-4 group-hover:translate-y-4"
-                />
+            <div className="border-l-4 border-[#F8904D] bg-white p-4 rounded-r-xl shadow-sm text-xs sm:text-sm text-slate-700 italic leading-relaxed mb-6">
+              &ldquo;A train ticket only takes you from station to station. KoiKoi Travel takes care of your entire vacation &mdash; from the moment you land at the airport until you fly back home safely.&rdquo;
+            </div>
 
-                {/* Main Card */}
-                <div className="relative rounded-2xl bg-white overflow-hidden shadow-2xl border-2 border-white">
-                  <div className="relative h-60 w-full overflow-hidden bg-slate-900">
-                    <Image
-                      src="/images/luxury-trains/maharajas-express/dining-pink.jpg"
-                      alt="Maharajas Express Fine Dining"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 40vw"
-                      className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/30" />
-                    <span className="absolute top-4 left-4 inline-block bg-[#0f172a]/85 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                      THE KOIKOI CURATOR PROMISE
-                    </span>
-                  </div>
-
-                  <div className="p-6">
-                    <h3 className="text-lg font-bold text-[#0f172a] font-outfit mb-4">
-                      Why Plan Your Rail Journey With Us
-                    </h3>
-                    <ul className="space-y-3.5 text-xs sm:text-sm text-slate-600">
-                      <li className="flex items-start gap-2.5 pb-3 border-b border-slate-100">
-                        <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
-                          ✓
-                        </span>
-                        <div>
-                          <strong className="text-slate-900 block font-semibold">Impartial Route &amp; Cabin Guidance:</strong>
-                          Unbiased advice on train seasons (October to April), routes, and cabin layouts (Deluxe vs Junior Suite vs Presidential Suite).
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5 pb-3 border-b border-slate-100">
-                        <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
-                          ✓
-                        </span>
-                        <div>
-                          <strong className="text-slate-900 block font-semibold">Bespoke Pre &amp; Post Extensions:</strong>
-                          Tailored Golden Triangle tours, private chauffeured Mercedes/Innova Crysta cars, and airport VIP meet-and-greets.
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5 pb-3 border-b border-slate-100">
-                        <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
-                          ✓
-                        </span>
-                        <div>
-                          <strong className="text-slate-900 block font-semibold">Handpicked 5-Star Heritage Stays:</strong>
-                          Curated suites and preferential arrangements at legendary palace hotels (The Oberoi, Taj Mahal Palace, The Leela).
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
-                          ✓
-                        </span>
-                        <div>
-                          <strong className="text-slate-900 block font-semibold">Dedicated 24/7 Concierge:</strong>
-                          One trip manager on WhatsApp before, during, and after your journey until you return home safely.
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+            <div className="flex flex-wrap items-center gap-3.5">
+              <a
+                href="#trains"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-semibold text-xs sm:text-sm transition-all shadow-md hover:scale-105 active:scale-95 font-outfit"
+              >
+                <span>Explore All 4 Trains Below</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors"
+              >
+                <MessageCircle className="w-4 h-4 text-emerald-600" />
+                <span>Talk to a Specialist on WhatsApp</span>
+              </a>
             </div>
           </div>
         </div>
@@ -573,132 +538,222 @@ export default function LuxuryTrainHomeView() {
         </div>
       </section>
 
-      {/* 2.5 PALACE ON WHEELS VIDEO SPOTLIGHT (SPLIT ROYAL LAYOUT) */}
-      <section className="py-12 sm:py-16 bg-white">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-[#262463]">
-            {/* Left: Content */}
-            <div className="p-8 sm:p-12 flex flex-col justify-center text-white bg-[#262463]">
-              <div className="mb-5 inline-flex items-center">
-                <img
-                  src="/images/luxury-trains/palace-on-wheels/logo.png"
-                  alt="Palace on Wheels Logo"
-                  className="h-16 w-auto max-w-[150px] object-contain drop-shadow-md rounded-lg"
-                />
-              </div>
-
-              <h2 className="text-3xl sm:text-4xl font-outfit font-bold text-white mb-4">
-                Palace on Wheels
-              </h2>
-
-              <p className="text-slate-200 text-sm sm:text-base leading-relaxed mb-4">
-                <strong className="text-white font-semibold">World&apos;s leading heritage luxury train</strong> &mdash; Modelled along the personal royal saloons of the erstwhile Rajput Maharajas, the Palace on Wheels is a royal 5-star palace on tracks taking guests across Rajasthan, the golden dunes of Jaisalmer, the lake palaces of Udaipur, and the timeless Taj Mahal in Agra.
-              </p>
-
-              <p className="text-slate-200 text-sm sm:text-base leading-relaxed mb-6">
-                <strong className="text-white font-semibold">7 Nights &amp; 8 Days of imperial grandeur:</strong> In operation since 1982, this iconic train departs weekly from Delhi, traversing Jaipur, Ranthambore tiger safari, Chittorgarh, Udaipur, Jaisalmer, Jodhpur, and Bharatpur. Each deluxe saloon is serviced by dedicated personal Khidmatgars.
-              </p>
-
-              <div className="flex flex-wrap items-center gap-3.5">
-                <Link
-                  href="/luxury-trains/palace-on-wheels/itinerary"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#F8904D] hover:bg-[#e07b3b] text-white font-bold text-sm sm:text-base transition-all shadow-md hover:scale-105 active:scale-95 font-outfit"
-                >
-                  <span>View 7-Night Itinerary</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-slate-100 text-[#0f172a] font-bold text-sm sm:text-base transition-all shadow-md hover:scale-105 active:scale-95 font-outfit"
-                >
-                  <span>Get a Free Quote</span>
-                </a>
-              </div>
-            </div>
-
-            {/* Right: Video Player / Facade */}
-            <div className="relative w-full min-h-[340px] sm:min-h-[420px] bg-black flex items-center justify-center overflow-hidden">
-              {!isPowVideoPlaying ? (
-                <div
-                  className="relative w-full h-full min-h-[340px] sm:min-h-[420px] cursor-pointer group"
-                  onClick={() => setIsPowVideoPlaying(true)}
-                >
-                  <Image
-                    src="https://img.youtube.com/vi/HnY_2_BBbW4/maxresdefault.jpg"
-                    alt="Palace on Wheels Video Preview"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black/35 transition-colors group-hover:bg-black/20" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#F8904D] text-white flex items-center justify-center shadow-2xl transition-transform group-hover:scale-110">
-                      <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="ml-1">
-                        <polygon points="5 3 19 12 5 21 5 3" />
-                      </svg>
-                    </div>
-                  </div>
-                  <span className="absolute bottom-4 left-4 z-10 bg-black/75 backdrop-blur-md text-white text-xs font-semibold px-3.5 py-1.5 rounded-full border border-white/20">
-                    Palace on Wheels · Experience Video
-                  </span>
-                </div>
-              ) : (
-                <iframe
-                  src="https://www.youtube-nocookie.com/embed/HnY_2_BBbW4?autoplay=1&rel=0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full border-0"
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. QUICK COMPARE TABLE */}
+      {/* 3. QUICK COMPARE & OFFICIAL DEPARTURE SCHEDULE */}
       <section id="compare" className="py-16 sm:py-20 bg-[#faf8f5] border-y border-[#eee7de]">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-10">
           <div className="max-w-2xl mb-10">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#0f172a] mb-2">
               <span className="w-2 h-2 rounded-full bg-[#F8904D]"></span>
-              <span>Quick Compare</span>
+              <span>Quick Compare &amp; Departure Schedule</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-outfit font-bold text-[#0f172a] mb-3">
               Which Train Is Right for You?
             </h2>
             <p className="text-slate-600 text-sm sm:text-base">
-              Not sure where to start? This table shows the main differences. Or just message us and we will suggest one.
+              Compare regions, durations, operating seasons, and official upcoming departure schedules for all 4 luxury trains in India.
             </p>
           </div>
 
-          {/* Table */}
+          {/* Responsive Comparison Table */}
           <div className="overflow-x-auto rounded-2xl shadow-sm bg-white border border-[#eee7de]">
-            <table className="w-full border-collapse min-w-[760px] text-sm text-left">
+            <table className="w-full border-collapse min-w-[860px] text-sm text-left">
               <thead>
                 <tr className="bg-[#0f172a] text-white text-xs uppercase tracking-wider font-outfit">
                   <th className="py-3.5 px-5 font-bold">Train</th>
                   <th className="py-3.5 px-5 font-bold">Region</th>
-                  <th className="py-3.5 px-5 font-bold">Journeys</th>
-                  <th className="py-3.5 px-5 font-bold">Duration</th>
+                  <th className="py-3.5 px-5 font-bold">Journeys &amp; Duration</th>
                   <th className="py-3.5 px-5 font-bold">Season</th>
-                  <th className="py-3.5 px-5 font-bold">Starts from</th>
+                  <th className="py-3.5 px-5 font-bold">Official Departures</th>
+                  <th className="py-3.5 px-5 font-bold">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#eee7de]">
                 {compareRows.map((row, idx) => (
                   <tr key={idx} className="hover:bg-slate-50 transition-colors">
-                    <td className="py-4 px-5 font-bold text-[#0f172a]">{row.train}</td>
+                    <td className="py-4 px-5">
+                      <div className="font-bold text-[#0f172a]">{row.train}</div>
+                      <div className="text-xs text-slate-500 font-normal">Starts: {row.startsFrom}</div>
+                    </td>
                     <td className="py-4 px-5 text-slate-700">{row.region}</td>
-                    <td className="py-4 px-5 text-slate-700">{row.journeys}</td>
-                    <td className="py-4 px-5 text-slate-700 whitespace-nowrap">{row.duration}</td>
+                    <td className="py-4 px-5 text-slate-700">
+                      <div>{row.journeys}</div>
+                      <span className="text-xs font-semibold text-[#F8904D]">{row.duration}</span>
+                    </td>
                     <td className="py-4 px-5 text-slate-700">{row.season}</td>
-                    <td className="py-4 px-5 text-slate-700">{row.startsFrom}</td>
+                    <td className="py-4 px-5 text-slate-700">
+                      <strong className="text-slate-900 block font-semibold">{row.departures}</strong>
+                      <div className="text-xs text-slate-500 mt-0.5">{row.datesPreview}</div>
+                    </td>
+                    <td className="py-4 px-5 whitespace-nowrap">
+                      <Link
+                        href={`/luxury-trains/${row.slug}/departures`}
+                        className="inline-flex items-center gap-1 text-xs font-bold text-[#F8904D] hover:text-[#e07b3b] hover:underline font-outfit"
+                      >
+                        <span>Full Calendar</span>
+                        <span>&rarr;</span>
+                      </Link>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Responsive Official Departure Dates Cards */}
+          <div className="mt-12">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <div>
+                <h3 className="text-2xl font-bold font-outfit text-[#0f172a]">
+                  Official 2025–2026 Departure Calendars
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                  Verified official dates by train. Peak winter departures (October to February) book out early.
+                </p>
+              </div>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-xs sm:text-sm transition-all shadow-sm font-outfit shrink-0"
+              >
+                <MessageCircle className="w-4 h-4 text-emerald-600" />
+                <span>Inquire Live Dates on WhatsApp</span>
+              </a>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Card 1: Palace on Wheels */}
+              <div className="bg-white border border-[#eee7de] rounded-2xl p-6 shadow-sm flex flex-col">
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 flex-wrap gap-2">
+                  <h4 className="font-outfit font-bold text-lg text-[#0f172a]">Palace on Wheels</h4>
+                  <span className="text-xs font-semibold text-[#F8904D] bg-[#F8904D]/10 px-3 py-1 rounded-full border border-[#F8904D]/25">
+                    Departs Every Wednesday
+                  </span>
+                </div>
+                <ul className="space-y-3 text-xs sm:text-sm text-slate-600 mb-6 flex-1">
+                  <li className="pb-2.5 border-b border-dashed border-slate-100">
+                    <strong className="text-slate-900 block font-semibold mb-0.5">Operating Season &amp; Route</strong>
+                    September to April &middot; 7 Nights / 8 Days circular journey starting &amp; ending in Delhi (Safdarjung Station).
+                  </li>
+                  <li className="pb-2.5 border-b border-dashed border-slate-100">
+                    <strong className="text-slate-900 block font-semibold mb-0.5">2025–2026 Peak Departure Dates</strong>
+                    Oct: 01, 08, 15, 22, 29 &middot; Nov: 05, 12, 19, 26 &middot; Dec: 03, 10, 17, 24, 31 (Holiday Gala) &middot; Jan: 07, 14, 21, 28 &middot; Feb: 04, 11, 18, 25 &middot; Mar: 04, 11, 18, 25
+                  </li>
+                  <li>
+                    <strong className="text-slate-900 block font-semibold mb-0.5">Lean Season Dates (Special Lower Tariff)</strong>
+                    September 2025: 03, 10, 17, 24 Sep &middot; April 2026: 01, 08, 15, 22, 29 Apr
+                  </li>
+                </ul>
+                <div className="pt-4 border-t border-[#eee7de] flex items-center justify-between text-xs font-semibold font-outfit mt-auto">
+                  <Link href="/luxury-trains/palace-on-wheels/departures" className="text-[#F8904D] hover:underline">
+                    View Official Schedule &rarr;
+                  </Link>
+                  <Link href="/luxury-trains/palace-on-wheels/price" className="text-slate-500 hover:text-slate-900">
+                    Check Tariffs &rarr;
+                  </Link>
+                </div>
+              </div>
+
+              {/* Card 2: Maharajas' Express */}
+              <div className="bg-white border border-[#eee7de] rounded-2xl p-6 shadow-sm flex flex-col">
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 flex-wrap gap-2">
+                  <h4 className="font-outfit font-bold text-lg text-[#0f172a]">Maharajas&apos; Express</h4>
+                  <span className="text-xs font-semibold text-[#F8904D] bg-[#F8904D]/10 px-3 py-1 rounded-full border border-[#F8904D]/25">
+                    4 Distinct Circuits
+                  </span>
+                </div>
+                <ul className="space-y-3 text-xs sm:text-sm text-slate-600 mb-6 flex-1">
+                  <li className="pb-2.5 border-b border-dashed border-slate-100">
+                    <strong className="text-slate-900 block font-semibold mb-0.5">The Heritage of India (6N / 7D &middot; Mumbai to Delhi)</strong>
+                    11 Oct, 08 Nov, 06 Dec 2025 &middot; 03 Jan, 31 Jan, 28 Feb 2026
+                  </li>
+                  <li className="pb-2.5 border-b border-dashed border-slate-100">
+                    <strong className="text-slate-900 block font-semibold mb-0.5">The Indian Panorama (6N / 7D &middot; Delhi to Delhi)</strong>
+                    25 Oct, 22 Nov, 20 Dec 2025 &middot; 17 Jan, 14 Feb, 14 Mar 2026
+                  </li>
+                  <li className="pb-2.5 border-b border-dashed border-slate-100">
+                    <strong className="text-slate-900 block font-semibold mb-0.5">The Indian Splendour (6N / 7D &middot; Delhi to Mumbai)</strong>
+                    18 Oct, 15 Nov, 13 Dec 2025 &middot; 10 Jan, 07 Feb, 07 Mar 2026
+                  </li>
+                  <li>
+                    <strong className="text-slate-900 block font-semibold mb-0.5">Treasures of India (3N / 4D Golden Triangle)</strong>
+                    02 Nov, 30 Nov, 28 Dec 2025 &middot; 25 Jan, 22 Feb, 22 Mar 2026
+                  </li>
+                </ul>
+                <div className="pt-4 border-t border-[#eee7de] flex items-center justify-between text-xs font-semibold font-outfit mt-auto">
+                  <Link href="/luxury-trains/maharajas-express/departures" className="text-[#F8904D] hover:underline">
+                    View Official Schedule &rarr;
+                  </Link>
+                  <Link href="/luxury-trains/maharajas-express/price" className="text-slate-500 hover:text-slate-900">
+                    Check Tariffs &rarr;
+                  </Link>
+                </div>
+              </div>
+
+              {/* Card 3: The Golden Chariot */}
+              <div className="bg-white border border-[#eee7de] rounded-2xl p-6 shadow-sm flex flex-col">
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 flex-wrap gap-2">
+                  <h4 className="font-outfit font-bold text-lg text-[#0f172a]">The Golden Chariot</h4>
+                  <span className="text-xs font-semibold text-[#F8904D] bg-[#F8904D]/10 px-3 py-1 rounded-full border border-[#F8904D]/25">
+                    South India Heritage
+                  </span>
+                </div>
+                <ul className="space-y-3 text-xs sm:text-sm text-slate-600 mb-6 flex-1">
+                  <li className="pb-2.5 border-b border-dashed border-slate-100">
+                    <strong className="text-slate-900 block font-semibold mb-0.5">Pride of Karnataka (5N / 6D &middot; Bengaluru to Bengaluru)</strong>
+                    18 Oct, 15 Nov, 13 Dec 2025 &middot; 03 Jan, 31 Jan, 28 Feb 2026
+                  </li>
+                  <li className="pb-2.5 border-b border-dashed border-slate-100">
+                    <strong className="text-slate-900 block font-semibold mb-0.5">Jewels of South (5N / 6D &middot; Bengaluru to Bengaluru via Kerala)</strong>
+                    01 Nov, 29 Nov, 27 Dec 2025 &middot; 17 Jan, 14 Feb, 14 Mar 2026
+                  </li>
+                  <li>
+                    <strong className="text-slate-900 block font-semibold mb-0.5">Glimpses of Karnataka (3N / 4D Short Circuit)</strong>
+                    08 Nov, 06 Dec, 20 Dec 2025 &middot; 24 Jan, 21 Feb 2026
+                  </li>
+                </ul>
+                <div className="pt-4 border-t border-[#eee7de] flex items-center justify-between text-xs font-semibold font-outfit mt-auto">
+                  <Link href="/luxury-trains/golden-chariot/departures" className="text-[#F8904D] hover:underline">
+                    View Official Schedule &rarr;
+                  </Link>
+                  <Link href="/luxury-trains/golden-chariot/price" className="text-slate-500 hover:text-slate-900">
+                    Check Tariffs &rarr;
+                  </Link>
+                </div>
+              </div>
+
+              {/* Card 4: Deccan Odyssey */}
+              <div className="bg-white border border-[#eee7de] rounded-2xl p-6 shadow-sm flex flex-col">
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 flex-wrap gap-2">
+                  <h4 className="font-outfit font-bold text-lg text-[#0f172a]">Deccan Odyssey</h4>
+                  <span className="text-xs font-semibold text-[#F8904D] bg-[#F8904D]/10 px-3 py-1 rounded-full border border-[#F8904D]/25">
+                    6 Royal Circuits
+                  </span>
+                </div>
+                <ul className="space-y-3 text-xs sm:text-sm text-slate-600 mb-6 flex-1">
+                  <li className="pb-2.5 border-b border-dashed border-slate-100">
+                    <strong className="text-slate-900 block font-semibold mb-0.5">Maharashtra Splendour (7N / 8D &middot; Mumbai to Mumbai)</strong>
+                    04 Oct, 01 Nov, 06 Dec 2025 &middot; 03 Jan, 31 Jan, 28 Feb 2026
+                  </li>
+                  <li className="pb-2.5 border-b border-dashed border-slate-100">
+                    <strong className="text-slate-900 block font-semibold mb-0.5">Indian Odyssey (7N / 8D &middot; Delhi to Mumbai)</strong>
+                    18 Oct, 15 Nov, 13 Dec 2025 &middot; 17 Jan, 14 Feb, 14 Mar 2026
+                  </li>
+                  <li>
+                    <strong className="text-slate-900 block font-semibold mb-0.5">Maharashtra Wild Trail (7N / 8D &middot; Tadoba &amp; Pench)</strong>
+                    25 Oct, 22 Nov, 20 Dec 2025 &middot; 24 Jan, 21 Feb, 21 Mar 2026
+                  </li>
+                </ul>
+                <div className="pt-4 border-t border-[#eee7de] flex items-center justify-between text-xs font-semibold font-outfit mt-auto">
+                  <Link href="/luxury-trains/deccan-odyssey/departures" className="text-[#F8904D] hover:underline">
+                    View Official Schedule &rarr;
+                  </Link>
+                  <Link href="/luxury-trains/deccan-odyssey/price" className="text-slate-500 hover:text-slate-900">
+                    Check Tariffs &rarr;
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
