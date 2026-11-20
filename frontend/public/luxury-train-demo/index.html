@@ -59,15 +59,21 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 .dd .menu a:hover{background:var(--soft);color:var(--accent-dark)}
 @media(max-width:1020px){.nav ul{display:none}}
 
-/* hero */
+/* hero slider scroller */
 .hero{position:relative;color:#fff;padding:120px 0 110px;min-height:560px;display:flex;align-items:center;overflow:hidden;background:#091b2c;
   background:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),
   url('/images/luxury-trains/palace-on-wheels/exterior.webp') center/cover no-repeat;
 }
-.hero-slides{position:absolute;inset:0;z-index:1}
-.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease-in-out, transform 7s ease-out;transform:scale(1.05)}
-.hero-slide.active{opacity:1;transform:scale(1)}
-.hero-controls{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;z-index:4}
+.hero-slider-wrap{position:absolute;inset:0;overflow:hidden;z-index:1}
+.hero-track{display:flex;width:100%;height:100%;transition:transform .75s cubic-bezier(.25,1,.5,1);will-change:transform}
+.hero-slide{min-width:100%;width:100%;height:100%;flex-shrink:0;background-size:cover;background-position:center;position:relative}
+.hero-slide::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,27,44,.65) 0%,rgba(9,27,44,.28) 50%,rgba(9,27,44,.10) 100%)}
+.hero-arrow{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:.2s}
+.hero-arrow:hover{background:var(--accent);border-color:var(--accent);color:#fff;transform:translateY(-50%) scale(1.08)}
+.hero-arrow.prev{left:20px}
+.hero-arrow.next{right:20px}
+@media(max-width:768px){.hero-arrow{display:none}}
+.hero-controls{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;z-index:10}
 .hero-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.45);border:none;cursor:pointer;padding:0;transition:all .3s ease}
 .hero-dot.active{background:var(--accent);width:26px;border-radius:999px}
 .hero .wrap{position:relative;z-index:3}
@@ -249,18 +255,22 @@ footer a:hover{color:var(--accent)}
 
 
 
-<!-- HERO SLIDER (2 IMAGES FROM EACH OF THE 4 TRAINS = 8 IMAGES) -->
+<!-- HERO SLIDER SCROLLER (2 IMAGES FROM EACH OF THE 4 TRAINS = 8 IMAGES) -->
 <section class="hero" id="heroSlider">
-  <div class="hero-slides">
-    <div class="hero-slide active" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/palace-on-wheels/exterior.webp')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/maharajas-express/hero.jpg')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/golden-chariot/hero.jpg')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/deccan-odyssey/hero.jpg')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/palace-on-wheels/hero.jpg')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/maharajas-express/dining-pink.jpg')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/golden-chariot/restaurant-1.jpg')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/deccan-odyssey/dining-lounge.jpg')"></div>
+  <div class="hero-slider-wrap">
+    <div class="hero-track" id="heroTrack">
+      <div class="hero-slide" style="background-image:url('/images/luxury-trains/palace-on-wheels/exterior.webp')"></div>
+      <div class="hero-slide" style="background-image:url('/images/luxury-trains/maharajas-express/hero.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('/images/luxury-trains/golden-chariot/hero.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('/images/luxury-trains/deccan-odyssey/hero.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('/images/luxury-trains/palace-on-wheels/hero.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('/images/luxury-trains/maharajas-express/dining-pink.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('/images/luxury-trains/golden-chariot/restaurant-1.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('/images/luxury-trains/deccan-odyssey/dining-lounge.jpg')"></div>
+    </div>
   </div>
+  <button class="hero-arrow prev" onclick="prevHeroSlide()" aria-label="Previous Slide">&#10094;</button>
+  <button class="hero-arrow next" onclick="nextHeroSlide()" aria-label="Next Slide">&#10095;</button>
   <div class="wrap">
     <span class="tag">LUXURY TRAINS OF INDIA</span>
     <h1>Travel India Like Royalty, On Board a Palace on Wheels</h1>
@@ -295,7 +305,7 @@ footer a:hover{color:var(--accent)}
 
       <!-- Palace on Wheels -->
       <article class="card">
-        <div class="photo" style="background-image:url('/images/luxury-trains/palace-on-wheels/hero.jpg')">
+        <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.26)),url('/images/luxury-trains/palace-on-wheels/hero.jpg')">
           <span>Rajasthan &amp; Agra</span>
           <div class="train-badge">
             <img src="/images/luxury-trains/palace-on-wheels/logo.png" alt="Palace on Wheels Logo">
@@ -324,7 +334,7 @@ footer a:hover{color:var(--accent)}
 
       <!-- Maharajas Express -->
       <article class="card">
-        <div class="photo" style="background-image:url('/images/luxury-trains/maharajas-express/hero.jpg')">
+        <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.26)),url('/images/luxury-trains/maharajas-express/hero.jpg')">
           <span>North, West &amp; Central India</span>
           <div class="train-badge">
             <img src="/images/luxury-trains/maharajas-express/logo.png" alt="Maharajas' Express Logo">
@@ -353,7 +363,7 @@ footer a:hover{color:var(--accent)}
 
       <!-- Golden Chariot -->
       <article class="card">
-        <div class="photo" style="background-image:url('/images/luxury-trains/golden-chariot/hero.jpg')">
+        <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.26)),url('/images/luxury-trains/golden-chariot/hero.jpg')">
           <span>South India</span>
           <div class="train-badge">
             <img src="/images/luxury-trains/golden-chariot/logo.png" alt="Golden Chariot Logo">
@@ -382,7 +392,7 @@ footer a:hover{color:var(--accent)}
 
       <!-- Deccan Odyssey -->
       <article class="card">
-        <div class="photo" style="background-image:url('/images/luxury-trains/deccan-odyssey/hero.jpg')">
+        <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.26)),url('/images/luxury-trains/deccan-odyssey/hero.jpg')">
           <span>Maharashtra, Rajasthan &amp; Gujarat</span>
           <div class="train-badge">
             <img src="/images/luxury-trains/deccan-odyssey/logo.png" alt="Deccan Odyssey Logo">
@@ -565,18 +575,27 @@ footer a:hover{color:var(--accent)}
 
 <script>
 let curHeroSlide = 0;
+const hTrack = document.getElementById('heroTrack');
 const hSlides = document.querySelectorAll('.hero-slide');
 const hDots = document.querySelectorAll('.hero-dot');
 function setHeroSlide(idx) {
-  if (!hSlides.length) return;
-  hSlides[curHeroSlide]?.classList.remove('active');
+  if (!hTrack || !hSlides.length) return;
   hDots[curHeroSlide]?.classList.remove('active');
   curHeroSlide = (idx + hSlides.length) % hSlides.length;
-  hSlides[curHeroSlide]?.classList.add('active');
+  hTrack.style.transform = `translateX(-${curHeroSlide * 100}%)`;
   hDots[curHeroSlide]?.classList.add('active');
 }
-if (hSlides.length > 1) {
-  setInterval(() => setHeroSlide(curHeroSlide + 1), 4500);
+function nextHeroSlide() { setHeroSlide(curHeroSlide + 1); }
+function prevHeroSlide() { setHeroSlide(curHeroSlide - 1); }
+
+let heroTimer = setInterval(nextHeroSlide, 4500);
+const heroEl = document.getElementById('heroSlider');
+if (heroEl) {
+  heroEl.addEventListener('mouseenter', () => clearInterval(heroTimer));
+  heroEl.addEventListener('mouseleave', () => {
+    clearInterval(heroTimer);
+    heroTimer = setInterval(nextHeroSlide, 4500);
+  });
 }
 </script>
 </body>

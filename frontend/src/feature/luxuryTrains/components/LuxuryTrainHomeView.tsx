@@ -334,7 +334,7 @@ export default function LuxuryTrainHomeView() {
                 <div
                   className={`h-72 sm:h-80 relative flex items-end p-5 text-white bg-gradient-to-br ${train.gradientClass}`}
                   style={{
-                    backgroundImage: `url('${train.image}')`,
+                    backgroundImage: `linear-gradient(rgba(0,0,0,0.12), rgba(0,0,0,0.26)), url('${train.image}')`,
                     backgroundPosition: "center",
                     backgroundSize: "cover",
                   }}
