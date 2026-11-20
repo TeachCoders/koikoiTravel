@@ -73,9 +73,11 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 .hero-overlay-bottom{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.45) 0%,rgba(0,0,0,.15) 50%,transparent 100%);pointer-events:none;z-index:2}
 .hero-overlay-left{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.35) 0%,rgba(0,0,0,.10) 50%,transparent 100%);pointer-events:none;z-index:2}
 /* Content */
-.hero .wrap{position:relative;z-index:10;max-width:1600px;margin:0 auto;padding:0 24px sm:0 40px;width:100%}
+.hero .wrap{position:relative;z-index:10;max-width:1600px;margin:0 auto;padding:0 24px;width:100%}
 .hero-tag-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;background:rgba(2,6,23,.6);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px}
 .hero-tag-pill span.dot{width:6px;height:6px;border-radius:50%;background:#F8904D;box-shadow:0 0 8px #F8904D}
+.hero-display-title{font-family:'Playfair Display',serif;color:#fff;font-size:clamp(26px,4.5vw,56px);font-weight:700;line-height:1.15;max-width:880px;margin-bottom:12px;text-shadow:0 4px 24px rgba(0,0,0,.9)}
+.hero-display-title span{display:block}
 .hero h1{font-family:'Playfair Display',serif;color:#fff;font-size:clamp(28px,4.5vw,56px);font-weight:700;line-height:1.15;max-width:880px;margin-bottom:14px;text-shadow:0 4px 24px rgba(0,0,0,.9)}
 .hero p{font-size:clamp(14px,1.5vw,19px);font-weight:500;color:#fff;line-height:1.6;max-width:720px;margin-bottom:24px;text-shadow:0 2px 12px rgba(0,0,0,.85)}
 .hero-ctas{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
@@ -94,6 +96,40 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 .hero-dot-btn{background:none;border:none;padding:6px;cursor:pointer;display:flex;align-items:center}
 .hero-dot-btn span{display:block;height:7px;width:10px;border-radius:999px;background:rgba(255,255,255,.6);transition:all .3s ease}
 .hero-dot-btn.active span{width:30px;background:#F8904D}
+
+/* Editorial / SEO Overview Section (Below Hero - KoiKoi Style) */
+.editorial-sec{background:#faf8f5;border-top:1px solid #ede8e1;border-bottom:1px solid #ede8e1;padding:64px 0;position:relative}
+@media(max-width:768px){.editorial-sec{padding:42px 0}}
+.editorial-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:48px;align-items:center}
+@media(max-width:992px){.editorial-grid{grid-template-columns:1fr;gap:36px}}
+
+.editorial-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:999px;background:rgba(248,144,77,.12);border:1px solid rgba(248,144,77,.35);color:#d96b27;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
+.editorial-sec h1{font-family:'Playfair Display',serif;font-size:clamp(26px,3.2vw,40px);font-weight:700;color:#0f2a43;line-height:1.22;margin-bottom:12px;letter-spacing:-.01em}
+.editorial-sec h1 span{color:#F8904D}
+.editorial-sub{font-size:clamp(16px,1.6vw,20px);font-weight:600;color:#1e293b;margin-bottom:16px;line-height:1.4}
+.editorial-sub span{color:#F8904D}
+.editorial-p{color:#475569;font-size:15px;line-height:1.75;margin-bottom:16px}
+.editorial-train-points{list-style:none;padding:0;margin:16px 0 20px}
+.editorial-train-points li{position:relative;padding-left:22px;margin-bottom:12px;font-size:14px;line-height:1.65;color:#475569}
+.editorial-train-points li::before{content:'•';position:absolute;left:6px;top:0;color:#F8904D;font-size:18px;line-height:1}
+.editorial-train-points li strong{color:#0f2a43}
+.editorial-highlight{border-left:4px solid #F8904D;background:#fff;padding:14px 18px;border-radius:0 12px 12px 0;margin:18px 0;box-shadow:0 2px 10px rgba(0,0,0,.03);font-size:14px;color:#334155;line-height:1.65;font-style:italic}
+.editorial-notice{background:rgba(197,155,39,.08);border:1px solid rgba(197,155,39,.35);border-radius:10px;padding:14px 16px;margin:18px 0;font-size:13px;color:#553f0c;line-height:1.65}
+.editorial-notice strong{color:#0f2a43;display:block;margin-bottom:4px;font-size:13.5px}
+.editorial-ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px}
+
+/* Visual Media / Feature Card on Right Side */
+.editorial-card{position:relative}
+.editorial-card-frame{position:absolute;inset:0;transform:translate(12px,12px);border-radius:18px;background:linear-gradient(135deg,#F8904D 0%,#c59b27 100%);z-index:0;transition:.3s}
+.editorial-card-inner{position:relative;z-index:1;background:#fff;border-radius:18px;overflow:hidden;border:2px solid #fff;box-shadow:0 16px 40px rgba(15,42,67,.12)}
+.editorial-card-img{height:250px;background-size:cover;background-position:center;position:relative}
+.editorial-card-badge{position:absolute;top:14px;left:14px;background:rgba(15,42,67,.85);backdrop-filter:blur(6px);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:.05em}
+.editorial-card-body{padding:24px}
+.editorial-card-title{font-size:18px;font-weight:700;color:#0f2a43;margin-bottom:14px}
+.editorial-checklist{list-style:none;padding:0;margin:0}
+.editorial-checklist li{display:flex;align-items:flex-start;gap:10px;padding:9px 0;font-size:13.5px;color:#334155;line-height:1.5;border-bottom:1px solid #f1f5f9}
+.editorial-checklist li:last-child{border-bottom:none}
+.editorial-checklist li .icon-chk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#eaf7ee;color:#16a34a;font-weight:bold;font-size:12px;flex-shrink:0;margin-top:2px}
 
 /* sub-nav tabs for train pages */
 .train-subnav{background:var(--primary);color:#fff;border-bottom:1px solid rgba(255,255,255,.12);position:sticky;top:72px;z-index:40}
@@ -423,17 +459,20 @@ def generate_all_for_base(base_dir, base_path):
   <div class="wrap">
     <div class="hero-tag-pill">
       <span class="dot"></span>
-      <span>LUXURY TRAINS OF INDIA</span>
+      <span>Private Customized &amp; Luxury Rail Journeys</span>
     </div>
-    <h1>Travel India Like Royalty, On Board a Palace on Wheels</h1>
-    <p>Four iconic luxury trains. One personal travel team. Tell us your dates and we will help you pick the right train, journey and cabin, then send a quote on WhatsApp and email.</p>
+    <div class="hero-display-title">
+      <span>Travel India, </span>
+      <span>like Royalty</span>
+    </div>
+    <p class="hero-desc">Bespoke luxury rail journeys across India, crafted with personalized pre and post-tour extensions.</p>
     <div class="hero-ctas">
       <a class="btn-koikoi-orange" href="#trains">
         <span>Explore the 4 Trains</span>
         <span>&rarr;</span>
       </a>
-      <a class="btn-koikoi-white" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20want%20a%20quote%20for%20a%20luxury%20train%20journey." target="_blank" rel="noopener">
-        <span>Get a Free Quote</span>
+      <a class="btn-koikoi-white" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20want%20to%20plan%20a%20luxury%20train%20journey%20in%20India." target="_blank" rel="noopener">
+        <span>Plan My Journey</span>
       </a>
     </div>
   </div>
@@ -448,6 +487,94 @@ def generate_all_for_base(base_dir, base_path):
     <button class="hero-dot-btn" onclick="setHeroSlide(5)" aria-label="Slide 6"><span></span></button>
     <button class="hero-dot-btn" onclick="setHeroSlide(6)" aria-label="Slide 7"><span></span></button>
     <button class="hero-dot-btn" onclick="setHeroSlide(7)" aria-label="Slide 8"><span></span></button>
+  </div>
+</section>
+
+<!-- DEDICATED SEO & EDITORIAL SECTION (BELOW HERO) -->
+<section class="editorial-sec">
+  <div class="wrap">
+    <div class="editorial-grid">
+      <!-- Left: Story & Expert Overview -->
+      <div>
+        <div class="editorial-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          <span>Bespoke Heritage Rail Expeditions</span>
+        </div>
+
+        <h1><span>Luxury Train Journeys in India</span>: Handcrafted Royal Expeditions</h1>
+
+        <p class="editorial-sub">Experience the Subcontinent Aboard India's 4 Iconic Palaces on Wheels, Planned by <span>Independent Travel Specialists</span></p>
+
+        <p class="editorial-p">Stepping aboard one of India's legendary luxury trains is a journey back to the golden era of rail travel. Far beyond ordinary transit, each voyage is an immersive five-star sanctuary where panoramic observation windows frame Rajput hill forts, untamed wildlife sanctuaries, and golden desert dunes—accompanied by white-gloved butler service, fine dining salons, and curated private excursions.</p>
+
+        <div class="editorial-notice">
+          <strong>Independent Luxury Travel Curator &amp; Advisory Notice</strong>
+          KoiKoi Travel is an independent bespoke luxury tour designer. India's four luxury trains are operated by their respective state rail corporations and tourism boards (IRCTC, RTDC, KSTDC, and MTDC). While train operators provide only station-to-station rail tickets, KoiKoi Travel crafts the complete, seamless vacation around your train voyage: securing your preferred cabin class, managing departure logistics, providing private chauffeured luxury transfers, arranging handpicked 5-star heritage palace stays in Delhi and Mumbai, and designing private guided pre- and post-rail excursions.
+        </div>
+
+        <p class="editorial-p">Choosing between India's four legendary trains depends on your travel season, preferred pace, and the regions you wish to discover:</p>
+
+        <ul class="editorial-train-points">
+          <li>
+            <strong>Palace on Wheels (7 Nights / 8 Days)</strong>: India's original luxury train (operating since 1982). A classic circuit through the royal heart of Rajasthan—Jaipur's Pink City, Ranthambore tiger safari, Chittorgarh fort, Udaipur's lakes, Jaisalmer's Thar desert dunes, and Jodhpur—culminating at Agra's Taj Mahal. Ideal for first-time visitors seeking timeless Rajputana romance.
+          </li>
+          <li>
+            <strong>Maharajas' Express (3 to 6 Nights)</strong>: India's most modern and opulent luxury train, featuring pneumatic suspension, twin fine-dining restaurants (Mayur Mahal &amp; Rang Mahal), and Presidential Suites spanning entire carriages. Offers four distinct routes connecting Delhi, Agra, and Rajasthan with the temple carvings of Khajuraho and the sacred ghats of Varanasi.
+          </li>
+          <li>
+            <strong>The Golden Chariot (3 to 5 Nights)</strong>: South India's premier luxury train gliding from Bengaluru through the boulder-strewn UNESCO World Heritage ruins of Hampi, Mysore's ornate palaces, Bandipur tiger reserve, and the sunlit beaches of Goa. Best for travelers seeking southern architecture, culture, and nature.
+          </li>
+          <li>
+            <strong>Deccan Odyssey (7 Nights / 8 Days)</strong>: The royal blue train of Western India, navigating Maharashtra, Gujarat, and Rajasthan. Highlights include the awe-inspiring rock-cut UNESCO caves of Ajanta and Ellora, Nashik's vineyard valleys, and vibrant coastal heritage.
+          </li>
+        </ul>
+
+        <div class="editorial-highlight">
+          "A train ticket gets you between stations. A handcrafted journey with KoiKoi Travel ensures you are met at the aircraft door, chauffeured in private luxury, housed in legendary palace hotels, and supported by a dedicated 24/7 personal trip manager throughout India."
+        </div>
+
+        <div class="editorial-ctas">
+          <a class="btn-koikoi-orange" href="#trains">
+            <span>Explore the 4 Trains Below</span>
+            <span>&darr;</span>
+          </a>
+          <a class="btn-koikoi-white" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20would%20like%20expert%20guidance%20on%20choosing%20the%20right%20luxury%20train%20in%20India." target="_blank" rel="noopener">
+            <span>Speak with a Rail Specialist</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Visual Curator & Commitment Card -->
+      <div class="editorial-card">
+        <div class="editorial-card-frame"></div>
+        <div class="editorial-card-inner">
+          <div class="editorial-card-img" style="background-image:url('/images/luxury-trains/maharajas-express/dining-pink.jpg')">
+            <span class="editorial-card-badge">THE KOIKOI CURATOR PROMISE</span>
+          </div>
+          <div class="editorial-card-body">
+            <h3 class="editorial-card-title">Why Plan Your Rail Journey With Us</h3>
+            <ul class="editorial-checklist">
+              <li>
+                <span class="icon-chk">&#10003;</span>
+                <div><strong>Impartial Route &amp; Cabin Guidance:</strong> Unbiased advice on train seasons (October to April), routes, and cabin layouts (Deluxe vs Junior Suite vs Presidential Suite).</div>
+              </li>
+              <li>
+                <span class="icon-chk">&#10003;</span>
+                <div><strong>Bespoke Pre &amp; Post Extensions:</strong> Tailored Golden Triangle tours, private chauffeured Mercedes/Innova Crysta cars, and airport VIP meet-and-greets.</div>
+              </li>
+              <li>
+                <span class="icon-chk">&#10003;</span>
+                <div><strong>Handpicked 5-Star Heritage Stays:</strong> Curated suites and preferential arrangements at legendary palace hotels (The Oberoi, Taj Mahal Palace, The Leela).</div>
+              </li>
+              <li>
+                <span class="icon-chk">&#10003;</span>
+                <div><strong>Dedicated 24/7 Concierge:</strong> One trip manager on WhatsApp before, during, and after your journey until you return home safely.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
