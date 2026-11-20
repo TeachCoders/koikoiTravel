@@ -65,7 +65,7 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 
 /* hero */
 .hero{position:relative;color:#fff;padding:120px 0 110px;min-height:560px;display:flex;align-items:center;overflow:hidden;background:#091b2c;
-  background:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),
+  background:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),
   url('/images/luxury-trains/palace-on-wheels/exterior.webp') center/cover no-repeat;
 }
 .hero-slides{position:absolute;inset:0;z-index:1}
@@ -75,9 +75,9 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 .hero-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.45);border:none;cursor:pointer;padding:0;transition:all .3s ease}
 .hero-dot.active{background:var(--accent);width:26px;border-radius:999px}
 .hero .wrap{position:relative;z-index:3}
-.hero .tag{display:inline-block;border:1px solid rgba(255,255,255,.4);padding:5px 16px;border-radius:999px;font-size:12px;letter-spacing:.08em;margin-bottom:18px;color:#f3d79b}
-.hero h1{color:#fff;font-size:clamp(30px,5vw,56px);max-width:820px;margin-bottom:16px}
-.hero p{max-width:640px;font-size:17px;color:#e8edf2;margin-bottom:28px}
+.hero .tag{display:inline-block;border:1px solid rgba(255,255,255,.5);padding:5px 16px;border-radius:999px;font-size:12px;letter-spacing:.08em;margin-bottom:18px;color:#f3d79b;background:rgba(0,0,0,.35);backdrop-filter:blur(4px)}
+.hero h1{color:#fff;font-size:clamp(30px,5vw,56px);max-width:820px;margin-bottom:16px;text-shadow:0 3px 14px rgba(0,0,0,.85)}
+.hero p{max-width:640px;font-size:17px;color:#fff;margin-bottom:28px;text-shadow:0 2px 10px rgba(0,0,0,.85)}
 .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
 
 /* sub-nav tabs for train pages */
@@ -377,14 +377,14 @@ def generate_all_for_base(base_dir, base_path):
 <!-- HERO SLIDER (2 IMAGES FROM EACH OF THE 4 TRAINS = 8 IMAGES) -->
 <section class="hero" id="heroSlider">
   <div class="hero-slides">
-    <div class="hero-slide active" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/palace-on-wheels/exterior.webp')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/maharajas-express/hero.jpg')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/golden-chariot/hero.jpg')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/deccan-odyssey/hero.jpg')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/palace-on-wheels/hero.jpg')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/maharajas-express/dining-pink.jpg')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/golden-chariot/restaurant-1.jpg')"></div>
-    <div class="hero-slide" style="background-image:linear-gradient(105deg,rgba(9,27,44,.90) 0%,rgba(9,27,44,.68) 55%,rgba(9,27,44,.35) 100%),url('/images/luxury-trains/deccan-odyssey/dining-lounge.jpg')"></div>
+    <div class="hero-slide active" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/palace-on-wheels/exterior.webp')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/maharajas-express/hero.jpg')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/golden-chariot/hero.jpg')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/deccan-odyssey/hero.jpg')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/palace-on-wheels/hero.jpg')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/maharajas-express/dining-pink.jpg')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/golden-chariot/restaurant-1.jpg')"></div>
+    <div class="hero-slide" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/deccan-odyssey/dining-lounge.jpg')"></div>
   </div>
   <div class="wrap">
     <span class="tag">LUXURY TRAINS OF INDIA</span>
@@ -420,7 +420,7 @@ def generate_all_for_base(base_dir, base_path):
 
       <!-- Palace on Wheels -->
       <article class="card">
-        <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.55)),url('/images/luxury-trains/palace-on-wheels/hero.jpg')">
+        <div class="photo" style="background-image:url('/images/luxury-trains/palace-on-wheels/hero.jpg')">
           <span>Rajasthan &amp; Agra</span>
           <div class="train-badge">
             <img src="/images/luxury-trains/palace-on-wheels/logo.png" alt="Palace on Wheels Logo">
@@ -449,7 +449,7 @@ def generate_all_for_base(base_dir, base_path):
 
       <!-- Maharajas Express -->
       <article class="card">
-        <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.55)),url('/images/luxury-trains/maharajas-express/hero.jpg')">
+        <div class="photo" style="background-image:url('/images/luxury-trains/maharajas-express/hero.jpg')">
           <span>North, West &amp; Central India</span>
           <div class="train-badge">
             <img src="/images/luxury-trains/maharajas-express/logo.png" alt="Maharajas' Express Logo">
@@ -478,7 +478,7 @@ def generate_all_for_base(base_dir, base_path):
 
       <!-- Golden Chariot -->
       <article class="card">
-        <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.55)),url('/images/luxury-trains/golden-chariot/hero.jpg')">
+        <div class="photo" style="background-image:url('/images/luxury-trains/golden-chariot/hero.jpg')">
           <span>South India</span>
           <div class="train-badge">
             <img src="/images/luxury-trains/golden-chariot/logo.png" alt="Golden Chariot Logo">
@@ -507,7 +507,7 @@ def generate_all_for_base(base_dir, base_path):
 
       <!-- Deccan Odyssey -->
       <article class="card">
-        <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.55)),url('/images/luxury-trains/deccan-odyssey/hero.jpg')">
+        <div class="photo" style="background-image:url('/images/luxury-trains/deccan-odyssey/hero.jpg')">
           <span>Maharashtra, Rajasthan &amp; Gujarat</span>
           <div class="train-badge">
             <img src="/images/luxury-trains/deccan-odyssey/logo.png" alt="Deccan Odyssey Logo">
@@ -655,7 +655,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Palace on Wheels: Overview
     pow_overview = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{pow_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{pow_data["banner"]}');">
   <div class="wrap">
     <span class="tag">PALACE ON WHEELS · OVERVIEW</span>
     <h1>The Pioneer of Luxury Rail Travel in India</h1>
@@ -713,7 +713,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Palace on Wheels: Itinerary
     pow_itinerary = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{pow_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{pow_data["banner"]}');">
   <div class="wrap">
     <span class="tag">PALACE ON WHEELS · ITINERARY</span>
     <h1>7 Nights / 8 Days Classic Rajasthan Journey</h1>
@@ -797,7 +797,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Palace on Wheels: Departures
     pow_departures = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{pow_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{pow_data["banner"]}');">
   <div class="wrap">
     <span class="tag">PALACE ON WHEELS · DEPARTURES</span>
     <h1>2024–2025 & 2025–2026 Departure Schedule</h1>
@@ -839,7 +839,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Palace on Wheels: Price
     pow_price = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{pow_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{pow_data["banner"]}');">
   <div class="wrap">
     <span class="tag">PALACE ON WHEELS · TARIFF & PRICE</span>
     <h1>All-Inclusive Official Royal Tariff</h1>
@@ -898,7 +898,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Palace on Wheels: Cabins
     pow_cabins = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{pow_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{pow_data["banner"]}');">
   <div class="wrap">
     <span class="tag">PALACE ON WHEELS · CABINS & SUITES</span>
     <h1>Imperial Accommodations on Wheels</h1>
@@ -952,7 +952,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Palace on Wheels: Photo Gallery
     pow_gallery = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{pow_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{pow_data["banner"]}');">
   <div class="wrap">
     <span class="tag">PALACE ON WHEELS · PHOTO GALLERY</span>
     <h1>Visual Tour of Royal Rajasthan on Rails</h1>
@@ -987,7 +987,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Maharajas' Express: Overview
     me_overview = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{me_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{me_data["banner"]}');">
   <div class="wrap">
     <span class="tag">MAHARAJAS' EXPRESS · OVERVIEW</span>
     <h1>The World's Leading Luxury Train</h1>
@@ -1033,7 +1033,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Maharajas' Express: Itinerary
     me_itinerary = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{me_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{me_data["banner"]}');">
   <div class="wrap">
     <span class="tag">MAHARAJAS' EXPRESS · ITINERARIES</span>
     <h1>4 Iconic Royal Journeys</h1>
@@ -1076,7 +1076,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Maharajas' Express: Departures
     me_departures = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{me_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{me_data["banner"]}');">
   <div class="wrap">
     <span class="tag">MAHARAJAS' EXPRESS · DEPARTURES</span>
     <h1>2024–2025 & 2025–2026 Departure Schedule</h1>
@@ -1106,7 +1106,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Maharajas' Express: Price
     me_price = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{me_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{me_data["banner"]}');">
   <div class="wrap">
     <span class="tag">MAHARAJAS' EXPRESS · TARIFF</span>
     <h1>Official Tariff & Cabin Prices</h1>
@@ -1136,7 +1136,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Maharajas' Express: Cabins
     me_cabins = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{me_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{me_data["banner"]}');">
   <div class="wrap">
     <span class="tag">MAHARAJAS' EXPRESS · CABINS</span>
     <h1>4 Palatial Cabin Categories</h1>
@@ -1173,7 +1173,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Maharajas' Express: Gallery
     me_gallery = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{me_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{me_data["banner"]}');">
   <div class="wrap">
     <span class="tag">MAHARAJAS' EXPRESS · GALLERY</span>
     <h1>Photo Gallery</h1>
@@ -1206,7 +1206,7 @@ def generate_all_for_base(base_dir, base_path):
     
     # Golden Chariot Overview
     gc_overview = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{gc_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{gc_data["banner"]}');">
   <div class="wrap">
     <span class="tag">THE GOLDEN CHARIOT · OVERVIEW</span>
     <h1>The Soul of South India on Wheels</h1>
@@ -1252,7 +1252,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Golden Chariot Itinerary
     gc_itinerary = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{gc_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{gc_data["banner"]}');">
   <div class="wrap">
     <span class="tag">GOLDEN CHARIOT · ITINERARIES</span>
     <h1>3 South India Luxury Circuits</h1>
@@ -1289,7 +1289,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Golden Chariot Departures
     gc_departures = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{gc_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{gc_data["banner"]}');">
   <div class="wrap">
     <span class="tag">GOLDEN CHARIOT · DEPARTURES</span>
     <h1>2024–2025 & 2025–2026 Departure Schedule</h1>
@@ -1318,7 +1318,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Golden Chariot Price
     gc_price = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{gc_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{gc_data["banner"]}');">
   <div class="wrap">
     <span class="tag">GOLDEN CHARIOT · TARIFF</span>
     <h1>Official Ticket Prices</h1>
@@ -1347,7 +1347,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Golden Chariot Cabins
     gc_cabins = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{gc_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{gc_data["banner"]}');">
   <div class="wrap">
     <span class="tag">GOLDEN CHARIOT · CABINS</span>
     <h1>Royal Suites Inspired by Hoysala Temples</h1>
@@ -1384,7 +1384,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Golden Chariot Gallery
     gc_gallery = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{gc_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{gc_data["banner"]}');">
   <div class="wrap">
     <span class="tag">GOLDEN CHARIOT · GALLERY</span>
     <h1>Photo Gallery</h1>
@@ -1419,7 +1419,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Deccan Odyssey Overview
     do_overview = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{do_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{do_data["banner"]}');">
   <div class="wrap">
     <span class="tag">DECCAN ODYSSEY · OVERVIEW</span>
     <h1>The Blue Limousine on Rails</h1>
@@ -1465,7 +1465,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Deccan Odyssey Itinerary
     do_itinerary = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{do_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{do_data["banner"]}');">
   <div class="wrap">
     <span class="tag">DECCAN ODYSSEY · ITINERARIES</span>
     <h1>6 Distinct 7 Nights / 8 Days Circuits</h1>
@@ -1502,7 +1502,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Deccan Odyssey Departures
     do_departures = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{do_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{do_data["banner"]}');">
   <div class="wrap">
     <span class="tag">DECCAN ODYSSEY · DEPARTURES</span>
     <h1>2024–2025 & 2025–2026 Departure Schedule</h1>
@@ -1531,7 +1531,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Deccan Odyssey Price
     do_price = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{do_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{do_data["banner"]}');">
   <div class="wrap">
     <span class="tag">DECCAN ODYSSEY · TARIFF</span>
     <h1>Official Ticket Prices (7 Nights / 8 Days)</h1>
@@ -1559,7 +1559,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Deccan Odyssey Cabins
     do_cabins = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{do_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{do_data["banner"]}');">
   <div class="wrap">
     <span class="tag">DECCAN ODYSSEY · CABINS</span>
     <h1>Maratha Inspired Suites on Rails</h1>
@@ -1596,7 +1596,7 @@ def generate_all_for_base(base_dir, base_path):
 
     # Deccan Odyssey Gallery
     do_gallery = f"""
-<section class="hero" style="background-image:linear-gradient(105deg,rgba(9,27,44,.92) 0%,rgba(9,27,44,.72) 55%,rgba(9,27,44,.40) 100%),url('{do_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{do_data["banner"]}');">
   <div class="wrap">
     <span class="tag">DECCAN ODYSSEY · GALLERY</span>
     <h1>Photo Gallery</h1>
