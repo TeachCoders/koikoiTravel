@@ -82,6 +82,9 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 .card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;border:1px solid var(--line)}
 .card .photo{height:320px;display:flex;align-items:flex-end;padding:20px;color:#fff;font-family:'Playfair Display',serif;font-size:13px;background-size:cover;background-position:center;position:relative}
 @media(max-width:600px){.card .photo{height:250px}}
+.train-badge{position:absolute;top:20px;right:20px;width:72px;height:72px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;padding:7px;border:2.5px solid #c59b27;box-shadow:0 6px 18px rgba(0,0,0,.35);z-index:2;transition:transform .2s ease}
+.train-badge img{width:100%;height:100%;object-fit:contain}
+.card:hover .train-badge{transform:scale(1.06)}
 .card .photo span{background:rgba(0,0,0,.6);backdrop-filter:blur(4px);padding:5px 12px;border-radius:999px;font-family:'Inter',sans-serif;font-size:12px;letter-spacing:.05em}
 .card .body{padding:24px;flex:1;display:flex;flex-direction:column}
 .card h3{font-size:24px;margin-bottom:4px}
@@ -267,7 +270,9 @@ footer a:hover{color:var(--accent)}
       <article class="card">
         <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.55)),url('/images/luxury-trains/palace-on-wheels/hero.jpg')">
           <span>Rajasthan &amp; Agra</span>
-          <img src="/images/luxury-trains/palace-on-wheels/logo.png" alt="Palace on Wheels Logo" style="position:absolute;top:20px;right:20px;height:48px;max-width:125px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.7));">
+          <div class="train-badge">
+            <img src="/images/luxury-trains/palace-on-wheels/logo.png" alt="Palace on Wheels Logo">
+          </div>
         </div>
         <div class="body">
           <h3 style="margin-bottom:2px">Palace on Wheels</h3>
@@ -294,7 +299,9 @@ footer a:hover{color:var(--accent)}
       <article class="card">
         <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.55)),url('/images/luxury-trains/maharajas-express/hero.jpg')">
           <span>North, West &amp; Central India</span>
-          <img src="/images/luxury-trains/maharajas-express/logo.png" alt="Maharajas' Express Logo" style="position:absolute;top:20px;right:20px;height:48px;max-width:125px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.7));">
+          <div class="train-badge">
+            <img src="/images/luxury-trains/maharajas-express/logo.png" alt="Maharajas' Express Logo">
+          </div>
         </div>
         <div class="body">
           <h3 style="margin-bottom:2px">Maharajas' Express</h3>
@@ -321,7 +328,9 @@ footer a:hover{color:var(--accent)}
       <article class="card">
         <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.55)),url('/images/luxury-trains/golden-chariot/hero.jpg')">
           <span>South India</span>
-          <img src="/images/luxury-trains/golden-chariot/logo.png" alt="Golden Chariot Logo" style="position:absolute;top:20px;right:20px;height:48px;max-width:125px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.7));">
+          <div class="train-badge">
+            <img src="/images/luxury-trains/golden-chariot/logo.png" alt="Golden Chariot Logo">
+          </div>
         </div>
         <div class="body">
           <h3 style="margin-bottom:2px">Golden Chariot</h3>
@@ -348,7 +357,9 @@ footer a:hover{color:var(--accent)}
       <article class="card">
         <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.55)),url('/images/luxury-trains/deccan-odyssey/hero.jpg')">
           <span>Maharashtra, Rajasthan &amp; Gujarat</span>
-          <img src="/images/luxury-trains/deccan-odyssey/logo.png" alt="Deccan Odyssey Logo" style="position:absolute;top:20px;right:20px;height:48px;max-width:125px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.7));">
+          <div class="train-badge">
+            <img src="/images/luxury-trains/deccan-odyssey/logo.png" alt="Deccan Odyssey Logo">
+          </div>
         </div>
         <div class="body">
           <h3 style="margin-bottom:2px">Deccan Odyssey</h3>
