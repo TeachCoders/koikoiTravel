@@ -285,8 +285,7 @@ export default function LuxuryTrainHomeView() {
           </span>
 
           <div className="text-3xl sm:text-5xl lg:text-6xl font-outfit font-bold text-white max-w-4xl leading-[1.1] mb-4 drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]">
-            <span className="block">Travel India, </span>
-            <span className="block">like Royalty</span>
+            <span className="block">Luxury Train India</span>
           </div>
 
           <p className="max-w-2xl text-base sm:text-lg text-white/90 mb-7 leading-relaxed font-normal">

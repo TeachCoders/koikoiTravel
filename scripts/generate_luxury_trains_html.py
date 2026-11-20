@@ -1060,8 +1060,7 @@ def generate_all_for_base(base_dir, base_path):
       <span>Private Customized &amp; Luxury Rail Journeys</span>
     </div>
     <div class="hero-display-title">
-      <span>Travel India, </span>
-      <span>like Royalty</span>
+      <span>Luxury Train India</span>
     </div>
     <p class="hero-desc">Bespoke luxury rail journeys across India, crafted with personalized pre and post-tour extensions.</p>
     <div class="hero-ctas">
