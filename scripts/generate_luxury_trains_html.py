@@ -1950,11 +1950,11 @@ def generate_all_for_base(base_dir, base_path):
       </div>
       <div class="koikoi-card-footer">
         <div class="koikoi-card-amenities">
-          Hotels · Meals · Sightseeing · Transfers
+          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
         </div>
         <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20a%20quote%20for%20Maharajas%27%20Express%20-%20The%20Heritage%20of%20India%20(Mumbai%20to%20Delhi%2C%207%20Days)." target="_blank" rel="noopener">
-            Get a quote
+          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Maharajas%27%20Express%20-%20The%20Heritage%20of%20India%20(Mumbai%20to%20Delhi%2C%207%20Days)." target="_blank" rel="noopener">
+            Inquire on WhatsApp
           </a>
           <a class="koikoi-btn-details" href="{base_path}/maharajas-express/the-heritage-of-india">
             Details
@@ -1992,11 +1992,11 @@ def generate_all_for_base(base_dir, base_path):
       </div>
       <div class="koikoi-card-footer">
         <div class="koikoi-card-amenities">
-          Hotels · Meals · Sightseeing · Transfers
+          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
         </div>
         <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20a%20quote%20for%20Maharajas%27%20Express%20-%20The%20Indian%20Panorama%20(Delhi%20to%20Delhi%2C%207%20Days)." target="_blank" rel="noopener">
-            Get a quote
+          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Maharajas%27%20Express%20-%20The%20Indian%20Panorama%20(Delhi%20to%20Delhi%2C%207%20Days)." target="_blank" rel="noopener">
+            Inquire on WhatsApp
           </a>
           <a class="koikoi-btn-details" href="{base_path}/maharajas-express/the-indian-panorama">
             Details
@@ -2034,11 +2034,11 @@ def generate_all_for_base(base_dir, base_path):
       </div>
       <div class="koikoi-card-footer">
         <div class="koikoi-card-amenities">
-          Hotels · Meals · Sightseeing · Transfers
+          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
         </div>
         <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20a%20quote%20for%20Maharajas%27%20Express%20-%20The%20Indian%20Splendour%20(Delhi%20to%20Mumbai%2C%207%20Days)." target="_blank" rel="noopener">
-            Get a quote
+          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Maharajas%27%20Express%20-%20The%20Indian%20Splendour%20(Delhi%20to%20Mumbai%2C%207%20Days)." target="_blank" rel="noopener">
+            Inquire on WhatsApp
           </a>
           <a class="koikoi-btn-details" href="{base_path}/maharajas-express/the-indian-splendour">
             Details
@@ -2076,11 +2076,11 @@ def generate_all_for_base(base_dir, base_path):
       </div>
       <div class="koikoi-card-footer">
         <div class="koikoi-card-amenities">
-          Hotels · Meals · Sightseeing · Transfers
+          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
         </div>
         <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20a%20quote%20for%20Maharajas%27%20Express%20-%20Treasures%20of%20India%20(4%20Days%20Golden%20Triangle)." target="_blank" rel="noopener">
-            Get a quote
+          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Maharajas%27%20Express%20-%20Treasures%20of%20India%20(4%20Days%20Golden%20Triangle)." target="_blank" rel="noopener">
+            Inquire on WhatsApp
           </a>
           <a class="koikoi-btn-details" href="{base_path}/maharajas-express/treasures-of-india">
             Details
@@ -2427,24 +2427,24 @@ def generate_all_for_base(base_dir, base_path):
     # Image 1 Video Spotlight Split Box Component
     def get_me_video_spotlight_component():
         return f"""
-<div style="border-radius:24px;overflow:hidden;background:#ffffff;border:1px solid #e2e8f0;box-shadow:0 8px 30px rgba(0,0,0,0.06);margin-top:20px">
+<div style="border-radius:24px;overflow:hidden;background:#262463;border:1px solid rgba(255,255,255,0.08);box-shadow:0 16px 48px rgba(15,23,42,0.18);margin-top:20px">
   <div style="display:grid;grid-template-columns:1fr 1.25fr;min-height:460px" class="video-split-grid">
-    <div style="padding:48px 44px;display:flex;flex-direction:column;justify-content:center;background:#ffffff;color:#0f172a">
+    <div style="padding:48px 44px;display:flex;flex-direction:column;justify-content:center;background:#262463;color:#ffffff">
       <div style="margin-bottom:20px">
-        <img src="/images/luxury-trains/maharajas-express/logo.png" alt="Maharajas' Express Official Logo" style="max-height:85px;width:auto">
+        <img src="/images/luxury-trains/maharajas-express/logo.png" alt="Maharajas' Express Official Logo" style="max-height:85px;width:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.3))">
       </div>
-      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,2.8vw,36px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 16px">
-        Maharajas Express
+      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,2.8vw,36px);font-weight:800;color:#ffffff;line-height:1.2;margin:0 0 16px">
+        Maharajas' Express
       </h2>
-      <p style="color:#475569;font-size:14.5px;line-height:1.7;margin:0 0 14px">
-        World's leading luxury trains Maharaja Express Ticket Booking - Promoted by IRCTC, the catering wing of the Indian Railways, the Maharajas Express has been voted as the best royal train of India.
+      <p style="color:#cbd5e1;font-size:14.5px;line-height:1.75;margin:0 0 14px">
+        Voted the World's Leading Luxury Train, the Maharajas' Express represents the gold standard of royal Indian rail travel. Half a mile of sheer opulence, authentic Rajput hospitality, and five-star dining on wheels.
       </p>
-      <p style="color:#475569;font-size:14.5px;line-height:1.7;margin:0 0 24px">
-        It is perhaps the only royal train to offer 4 itineraries to cover destinations as far apart as Mumbai and Khajuraho over periods stretching from a week or so to two weeks and more. Visit us to check out Maharaja Express ticket price.
+      <p style="color:#cbd5e1;font-size:14.5px;line-height:1.75;margin:0 0 24px">
+        Covering destinations from Mumbai to Delhi, Rajasthan, Orchha, Khajuraho, and the sacred river ghats of Varanasi across 4 distinct signature circuits.
       </p>
       <div>
-        <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20watched%20the%20Maharajas%27%20Express%20video%20and%20want%20to%20inquire%20about%20booking." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:999px;text-decoration:none">
-          Inquire Now on WhatsApp &rarr;
+        <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20am%20interested%20in%20Maharajas%27%20Express.%20Please%20share%20availability%20and%20journey%20details." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 26px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(248,144,77,0.4)">
+          Inquire on WhatsApp &rarr;
         </a>
       </div>
     </div>
@@ -2483,7 +2483,7 @@ def generate_all_for_base(base_dir, base_path):
 <div style="position:relative;height:480px;background:url('/images/luxury-trains/maharajas-express/hero.jpg') center/cover no-repeat;overflow:hidden">
 </div>
 
-<!-- Clean Editorial Title & Intro Section (BELOW BANNER) -->
+<!-- Clean Editorial Title & Journeys Intro Section (SINGLE MERGED HEADING & TEXT) -->
 <div style="background:#ffffff;border-bottom:1px solid #e2e8f0;padding:40px 0 36px">
   <div class="wrap">
     <div class="koikoi-breadcrumb" style="margin-bottom:14px">
@@ -2495,30 +2495,23 @@ def generate_all_for_base(base_dir, base_path):
       <span style="background:rgba(248,144,77,0.12);color:#d96b27;border:1px solid rgba(248,144,77,0.25);font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:5px 14px;border-radius:999px">
         WORLD'S LEADING LUXURY TRAIN (7x WINNER)
       </span>
-      <span style="color:#64748b;font-size:13.5px;font-weight:500">★ 4.9 (184 Verified Travelers) · IRCTC Royal Train</span>
+      <span style="color:#64748b;font-size:13.5px;font-weight:600">4 Signature Circuits · 23 Carriages</span>
     </div>
     <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(30px,4.2vw,48px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 14px;max-width:1100px">
-      Maharajas' Express Luxury Train Tour Packages
+      The 4 Signature Journeys of Maharajas' Express
     </h1>
-    <p style="color:#475569;font-size:clamp(15px,1.25vw,17.5px);max-width:1050px;line-height:1.7;margin:0">
-      Experience half a mile of royal opulence across India. 23 carriages, state-of-the-art pneumatic suspension, two five-star dining restaurants, and 4 legendary circuits connecting Mumbai, Delhi, Rajasthan, Agra, and Varanasi.
+    <p style="color:#475569;font-size:clamp(15px,1.25vw,17.5px);max-width:1050px;line-height:1.75;margin:0">
+      Experience half a mile of royal opulence across India aboard 23 carriages with two five-star fine-dining restaurants and pneumatic suspension. Choose from 4 legendary circuits — from a high-energy 4-day Golden Triangle royal weekend to week-long grand odysseys connecting Mumbai, Delhi, Rajasthan, Agra, and Varanasi. Each journey features its own complete day-by-day itinerary.
     </p>
   </div>
 </div>
 
 <!-- Main Body Section (FULL WIDTH - NO SIDEBAR - NO INCLUSIONS/EXCLUSIONS ON INDEX) -->
-<section style="padding:56px 0 80px;background:#fcfbf9">
+<section style="padding:48px 0 80px;background:#fcfbf9">
   <div class="wrap">
     
     <!-- 1. The 4 Signature Journeys -->
     <div id="journeys" style="margin-bottom:64px">
-      <div class="sec-head" style="margin-bottom:12px">
-        <div class="eyebrow">Choose Your Royal Circuit</div>
-        <h2 style="font-size:clamp(26px,3vw,36px)">The 4 Signature Journeys of Maharajas' Express</h2>
-        <p style="max-width:860px;margin:0 auto">
-          From a high-energy 4-day Golden Triangle royal weekend to week-long grand odysseys connecting Mumbai, Delhi, Rajasthan, and Varanasi. Each journey features its own separate complete day-by-day itinerary.
-        </p>
-      </div>
       {get_me_cards_component()}
     </div>
 
