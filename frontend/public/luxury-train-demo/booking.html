@@ -1181,8 +1181,7 @@ footer a:hover{color:#F8904D}
 }
 
 /* ========================================================
-   Timeline Stepper (Matches user reference image)
-   Warm gold track line + right arrow + labels + drop pin
+   Timeline Stepper with Active Animated Green Transition
    ======================================================== */
 .kb-timeline-wrap {
   position: relative;
@@ -1195,20 +1194,34 @@ footer a:hover{color:#F8904D}
   top: 32px;
   left: 60px;
   right: 60px;
-  height: 2px;
-  background: var(--gold-border);
+  height: 3px;
+  background: #e2e8f0;
   z-index: 1;
+  border-radius: 999px;
+}
+.kb-timeline-bar-fill {
+  position: absolute;
+  top: 32px;
+  left: 60px;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #10b981 0%, #0d9488 100%);
+  z-index: 1;
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
 }
 .kb-timeline-arrow {
   position: absolute;
-  right: 46px;
-  top: 28px;
+  right: 48px;
+  top: 27px;
   width: 0;
   height: 0;
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-left: 9px solid var(--gold-dark);
+  border-left: 9px solid #94a3b8;
   z-index: 1;
+  transition: border-left-color 0.4s ease;
 }
 .kb-timeline-steps {
   position: relative;
@@ -1233,40 +1246,61 @@ footer a:hover{color:#F8904D}
   margin-bottom: 8px;
   color: #94a3b8;
   white-space: nowrap;
-  transition: color 0.2s ease;
+  transition: all 0.35s ease;
 }
 .kb-timeline-step.active .kb-step-label-top {
-  color: var(--gold-dark);
+  color: #0f766e;
+  font-weight: 800;
 }
 .kb-timeline-step.completed .kb-step-label-top {
-  color: var(--teal);
+  color: #10b981;
 }
 .kb-timeline-node {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: #ffffff;
-  border: 3px solid var(--gold-border);
-  transition: all 0.25s ease;
+  border: 3px solid #cbd5e1;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
 }
 .kb-timeline-step.active .kb-timeline-node {
-  border-color: var(--gold);
-  background: var(--gold);
-  box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.25);
+  border-color: #0d9488;
+  background: #0d9488;
+  box-shadow: 0 0 0 5px rgba(13, 148, 136, 0.25);
+  transform: scale(1.15);
 }
 .kb-timeline-step.completed .kb-timeline-node {
-  border-color: var(--teal);
-  background: var(--teal);
+  border-color: #10b981;
+  background: #10b981;
+  color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+  transform: scale(1.05);
+}
+.kb-timeline-step.completed .kb-timeline-node::before {
+  content: "✓";
+  color: #ffffff;
+  display: block;
 }
 /* Vertical drop pin connecting active node to form card below */
 .kb-timeline-step.active::after {
   content: "";
   position: absolute;
-  top: 42px;
-  width: 2px;
-  height: 22px;
-  background: var(--gold);
+  top: 45px;
+  width: 2.5px;
+  height: 20px;
+  background: #0d9488;
+  border-radius: 2px;
+  animation: dropPinSlide 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes dropPinSlide {
+  from { height: 0; opacity: 0; }
+  to { height: 20px; opacity: 1; }
 }
 
 @media (max-width: 640px) {
@@ -1274,7 +1308,7 @@ footer a:hover{color:#F8904D}
     padding: 0 10px;
     margin: 16px auto 26px;
   }
-  .kb-timeline-bar-line {
+  .kb-timeline-bar-line, .kb-timeline-bar-fill {
     left: 40px;
     right: 40px;
     top: 30px;
@@ -1292,7 +1326,7 @@ footer a:hover{color:#F8904D}
     margin-bottom: 6px;
   }
   .kb-timeline-step.active::after {
-    top: 38px;
+    top: 40px;
     height: 18px;
   }
 }
@@ -1532,55 +1566,57 @@ footer a:hover{color:#F8904D}
   }
 }
 
-/* Individual Clean Radio Button (NO CARD BOX BORDER!) */
+/* Individual Pill Radio Button (Matches homepage background #faf8f5 with #e2e8f0 border) */
 .kb-date-item {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 12px;
-  padding: 6px 2px;
-  background: transparent;
-  border: none;
+  padding: 10px 14px;
+  background: #faf8f5;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.15s ease;
-  font-size: 16px;
+  transition: all 0.2s ease;
+  font-size: 15.5px;
   font-weight: 600;
   color: #0f172a;
   user-select: none;
   text-align: left;
-  border-radius: 4px;
 }
 .kb-date-item:hover {
-  color: var(--gold);
-}
-.kb-date-item:hover .kb-radio-circle {
-  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.18);
+  background: #f1f5f9;
+  border-color: #cbd5e1;
 }
 .kb-date-item[aria-checked="true"] {
-  color: var(--gold-dark);
+  background: #f0fdfa;
+  border-color: #0d9488;
+  box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.2);
+  color: #0f766e;
   font-weight: 700;
 }
 .kb-radio-circle {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  border: 2.2px solid var(--gold); /* Golden circle border */
+  border: 2px solid #0d9488;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   background: #ffffff;
   box-sizing: border-box;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
 }
 .kb-date-item[aria-checked="true"] .kb-radio-circle {
-  border-color: var(--gold-dark);
+  border-color: #0d9488;
+  background: #0d9488;
 }
 .kb-date-item[aria-checked="true"] .kb-radio-circle::after {
   content: "";
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: var(--gold-dark); /* Filled gold dot */
+  background: #ffffff;
 }
 
 .kb-flex-date-wrap {
@@ -1921,6 +1957,7 @@ footer a:hover{color:#F8904D}
   <!-- Timeline Stepper (Matches user reference image) -->
   <div class="kb-timeline-wrap">
     <div class="kb-timeline-bar-line"></div>
+    <div class="kb-timeline-bar-fill" id="timeline-progress-fill"></div>
     <div class="kb-timeline-arrow"></div>
     <div class="kb-timeline-steps">
       <div class="kb-timeline-step active" id="step-node-1" onclick="goToStep(1)">
@@ -2253,20 +2290,28 @@ function updateTimeline() {
   var n1 = document.getElementById("step-node-1");
   var n2 = document.getElementById("step-node-2");
   var n3 = document.getElementById("step-node-3");
+  var fill = document.getElementById("timeline-progress-fill");
+  var arr = document.querySelector(".kb-timeline-arrow");
   if (!n1 || !n2 || !n3) return;
 
   if (S.currentStep === 1) {
     n1.className = "kb-timeline-step active";
     n2.className = "kb-timeline-step";
     n3.className = "kb-timeline-step";
+    if (fill) fill.style.width = "0%";
+    if (arr) arr.style.borderLeftColor = "#94a3b8";
   } else if (S.currentStep === 2) {
     n1.className = "kb-timeline-step completed";
     n2.className = "kb-timeline-step active";
     n3.className = "kb-timeline-step";
+    if (fill) fill.style.width = "50%";
+    if (arr) arr.style.borderLeftColor = "#94a3b8";
   } else if (S.currentStep === 3) {
     n1.className = "kb-timeline-step completed";
     n2.className = "kb-timeline-step completed";
     n3.className = "kb-timeline-step active";
+    if (fill) fill.style.width = "100%";
+    if (arr) arr.style.borderLeftColor = "#0d9488";
   }
 }
 
