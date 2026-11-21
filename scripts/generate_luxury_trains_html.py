@@ -1334,6 +1334,56 @@ footer a:hover{color:#F8904D}
     gap: 10px;
   }
 }
+
+/* Train Overview Circuit Switcher Tabs */
+.train-circuit-tabs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px 10px;
+  margin-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.t-circuit-tab-btn {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #475569;
+  border: 1.5px solid #cbd5e1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.t-circuit-tab-btn:hover {
+  border-color: #F8904D;
+  color: #d96b27;
+  background: #fff8f4;
+}
+.t-circuit-tab-btn.active {
+  background: #0f172a;
+  color: #ffffff !important;
+  border-color: #0f172a;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+}
+.t-circuit-tab-btn .tab-duration {
+  font-size: 11.5px;
+  font-weight: 600;
+  opacity: 0.85;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+}
+.t-circuit-tab-btn.active .tab-duration {
+  background: rgba(255,255,255,0.22);
+  color: #ffffff;
+}
 """
 
 def get_header(active_train=None, base_path="/luxury-trains"):
@@ -2308,6 +2358,334 @@ function onCircuitDateClick(btn, dateStr, formattedStr) {{
 '''
         return comp_html
 
+    def build_train_departures_tabs_component(train_slug, base_path="/luxury-trains"):
+        TRAIN_CONFIGS = {
+            "palace-on-wheels": {
+                "train_name": "Palace on Wheels",
+                "circuits": [
+                    {
+                        "key": "Palace on Wheels|Royal Rajasthan Circuit",
+                        "name": "Royal Rajasthan Circuit",
+                        "duration": "7 Nights / 8 Days",
+                        "duration_short": "7N/8D",
+                        "booking_train": "Palace on Wheels",
+                        "booking_circuit": "Royal Rajasthan Circuit"
+                    }
+                ]
+            },
+            "maharajas-express": {
+                "train_name": "Maharajas' Express",
+                "circuits": [
+                    {
+                        "key": "Maharajas’ Express|Treasures of India",
+                        "name": "Treasures of India",
+                        "duration": "3 Nights / 4 Days",
+                        "duration_short": "3N/4D",
+                        "booking_train": "Maharajas' Express",
+                        "booking_circuit": "Treasures of India"
+                    },
+                    {
+                        "key": "Maharajas’ Express|The Indian Panorama",
+                        "name": "The Indian Panorama",
+                        "duration": "6 Nights / 7 Days",
+                        "duration_short": "6N/7D",
+                        "booking_train": "Maharajas' Express",
+                        "booking_circuit": "The Indian Panorama"
+                    },
+                    {
+                        "key": "Maharajas’ Express|Indian Splendor",
+                        "name": "The Indian Splendour",
+                        "duration": "6 Nights / 7 Days",
+                        "duration_short": "6N/7D",
+                        "booking_train": "Maharajas' Express",
+                        "booking_circuit": "Indian Splendor"
+                    },
+                    {
+                        "key": "Maharajas’ Express|Heritage of India",
+                        "name": "The Heritage of India",
+                        "duration": "6 Nights / 7 Days",
+                        "duration_short": "6N/7D",
+                        "booking_train": "Maharajas' Express",
+                        "booking_circuit": "Heritage of India"
+                    }
+                ]
+            },
+            "golden-chariot": {
+                "train_name": "Golden Chariot",
+                "circuits": [
+                    {
+                        "key": "Golden Chariot|Pride of Karnataka",
+                        "name": "Pride of Karnataka",
+                        "duration": "5 Nights / 6 Days",
+                        "duration_short": "5N/6D",
+                        "booking_train": "Golden Chariot",
+                        "booking_circuit": "Pride of Karnataka"
+                    },
+                    {
+                        "key": "Golden Chariot|Jewels of South",
+                        "name": "Jewels of South",
+                        "duration": "5 Nights / 6 Days",
+                        "duration_short": "5N/6D",
+                        "booking_train": "Golden Chariot",
+                        "booking_circuit": "Jewels of South"
+                    },
+                    {
+                        "key": "Golden Chariot|Glimpses of Karnataka",
+                        "name": "Glimpses of Karnataka",
+                        "duration": "3 Nights / 4 Days",
+                        "duration_short": "3N/4D",
+                        "booking_train": "Golden Chariot",
+                        "booking_circuit": "Glimpses of Karnataka"
+                    }
+                ]
+            },
+            "deccan-odyssey": {
+                "train_name": "Deccan Odyssey",
+                "circuits": [
+                    {
+                        "key": "Deccan Odyssey|Maharashtra Splendor",
+                        "name": "Maharashtra Splendour",
+                        "duration": "7 Nights / 8 Days",
+                        "duration_short": "7N/8D",
+                        "booking_train": "Deccan Odyssey",
+                        "booking_circuit": "Maharashtra Splendor"
+                    },
+                    {
+                        "key": "Deccan Odyssey|Indian Odyssey",
+                        "name": "Indian Odyssey",
+                        "duration": "7 Nights / 8 Days",
+                        "duration_short": "7N/8D",
+                        "booking_train": "Deccan Odyssey",
+                        "booking_circuit": "Indian Odyssey"
+                    },
+                    {
+                        "key": "Deccan Odyssey|Indian Sojourn",
+                        "name": "Indian Sojourn",
+                        "duration": "7 Nights / 8 Days",
+                        "duration_short": "7N/8D",
+                        "booking_train": "Deccan Odyssey",
+                        "booking_circuit": "Indian Sojourn"
+                    },
+                    {
+                        "key": "Deccan Odyssey|Maharashtra Wild Trail",
+                        "name": "Maharashtra Wild Trail",
+                        "duration": "7 Nights / 8 Days",
+                        "duration_short": "7N/8D",
+                        "booking_train": "Deccan Odyssey",
+                        "booking_circuit": "Maharashtra Wild Trail"
+                    },
+                    {
+                        "key": "Deccan Odyssey|Heritage Odyssey",
+                        "name": "Heritage Odyssey",
+                        "duration": "7 Nights / 8 Days",
+                        "duration_short": "7N/8D",
+                        "booking_train": "Deccan Odyssey",
+                        "booking_circuit": "Heritage Odyssey"
+                    },
+                    {
+                        "key": "Deccan Odyssey|Cultural Odyssey",
+                        "name": "Cultural Odyssey",
+                        "duration": "7 Nights / 8 Days",
+                        "duration_short": "7N/8D",
+                        "booking_train": "Deccan Odyssey",
+                        "booking_circuit": "Cultural Odyssey"
+                    }
+                ]
+            }
+        }
+
+        conf = TRAIN_CONFIGS.get(train_slug)
+        if not conf:
+            return ""
+
+        train_name = conf["train_name"]
+        circuits = conf["circuits"]
+        clean_slug = train_slug.replace("-", "_")
+        months_full = ['January','February','March','April','May','June','July','August','September','October','November','December']
+
+        def format_date_str(d_str):
+            p = d_str.split('-')
+            y, m, d = p[0], int(p[1]), int(p[2])
+            if 11 <= d <= 13: ord_s = "th"
+            else: ord_s = {1:"st", 2:"nd", 3:"rd"}.get(d % 10, "th")
+            return f"{d:02d}{ord_s} {months_full[m-1]}, {y}"
+
+        tabs_html = ""
+        if len(circuits) > 1:
+            tab_btns = []
+            for i, c in enumerate(circuits):
+                active_cls = "active" if i == 0 else ""
+                tab_btns.append(f'''
+<button type="button" class="t-circuit-tab-btn {active_cls}" onclick="switchTrainOverviewCircuit('{clean_slug}', {i}, this)">
+  <span>{c["name"]}</span>
+  <span class="tab-duration">{c["duration_short"]}</span>
+</button>''')
+            tabs_html = f'''
+<div class="train-circuit-tabs" id="circuitTabs_{clean_slug}" role="tablist">
+  {"".join(tab_btns)}
+</div>'''
+
+        panes_html = ""
+        for i, c in enumerate(circuits):
+            dates_list = OFFICIAL_DEPARTURE_DATES.get(c["key"], [])
+            years = sorted(list(set(d.split("-")[0] for d in dates_list)))
+            default_year = years[0] if years else "2026"
+
+            months_dict = {}
+            for d in dates_list:
+                m_key = d[:7]
+                if m_key not in months_dict:
+                    months_dict[m_key] = []
+                months_dict[m_key].append(d)
+
+            year_options_html = "".join([f'<option value="{y}" {"selected" if y == default_year else ""}>Year {y}</option>' for y in years])
+            year_options_html += '<option value="all">All Years</option>'
+
+            month_rows_html = ""
+            pane_id = f"{clean_slug}_{i}"
+            booking_base_url = f"{base_path}/booking?train={urllib.parse.quote(c['booking_train'])}&journey={urllib.parse.quote(c['booking_circuit'])}"
+
+            for m_key in sorted(months_dict.keys()):
+                y_val = m_key.split("-")[0]
+                m_idx = int(m_key.split("-")[1]) - 1
+                m_name = f"{months_full[m_idx]} {y_val}"
+                m_dates = months_dict[m_key]
+
+                date_btns_html = ""
+                for d in m_dates:
+                    d_formatted = format_date_str(d)
+                    date_btns_html += f'''
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="{d}" onclick="onTrainOverviewDateClick('{pane_id}', this, '{d}', '{d_formatted}', '{c['booking_train']}', '{c['name']}', '{booking_base_url}')">
+  <span class="kb-radio-circle"></span>
+  <span>{d_formatted}</span>
+</button>'''
+
+                is_hidden = 'style="display:none"' if y_val != default_year else ''
+                month_rows_html += f'''
+<div class="kb-month-row c-month-row" data-year="{y_val}" {is_hidden}>
+  <div class="kb-month-col">
+    <div class="kb-month-name">{m_name}</div>
+  </div>
+  <div class="kb-dates-col">
+    {date_btns_html}
+  </div>
+</div>'''
+
+            display_style = "block" if i == 0 else "none"
+            c_name = c["name"]
+            c_duration = c["duration"]
+            c_name_upper = c_name.upper()
+            wa_text = f"Hi KoiKoi Travel, please check cabin availability for {train_name} ({c_name})."
+            default_wa_url = "https://wa.me/919136739178?text=" + urllib.parse.quote(wa_text)
+
+            panes_html += f'''
+<div class="t-circuit-pane t-circuit-pane-{clean_slug}" id="pane_{pane_id}" style="display:{display_style}">
+  <div class="circuit-date-selector-card">
+    <div class="circuit-date-header">
+      <div>
+        <div class="circuit-date-subtitle">Scheduled Departures · {c_name} ({c_duration})</div>
+        <div class="circuit-date-instruction">Select your preferred departure date to check real-time IRCTC cabin availability:</div>
+      </div>
+      <div class="kb-year-wrap">
+        <span class="kb-year-label" style="color:#ffffff">Select Year:</span>
+        <select class="kb-year-select" onchange="filterTrainOverviewYear('{pane_id}', this.value)">
+          {year_options_html}
+        </select>
+      </div>
+    </div>
+
+    <div class="kb-dates-container" role="radiogroup" aria-label="Departure date">
+      {month_rows_html}
+    </div>
+
+    <div class="circuit-date-action-bar">
+      <div class="circuit-date-action-info">
+        <span class="c-action-badge">SELECTED DEPARTURE · {c_name_upper}</span>
+        <span class="c-action-date-val" id="selDateLabel_{pane_id}">Select a departure date above to proceed</span>
+      </div>
+      <div class="circuit-date-action-btns">
+        <a id="waBtn_{pane_id}" href="{default_wa_url}" target="_blank" rel="noopener" class="c-btn-secondary">
+          <span>💬 Check on WhatsApp</span>
+        </a>
+        <a id="bookBtn_{pane_id}" href="{booking_base_url}" class="c-btn-primary disabled" data-base-href="{booking_base_url}">
+          <span>Select Date to Book &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>'''
+
+        script_html = f'''
+<script>
+if (typeof window.trainOverviewScriptLoaded === 'undefined') {{
+  window.trainOverviewScriptLoaded = true;
+
+  window.switchTrainOverviewCircuit = function(cleanSlug, targetIdx, btn) {{
+    var tabs = document.getElementById('circuitTabs_' + cleanSlug);
+    if (tabs) {{
+      tabs.querySelectorAll('.t-circuit-tab-btn').forEach(function(b) {{
+        b.classList.remove('active');
+      }});
+    }}
+    btn.classList.add('active');
+
+    var panes = document.querySelectorAll('.t-circuit-pane-' + cleanSlug);
+    panes.forEach(function(p, idx) {{
+      p.style.display = (idx === targetIdx) ? 'block' : 'none';
+    }});
+  }};
+
+  window.filterTrainOverviewYear = function(paneId, y) {{
+    var pane = document.getElementById('pane_' + paneId);
+    if (!pane) return;
+    var rows = pane.querySelectorAll('.c-month-row');
+    rows.forEach(function(r) {{
+      if (y === 'all' || r.getAttribute('data-year') === y) {{
+        r.style.display = 'flex';
+      }} else {{
+        r.style.display = 'none';
+      }}
+    }});
+  }};
+
+  window.onTrainOverviewDateClick = function(paneId, btn, dateStr, formattedStr, trainName, circuitName, bookingBaseUrl) {{
+    var pane = document.getElementById('pane_' + paneId);
+    if (!pane) return;
+    pane.querySelectorAll('.c-dep-item').forEach(function(b) {{
+      b.setAttribute('aria-checked', 'false');
+      b.classList.remove('active');
+    }});
+    btn.setAttribute('aria-checked', 'true');
+    btn.classList.add('active');
+
+    var lbl = document.getElementById('selDateLabel_' + paneId);
+    if (lbl) lbl.innerHTML = 'Selected: <b>' + formattedStr + ' (' + circuitName + ')</b>';
+
+    var bookBtn = document.getElementById('bookBtn_' + paneId);
+    if (bookBtn) {{
+      bookBtn.classList.remove('disabled');
+      bookBtn.href = bookingBaseUrl + '&date=' + encodeURIComponent(dateStr);
+      bookBtn.innerHTML = '<span>Book for ' + formattedStr + ' &rarr;</span>';
+    }}
+
+    var waBtn = document.getElementById('waBtn_' + paneId);
+    if (waBtn) {{
+      var waMsg = "Hi KoiKoi Travel, I am interested in booking " + trainName + " (" + circuitName + ") departing on " + formattedStr + ". Please check real-time cabin availability.";
+      waBtn.href = "https://wa.me/919136739178?text=" + encodeURIComponent(waMsg);
+    }}
+  }};
+}}
+</script>
+'''
+
+        return f'''
+<div class="train-departures-tabs-wrapper" style="margin-top:20px">
+  {tabs_html}
+  {panes_html}
+  {script_html}
+</div>
+'''
+
     def build_koikoi_circuit_page(circuit_tag, name, duration, title, route, starting_price,
                                   origin, destination, destinations_count,
                                   hero_imgs, highlights, overview, days_data,
@@ -3140,42 +3518,7 @@ function switchCircuitPrice(curr) {{
 </div>
 """
     def get_pow_departures_table_component():
-        return f"""
-<div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:32px">
-  <div style="background:#0f172a;color:#fff;padding:14px 20px;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:space-between">
-    <span>🗓 Season 2026 – 2027 &amp; 2027 – 2028 Departure Calendar</span>
-    <span style="font-size:12px;color:#F8904D">Departs Every Wednesday</span>
-  </div>
-  <div style="overflow-x:auto">
-    <table class="circuit-price-table">
-      <thead>
-        <tr>
-          <th style="width:25%">Month</th>
-          <th style="width:35%">Season 2026 – 2027 Departures</th>
-          <th style="width:25%">Season 2027 – 2028 Departures</th>
-          <th style="width:15%">Tariff Type</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td style="font-weight:700">September</td><td style="font-weight:700;color:#ea580c">02, 09, 16, 23, 30</td><td>01, 08, 15, 22, 29</td><td><span style="background:#e0f2fe;color:#0369a1;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Lean Season</span></td></tr>
-        <tr><td style="font-weight:700">October</td><td style="font-weight:700;color:#ea580c">07, 14, 21, 28</td><td>06, 13, 20, 27</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
-        <tr><td style="font-weight:700">November</td><td style="font-weight:700;color:#ea580c">04, 11, 18, 25</td><td>03, 10, 17, 24</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
-        <tr><td style="font-weight:700">December</td><td style="font-weight:700;color:#ea580c">02, 09, 16, 23, 30</td><td>01, 08, 15, 22, 29</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
-        <tr><td style="font-weight:700">January</td><td style="font-weight:700;color:#ea580c">06, 13, 20, 27</td><td>05, 12, 19, 26</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
-        <tr><td style="font-weight:700">February</td><td style="font-weight:700;color:#ea580c">03, 10, 17, 24</td><td>02, 09, 16, 23</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
-        <tr><td style="font-weight:700">March</td><td style="font-weight:700;color:#ea580c">03, 10, 17, 24, 31</td><td>01, 08, 15, 22, 29</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
-        <tr><td style="font-weight:700">April</td><td style="font-weight:700;color:#ea580c">07, 14, 21, 28</td><td>05, 12, 19, 26</td><td><span style="background:#e0f2fe;color:#0369a1;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Lean Season</span></td></tr>
-      </tbody>
-    </table>
-  </div>
-  <div style="padding:14px 20px;background:#fdfcfb;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-    <span style="font-size:13px;color:#64748b">✦ Weekly departures start at Delhi Safdarjung Station at 18:30 hrs every Wednesday.</span>
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Palace%20on%20Wheels%20Wednesday%20dates." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;padding:8px 18px;border-radius:999px;text-decoration:none">
-      Inquire Dates on WhatsApp &rarr;
-    </a>
-  </div>
-</div>
-"""
+        return build_train_departures_tabs_component("palace-on-wheels", base_path)
 
     def get_pow_price_tables_component():
         return f"""
@@ -3988,108 +4331,7 @@ function switchPowHomePrice(curr) {{
 </div>
 """
     def get_me_departures_table_component():
-        return f"""
-<div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04);margin-top:20px">
-  <div style="overflow-x:auto">
-    <table style="width:100%;border-collapse:collapse;text-align:center;font-size:14px">
-      <thead>
-        <tr style="background:#1e255e;color:#fff;font-family:'Outfit',sans-serif">
-          <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15);font-size:15px">Season 2026-27</th>
-          <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
-            <div style="font-size:15px;font-weight:700">Treasures of India</div>
-            <div style="font-size:12.5px;color:#cbd5e1;font-weight:400;margin-top:2px">(3 Nights/4 Days)</div>
-          </th>
-          <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
-            <div style="font-size:15px;font-weight:700">The Indian Panorama</div>
-            <div style="font-size:12.5px;color:#cbd5e1;font-weight:400;margin-top:2px">(6 Nights/7 Days)</div>
-          </th>
-          <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
-            <div style="font-size:15px;font-weight:700">The Indian Splendour</div>
-            <div style="font-size:12.5px;color:#cbd5e1;font-weight:400;margin-top:2px">(6 Nights/7 Days)</div>
-          </th>
-          <th style="padding:16px 14px">
-            <div style="font-size:15px;font-weight:700">The Heritage of India</div>
-            <div style="font-size:12.5px;color:#cbd5e1;font-weight:400;margin-top:2px">(6 Nights/7 Days)</div>
-          </th>
-        </tr>
-        <tr style="background:#f8fafc;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;border-bottom:2px solid #e2e8f0;font-size:13px">
-          <td style="padding:10px 14px;border-right:1px solid #e2e8f0;color:#64748b">Month / Day</td>
-          <td style="padding:10px 14px;border-right:1px solid #e2e8f0;color:#2E8B8B">Wednesday / Sunday</td>
-          <td style="padding:10px 14px;border-right:1px solid #e2e8f0;color:#2E8B8B">Sunday</td>
-          <td style="padding:10px 14px;border-right:1px solid #e2e8f0;color:#2E8B8B">Sunday</td>
-          <td style="padding:10px 14px;color:#2E8B8B">Sunday</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="border-bottom:1px solid #f1f5f9">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Sept. 2026</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">30</td>
-          <td style="padding:13px 14px;color:#94a3b8;border-right:1px solid #f1f5f9">-</td>
-          <td style="padding:13px 14px;color:#94a3b8;border-right:1px solid #f1f5f9">-</td>
-          <td style="padding:13px 14px;color:#94a3b8">-</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;background:#fcfcfd">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Oct. 2026</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">25</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">4</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">11</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a">18</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Nov. 2026</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">22</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">1, 29</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">8</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a">15</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;background:#fcfcfd">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Dec. 2026</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">20</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">27</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">6</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a">13</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Jan. 2027</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">17</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">24</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">3, 31</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a">10</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;background:#fcfcfd">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Feb. 2027</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">14</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">21</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">28</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a">7</td>
-        </tr>
-        <tr style="border-bottom:2px solid #e2e8f0">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Mar. 2027</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">14</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">21</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">28</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a">7</td>
-        </tr>
-        <tr style="background:#f8fafc;font-family:'Outfit',sans-serif;font-weight:700">
-          <td style="padding:14px;color:#0f172a;border-right:1px solid #e2e8f0">Trips Total</td>
-          <td style="padding:14px;color:#F8904D;border-right:1px solid #e2e8f0;font-size:15px">7 Trips</td>
-          <td style="padding:14px;color:#F8904D;border-right:1px solid #e2e8f0;font-size:15px">7 Trips</td>
-          <td style="padding:14px;color:#F8904D;border-right:1px solid #e2e8f0;font-size:15px">7 Trips</td>
-          <td style="padding:14px;color:#F8904D;font-size:15px">6 Trips</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div style="padding:16px 24px;background:#fdfcfb;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-    <div style="font-size:13.5px;color:#64748b">
-      ✦ Also available: <a href="{base_path}/maharajas-express/departures" style="color:#2E8B8B;font-weight:600">Full 2025–2026 & 2026–2027 Departure Calendars &rarr;</a>
-    </div>
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20scheduled%20dates." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:8px 18px;border-radius:999px;text-decoration:none">
-      Inquire Dates on WhatsApp &rarr;
-    </a>
-  </div>
-</div>
-"""
+        return build_train_departures_tabs_component("maharajas-express", base_path)
 
     # Image 3 Fare / Price Tables Component (Season 2026-27 USD & INR)
     def get_me_price_tables_component():
@@ -5412,76 +5654,7 @@ function switchPriceCurrency(curr) {{
 </div>
 """
     def get_gc_departures_table_component():
-        return f"""
-<div class="table-wrap" style="box-shadow:0 8px 30px rgba(15,23,42,0.06);border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;background:#ffffff">
-  <table style="width:100%;border-collapse:collapse;text-align:center;font-size:14px">
-    <thead>
-      <tr style="background:#0f172a;color:#ffffff;font-family:'Outfit',sans-serif">
-        <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15);font-size:14.5px;text-align:left">Season 2026-27</th>
-        <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
-          <div style="font-size:14px;font-weight:700">Pride of Karnataka</div>
-          <div style="font-size:11px;opacity:0.85;font-weight:500">5 Nights / 6 Days (Saturday)</div>
-        </th>
-        <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
-          <div style="font-size:14px;font-weight:700">Jewels of South</div>
-          <div style="font-size:11px;opacity:0.85;font-weight:500">5 Nights / 6 Days (Saturday)</div>
-        </th>
-        <th style="padding:16px 14px">
-          <div style="font-size:14px;font-weight:700">Glimpses of Karnataka</div>
-          <div style="font-size:11px;opacity:0.85;font-weight:500">3 Nights / 4 Days (Saturday)</div>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr style="border-bottom:1px solid #f1f5f9">
-        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">October 2026</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">24 Oct 2026</td>
-        <td style="padding:14px;color:#94a3b8;border-right:1px solid #f1f5f9">—</td>
-        <td style="padding:14px;color:#0f172a;font-weight:600">31 Oct 2026</td>
-      </tr>
-      <tr style="border-bottom:1px solid #f1f5f9;background:#fafbfc">
-        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">November 2026</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">14 Nov 2026</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">28 Nov 2026</td>
-        <td style="padding:14px;color:#94a3b8">—</td>
-      </tr>
-      <tr style="border-bottom:1px solid #f1f5f9">
-        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">December 2026</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">26 Dec 2026</td>
-        <td style="padding:14px;color:#94a3b8;border-right:1px solid #f1f5f9">—</td>
-        <td style="padding:14px;color:#0f172a;font-weight:600">19 Dec 2026</td>
-      </tr>
-      <tr style="border-bottom:1px solid #f1f5f9;background:#fafbfc">
-        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">January 2027</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">30 Jan 2027</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">02 Jan 2027</td>
-        <td style="padding:14px;color:#94a3b8">—</td>
-      </tr>
-      <tr style="border-bottom:1px solid #f1f5f9">
-        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">February 2027</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">27 Feb 2027</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">20 Feb 2027</td>
-        <td style="padding:14px;color:#0f172a;font-weight:600">06 Feb 2027</td>
-      </tr>
-      <tr style="background:#fafbfc">
-        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">March 2027</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">13 Mar 2027</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">27 Mar 2027</td>
-        <td style="padding:14px;color:#94a3b8">—</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div style="margin-top:14px;padding:12px 18px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-  <div style="font-size:12.5px;color:#64748b">
-    • All departures originate from Yesvantpur Railway Station, Bengaluru on scheduled Saturdays. Check-in starts at 08:30 AM.
-  </div>
-  <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20seat%20availability%20for%20The%20Golden%20Chariot." target="_blank" rel="noopener" style="color:#2E8B8B;font-weight:700;font-size:13px;text-decoration:none">
-    Inquire Seat Availability &rarr;
-  </a>
-</div>
-"""
+        return build_train_departures_tabs_component("golden-chariot", base_path)
 
     def get_gc_prices_table_component():
         return f"""
@@ -7253,46 +7426,7 @@ function switchPriceCurrency(curr) {{
     do_cards_html = get_do_cards_component()
 
     def get_do_departures_table_component():
-        return f"""
-<div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:32px">
-  <div style="background:#0f172a;color:#fff;padding:14px 20px;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:space-between">
-    <span>🗓 Season 2026 – 2027 Scheduled Departures</span>
-    <span style="font-size:12px;color:#F8904D">Official MTDC/IRCTC Calendar</span>
-  </div>
-  <div style="overflow-x:auto">
-    <table class="circuit-price-table">
-      <thead>
-        <tr>
-          <th>Month</th>
-          <th>Maharashtra Splendour</th>
-          <th>Indian Odyssey</th>
-          <th>Indian Sojourn</th>
-          <th>Maharashtra Wild Trail</th>
-          <th>Heritage Odyssey</th>
-          <th>Cultural Odyssey</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td style="font-weight:700">Sep 2026</td><td style="font-weight:700;color:#ea580c">26</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-        <tr><td style="font-weight:700">Oct 2026</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">03, 24</td><td>-</td><td style="font-weight:700;color:#ea580c">31</td><td>-</td></tr>
-        <tr><td style="font-weight:700">Nov 2026</td><td>-</td><td style="font-weight:700;color:#ea580c">07</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">21</td><td style="font-weight:700;color:#ea580c">28</td></tr>
-        <tr><td style="font-weight:700">Dec 2026</td><td>-</td><td style="font-weight:700;color:#ea580c">12</td><td style="font-weight:700;color:#ea580c">19</td><td>-</td><td style="font-weight:700;color:#ea580c">05</td><td style="font-weight:700;color:#ea580c">26</td></tr>
-        <tr><td style="font-weight:700">Jan 2027</td><td>-</td><td style="font-weight:700;color:#ea580c">09, 30</td><td style="font-weight:700;color:#ea580c">23</td><td style="font-weight:700;color:#ea580c">16</td><td style="font-weight:700;color:#ea580c">02</td><td>-</td></tr>
-        <tr><td style="font-weight:700">Feb 2027</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">20</td><td>-</td><td style="font-weight:700;color:#ea580c">27</td><td>-</td></tr>
-        <tr><td style="font-weight:700">Mar 2027</td><td style="font-weight:700;color:#ea580c">20</td><td style="font-weight:700;color:#ea580c">13</td><td>-</td><td style="font-weight:700;color:#ea580c">27</td><td>-</td><td style="font-weight:700;color:#ea580c">06</td></tr>
-        <tr><td style="font-weight:700">Apr 2027</td><td>-</td><td style="font-weight:700;color:#ea580c">24</td><td style="font-weight:700;color:#ea580c">03</td><td>-</td><td style="font-weight:700;color:#ea580c">17</td><td style="font-weight:700;color:#ea580c">10</td></tr>
-        <tr><td style="font-weight:700">May 2027</td><td>-</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">01</td><td>-</td><td>-</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <div style="padding:14px 20px;background:#fdfcfb;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-    <span style="font-size:13px;color:#64748b">✦ Also available: <a href="{base_path}/deccan-odyssey/departures" style="color:#2E8B8B;font-weight:600">Full 2026–2027 &amp; 2027–2028 Departure Calendars &rarr;</a></span>
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Deccan%20Odyssey%20scheduled%20dates." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;padding:8px 18px;border-radius:999px;text-decoration:none">
-      Inquire Dates on WhatsApp &rarr;
-    </a>
-  </div>
-</div>
-"""
+        return build_train_departures_tabs_component("deccan-odyssey", base_path)
 
     def get_do_price_tables_component():
         return f"""
@@ -7696,73 +7830,8 @@ if (window.location.pathname.endsWith('/deccan-odyssey/itinerary') || window.loc
       <p>All Deccan Odyssey departures operate on Saturday mornings/evenings and complete in 7 Nights / 8 Days.</p>
     </div>
 
-    <!-- Season 2026-2027 Table -->
-    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:32px">
-      <div style="background:#0f172a;color:#fff;padding:14px 20px;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:space-between">
-        <span>🗓 Season 2026 – 2027 Departures</span>
-        <span style="font-size:12px;color:#F8904D">Official MTDC/IRCTC Published</span>
-      </div>
-      <div style="overflow-x:auto">
-        <table class="circuit-price-table">
-          <thead>
-            <tr>
-              <th>Month</th>
-              <th>Maharashtra Splendour</th>
-              <th>Indian Odyssey</th>
-              <th>Indian Sojourn</th>
-              <th>Maharashtra Wild Trail</th>
-              <th>Heritage Odyssey</th>
-              <th>Cultural Odyssey</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td style="font-weight:700">Sep 2026</td><td style="font-weight:700;color:#ea580c">26</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-            <tr><td style="font-weight:700">Oct 2026</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">03, 24</td><td>-</td><td style="font-weight:700;color:#ea580c">31</td><td>-</td></tr>
-            <tr><td style="font-weight:700">Nov 2026</td><td>-</td><td style="font-weight:700;color:#ea580c">07</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">21</td><td style="font-weight:700;color:#ea580c">28</td></tr>
-            <tr><td style="font-weight:700">Dec 2026</td><td>-</td><td style="font-weight:700;color:#ea580c">12</td><td style="font-weight:700;color:#ea580c">19</td><td>-</td><td style="font-weight:700;color:#ea580c">05</td><td style="font-weight:700;color:#ea580c">26</td></tr>
-            <tr><td style="font-weight:700">Jan 2027</td><td>-</td><td style="font-weight:700;color:#ea580c">09, 30</td><td style="font-weight:700;color:#ea580c">23</td><td style="font-weight:700;color:#ea580c">16</td><td style="font-weight:700;color:#ea580c">02</td><td>-</td></tr>
-            <tr><td style="font-weight:700">Feb 2027</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">20</td><td>-</td><td style="font-weight:700;color:#ea580c">27</td><td>-</td></tr>
-            <tr><td style="font-weight:700">Mar 2027</td><td style="font-weight:700;color:#ea580c">20</td><td style="font-weight:700;color:#ea580c">13</td><td>-</td><td style="font-weight:700;color:#ea580c">27</td><td>-</td><td style="font-weight:700;color:#ea580c">06</td></tr>
-            <tr><td style="font-weight:700">Apr 2027</td><td>-</td><td style="font-weight:700;color:#ea580c">24</td><td style="font-weight:700;color:#ea580c">03</td><td>-</td><td style="font-weight:700;color:#ea580c">17</td><td style="font-weight:700;color:#ea580c">10</td></tr>
-            <tr><td style="font-weight:700">May 2027</td><td>-</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">01</td><td>-</td><td>-</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Season 2027-2028 Table -->
-    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:32px">
-      <div style="background:#0f172a;color:#fff;padding:14px 20px;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:space-between">
-        <span>🗓 Season 2027 – 2028 Departures</span>
-        <span style="font-size:12px;color:#F8904D">Advance Reservations Open</span>
-      </div>
-      <div style="overflow-x:auto">
-        <table class="circuit-price-table">
-          <thead>
-            <tr>
-              <th>Month</th>
-              <th>Maharashtra Splendour</th>
-              <th>Indian Odyssey</th>
-              <th>Indian Sojourn</th>
-              <th>Maharashtra Wild Trail</th>
-              <th>Heritage Odyssey</th>
-              <th>Cultural Odyssey</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td style="font-weight:700">Sep 2027</td><td style="font-weight:700;color:#ea580c">11, 18, 25</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-            <tr><td style="font-weight:700">Oct 2027</td><td>-</td><td style="font-weight:700;color:#ea580c">16</td><td style="font-weight:700;color:#ea580c">09, 23</td><td style="font-weight:700;color:#ea580c">02</td><td style="font-weight:700;color:#ea580c">30</td><td>-</td></tr>
-            <tr><td style="font-weight:700">Nov 2027</td><td>-</td><td style="font-weight:700;color:#ea580c">06</td><td style="font-weight:700;color:#ea580c">13</td><td>-</td><td style="font-weight:700;color:#ea580c">20</td><td style="font-weight:700;color:#ea580c">27</td></tr>
-            <tr><td style="font-weight:700">Dec 2027</td><td>-</td><td style="font-weight:700;color:#ea580c">11</td><td style="font-weight:700;color:#ea580c">18</td><td>-</td><td style="font-weight:700;color:#ea580c">04</td><td style="font-weight:700;color:#ea580c">25</td></tr>
-            <tr><td style="font-weight:700">Jan 2028</td><td>-</td><td style="font-weight:700;color:#ea580c">08</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">01</td><td>-</td></tr>
-            <tr><td style="font-weight:700">Feb 2028</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">19</td><td>-</td><td style="font-weight:700;color:#ea580c">26</td><td>-</td></tr>
-            <tr><td style="font-weight:700">Mar 2028</td><td style="font-weight:700;color:#ea580c">18</td><td style="font-weight:700;color:#ea580c">11</td><td>-</td><td style="font-weight:700;color:#ea580c">25</td><td>-</td><td style="font-weight:700;color:#ea580c">04</td></tr>
-            <tr><td style="font-weight:700">Apr 2028</td><td style="font-weight:700;color:#ea580c">29</td><td style="font-weight:700;color:#ea580c">22</td><td style="font-weight:700;color:#ea580c">01</td><td>-</td><td style="font-weight:700;color:#ea580c">15</td><td style="font-weight:700;color:#ea580c">08</td></tr>
-            <tr><td style="font-weight:700">May 2028</td><td>-</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">06</td><td>-</td><td>-</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+        <!-- Season Departure Selector Component -->
+    {get_do_departures_table_component()}
   </div>
 </section>
 """

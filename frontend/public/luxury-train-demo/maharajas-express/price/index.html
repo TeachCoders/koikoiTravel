@@ -1330,6 +1330,56 @@ footer a:hover{color:#F8904D}
   }
 }
 
+/* Train Overview Circuit Switcher Tabs */
+.train-circuit-tabs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px 10px;
+  margin-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.t-circuit-tab-btn {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #475569;
+  border: 1.5px solid #cbd5e1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.t-circuit-tab-btn:hover {
+  border-color: #F8904D;
+  color: #d96b27;
+  background: #fff8f4;
+}
+.t-circuit-tab-btn.active {
+  background: #0f172a;
+  color: #ffffff !important;
+  border-color: #0f172a;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+}
+.t-circuit-tab-btn .tab-duration {
+  font-size: 11.5px;
+  font-weight: 600;
+  opacity: 0.85;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+}
+.t-circuit-tab-btn.active .tab-duration {
+  background: rgba(255,255,255,0.22);
+  color: #ffffff;
+}
+
 </style>
 </head>
 <body>

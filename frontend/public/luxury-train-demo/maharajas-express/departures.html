@@ -1330,6 +1330,56 @@ footer a:hover{color:#F8904D}
   }
 }
 
+/* Train Overview Circuit Switcher Tabs */
+.train-circuit-tabs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px 10px;
+  margin-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.t-circuit-tab-btn {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #475569;
+  border: 1.5px solid #cbd5e1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.t-circuit-tab-btn:hover {
+  border-color: #F8904D;
+  color: #d96b27;
+  background: #fff8f4;
+}
+.t-circuit-tab-btn.active {
+  background: #0f172a;
+  color: #ffffff !important;
+  border-color: #0f172a;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+}
+.t-circuit-tab-btn .tab-duration {
+  font-size: 11.5px;
+  font-weight: 600;
+  opacity: 0.85;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+}
+.t-circuit-tab-btn.active .tab-duration {
+  background: rgba(255,255,255,0.22);
+  color: #ffffff;
+}
+
 </style>
 </head>
 <body>
@@ -1411,105 +1461,822 @@ footer a:hover{color:#F8904D}
 <section style="padding:48px 0 80px">
   <div class="wrap">
     
-<div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04);margin-top:20px">
-  <div style="overflow-x:auto">
-    <table style="width:100%;border-collapse:collapse;text-align:center;font-size:14px">
-      <thead>
-        <tr style="background:#1e255e;color:#fff;font-family:'Outfit',sans-serif">
-          <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15);font-size:15px">Season 2026-27</th>
-          <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
-            <div style="font-size:15px;font-weight:700">Treasures of India</div>
-            <div style="font-size:12.5px;color:#cbd5e1;font-weight:400;margin-top:2px">(3 Nights/4 Days)</div>
-          </th>
-          <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
-            <div style="font-size:15px;font-weight:700">The Indian Panorama</div>
-            <div style="font-size:12.5px;color:#cbd5e1;font-weight:400;margin-top:2px">(6 Nights/7 Days)</div>
-          </th>
-          <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
-            <div style="font-size:15px;font-weight:700">The Indian Splendour</div>
-            <div style="font-size:12.5px;color:#cbd5e1;font-weight:400;margin-top:2px">(6 Nights/7 Days)</div>
-          </th>
-          <th style="padding:16px 14px">
-            <div style="font-size:15px;font-weight:700">The Heritage of India</div>
-            <div style="font-size:12.5px;color:#cbd5e1;font-weight:400;margin-top:2px">(6 Nights/7 Days)</div>
-          </th>
-        </tr>
-        <tr style="background:#f8fafc;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;border-bottom:2px solid #e2e8f0;font-size:13px">
-          <td style="padding:10px 14px;border-right:1px solid #e2e8f0;color:#64748b">Month / Day</td>
-          <td style="padding:10px 14px;border-right:1px solid #e2e8f0;color:#2E8B8B">Wednesday / Sunday</td>
-          <td style="padding:10px 14px;border-right:1px solid #e2e8f0;color:#2E8B8B">Sunday</td>
-          <td style="padding:10px 14px;border-right:1px solid #e2e8f0;color:#2E8B8B">Sunday</td>
-          <td style="padding:10px 14px;color:#2E8B8B">Sunday</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="border-bottom:1px solid #f1f5f9">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Sept. 2026</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">30</td>
-          <td style="padding:13px 14px;color:#94a3b8;border-right:1px solid #f1f5f9">-</td>
-          <td style="padding:13px 14px;color:#94a3b8;border-right:1px solid #f1f5f9">-</td>
-          <td style="padding:13px 14px;color:#94a3b8">-</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;background:#fcfcfd">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Oct. 2026</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">25</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">4</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">11</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a">18</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Nov. 2026</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">22</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">1, 29</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">8</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a">15</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;background:#fcfcfd">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Dec. 2026</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">20</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">27</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">6</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a">13</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Jan. 2027</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">17</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">24</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">3, 31</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a">10</td>
-        </tr>
-        <tr style="border-bottom:1px solid #f1f5f9;background:#fcfcfd">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Feb. 2027</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">14</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">21</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">28</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a">7</td>
-        </tr>
-        <tr style="border-bottom:2px solid #e2e8f0">
-          <td style="padding:13px 14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9;background:#fafafa">Mar. 2027</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">14</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">21</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">28</td>
-          <td style="padding:13px 14px;font-weight:600;color:#0f172a">7</td>
-        </tr>
-        <tr style="background:#f8fafc;font-family:'Outfit',sans-serif;font-weight:700">
-          <td style="padding:14px;color:#0f172a;border-right:1px solid #e2e8f0">Trips Total</td>
-          <td style="padding:14px;color:#F8904D;border-right:1px solid #e2e8f0;font-size:15px">7 Trips</td>
-          <td style="padding:14px;color:#F8904D;border-right:1px solid #e2e8f0;font-size:15px">7 Trips</td>
-          <td style="padding:14px;color:#F8904D;border-right:1px solid #e2e8f0;font-size:15px">7 Trips</td>
-          <td style="padding:14px;color:#F8904D;font-size:15px">6 Trips</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div style="padding:16px 24px;background:#fdfcfb;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-    <div style="font-size:13.5px;color:#64748b">
-      ✦ Also available: <a href="/luxury-train-demo/maharajas-express/departures" style="color:#2E8B8B;font-weight:600">Full 2025–2026 & 2026–2027 Departure Calendars &rarr;</a>
+<div class="train-departures-tabs-wrapper" style="margin-top:20px">
+  
+<div class="train-circuit-tabs" id="circuitTabs_maharajas_express" role="tablist">
+  
+<button type="button" class="t-circuit-tab-btn active" onclick="switchTrainOverviewCircuit('maharajas_express', 0, this)">
+  <span>Treasures of India</span>
+  <span class="tab-duration">3N/4D</span>
+</button>
+<button type="button" class="t-circuit-tab-btn " onclick="switchTrainOverviewCircuit('maharajas_express', 1, this)">
+  <span>The Indian Panorama</span>
+  <span class="tab-duration">6N/7D</span>
+</button>
+<button type="button" class="t-circuit-tab-btn " onclick="switchTrainOverviewCircuit('maharajas_express', 2, this)">
+  <span>The Indian Splendour</span>
+  <span class="tab-duration">6N/7D</span>
+</button>
+<button type="button" class="t-circuit-tab-btn " onclick="switchTrainOverviewCircuit('maharajas_express', 3, this)">
+  <span>The Heritage of India</span>
+  <span class="tab-duration">6N/7D</span>
+</button>
+</div>
+  
+<div class="t-circuit-pane t-circuit-pane-maharajas_express" id="pane_maharajas_express_0" style="display:block">
+  <div class="circuit-date-selector-card">
+    <div class="circuit-date-header">
+      <div>
+        <div class="circuit-date-subtitle">Scheduled Departures · Treasures of India (3 Nights / 4 Days)</div>
+        <div class="circuit-date-instruction">Select your preferred departure date to check real-time IRCTC cabin availability:</div>
+      </div>
+      <div class="kb-year-wrap">
+        <span class="kb-year-label" style="color:#ffffff">Select Year:</span>
+        <select class="kb-year-select" onchange="filterTrainOverviewYear('maharajas_express_0', this.value)">
+          <option value="2026" selected>Year 2026</option><option value="2027" >Year 2027</option><option value="2028" >Year 2028</option><option value="all">All Years</option>
+        </select>
+      </div>
     </div>
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20scheduled%20dates." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:8px 18px;border-radius:999px;text-decoration:none">
-      Inquire Dates on WhatsApp &rarr;
-    </a>
+
+    <div class="kb-dates-container" role="radiogroup" aria-label="Departure date">
+      
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2026</div>
   </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-25" onclick="onTrainOverviewDateClick('maharajas_express_0', this, '2026-10-25', '25th October, 2026', 'Maharajas' Express', 'Treasures of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>25th October, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-22" onclick="onTrainOverviewDateClick('maharajas_express_0', this, '2026-11-22', '22nd November, 2026', 'Maharajas' Express', 'Treasures of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>22nd November, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-20" onclick="onTrainOverviewDateClick('maharajas_express_0', this, '2026-12-20', '20th December, 2026', 'Maharajas' Express', 'Treasures of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>20th December, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-17" onclick="onTrainOverviewDateClick('maharajas_express_0', this, '2027-01-17', '17th January, 2027', 'Maharajas' Express', 'Treasures of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>17th January, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-14" onclick="onTrainOverviewDateClick('maharajas_express_0', this, '2027-02-14', '14th February, 2027', 'Maharajas' Express', 'Treasures of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>14th February, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-14" onclick="onTrainOverviewDateClick('maharajas_express_0', this, '2027-03-14', '14th March, 2027', 'Maharajas' Express', 'Treasures of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>14th March, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-24" onclick="onTrainOverviewDateClick('maharajas_express_0', this, '2027-10-24', '24th October, 2027', 'Maharajas' Express', 'Treasures of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>24th October, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-21" onclick="onTrainOverviewDateClick('maharajas_express_0', this, '2027-11-21', '21st November, 2027', 'Maharajas' Express', 'Treasures of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>21st November, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-19" onclick="onTrainOverviewDateClick('maharajas_express_0', this, '2027-12-19', '19th December, 2027', 'Maharajas' Express', 'Treasures of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>19th December, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-16" onclick="onTrainOverviewDateClick('maharajas_express_0', this, '2028-01-16', '16th January, 2028', 'Maharajas' Express', 'Treasures of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>16th January, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-13" onclick="onTrainOverviewDateClick('maharajas_express_0', this, '2028-02-13', '13th February, 2028', 'Maharajas' Express', 'Treasures of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>13th February, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-12" onclick="onTrainOverviewDateClick('maharajas_express_0', this, '2028-03-12', '12th March, 2028', 'Maharajas' Express', 'Treasures of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>12th March, 2028</span>
+</button>
+  </div>
+</div>
+    </div>
+
+    <div class="circuit-date-action-bar">
+      <div class="circuit-date-action-info">
+        <span class="c-action-badge">SELECTED DEPARTURE · TREASURES OF INDIA</span>
+        <span class="c-action-date-val" id="selDateLabel_maharajas_express_0">Select a departure date above to proceed</span>
+      </div>
+      <div class="circuit-date-action-btns">
+        <a id="waBtn_maharajas_express_0" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20%28Treasures%20of%20India%29." target="_blank" rel="noopener" class="c-btn-secondary">
+          <span>💬 Check on WhatsApp</span>
+        </a>
+        <a id="bookBtn_maharajas_express_0" href="/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India" class="c-btn-primary disabled" data-base-href="/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Treasures%20of%20India">
+          <span>Select Date to Book &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="t-circuit-pane t-circuit-pane-maharajas_express" id="pane_maharajas_express_1" style="display:none">
+  <div class="circuit-date-selector-card">
+    <div class="circuit-date-header">
+      <div>
+        <div class="circuit-date-subtitle">Scheduled Departures · The Indian Panorama (6 Nights / 7 Days)</div>
+        <div class="circuit-date-instruction">Select your preferred departure date to check real-time IRCTC cabin availability:</div>
+      </div>
+      <div class="kb-year-wrap">
+        <span class="kb-year-label" style="color:#ffffff">Select Year:</span>
+        <select class="kb-year-select" onchange="filterTrainOverviewYear('maharajas_express_1', this.value)">
+          <option value="2026" selected>Year 2026</option><option value="2027" >Year 2027</option><option value="2028" >Year 2028</option><option value="all">All Years</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="kb-dates-container" role="radiogroup" aria-label="Departure date">
+      
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-04" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2026-10-04', '04th October, 2026', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>04th October, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-01" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2026-11-01', '01st November, 2026', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>01st November, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-29" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2026-11-29', '29th November, 2026', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>29th November, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-27" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2026-12-27', '27th December, 2026', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>27th December, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-24" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2027-01-24', '24th January, 2027', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>24th January, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-21" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2027-02-21', '21st February, 2027', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>21st February, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-21" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2027-03-21', '21st March, 2027', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>21st March, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-03" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2027-10-03', '03rd October, 2027', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>03rd October, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-31" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2027-10-31', '31st October, 2027', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>31st October, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-28" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2027-11-28', '28th November, 2027', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>28th November, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-26" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2027-12-26', '26th December, 2027', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>26th December, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-23" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2028-01-23', '23rd January, 2028', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>23rd January, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-20" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2028-02-20', '20th February, 2028', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>20th February, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-19" onclick="onTrainOverviewDateClick('maharajas_express_1', this, '2028-03-19', '19th March, 2028', 'Maharajas' Express', 'The Indian Panorama', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama')">
+  <span class="kb-radio-circle"></span>
+  <span>19th March, 2028</span>
+</button>
+  </div>
+</div>
+    </div>
+
+    <div class="circuit-date-action-bar">
+      <div class="circuit-date-action-info">
+        <span class="c-action-badge">SELECTED DEPARTURE · THE INDIAN PANORAMA</span>
+        <span class="c-action-date-val" id="selDateLabel_maharajas_express_1">Select a departure date above to proceed</span>
+      </div>
+      <div class="circuit-date-action-btns">
+        <a id="waBtn_maharajas_express_1" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20%28The%20Indian%20Panorama%29." target="_blank" rel="noopener" class="c-btn-secondary">
+          <span>💬 Check on WhatsApp</span>
+        </a>
+        <a id="bookBtn_maharajas_express_1" href="/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama" class="c-btn-primary disabled" data-base-href="/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=The%20Indian%20Panorama">
+          <span>Select Date to Book &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="t-circuit-pane t-circuit-pane-maharajas_express" id="pane_maharajas_express_2" style="display:none">
+  <div class="circuit-date-selector-card">
+    <div class="circuit-date-header">
+      <div>
+        <div class="circuit-date-subtitle">Scheduled Departures · The Indian Splendour (6 Nights / 7 Days)</div>
+        <div class="circuit-date-instruction">Select your preferred departure date to check real-time IRCTC cabin availability:</div>
+      </div>
+      <div class="kb-year-wrap">
+        <span class="kb-year-label" style="color:#ffffff">Select Year:</span>
+        <select class="kb-year-select" onchange="filterTrainOverviewYear('maharajas_express_2', this.value)">
+          <option value="2026" selected>Year 2026</option><option value="2027" >Year 2027</option><option value="2028" >Year 2028</option><option value="all">All Years</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="kb-dates-container" role="radiogroup" aria-label="Departure date">
+      
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-11" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2026-10-11', '11th October, 2026', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>11th October, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-08" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2026-11-08', '08th November, 2026', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>08th November, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-06" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2026-12-06', '06th December, 2026', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>06th December, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-03" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2027-01-03', '03rd January, 2027', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>03rd January, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-31" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2027-01-31', '31st January, 2027', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>31st January, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-28" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2027-02-28', '28th February, 2027', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>28th February, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-28" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2027-03-28', '28th March, 2027', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>28th March, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-10" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2027-10-10', '10th October, 2027', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>10th October, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-07" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2027-11-07', '07th November, 2027', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>07th November, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-05" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2027-12-05', '05th December, 2027', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>05th December, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-02" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2028-01-02', '02nd January, 2028', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>02nd January, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-30" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2028-01-30', '30th January, 2028', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>30th January, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-27" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2028-02-27', '27th February, 2028', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>27th February, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-26" onclick="onTrainOverviewDateClick('maharajas_express_2', this, '2028-03-26', '26th March, 2028', 'Maharajas' Express', 'The Indian Splendour', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor')">
+  <span class="kb-radio-circle"></span>
+  <span>26th March, 2028</span>
+</button>
+  </div>
+</div>
+    </div>
+
+    <div class="circuit-date-action-bar">
+      <div class="circuit-date-action-info">
+        <span class="c-action-badge">SELECTED DEPARTURE · THE INDIAN SPLENDOUR</span>
+        <span class="c-action-date-val" id="selDateLabel_maharajas_express_2">Select a departure date above to proceed</span>
+      </div>
+      <div class="circuit-date-action-btns">
+        <a id="waBtn_maharajas_express_2" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20%28The%20Indian%20Splendour%29." target="_blank" rel="noopener" class="c-btn-secondary">
+          <span>💬 Check on WhatsApp</span>
+        </a>
+        <a id="bookBtn_maharajas_express_2" href="/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor" class="c-btn-primary disabled" data-base-href="/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Indian%20Splendor">
+          <span>Select Date to Book &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="t-circuit-pane t-circuit-pane-maharajas_express" id="pane_maharajas_express_3" style="display:none">
+  <div class="circuit-date-selector-card">
+    <div class="circuit-date-header">
+      <div>
+        <div class="circuit-date-subtitle">Scheduled Departures · The Heritage of India (6 Nights / 7 Days)</div>
+        <div class="circuit-date-instruction">Select your preferred departure date to check real-time IRCTC cabin availability:</div>
+      </div>
+      <div class="kb-year-wrap">
+        <span class="kb-year-label" style="color:#ffffff">Select Year:</span>
+        <select class="kb-year-select" onchange="filterTrainOverviewYear('maharajas_express_3', this.value)">
+          <option value="2026" selected>Year 2026</option><option value="2027" >Year 2027</option><option value="2028" >Year 2028</option><option value="all">All Years</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="kb-dates-container" role="radiogroup" aria-label="Departure date">
+      
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-18" onclick="onTrainOverviewDateClick('maharajas_express_3', this, '2026-10-18', '18th October, 2026', 'Maharajas' Express', 'The Heritage of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>18th October, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-15" onclick="onTrainOverviewDateClick('maharajas_express_3', this, '2026-11-15', '15th November, 2026', 'Maharajas' Express', 'The Heritage of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>15th November, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-13" onclick="onTrainOverviewDateClick('maharajas_express_3', this, '2026-12-13', '13th December, 2026', 'Maharajas' Express', 'The Heritage of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>13th December, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-10" onclick="onTrainOverviewDateClick('maharajas_express_3', this, '2027-01-10', '10th January, 2027', 'Maharajas' Express', 'The Heritage of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>10th January, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-07" onclick="onTrainOverviewDateClick('maharajas_express_3', this, '2027-02-07', '07th February, 2027', 'Maharajas' Express', 'The Heritage of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>07th February, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-07" onclick="onTrainOverviewDateClick('maharajas_express_3', this, '2027-03-07', '07th March, 2027', 'Maharajas' Express', 'The Heritage of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>07th March, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-17" onclick="onTrainOverviewDateClick('maharajas_express_3', this, '2027-10-17', '17th October, 2027', 'Maharajas' Express', 'The Heritage of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>17th October, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-14" onclick="onTrainOverviewDateClick('maharajas_express_3', this, '2027-11-14', '14th November, 2027', 'Maharajas' Express', 'The Heritage of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>14th November, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-12" onclick="onTrainOverviewDateClick('maharajas_express_3', this, '2027-12-12', '12th December, 2027', 'Maharajas' Express', 'The Heritage of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>12th December, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-09" onclick="onTrainOverviewDateClick('maharajas_express_3', this, '2028-01-09', '09th January, 2028', 'Maharajas' Express', 'The Heritage of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>09th January, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-06" onclick="onTrainOverviewDateClick('maharajas_express_3', this, '2028-02-06', '06th February, 2028', 'Maharajas' Express', 'The Heritage of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>06th February, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-05" onclick="onTrainOverviewDateClick('maharajas_express_3', this, '2028-03-05', '05th March, 2028', 'Maharajas' Express', 'The Heritage of India', '/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India')">
+  <span class="kb-radio-circle"></span>
+  <span>05th March, 2028</span>
+</button>
+  </div>
+</div>
+    </div>
+
+    <div class="circuit-date-action-bar">
+      <div class="circuit-date-action-info">
+        <span class="c-action-badge">SELECTED DEPARTURE · THE HERITAGE OF INDIA</span>
+        <span class="c-action-date-val" id="selDateLabel_maharajas_express_3">Select a departure date above to proceed</span>
+      </div>
+      <div class="circuit-date-action-btns">
+        <a id="waBtn_maharajas_express_3" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20%28The%20Heritage%20of%20India%29." target="_blank" rel="noopener" class="c-btn-secondary">
+          <span>💬 Check on WhatsApp</span>
+        </a>
+        <a id="bookBtn_maharajas_express_3" href="/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India" class="c-btn-primary disabled" data-base-href="/luxury-train-demo/booking?train=Maharajas%27%20Express&journey=Heritage%20of%20India">
+          <span>Select Date to Book &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<script>
+if (typeof window.trainOverviewScriptLoaded === 'undefined') {
+  window.trainOverviewScriptLoaded = true;
+
+  window.switchTrainOverviewCircuit = function(cleanSlug, targetIdx, btn) {
+    var tabs = document.getElementById('circuitTabs_' + cleanSlug);
+    if (tabs) {
+      tabs.querySelectorAll('.t-circuit-tab-btn').forEach(function(b) {
+        b.classList.remove('active');
+      });
+    }
+    btn.classList.add('active');
+
+    var panes = document.querySelectorAll('.t-circuit-pane-' + cleanSlug);
+    panes.forEach(function(p, idx) {
+      p.style.display = (idx === targetIdx) ? 'block' : 'none';
+    });
+  };
+
+  window.filterTrainOverviewYear = function(paneId, y) {
+    var pane = document.getElementById('pane_' + paneId);
+    if (!pane) return;
+    var rows = pane.querySelectorAll('.c-month-row');
+    rows.forEach(function(r) {
+      if (y === 'all' || r.getAttribute('data-year') === y) {
+        r.style.display = 'flex';
+      } else {
+        r.style.display = 'none';
+      }
+    });
+  };
+
+  window.onTrainOverviewDateClick = function(paneId, btn, dateStr, formattedStr, trainName, circuitName, bookingBaseUrl) {
+    var pane = document.getElementById('pane_' + paneId);
+    if (!pane) return;
+    pane.querySelectorAll('.c-dep-item').forEach(function(b) {
+      b.setAttribute('aria-checked', 'false');
+      b.classList.remove('active');
+    });
+    btn.setAttribute('aria-checked', 'true');
+    btn.classList.add('active');
+
+    var lbl = document.getElementById('selDateLabel_' + paneId);
+    if (lbl) lbl.innerHTML = 'Selected: <b>' + formattedStr + ' (' + circuitName + ')</b>';
+
+    var bookBtn = document.getElementById('bookBtn_' + paneId);
+    if (bookBtn) {
+      bookBtn.classList.remove('disabled');
+      bookBtn.href = bookingBaseUrl + '&date=' + encodeURIComponent(dateStr);
+      bookBtn.innerHTML = '<span>Book for ' + formattedStr + ' &rarr;</span>';
+    }
+
+    var waBtn = document.getElementById('waBtn_' + paneId);
+    if (waBtn) {
+      var waMsg = "Hi KoiKoi Travel, I am interested in booking " + trainName + " (" + circuitName + ") departing on " + formattedStr + ". Please check real-time cabin availability.";
+      waBtn.href = "https://wa.me/919136739178?text=" + encodeURIComponent(waMsg);
+    }
+  };
+}
+</script>
+
 </div>
 
   </div>

@@ -1330,6 +1330,56 @@ footer a:hover{color:#F8904D}
   }
 }
 
+/* Train Overview Circuit Switcher Tabs */
+.train-circuit-tabs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px 10px;
+  margin-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.t-circuit-tab-btn {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #475569;
+  border: 1.5px solid #cbd5e1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.t-circuit-tab-btn:hover {
+  border-color: #F8904D;
+  color: #d96b27;
+  background: #fff8f4;
+}
+.t-circuit-tab-btn.active {
+  background: #0f172a;
+  color: #ffffff !important;
+  border-color: #0f172a;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+}
+.t-circuit-tab-btn .tab-duration {
+  font-size: 11.5px;
+  font-weight: 600;
+  opacity: 0.85;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+}
+.t-circuit-tab-btn.active .tab-duration {
+  background: rgba(255,255,255,0.22);
+  color: #ffffff;
+}
+
 </style>
 </head>
 <body>
@@ -1555,73 +1605,623 @@ footer a:hover{color:#F8904D}
         </p>
       </div>
       
-<div class="table-wrap" style="box-shadow:0 8px 30px rgba(15,23,42,0.06);border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;background:#ffffff">
-  <table style="width:100%;border-collapse:collapse;text-align:center;font-size:14px">
-    <thead>
-      <tr style="background:#0f172a;color:#ffffff;font-family:'Outfit',sans-serif">
-        <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15);font-size:14.5px;text-align:left">Season 2026-27</th>
-        <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
-          <div style="font-size:14px;font-weight:700">Pride of Karnataka</div>
-          <div style="font-size:11px;opacity:0.85;font-weight:500">5 Nights / 6 Days (Saturday)</div>
-        </th>
-        <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
-          <div style="font-size:14px;font-weight:700">Jewels of South</div>
-          <div style="font-size:11px;opacity:0.85;font-weight:500">5 Nights / 6 Days (Saturday)</div>
-        </th>
-        <th style="padding:16px 14px">
-          <div style="font-size:14px;font-weight:700">Glimpses of Karnataka</div>
-          <div style="font-size:11px;opacity:0.85;font-weight:500">3 Nights / 4 Days (Saturday)</div>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr style="border-bottom:1px solid #f1f5f9">
-        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">October 2026</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">24 Oct 2026</td>
-        <td style="padding:14px;color:#94a3b8;border-right:1px solid #f1f5f9">—</td>
-        <td style="padding:14px;color:#0f172a;font-weight:600">31 Oct 2026</td>
-      </tr>
-      <tr style="border-bottom:1px solid #f1f5f9;background:#fafbfc">
-        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">November 2026</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">14 Nov 2026</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">28 Nov 2026</td>
-        <td style="padding:14px;color:#94a3b8">—</td>
-      </tr>
-      <tr style="border-bottom:1px solid #f1f5f9">
-        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">December 2026</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">26 Dec 2026</td>
-        <td style="padding:14px;color:#94a3b8;border-right:1px solid #f1f5f9">—</td>
-        <td style="padding:14px;color:#0f172a;font-weight:600">19 Dec 2026</td>
-      </tr>
-      <tr style="border-bottom:1px solid #f1f5f9;background:#fafbfc">
-        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">January 2027</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">30 Jan 2027</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">02 Jan 2027</td>
-        <td style="padding:14px;color:#94a3b8">—</td>
-      </tr>
-      <tr style="border-bottom:1px solid #f1f5f9">
-        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">February 2027</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">27 Feb 2027</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">20 Feb 2027</td>
-        <td style="padding:14px;color:#0f172a;font-weight:600">06 Feb 2027</td>
-      </tr>
-      <tr style="background:#fafbfc">
-        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">March 2027</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">13 Mar 2027</td>
-        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">27 Mar 2027</td>
-        <td style="padding:14px;color:#94a3b8">—</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="train-departures-tabs-wrapper" style="margin-top:20px">
+  
+<div class="train-circuit-tabs" id="circuitTabs_golden_chariot" role="tablist">
+  
+<button type="button" class="t-circuit-tab-btn active" onclick="switchTrainOverviewCircuit('golden_chariot', 0, this)">
+  <span>Pride of Karnataka</span>
+  <span class="tab-duration">5N/6D</span>
+</button>
+<button type="button" class="t-circuit-tab-btn " onclick="switchTrainOverviewCircuit('golden_chariot', 1, this)">
+  <span>Jewels of South</span>
+  <span class="tab-duration">5N/6D</span>
+</button>
+<button type="button" class="t-circuit-tab-btn " onclick="switchTrainOverviewCircuit('golden_chariot', 2, this)">
+  <span>Glimpses of Karnataka</span>
+  <span class="tab-duration">3N/4D</span>
+</button>
 </div>
+  
+<div class="t-circuit-pane t-circuit-pane-golden_chariot" id="pane_golden_chariot_0" style="display:block">
+  <div class="circuit-date-selector-card">
+    <div class="circuit-date-header">
+      <div>
+        <div class="circuit-date-subtitle">Scheduled Departures · Pride of Karnataka (5 Nights / 6 Days)</div>
+        <div class="circuit-date-instruction">Select your preferred departure date to check real-time IRCTC cabin availability:</div>
+      </div>
+      <div class="kb-year-wrap">
+        <span class="kb-year-label" style="color:#ffffff">Select Year:</span>
+        <select class="kb-year-select" onchange="filterTrainOverviewYear('golden_chariot_0', this.value)">
+          <option value="2026" selected>Year 2026</option><option value="2027" >Year 2027</option><option value="2028" >Year 2028</option><option value="all">All Years</option>
+        </select>
+      </div>
+    </div>
 
-<div style="margin-top:14px;padding:12px 18px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-  <div style="font-size:12.5px;color:#64748b">
-    • All departures originate from Yesvantpur Railway Station, Bengaluru on scheduled Saturdays. Check-in starts at 08:30 AM.
+    <div class="kb-dates-container" role="radiogroup" aria-label="Departure date">
+      
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2026</div>
   </div>
-  <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20seat%20availability%20for%20The%20Golden%20Chariot." target="_blank" rel="noopener" style="color:#2E8B8B;font-weight:700;font-size:13px;text-decoration:none">
-    Inquire Seat Availability &rarr;
-  </a>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-03" onclick="onTrainOverviewDateClick('golden_chariot_0', this, '2026-10-03', '03rd October, 2026', 'Golden Chariot', 'Pride of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>03rd October, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-07" onclick="onTrainOverviewDateClick('golden_chariot_0', this, '2026-11-07', '07th November, 2026', 'Golden Chariot', 'Pride of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>07th November, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-05" onclick="onTrainOverviewDateClick('golden_chariot_0', this, '2026-12-05', '05th December, 2026', 'Golden Chariot', 'Pride of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>05th December, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-02" onclick="onTrainOverviewDateClick('golden_chariot_0', this, '2027-01-02', '02nd January, 2027', 'Golden Chariot', 'Pride of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>02nd January, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-06" onclick="onTrainOverviewDateClick('golden_chariot_0', this, '2027-02-06', '06th February, 2027', 'Golden Chariot', 'Pride of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>06th February, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-06" onclick="onTrainOverviewDateClick('golden_chariot_0', this, '2027-03-06', '06th March, 2027', 'Golden Chariot', 'Pride of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>06th March, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-02" onclick="onTrainOverviewDateClick('golden_chariot_0', this, '2027-10-02', '02nd October, 2027', 'Golden Chariot', 'Pride of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>02nd October, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-06" onclick="onTrainOverviewDateClick('golden_chariot_0', this, '2027-11-06', '06th November, 2027', 'Golden Chariot', 'Pride of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>06th November, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-04" onclick="onTrainOverviewDateClick('golden_chariot_0', this, '2027-12-04', '04th December, 2027', 'Golden Chariot', 'Pride of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>04th December, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-01" onclick="onTrainOverviewDateClick('golden_chariot_0', this, '2028-01-01', '01st January, 2028', 'Golden Chariot', 'Pride of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>01st January, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-05" onclick="onTrainOverviewDateClick('golden_chariot_0', this, '2028-02-05', '05th February, 2028', 'Golden Chariot', 'Pride of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>05th February, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-04" onclick="onTrainOverviewDateClick('golden_chariot_0', this, '2028-03-04', '04th March, 2028', 'Golden Chariot', 'Pride of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>04th March, 2028</span>
+</button>
+  </div>
+</div>
+    </div>
+
+    <div class="circuit-date-action-bar">
+      <div class="circuit-date-action-info">
+        <span class="c-action-badge">SELECTED DEPARTURE · PRIDE OF KARNATAKA</span>
+        <span class="c-action-date-val" id="selDateLabel_golden_chariot_0">Select a departure date above to proceed</span>
+      </div>
+      <div class="circuit-date-action-btns">
+        <a id="waBtn_golden_chariot_0" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Golden%20Chariot%20%28Pride%20of%20Karnataka%29." target="_blank" rel="noopener" class="c-btn-secondary">
+          <span>💬 Check on WhatsApp</span>
+        </a>
+        <a id="bookBtn_golden_chariot_0" href="/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka" class="c-btn-primary disabled" data-base-href="/luxury-train-demo/booking?train=Golden%20Chariot&journey=Pride%20of%20Karnataka">
+          <span>Select Date to Book &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="t-circuit-pane t-circuit-pane-golden_chariot" id="pane_golden_chariot_1" style="display:none">
+  <div class="circuit-date-selector-card">
+    <div class="circuit-date-header">
+      <div>
+        <div class="circuit-date-subtitle">Scheduled Departures · Jewels of South (5 Nights / 6 Days)</div>
+        <div class="circuit-date-instruction">Select your preferred departure date to check real-time IRCTC cabin availability:</div>
+      </div>
+      <div class="kb-year-wrap">
+        <span class="kb-year-label" style="color:#ffffff">Select Year:</span>
+        <select class="kb-year-select" onchange="filterTrainOverviewYear('golden_chariot_1', this.value)">
+          <option value="2026" selected>Year 2026</option><option value="2027" >Year 2027</option><option value="2028" >Year 2028</option><option value="all">All Years</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="kb-dates-container" role="radiogroup" aria-label="Departure date">
+      
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-17" onclick="onTrainOverviewDateClick('golden_chariot_1', this, '2026-10-17', '17th October, 2026', 'Golden Chariot', 'Jewels of South', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South')">
+  <span class="kb-radio-circle"></span>
+  <span>17th October, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-21" onclick="onTrainOverviewDateClick('golden_chariot_1', this, '2026-11-21', '21st November, 2026', 'Golden Chariot', 'Jewels of South', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South')">
+  <span class="kb-radio-circle"></span>
+  <span>21st November, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-19" onclick="onTrainOverviewDateClick('golden_chariot_1', this, '2026-12-19', '19th December, 2026', 'Golden Chariot', 'Jewels of South', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South')">
+  <span class="kb-radio-circle"></span>
+  <span>19th December, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-16" onclick="onTrainOverviewDateClick('golden_chariot_1', this, '2027-01-16', '16th January, 2027', 'Golden Chariot', 'Jewels of South', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South')">
+  <span class="kb-radio-circle"></span>
+  <span>16th January, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-20" onclick="onTrainOverviewDateClick('golden_chariot_1', this, '2027-02-20', '20th February, 2027', 'Golden Chariot', 'Jewels of South', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South')">
+  <span class="kb-radio-circle"></span>
+  <span>20th February, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-20" onclick="onTrainOverviewDateClick('golden_chariot_1', this, '2027-03-20', '20th March, 2027', 'Golden Chariot', 'Jewels of South', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South')">
+  <span class="kb-radio-circle"></span>
+  <span>20th March, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-16" onclick="onTrainOverviewDateClick('golden_chariot_1', this, '2027-10-16', '16th October, 2027', 'Golden Chariot', 'Jewels of South', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South')">
+  <span class="kb-radio-circle"></span>
+  <span>16th October, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-20" onclick="onTrainOverviewDateClick('golden_chariot_1', this, '2027-11-20', '20th November, 2027', 'Golden Chariot', 'Jewels of South', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South')">
+  <span class="kb-radio-circle"></span>
+  <span>20th November, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-18" onclick="onTrainOverviewDateClick('golden_chariot_1', this, '2027-12-18', '18th December, 2027', 'Golden Chariot', 'Jewels of South', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South')">
+  <span class="kb-radio-circle"></span>
+  <span>18th December, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-15" onclick="onTrainOverviewDateClick('golden_chariot_1', this, '2028-01-15', '15th January, 2028', 'Golden Chariot', 'Jewels of South', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South')">
+  <span class="kb-radio-circle"></span>
+  <span>15th January, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-19" onclick="onTrainOverviewDateClick('golden_chariot_1', this, '2028-02-19', '19th February, 2028', 'Golden Chariot', 'Jewels of South', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South')">
+  <span class="kb-radio-circle"></span>
+  <span>19th February, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-18" onclick="onTrainOverviewDateClick('golden_chariot_1', this, '2028-03-18', '18th March, 2028', 'Golden Chariot', 'Jewels of South', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South')">
+  <span class="kb-radio-circle"></span>
+  <span>18th March, 2028</span>
+</button>
+  </div>
+</div>
+    </div>
+
+    <div class="circuit-date-action-bar">
+      <div class="circuit-date-action-info">
+        <span class="c-action-badge">SELECTED DEPARTURE · JEWELS OF SOUTH</span>
+        <span class="c-action-date-val" id="selDateLabel_golden_chariot_1">Select a departure date above to proceed</span>
+      </div>
+      <div class="circuit-date-action-btns">
+        <a id="waBtn_golden_chariot_1" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Golden%20Chariot%20%28Jewels%20of%20South%29." target="_blank" rel="noopener" class="c-btn-secondary">
+          <span>💬 Check on WhatsApp</span>
+        </a>
+        <a id="bookBtn_golden_chariot_1" href="/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South" class="c-btn-primary disabled" data-base-href="/luxury-train-demo/booking?train=Golden%20Chariot&journey=Jewels%20of%20South">
+          <span>Select Date to Book &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="t-circuit-pane t-circuit-pane-golden_chariot" id="pane_golden_chariot_2" style="display:none">
+  <div class="circuit-date-selector-card">
+    <div class="circuit-date-header">
+      <div>
+        <div class="circuit-date-subtitle">Scheduled Departures · Glimpses of Karnataka (3 Nights / 4 Days)</div>
+        <div class="circuit-date-instruction">Select your preferred departure date to check real-time IRCTC cabin availability:</div>
+      </div>
+      <div class="kb-year-wrap">
+        <span class="kb-year-label" style="color:#ffffff">Select Year:</span>
+        <select class="kb-year-select" onchange="filterTrainOverviewYear('golden_chariot_2', this.value)">
+          <option value="2026" selected>Year 2026</option><option value="2027" >Year 2027</option><option value="2028" >Year 2028</option><option value="all">All Years</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="kb-dates-container" role="radiogroup" aria-label="Departure date">
+      
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-24" onclick="onTrainOverviewDateClick('golden_chariot_2', this, '2026-10-24', '24th October, 2026', 'Golden Chariot', 'Glimpses of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>24th October, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-28" onclick="onTrainOverviewDateClick('golden_chariot_2', this, '2026-11-28', '28th November, 2026', 'Golden Chariot', 'Glimpses of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>28th November, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-26" onclick="onTrainOverviewDateClick('golden_chariot_2', this, '2026-12-26', '26th December, 2026', 'Golden Chariot', 'Glimpses of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>26th December, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-23" onclick="onTrainOverviewDateClick('golden_chariot_2', this, '2027-01-23', '23rd January, 2027', 'Golden Chariot', 'Glimpses of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>23rd January, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-27" onclick="onTrainOverviewDateClick('golden_chariot_2', this, '2027-02-27', '27th February, 2027', 'Golden Chariot', 'Glimpses of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>27th February, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-27" onclick="onTrainOverviewDateClick('golden_chariot_2', this, '2027-03-27', '27th March, 2027', 'Golden Chariot', 'Glimpses of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>27th March, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-23" onclick="onTrainOverviewDateClick('golden_chariot_2', this, '2027-10-23', '23rd October, 2027', 'Golden Chariot', 'Glimpses of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>23rd October, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-27" onclick="onTrainOverviewDateClick('golden_chariot_2', this, '2027-11-27', '27th November, 2027', 'Golden Chariot', 'Glimpses of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>27th November, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-25" onclick="onTrainOverviewDateClick('golden_chariot_2', this, '2027-12-25', '25th December, 2027', 'Golden Chariot', 'Glimpses of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>25th December, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-22" onclick="onTrainOverviewDateClick('golden_chariot_2', this, '2028-01-22', '22nd January, 2028', 'Golden Chariot', 'Glimpses of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>22nd January, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-26" onclick="onTrainOverviewDateClick('golden_chariot_2', this, '2028-02-26', '26th February, 2028', 'Golden Chariot', 'Glimpses of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>26th February, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-25" onclick="onTrainOverviewDateClick('golden_chariot_2', this, '2028-03-25', '25th March, 2028', 'Golden Chariot', 'Glimpses of Karnataka', '/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka')">
+  <span class="kb-radio-circle"></span>
+  <span>25th March, 2028</span>
+</button>
+  </div>
+</div>
+    </div>
+
+    <div class="circuit-date-action-bar">
+      <div class="circuit-date-action-info">
+        <span class="c-action-badge">SELECTED DEPARTURE · GLIMPSES OF KARNATAKA</span>
+        <span class="c-action-date-val" id="selDateLabel_golden_chariot_2">Select a departure date above to proceed</span>
+      </div>
+      <div class="circuit-date-action-btns">
+        <a id="waBtn_golden_chariot_2" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Golden%20Chariot%20%28Glimpses%20of%20Karnataka%29." target="_blank" rel="noopener" class="c-btn-secondary">
+          <span>💬 Check on WhatsApp</span>
+        </a>
+        <a id="bookBtn_golden_chariot_2" href="/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka" class="c-btn-primary disabled" data-base-href="/luxury-train-demo/booking?train=Golden%20Chariot&journey=Glimpses%20of%20Karnataka">
+          <span>Select Date to Book &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<script>
+if (typeof window.trainOverviewScriptLoaded === 'undefined') {
+  window.trainOverviewScriptLoaded = true;
+
+  window.switchTrainOverviewCircuit = function(cleanSlug, targetIdx, btn) {
+    var tabs = document.getElementById('circuitTabs_' + cleanSlug);
+    if (tabs) {
+      tabs.querySelectorAll('.t-circuit-tab-btn').forEach(function(b) {
+        b.classList.remove('active');
+      });
+    }
+    btn.classList.add('active');
+
+    var panes = document.querySelectorAll('.t-circuit-pane-' + cleanSlug);
+    panes.forEach(function(p, idx) {
+      p.style.display = (idx === targetIdx) ? 'block' : 'none';
+    });
+  };
+
+  window.filterTrainOverviewYear = function(paneId, y) {
+    var pane = document.getElementById('pane_' + paneId);
+    if (!pane) return;
+    var rows = pane.querySelectorAll('.c-month-row');
+    rows.forEach(function(r) {
+      if (y === 'all' || r.getAttribute('data-year') === y) {
+        r.style.display = 'flex';
+      } else {
+        r.style.display = 'none';
+      }
+    });
+  };
+
+  window.onTrainOverviewDateClick = function(paneId, btn, dateStr, formattedStr, trainName, circuitName, bookingBaseUrl) {
+    var pane = document.getElementById('pane_' + paneId);
+    if (!pane) return;
+    pane.querySelectorAll('.c-dep-item').forEach(function(b) {
+      b.setAttribute('aria-checked', 'false');
+      b.classList.remove('active');
+    });
+    btn.setAttribute('aria-checked', 'true');
+    btn.classList.add('active');
+
+    var lbl = document.getElementById('selDateLabel_' + paneId);
+    if (lbl) lbl.innerHTML = 'Selected: <b>' + formattedStr + ' (' + circuitName + ')</b>';
+
+    var bookBtn = document.getElementById('bookBtn_' + paneId);
+    if (bookBtn) {
+      bookBtn.classList.remove('disabled');
+      bookBtn.href = bookingBaseUrl + '&date=' + encodeURIComponent(dateStr);
+      bookBtn.innerHTML = '<span>Book for ' + formattedStr + ' &rarr;</span>';
+    }
+
+    var waBtn = document.getElementById('waBtn_' + paneId);
+    if (waBtn) {
+      var waMsg = "Hi KoiKoi Travel, I am interested in booking " + trainName + " (" + circuitName + ") departing on " + formattedStr + ". Please check real-time cabin availability.";
+      waBtn.href = "https://wa.me/919136739178?text=" + encodeURIComponent(waMsg);
+    }
+  };
+}
+</script>
+
 </div>
 
     </div>

@@ -1330,6 +1330,56 @@ footer a:hover{color:#F8904D}
   }
 }
 
+/* Train Overview Circuit Switcher Tabs */
+.train-circuit-tabs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px 10px;
+  margin-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.t-circuit-tab-btn {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #475569;
+  border: 1.5px solid #cbd5e1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.t-circuit-tab-btn:hover {
+  border-color: #F8904D;
+  color: #d96b27;
+  background: #fff8f4;
+}
+.t-circuit-tab-btn.active {
+  background: #0f172a;
+  color: #ffffff !important;
+  border-color: #0f172a;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+}
+.t-circuit-tab-btn .tab-duration {
+  font-size: 11.5px;
+  font-weight: 600;
+  opacity: 0.85;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+}
+.t-circuit-tab-btn.active .tab-duration {
+  background: rgba(255,255,255,0.22);
+  color: #ffffff;
+}
+
 </style>
 </head>
 <body>
@@ -1405,39 +1455,514 @@ footer a:hover{color:#F8904D}
       <p>Due to high demand from international travelers, cabins on October to February departures book out 6–9 months in advance.</p>
     </div>
     
-<div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:32px">
-  <div style="background:#0f172a;color:#fff;padding:14px 20px;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:space-between">
-    <span>🗓 Season 2026 – 2027 &amp; 2027 – 2028 Departure Calendar</span>
-    <span style="font-size:12px;color:#F8904D">Departs Every Wednesday</span>
+<div class="train-departures-tabs-wrapper" style="margin-top:20px">
+  
+  
+<div class="t-circuit-pane t-circuit-pane-palace_on_wheels" id="pane_palace_on_wheels_0" style="display:block">
+  <div class="circuit-date-selector-card">
+    <div class="circuit-date-header">
+      <div>
+        <div class="circuit-date-subtitle">Scheduled Departures · Royal Rajasthan Circuit (7 Nights / 8 Days)</div>
+        <div class="circuit-date-instruction">Select your preferred departure date to check real-time IRCTC cabin availability:</div>
+      </div>
+      <div class="kb-year-wrap">
+        <span class="kb-year-label" style="color:#ffffff">Select Year:</span>
+        <select class="kb-year-select" onchange="filterTrainOverviewYear('palace_on_wheels_0', this.value)">
+          <option value="2026" selected>Year 2026</option><option value="2027" >Year 2027</option><option value="2028" >Year 2028</option><option value="all">All Years</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="kb-dates-container" role="radiogroup" aria-label="Departure date">
+      
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">September 2026</div>
   </div>
-  <div style="overflow-x:auto">
-    <table class="circuit-price-table">
-      <thead>
-        <tr>
-          <th style="width:25%">Month</th>
-          <th style="width:35%">Season 2026 – 2027 Departures</th>
-          <th style="width:25%">Season 2027 – 2028 Departures</th>
-          <th style="width:15%">Tariff Type</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td style="font-weight:700">September</td><td style="font-weight:700;color:#ea580c">02, 09, 16, 23, 30</td><td>01, 08, 15, 22, 29</td><td><span style="background:#e0f2fe;color:#0369a1;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Lean Season</span></td></tr>
-        <tr><td style="font-weight:700">October</td><td style="font-weight:700;color:#ea580c">07, 14, 21, 28</td><td>06, 13, 20, 27</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
-        <tr><td style="font-weight:700">November</td><td style="font-weight:700;color:#ea580c">04, 11, 18, 25</td><td>03, 10, 17, 24</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
-        <tr><td style="font-weight:700">December</td><td style="font-weight:700;color:#ea580c">02, 09, 16, 23, 30</td><td>01, 08, 15, 22, 29</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
-        <tr><td style="font-weight:700">January</td><td style="font-weight:700;color:#ea580c">06, 13, 20, 27</td><td>05, 12, 19, 26</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
-        <tr><td style="font-weight:700">February</td><td style="font-weight:700;color:#ea580c">03, 10, 17, 24</td><td>02, 09, 16, 23</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
-        <tr><td style="font-weight:700">March</td><td style="font-weight:700;color:#ea580c">03, 10, 17, 24, 31</td><td>01, 08, 15, 22, 29</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
-        <tr><td style="font-weight:700">April</td><td style="font-weight:700;color:#ea580c">07, 14, 21, 28</td><td>05, 12, 19, 26</td><td><span style="background:#e0f2fe;color:#0369a1;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Lean Season</span></td></tr>
-      </tbody>
-    </table>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-09-02" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-09-02', '02nd September, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>02nd September, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-09-09" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-09-09', '09th September, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>09th September, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-09-16" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-09-16', '16th September, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>16th September, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-09-23" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-09-23', '23rd September, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>23rd September, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-09-30" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-09-30', '30th September, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>30th September, 2026</span>
+</button>
   </div>
-  <div style="padding:14px 20px;background:#fdfcfb;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-    <span style="font-size:13px;color:#64748b">✦ Weekly departures start at Delhi Safdarjung Station at 18:30 hrs every Wednesday.</span>
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Palace%20on%20Wheels%20Wednesday%20dates." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;padding:8px 18px;border-radius:999px;text-decoration:none">
-      Inquire Dates on WhatsApp &rarr;
-    </a>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2026</div>
   </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-07" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-10-07', '07th October, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>07th October, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-14" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-10-14', '14th October, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>14th October, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-21" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-10-21', '21st October, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>21st October, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-28" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-10-28', '28th October, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>28th October, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-04" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-11-04', '04th November, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>04th November, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-11" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-11-11', '11th November, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>11th November, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-18" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-11-18', '18th November, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>18th November, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-25" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-11-25', '25th November, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>25th November, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-02" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-12-02', '02nd December, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>02nd December, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-09" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-12-09', '09th December, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>09th December, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-16" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-12-16', '16th December, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>16th December, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-23" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-12-23', '23rd December, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>23rd December, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-30" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2026-12-30', '30th December, 2026', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>30th December, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-06" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-01-06', '06th January, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>06th January, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-13" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-01-13', '13th January, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>13th January, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-20" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-01-20', '20th January, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>20th January, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-27" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-01-27', '27th January, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>27th January, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-03" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-02-03', '03rd February, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>03rd February, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-10" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-02-10', '10th February, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>10th February, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-17" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-02-17', '17th February, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>17th February, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-24" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-02-24', '24th February, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>24th February, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-03" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-03-03', '03rd March, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>03rd March, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-10" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-03-10', '10th March, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>10th March, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-17" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-03-17', '17th March, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>17th March, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-24" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-03-24', '24th March, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>24th March, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-31" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-03-31', '31st March, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>31st March, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">April 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-04-07" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-04-07', '07th April, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>07th April, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-04-14" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-04-14', '14th April, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>14th April, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-04-21" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-04-21', '21st April, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>21st April, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-04-28" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-04-28', '28th April, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>28th April, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">September 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-09-01" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-09-01', '01st September, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>01st September, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-09-08" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-09-08', '08th September, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>08th September, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-09-15" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-09-15', '15th September, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>15th September, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-09-22" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-09-22', '22nd September, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>22nd September, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-09-29" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-09-29', '29th September, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>29th September, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-06" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-10-06', '06th October, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>06th October, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-13" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-10-13', '13th October, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>13th October, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-20" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-10-20', '20th October, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>20th October, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-27" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-10-27', '27th October, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>27th October, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-03" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-11-03', '03rd November, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>03rd November, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-10" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-11-10', '10th November, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>10th November, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-17" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-11-17', '17th November, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>17th November, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-24" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-11-24', '24th November, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>24th November, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-01" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-12-01', '01st December, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>01st December, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-08" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-12-08', '08th December, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>08th December, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-15" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-12-15', '15th December, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>15th December, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-22" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-12-22', '22nd December, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>22nd December, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-29" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2027-12-29', '29th December, 2027', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>29th December, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-05" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-01-05', '05th January, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>05th January, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-12" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-01-12', '12th January, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>12th January, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-19" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-01-19', '19th January, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>19th January, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-26" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-01-26', '26th January, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>26th January, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-02" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-02-02', '02nd February, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>02nd February, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-09" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-02-09', '09th February, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>09th February, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-16" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-02-16', '16th February, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>16th February, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-23" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-02-23', '23rd February, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>23rd February, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-01" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-03-01', '01st March, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>01st March, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-08" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-03-08', '08th March, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>08th March, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-15" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-03-15', '15th March, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>15th March, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-22" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-03-22', '22nd March, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>22nd March, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-29" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-03-29', '29th March, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>29th March, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">April 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-04-05" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-04-05', '05th April, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>05th April, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-04-12" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-04-12', '12th April, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>12th April, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-04-19" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-04-19', '19th April, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>19th April, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-04-26" onclick="onTrainOverviewDateClick('palace_on_wheels_0', this, '2028-04-26', '26th April, 2028', 'Palace on Wheels', 'Royal Rajasthan Circuit', '/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit')">
+  <span class="kb-radio-circle"></span>
+  <span>26th April, 2028</span>
+</button>
+  </div>
+</div>
+    </div>
+
+    <div class="circuit-date-action-bar">
+      <div class="circuit-date-action-info">
+        <span class="c-action-badge">SELECTED DEPARTURE · ROYAL RAJASTHAN CIRCUIT</span>
+        <span class="c-action-date-val" id="selDateLabel_palace_on_wheels_0">Select a departure date above to proceed</span>
+      </div>
+      <div class="circuit-date-action-btns">
+        <a id="waBtn_palace_on_wheels_0" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Palace%20on%20Wheels%20%28Royal%20Rajasthan%20Circuit%29." target="_blank" rel="noopener" class="c-btn-secondary">
+          <span>💬 Check on WhatsApp</span>
+        </a>
+        <a id="bookBtn_palace_on_wheels_0" href="/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit" class="c-btn-primary disabled" data-base-href="/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit">
+          <span>Select Date to Book &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<script>
+if (typeof window.trainOverviewScriptLoaded === 'undefined') {
+  window.trainOverviewScriptLoaded = true;
+
+  window.switchTrainOverviewCircuit = function(cleanSlug, targetIdx, btn) {
+    var tabs = document.getElementById('circuitTabs_' + cleanSlug);
+    if (tabs) {
+      tabs.querySelectorAll('.t-circuit-tab-btn').forEach(function(b) {
+        b.classList.remove('active');
+      });
+    }
+    btn.classList.add('active');
+
+    var panes = document.querySelectorAll('.t-circuit-pane-' + cleanSlug);
+    panes.forEach(function(p, idx) {
+      p.style.display = (idx === targetIdx) ? 'block' : 'none';
+    });
+  };
+
+  window.filterTrainOverviewYear = function(paneId, y) {
+    var pane = document.getElementById('pane_' + paneId);
+    if (!pane) return;
+    var rows = pane.querySelectorAll('.c-month-row');
+    rows.forEach(function(r) {
+      if (y === 'all' || r.getAttribute('data-year') === y) {
+        r.style.display = 'flex';
+      } else {
+        r.style.display = 'none';
+      }
+    });
+  };
+
+  window.onTrainOverviewDateClick = function(paneId, btn, dateStr, formattedStr, trainName, circuitName, bookingBaseUrl) {
+    var pane = document.getElementById('pane_' + paneId);
+    if (!pane) return;
+    pane.querySelectorAll('.c-dep-item').forEach(function(b) {
+      b.setAttribute('aria-checked', 'false');
+      b.classList.remove('active');
+    });
+    btn.setAttribute('aria-checked', 'true');
+    btn.classList.add('active');
+
+    var lbl = document.getElementById('selDateLabel_' + paneId);
+    if (lbl) lbl.innerHTML = 'Selected: <b>' + formattedStr + ' (' + circuitName + ')</b>';
+
+    var bookBtn = document.getElementById('bookBtn_' + paneId);
+    if (bookBtn) {
+      bookBtn.classList.remove('disabled');
+      bookBtn.href = bookingBaseUrl + '&date=' + encodeURIComponent(dateStr);
+      bookBtn.innerHTML = '<span>Book for ' + formattedStr + ' &rarr;</span>';
+    }
+
+    var waBtn = document.getElementById('waBtn_' + paneId);
+    if (waBtn) {
+      var waMsg = "Hi KoiKoi Travel, I am interested in booking " + trainName + " (" + circuitName + ") departing on " + formattedStr + ". Please check real-time cabin availability.";
+      waBtn.href = "https://wa.me/919136739178?text=" + encodeURIComponent(waMsg);
+    }
+  };
+}
+</script>
+
 </div>
 
     <div style="margin-top:36px;text-align:center">
