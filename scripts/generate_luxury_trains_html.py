@@ -1733,204 +1733,1454 @@ def generate_all_for_base(base_dir, base_path):
                "Plan a luxury train journey in India with KoiKoi Travel. Palace on Wheels, Maharajas' Express, Golden Chariot and Deccan Odyssey.",
                home_content, base_path=base_path)
 
-    # ================= 2. PALACE ON WHEELS SUBPAGES =================
+    def build_koikoi_circuit_page(circuit_tag, name, duration, title, route, starting_price,
+                                  origin, destination, destinations_count,
+                                  hero_imgs, highlights, overview, days_data,
+                                  departures_data, price_data, faqs_data,
+                                  train_slug="maharajas-express", train_name="Maharajas' Express",
+                                  inc_exc_html=None):
+        hl_html = "".join([f"""<li style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#334155;line-height:1.5">
+  <svg style="color:#2E8B8B;margin-top:2px;flex-shrink:0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span>{h}</span>
+</li>""" for h in highlights])
+
+        days_html = ""
+        for i, d in enumerate(days_data):
+            open_attr = "open" if i == 0 else ""
+            desc_html = "".join([f"<p>{p}</p>" for p in d["paragraphs"]])
+            overnight_html = f'<div class="day-meta-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> {d["overnight"]}</div>' if d.get("overnight") else ""
+            meals_html = f'<div class="day-meta-pill" style="margin-left:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg> {d["meals"]}</div>' if d.get("meals") else ""
+
+            days_html += f"""
+<details class="day-accordion-item" {open_attr}>
+  <summary>
+    <h3>
+      <span class="day-num">Day {d['day']}:</span>
+      <span>{d['title']}</span>
+    </h3>
+    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </summary>
+  <div class="day-accordion-content">
+    {desc_html}
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:10px">
+      {overnight_html}
+      {meals_html}
+    </div>
+  </div>
+</details>
+"""
+
+        # Build departure rows
+        dep_rows_html = ""
+        for month_name, date_str in departures_data:
+            dep_rows_html += f"""
+<tr style="border-bottom:1px solid #f1f5f9">
+  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">{month_name}</td>
+  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">{date_str}</td>
+  <td style="padding:14px 20px">
+    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20{train_name}%20{name}%20departing%20on%20{date_str}." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
+      Check Availability &rarr;
+    </a>
+  </td>
+</tr>
+"""
+
+        # Build Dynamic Photo Grid HTML (4+ photos support with +N Photos badge)
+        extra_count = len(hero_imgs) - 4
+        more_badge_html = f"""
+        <div style="position:absolute;inset:0;background:rgba(15,23,42,0.38);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;transition:background .25s" class="more-overlay">
+          <span style="padding:10px 18px;border-radius:12px;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);color:#0f172a;font-family:\'Outfit\',sans-serif;font-size:13px;font-weight:800;box-shadow:0 10px 25px rgba(0,0,0,0.25);display:inline-flex;align-items:center;gap:6px;transition:transform .2s">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            +{extra_count} Photos
+          </span>
+        </div>
+""" if extra_count > 0 else ""
+
+        if len(hero_imgs) >= 4:
+            gallery_grid_html = f"""
+    <!-- Left: 4-Photo Showcase Grid with Lightbox Trigger -->
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:12px;height:100%;min-height:380px" class="gallery-hero-grid">
+      <!-- Photo 1 (Top Left) -->
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(0)" class="hero-photo-card" title="Click to open photo lightbox">
+        <img src="{hero_imgs[0]['src']}" alt="{hero_imgs[0].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[0]['title']}</span>
+      </div>
+
+      <!-- Photo 2 (Top Right) -->
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(1)" class="hero-photo-card" title="Click to open photo lightbox">
+        <img src="{hero_imgs[1]['src']}" alt="{hero_imgs[1].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[1]['title']}</span>
+      </div>
+
+      <!-- Photo 3 (Bottom Left) -->
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(2)" class="hero-photo-card" title="Click to open photo lightbox">
+        <img src="{hero_imgs[2]['src']}" alt="{hero_imgs[2].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[2]['title']}</span>
+      </div>
+
+      <!-- Photo 4 (Bottom Right + Optional Overlay) -->
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(3)" class="hero-photo-card" title="Click to view all photos">
+        <img src="{hero_imgs[3]['src']}" alt="{hero_imgs[3].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[3]['title']}</span>
+        {more_badge_html}
+      </div>
+    </div>
+"""
+        else:
+            gallery_grid_html = f"""
+    <!-- Left: 3-Photo Showcase Grid with Lightbox Trigger -->
+    <div style="display:grid;grid-template-columns:1.2fr 1fr;grid-template-rows:repeat(2,1fr);gap:12px;height:100%" class="gallery-hero-grid">
+      <div style="grid-row:1 / -1;border-radius:20px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(0)" class="hero-photo-card" title="Click to open photo lightbox">
+        <img src="{hero_imgs[0]['src']}" alt="{hero_imgs[0].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:12px 16px;font-size:13px;font-weight:600">{hero_imgs[0]['title']}</span>
+      </div>
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(1)" class="hero-photo-card" title="Click to open photo lightbox">
+        <img src="{hero_imgs[1]['src']}" alt="{hero_imgs[1].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[1]['title']}</span>
+      </div>
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(2)" class="hero-photo-card" title="Click to open photo lightbox">
+        <img src="{hero_imgs[2]['src']}" alt="{hero_imgs[2].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[2]['title']}</span>
+      </div>
+    </div>
+"""
+
+        # Serialize slides json for frontend JS
+        import json as _py_json
+        slides_json = _py_json.dumps(hero_imgs)
+
+        lightbox_modal_html = f"""
+<!-- Circuit Photo Lightbox Modal -->
+<div id="circuitLightbox" class="circuit-lb-overlay" onclick="onLightboxBackdropClick(event)">
+  <!-- Header: Counter & Close -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;z-index:30">
+    <span id="lbCounter" style="display:inline-block;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.10);padding:6px 14px;border-radius:9999px;font-size:11px;font-weight:700;letter-spacing:0.18em;color:rgba(255,255,255,0.9);backdrop-filter:blur(10px);text-transform:uppercase">1 / {len(hero_imgs)}</span>
+    <button class="circuit-lb-btn" onclick="closeCircuitLightbox()" aria-label="Close photo gallery">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </div>
+
+  <!-- Main View Area with Prev / Next Arrows -->
+  <div style="position:relative;flex:1;display:flex;align-items:center;justify-content:center;padding:10px 80px;min-height:0">
+    <button class="circuit-lb-btn circuit-lb-arrow prev" onclick="prevCircuitLightbox()" aria-label="Previous photo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+    <img id="lbMainImage" src="" alt="" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;box-shadow:0 25px 60px rgba(0,0,0,0.8);transition:opacity 0.2s ease, transform 0.2s ease">
+    <button class="circuit-lb-btn circuit-lb-arrow next" onclick="nextCircuitLightbox()" aria-label="Next photo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+  </div>
+
+  <!-- Footer: Caption -->
+  <div style="padding:16px 24px 22px;text-align:center;z-index:30">
+    <div id="lbCaption" style="color:#ffffff;font-size:15px;font-weight:600;font-family:\'Outfit\',sans-serif;letter-spacing:0.3px;text-shadow:0 2px 8px rgba(0,0,0,0.8)"></div>
+  </div>
+</div>
+
+<script>
+const circuitSlides = {slides_json};
+let curLbIndex = 0;
+
+function openCircuitLightbox(index) {{
+  curLbIndex = index;
+  updateLightboxContent();
+  const lb = document.getElementById('circuitLightbox');
+  if (!lb) return;
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}}
+
+function closeCircuitLightbox() {{
+  const lb = document.getElementById('circuitLightbox');
+  if (!lb) return;
+  lb.classList.remove('active');
+  document.body.style.overflow = '';
+}}
+
+function updateLightboxContent() {{
+  if (!circuitSlides || !circuitSlides.length) return;
+  const slide = circuitSlides[curLbIndex];
+  const imgEl = document.getElementById('lbMainImage');
+  const counterEl = document.getElementById('lbCounter');
+  const captionEl = document.getElementById('lbCaption');
+  if (imgEl) {{
+    imgEl.style.opacity = '0.3';
+    imgEl.style.transform = 'scale(0.98)';
+    imgEl.src = slide.src;
+    imgEl.alt = slide.title || '';
+    setTimeout(() => {{
+      imgEl.style.opacity = '1';
+      imgEl.style.transform = 'scale(1)';
+    }}, 80);
+  }}
+  if (counterEl) {{
+    counterEl.textContent = `${{curLbIndex + 1}} / ${{circuitSlides.length}}`;
+  }}
+  if (captionEl) {{
+    captionEl.textContent = slide.title || '';
+  }}
+}}
+
+function nextCircuitLightbox() {{
+  if (!circuitSlides.length) return;
+  curLbIndex = (curLbIndex + 1) % circuitSlides.length;
+  updateLightboxContent();
+}}
+
+function prevCircuitLightbox() {{
+  if (!circuitSlides.length) return;
+  curLbIndex = (curLbIndex - 1 + circuitSlides.length) % circuitSlides.length;
+  updateLightboxContent();
+}}
+
+function onLightboxBackdropClick(e) {{
+  if (e.target.id === 'circuitLightbox' || e.target.tagName === 'DIV') {{
+    if (e.target.closest('button') || e.target.tagName === 'IMG') return;
+    closeCircuitLightbox();
+  }}
+}}
+
+document.addEventListener('keydown', (e) => {{
+  const lb = document.getElementById('circuitLightbox');
+  if (!lb || !lb.classList.contains('active')) return;
+  if (e.key === 'Escape') closeCircuitLightbox();
+  if (e.key === 'ArrowRight') nextCircuitLightbox();
+  if (e.key === 'ArrowLeft') prevCircuitLightbox();
+}});
+
+// Swipe support for mobile touch
+let lbTouchStartX = 0;
+let lbTouchEndX = 0;
+const lbContainer = document.getElementById('circuitLightbox');
+if (lbContainer) {{
+  lbContainer.addEventListener('touchstart', (e) => {{
+    lbTouchStartX = e.changedTouches[0].screenX;
+  }}, {{ passive: true }});
+  lbContainer.addEventListener('touchend', (e) => {{
+    lbTouchEndX = e.changedTouches[0].screenX;
+    if (lbTouchStartX - lbTouchEndX > 50) nextCircuitLightbox();
+    if (lbTouchEndX - lbTouchStartX > 50) prevCircuitLightbox();
+  }}, {{ passive: true }});
+}}
+</script>
+"""
+
+        # Build Pricing Table HTML
+        if train_slug == "golden-chariot":
+            price_table_html = f"""
+      <!-- USD Table -->
+      <div id="circuitPriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table class="circuit-price-table">
+            <thead>
+              <tr>
+                <th style="width:40%">Occupancy Category</th>
+                <th style="width:30%">Deluxe Cabin (Twin / Double Sharing)</th>
+                <th style="width:30%">Single Supplement (Solo Traveler)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Adult Tariff (USD)</td>
+                <td style="font-weight:700">{price_data['usd']['deluxe_twin']}</td>
+                <td style="color:#64748b">{price_data['usd']['deluxe_single']}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- INR Table -->
+      <div id="circuitPriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table class="circuit-price-table">
+            <thead>
+              <tr>
+                <th style="width:40%">Occupancy Category</th>
+                <th style="width:30%">Deluxe Cabin (Twin / Double Sharing)</th>
+                <th style="width:30%">Single Supplement (Solo Traveler)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Indian Nationals Tariff (INR)</td>
+                <td style="font-weight:700">{price_data['inr']['deluxe_twin']}</td>
+                <td style="color:#64748b">{price_data['inr']['deluxe_single']}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+"""
+        elif train_slug == "deccan-odyssey":
+            price_table_html = f"""
+      <!-- USD Table -->
+      <div id="circuitPriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table class="circuit-price-table">
+            <thead>
+              <tr>
+                <th style="width:34%">Occupancy Category</th>
+                <th style="width:33%">Deluxe Cabin (Twin / Double)</th>
+                <th style="width:33%">Presidential Suite (Per Cabin)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Twin / Double Sharing (Per Person)</td>
+                <td style="font-weight:700">{price_data['usd']['deluxe_twin']}</td>
+                <td style="font-weight:700">{price_data['usd']['presidential']}</td>
+              </tr>
+              <tr>
+                <td>Single Occupancy (Solo Cabin)</td>
+                <td style="color:#64748b">{price_data['usd']['deluxe_single']}</td>
+                <td style="color:#64748b">{price_data['usd']['presidential']}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- INR Table -->
+      <div id="circuitPriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table class="circuit-price-table">
+            <thead>
+              <tr>
+                <th style="width:34%">Occupancy Category</th>
+                <th style="width:33%">Deluxe Cabin (Twin / Double)</th>
+                <th style="width:33%">Presidential Suite (Per Cabin)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Twin / Double Sharing (Per Person)</td>
+                <td style="font-weight:700">{price_data['inr']['deluxe_twin']}</td>
+                <td style="font-weight:700">{price_data['inr']['presidential']}</td>
+              </tr>
+              <tr>
+                <td>Single Occupancy (Solo Cabin)</td>
+                <td style="color:#64748b">{price_data['inr']['deluxe_single']}</td>
+                <td style="color:#64748b">{price_data['inr']['presidential']}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+"""
+        elif train_slug == "palace-on-wheels":
+            price_table_html = f"""
+      <!-- USD Table -->
+      <div id="circuitPriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table class="circuit-price-table">
+            <thead>
+              <tr>
+                <th style="width:40%">Occupancy Category</th>
+                <th style="width:30%">Lean Season (Sep &amp; Apr)</th>
+                <th style="width:30%">Peak Season (Oct to Mar)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Deluxe Cabin (Twin / Double Sharing · Per Person)</td>
+                <td style="font-weight:700">{price_data['usd']['deluxe_lean']}</td>
+                <td style="font-weight:700">{price_data['usd']['deluxe_peak']}</td>
+              </tr>
+              <tr>
+                <td>Deluxe Cabin (Single Occupancy · Solo Cabin)</td>
+                <td style="color:#64748b">{price_data['usd']['single_lean']}</td>
+                <td style="color:#64748b">{price_data['usd']['single_peak']}</td>
+              </tr>
+              <tr>
+                <td>Super Deluxe Suite (Full Cabin · Per Cabin)</td>
+                <td style="font-weight:700">{price_data['usd']['suite_lean']}</td>
+                <td style="font-weight:700">{price_data['usd']['suite_peak']}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- INR Table -->
+      <div id="circuitPriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table class="circuit-price-table">
+            <thead>
+              <tr>
+                <th style="width:40%">Occupancy Category</th>
+                <th style="width:30%">Lean Season (Sep &amp; Apr)</th>
+                <th style="width:30%">Peak Season (Oct to Mar)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Deluxe Cabin (Twin / Double Sharing · Per Person)</td>
+                <td style="font-weight:700">{price_data['inr']['deluxe_lean']}</td>
+                <td style="font-weight:700">{price_data['inr']['deluxe_peak']}</td>
+              </tr>
+              <tr>
+                <td>Deluxe Cabin (Single Occupancy · Solo Cabin)</td>
+                <td style="color:#64748b">{price_data['inr']['single_lean']}</td>
+                <td style="color:#64748b">{price_data['inr']['single_peak']}</td>
+              </tr>
+              <tr>
+                <td>Super Deluxe Suite (Full Cabin · Per Cabin)</td>
+                <td style="font-weight:700">{price_data['inr']['suite_lean']}</td>
+                <td style="font-weight:700">{price_data['inr']['suite_peak']}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+"""
+        else:
+            price_table_html = f"""
+      <!-- USD Table -->
+      <div id="circuitPriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table class="circuit-price-table">
+            <thead>
+              <tr>
+                <th>Rooming Category</th>
+                <th>Deluxe Cabin</th>
+                <th>Junior Suite</th>
+                <th>Suite</th>
+                <th>Presidential Suite</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Adult (Twin Sharing)</td>
+                <td style="font-weight:700">{price_data['usd']['deluxe_twin']}</td>
+                <td style="font-weight:700">{price_data['usd']['junior_twin']}</td>
+                <td style="font-weight:700">{price_data['usd']['suite_twin']}</td>
+                <td style="font-weight:700">{price_data['usd']['presidential']}</td>
+              </tr>
+              <tr>
+                <td>Single Supplement</td>
+                <td style="color:#64748b">{price_data['usd']['deluxe_single']}</td>
+                <td style="color:#64748b">{price_data['usd']['junior_single']}</td>
+                <td style="color:#64748b">{price_data['usd']['suite_single']}</td>
+                <td style="color:#64748b">{price_data['usd']['presidential']}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- INR Table -->
+      <div id="circuitPriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table class="circuit-price-table">
+            <thead>
+              <tr>
+                <th>Rooming Category</th>
+                <th>Deluxe Cabin</th>
+                <th>Junior Suite</th>
+                <th>Suite</th>
+                <th>Presidential Suite</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Adult (Twin Sharing)</td>
+                <td style="font-weight:700">{price_data['inr']['deluxe_twin']}</td>
+                <td style="font-weight:700">{price_data['inr']['junior_twin']}</td>
+                <td style="font-weight:700">{price_data['inr']['suite_twin']}</td>
+                <td style="font-weight:700">{price_data['inr']['presidential']}</td>
+              </tr>
+              <tr>
+                <td>Single Supplement</td>
+                <td style="color:#64748b">{price_data['inr']['deluxe_single']}</td>
+                <td style="color:#64748b">{price_data['inr']['junior_single']}</td>
+                <td style="color:#64748b">{price_data['inr']['suite_single']}</td>
+                <td style="color:#64748b">{price_data['inr']['presidential']}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+"""
+
+        # Format route with distinctive styling & colored arrows
+        route_styled_html = route.replace(" → ", ' <span style="color:#ea580c;font-weight:800;margin:0 4px">&rarr;</span> ')
+
+        # Build FAQs HTML
+        faqs_html = ""
+        for idx, faq in enumerate(faqs_data):
+            open_attr = "open" if idx == 0 else ""
+            border_style = "border-bottom:1px solid #f1f5f9;" if idx < len(faqs_data) - 1 else ""
+            faqs_html += f"""
+<details {open_attr} style="{border_style}padding:16px 0">
+  <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">{faq['q']}</summary>
+  <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+    {faq['a']}
+  </div>
+</details>
+"""
+
+        return f"""
+<div class="wrap" style="padding-top:28px;padding-bottom:12px">
+  <div class="koikoi-breadcrumb" style="margin-bottom:12px">
+    <a href="{base_path}" style="color:#64748b;text-decoration:none">Luxury Trains</a>
+    <span style="color:#94a3b8;margin:0 6px">›</span>
+    <a href="{base_path}/{train_slug}" style="color:#64748b;text-decoration:none">{train_name}</a>
+    <span style="color:#94a3b8;margin:0 6px">›</span>
+    <span style="color:#0f172a;font-weight:600">{name}</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+    <span style="background:rgba(248,144,77,0.12);color:#d96b27;border:1px solid rgba(248,144,77,0.25);font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;padding:4px 12px;border-radius:999px">
+      {circuit_tag}
+    </span>
+  </div>
+  <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+    {title}
+  </h1>
+  <div style="display:inline-flex;align-items:center;gap:10px;background:#fff8f4;border:1px solid #fed7aa;padding:8px 16px;border-radius:12px;margin-bottom:14px;flex-wrap:wrap">
+    <div style="display:inline-flex;align-items:center;gap:6px;color:#ea580c;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4" y="3" width="16" height="16" rx="2"></rect>
+        <path d="M4 11h16"></path>
+        <path d="M12 3v8"></path>
+        <path d="m8 19-2 3"></path>
+        <path d="m16 19 2 3"></path>
+        <circle cx="8" cy="15" r="1.5" fill="currentColor"></circle>
+        <circle cx="16" cy="15" r="1.5" fill="currentColor"></circle>
+      </svg>
+      <span>Circuit Route</span>
+    </div>
+    <span style="color:#fdba74">|</span>
+    <span style="color:#0f172a;font-weight:600;font-size:14.5px;line-height:1.5">
+      {route_styled_html}
+    </span>
+  </div>
+</div>
+
+<div class="wrap" style="margin-bottom:44px">
+  <div style="display:grid;grid-template-columns:1.8fr 1.2fr;gap:24px" class="hero-inner-split">
+    
+    {gallery_grid_html}
+    <!-- Right: Tour Snapshot Card (Exact Clean & Authentic Style) -->
+    <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:24px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid #f1f5f9;margin-bottom:16px">
+          <span style="width:5px;height:18px;border-radius:999px;background:#F8904D"></span>
+          <h3 style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0f172a;margin:0">Tour Snapshot</h3>
+        </div>
+
+        <div style="background:#f8fafc;border-radius:12px;padding:12px;margin-bottom:14px;border:1px solid #e2e8f0">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span style="font-size:12px;color:#64748b">Boarding Station:</span>
+            <span style="font-size:12.5px;font-weight:700;color:#0f172a">{origin}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between">
+            <span style="font-size:12px;color:#64748b">Deboarding Station:</span>
+            <span style="font-size:12.5px;font-weight:700;color:#0f172a">{destination}</span>
+          </div>
+        </div>
+
+        <!-- Starting Tariff Box (Partitioned for Visa Holders vs Indian Nationals) -->
+        <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:14px;padding:12px 14px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:11px;font-weight:700;color:#9a3412;text-transform:uppercase;letter-spacing:0.5px">Official Starting Tariff</span>
+            <span style="font-size:11px;font-weight:600;color:#2E8B8B;background:rgba(46,139,139,0.1);padding:2px 8px;border-radius:999px">Deluxe Twin</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#ffffff;border:1px solid #fed7aa;border-radius:10px;padding:9px 10px">
+            <!-- Foreign / Visa Holders -->
+            <div style="border-right:1px solid #fed7aa;padding-right:6px">
+              <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.3px;display:flex;align-items:center;gap:3px">
+                <span>🌐 Visa / Foreign</span>
+              </div>
+              <div style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:800;color:#ea580c;line-height:1.2;margin-top:2px">
+                {price_data['usd']['deluxe_twin']} <span style="font-size:10.5px;font-weight:700;color:#9a3412">USD</span>
+              </div>
+            </div>
+            <!-- Indian Nationals -->
+            <div style="padding-left:4px">
+              <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.3px;display:flex;align-items:center;gap:3px">
+                <span>🇮🇳 For Indian</span>
+              </div>
+              <div style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:800;color:#ea580c;line-height:1.2;margin-top:2px">
+                {price_data['inr']['deluxe_twin']} <span style="font-size:10.5px;font-weight:700;color:#9a3412">INR</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap;gap:4px">
+            <span style="font-size:10.5px;color:#64748b">Per Person · 5% Govt. GST extra</span>
+            <a href="#pricing" style="font-size:11.5px;font-weight:700;color:#2E8B8B;text-decoration:none">View Full Table &darr;</a>
+          </div>
+        </div>
+
+        <!-- Clean Authentic Booking Policy Box -->
+        <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:12px;padding:12px 14px;margin-bottom:16px">
+          <div style="font-size:11px;font-weight:700;color:#c2410c;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Booking Policy</div>
+          <div style="font-size:12px;color:#475569;line-height:1.5">Reserve your cabin with 25% advance deposit. Remaining 75% balance payable 60 days before departure.</div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+          <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20want%20to%20plan%20{name}." target="_blank" rel="noopener" style="background:#2E8B8B;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:11px 8px;border-radius:8px;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;box-shadow:0 2px 6px rgba(46,139,139,0.25);transition:all .2s ease">
+            <svg style="width:16px;height:16px;fill:currentColor;flex-shrink:0" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.487-1.761-1.659-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+            <span>WhatsApp Us</span>
+          </a>
+          <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20send%20quote%20for%20{train_name}%20{name}." target="_blank" rel="noopener" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:11px 8px;border-radius:8px;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;box-shadow:0 2px 6px rgba(248,144,77,0.25);transition:all .2s ease">
+            <svg style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;flex-shrink:0" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>Request Quote</span>
+          </a>
+        </div>
+
+        <!-- Real Authentic Inclusions (NO FAKE BADGES) -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;border-top:1px solid #f1f5f9;padding-top:12px">
+          <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
+            <span style="color:#10b981;font-weight:800">✓</span> All Gourmet Meals
+          </div>
+          <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
+            <span style="color:#10b981;font-weight:800">✓</span> House Wines/Spirits
+          </div>
+          <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
+            <span style="color:#10b981;font-weight:800">✓</span> Dedicated Butler
+          </div>
+          <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
+            <span style="color:#10b981;font-weight:800">✓</span> Guided Excursions
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-bottom:80px">
+  <div style="display:grid;grid-template-columns:1fr;gap:40px">
+
+    <!-- 1. Highlights Section -->
+    <div>
+      <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">KEY SIGHTS</span>
+      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 16px">
+        {name} <span style="color:#F8904D">Highlights</span>
+      </h2>
+      <div style="background:rgba(204,251,241,0.25);border:1px solid #ccfbf1;border-radius:24px;padding:24px">
+        <ul class="circuit-highlights-grid">
+          {hl_html}
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2. Overview Section -->
+    <div>
+      <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">OVERVIEW</span>
+      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 16px">
+        About <span style="color:#F8904D">{name}</span>
+      </h2>
+      <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:24px;padding:28px;color:#475569;font-size:15.5px;line-height:1.8">
+        {overview}
+      </div>
+    </div>
+
+    <!-- 3. Day-by-Day Accordion -->
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+        <div>
+          <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">DETAILED PLAN</span>
+          <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0">
+            {name} <span style="color:#F8904D">Itinerary</span>
+          </h2>
+        </div>
+        <button type="button" onclick="toggleAllDays()" style="background:#f1f5f9;border:1px solid #cbd5e1;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 16px;border-radius:999px;cursor:pointer">
+          Expand / Collapse All
+        </button>
+      </div>
+
+      <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:24px;padding:16px 24px;box-shadow:0 2px 10px rgba(0,0,0,0.02)">
+        <div class="day-accordion">
+          {days_html}
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Inclusions & Exclusions -->
+    {inc_exc_html if inc_exc_html else inc_exc_snippet}
+
+    <!-- 5. Scheduled Departures -->
+    <div id="departures" style="margin-top:16px">
+      <div class="sec-head" style="margin-bottom:20px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">Schedules</div>
+        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px">
+          {name} <span style="color:#F8904D">Departure Dates (2026 – 2027)</span>
+        </h2>
+        <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">
+          Official scheduled Sunday departures for Season 2026-27. Reserve your cabin in advance.
+        </p>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:14px;text-align:left">
+            <thead>
+              <tr style="background:#1e255e;color:#fff;font-family:'Outfit',sans-serif">
+                <th style="padding:14px 20px;border-right:1px solid rgba(255,255,255,0.15)">Month</th>
+                <th style="padding:14px 20px;border-right:1px solid rgba(255,255,255,0.15)">Scheduled Departure Date</th>
+                <th style="padding:14px 20px">Cabin Availability &amp; Inquiries</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dep_rows_html}
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:14px 20px;background:#fdfcfb;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+          <span style="font-size:13px;color:#64748b">✦ Departures commence with an afternoon check-in and traditional garland welcome ceremony.</span>
+          <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20{name}." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;padding:8px 18px;border-radius:999px;text-decoration:none">
+            Inquire Specific Date on WhatsApp &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Official Tariffs & Prices -->
+    <div id="pricing" style="margin-top:16px">
+      <div class="sec-head" style="margin-bottom:20px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">Official Fares</div>
+        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px">
+          {name} <span style="color:#F8904D">Tariffs &amp; Cabin Prices (2026 – 2027)</span>
+        </h2>
+        <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">
+          Official published IRCTC tariffs per person. 5% Govt. GST extra.
+        </p>
+      </div>
+
+      <!-- Currency Switcher Buttons (Partitioned for Visa / Foreign vs For Indian) -->
+      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+        <button id="circuitBtnUsd" onclick="switchCircuitPrice('usd')" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:8px 18px;border-radius:999px;background:#0f172a;color:#fff;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
+          <span>🌐 Visa / Foreign (USD $)</span>
+        </button>
+        <button id="circuitBtnInr" onclick="switchCircuitPrice('inr')" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:8px 18px;border-radius:999px;background:#fff;border:1px solid #cbd5e1;color:#64748b;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
+          <span>🇮🇳 For Indian (INR ₹)</span>
+        </button>
+      </div>
+
+      {price_table_html}
+    </div>
+
+    <!-- 7. FAQs for this Itinerary -->
+    <div id="faqs" style="margin-top:16px">
+      <div class="sec-head center" style="margin-bottom:24px;text-align:center;max-width:850px;margin-left:auto;margin-right:auto">
+        <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">HELPFUL FAQS</span>
+        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px;text-align:center">
+          Frequently Asked Questions · <span style="color:#F8904D">{name}</span>
+        </h2>
+        <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6;text-align:center">
+          Everything you need to know about departures, excursions, dining, and reservations for this circuit.
+        </p>
+      </div>
+
+      <div class="faq" style="background:#fff;border-radius:18px;border:1px solid #e2e8f0;padding:8px 24px;box-shadow:0 4px 16px rgba(0,0,0,0.02)">
+        {faqs_html}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{lightbox_modal_html}
+
+<script>
+function switchCircuitPrice(curr) {{
+  const usd = document.getElementById('circuitPriceUsd');
+  const inr = document.getElementById('circuitPriceInr');
+  const btnUsd = document.getElementById('circuitBtnUsd');
+  const btnInr = document.getElementById('circuitBtnInr');
+  if (curr === 'usd') {{
+    if (usd) usd.style.display = 'block';
+    if (inr) inr.style.display = 'none';
+    if (btnUsd) {{ btnUsd.style.background = '#0f172a'; btnUsd.style.color = '#fff'; btnUsd.style.border = 'none'; }}
+    if (btnInr) {{ btnInr.style.background = '#fff'; btnInr.style.color = '#64748b'; btnInr.style.border = '1px solid #cbd5e1'; }}
+  }} else {{
+    if (usd) usd.style.display = 'none';
+    if (inr) inr.style.display = 'block';
+    if (btnInr) {{ btnInr.style.background = '#0f172a'; btnInr.style.color = '#fff'; btnInr.style.border = 'none'; }}
+    if (btnUsd) {{ btnUsd.style.background = '#fff'; btnUsd.style.color = '#64748b'; btnUsd.style.border = '1px solid #cbd5e1'; }}
+  }}
+}}
+</script>
+"""
+
+
+    # ================= 2. PALACE ON WHEELS SUBPAGES (ROYAL REBUILD MATCHING MAHARAJAS, GOLDEN CHARIOT & DECCAN ODYSSEY) =================
     pow_data = {
         "slug": "palace-on-wheels",
         "name": "Palace on Wheels",
-        "tagline": "India's First Luxury Train, Since 1982",
+        "tagline": "India's Pioneer Luxury Train, Since 1982",
         "banner": "/images/luxury-trains/palace-on-wheels/hero.jpg",
     }
 
-    # Palace on Wheels: Overview
+    # Helper components for Palace on Wheels Home / Overview Page
+    def get_pow_cards_component():
+        return f"""
+<div class="koikoi-card-grid" style="margin-top:24px">
+  <!-- Card 1: Classic Rajasthan -->
+  <div class="koikoi-tour-card" id="card-classic-rajasthan">
+    <a href="{base_path}/palace-on-wheels/itinerary" class="koikoi-card-img-wrap">
+      <img src="/images/luxury-trains/palace-on-wheels/deluxe-cabin.jpg" alt="Classic Rajasthan - Palace on Wheels Tour Package | KoiKoi Travel">
+    </a>
+    <div class="koikoi-card-body">
+      <a href="{base_path}/palace-on-wheels/itinerary" class="koikoi-card-title">
+        8 Days - Classic Rajasthan Luxury Rail Tour
+      </a>
+      <div class="koikoi-card-route">
+        🚂 Delhi · Jaipur · Ranthambore · Chittorgarh · Udaipur · Jaisalmer · Jodhpur · Bharatpur · Agra · Delhi
+      </div>
+      <div class="koikoi-card-highlights">
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Early morning Ranthambore tiger safari &amp; sunset camel trek at Sam Sand Dunes, Jaisalmer</span>
+        </div>
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Hilltop Amber Fort Jaipur, Mehrangarh Fort Jodhpur &amp; Lake Pichola boat cruise Udaipur</span>
+        </div>
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Keoladeo Ghana Bird Sanctuary dawn rickshaw safari &amp; iconic Taj Mahal, Agra</span>
+        </div>
+      </div>
+      <div class="koikoi-card-footer">
+        <div class="koikoi-card-amenities">
+          Deluxe Cabins &amp; Super Deluxe Suites · All Meals · Guided Sightseeing · Khidmatgar Service
+        </div>
+        <div class="koikoi-card-btn-row">
+          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Palace%20on%20Wheels%20-%20Classic%20Rajasthan%20(8%20Days)." target="_blank" rel="noopener">
+            Get a quote
+          </a>
+          <a class="koikoi-btn-details" href="{base_path}/palace-on-wheels/itinerary">
+            Details
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+"""
+
+    def get_pow_departures_table_component():
+        return f"""
+<div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:32px">
+  <div style="background:#0f172a;color:#fff;padding:14px 20px;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:space-between">
+    <span>🗓 Season 2026 – 2027 &amp; 2027 – 2028 Departure Calendar</span>
+    <span style="font-size:12px;color:#F8904D">Departs Every Wednesday</span>
+  </div>
+  <div style="overflow-x:auto">
+    <table class="circuit-price-table">
+      <thead>
+        <tr>
+          <th style="width:25%">Month</th>
+          <th style="width:35%">Season 2026 – 2027 Departures</th>
+          <th style="width:25%">Season 2027 – 2028 Departures</th>
+          <th style="width:15%">Tariff Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="font-weight:700">September</td><td style="font-weight:700;color:#ea580c">02, 09, 16, 23, 30</td><td>01, 08, 15, 22, 29</td><td><span style="background:#e0f2fe;color:#0369a1;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Lean Season</span></td></tr>
+        <tr><td style="font-weight:700">October</td><td style="font-weight:700;color:#ea580c">07, 14, 21, 28</td><td>06, 13, 20, 27</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
+        <tr><td style="font-weight:700">November</td><td style="font-weight:700;color:#ea580c">04, 11, 18, 25</td><td>03, 10, 17, 24</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
+        <tr><td style="font-weight:700">December</td><td style="font-weight:700;color:#ea580c">02, 09, 16, 23, 30</td><td>01, 08, 15, 22, 29</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
+        <tr><td style="font-weight:700">January</td><td style="font-weight:700;color:#ea580c">06, 13, 20, 27</td><td>05, 12, 19, 26</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
+        <tr><td style="font-weight:700">February</td><td style="font-weight:700;color:#ea580c">03, 10, 17, 24</td><td>02, 09, 16, 23</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
+        <tr><td style="font-weight:700">March</td><td style="font-weight:700;color:#ea580c">03, 10, 17, 24, 31</td><td>01, 08, 15, 22, 29</td><td><span style="background:#fef3c7;color:#b45309;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Peak Season</span></td></tr>
+        <tr><td style="font-weight:700">April</td><td style="font-weight:700;color:#ea580c">07, 14, 21, 28</td><td>05, 12, 19, 26</td><td><span style="background:#e0f2fe;color:#0369a1;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700">Lean Season</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="padding:14px 20px;background:#fdfcfb;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <span style="font-size:13px;color:#64748b">✦ Weekly departures start at Delhi Safdarjung Station at 18:30 hrs every Wednesday.</span>
+    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Palace%20on%20Wheels%20Wednesday%20dates." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;padding:8px 18px;border-radius:999px;text-decoration:none">
+      Inquire Dates on WhatsApp &rarr;
+    </a>
+  </div>
+</div>
+"""
+
+    def get_pow_price_tables_component():
+        return f"""
+<!-- Currency Switcher Buttons (Partitioned for Visa / Foreign vs For Indian) -->
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+  <button id="powHomeBtnUsd" onclick="switchPowHomePrice('usd')" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:8px 18px;border-radius:999px;background:#0f172a;color:#fff;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
+    <span>🌐 Visa / Foreign (USD $)</span>
+  </button>
+  <button id="powHomeBtnInr" onclick="switchPowHomePrice('inr')" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:8px 18px;border-radius:999px;background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
+    <span>🇮🇳 For Indian (INR ₹)</span>
+  </button>
+</div>
+
+<!-- USD Table -->
+<div id="powHomePriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:24px">
+  <div style="overflow-x:auto">
+    <table class="circuit-price-table">
+      <thead>
+        <tr>
+          <th style="width:40%">Occupancy Category</th>
+          <th style="width:30%">Lean Season (Sep &amp; Apr)</th>
+          <th style="width:30%">Peak Season (Oct to Mar)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Deluxe Cabin (Twin / Double Sharing · Per Person)</td>
+          <td style="font-weight:700">$4,900 USD <span style="font-size:11.5px;color:#64748b;font-weight:500">($9,800 / cabin)</span></td>
+          <td style="font-weight:700">$6,300 USD <span style="font-size:11.5px;color:#64748b;font-weight:500">($12,600 / cabin)</span></td>
+        </tr>
+        <tr>
+          <td>Deluxe Cabin (Single Occupancy · Solo Cabin)</td>
+          <td style="color:#64748b">$7,350 USD</td>
+          <td style="color:#64748b">$9,450 USD</td>
+        </tr>
+        <tr>
+          <td>Super Deluxe Suite (Full Cabin · Per Cabin)</td>
+          <td style="font-weight:700">$12,600 USD <span style="font-size:11.5px;color:#64748b;font-weight:500">(Full Suite)</span></td>
+          <td style="font-weight:700">$16,800 USD <span style="font-size:11.5px;color:#64748b;font-weight:500">(Full Suite)</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- INR Table -->
+<div id="powHomePriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:24px">
+  <div style="overflow-x:auto">
+    <table class="circuit-price-table">
+      <thead>
+        <tr>
+          <th style="width:40%">Occupancy Category</th>
+          <th style="width:30%">Lean Season (Sep &amp; Apr)</th>
+          <th style="width:30%">Peak Season (Oct to Mar)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Deluxe Cabin (Twin / Double Sharing · Per Person)</td>
+          <td style="font-weight:700">₹4,06,000 INR <span style="font-size:11.5px;color:#64748b;font-weight:500">(₹8,12,000 / cabin)</span></td>
+          <td style="font-weight:700">₹5,23,000 INR <span style="font-size:11.5px;color:#64748b;font-weight:500">(₹10,46,000 / cabin)</span></td>
+        </tr>
+        <tr>
+          <td>Deluxe Cabin (Single Occupancy · Solo Cabin)</td>
+          <td style="color:#64748b">₹6,10,000 INR</td>
+          <td style="color:#64748b">₹7,84,000 INR</td>
+        </tr>
+        <tr>
+          <td>Super Deluxe Suite (Full Cabin · Per Cabin)</td>
+          <td style="font-weight:700">₹10,45,000 INR <span style="font-size:11.5px;color:#64748b;font-weight:500">(Full Suite)</span></td>
+          <td style="font-weight:700">₹13,94,000 INR <span style="font-size:11.5px;color:#64748b;font-weight:500">(Full Suite)</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div style="padding:14px 20px;background:#fdfcfb;border:1px solid #e2e8f0;border-radius:12px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+  <span style="font-size:13px;color:#64748b">✦ Published rates are per person/cabin for 7 Nights / 8 Days. 5% Govt. GST extra.</span>
+  <a href="{base_path}/palace-on-wheels/price" style="color:#2E8B8B;font-weight:700;font-size:13px;text-decoration:none">
+    View Detailed Booking Terms &amp; Inclusions &rarr;
+  </a>
+</div>
+
+<script>
+function switchPowHomePrice(curr) {{
+  const u = document.getElementById('powHomePriceUsd');
+  const i = document.getElementById('powHomePriceInr');
+  const bU = document.getElementById('powHomeBtnUsd');
+  const bI = document.getElementById('powHomeBtnInr');
+  if (curr === 'usd') {{
+    u.style.display = 'block'; i.style.display = 'none';
+    bU.style.background = '#0f172a'; bU.style.color = '#fff'; bU.style.borderColor = '#0f172a';
+    bI.style.background = '#f1f5f9'; bI.style.color = '#64748b'; bI.style.borderColor = '#cbd5e1';
+  }} else {{
+    u.style.display = 'none'; i.style.display = 'block';
+    bI.style.background = '#0f172a'; bI.style.color = '#fff'; bI.style.borderColor = '#0f172a';
+    bU.style.background = '#f1f5f9'; bU.style.color = '#64748b'; bU.style.borderColor = '#cbd5e1';
+  }}
+}}
+</script>
+"""
+
+    def get_pow_video_spotlight_component():
+        return f"""
+<div style="border-radius:24px;overflow:hidden;background:#4a0e17;border:1px solid rgba(255,255,255,0.08);box-shadow:0 16px 48px rgba(15,23,42,0.18);margin-top:20px">
+  <div style="display:grid;grid-template-columns:1fr 1.25fr;min-height:460px" class="video-split-grid">
+    <div style="padding:48px 44px;display:flex;flex-direction:column;justify-content:center;background:#4a0e17;color:#ffffff">
+      <div style="margin-bottom:20px">
+        <img src="/images/luxury-trains/palace-on-wheels/logo.png" alt="Palace on Wheels Logo" style="max-height:85px;width:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.3))">
+      </div>
+      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,2.8vw,36px);font-weight:800;color:#ffffff;line-height:1.2;margin:0 0 16px">
+        Palace on Wheels
+      </h2>
+      <p style="color:#fecdd3;font-size:14.5px;line-height:1.75;margin:0 0 14px">
+        Voted the <strong>4th Best Luxury Train in the World</strong> by Condé Nast. Inaugurated in 1982 by Indian Railways and Rajasthan Tourism (RTDC), the Palace on Wheels was India's first luxury train, originally crafted using the personal vintage saloons of Rajput maharajas and British Viceroys.
+      </p>
+      <p style="color:#fecdd3;font-size:14.5px;line-height:1.75;margin:0 0 24px">
+        Features 14 royal saloons named after Rajput princely states, two ornate fine-dining restaurants (Swarn Mahal &amp; Sheesh Mahal), a club bar lounge, and dedicated personal Khidmatgars.
+      </p>
+      <div>
+        <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20am%20interested%20in%20Palace%20on%20Wheels.%20Please%20share%20availability%20and%20journey%20details." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 26px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(248,144,77,0.4)">
+          Inquire on WhatsApp &rarr;
+        </a>
+      </div>
+    </div>
+    <div style="position:relative;background:#000;min-height:360px" id="powOverviewVideoBox">
+      <div class="video-facade" onclick="loadTrainVideo('powOverviewVideoBox', 'HnY_2_BBbW4')" style="position:absolute;inset:0;background:url('https://img.youtube.com/vi/HnY_2_BBbW4/maxresdefault.jpg') center/cover no-repeat;cursor:pointer;display:flex;align-items:center;justify-content:center">
+        <div style="width:72px;height:72px;border-radius:50%;background:#F8904D;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 10px rgba(248,144,77,0.3);transition:transform .3s">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" style="margin-left:4px"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+"""
+
+    def get_pow_gallery_component():
+        return f"""
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:20px">
+  <div style="border-radius:14px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.05);position:relative;height:240px">
+    <img src="/images/luxury-trains/palace-on-wheels/deluxe-cabin.jpg" alt="Deluxe Double Bed Cabin" style="width:100%;height:100%;object-fit:cover">
+    <div style="position:absolute;bottom:0;inset-x:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));padding:10px 14px;color:#fff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700">Deluxe Double Bed Cabin</div>
+  </div>
+  <div style="border-radius:14px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.05);position:relative;height:240px">
+    <img src="/images/luxury-trains/palace-on-wheels/super-deluxe-suite.jpg" alt="Super Deluxe Suite Saloon" style="width:100%;height:100%;object-fit:cover">
+    <div style="position:absolute;bottom:0;inset-x:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));padding:10px 14px;color:#fff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700">Super Deluxe Suite Saloon</div>
+  </div>
+  <div style="border-radius:14px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.05);position:relative;height:240px">
+    <img src="/images/luxury-trains/palace-on-wheels/dining-car.jpg" alt="Sheesh Mahal &amp; Swarn Mahal Dining" style="width:100%;height:100%;object-fit:cover">
+    <div style="position:absolute;bottom:0;inset-x:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));padding:10px 14px;color:#fff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700">Sheesh Mahal &amp; Swarn Mahal Dining</div>
+  </div>
+  <div style="border-radius:14px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.05);position:relative;height:240px">
+    <img src="/images/luxury-trains/palace-on-wheels/bar-lounge.jpg" alt="The Royal Bar &amp; Club Lounge" style="width:100%;height:100%;object-fit:cover">
+    <div style="position:absolute;bottom:0;inset-x:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));padding:10px 14px;color:#fff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700">The Royal Bar &amp; Club Lounge</div>
+  </div>
+</div>
+"""
+
     pow_overview = f"""
-<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{pow_data["banner"]}');">
-  <div class="wrap">
-    <span class="tag">PALACE ON WHEELS · OVERVIEW</span>
-    <h1>The Pioneer of Luxury Rail Travel in India</h1>
-    <p>Step aboard the authentic coaches inspired by erstwhile Rajput rulers and the British Viceroy. An unforgettable 7 Nights / 8 Days circular journey starting and finishing in Delhi.</p>
-    <div class="cta">
-      <a class="btn btn-gold" href="{base_path}/palace-on-wheels/itinerary">View Itinerary</a>
-      <a class="btn btn-line" href="{base_path}/palace-on-wheels/departures">Check Departure Dates</a>
-    </div>
-  </div>
-</section>
+<!-- Top Full-View Clean Hero Banner (NO TEXT ON BANNER) -->
+<div style="position:relative;height:480px;background:url('/images/luxury-trains/palace-on-wheels/hero.jpg') center/cover no-repeat;overflow:hidden">
+</div>
 
-<!-- PALACE ON WHEELS VIDEO SPOTLIGHT (SPLIT ROYAL LAYOUT) -->
-<section class="train-video-sec">
+<!-- Clean Editorial Title & Journeys Intro Section (SINGLE MERGED HEADING & TEXT) -->
+<div style="background:#ffffff;border-bottom:1px solid #e2e8f0;padding:40px 0 36px">
   <div class="wrap">
-    <div class="train-video-box">
-      <!-- Left: Train Details & Logo -->
-      <div class="train-video-content">
-        <div class="train-video-logo">
-          <img src="/images/luxury-trains/palace-on-wheels/logo.png" alt="Palace on Wheels Logo">
-        </div>
-        <h2 class="train-video-title">Palace on Wheels</h2>
-        <p class="train-video-desc">
-          World&apos;s leading heritage luxury train &mdash; Modelled along the personal royal saloons of the erstwhile Rajput Maharajas, the Palace on Wheels is a royal 5-star palace on tracks taking guests across Rajasthan, the golden dunes of Jaisalmer, the lake palaces of Udaipur, and the timeless Taj Mahal in Agra.
+    <div class="koikoi-breadcrumb" style="margin-bottom:14px">
+      <a href="{base_path}" style="color:#64748b;text-decoration:none">Luxury Trains</a>
+      <span style="color:#94a3b8;margin:0 6px">›</span>
+      <span style="color:#0f172a;font-weight:600">Palace on Wheels</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+      <span style="background:rgba(248,144,77,0.12);color:#ea580c;border:1px solid rgba(248,144,77,0.25);font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:5px 14px;border-radius:999px">
+        INDIA'S PIONEER LUXURY TRAIN · OPERATING SINCE 1982
+      </span>
+      <span style="color:#64748b;font-size:13.5px;font-weight:600">1 Legendary Circuit · 14 Princely Saloons · Departs Every Wednesday from Delhi</span>
+    </div>
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(30px,4.2vw,48px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 14px;max-width:1100px">
+      Palace on Wheels Luxury Train
+    </h1>
+    <p style="color:#475569;font-size:clamp(15px,1.25vw,17.5px);max-width:1050px;line-height:1.75;margin:0">
+      Voted the 4th best luxury train in the world by Condé Nast, the Palace on Wheels is India's original and most romantic royal rail experience. Crafted along the private heritage saloons of erstwhile Rajput maharajas and the British Viceroy, the cream-and-gold train embarks on an 8-day circular odyssey from New Delhi across Rajasthan's princely forts, tiger sanctuaries, desert dunes, and the timeless Taj Mahal.
+    </p>
+  </div>
+</div>
+
+<!-- Main Body Section (FULL WIDTH - NO SIDEBAR - ROYAL LAYOUT) -->
+<section style="padding:48px 0 80px;background:#fcfbf9">
+  <div class="wrap">
+
+    <!-- 1. The Signature Journey -->
+    <div id="journeys" style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:28px;text-align:left">
+        <div class="eyebrow" style="color:#ea580c">The Royal Journey</div>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
+          Classic Rajasthan Circuit
+        </h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          Explore complete day-by-day sightseeing, route map, high-res photos, and departure schedules.
         </p>
-        <p class="train-video-desc">
-          7 Nights &amp; 8 Days of imperial grandeur: In operation since 1982, this iconic train departs weekly from Delhi, traversing Jaipur, Ranthambore tiger safari, Chittorgarh, Udaipur, Jaisalmer, Jodhpur, and Bharatpur. Each deluxe saloon is serviced by dedicated personal Khidmatgars.
+      </div>
+      {get_pow_cards_component()}
+    </div>
+
+    <!-- 2. Departure Dates Table -->
+    <div id="departures" style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:20px;text-align:left">
+        <div class="eyebrow" style="color:#ea580c">Schedules</div>
+        <h2 style="font-size:clamp(26px,3vw,36px);font-weight:800;color:#0f172a;text-align:left">Departure Dates (Season 2026 – 2027 &amp; 2027 – 2028)</h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          Palace on Wheels operates weekly every Wednesday from Safdarjung Railway Station, New Delhi between September and April.
         </p>
-        <div class="train-video-ctas">
-          <a class="btn-koikoi-orange" href="{base_path}/palace-on-wheels/itinerary">
-            <span>View 7-Night Itinerary</span>
-            <span>&rarr;</span>
-          </a>
-          <a class="btn-koikoi-white" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20am%20interested%20in%20the%20Palace%20on%20Wheels%20journey." target="_blank" rel="noopener">
-            <span>Get a Quote</span>
-          </a>
-        </div>
+      </div>
+      {get_pow_departures_table_component()}
+    </div>
+
+    <!-- 3. Ticket Prices & Tariffs -->
+    <div id="price" style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:20px;text-align:left">
+        <div class="eyebrow" style="color:#ea580c">Official Tariffs</div>
+        <h2 style="font-size:clamp(26px,3vw,36px);font-weight:800;color:#0f172a;text-align:left">Ticket Prices &amp; Tariffs (Season 2026 – 2027)</h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          Official published RTDC tariffs for Lean Season (Sep &amp; Apr) and Peak Season (Oct to Mar). Switch currencies below. 5% Govt. GST extra.
+        </p>
+      </div>
+      {get_pow_price_tables_component()}
+    </div>
+
+    <!-- 4. Video Spotlight Split Box -->
+    <div id="experience" style="margin-bottom:64px">
+      {get_pow_video_spotlight_component()}
+    </div>
+
+    <!-- 5. Onboard Carriages & Facilities -->
+    <div id="facilities" style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:28px;text-align:left">
+        <div class="eyebrow" style="color:#ea580c">Life On Board</div>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
+          Royal Carriages &amp; Heritage Amenities
+        </h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          14 royally decorated saloons named after legendary Rajput states, with personal Khidmatgars ensuring five-star palace hospitality.
+        </p>
       </div>
 
-      <!-- Right: YouTube Video Player -->
-      <div class="train-video-player" id="powOverviewVideoBox">
-        <div class="video-facade" onclick="loadPowVideo('powOverviewVideoBox')" style="background-image:url('https://img.youtube.com/vi/HnY_2_BBbW4/maxresdefault.jpg')">
-          <div class="video-facade-overlay"></div>
-          <div class="video-play-btn" aria-label="Play Palace on Wheels Video">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" style="margin-left:3px"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      <div class="grid-4">
+        <div class="card" style="padding:28px 24px;border-radius:16px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div style="font-size:28px;margin-bottom:12px">🛏️</div>
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:19px;color:#0f172a;margin-bottom:8px">14 Princely Saloons</h3>
+          <p style="font-size:14px;color:#64748b;line-height:1.6;margin:0">Named after Mewar, Marwar, Amber, Bikaner, and other kingdoms. Each coach has en-suite bathrooms, climate control, and two personal Khidmatgars.</p>
+        </div>
+        <div class="card" style="padding:28px 24px;border-radius:16px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div style="font-size:28px;margin-bottom:12px">🍽️</div>
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:19px;color:#0f172a;margin-bottom:8px">Swarn &amp; Sheesh Mahal Dining</h3>
+          <p style="font-size:14px;color:#64748b;line-height:1.6;margin:0">Two opulent dining cars adorned with crystal chandeliers and Bohemian mirror-work, serving authentic Rajasthani, Mughlai, and Continental gourmet feasts.</p>
+        </div>
+        <div class="card" style="padding:28px 24px;border-radius:16px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div style="font-size:28px;margin-bottom:12px">🍸</div>
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:19px;color:#0f172a;margin-bottom:8px">The Royal Bar &amp; Lounge</h3>
+          <p style="font-size:14px;color:#64748b;line-height:1.6;margin:0">Relax in plush velvet armchairs with curated single malts, fine Indian wines, and cocktails while gazing at the shifting desert panoramas.</p>
+        </div>
+        <div class="card" style="padding:28px 24px;border-radius:16px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div style="font-size:28px;margin-bottom:12px">🌿</div>
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:19px;color:#0f172a;margin-bottom:8px">Rejuvenation Royal Spa</h3>
+          <p style="font-size:14px;color:#64748b;line-height:1.6;margin:0">Dedicated wellness salon car offering authentic Ayurvedic therapies, head and foot reflexology, and aromatherapy massages by professional therapists.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Simple Booking Steps -->
+    <div style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:28px;text-align:left">
+        <div class="eyebrow" style="color:#ea580c">How It Works</div>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
+          3 Simple Steps to Book
+        </h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          No complicated forms or pressure. Direct booking with KoiKoi Travel, authorized luxury rail partner.
+        </p>
+      </div>
+
+      <div class="step-grid">
+        <div class="step" style="border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div class="n" style="color:#ea580c">01</div>
+          <h3 style="color:#0f172a">Select Your Preferred Wednesday</h3>
+          <p style="color:#64748b">Choose your travel month (Sep to Apr) and pick your preferred Wednesday departure date from New Delhi.</p>
+        </div>
+        <div class="step" style="border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div class="n" style="color:#ea580c">02</div>
+          <h3 style="color:#0f172a">Verify Cabin Availability</h3>
+          <p style="color:#64748b">We confirm live cabin inventory directly with RTDC/central reservations and share an itemized quote in USD or INR.</p>
+        </div>
+        <div class="step" style="border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div class="n" style="color:#ea580c">03</div>
+          <h3 style="color:#0f172a">Reserve with 20% Deposit</h3>
+          <p style="color:#64748b">Confirm your cabin with a 20% advance payment. We arrange seamless 5-star pre/post hotel stays and private airport transfers.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. FAQ -->
+    <div id="faq">
+      <div class="sec-head center" style="margin-bottom:28px;text-align:center;max-width:850px;margin-left:auto;margin-right:auto">
+        <span style="color:#ea580c;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">HELPFUL FAQS</span>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:center">
+          Frequently Asked Questions · <span style="color:#ea580c">Palace on Wheels</span>
+        </h2>
+        <p style="max-width:860px;margin:8px auto 0;color:#64748b;font-size:15px;line-height:1.6;text-align:center">
+          Everything you need to know about saloons, dining, excursions, and reservations.
+        </p>
+      </div>
+
+      <div class="faq" style="background:#fff;border-radius:16px;border:1px solid #e2e8f0;padding:8px 24px;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+        <details open style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">Where does Palace on Wheels depart from?</summary>
+          <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+            The train departs from Safdarjung Railway Station in New Delhi. Guest reporting and traditional garland check-in begin at 16:00 hrs on scheduled Wednesdays, and the train rolls out at 18:30 hrs. It completes its full 7 Nights / 8 Days circular circuit returning to Safdarjung Station the following Wednesday morning at 06:00 hrs.
           </div>
-          <span class="video-caption-pill">Palace on Wheels &middot; Experience Video</span>
-        </div>
+        </details>
+        <details style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">What is included in the ticket fare?</summary>
+          <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+            Your ticket fare is all-inclusive: accommodation in air-conditioned Deluxe or Super Deluxe saloons with attached private bathrooms, all gourmet meals in dining cars or heritage palace hotels, all off-train guided sightseeing in AC coaches, Ranthambore wildlife safari, Sam Sand Dunes camel safari, Bharatpur bird sanctuary cycle-rickshaw tour, monument entrance tickets, and 24/7 personal Khidmatgar service.
+          </div>
+        </details>
+        <details style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">What is the difference between Deluxe Cabin and Super Deluxe Suite?</summary>
+          <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+            Deluxe Cabins feature authentic royal Rajput wood carvings, twin single beds or a double bed, private en-suite bathroom with shower, electronic safe, individual climate control, and a personal Khidmatgar. Super Deluxe Suites offer significantly more floor space, silk upholstery, a private sitting lounge area, and exclusive personalized amenities.
+          </div>
+        </details>
+        <details style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">Can vegetarian, vegan, or Jain meals be arranged?</summary>
+          <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+            Yes, absolutely. The two onboard restaurants (Swarn Mahal and Sheesh Mahal) cater to all dietary needs. Pure vegetarian, vegan, Jain (prepared without root vegetables/onion/garlic), and continental gourmet dishes are prepared fresh daily by executive master chefs.
+          </div>
+        </details>
+        <details style="padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">Can KoiKoi Travel arrange hotel stays in New Delhi or Agra before and after the train?</summary>
+          <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+            Yes. We seamlessly organize 5-star hotel stays in New Delhi (e.g., The Imperial, Taj Mahal Hotel, or The Leela Palace) before boarding or in Agra after your trip, along with private luxury chauffeured airport pickups and custom city sightseeing.
+          </div>
+        </details>
       </div>
     </div>
-  </div>
-</section>
 
-<section>
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">The Royal Experience</div>
-      <h2>A Week Across the Land of Kings</h2>
-      <p>Palace on Wheels was rated the 4th best luxury train in the world by Condé Nast. Each saloon is named after princely states of Rajasthan, furnished in royal heritage decor with private modern bathrooms.</p>
-    </div>
-    <div class="grid-4" style="margin-bottom:48px">
-      <div class="card" style="padding:24px">
-        <h3>14 Deluxe Saloons</h3>
-        <p>Named after Mewar, Marwar, Bikaner, Amber, and other princely states, with two private Khidmatgars per coach.</p>
-      </div>
-      <div class="card" style="padding:24px">
-        <h3>2 Fine Dining Cars</h3>
-        <p>Sheesh Mahal and Swarn Mahal serve authentic Rajasthani, Mughlai, Continental and Chinese delicacies.</p>
-      </div>
-      <div class="card" style="padding:24px">
-        <h3>The Bar & Lounge</h3>
-        <p>Relax with fine scotches, Indian wines and signature cocktails in a vintage regal setting with scenic viewing windows.</p>
-      </div>
-      <div class="card" style="padding:24px">
-        <h3>Royal Rejuvenation Spa</h3>
-        <p>Dedicated Ayurvedic wellness coach offering reflexology, herbal therapies and massages by certified therapists.</p>
-      </div>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Detail</th><th>Specification</th></tr></thead>
-        <tbody>
-          <tr><td>Route</td><td>Delhi – Jaipur – Sawai Madhopur – Chittorgarh – Udaipur – Jaisalmer – Jodhpur – Bharatpur – Agra – Delhi</td></tr>
-          <tr><td>Duration</td><td>7 Nights / 8 Days (Departs Every Wednesday)</td></tr>
-          <tr><td>Total Capacity</td><td>82 Guests Maximum</td></tr>
-          <tr><td>Operating Season</td><td>September to April Every Year</td></tr>
-          <tr><td>Inclusions</td><td>Accommodation, all meals, scheduled excursions, monument fees, wildlife safari, guide, butler</td></tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 </section>
 """
     write_page(f"{base_dir}/palace-on-wheels/index.html", 
-               "Palace on Wheels Luxury Train | Route, Schedule & Highlights | KoiKoi Travel",
-               "Complete overview of Palace on Wheels luxury train: route, coaches, dining and royal history with KoiKoi Travel.",
+               "Palace on Wheels Luxury Train | Route, Schedule & Official Tariffs | KoiKoi Travel",
+               "Experience Palace on Wheels: 8-day royal Rajasthan circuit across Jaipur, Ranthambore, Udaipur, Jaisalmer & Taj Mahal. Official tariffs and schedules.",
                pow_overview, active_train="palace-on-wheels", active_tab="overview", base_path=base_path)
 
-    # Palace on Wheels: Itinerary
-    pow_itinerary = f"""
-<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{pow_data["banner"]}');">
-  <div class="wrap">
-    <span class="tag">PALACE ON WHEELS · ITINERARY</span>
-    <h1>7 Nights / 8 Days Classic Rajasthan Journey</h1>
-    <p>Departs every Wednesday from Delhi Safdarjung Station between September and April.</p>
-    <div class="cta">
-      <a class="btn btn-gold" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20want%20to%20book%20the%20Palace%20on%20Wheels%20itinerary." target="_blank" rel="noopener">Inquire This Route</a>
-      <a class="btn btn-line" href="{base_path}/palace-on-wheels/price">View Prices</a>
-    </div>
+    # ================= Palace on Wheels: DETAILED ITINERARY PAGE =================
+    pow_inc_exc_snippet = f"""
+<div class="inc-exc-grid" style="margin-top:32px">
+  <div class="inc-box">
+    <h3>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="16 9 10 15 7 12"></polyline></svg>
+      What's Included in Your Palace on Wheels Ticket
+    </h3>
+    <ul>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>7 Nights luxury accommodation in air-conditioned Deluxe Cabins or Super Deluxe Suites with en-suite shower bathrooms</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All multi-course gourmet meals on board at Swarn Mahal and Sheesh Mahal fine-dining cars</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Royal lunches at iconic heritage palace venues in Jaipur, Udaipur, and Jodhpur</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All off-train sightseeing tours in deluxe air-conditioned highway coaches with expert English-speaking guides</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Ranthambore National Park tiger safari in open canters and Bharatpur bird sanctuary cycle-rickshaw safari</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Sunset camel safari across Sam Sand Dunes in Jaisalmer with cultural barbecue dinner and folk dance</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All monument entrance tickets (Amber Fort, Chittorgarh Fort, Mehrangarh Fort, Taj Mahal, Agra Fort)</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>24/7 dedicated Khidmatgar (personal butler) service, bottled drinking water, and high-speed Wi-Fi</span></li>
+    </ul>
   </div>
-</section>
-<section>
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">Day-by-Day Detailed Plan</div>
-      <h2>Royal Circuit Day Schedule</h2>
-      <p>Wake up each morning in a new royal destination without unpacking your luggage twice.</p>
-    </div>
-    
-    <div class="day-card">
-      <span class="day-badge">Day 1 · Wednesday</span>
-      <h3>Delhi: Royal Boarding at Safdarjung Station</h3>
-      <p>Report at Safdarjung Railway Station at 16:00 hrs for a traditional red-carpet welcome with garlands, tikka, and shehnai music. Introduction to your Khidmatgar and departure for Jaipur at 18:30 hrs. Dinner on board.</p>
-      <div class="day-meta"><span>Meals: Dinner</span><span>Night: On board Palace on Wheels</span></div>
-    </div>
-
-    <div class="day-card">
-      <span class="day-badge">Day 2 · Thursday</span>
-      <h3>Jaipur: The Pink City, Amber Fort & City Palace</h3>
-      <p>Arrive in Jaipur. Morning excursion to the hill-top Amber Fort with royal elephant ride. Visit Hawa Mahal, Jantar Mantar and the royal City Palace. Enjoy lunch at an authentic palace hotel followed by shopping for gems and textiles.</p>
-      <div class="day-meta"><span>Meals: Breakfast, Lunch, Dinner</span><span>Night: On board</span></div>
-    </div>
-
-    <div class="day-card">
-      <span class="day-badge">Day 3 · Friday</span>
-      <h3>Sawai Madhopur (Ranthambore) & Chittorgarh</h3>
-      <p>Early morning jungle safari into Ranthambore Tiger Reserve in open safari vehicles. Return to train for breakfast as train glides toward Chittorgarh. Evening visit to the magnificent Chittorgarh Fort with sound and light show.</p>
-      <div class="day-meta"><span>Meals: Breakfast, Lunch, Dinner</span><span>Night: On board</span></div>
-    </div>
-
-    <div class="day-card">
-      <span class="day-badge">Day 4 · Saturday</span>
-      <h3>Udaipur: City of Lakes & Royal Palaces</h3>
-      <p>Arrive in romantic Udaipur. Tour the grand City Palace complex, Jag Mandir, and Saheliyon Ki Bari gardens. Enjoy an exclusive boat ride on Lake Pichola with lunch at a boutique lake palace hotel.</p>
-      <div class="day-meta"><span>Meals: Breakfast, Lunch, Dinner</span><span>Night: On board</span></div>
-    </div>
-
-    <div class="day-card">
-      <span class="day-badge">Day 5 · Sunday</span>
-      <h3>Jaisalmer: Golden Fort & Sam Sand Dunes Sunset</h3>
-      <p>Wake up amidst the Thar Desert. Tour the living Golden Fort (Sonar Kila), Jain temples and Patwon ki Haveli. Late afternoon excursion to Sam Sand Dunes for camel rides, sunset views, and cultural barbecue dinner under the desert stars.</p>
-      <div class="day-meta"><span>Meals: Breakfast, Lunch, Dinner</span><span>Night: On board</span></div>
-    </div>
-
-    <div class="day-card">
-      <span class="day-badge">Day 6 · Monday</span>
-      <h3>Jodhpur: Mehrangarh Fort & Jaswant Thada</h3>
-      <p>Arrive in the Sun City of Jodhpur. Ascend to the impregnable Mehrangarh Fort towering above the blue city. Visit Jaswant Thada marble cenotaphs and Umaid Bhawan Palace museum. Lunch at a heritage venue.</p>
-      <div class="day-meta"><span>Meals: Breakfast, Lunch, Dinner</span><span>Night: On board</span></div>
-    </div>
-
-    <div class="day-card">
-      <span class="day-badge">Day 7 · Tuesday</span>
-      <h3>Bharatpur Bird Sanctuary & The Taj Mahal, Agra</h3>
-      <p>Dawn cycle-rickshaw safari in Keoladeo National Park (UNESCO Bird Sanctuary). Return for breakfast and proceed to Agra. Marvel at the Taj Mahal, followed by a guided tour of Agra Fort and souvenir shopping.</p>
-      <div class="day-meta"><span>Meals: Breakfast, Lunch, Dinner</span><span>Night: On board</span></div>
-    </div>
-
-    <div class="day-card">
-      <span class="day-badge">Day 8 · Wednesday</span>
-      <h3>Delhi: Disembarkation & Farewell</h3>
-      <p>Train arrives at Delhi Safdarjung Station at 06:00 hrs. Enjoy leisurely breakfast on board. Farewell ceremony and disembarkation with lifelong royal memories by 07:30 hrs.</p>
-      <div class="day-meta"><span>Meals: Breakfast</span><span>Trip End</span></div>
-    </div>
+  <div class="exc-box">
+    <h3>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+      What's Excluded
+    </h3>
+    <ul>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>5% Government Goods and Services Tax (GST)</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Pre and post-train 5-star hotel stays in New Delhi or Agra (arranged separately by KoiKoi Travel)</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>International and domestic airfare, visa fees, and personal travel insurance</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Alcoholic and soft beverages ordered from the Bar Lounge (available on chargeable basis)</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Ayurvedic spa therapies, laundry service, telephone calls, and commercial video camera permits</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Gratuities and tips for train Khidmatgars and off-train local guides (at guest discretion)</span></li>
+    </ul>
   </div>
-</section>
+</div>
 """
+
+    pow_circuit_days = [
+        {
+            "day": 1,
+            "title": "Delhi Safdarjung Station – Royal Red-Carpet Welcome & Departure",
+            "paragraphs": [
+                "Afternoon (16:00 – 17:30 hrs): Arrive at Safdarjung Railway Station in New Delhi for check-in formalities. Experience a royal Rajput welcome with marigold garlands, vermilion tikka, traditional turban tying, and celebratory shehnai music. Hand your luggage to your personal carriage Khidmatgar (butler).",
+                "Evening (18:30 hrs): Palace on Wheels departs Safdarjung Station, beginning its 7-night circular odyssey across Rajasthan. Gather in Swarn Mahal or Sheesh Mahal dining saloons for an inaugural feast and captain's toast as the train rolls through the NCR into Rajasthan."
+            ],
+            "overnight": "Overnight aboard Palace on Wheels traveling toward Jaipur"
+        },
+        {
+            "day": 2,
+            "title": "Jaipur – The Pink City, Amber Fort, City Palace & Bazaars",
+            "paragraphs": [
+                "Morning (03:45 hrs arrival, 07:30 hrs breakfast): Board deluxe air-conditioned coaches to the hilltop Amber Fort. Ascend the citadel ramparts via decorated elephant or open 4x4 jeep. Tour the Sheesh Mahal (Mirror Palace), Diwan-e-Khas, and ancient courtyards overlooking Maota Lake.",
+                "Afternoon: Descend into Jaipur city. Enjoy an authentic royal lunch at a heritage hotel venue. Visit the astronomical instruments at Jantar Mantar (UNESCO World Heritage Site), the City Palace museum showcasing royal Rajput regalia, and enjoy a photo stop at the intricately latticed facade of Hawa Mahal (Palace of Winds).",
+                "Late Afternoon & Evening: Browse Jaipur's colorful bazaars for handcrafted blue pottery, Kundan jewelry, and block-printed textiles. Return to the train by 19:30 hrs for dinner onboard. Train departs at 23:55 hrs for Sawai Madhopur."
+            ],
+            "overnight": "Overnight aboard Palace on Wheels en route to Sawai Madhopur"
+        },
+        {
+            "day": 3,
+            "title": "Sawai Madhopur (Ranthambore Tiger Safari) & Chittorgarh Fort",
+            "paragraphs": [
+                "Dawn (05:30 – 09:30 hrs): Arrive in Sawai Madhopur. Embark on an early morning wildlife safari in open safari canters inside Ranthambore National Park. Track Royal Bengal tigers, leopards, marsh crocodiles, and wild boars through the ancient hunting grounds of the Jaipur maharajas.",
+                "Morning & Midday (10:00 hrs): Return to the train for breakfast. Train departs for Chittorgarh at 10:20 hrs. Relax in the lounge bar while rolling through central Rajasthan. Lunch onboard.",
+                "Afternoon & Evening (15:00 hrs): Arrive in Chittorgarh. Ascend to the legendary Chittorgarh Fort, India's largest fort perched on a 180-meter high hill. Walk through Padmini Palace, Vijay Stambh (Tower of Victory), and Kirti Stambh, hearing stories of Rajput chivalry. Witness the evening sound & light show. Return to the train by 20:00 hrs for dinner onboard. Train departs at 02:00 hrs for Udaipur."
+            ],
+            "overnight": "Overnight aboard Palace on Wheels en route to Udaipur"
+        },
+        {
+            "day": 4,
+            "title": "Udaipur – City of Lakes, City Palace & Lake Pichola Boat Ride",
+            "paragraphs": [
+                "Morning (08:00 hrs arrival): Breakfast onboard. Proceed for a royal sightseeing tour of Udaipur. Visit the grand City Palace complex towering over Lake Pichola with its peacock courtyards, mirror work, and royal armory. Tour the Crystal Gallery and Saheliyon Ki Bari (Garden of the Maids of Honour) with its marble fountains.",
+                "Afternoon: Savor a royal lunch at a luxury heritage venue overlooking Lake Pichola (Fateh Prakash Palace). Enjoy an exclusive boat cruise across the calm waters of Lake Pichola, gliding past Jag Mandir and the Lake Palace.",
+                "Late Afternoon: Visit a traditional Rajasthani miniature painting academy. Return to the train by 15:00 hrs. Palace on Wheels departs at 15:30 hrs for the desert frontier of Jaisalmer."
+            ],
+            "overnight": "Overnight aboard Palace on Wheels traveling through the Thar Desert"
+        },
+        {
+            "day": 5,
+            "title": "Jaisalmer – The Living Golden Fort & Sam Sand Dunes Sunset",
+            "paragraphs": [
+                "Morning (09:15 hrs arrival): Savor breakfast onboard gazing at the golden desert landscape. Tour the living Sonar Qila (Jaisalmer Golden Fort) made of yellow sandstone, housing vibrant markets, 800-year-old Jain temples, and the Maharawal's palace. Walk through narrow alleys to marvel at the stone lattice carving of Patwon Ki Haveli and Nathmal Ki Haveli.",
+                "Afternoon: Return to the train for lunch and a short siesta.",
+                "Late Afternoon & Evening (16:30 hrs): Journey into the heart of the Thar Desert to the Sam Sand Dunes. Mount camels for a trek into the undulating dunes as the desert turns amber and crimson at sunset. Enjoy an authentic Rajasthani barbecue dinner with Kalbeliya folk dancers and musicians under the star-lit desert sky.",
+                "Night: Return to the train by 23:00 hrs. Palace on Wheels departs at 23:45 hrs for Jodhpur."
+            ],
+            "overnight": "Overnight aboard Palace on Wheels en route to Jodhpur"
+        },
+        {
+            "day": 6,
+            "title": "Jodhpur – Mehrangarh Fort, Jaswant Thada & Umaid Bhawan",
+            "paragraphs": [
+                "Morning (07:00 hrs arrival): Breakfast onboard. Ascend to Mehrangarh Fort, towering 400 feet above the Sun City. Explore Moti Mahal, Phool Mahal, Sheesh Mahal, and the armory museum housing the weaponry of the Rathore dynasty.",
+                "Afternoon: Visit Jaswant Thada, the pristine white marble royal cenotaphs built in memory of Maharaja Jaswant Singh II. Savor lunch at an authentic palace venue (such as Ajit Bhawan Palace).",
+                "Late Afternoon: Visit the royal museum at Umaid Bhawan Palace, still home to the Maharaja of Jodhpur. Stroll through the Clock Tower and Sardar Market in the old blue town.",
+                "Evening: Dinner onboard Palace on Wheels. Train departs for Bharatpur at 18:00 hrs."
+            ],
+            "overnight": "Overnight aboard Palace on Wheels traveling eastward to Bharatpur"
+        },
+        {
+            "day": 7,
+            "title": "Bharatpur Bird Sanctuary & Monumental Taj Mahal, Agra",
+            "paragraphs": [
+                "Early Morning (05:00 hrs arrival, 06:00 – 08:30 hrs): Dawn cycle-rickshaw safari into Keoladeo Ghana National Park (UNESCO World Heritage Site). With a trained forest naturalist, spot over 370 species of resident and migratory waterbirds, including painted storks, egrets, and pelicans.",
+                "Morning (08:45 hrs): Return to the train for breakfast. Train departs for Agra, arriving at Agra Fort Railway Station by 10:30 hrs.",
+                "Afternoon: Visit the massive red sandstone UNESCO Agra Fort, seat of the Mughal Empire. Lunch at a 5-star hotel in Agra (ITC Mughal / Courtyard by Marriott).",
+                "Late Afternoon (15:00 hrs): Enter the magnificent Taj Mahal, an architectural wonder of the world built by Emperor Shah Jahan for Mumtaz Mahal. Marvel at the white Makrana marble shimmering in the late afternoon sun. Opportunity to view Pietra Dura marble inlay craftsmen at work.",
+                "Evening: Gala farewell dinner onboard Swarn Mahal and Sheesh Mahal as the train journeys back toward Delhi."
+            ],
+            "overnight": "Overnight aboard Palace on Wheels en route to New Delhi"
+        },
+        {
+            "day": 8,
+            "title": "Delhi Safdarjung Station – Farewell & Disembarkation",
+            "paragraphs": [
+                "Morning (06:00 hrs): Palace on Wheels pulls back into Delhi Safdarjung Railway Station, completing its 7 Nights / 8 Days circular journey across Rajasthan.",
+                "06:30 – 07:30 hrs: Leisurely farewell breakfast onboard with fellow travelers and train crew.",
+                "07:30 hrs: Traditional farewell ceremony by the onboard team. Disembarkation with lifelong memories of royal Rajasthan.",
+                "Extension: Private chauffeured transfer to Delhi International Airport (DEL) or to a 5-star hotel (e.g. The Imperial or Taj Palace) arranged by KoiKoi Travel."
+            ],
+            "overnight": "Tour concludes in New Delhi (Safdarjung Station)"
+        }
+    ]
+
+    pow_circuit_departures = [
+        ("Sep 2026", "02, 09, 16, 23, 30"),
+        ("Oct 2026", "07, 14, 21, 28"),
+        ("Nov 2026", "04, 11, 18, 25"),
+        ("Dec 2026", "02, 09, 16, 23, 30"),
+        ("Jan 2027", "06, 13, 20, 27"),
+        ("Feb 2027", "03, 10, 17, 24"),
+        ("Mar 2027", "03, 10, 17, 24, 31"),
+        ("Apr 2027", "07, 14, 21, 28"),
+    ]
+
+    pow_price_data = {
+        "usd": {
+            "deluxe_twin": "$4,900",
+            "deluxe_lean": "$4,900 USD",
+            "deluxe_peak": "$6,300 USD",
+            "single_lean": "$7,350 USD",
+            "single_peak": "$9,450 USD",
+            "suite_lean": "$12,600 USD",
+            "suite_peak": "$16,800 USD",
+        },
+        "inr": {
+            "deluxe_twin": "₹4,06,000",
+            "deluxe_lean": "₹4,06,000 INR",
+            "deluxe_peak": "₹5,23,000 INR",
+            "single_lean": "₹6,10,000 INR",
+            "single_peak": "₹7,84,000 INR",
+            "suite_lean": "₹10,45,000 INR",
+            "suite_peak": "₹13,94,000 INR",
+        }
+    }
+
+    pow_faqs = [
+        {"q": "Where does Palace on Wheels depart from and at what time?",
+         "a": "The journey starts and ends at Safdarjung Railway Station in New Delhi. On scheduled Wednesdays, guest check-in begins at 16:00 hrs with a royal garland welcome and live shehnai music. The train departs Delhi at 18:30 hrs."},
+        {"q": "What is the difference between Deluxe Cabin and Super Deluxe Suite?",
+         "a": "Deluxe Cabins feature authentic royal Rajput decor, twin or double beds, private en-suite bathroom with hot/cold shower, personal climate control, and a dedicated Khidmatgar (butler). Super Deluxe Suites offer extra square footage, a separate sitting area with silk upholstery, antique carved wooden furnishings, and premium amenities."},
+        {"q": "Are meals and guided excursions included in the Palace on Wheels fare?",
+         "a": "Yes, the ticket is comprehensive and all-inclusive: all meals onboard at Swarn Mahal and Sheesh Mahal dining cars, palace hotel lunches in Jaipur, Udaipur, and Jodhpur, guided sightseeing in AC coaches, monument entrance fees, Ranthambore wildlife safari, Sam Sand Dunes camel safari, Bharatpur bird sanctuary cycle-rickshaw safari, and 24/7 butler service."},
+        {"q": "Can vegetarian, Jain, or specific dietary food be requested?",
+         "a": "Yes. The onboard master chefs cater to all dietary preferences including pure vegetarian, Jain (without onion/garlic), vegan, gluten-free, and international continental dishes. We advise notifying us during reservation so the kitchen prepares accordingly."},
+        {"q": "Can KoiKoi Travel arrange hotel stays in Delhi or Agra before and after the journey?",
+         "a": "Yes, absolutely. We arrange complete 5-star pre and post extensions: luxury hotel stays at The Imperial or Taj Palace in New Delhi, private luxury airport transfers, and private guided excursions tailored to your flight schedule."}
+    ]
+
+    pow_circuit_html = build_koikoi_circuit_page(
+        circuit_tag="Signature Circuit · 7 Nights / 8 Days",
+        name="Classic Rajasthan",
+        duration="7 Nights / 8 Days",
+        title="Classic Rajasthan (Delhi to Delhi · 8D/7N)",
+        route="Delhi → Jaipur → Sawai Madhopur → Chittorgarh → Udaipur → Jaisalmer → Jodhpur → Bharatpur → Agra → Delhi",
+        origin="Delhi (Safdarjung Railway Station)",
+        destination="Delhi (Safdarjung Railway Station)",
+        destinations_count="8 Destinations · Rajasthan, UP & Delhi",
+        starting_price="$4,900 USD / ₹4,06,000 INR",
+        hero_imgs=[
+            {"src": "/images/luxury-trains/palace-on-wheels/deluxe-cabin.jpg", "title": "Deluxe Double Bed Cabin"},
+            {"src": "/images/luxury-trains/palace-on-wheels/super-deluxe-suite.jpg", "title": "Super Deluxe Suite Saloon"},
+            {"src": "/images/luxury-trains/palace-on-wheels/dining-car.jpg", "title": "Sheesh Mahal & Swarn Mahal Dining"},
+            {"src": "/images/luxury-trains/palace-on-wheels/bar-lounge.jpg", "title": "The Royal Bar & Club Lounge"},
+            {"src": "/images/luxury-trains/palace-on-wheels/deluxe-cabin-twin.jpg", "title": "Deluxe Twin Bed Cabin"},
+            {"src": "/images/luxury-trains/palace-on-wheels/hero.jpg", "title": "Palace on Wheels Heritage Livery"}
+        ],
+        highlights=[
+            "Morning open-canter safari in Ranthambore Tiger Reserve tracking Royal Bengal tigers",
+            "Sunset camel trek and cultural Kalbeliya folk music under the desert stars at Sam Sand Dunes, Jaisalmer",
+            "Elephant or jeep ride to hilltop Amber Fort in Jaipur & guided tour of City Palace",
+            "Exquisite boat cruise across Lake Pichola with royal lunch overlooking the Lake Palace, Udaipur",
+            "Ascent to the monumental Mehrangarh Fort towering 400 ft above the Blue City of Jodhpur",
+            "Dawn cycle-rickshaw safari in Keoladeo Ghana National Park (UNESCO Bharatpur Bird Sanctuary)",
+            "Sunrise visit to the iconic Taj Mahal & red sandstone Agra Fort"
+        ],
+        overview="The Classic Rajasthan journey aboard Palace on Wheels is India's most celebrated luxury rail adventure. Operating weekly every Wednesday between September and April from New Delhi, this 8-day royal loop connects the imperial Pink City of Jaipur, tiger-rich jungles of Ranthambore, the battlements of Chittorgarh, the romantic lake palaces of Udaipur, the golden desert dunes of Jaisalmer, the blue-hued alleys of Jodhpur, the world-famous bird sanctuary of Bharatpur, and Emperor Shah Jahan's timeless monument to love—the Taj Mahal in Agra. Travel in authentic saloons serviced by dedicated Khidmatgars and discover the regal heart of India.",
+        days_data=pow_circuit_days,
+        departures_data=pow_circuit_departures,
+        price_data=pow_price_data,
+        faqs_data=pow_faqs,
+        train_slug="palace-on-wheels",
+        train_name="Palace on Wheels",
+        inc_exc_html=pow_inc_exc_snippet
+    )
+
     write_page(f"{base_dir}/palace-on-wheels/itinerary/index.html", 
-               "Palace on Wheels Itinerary 7N/8D Day by Day | KoiKoi Travel",
-               "Detailed 7 Nights / 8 Days itinerary for Palace on Wheels: Jaipur, Ranthambore, Udaipur, Jaisalmer, Jodhpur, Bharatpur and Taj Mahal.",
-               pow_itinerary, active_train="palace-on-wheels", active_tab="itinerary", base_path=base_path)
+               "Palace on Wheels Itinerary 8 Days (Delhi to Delhi · 7N/8D) | KoiKoi Travel",
+               "Detailed 7 Nights / 8 Days day-by-day itinerary for Palace on Wheels: Jaipur, Ranthambore, Udaipur, Jaisalmer, Jodhpur, Bharatpur and Taj Mahal.",
+               pow_circuit_html, active_train="palace-on-wheels", active_tab="itinerary", base_path=base_path)
+
+    write_page(f"{base_dir}/palace-on-wheels/classic-rajasthan/index.html", 
+               "Classic Rajasthan Tour (7N/8D) | Palace on Wheels | KoiKoi Travel",
+               "Official 8-day Classic Rajasthan itinerary aboard Palace on Wheels: Ranthambore safari, Jaisalmer dunes, Mehrangarh Fort, and Taj Mahal.",
+               pow_circuit_html, active_train="palace-on-wheels", active_tab="itinerary", base_path=base_path)
 
     # Palace on Wheels: Departures
     pow_departures = f"""
 <section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{pow_data["banner"]}');">
   <div class="wrap">
     <span class="tag">PALACE ON WHEELS · DEPARTURES</span>
-    <h1>2024–2025 & 2025–2026 Departure Schedule</h1>
+    <h1>2026–2027 &amp; 2027–2028 Departure Schedule</h1>
     <p>Departs every Wednesday from New Delhi Safdarjung Station. Check upcoming available dates below.</p>
   </div>
 </section>
@@ -1941,21 +3191,7 @@ def generate_all_for_base(base_dir, base_path):
       <h2>Every Wednesday: September to April</h2>
       <p>Due to high demand from international travelers, cabins on October to February departures book out 6–9 months in advance.</p>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Month</th><th>Departure Dates (2024–2025)</th><th>Departure Dates (2025–2026)</th><th>Season Type</th></tr></thead>
-        <tbody>
-          <tr><td>September</td><td>04, 11, 18, 25 Sep 2024</td><td>03, 10, 17, 24 Sep 2025</td><td>Lean Season (Special Tariff)</td></tr>
-          <tr><td>October</td><td>02, 09, 16, 23, 30 Oct 2024</td><td>01, 08, 15, 22, 29 Oct 2025</td><td>Peak Season</td></tr>
-          <tr><td>November</td><td>06, 13, 20, 27 Nov 2024</td><td>05, 12, 19, 26 Nov 2025</td><td>Peak Season</td></tr>
-          <tr><td>December</td><td>04, 11, 18, 25 Dec 2024</td><td>03, 10, 17, 24, 31 Dec 2025</td><td>Peak Season (Holiday Gala)</td></tr>
-          <tr><td>January</td><td>01, 08, 15, 22, 29 Jan 2025</td><td>07, 14, 21, 28 Jan 2026</td><td>Peak Season</td></tr>
-          <tr><td>February</td><td>05, 12, 19, 26 Feb 2025</td><td>04, 11, 18, 25 Feb 2026</td><td>Peak Season</td></tr>
-          <tr><td>March</td><td>05, 12, 19, 26 Mar 2025</td><td>04, 11, 18, 25 Mar 2026</td><td>Peak Season</td></tr>
-          <tr><td>April</td><td>02, 09, 16, 23, 30 Apr 2025</td><td>01, 08, 15, 22, 29 Apr 2026</td><td>Lean Season (Special Tariff)</td></tr>
-        </tbody>
-      </table>
-    </div>
+    {get_pow_departures_table_component()}
     <div style="margin-top:36px;text-align:center">
       <a class="btn btn-gold" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20Palace%20on%20Wheels%20dates%20for%20me." target="_blank" rel="noopener">Check Live Date Availability</a>
     </div>
@@ -1963,7 +3199,7 @@ def generate_all_for_base(base_dir, base_path):
 </section>
 """
     write_page(f"{base_dir}/palace-on-wheels/departures/index.html", 
-               "Palace on Wheels Departure Dates 2024-2025 & 2026 | KoiKoi Travel",
+               "Palace on Wheels Departure Dates 2026-2027 & 2027-2028 | KoiKoi Travel",
                "Official departure calendar for Palace on Wheels luxury train. Weekly departures every Wednesday from September to April.",
                pow_departures, active_train="palace-on-wheels", active_tab="departures", base_path=base_path)
 
@@ -1971,58 +3207,25 @@ def generate_all_for_base(base_dir, base_path):
     pow_price = f"""
 <section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{pow_data["banner"]}');">
   <div class="wrap">
-    <span class="tag">PALACE ON WHEELS · TARIFF & PRICE</span>
-    <h1>All-Inclusive Official Royal Tariff</h1>
-    <p>Transparent government tariffs with zero agency markup. Includes meals, sightseeing, entrance fees, and personal butler.</p>
+    <span class="tag">PALACE ON WHEELS · TARIFFS</span>
+    <h1>Official Ticket Prices &amp; Fares 2026–2027</h1>
+    <p>Official published tariffs in USD ($) and INR (₹). Special Lean Season rates in September and April.</p>
   </div>
 </section>
 <section>
   <div class="wrap">
     <div class="sec-head">
-      <div class="eyebrow">Price Per Person (7 Nights / 8 Days)</div>
-      <h2>Cabin Tariff Breakdown</h2>
-      <p>Rates are subject to government service tax (5% GST). Contact us for live currency conversions and INR rates.</p>
+      <div class="eyebrow">Official Tariffs</div>
+      <h2>Deluxe Cabins &amp; Super Deluxe Suites</h2>
+      <p>Rates are per cabin/person for the complete 7 Nights / 8 Days itinerary. 5% Govt. GST extra.</p>
     </div>
-    <div class="table-wrap" style="margin-bottom:36px">
-      <table>
-        <thead><tr><th>Cabin Category</th><th>Occupancy Type</th><th>Peak Season (Oct – Mar)</th><th>Lean Season (Sep & Apr)</th></tr></thead>
-        <tbody>
-          <tr><td>Deluxe Cabin</td><td>Single Occupancy</td><td>$7,000 USD</td><td>$5,250 USD</td></tr>
-          <tr><td>Deluxe Cabin</td><td>Double Sharing (per person)</td><td>$5,250 USD</td><td>$3,950 USD</td></tr>
-          <tr><td>Deluxe Cabin</td><td>Triple Sharing (per person)</td><td>$4,550 USD</td><td>$3,400 USD</td></tr>
-          <tr><td>Super Deluxe Suite</td><td>Single Occupancy</td><td>$14,000 USD</td><td>$10,500 USD</td></tr>
-          <tr><td>Super Deluxe Suite</td><td>Double Sharing (per cabin)</td><td>$18,200 USD</td><td>$13,650 USD</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="grid-4">
-      <div class="card" style="padding:24px">
-        <h3>What is Included</h3>
-        <ul class="facts">
-          <li><span>Accommodation</span><span>Private en-suite royal cabin</span></li>
-          <li><span>All Meals</span><span>Breakfast, Lunch, High Tea, Dinner</span></li>
-          <li><span>Sightseeing</span><span>AC coach tours with English guides</span></li>
-          <li><span>Monuments</span><span>Entry tickets, boat ride & camel safari</span></li>
-          <li><span>Butler Service</span><span>Dedicated Khidmatgar in royal uniform</span></li>
-        </ul>
-      </div>
-      <div class="card" style="padding:24px">
-        <h3>What is Excluded</h3>
-        <ul class="facts">
-          <li><span>Government Taxes</span><span>5% GST applicable on total</span></li>
-          <li><span>Drinks</span><span>Alcoholic beverages & bar orders</span></li>
-          <li><span>Spa</span><span>Massages & wellness therapies</span></li>
-          <li><span>Tips</span><span>Gratuities for crew & tour guides</span></li>
-          <li><span>Flights</span><span>Pre/post international or domestic flights</span></li>
-        </ul>
-      </div>
-    </div>
+    {get_pow_price_tables_component()}
+    {pow_inc_exc_snippet}
   </div>
 </section>
 """
     write_page(f"{base_dir}/palace-on-wheels/price/index.html", 
-               "Palace on Wheels Ticket Price & Tariff 2024-2025 | KoiKoi Travel",
+               "Palace on Wheels Ticket Price & Tariff 2026-2027 | KoiKoi Travel",
                "Official ticket prices for Palace on Wheels: Deluxe cabins and Super Deluxe suites tariffs in USD and INR.",
                pow_price, active_train="palace-on-wheels", active_tab="price", base_path=base_path)
 
@@ -2030,53 +3233,27 @@ def generate_all_for_base(base_dir, base_path):
     pow_cabins = f"""
 <section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{pow_data["banner"]}');">
   <div class="wrap">
-    <span class="tag">PALACE ON WHEELS · CABINS & SUITES</span>
-    <h1>Imperial Accommodations on Wheels</h1>
-    <p>14 Saloons featuring antique Rajasthani miniature paintings, richly carved teakwood, and modern attached bathrooms.</p>
+    <span class="tag">PALACE ON WHEELS · CABINS &amp; SALOONS</span>
+    <h1>Royal Saloons &amp; Heritage Suites</h1>
+    <p>14 princely coaches, each named after erstwhile Rajput kingdoms and decorated in authentic royal heritage style.</p>
   </div>
 </section>
 <section>
   <div class="wrap">
-    <div class="cabin-grid">
-      <div class="cabin-card">
-        <div class="cabin-photo" style="background-image:url('/images/luxury-trains/palace-on-wheels/swarn-mahal.jpg')"></div>
-        <div class="cabin-body">
-          <span class="cabin-size">105 sq. ft. · Deluxe Category</span>
-          <h3>Deluxe Cabin</h3>
-          <p>Elegantly crafted with silk upholstery, wooden marquetry, and twin or double bed configuration. Each saloon holds 4 cabins with a dedicated mini-pantry and personal Khidmatgar.</p>
-          <ul class="cabin-features">
-            <li>Private en-suite bathroom with shower and running hot/cold water</li>
-            <li>Individual climate control AC</li>
-            <li>Electronic safety locker & intercom</li>
-            <li>Panoramic large picture windows with sun shades</li>
-            <li>Complimentary vanity amenities & bathrobes</li>
-          </ul>
-          <a class="btn btn-dark" style="width:100%" href="https://wa.me/919136739178?text=Hi%20KoiKoi%2C%20I%20am%20interested%20in%20Palace%20on%20Wheels%20Deluxe%20Cabin." target="_blank" rel="noopener">Book Deluxe Cabin</a>
-        </div>
-      </div>
-
-      <div class="cabin-card">
-        <div class="cabin-photo" style="background-image:url('/images/luxury-trains/palace-on-wheels/hero.jpg')"></div>
-        <div class="cabin-body">
-          <span class="cabin-size">140 sq. ft. · Presidential Class</span>
-          <h3>Super Deluxe Suite</h3>
-          <p>Named after precious gems (Emerald, Ruby, Diamond). Offers extra spacious floor plans with rich velvet furnishings, queen bed, private writing desk, and private chauffeured car for sightseeing.</p>
-          <ul class="cabin-features">
-            <li>Dedicated private air-conditioned car for all off-train excursions</li>
-            <li>Personal English-speaking guide for monument tours</li>
-            <li>Luxury sofa lounge and double queen bed</li>
-            <li>Complimentary bottle of fine wine upon arrival</li>
-            <li>Upgraded bathroom with organic botanical toiletries</li>
-          </ul>
-          <a class="btn btn-gold" style="width:100%" href="https://wa.me/919136739178?text=Hi%20KoiKoi%2C%20I%20am%20interested%20in%20Palace%20on%20Wheels%20Super%20Deluxe%20Suite." target="_blank" rel="noopener">Book Super Deluxe Suite</a>
-        </div>
-      </div>
+    <div class="sec-head">
+      <div class="eyebrow">Accommodations</div>
+      <h2>Deluxe Cabins &amp; Super Deluxe Suites</h2>
+      <p>Hand-carved wooden furniture, traditional silk tapestries, en-suite modern bathrooms, and dedicated personal Khidmatgars.</p>
+    </div>
+    {get_pow_gallery_component()}
+    <div style="margin-top:40px;text-align:center">
+      <a class="btn btn-gold" href="{base_path}/palace-on-wheels/itinerary">View 8-Day Itinerary &rarr;</a>
     </div>
   </div>
 </section>
 """
     write_page(f"{base_dir}/palace-on-wheels/cabins/index.html", 
-               "Palace on Wheels Cabins & Suites Photos & Dimensions | KoiKoi Travel",
+               "Palace on Wheels Cabins & Suites Photos & Saloons | KoiKoi Travel",
                "Explore Deluxe cabins and Super Deluxe suites on Palace on Wheels. Amenities, en-suite bathrooms and royal saloon layout.",
                pow_cabins, active_train="palace-on-wheels", active_tab="cabins", base_path=base_path)
 
@@ -2085,19 +3262,20 @@ def generate_all_for_base(base_dir, base_path):
 <section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{pow_data["banner"]}');">
   <div class="wrap">
     <span class="tag">PALACE ON WHEELS · PHOTO GALLERY</span>
-    <h1>Visual Tour of Royal Rajasthan on Rails</h1>
-    <p>Glimpse inside the train exterior, royal dining saloons, bar lounge, palatial cabins, and off-train excursions.</p>
+    <h1>Visual Tour of Palace on Wheels</h1>
+    <p>Explore the ornate carriages, dining saloons, club lounge bar, and iconic sights across royal Rajasthan.</p>
   </div>
 </section>
 <section>
   <div class="wrap">
-    <div class="gallery-grid">
-      <div class="g-item"><img src="/images/luxury-trains/palace-on-wheels/hero.jpg" alt="Palace on Wheels Train Exterior"><span>Royal Train Exterior</span></div>
-      <div class="g-item"><img src="/images/luxury-trains/palace-on-wheels/sheesh-mahal-1.jpg" alt="Sheesh Mahal Restaurant"><span>Sheesh Mahal Restaurant</span></div>
-      <div class="g-item"><img src="/images/luxury-trains/palace-on-wheels/sheesh-mahal-2.jpg" alt="Sheesh Mahal Dining Hall"><span>Sheesh Mahal Dining Car</span></div>
-      <div class="g-item"><img src="/images/luxury-trains/palace-on-wheels/swarn-mahal.jpg" alt="Swarn Mahal Restaurant"><span>Swarn Mahal Royal Car</span></div>
-      <div class="g-item"><img src="/images/luxury-trains/palace-on-wheels/bar.jpg" alt="Sheesh Mahal Bar & Lounge"><span>Sheesh Mahal Bar Lounge</span></div>
-      <div class="g-item"><img src="/images/luxury-trains/palace-on-wheels/exterior.webp" alt="Palace on Wheels Historic Carriage"><span>Imperial Heritage Coach</span></div>
+    <div class="sec-head">
+      <div class="eyebrow">Authentic Gallery</div>
+      <h2>Step Aboard the Royal Saloon</h2>
+      <p>Click on any image below to explore our verified high-resolution photo collection.</p>
+    </div>
+    {get_pow_gallery_component()}
+    <div style="margin-top:40px;text-align:center">
+      <a class="btn btn-gold" href="{base_path}/palace-on-wheels/itinerary">Explore Itinerary &amp; Dates &rarr;</a>
     </div>
   </div>
 </section>
@@ -2106,7 +3284,6 @@ def generate_all_for_base(base_dir, base_path):
                "Palace on Wheels Photo Gallery | Interior, Exterior & Excursions | KoiKoi Travel",
                "High resolution photo gallery of Palace on Wheels luxury train. View cabins, dining cars, lounges and scenic stops.",
                pow_gallery, active_train="palace-on-wheels", active_tab="photo-gallery", base_path=base_path)
-
     # ================= 3. MAHARAJAS' EXPRESS SUBPAGES =================
     me_data = {
         "slug": "maharajas-express",
@@ -2971,718 +4148,6 @@ function switchPriceCurrency(curr) {{
     </ul>
   </div>
 </div>
-"""
-
-    def build_koikoi_circuit_page(circuit_tag, name, duration, title, route, starting_price,
-                                  origin, destination, destinations_count,
-                                  hero_imgs, highlights, overview, days_data,
-                                  departures_data, price_data, faqs_data,
-                                  train_slug="maharajas-express", train_name="Maharajas' Express",
-                                  inc_exc_html=None):
-        hl_html = "".join([f"""<li style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#334155;line-height:1.5">
-  <svg style="color:#2E8B8B;margin-top:2px;flex-shrink:0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-  <span>{h}</span>
-</li>""" for h in highlights])
-
-        days_html = ""
-        for i, d in enumerate(days_data):
-            open_attr = "open" if i == 0 else ""
-            desc_html = "".join([f"<p>{p}</p>" for p in d["paragraphs"]])
-            overnight_html = f'<div class="day-meta-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> {d["overnight"]}</div>' if d.get("overnight") else ""
-            meals_html = f'<div class="day-meta-pill" style="margin-left:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg> {d["meals"]}</div>' if d.get("meals") else ""
-
-            days_html += f"""
-<details class="day-accordion-item" {open_attr}>
-  <summary>
-    <h3>
-      <span class="day-num">Day {d['day']}:</span>
-      <span>{d['title']}</span>
-    </h3>
-    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-      <polyline points="6 9 12 15 18 9"></polyline>
-    </svg>
-  </summary>
-  <div class="day-accordion-content">
-    {desc_html}
-    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:10px">
-      {overnight_html}
-      {meals_html}
-    </div>
-  </div>
-</details>
-"""
-
-        # Build departure rows
-        dep_rows_html = ""
-        for month_name, date_str in departures_data:
-            dep_rows_html += f"""
-<tr style="border-bottom:1px solid #f1f5f9">
-  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">{month_name}</td>
-  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">{date_str}</td>
-  <td style="padding:14px 20px">
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20{train_name}%20{name}%20departing%20on%20{date_str}." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
-      Check Availability &rarr;
-    </a>
-  </td>
-</tr>
-"""
-
-        # Build Dynamic Photo Grid HTML (4+ photos support with +N Photos badge)
-        extra_count = len(hero_imgs) - 4
-        more_badge_html = f"""
-        <div style="position:absolute;inset:0;background:rgba(15,23,42,0.38);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;transition:background .25s" class="more-overlay">
-          <span style="padding:10px 18px;border-radius:12px;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);color:#0f172a;font-family:\'Outfit\',sans-serif;font-size:13px;font-weight:800;box-shadow:0 10px 25px rgba(0,0,0,0.25);display:inline-flex;align-items:center;gap:6px;transition:transform .2s">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-            +{extra_count} Photos
-          </span>
-        </div>
-""" if extra_count > 0 else ""
-
-        if len(hero_imgs) >= 4:
-            gallery_grid_html = f"""
-    <!-- Left: 4-Photo Showcase Grid with Lightbox Trigger -->
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:12px;height:100%;min-height:380px" class="gallery-hero-grid">
-      <!-- Photo 1 (Top Left) -->
-      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(0)" class="hero-photo-card" title="Click to open photo lightbox">
-        <img src="{hero_imgs[0]['src']}" alt="{hero_imgs[0].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[0]['title']}</span>
-      </div>
-
-      <!-- Photo 2 (Top Right) -->
-      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(1)" class="hero-photo-card" title="Click to open photo lightbox">
-        <img src="{hero_imgs[1]['src']}" alt="{hero_imgs[1].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[1]['title']}</span>
-      </div>
-
-      <!-- Photo 3 (Bottom Left) -->
-      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(2)" class="hero-photo-card" title="Click to open photo lightbox">
-        <img src="{hero_imgs[2]['src']}" alt="{hero_imgs[2].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[2]['title']}</span>
-      </div>
-
-      <!-- Photo 4 (Bottom Right + Optional Overlay) -->
-      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(3)" class="hero-photo-card" title="Click to view all photos">
-        <img src="{hero_imgs[3]['src']}" alt="{hero_imgs[3].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[3]['title']}</span>
-        {more_badge_html}
-      </div>
-    </div>
-"""
-        else:
-            gallery_grid_html = f"""
-    <!-- Left: 3-Photo Showcase Grid with Lightbox Trigger -->
-    <div style="display:grid;grid-template-columns:1.2fr 1fr;grid-template-rows:repeat(2,1fr);gap:12px;height:100%" class="gallery-hero-grid">
-      <div style="grid-row:1 / -1;border-radius:20px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(0)" class="hero-photo-card" title="Click to open photo lightbox">
-        <img src="{hero_imgs[0]['src']}" alt="{hero_imgs[0].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:12px 16px;font-size:13px;font-weight:600">{hero_imgs[0]['title']}</span>
-      </div>
-      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(1)" class="hero-photo-card" title="Click to open photo lightbox">
-        <img src="{hero_imgs[1]['src']}" alt="{hero_imgs[1].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[1]['title']}</span>
-      </div>
-      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(2)" class="hero-photo-card" title="Click to open photo lightbox">
-        <img src="{hero_imgs[2]['src']}" alt="{hero_imgs[2].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[2]['title']}</span>
-      </div>
-    </div>
-"""
-
-        # Serialize slides json for frontend JS
-        import json as _py_json
-        slides_json = _py_json.dumps(hero_imgs)
-
-        lightbox_modal_html = f"""
-<!-- Circuit Photo Lightbox Modal -->
-<div id="circuitLightbox" class="circuit-lb-overlay" onclick="onLightboxBackdropClick(event)">
-  <!-- Header: Counter & Close -->
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;z-index:30">
-    <span id="lbCounter" style="display:inline-block;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.10);padding:6px 14px;border-radius:9999px;font-size:11px;font-weight:700;letter-spacing:0.18em;color:rgba(255,255,255,0.9);backdrop-filter:blur(10px);text-transform:uppercase">1 / {len(hero_imgs)}</span>
-    <button class="circuit-lb-btn" onclick="closeCircuitLightbox()" aria-label="Close photo gallery">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-    </button>
-  </div>
-
-  <!-- Main View Area with Prev / Next Arrows -->
-  <div style="position:relative;flex:1;display:flex;align-items:center;justify-content:center;padding:10px 80px;min-height:0">
-    <button class="circuit-lb-btn circuit-lb-arrow prev" onclick="prevCircuitLightbox()" aria-label="Previous photo">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-    </button>
-    <img id="lbMainImage" src="" alt="" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;box-shadow:0 25px 60px rgba(0,0,0,0.8);transition:opacity 0.2s ease, transform 0.2s ease">
-    <button class="circuit-lb-btn circuit-lb-arrow next" onclick="nextCircuitLightbox()" aria-label="Next photo">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-    </button>
-  </div>
-
-  <!-- Footer: Caption -->
-  <div style="padding:16px 24px 22px;text-align:center;z-index:30">
-    <div id="lbCaption" style="color:#ffffff;font-size:15px;font-weight:600;font-family:\'Outfit\',sans-serif;letter-spacing:0.3px;text-shadow:0 2px 8px rgba(0,0,0,0.8)"></div>
-  </div>
-</div>
-
-<script>
-const circuitSlides = {slides_json};
-let curLbIndex = 0;
-
-function openCircuitLightbox(index) {{
-  curLbIndex = index;
-  updateLightboxContent();
-  const lb = document.getElementById('circuitLightbox');
-  if (!lb) return;
-  lb.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}}
-
-function closeCircuitLightbox() {{
-  const lb = document.getElementById('circuitLightbox');
-  if (!lb) return;
-  lb.classList.remove('active');
-  document.body.style.overflow = '';
-}}
-
-function updateLightboxContent() {{
-  if (!circuitSlides || !circuitSlides.length) return;
-  const slide = circuitSlides[curLbIndex];
-  const imgEl = document.getElementById('lbMainImage');
-  const counterEl = document.getElementById('lbCounter');
-  const captionEl = document.getElementById('lbCaption');
-  if (imgEl) {{
-    imgEl.style.opacity = '0.3';
-    imgEl.style.transform = 'scale(0.98)';
-    imgEl.src = slide.src;
-    imgEl.alt = slide.title || '';
-    setTimeout(() => {{
-      imgEl.style.opacity = '1';
-      imgEl.style.transform = 'scale(1)';
-    }}, 80);
-  }}
-  if (counterEl) {{
-    counterEl.textContent = `${{curLbIndex + 1}} / ${{circuitSlides.length}}`;
-  }}
-  if (captionEl) {{
-    captionEl.textContent = slide.title || '';
-  }}
-}}
-
-function nextCircuitLightbox() {{
-  if (!circuitSlides.length) return;
-  curLbIndex = (curLbIndex + 1) % circuitSlides.length;
-  updateLightboxContent();
-}}
-
-function prevCircuitLightbox() {{
-  if (!circuitSlides.length) return;
-  curLbIndex = (curLbIndex - 1 + circuitSlides.length) % circuitSlides.length;
-  updateLightboxContent();
-}}
-
-function onLightboxBackdropClick(e) {{
-  if (e.target.id === 'circuitLightbox' || e.target.tagName === 'DIV') {{
-    if (e.target.closest('button') || e.target.tagName === 'IMG') return;
-    closeCircuitLightbox();
-  }}
-}}
-
-document.addEventListener('keydown', (e) => {{
-  const lb = document.getElementById('circuitLightbox');
-  if (!lb || !lb.classList.contains('active')) return;
-  if (e.key === 'Escape') closeCircuitLightbox();
-  if (e.key === 'ArrowRight') nextCircuitLightbox();
-  if (e.key === 'ArrowLeft') prevCircuitLightbox();
-}});
-
-// Swipe support for mobile touch
-let lbTouchStartX = 0;
-let lbTouchEndX = 0;
-const lbContainer = document.getElementById('circuitLightbox');
-if (lbContainer) {{
-  lbContainer.addEventListener('touchstart', (e) => {{
-    lbTouchStartX = e.changedTouches[0].screenX;
-  }}, {{ passive: true }});
-  lbContainer.addEventListener('touchend', (e) => {{
-    lbTouchEndX = e.changedTouches[0].screenX;
-    if (lbTouchStartX - lbTouchEndX > 50) nextCircuitLightbox();
-    if (lbTouchEndX - lbTouchStartX > 50) prevCircuitLightbox();
-  }}, {{ passive: true }});
-}}
-</script>
-"""
-
-        # Build Pricing Table HTML
-        if train_slug == "golden-chariot":
-            price_table_html = f"""
-      <!-- USD Table -->
-      <div id="circuitPriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
-        <div style="overflow-x:auto">
-          <table class="circuit-price-table">
-            <thead>
-              <tr>
-                <th style="width:40%">Occupancy Category</th>
-                <th style="width:30%">Deluxe Cabin (Twin / Double Sharing)</th>
-                <th style="width:30%">Single Supplement (Solo Traveler)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Adult Tariff (USD)</td>
-                <td style="font-weight:700">{price_data['usd']['deluxe_twin']}</td>
-                <td style="color:#64748b">{price_data['usd']['deluxe_single']}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- INR Table -->
-      <div id="circuitPriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
-        <div style="overflow-x:auto">
-          <table class="circuit-price-table">
-            <thead>
-              <tr>
-                <th style="width:40%">Occupancy Category</th>
-                <th style="width:30%">Deluxe Cabin (Twin / Double Sharing)</th>
-                <th style="width:30%">Single Supplement (Solo Traveler)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Indian Nationals Tariff (INR)</td>
-                <td style="font-weight:700">{price_data['inr']['deluxe_twin']}</td>
-                <td style="color:#64748b">{price_data['inr']['deluxe_single']}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-"""
-        elif train_slug == "deccan-odyssey":
-            price_table_html = f"""
-      <!-- USD Table -->
-      <div id="circuitPriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
-        <div style="overflow-x:auto">
-          <table class="circuit-price-table">
-            <thead>
-              <tr>
-                <th style="width:34%">Occupancy Category</th>
-                <th style="width:33%">Deluxe Cabin (Twin / Double)</th>
-                <th style="width:33%">Presidential Suite (Per Cabin)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Twin / Double Sharing (Per Person)</td>
-                <td style="font-weight:700">{price_data['usd']['deluxe_twin']}</td>
-                <td style="font-weight:700">{price_data['usd']['presidential']}</td>
-              </tr>
-              <tr>
-                <td>Single Occupancy (Solo Cabin)</td>
-                <td style="color:#64748b">{price_data['usd']['deluxe_single']}</td>
-                <td style="color:#64748b">{price_data['usd']['presidential']}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- INR Table -->
-      <div id="circuitPriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
-        <div style="overflow-x:auto">
-          <table class="circuit-price-table">
-            <thead>
-              <tr>
-                <th style="width:34%">Occupancy Category</th>
-                <th style="width:33%">Deluxe Cabin (Twin / Double)</th>
-                <th style="width:33%">Presidential Suite (Per Cabin)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Twin / Double Sharing (Per Person)</td>
-                <td style="font-weight:700">{price_data['inr']['deluxe_twin']}</td>
-                <td style="font-weight:700">{price_data['inr']['presidential']}</td>
-              </tr>
-              <tr>
-                <td>Single Occupancy (Solo Cabin)</td>
-                <td style="color:#64748b">{price_data['inr']['deluxe_single']}</td>
-                <td style="color:#64748b">{price_data['inr']['presidential']}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-"""
-        else:
-            price_table_html = f"""
-      <!-- USD Table -->
-      <div id="circuitPriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
-        <div style="overflow-x:auto">
-          <table class="circuit-price-table">
-            <thead>
-              <tr>
-                <th>Rooming Category</th>
-                <th>Deluxe Cabin</th>
-                <th>Junior Suite</th>
-                <th>Suite</th>
-                <th>Presidential Suite</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Adult (Twin Sharing)</td>
-                <td style="font-weight:700">{price_data['usd']['deluxe_twin']}</td>
-                <td style="font-weight:700">{price_data['usd']['junior_twin']}</td>
-                <td style="font-weight:700">{price_data['usd']['suite_twin']}</td>
-                <td style="font-weight:700">{price_data['usd']['presidential']}</td>
-              </tr>
-              <tr>
-                <td>Single Supplement</td>
-                <td style="color:#64748b">{price_data['usd']['deluxe_single']}</td>
-                <td style="color:#64748b">{price_data['usd']['junior_single']}</td>
-                <td style="color:#64748b">{price_data['usd']['suite_single']}</td>
-                <td style="color:#64748b">{price_data['usd']['presidential']}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- INR Table -->
-      <div id="circuitPriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
-        <div style="overflow-x:auto">
-          <table class="circuit-price-table">
-            <thead>
-              <tr>
-                <th>Rooming Category</th>
-                <th>Deluxe Cabin</th>
-                <th>Junior Suite</th>
-                <th>Suite</th>
-                <th>Presidential Suite</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Adult (Twin Sharing)</td>
-                <td style="font-weight:700">{price_data['inr']['deluxe_twin']}</td>
-                <td style="font-weight:700">{price_data['inr']['junior_twin']}</td>
-                <td style="font-weight:700">{price_data['inr']['suite_twin']}</td>
-                <td style="font-weight:700">{price_data['inr']['presidential']}</td>
-              </tr>
-              <tr>
-                <td>Single Supplement</td>
-                <td style="color:#64748b">{price_data['inr']['deluxe_single']}</td>
-                <td style="color:#64748b">{price_data['inr']['junior_single']}</td>
-                <td style="color:#64748b">{price_data['inr']['suite_single']}</td>
-                <td style="color:#64748b">{price_data['inr']['presidential']}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-"""
-
-        # Format route with distinctive styling & colored arrows
-        route_styled_html = route.replace(" → ", ' <span style="color:#ea580c;font-weight:800;margin:0 4px">&rarr;</span> ')
-
-        # Build FAQs HTML
-        faqs_html = ""
-        for idx, faq in enumerate(faqs_data):
-            open_attr = "open" if idx == 0 else ""
-            border_style = "border-bottom:1px solid #f1f5f9;" if idx < len(faqs_data) - 1 else ""
-            faqs_html += f"""
-<details {open_attr} style="{border_style}padding:16px 0">
-  <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">{faq['q']}</summary>
-  <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
-    {faq['a']}
-  </div>
-</details>
-"""
-
-        return f"""
-<div class="wrap" style="padding-top:28px;padding-bottom:12px">
-  <div class="koikoi-breadcrumb" style="margin-bottom:12px">
-    <a href="{base_path}" style="color:#64748b;text-decoration:none">Luxury Trains</a>
-    <span style="color:#94a3b8;margin:0 6px">›</span>
-    <a href="{base_path}/{train_slug}" style="color:#64748b;text-decoration:none">{train_name}</a>
-    <span style="color:#94a3b8;margin:0 6px">›</span>
-    <span style="color:#0f172a;font-weight:600">{name}</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
-    <span style="background:rgba(248,144,77,0.12);color:#d96b27;border:1px solid rgba(248,144,77,0.25);font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;padding:4px 12px;border-radius:999px">
-      {circuit_tag}
-    </span>
-  </div>
-  <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
-    {title}
-  </h1>
-  <div style="display:inline-flex;align-items:center;gap:10px;background:#fff8f4;border:1px solid #fed7aa;padding:8px 16px;border-radius:12px;margin-bottom:14px;flex-wrap:wrap">
-    <div style="display:inline-flex;align-items:center;gap:6px;color:#ea580c;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="4" y="3" width="16" height="16" rx="2"></rect>
-        <path d="M4 11h16"></path>
-        <path d="M12 3v8"></path>
-        <path d="m8 19-2 3"></path>
-        <path d="m16 19 2 3"></path>
-        <circle cx="8" cy="15" r="1.5" fill="currentColor"></circle>
-        <circle cx="16" cy="15" r="1.5" fill="currentColor"></circle>
-      </svg>
-      <span>Circuit Route</span>
-    </div>
-    <span style="color:#fdba74">|</span>
-    <span style="color:#0f172a;font-weight:600;font-size:14.5px;line-height:1.5">
-      {route_styled_html}
-    </span>
-  </div>
-</div>
-
-<div class="wrap" style="margin-bottom:44px">
-  <div style="display:grid;grid-template-columns:1.8fr 1.2fr;gap:24px" class="hero-inner-split">
-    
-    {gallery_grid_html}
-    <!-- Right: Tour Snapshot Card (Exact Clean & Authentic Style) -->
-    <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:24px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between">
-      <div>
-        <div style="display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid #f1f5f9;margin-bottom:16px">
-          <span style="width:5px;height:18px;border-radius:999px;background:#F8904D"></span>
-          <h3 style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0f172a;margin:0">Tour Snapshot</h3>
-        </div>
-
-        <div style="background:#f8fafc;border-radius:12px;padding:12px;margin-bottom:14px;border:1px solid #e2e8f0">
-          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-            <span style="font-size:12px;color:#64748b">Boarding Station:</span>
-            <span style="font-size:12.5px;font-weight:700;color:#0f172a">{origin}</span>
-          </div>
-          <div style="display:flex;justify-content:space-between">
-            <span style="font-size:12px;color:#64748b">Deboarding Station:</span>
-            <span style="font-size:12.5px;font-weight:700;color:#0f172a">{destination}</span>
-          </div>
-        </div>
-
-        <!-- Starting Tariff Box (Partitioned for Visa Holders vs Indian Nationals) -->
-        <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:14px;padding:12px 14px;margin-bottom:14px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-            <span style="font-size:11px;font-weight:700;color:#9a3412;text-transform:uppercase;letter-spacing:0.5px">Official Starting Tariff</span>
-            <span style="font-size:11px;font-weight:600;color:#2E8B8B;background:rgba(46,139,139,0.1);padding:2px 8px;border-radius:999px">Deluxe Twin</span>
-          </div>
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#ffffff;border:1px solid #fed7aa;border-radius:10px;padding:9px 10px">
-            <!-- Foreign / Visa Holders -->
-            <div style="border-right:1px solid #fed7aa;padding-right:6px">
-              <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.3px;display:flex;align-items:center;gap:3px">
-                <span>🌐 Visa / Foreign</span>
-              </div>
-              <div style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:800;color:#ea580c;line-height:1.2;margin-top:2px">
-                {price_data['usd']['deluxe_twin']} <span style="font-size:10.5px;font-weight:700;color:#9a3412">USD</span>
-              </div>
-            </div>
-            <!-- Indian Nationals -->
-            <div style="padding-left:4px">
-              <div style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.3px;display:flex;align-items:center;gap:3px">
-                <span>🇮🇳 For Indian</span>
-              </div>
-              <div style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:800;color:#ea580c;line-height:1.2;margin-top:2px">
-                {price_data['inr']['deluxe_twin']} <span style="font-size:10.5px;font-weight:700;color:#9a3412">INR</span>
-              </div>
-            </div>
-          </div>
-
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap;gap:4px">
-            <span style="font-size:10.5px;color:#64748b">Per Person · 5% Govt. GST extra</span>
-            <a href="#pricing" style="font-size:11.5px;font-weight:700;color:#2E8B8B;text-decoration:none">View Full Table &darr;</a>
-          </div>
-        </div>
-
-        <!-- Clean Authentic Booking Policy Box -->
-        <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:12px;padding:12px 14px;margin-bottom:16px">
-          <div style="font-size:11px;font-weight:700;color:#c2410c;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Booking Policy</div>
-          <div style="font-size:12px;color:#475569;line-height:1.5">Reserve your cabin with 25% advance deposit. Remaining 75% balance payable 60 days before departure.</div>
-        </div>
-      </div>
-
-      <div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
-          <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20want%20to%20plan%20{name}." target="_blank" rel="noopener" style="background:#2E8B8B;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:11px 8px;border-radius:8px;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;box-shadow:0 2px 6px rgba(46,139,139,0.25);transition:all .2s ease">
-            <svg style="width:16px;height:16px;fill:currentColor;flex-shrink:0" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.487-1.761-1.659-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
-            <span>WhatsApp Us</span>
-          </a>
-          <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20send%20quote%20for%20{train_name}%20{name}." target="_blank" rel="noopener" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:11px 8px;border-radius:8px;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;box-shadow:0 2px 6px rgba(248,144,77,0.25);transition:all .2s ease">
-            <svg style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;flex-shrink:0" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            <span>Request Quote</span>
-          </a>
-        </div>
-
-        <!-- Real Authentic Inclusions (NO FAKE BADGES) -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;border-top:1px solid #f1f5f9;padding-top:12px">
-          <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
-            <span style="color:#10b981;font-weight:800">✓</span> All Gourmet Meals
-          </div>
-          <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
-            <span style="color:#10b981;font-weight:800">✓</span> House Wines/Spirits
-          </div>
-          <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
-            <span style="color:#10b981;font-weight:800">✓</span> Dedicated Butler
-          </div>
-          <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
-            <span style="color:#10b981;font-weight:800">✓</span> Guided Excursions
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<div class="wrap" style="padding-bottom:80px">
-  <div style="display:grid;grid-template-columns:1fr;gap:40px">
-
-    <!-- 1. Highlights Section -->
-    <div>
-      <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">KEY SIGHTS</span>
-      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 16px">
-        {name} <span style="color:#F8904D">Highlights</span>
-      </h2>
-      <div style="background:rgba(204,251,241,0.25);border:1px solid #ccfbf1;border-radius:24px;padding:24px">
-        <ul class="circuit-highlights-grid">
-          {hl_html}
-        </ul>
-      </div>
-    </div>
-
-    <!-- 2. Overview Section -->
-    <div>
-      <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">OVERVIEW</span>
-      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 16px">
-        About <span style="color:#F8904D">{name}</span>
-      </h2>
-      <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:24px;padding:28px;color:#475569;font-size:15.5px;line-height:1.8">
-        {overview}
-      </div>
-    </div>
-
-    <!-- 3. Day-by-Day Accordion -->
-    <div>
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap;gap:12px">
-        <div>
-          <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">DETAILED PLAN</span>
-          <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0">
-            {name} <span style="color:#F8904D">Itinerary</span>
-          </h2>
-        </div>
-        <button type="button" onclick="toggleAllDays()" style="background:#f1f5f9;border:1px solid #cbd5e1;color:#0f172a;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 16px;border-radius:999px;cursor:pointer">
-          Expand / Collapse All
-        </button>
-      </div>
-
-      <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:24px;padding:16px 24px;box-shadow:0 2px 10px rgba(0,0,0,0.02)">
-        <div class="day-accordion">
-          {days_html}
-        </div>
-      </div>
-    </div>
-
-    <!-- 4. Inclusions & Exclusions -->
-    {inc_exc_html if inc_exc_html else inc_exc_snippet}
-
-    <!-- 5. Scheduled Departures -->
-    <div id="departures" style="margin-top:16px">
-      <div class="sec-head" style="margin-bottom:20px;text-align:left">
-        <div class="eyebrow" style="color:#d96b27">Schedules</div>
-        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px">
-          {name} <span style="color:#F8904D">Departure Dates (2026 – 2027)</span>
-        </h2>
-        <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">
-          Official scheduled Sunday departures for Season 2026-27. Reserve your cabin in advance.
-        </p>
-      </div>
-
-      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
-        <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-size:14px;text-align:left">
-            <thead>
-              <tr style="background:#1e255e;color:#fff;font-family:'Outfit',sans-serif">
-                <th style="padding:14px 20px;border-right:1px solid rgba(255,255,255,0.15)">Month</th>
-                <th style="padding:14px 20px;border-right:1px solid rgba(255,255,255,0.15)">Scheduled Departure Date</th>
-                <th style="padding:14px 20px">Cabin Availability &amp; Inquiries</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dep_rows_html}
-            </tbody>
-          </table>
-        </div>
-        <div style="padding:14px 20px;background:#fdfcfb;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-          <span style="font-size:13px;color:#64748b">✦ Departures commence with an afternoon check-in and traditional garland welcome ceremony.</span>
-          <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20{name}." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;padding:8px 18px;border-radius:999px;text-decoration:none">
-            Inquire Specific Date on WhatsApp &rarr;
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- 6. Official Tariffs & Prices -->
-    <div id="pricing" style="margin-top:16px">
-      <div class="sec-head" style="margin-bottom:20px;text-align:left">
-        <div class="eyebrow" style="color:#d96b27">Official Fares</div>
-        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px">
-          {name} <span style="color:#F8904D">Tariffs &amp; Cabin Prices (2026 – 2027)</span>
-        </h2>
-        <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">
-          Official published IRCTC tariffs per person. 5% Govt. GST extra.
-        </p>
-      </div>
-
-      <!-- Currency Switcher Buttons (Partitioned for Visa / Foreign vs For Indian) -->
-      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
-        <button id="circuitBtnUsd" onclick="switchCircuitPrice('usd')" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:8px 18px;border-radius:999px;background:#0f172a;color:#fff;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
-          <span>🌐 Visa / Foreign (USD $)</span>
-        </button>
-        <button id="circuitBtnInr" onclick="switchCircuitPrice('inr')" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:8px 18px;border-radius:999px;background:#fff;border:1px solid #cbd5e1;color:#64748b;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
-          <span>🇮🇳 For Indian (INR ₹)</span>
-        </button>
-      </div>
-
-      {price_table_html}
-    </div>
-
-    <!-- 7. FAQs for this Itinerary -->
-    <div id="faqs" style="margin-top:16px">
-      <div class="sec-head center" style="margin-bottom:24px;text-align:center;max-width:850px;margin-left:auto;margin-right:auto">
-        <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">HELPFUL FAQS</span>
-        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px;text-align:center">
-          Frequently Asked Questions · <span style="color:#F8904D">{name}</span>
-        </h2>
-        <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6;text-align:center">
-          Everything you need to know about departures, excursions, dining, and reservations for this circuit.
-        </p>
-      </div>
-
-      <div class="faq" style="background:#fff;border-radius:18px;border:1px solid #e2e8f0;padding:8px 24px;box-shadow:0 4px 16px rgba(0,0,0,0.02)">
-        {faqs_html}
-      </div>
-    </div>
-
-  </div>
-</div>
-
-{lightbox_modal_html}
-
-<script>
-function switchCircuitPrice(curr) {{
-  const usd = document.getElementById('circuitPriceUsd');
-  const inr = document.getElementById('circuitPriceInr');
-  const btnUsd = document.getElementById('circuitBtnUsd');
-  const btnInr = document.getElementById('circuitBtnInr');
-  if (curr === 'usd') {{
-    if (usd) usd.style.display = 'block';
-    if (inr) inr.style.display = 'none';
-    if (btnUsd) {{ btnUsd.style.background = '#0f172a'; btnUsd.style.color = '#fff'; btnUsd.style.border = 'none'; }}
-    if (btnInr) {{ btnInr.style.background = '#fff'; btnInr.style.color = '#64748b'; btnInr.style.border = '1px solid #cbd5e1'; }}
-  }} else {{
-    if (usd) usd.style.display = 'none';
-    if (inr) inr.style.display = 'block';
-    if (btnInr) {{ btnInr.style.background = '#0f172a'; btnInr.style.color = '#fff'; btnInr.style.border = 'none'; }}
-    if (btnUsd) {{ btnUsd.style.background = '#fff'; btnUsd.style.color = '#64748b'; btnUsd.style.border = '1px solid #cbd5e1'; }}
-  }}
-}}
-</script>
 """
 
     # 1. The Heritage of India (Mumbai to Delhi · 6N/7D)

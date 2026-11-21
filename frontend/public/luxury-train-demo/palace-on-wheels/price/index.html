@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Palace on Wheels Ticket Price & Tariff 2024-2025 | KoiKoi Travel</title>
+<title>Palace on Wheels Ticket Price & Tariff 2026-2027 | KoiKoi Travel</title>
 <meta name="description" content="Official ticket prices for Palace on Wheels: Deluxe cabins and Super Deluxe suites tariffs in USD and INR.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1060,53 +1060,152 @@ footer a:hover{color:#F8904D}
 
 <section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('/images/luxury-trains/palace-on-wheels/hero.jpg');">
   <div class="wrap">
-    <span class="tag">PALACE ON WHEELS · TARIFF & PRICE</span>
-    <h1>All-Inclusive Official Royal Tariff</h1>
-    <p>Transparent government tariffs with zero agency markup. Includes meals, sightseeing, entrance fees, and personal butler.</p>
+    <span class="tag">PALACE ON WHEELS · TARIFFS</span>
+    <h1>Official Ticket Prices &amp; Fares 2026–2027</h1>
+    <p>Official published tariffs in USD ($) and INR (₹). Special Lean Season rates in September and April.</p>
   </div>
 </section>
 <section>
   <div class="wrap">
     <div class="sec-head">
-      <div class="eyebrow">Price Per Person (7 Nights / 8 Days)</div>
-      <h2>Cabin Tariff Breakdown</h2>
-      <p>Rates are subject to government service tax (5% GST). Contact us for live currency conversions and INR rates.</p>
+      <div class="eyebrow">Official Tariffs</div>
+      <h2>Deluxe Cabins &amp; Super Deluxe Suites</h2>
+      <p>Rates are per cabin/person for the complete 7 Nights / 8 Days itinerary. 5% Govt. GST extra.</p>
     </div>
-    <div class="table-wrap" style="margin-bottom:36px">
-      <table>
-        <thead><tr><th>Cabin Category</th><th>Occupancy Type</th><th>Peak Season (Oct – Mar)</th><th>Lean Season (Sep & Apr)</th></tr></thead>
-        <tbody>
-          <tr><td>Deluxe Cabin</td><td>Single Occupancy</td><td>$7,000 USD</td><td>$5,250 USD</td></tr>
-          <tr><td>Deluxe Cabin</td><td>Double Sharing (per person)</td><td>$5,250 USD</td><td>$3,950 USD</td></tr>
-          <tr><td>Deluxe Cabin</td><td>Triple Sharing (per person)</td><td>$4,550 USD</td><td>$3,400 USD</td></tr>
-          <tr><td>Super Deluxe Suite</td><td>Single Occupancy</td><td>$14,000 USD</td><td>$10,500 USD</td></tr>
-          <tr><td>Super Deluxe Suite</td><td>Double Sharing (per cabin)</td><td>$18,200 USD</td><td>$13,650 USD</td></tr>
-        </tbody>
-      </table>
-    </div>
+    
+<!-- Currency Switcher Buttons (Partitioned for Visa / Foreign vs For Indian) -->
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+  <button id="powHomeBtnUsd" onclick="switchPowHomePrice('usd')" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:8px 18px;border-radius:999px;background:#0f172a;color:#fff;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
+    <span>🌐 Visa / Foreign (USD $)</span>
+  </button>
+  <button id="powHomeBtnInr" onclick="switchPowHomePrice('inr')" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:8px 18px;border-radius:999px;background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
+    <span>🇮🇳 For Indian (INR ₹)</span>
+  </button>
+</div>
 
-    <div class="grid-4">
-      <div class="card" style="padding:24px">
-        <h3>What is Included</h3>
-        <ul class="facts">
-          <li><span>Accommodation</span><span>Private en-suite royal cabin</span></li>
-          <li><span>All Meals</span><span>Breakfast, Lunch, High Tea, Dinner</span></li>
-          <li><span>Sightseeing</span><span>AC coach tours with English guides</span></li>
-          <li><span>Monuments</span><span>Entry tickets, boat ride & camel safari</span></li>
-          <li><span>Butler Service</span><span>Dedicated Khidmatgar in royal uniform</span></li>
-        </ul>
-      </div>
-      <div class="card" style="padding:24px">
-        <h3>What is Excluded</h3>
-        <ul class="facts">
-          <li><span>Government Taxes</span><span>5% GST applicable on total</span></li>
-          <li><span>Drinks</span><span>Alcoholic beverages & bar orders</span></li>
-          <li><span>Spa</span><span>Massages & wellness therapies</span></li>
-          <li><span>Tips</span><span>Gratuities for crew & tour guides</span></li>
-          <li><span>Flights</span><span>Pre/post international or domestic flights</span></li>
-        </ul>
-      </div>
-    </div>
+<!-- USD Table -->
+<div id="powHomePriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:24px">
+  <div style="overflow-x:auto">
+    <table class="circuit-price-table">
+      <thead>
+        <tr>
+          <th style="width:40%">Occupancy Category</th>
+          <th style="width:30%">Lean Season (Sep &amp; Apr)</th>
+          <th style="width:30%">Peak Season (Oct to Mar)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Deluxe Cabin (Twin / Double Sharing · Per Person)</td>
+          <td style="font-weight:700">$4,900 USD <span style="font-size:11.5px;color:#64748b;font-weight:500">($9,800 / cabin)</span></td>
+          <td style="font-weight:700">$6,300 USD <span style="font-size:11.5px;color:#64748b;font-weight:500">($12,600 / cabin)</span></td>
+        </tr>
+        <tr>
+          <td>Deluxe Cabin (Single Occupancy · Solo Cabin)</td>
+          <td style="color:#64748b">$7,350 USD</td>
+          <td style="color:#64748b">$9,450 USD</td>
+        </tr>
+        <tr>
+          <td>Super Deluxe Suite (Full Cabin · Per Cabin)</td>
+          <td style="font-weight:700">$12,600 USD <span style="font-size:11.5px;color:#64748b;font-weight:500">(Full Suite)</span></td>
+          <td style="font-weight:700">$16,800 USD <span style="font-size:11.5px;color:#64748b;font-weight:500">(Full Suite)</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- INR Table -->
+<div id="powHomePriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:24px">
+  <div style="overflow-x:auto">
+    <table class="circuit-price-table">
+      <thead>
+        <tr>
+          <th style="width:40%">Occupancy Category</th>
+          <th style="width:30%">Lean Season (Sep &amp; Apr)</th>
+          <th style="width:30%">Peak Season (Oct to Mar)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Deluxe Cabin (Twin / Double Sharing · Per Person)</td>
+          <td style="font-weight:700">₹4,06,000 INR <span style="font-size:11.5px;color:#64748b;font-weight:500">(₹8,12,000 / cabin)</span></td>
+          <td style="font-weight:700">₹5,23,000 INR <span style="font-size:11.5px;color:#64748b;font-weight:500">(₹10,46,000 / cabin)</span></td>
+        </tr>
+        <tr>
+          <td>Deluxe Cabin (Single Occupancy · Solo Cabin)</td>
+          <td style="color:#64748b">₹6,10,000 INR</td>
+          <td style="color:#64748b">₹7,84,000 INR</td>
+        </tr>
+        <tr>
+          <td>Super Deluxe Suite (Full Cabin · Per Cabin)</td>
+          <td style="font-weight:700">₹10,45,000 INR <span style="font-size:11.5px;color:#64748b;font-weight:500">(Full Suite)</span></td>
+          <td style="font-weight:700">₹13,94,000 INR <span style="font-size:11.5px;color:#64748b;font-weight:500">(Full Suite)</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div style="padding:14px 20px;background:#fdfcfb;border:1px solid #e2e8f0;border-radius:12px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+  <span style="font-size:13px;color:#64748b">✦ Published rates are per person/cabin for 7 Nights / 8 Days. 5% Govt. GST extra.</span>
+  <a href="/luxury-train-demo/palace-on-wheels/price" style="color:#2E8B8B;font-weight:700;font-size:13px;text-decoration:none">
+    View Detailed Booking Terms &amp; Inclusions &rarr;
+  </a>
+</div>
+
+<script>
+function switchPowHomePrice(curr) {
+  const u = document.getElementById('powHomePriceUsd');
+  const i = document.getElementById('powHomePriceInr');
+  const bU = document.getElementById('powHomeBtnUsd');
+  const bI = document.getElementById('powHomeBtnInr');
+  if (curr === 'usd') {
+    u.style.display = 'block'; i.style.display = 'none';
+    bU.style.background = '#0f172a'; bU.style.color = '#fff'; bU.style.borderColor = '#0f172a';
+    bI.style.background = '#f1f5f9'; bI.style.color = '#64748b'; bI.style.borderColor = '#cbd5e1';
+  } else {
+    u.style.display = 'none'; i.style.display = 'block';
+    bI.style.background = '#0f172a'; bI.style.color = '#fff'; bI.style.borderColor = '#0f172a';
+    bU.style.background = '#f1f5f9'; bU.style.color = '#64748b'; bU.style.borderColor = '#cbd5e1';
+  }
+}
+</script>
+
+    
+<div class="inc-exc-grid" style="margin-top:32px">
+  <div class="inc-box">
+    <h3>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="16 9 10 15 7 12"></polyline></svg>
+      What's Included in Your Palace on Wheels Ticket
+    </h3>
+    <ul>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>7 Nights luxury accommodation in air-conditioned Deluxe Cabins or Super Deluxe Suites with en-suite shower bathrooms</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All multi-course gourmet meals on board at Swarn Mahal and Sheesh Mahal fine-dining cars</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Royal lunches at iconic heritage palace venues in Jaipur, Udaipur, and Jodhpur</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All off-train sightseeing tours in deluxe air-conditioned highway coaches with expert English-speaking guides</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Ranthambore National Park tiger safari in open canters and Bharatpur bird sanctuary cycle-rickshaw safari</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Sunset camel safari across Sam Sand Dunes in Jaisalmer with cultural barbecue dinner and folk dance</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>All monument entrance tickets (Amber Fort, Chittorgarh Fort, Mehrangarh Fort, Taj Mahal, Agra Fort)</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>24/7 dedicated Khidmatgar (personal butler) service, bottled drinking water, and high-speed Wi-Fi</span></li>
+    </ul>
+  </div>
+  <div class="exc-box">
+    <h3>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+      What's Excluded
+    </h3>
+    <ul>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>5% Government Goods and Services Tax (GST)</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Pre and post-train 5-star hotel stays in New Delhi or Agra (arranged separately by KoiKoi Travel)</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>International and domestic airfare, visa fees, and personal travel insurance</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Alcoholic and soft beverages ordered from the Bar Lounge (available on chargeable basis)</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Ayurvedic spa therapies, laundry service, telephone calls, and commercial video camera permits</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Gratuities and tips for train Khidmatgars and off-train local guides (at guest discretion)</span></li>
+    </ul>
+  </div>
+</div>
+
   </div>
 </section>
 
