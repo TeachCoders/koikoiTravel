@@ -219,6 +219,65 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   }
 }
 
+/* Dark Luxury Train & Circuit Selector Box */
+.kb-train-select-box {
+  background: linear-gradient(135deg, #091e2b 0%, #0f2738 100%);
+  border-radius: 14px;
+  padding: 20px 22px;
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(9, 30, 43, 0.12);
+  border: 1px solid #1e3a4d;
+}
+.kb-train-select-box .kb-label {
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 700;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.kb-train-select-box .kb-label .req {
+  color: #F8904D;
+}
+.kb-train-select-box .kb-select {
+  background: #ffffff;
+  color: #0f172a;
+  border: 1.5px solid #cbd5e1;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 11px 14px;
+  border-radius: 9px;
+}
+.kb-train-select-box .kb-select:focus {
+  border-color: #F8904D;
+  box-shadow: 0 0 0 3px rgba(248, 144, 77, 0.35);
+}
+.kb-train-select-box .kb-info-strip {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #f1f5f9;
+  margin-top: 14px;
+  border-radius: 9px;
+  padding: 10px 14px;
+}
+.kb-train-select-box .kb-strip-dur {
+  color: #ffffff;
+  background: #ea580c;
+  border: 1px solid #f97316;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.kb-train-select-box .kb-strip-route {
+  color: #5eead4;
+  font-weight: 600;
+}
+.kb-train-select-box .kb-strip-from {
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
 /* Row Grids */
 .kb-row-2 {
   display: grid;
@@ -449,8 +508,8 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 
 /* Step 2 Summary Pill */
 .kb-step2-summary-card {
-  background: #fffaf5;
-  border: 1.5px solid #fed7aa;
+  background: linear-gradient(135deg, #091e2b 0%, #0f2738 100%);
+  border: 1px solid #1e3a4d;
   border-radius: 12px;
   padding: 14px 18px;
   display: flex;
@@ -461,12 +520,15 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 .kb-s2-train {
   font-size: 15px;
   font-weight: 700;
-  color: var(--brand);
+  color: #ffffff;
 }
 .kb-s2-details {
   font-size: 13px;
-  color: #475569;
+  color: #cbd5e1;
   margin-top: 2px;
+}
+.kb-s2-details b {
+  color: #5eead4;
 }
 .kb-btn-edit {
   font: inherit;
@@ -1210,7 +1272,7 @@ function render() {
   // STEP 1: TRAIN, CIRCUIT & SCHEDULED DEPARTURE DATE
   // =========================================================================
   if (S.currentStep === 1) {
-    h += '<div>' +
+    h += '<div class="kb-train-select-box">' +
       '<div class="kb-row-2">' +
       '<div>' +
       '<label class="kb-label" for="train-select">Select Luxury Train <span class="req">*</span></label>' +
@@ -1229,7 +1291,7 @@ function render() {
       '</select>' +
       '</div>' +
       '</div>' +
-      '<div class="kb-info-strip" style="margin-top:12px">' +
+      '<div class="kb-info-strip">' +
       '<span class="kb-strip-dur">' + jn.d + '</span>' +
       '<span class="kb-strip-route">' + jn.r + '</span>' +
       '<span class="kb-strip-from">📍 ' + jn.from + '</span>' +
