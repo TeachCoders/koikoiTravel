@@ -1323,8 +1323,8 @@ def generate_all_for_base(base_dir, base_path):
               <div style="font-size:11.5px;color:#94a3b8">Per Person (Twin Sharing)</div>
             </div>
             <div style="text-align:right">
-              <div style="font-family:'Outfit',sans-serif;font-size:21px;font-weight:800;color:#d96b27;line-height:1.1">$3,150 <span style="font-size:12.5px;font-weight:600;color:#64748b">USD</span></div>
-              <div style="font-size:11px;color:#64748b;font-weight:600">approx. ₹2.62 Lakh</div>
+              <div style="font-family:'Outfit',sans-serif;font-size:21px;font-weight:800;color:#d96b27;line-height:1.1">$3,400 <span style="font-size:12.5px;font-weight:600;color:#64748b">USD</span></div>
+              <div style="font-size:11px;color:#64748b;font-weight:600">approx. ₹3.31 Lakh</div>
             </div>
           </div>
 
@@ -3393,146 +3393,591 @@ function switchPriceCurrency(curr) {{
         "tagline": "Many Worlds. One Journey.",
         "banner": "/images/luxury-trains/golden-chariot/hero.jpg",
     }
-    
-    # Golden Chariot Overview
-    gc_overview = f"""
-<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{gc_data["banner"]}');">
-  <div class="wrap">
-    <span class="tag">THE GOLDEN CHARIOT · OVERVIEW</span>
-    <h1>The Soul of South India on Wheels</h1>
-    <p>Journey through UNESCO ruins of Hampi, royal palaces of Mysore, Bandipur tiger country, and Arabian sea beaches of Goa.</p>
-    <div class="cta">
-      <a class="btn btn-gold" href="{base_path}/golden-chariot/itinerary">View Itineraries</a>
-      <a class="btn btn-line" href="{base_path}/golden-chariot/price">Tariff & Fares</a>
+
+    def get_gc_cards_component():
+        return f"""
+<div class="koikoi-card-grid" style="margin-top:24px">
+  <!-- Card 1: Pride of Karnataka -->
+  <div class="koikoi-tour-card" id="card-pride">
+    <a href="{base_path}/golden-chariot/itinerary" class="koikoi-card-img-wrap">
+      <img src="/images/luxury-trains/golden-chariot/sitting-room.jpg" alt="Pride of Karnataka - The Golden Chariot Tour Package | KoiKoi Travel">
+    </a>
+    <div class="koikoi-card-body">
+      <a href="{base_path}/golden-chariot/itinerary" class="koikoi-card-title">
+        6 Days - Pride of Karnataka Luxury Rail Tour
+      </a>
+      <div class="koikoi-card-route">
+        Bengaluru · Bandipur · Mysore · Halebidu · Chikmagalur · Hampi · Goa · Bengaluru
+      </div>
+      <div class="koikoi-card-highlights">
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Bandipur National Park Morning Open-Jeep Safari</span>
+        </div>
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Illuminated Mysore Palace & Hoysala Temples of Halebidu</span>
+        </div>
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>UNESCO World Heritage Hampi Ruins & Old Goa Sunset Beach</span>
+        </div>
+      </div>
+      <div class="koikoi-card-footer">
+        <div class="koikoi-card-amenities">
+          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
+        </div>
+        <div class="koikoi-card-btn-row">
+          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20The%20Golden%20Chariot%20-%20Pride%20of%20Karnataka%20(6%20Days)." target="_blank" rel="noopener">
+            Get a quote
+          </a>
+          <a class="koikoi-btn-details" href="{base_path}/golden-chariot/itinerary">
+            Details
+          </a>
+        </div>
+      </div>
     </div>
   </div>
-</section>
-<section>
+
+  <!-- Card 2: Jewels of South -->
+  <div class="koikoi-tour-card" id="card-jewels">
+    <a href="{base_path}/golden-chariot/itinerary" class="koikoi-card-img-wrap">
+      <img src="/images/luxury-trains/golden-chariot/restaurant-1.jpg" alt="Jewels of South - The Golden Chariot Tour Package | KoiKoi Travel">
+    </a>
+    <div class="koikoi-card-body">
+      <a href="{base_path}/golden-chariot/itinerary" class="koikoi-card-title">
+        6 Days - Jewels of South Heritage Rail Tour
+      </a>
+      <div class="koikoi-card-route">
+        Bengaluru · Mysore · Mahabalipuram · Thanjavur · Chettinad · Cochin · Kumarakom · Bengaluru
+      </div>
+      <div class="koikoi-card-highlights">
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>11th-Century Chola Architecture at Brihadisvara Temple, Thanjavur</span>
+        </div>
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Chettinad Heritage Mansions & Authentic Regional Dining</span>
+        </div>
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Kumarakom Traditional Houseboat Cruise along Kerala Backwaters</span>
+        </div>
+      </div>
+      <div class="koikoi-card-footer">
+        <div class="koikoi-card-amenities">
+          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
+        </div>
+        <div class="koikoi-card-btn-row">
+          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20The%20Golden%20Chariot%20-%20Jewels%20of%20South%20(6%20Days)." target="_blank" rel="noopener">
+            Get a quote
+          </a>
+          <a class="koikoi-btn-details" href="{base_path}/golden-chariot/itinerary">
+            Details
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3: Glimpses of Karnataka -->
+  <div class="koikoi-tour-card" id="card-glimpses">
+    <a href="{base_path}/golden-chariot/itinerary" class="koikoi-card-img-wrap">
+      <img src="/images/luxury-trains/golden-chariot/double-bed.jpg" alt="Glimpses of Karnataka - The Golden Chariot Tour Package | KoiKoi Travel">
+    </a>
+    <div class="koikoi-card-body">
+      <a href="{base_path}/golden-chariot/itinerary" class="koikoi-card-title">
+        4 Days - Glimpses of Karnataka Weekend Rail Tour
+      </a>
+      <div class="koikoi-card-route">
+        Bengaluru · Bandipur · Mysore · Hampi · Bengaluru
+      </div>
+      <div class="koikoi-card-highlights">
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Compact 4-Day Royal Weekend Combining Wildlife & Imperial History</span>
+        </div>
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Dawn Wildlife Safari inside Bandipur Tiger Reserve</span>
+        </div>
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Guided Heritage Walk through Hampi's Stone Chariot & Vitthala Temple</span>
+        </div>
+      </div>
+      <div class="koikoi-card-footer">
+        <div class="koikoi-card-amenities">
+          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
+        </div>
+        <div class="koikoi-card-btn-row">
+          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20The%20Golden%20Chariot%20-%20Glimpses%20of%20Karnataka%20(4%20Days)." target="_blank" rel="noopener">
+            Get a quote
+          </a>
+          <a class="koikoi-btn-details" href="{base_path}/golden-chariot/itinerary">
+            Details
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+"""
+
+    def get_gc_departures_table_component():
+        return f"""
+<div class="table-wrap" style="box-shadow:0 8px 30px rgba(15,23,42,0.06);border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;background:#ffffff">
+  <table style="width:100%;border-collapse:collapse;text-align:center;font-size:14px">
+    <thead>
+      <tr style="background:#0f172a;color:#ffffff;font-family:'Outfit',sans-serif">
+        <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15);font-size:14.5px;text-align:left">Season 2026-27</th>
+        <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
+          <div style="font-size:14px;font-weight:700">Pride of Karnataka</div>
+          <div style="font-size:11px;opacity:0.85;font-weight:500">5 Nights / 6 Days (Saturday)</div>
+        </th>
+        <th style="padding:16px 14px;border-right:1px solid rgba(255,255,255,0.15)">
+          <div style="font-size:14px;font-weight:700">Jewels of South</div>
+          <div style="font-size:11px;opacity:0.85;font-weight:500">5 Nights / 6 Days (Saturday)</div>
+        </th>
+        <th style="padding:16px 14px">
+          <div style="font-size:14px;font-weight:700">Glimpses of Karnataka</div>
+          <div style="font-size:11px;opacity:0.85;font-weight:500">3 Nights / 4 Days (Saturday)</div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid #f1f5f9">
+        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">October 2026</td>
+        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">24 Oct 2026</td>
+        <td style="padding:14px;color:#94a3b8;border-right:1px solid #f1f5f9">—</td>
+        <td style="padding:14px;color:#0f172a;font-weight:600">31 Oct 2026</td>
+      </tr>
+      <tr style="border-bottom:1px solid #f1f5f9;background:#fafbfc">
+        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">November 2026</td>
+        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">14 Nov 2026</td>
+        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">28 Nov 2026</td>
+        <td style="padding:14px;color:#94a3b8">—</td>
+      </tr>
+      <tr style="border-bottom:1px solid #f1f5f9">
+        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">December 2026</td>
+        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">26 Dec 2026</td>
+        <td style="padding:14px;color:#94a3b8;border-right:1px solid #f1f5f9">—</td>
+        <td style="padding:14px;color:#0f172a;font-weight:600">19 Dec 2026</td>
+      </tr>
+      <tr style="border-bottom:1px solid #f1f5f9;background:#fafbfc">
+        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">January 2027</td>
+        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">30 Jan 2027</td>
+        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">02 Jan 2027</td>
+        <td style="padding:14px;color:#94a3b8">—</td>
+      </tr>
+      <tr style="border-bottom:1px solid #f1f5f9">
+        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">February 2027</td>
+        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">27 Feb 2027</td>
+        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">20 Feb 2027</td>
+        <td style="padding:14px;color:#0f172a;font-weight:600">06 Feb 2027</td>
+      </tr>
+      <tr style="background:#fafbfc">
+        <td style="padding:14px 18px;font-weight:700;color:#0f172a;text-align:left;border-right:1px solid #f1f5f9;background:#f8fafc">March 2027</td>
+        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">13 Mar 2027</td>
+        <td style="padding:14px;color:#0f172a;border-right:1px solid #f1f5f9;font-weight:600">27 Mar 2027</td>
+        <td style="padding:14px;color:#94a3b8">—</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div style="margin-top:14px;padding:12px 18px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+  <div style="font-size:12.5px;color:#64748b">
+    • All departures originate from Yesvantpur Railway Station, Bengaluru on scheduled Saturdays. Check-in starts at 08:30 AM.
+  </div>
+  <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20seat%20availability%20for%20The%20Golden%20Chariot." target="_blank" rel="noopener" style="color:#2E8B8B;font-weight:700;font-size:13px;text-decoration:none">
+    Inquire Seat Availability &rarr;
+  </a>
+</div>
+"""
+
+    def get_gc_prices_table_component():
+        return f"""
+<div class="table-wrap" style="box-shadow:0 8px 30px rgba(15,23,42,0.06);border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;background:#ffffff">
+  <table style="width:100%;border-collapse:collapse;font-size:14px">
+    <thead>
+      <tr style="background:#0f172a;color:#ffffff;font-family:'Outfit',sans-serif">
+        <th style="padding:16px;text-align:left;border-right:1px solid rgba(255,255,255,0.15)">Circuit &amp; Route</th>
+        <th style="padding:16px;text-align:center;border-right:1px solid rgba(255,255,255,0.15)">Duration</th>
+        <th style="padding:16px;text-align:center;border-right:1px solid rgba(255,255,255,0.15)">Deluxe Twin/Double (Per Person)</th>
+        <th style="padding:16px;text-align:center">Single Supplement</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid #f1f5f9">
+        <td style="padding:18px;border-right:1px solid #f1f5f9">
+          <div style="font-weight:700;color:#0f172a;font-size:15px">Pride of Karnataka</div>
+          <div style="font-size:12px;color:#64748b;margin-top:4px">Bengaluru › Bandipur › Mysore › Halebidu › Chikmagalur › Hampi › Goa › Bengaluru</div>
+        </td>
+        <td style="padding:18px;text-align:center;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">5N / 6D</td>
+        <td style="padding:18px;text-align:center;border-right:1px solid #f1f5f9">
+          <div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:#d96b27">$5,000 USD</div>
+          <div style="font-size:12px;color:#64748b;font-weight:600">approx. ₹4,87,500 INR</div>
+        </td>
+        <td style="padding:18px;text-align:center">
+          <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0f172a">$3,800 USD</div>
+          <div style="font-size:12px;color:#64748b;font-weight:600">approx. ₹3,70,500 INR</div>
+        </td>
+      </tr>
+      <tr style="border-bottom:1px solid #f1f5f9;background:#fafbfc">
+        <td style="padding:18px;border-right:1px solid #f1f5f9">
+          <div style="font-weight:700;color:#0f172a;font-size:15px">Jewels of South</div>
+          <div style="font-size:12px;color:#64748b;margin-top:4px">Bengaluru › Mysore › Mahabalipuram › Thanjavur › Chettinad › Cochin › Kumarakom › Bengaluru</div>
+        </td>
+        <td style="padding:18px;text-align:center;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">5N / 6D</td>
+        <td style="padding:18px;text-align:center;border-right:1px solid #f1f5f9">
+          <div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:#d96b27">$5,000 USD</div>
+          <div style="font-size:12px;color:#64748b;font-weight:600">approx. ₹4,87,500 INR</div>
+        </td>
+        <td style="padding:18px;text-align:center">
+          <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0f172a">$3,800 USD</div>
+          <div style="font-size:12px;color:#64748b;font-weight:600">approx. ₹3,70,500 INR</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:18px;border-right:1px solid #f1f5f9">
+          <div style="font-weight:700;color:#0f172a;font-size:15px">Glimpses of Karnataka</div>
+          <div style="font-size:12px;color:#64748b;margin-top:4px">Bengaluru › Bandipur › Mysore › Hampi › Bengaluru</div>
+        </td>
+        <td style="padding:18px;text-align:center;font-weight:600;color:#0f172a;border-right:1px solid #f1f5f9">3N / 4D</td>
+        <td style="padding:18px;text-align:center;border-right:1px solid #f1f5f9">
+          <div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:#d96b27">$3,400 USD</div>
+          <div style="font-size:12px;color:#64748b;font-weight:600">approx. ₹3,31,500 INR</div>
+        </td>
+        <td style="padding:18px;text-align:center">
+          <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0f172a">$2,600 USD</div>
+          <div style="font-size:12px;color:#64748b;font-weight:600">approx. ₹2,53,500 INR</div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div style="margin-top:14px;padding:12px 18px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+  <div style="font-size:12.5px;color:#64748b">
+    • 5% Govt. GST extra · Includes all onboard meals, deluxe cabin, house beverages, guided excursions, monument entries &amp; Bandipur safari · 20% advance deposit to reserve
+  </div>
+  <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20detailed%20fare%20and%20booking%20policy%20for%20The%20Golden%20Chariot." target="_blank" rel="noopener" style="color:#2E8B8B;font-weight:700;font-size:13px;text-decoration:none">
+    Request Official Quote &rarr;
+  </a>
+</div>
+"""
+
+    def get_gc_video_spotlight_component():
+        return f"""
+<div style="border-radius:24px;overflow:hidden;background:#262463;border:1px solid rgba(255,255,255,0.08);box-shadow:0 16px 48px rgba(15,23,42,0.18);margin-top:20px">
+  <div style="display:grid;grid-template-columns:1fr 1.25fr;min-height:460px" class="video-split-grid">
+    <div style="padding:48px 44px;display:flex;flex-direction:column;justify-content:center;background:#262463;color:#ffffff">
+      <div style="margin-bottom:20px">
+        <img src="/images/luxury-trains/golden-chariot/logo.png" alt="The Golden Chariot Official Logo" style="max-height:85px;width:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.3))">
+      </div>
+      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,2.8vw,36px);font-weight:800;color:#ffffff;line-height:1.2;margin:0 0 16px">
+        The Golden Chariot
+      </h2>
+      <p style="color:#cbd5e1;font-size:14.5px;line-height:1.75;margin:0 0 14px">
+        Named after the legendary Stone Chariot in Hampi, this purple-and-gold train is South India's only luxury train. Operated jointly by Karnataka Tourism (KSTDC) and IRCTC, it offers an authentic, comfortable way to experience the South's royal dynasties, temples, and wilderness.
+      </p>
+      <p style="color:#cbd5e1;font-size:14.5px;line-height:1.75;margin:0 0 24px">
+        Connecting Bengaluru, Bandipur Tiger Reserve, Mysore palaces, Hampi, Badami caves, Goa beaches, and the backwaters of Kerala.
+      </p>
+      <div>
+        <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20am%20interested%20in%20The%20Golden%20Chariot.%20Please%20share%20availability%20and%20journey%20details." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 26px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(248,144,77,0.4)">
+          Inquire on WhatsApp &rarr;
+        </a>
+      </div>
+    </div>
+    <div style="position:relative;background:#000;min-height:360px" id="gcVideoBox">
+      <div class="video-facade" onclick="loadTrainVideo('gcVideoBox', 'd1QWZK3sgKU')" style="position:absolute;inset:0;background:url('https://img.youtube.com/vi/d1QWZK3sgKU/maxresdefault.jpg') center/cover no-repeat;cursor:pointer;display:flex;align-items:center;justify-content:center">
+        <div style="width:72px;height:72px;border-radius:50%;background:#F8904D;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 10px rgba(248,144,77,0.3);transition:transform .3s">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" style="margin-left:4px"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+"""
+
+    # Golden Chariot Overview Main Page
+    gc_overview = f"""
+<!-- Top Full-View Clean Hero Banner (NO TEXT ON BANNER) -->
+<div style="position:relative;height:480px;background:url('/images/luxury-trains/golden-chariot/hero.jpg') center/cover no-repeat;overflow:hidden">
+</div>
+
+<!-- Clean Editorial Title & Journeys Intro Section (SINGLE CLEAN HEADING & TEXT) -->
+<div style="background:#ffffff;border-bottom:1px solid #e2e8f0;padding:40px 0 36px">
   <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">South India Luxury Rail</div>
-      <h2>Many Worlds. One Journey.</h2>
-      <p>Named after the famous Stone Chariot in Hampi, this purple and gold train takes you through 1,500 years of southern dynasty heritage.</p>
+    <div class="koikoi-breadcrumb" style="margin-bottom:14px">
+      <a href="{base_path}" style="color:#64748b;text-decoration:none">Luxury Trains</a>
+      <span style="color:#94a3b8;margin:0 6px">›</span>
+      <span style="color:#0f172a;font-weight:600">The Golden Chariot</span>
     </div>
-    <div class="grid-4">
-      <div class="card" style="padding:24px">
-        <h3>3 Curated Circuits</h3>
-        <p>Pride of Karnataka (5N/6D), Jewels of South (5N/6D), and Glimpses of Karnataka (3N/4D) from Bengaluru.</p>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+      <span style="background:rgba(248,144,77,0.12);color:#d96b27;border:1px solid rgba(248,144,77,0.25);font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:5px 14px;border-radius:999px">
+        SOUTH INDIA'S LUXURY TRAIN
+      </span>
+      <span style="color:#64748b;font-size:13.5px;font-weight:600">3 Signature Circuits · 18 Carriages · Starts Bengaluru</span>
+    </div>
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(30px,4.2vw,48px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 14px;max-width:1100px">
+      The Golden Chariot Train
+    </h1>
+    <p style="color:#475569;font-size:clamp(15px,1.25vw,17.5px);max-width:1050px;line-height:1.75;margin:0">
+      Named after the iconic Stone Chariot in Hampi, The Golden Chariot is South India's only luxury train, operated jointly by Karnataka Tourism (KSTDC) and IRCTC. Starting from Bengaluru, the purple-and-gold train connects the royal heritage of Mysore, dawn wildlife safaris in Bandipur, the 14th-century Vijayanagara ruins of Hampi, and the Arabian Sea beaches of Goa across 3 hand-crafted circuits.
+    </p>
+  </div>
+</div>
+
+<!-- Main Body Section (FULL WIDTH - NO SIDEBAR - NO INCLUSIONS/EXCLUSIONS ON INDEX) -->
+<section style="padding:48px 0 80px;background:#fcfbf9">
+  <div class="wrap">
+    
+    <!-- 1. The 3 Signature Journeys -->
+    <div id="journeys" style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:28px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">Southern Circuits</div>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
+          3 Signature Journeys
+        </h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          Select a southern circuit below to explore complete day-by-day itineraries and departure dates.
+        </p>
       </div>
-      <div class="card" style="padding:24px">
-        <h3>Ruchi & Nalapaka</h3>
-        <p>Two fine-dining carriages serving vegetarian South Indian delicacies and gourmet continental grills.</p>
+      {get_gc_cards_component()}
+    </div>
+
+    <!-- 2. Departure Dates (Official 2026-27 Schedules) -->
+    <div id="departures" style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:20px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">Schedules</div>
+        <h2 style="font-size:clamp(26px,3vw,36px);font-weight:800;color:#0f172a;text-align:left">Departure Dates (2026 – 2027)</h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          Following are the scheduled Saturday departures of The Golden Chariot from Bengaluru (Yesvantpur Railway Station).
+        </p>
       </div>
-      <div class="card" style="padding:24px">
-        <h3>Madira Lounge Bar</h3>
-        <p>Regal bar carriage inspired by the Mysore Palace Hall of Mirrors, serving curated whiskeys and wines.</p>
+      {get_gc_departures_table_component()}
+    </div>
+
+    <!-- 3. Ticket Prices & Tariffs -->
+    <div id="price" style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:20px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">Official Tariffs</div>
+        <h2 style="font-size:clamp(26px,3vw,36px);font-weight:800;color:#0f172a;text-align:left">Ticket Prices (Season 2026 – 2027)</h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          Official published tariffs per person in USD and INR for Deluxe Cabins. 5% Govt. GST extra.
+        </p>
       </div>
-      <div class="card" style="padding:24px">
-        <h3>Arogya Ayurvedic Spa</h3>
-        <p>Traditional Kerala Ayurvedic massages and fitness gym on board to rejuvenate between royal destinations.</p>
+      {get_gc_prices_table_component()}
+    </div>
+
+    <!-- 4. Video Spotlight Split Box -->
+    <div id="experience" style="margin-bottom:64px">
+      {get_gc_video_spotlight_component()}
+    </div>
+
+    <!-- 5. Onboard Carriages & Facilities -->
+    <div id="facilities" style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:28px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">Life On Board</div>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
+          Royal Carriages &amp; Amenities
+        </h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          18 guest carriages named after legendary Karnataka ruling dynasties, with five-star hospitality throughout.
+        </p>
+      </div>
+
+      <div class="grid-4">
+        <div class="card" style="padding:28px 24px;border-radius:16px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div style="font-size:28px;margin-bottom:12px">🛏️</div>
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:19px;color:#0f172a;margin-bottom:8px">11 Dynasty Guest Coaches</h3>
+          <p style="font-size:14px;color:#64748b;line-height:1.6;margin:0">44 Deluxe Cabins named after ancient dynasties (Kadamba, Hoysala, Chalukya...) with private en-suite bathroom, Wi-Fi, and 24/7 attendant.</p>
+        </div>
+        <div class="card" style="padding:28px 24px;border-radius:16px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div style="font-size:28px;margin-bottom:12px">🍽️</div>
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:19px;color:#0f172a;margin-bottom:8px">Ruchi &amp; Nalapaka Dining</h3>
+          <p style="font-size:14px;color:#64748b;line-height:1.6;margin:0">Two ornate fine-dining restaurant cars serving authentic South Indian regional delicacies, fresh coastal fare, and multi-course international grills.</p>
+        </div>
+        <div class="card" style="padding:28px 24px;border-radius:16px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div style="font-size:28px;margin-bottom:12px">🍸</div>
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:19px;color:#0f172a;margin-bottom:8px">Madira Lounge Bar</h3>
+          <p style="font-size:14px;color:#64748b;line-height:1.6;margin:0">Regal lounge bar inspired by Mysore Palace's Hall of Mirrors, serving curated whiskeys, fine wines, and cocktails in plush armchairs.</p>
+        </div>
+        <div class="card" style="padding:28px 24px;border-radius:16px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div style="font-size:28px;margin-bottom:12px">🌿</div>
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:19px;color:#0f172a;margin-bottom:8px">Arogya Spa &amp; Fitness</h3>
+          <p style="font-size:14px;color:#64748b;line-height:1.6;margin:0">Traditional Kerala Ayurvedic massage therapy suites and a modern gym on wheels to refresh and relax between royal heritage destinations.</p>
+        </div>
       </div>
     </div>
+
+    <!-- 6. Simple Booking Steps -->
+    <div style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:28px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">How It Works</div>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
+          3 Simple Steps to Book
+        </h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          No complicated forms or pressure. Just direct travel advice from our dedicated team.
+        </p>
+      </div>
+
+      <div class="step-grid">
+        <div class="step" style="border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div class="n" style="color:#d96b27">01</div>
+          <h3 style="color:#0f172a">Share Your Preferred Dates</h3>
+          <p style="color:#64748b">Tell us your dates, group size, and whether you prefer the 6-day grand circuit or the 4-day royal weekend.</p>
+        </div>
+        <div class="step" style="border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div class="n" style="color:#d96b27">02</div>
+          <h3 style="color:#0f172a">Receive Official Quote &amp; Cabin Availability</h3>
+          <p style="color:#64748b">We confirm live cabin availability directly with IRCTC/KSTDC and send you a clear, itemized quote on WhatsApp within hours.</p>
+        </div>
+        <div class="step" style="border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div class="n" style="color:#d96b27">03</div>
+          <h3 style="color:#0f172a">Reserve with 20% Deposit</h3>
+          <p style="color:#64748b">Lock your cabin with a simple 20% advance payment. The balance is due 30 days before your departure.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. FAQ -->
+    <div id="faq">
+      <div class="sec-head" style="margin-bottom:28px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">FAQs</div>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
+          Frequently Asked Questions
+        </h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          Everything you need to know about traveling on South India's luxury train.
+        </p>
+      </div>
+
+      <div class="faq" style="background:#fff;border-radius:16px;border:1px solid #e2e8f0;padding:8px 24px;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+        <details open style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">Where does The Golden Chariot depart from?</summary>
+          <p style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">All journeys start and end in Bengaluru at Yesvantpur Railway Station on scheduled Saturdays. Check-in begins around 08:30 AM with a traditional South Indian garland and drum welcome.</p>
+        </details>
+        <details style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">What is included in the ticket fare?</summary>
+          <p style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">Your ticket is fully all-inclusive: accommodation in an AC Deluxe Cabin with private bathroom, all meals in the dining cars, house wines/beers/spirits, guided off-train excursions in AC coaches, Bandipur wildlife safari permits, monument entrance tickets, and 24/7 butler service.</p>
+        </details>
+        <details style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">Can vegetarian, vegan, or Jain meals be arranged?</summary>
+          <p style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">Yes, absolutely. The two onboard restaurants (Ruchi and Nalapaka) specialize in both vegetarian and non-vegetarian fare. Pure vegetarian, vegan, Jain, gluten-free, or specific dietary needs can be arranged upon advance notice.</p>
+        </details>
+        <details style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">How do I book and what is the payment schedule?</summary>
+          <p style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">You can reserve your cabin with an initial 20% advance deposit. The remaining 80% balance is payable 30 days prior to your departure date. We facilitate smooth booking and IRCTC confirmation without hassle.</p>
+        </details>
+        <details style="padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">Can KoiKoi Travel add pre/post hotel stays and airport transfers?</summary>
+          <p style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">Yes. We can seamlessly organize five-star hotel stays in Bengaluru before boarding or in Goa/Kochi after your train journey, along with airport transfers and private chauffeured cars.</p>
+        </details>
+      </div>
+    </div>
+
   </div>
 </section>
 """
     write_page(f"{base_dir}/golden-chariot/index.html", 
-               "The Golden Chariot Luxury Train South India | Routes & Fares | KoiKoi Travel",
-               "Discover The Golden Chariot luxury train: Hampi ruins, Bandipur safari, Mysore palace and Goa beaches.",
+               "The Golden Chariot Luxury Train South India | Routes, Fares & Departures | KoiKoi Travel",
+               "Discover The Golden Chariot luxury train: Hampi ruins, Bandipur safari, Mysore palace, Kerala backwaters and Goa beaches.",
                gc_overview, active_train="golden-chariot", active_tab="overview", base_path=base_path)
 
     # Golden Chariot Itinerary
     gc_itinerary = f"""
-<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{gc_data["banner"]}');">
+<div style="background:#ffffff;border-bottom:1px solid #e2e8f0;padding:40px 0 36px">
   <div class="wrap">
-    <span class="tag">GOLDEN CHARIOT · ITINERARIES</span>
-    <h1>3 South India Luxury Circuits</h1>
-    <p>Departing from Bengaluru between October and March.</p>
+    <div class="koikoi-breadcrumb" style="margin-bottom:14px">
+      <a href="{base_path}" style="color:#64748b;text-decoration:none">Luxury Trains</a>
+      <span style="color:#94a3b8;margin:0 6px">›</span>
+      <a href="{base_path}/golden-chariot" style="color:#64748b;text-decoration:none">The Golden Chariot</a>
+      <span style="color:#94a3b8;margin:0 6px">›</span>
+      <span style="color:#0f172a;font-weight:600">All Itineraries</span>
+    </div>
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+      The Golden Chariot 3 Signature Journeys
+    </h1>
+    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.65;margin:0">
+      Choose from 3 signature royal circuits departing alternate Saturdays from Bengaluru across Karnataka, Tamil Nadu, Kerala, and Goa.
+    </p>
   </div>
-</section>
-<section>
+</div>
+<section style="padding:48px 0 80px;background:#fcfbf9">
   <div class="wrap">
-    <div class="day-card">
-      <span class="day-badge">Circuit 1 · 6 Days / 5 Nights</span>
-      <h3>Pride of Karnataka</h3>
-      <p><strong>Route:</strong> Bengaluru → Bandipur Tiger Reserve → Mysore Palace → Halebidu Temples → Hampi Ruins → Badami Caves → Goa Beaches → Bengaluru.<br>
-      Highlights include dawn jeep safari in Bandipur, illuminated Mysore Palace, Stone Chariot in Hampi and Old Goa churches.</p>
-    </div>
-    <div class="day-card">
-      <span class="day-badge">Circuit 2 · 6 Days / 5 Nights</span>
-      <h3>Jewels of South</h3>
-      <p><strong>Route:</strong> Bengaluru → Mysore → Hampi → Mahabalipuram → Thanjavur → Chettinad → Cochin → Kumarakom.<br>
-      Highlights include Brihadeeswara Temple, Chettinad mansions culinary demo, and Kerala backwaters houseboat cruise.</p>
-    </div>
-    <div class="day-card">
-      <span class="day-badge">Circuit 3 · 4 Days / 3 Nights</span>
-      <h3>Glimpses of Karnataka</h3>
-      <p><strong>Route:</strong> Bengaluru → Bandipur → Mysore → Hampi → Bengaluru.<br>
-      A quick 4-day royal weekend getaway combining wildlife and UNESCO heritage.</p>
-    </div>
+    {get_gc_cards_component()}
   </div>
 </section>
 """
     write_page(f"{base_dir}/golden-chariot/itinerary/index.html", 
-               "Golden Chariot Itineraries: Pride of Karnataka & Jewels of South | KoiKoi Travel",
-               "Detailed itineraries for The Golden Chariot: Bandipur, Mysore, Hampi, Badami, Goa, Kerala backwaters.",
+               "Golden Chariot Itineraries: Pride of Karnataka, Jewels of South & Glimpses | KoiKoi Travel",
+               "Detailed itineraries for The Golden Chariot luxury train: Bandipur safari, Mysore palace, Hampi, Badami, Goa and Kerala backwaters.",
                gc_itinerary, active_train="golden-chariot", active_tab="itinerary", base_path=base_path)
 
     # Golden Chariot Departures
     gc_departures = f"""
-<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{gc_data["banner"]}');">
+<div style="background:#ffffff;border-bottom:1px solid #e2e8f0;padding:40px 0 36px">
   <div class="wrap">
-    <span class="tag">GOLDEN CHARIOT · DEPARTURES</span>
-    <h1>2024–2025 & 2025–2026 Departure Schedule</h1>
-    <p>Seasonal departures from Bengaluru Yashwantpur Station.</p>
-  </div>
-</section>
-<section>
-  <div class="wrap">
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Circuit Name</th><th>Duration</th><th>2024–2025 Departures</th><th>2025–2026 Departures</th></tr></thead>
-        <tbody>
-          <tr><td>Pride of Karnataka</td><td>5N / 6D</td><td>19 Oct, 16 Nov, 14 Dec 2024; 04 Jan, 01 Feb, 01 Mar 2025</td><td>18 Oct, 15 Nov, 13 Dec 2025; 03 Jan, 31 Jan, 28 Feb 2026</td></tr>
-          <tr><td>Jewels of South</td><td>5N / 6D</td><td>02 Nov, 30 Nov, 28 Dec 2024; 18 Jan, 15 Feb, 15 Mar 2025</td><td>01 Nov, 29 Nov, 27 Dec 2025; 17 Jan, 14 Feb, 14 Mar 2026</td></tr>
-          <tr><td>Glimpses of Karnataka</td><td>3N / 4D</td><td>09 Nov, 07 Dec, 21 Dec 2024; 25 Jan, 22 Feb 2025</td><td>08 Nov, 06 Dec, 20 Dec 2025; 24 Jan, 21 Feb 2026</td></tr>
-        </tbody>
-      </table>
+    <div class="koikoi-breadcrumb" style="margin-bottom:14px">
+      <a href="{base_path}" style="color:#64748b;text-decoration:none">Luxury Trains</a>
+      <span style="color:#94a3b8;margin:0 6px">›</span>
+      <a href="{base_path}/golden-chariot" style="color:#64748b;text-decoration:none">The Golden Chariot</a>
+      <span style="color:#94a3b8;margin:0 6px">›</span>
+      <span style="color:#0f172a;font-weight:600">Departure Dates</span>
     </div>
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+      The Golden Chariot Departure Dates (2026 – 2027)
+    </h1>
+    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.65;margin:0">
+      Official scheduled Saturday departures from Yesvantpur Railway Station, Bengaluru for the upcoming season.
+    </p>
+  </div>
+</div>
+<section style="padding:48px 0 80px;background:#fcfbf9">
+  <div class="wrap">
+    {get_gc_departures_table_component()}
   </div>
 </section>
 """
     write_page(f"{base_dir}/golden-chariot/departures/index.html", 
-               "Golden Chariot Departure Dates 2024-2025 & 2026 | KoiKoi Travel",
-               "Official departure dates for The Golden Chariot luxury train from Bengaluru.",
+               "Golden Chariot Departure Dates 2026-2027 Official Calendar | KoiKoi Travel",
+               "Official scheduled departure dates for The Golden Chariot luxury train from Bengaluru.",
                gc_departures, active_train="golden-chariot", active_tab="departures", base_path=base_path)
 
     # Golden Chariot Price
     gc_price = f"""
-<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{gc_data["banner"]}');">
+<div style="background:#ffffff;border-bottom:1px solid #e2e8f0;padding:40px 0 36px">
   <div class="wrap">
-    <span class="tag">GOLDEN CHARIOT · TARIFF</span>
-    <h1>Official Ticket Prices</h1>
-    <p>All-inclusive fares for South India's premier luxury rail odyssey.</p>
-  </div>
-</section>
-<section>
-  <div class="wrap">
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Journey</th><th>Deluxe Twin/Double (Single)</th><th>Deluxe Twin/Double (Per Person Sharing)</th></tr></thead>
-        <tbody>
-          <tr><td>Pride of Karnataka (5N/6D)</td><td>$6,500 USD</td><td>$4,900 USD</td></tr>
-          <tr><td>Jewels of South (5N/6D)</td><td>$6,500 USD</td><td>$4,900 USD</td></tr>
-          <tr><td>Glimpses of Karnataka (3N/4D)</td><td>$4,200 USD</td><td>$3,150 USD</td></tr>
-        </tbody>
-      </table>
+    <div class="koikoi-breadcrumb" style="margin-bottom:14px">
+      <a href="{base_path}" style="color:#64748b;text-decoration:none">Luxury Trains</a>
+      <span style="color:#94a3b8;margin:0 6px">›</span>
+      <a href="{base_path}/golden-chariot" style="color:#64748b;text-decoration:none">The Golden Chariot</a>
+      <span style="color:#94a3b8;margin:0 6px">›</span>
+      <span style="color:#0f172a;font-weight:600">Ticket Prices</span>
     </div>
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(28px,3.8vw,44px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+      The Golden Chariot Ticket Prices (2026 – 2027)
+    </h1>
+    <p style="color:#475569;font-size:16px;max-width:980px;line-height:1.65;margin:0">
+      Official published tariffs per person in USD and INR for Deluxe Cabins. 5% Govt. GST extra.
+    </p>
+  </div>
+</div>
+<section style="padding:48px 0 80px;background:#fcfbf9">
+  <div class="wrap">
+    {get_gc_prices_table_component()}
   </div>
 </section>
 """
     write_page(f"{base_dir}/golden-chariot/price/index.html", 
-               "The Golden Chariot Ticket Price & Tariff | KoiKoi Travel",
-               "Official pricing for The Golden Chariot luxury train journeys in USD and INR.",
+               "The Golden Chariot Ticket Price & Tariff 2026-2027 | KoiKoi Travel",
+               "Official pricing for The Golden Chariot luxury train journeys in USD and INR with inclusions.",
                gc_price, active_train="golden-chariot", active_tab="price", base_path=base_path)
 
     # Golden Chariot Cabins
