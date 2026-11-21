@@ -455,7 +455,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
    Zebra Striped Month Table (Light Golden & White alternate)
    ======================================================== */
 .kb-dates-container {
-  border: 1px solid #ece5da;
+  border: none;
   border-radius: 12px;
   overflow: hidden;
   background: #ffffff;
