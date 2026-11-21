@@ -634,6 +634,18 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   border-color: #0d9488;
   color: #0d9488;
 }
+@media (max-width: 640px) {
+  .kb-step2-summary-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px 16px;
+    gap: 14px;
+  }
+  .kb-btn-edit {
+    width: 100%;
+    text-align: center;
+  }
+}
 
 /* ========================================================
    Counters (Zero text overlap, flex-col with bold title)
@@ -729,21 +741,26 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   margin-bottom: 6px;
 }
 .kb-review-section {
-  border: 1px solid #f2ede4;
-  border-radius: 12px;
-  background: #ffffff;
-  padding: 18px 20px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0 0 22px 0;
+  border-bottom: 1px solid #ece6dc;
+}
+.kb-review-section:last-of-type {
+  border-bottom: none;
+  padding-bottom: 4px;
 }
 .kb-review-sec-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #f5efe6;
-  padding-bottom: 10px;
+  border-bottom: none;
+  padding-bottom: 0;
   margin-bottom: 14px;
 }
 .kb-review-sec-title {
-  font-size: 16.5px;
+  font-size: 17px;
   font-weight: 700;
   color: #1e293b;
   display: flex;
@@ -753,22 +770,21 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 .kb-btn-edit-sm {
   font: inherit;
   font-size: 12.5px;
-  font-weight: 700;
-  color: #0f766e;
-  background: #faf8f5;
-  border: 1px solid #eee8de;
+  font-weight: 600;
+  color: #0d9488;
+  background: #f0fdfa;
+  border: 1.5px solid #0d9488;
   border-radius: 6px;
-  padding: 5px 14px;
+  padding: 4px 12px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   transition: all 0.15s ease;
 }
 .kb-btn-edit-sm:hover {
-  border-color: #0d9488;
-  background: #f0fdfa;
-}
-.kb-btn-edit-sm:hover {
-  background: #fef3c7;
-  border-color: var(--gold);
+  background: #0d9488;
+  color: #ffffff;
 }
 .kb-review-grid-2 {
   display: grid;
@@ -1567,7 +1583,7 @@ function render() {
     h += '<div class="kb-review-section">' +
       '<div class="kb-review-sec-header">' +
       '<div class="kb-review-sec-title"><span>🚂</span><span>Luxury Train &amp; Route</span></div>' +
-      '<button type="button" class="kb-btn-edit-sm" onclick="goToStep(1)">Edit Train / Date ✎</button>' +
+      '<button type="button" class="kb-btn-edit-sm" onclick="goToStep(1)"><span>✎</span> Edit</button>' +
       '</div>' +
       '<div class="kb-review-grid-2">' +
       '<div class="kb-review-field"><span class="lbl">Train Name</span><span class="val highlight">' + esc(S.train) + '</span></div>' +
@@ -1582,7 +1598,7 @@ function render() {
     h += '<div class="kb-review-section">' +
       '<div class="kb-review-sec-header">' +
       '<div class="kb-review-sec-title"><span>👥</span><span>Travelers &amp; Accommodation</span></div>' +
-      '<button type="button" class="kb-btn-edit-sm" onclick="goToStep(2)">Edit Guests ✎</button>' +
+      '<button type="button" class="kb-btn-edit-sm" onclick="goToStep(2)"><span>✎</span> Edit</button>' +
       '</div>' +
       '<div class="kb-review-grid-3">' +
       '<div class="kb-review-field"><span class="lbl">Adults (12+ yrs)</span><span class="val">' + S.adults + ' Adults</span></div>' +
@@ -1595,7 +1611,7 @@ function render() {
     h += '<div class="kb-review-section">' +
       '<div class="kb-review-sec-header">' +
       '<div class="kb-review-sec-title"><span>✉️</span><span>Lead Traveler Contact</span></div>' +
-      '<button type="button" class="kb-btn-edit-sm" onclick="goToStep(2)">Edit Contact ✎</button>' +
+      '<button type="button" class="kb-btn-edit-sm" onclick="goToStep(2)"><span>✎</span> Edit</button>' +
       '</div>' +
       '<div class="kb-review-grid-3">' +
       '<div class="kb-review-field"><span class="lbl">Full Name</span><span class="val">' + esc(S.name) + '</span></div>' +
