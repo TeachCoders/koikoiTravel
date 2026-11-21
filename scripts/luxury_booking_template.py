@@ -404,9 +404,9 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 /* Date Header with Year Select */
 .kb-date-header-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   flex-wrap: wrap;
   gap: 10px;
 }
@@ -1389,14 +1389,11 @@ function render() {
       E("train") + E("journey") +
       '</div>';
 
-    // Dates Section: Header + Filter Year
-    h += '<div style="margin-top:10px">' +
+    // Dates Section: Filter Year Dropdown Centered (Heading removed as requested)
+    h += '<div style="margin-top:12px">' +
       '<div class="kb-date-header-row">' +
-      '<div>' +
-      '<h2 class="kb-sec-title">Select Scheduled Departure Date <span class="req" style="color:var(--gold-dark);font-size:16px">*</span></h2>' +
-      '</div>' +
       '<div class="kb-year-wrap">' +
-      '<span class="kb-year-label">Filter Year:</span>' +
+      '<span class="kb-year-label">Select Year:</span>' +
       '<select class="kb-year-select" onchange="onYearSelect(this.value)">' +
       years.map(function(y) {
         return '<option value="' + y + '"' + (S.selectedYear === y ? ' selected' : '') + '>Year ' + y + '</option>';
