@@ -162,10 +162,9 @@ header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid 
 .links a:hover .link-arr{opacity:1;transform:translateX(2px)}
 .card .btn{text-align:center;margin-top:auto;background:#F8904D;color:#fff;border-radius:999px;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;box-shadow:0 4px 14px rgba(248,144,77,.35)}
 .card .btn:hover{background:#e07b3b;transform:scale(1.02)}
-.card-journeys-list{margin-bottom:18px;border:1px solid #cbd5e1;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.03)}
-.card-journeys-list .journey-row-odd{background:#ffffff !important}
-.card-journeys-list .journey-row-even{background:#f1f5f9 !important}
-.card-journeys-list .journey-row:hover{background:#e2e8f0 !important}
+.card-journeys-list{margin-bottom:18px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#ffffff}
+.card-journeys-list .journey-row{background:#ffffff !important;transition:background .2s}
+.card-journeys-list .journey-row:hover{background:#f8fafc !important}
 
 
 /* Train Video Spotlight Box (Split Royal Layout) */
@@ -1155,16 +1154,42 @@ footer a:hover{color:#F8904D}
 
       <!-- Palace on Wheels -->
       <article class="card">
-        <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.26)),url('/images/luxury-trains/palace-on-wheels/hero.jpg')">
-          <span>Rajasthan &amp; Agra</span>
+        <div class="photo" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.35) 0%, rgba(0,0,0,.08) 40%, rgba(0,0,0,.85) 100%),url('/images/luxury-trains/palace-on-wheels/hero.jpg');position:relative;padding:0;overflow:hidden">
+          <!-- Top Left: Journey Badge & Region -->
+          <div style="position:absolute;top:18px;left:18px;z-index:3;display:flex;flex-direction:column;gap:7px">
+            <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(15,23,42,0.88);backdrop-filter:blur(10px);color:#ffffff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:7px 16px;border-radius:999px;border:1px solid rgba(248,144,77,0.4);box-shadow:0 4px 16px rgba(0,0,0,0.35)">
+              <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F8904D"></span>
+              <span>1 Iconic Circuit · 7N / 8D</span>
+            </div>
+            <div style="display:inline-flex;align-items:center;background:rgba(15,23,42,0.75);backdrop-filter:blur(8px);color:#cbd5e1;font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:0.08em;text-transform:uppercase;width:fit-content">
+              Rajasthan &amp; Agra
+            </div>
+          </div>
+
+          <!-- Top Right: Train Logo -->
           <div class="train-badge">
             <img src="/images/luxury-trains/palace-on-wheels/logo.png" alt="Palace on Wheels Logo">
           </div>
+
+          <!-- Bottom: Solid Departure Highlight Strip -->
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 18px;background:linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.80) 75%, transparent 100%);z-index:3;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <div style="display:inline-flex;align-items:center;gap:9px;color:#ffffff;font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700">
+              <div style="width:30px;height:30px;border-radius:8px;background:#F8904D;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(248,144,77,0.4)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              </div>
+              <span>Departs Every Wednesday <span style="font-weight:500;color:#cbd5e1;font-size:12.5px">(from Delhi)</span></span>
+            </div>
+            <span style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#F8904D;text-transform:uppercase;letter-spacing:0.5px;background:rgba(248,144,77,0.18);padding:4px 10px;border-radius:6px;border:1px solid rgba(248,144,77,0.35)">Sep – Apr Season</span>
+          </div>
         </div>
         <div class="body">
-          <div style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#d96b27;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Starts from Delhi</div>
-          <h3 style="margin-bottom:2px">Palace on Wheels</h3>
-          <div class="sub" style="margin-bottom:12px">India's first luxury train, since 1982</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#d96b27;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Official Heritage Rail · Since 1982</div>
+          <h3 style="margin-bottom:6px">Palace on Wheels</h3>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+            <span style="background:#f1f5f9;color:#334155;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;font-family:'Outfit',sans-serif">14 Royal Saloons</span>
+            <span style="background:#f1f5f9;color:#334155;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;font-family:'Outfit',sans-serif">Deluxe &amp; Super Deluxe</span>
+            <span style="background:#f1f5f9;color:#334155;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;font-family:'Outfit',sans-serif">Maharaja &amp; Maharani Dining</span>
+          </div>
           <p>A week through the land of kings: forts, palaces, lakes and desert, ending at the Taj Mahal.</p>
 
           <!-- Focused Lowest Starting Price Highlight -->
@@ -1222,16 +1247,42 @@ footer a:hover{color:#F8904D}
 
       <!-- Maharajas Express -->
       <article class="card">
-        <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.26)),url('/images/luxury-trains/maharajas-express/hero.jpg')">
-          <span>North, West &amp; Central India</span>
+        <div class="photo" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.35) 0%, rgba(0,0,0,.08) 40%, rgba(0,0,0,.85) 100%),url('/images/luxury-trains/maharajas-express/hero.jpg');position:relative;padding:0;overflow:hidden">
+          <!-- Top Left: Journey Badge & Region -->
+          <div style="position:absolute;top:18px;left:18px;z-index:3;display:flex;flex-direction:column;gap:7px">
+            <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(15,23,42,0.88);backdrop-filter:blur(10px);color:#ffffff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:7px 16px;border-radius:999px;border:1px solid rgba(248,144,77,0.4);box-shadow:0 4px 16px rgba(0,0,0,0.35)">
+              <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F8904D"></span>
+              <span>4 Curated Journeys · 3N to 6N</span>
+            </div>
+            <div style="display:inline-flex;align-items:center;background:rgba(15,23,42,0.75);backdrop-filter:blur(8px);color:#cbd5e1;font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:0.08em;text-transform:uppercase;width:fit-content">
+              North, West &amp; Central India
+            </div>
+          </div>
+
+          <!-- Top Right: Train Logo -->
           <div class="train-badge">
             <img src="/images/luxury-trains/maharajas-express/logo.png" alt="Maharajas' Express Logo">
           </div>
+
+          <!-- Bottom: Solid Departure Highlight Strip -->
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 18px;background:linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.80) 75%, transparent 100%);z-index:3;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <div style="display:inline-flex;align-items:center;gap:9px;color:#ffffff;font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700">
+              <div style="width:30px;height:30px;border-radius:8px;background:#F8904D;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(248,144,77,0.4)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              </div>
+              <span>Departs Scheduled Sundays <span style="font-weight:500;color:#cbd5e1;font-size:12.5px">(Delhi &amp; Mumbai)</span></span>
+            </div>
+            <span style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#F8904D;text-transform:uppercase;letter-spacing:0.5px;background:rgba(248,144,77,0.18);padding:4px 10px;border-radius:6px;border:1px solid rgba(248,144,77,0.35)">Oct – Apr Season</span>
+          </div>
         </div>
         <div class="body">
-          <div style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#d96b27;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Starts from Delhi &amp; Mumbai</div>
-          <h3 style="margin-bottom:2px">Maharajas' Express</h3>
-          <div class="sub" style="margin-bottom:12px">4 journeys · 23 coaches · 4 cabin types</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#d96b27;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">World Travel Awards Winner · Flagship Luxury Rail</div>
+          <h3 style="margin-bottom:6px">Maharajas' Express</h3>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+            <span style="background:#f1f5f9;color:#334155;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;font-family:'Outfit',sans-serif">4 Royal Circuits</span>
+            <span style="background:#f1f5f9;color:#334155;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;font-family:'Outfit',sans-serif">23 Royal Coaches</span>
+            <span style="background:#f1f5f9;color:#334155;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;font-family:'Outfit',sans-serif">Presidential Suite Available</span>
+          </div>
           <p>The most varied train: pick a short 4-day trip or a full week through Rajasthan, Orchha, Khajuraho and Varanasi.</p>
 
           <!-- Focused Lowest Starting Price Highlight -->
@@ -1247,14 +1298,14 @@ footer a:hover{color:#F8904D}
           </div>
 
           <!-- Journeys List (Chardham Table Style) -->
-          <div class="card-journeys-list" style="margin-bottom:18px;border:1px solid #cbd5e1;border-radius:12px;overflow:hidden;background:#fff">
-            <div style="background:#eef2f6;padding:10px 16px;border-bottom:1.5px solid #cbd5e1;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:700;color:#334155;text-transform:uppercase;letter-spacing:0.5px">
+          <div class="card-journeys-list" style="margin-bottom:18px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#fff">
+            <div style="background:#f8fafc;padding:10px 16px;border-bottom:1px solid #e2e8f0;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:0.5px">
               4 Curated Royal Journeys
             </div>
             
-            <div class="journey-row journey-row-odd" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #e2e8f0;background:#ffffff;gap:12px">
+            <div class="journey-row" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #f1f5f9;background:#ffffff;gap:12px">
               <div>
-                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">The Heritage of India <span style="font-size:13px;font-weight:600;color:#d96b27;margin-left:4px">(6 Nights / 7 Days)</span></div>
+                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">The Heritage of India <span style="font-size:13px;font-weight:500;color:#64748b;margin-left:4px">(6 Nights / 7 Days)</span></div>
                 <div style="font-size:12.5px;color:#64748b;margin-top:2px;line-height:1.35">Mumbai &rarr; Udaipur &rarr; Jodhpur &rarr; Bikaner &rarr; Jaipur &rarr; Ranthambore &rarr; Agra &rarr; Delhi</div>
               </div>
               <div style="flex-shrink:0">
@@ -1262,9 +1313,9 @@ footer a:hover{color:#F8904D}
               </div>
             </div>
 
-            <div class="journey-row journey-row-even" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #e2e8f0;background:#f1f5f9;gap:12px">
+            <div class="journey-row" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #f1f5f9;background:#ffffff;gap:12px">
               <div>
-                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">The Indian Panorama <span style="font-size:13px;font-weight:600;color:#d96b27;margin-left:4px">(6 Nights / 7 Days)</span></div>
+                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">The Indian Panorama <span style="font-size:13px;font-weight:500;color:#64748b;margin-left:4px">(6 Nights / 7 Days)</span></div>
                 <div style="font-size:12.5px;color:#64748b;margin-top:2px;line-height:1.35">Delhi &rarr; Jaipur &rarr; Ranthambore &rarr; Agra &rarr; Orchha &rarr; Khajuraho &rarr; Varanasi &rarr; Delhi</div>
               </div>
               <div style="flex-shrink:0">
@@ -1272,9 +1323,9 @@ footer a:hover{color:#F8904D}
               </div>
             </div>
 
-            <div class="journey-row journey-row-odd" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #e2e8f0;background:#ffffff;gap:12px">
+            <div class="journey-row" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #f1f5f9;background:#ffffff;gap:12px">
               <div>
-                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">The Indian Splendour <span style="font-size:13px;font-weight:600;color:#d96b27;margin-left:4px">(6 Nights / 7 Days)</span></div>
+                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">The Indian Splendour <span style="font-size:13px;font-weight:500;color:#64748b;margin-left:4px">(6 Nights / 7 Days)</span></div>
                 <div style="font-size:12.5px;color:#64748b;margin-top:2px;line-height:1.35">Delhi &rarr; Agra &rarr; Ranthambore &rarr; Jaipur &rarr; Bikaner &rarr; Jodhpur &rarr; Udaipur &rarr; Mumbai</div>
               </div>
               <div style="flex-shrink:0">
@@ -1282,9 +1333,9 @@ footer a:hover{color:#F8904D}
               </div>
             </div>
 
-            <div class="journey-row journey-row-even" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#f1f5f9;gap:12px">
+            <div class="journey-row" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#ffffff;gap:12px">
               <div>
-                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">Treasures of India <span style="font-size:13px;font-weight:600;color:#d96b27;margin-left:4px">(3 Nights / 4 Days)</span></div>
+                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">Treasures of India <span style="font-size:13px;font-weight:500;color:#64748b;margin-left:4px">(3 Nights / 4 Days)</span></div>
                 <div style="font-size:12.5px;color:#64748b;margin-top:2px;line-height:1.35">Delhi &rarr; Agra &rarr; Ranthambore &rarr; Jaipur &rarr; Delhi</div>
               </div>
               <div style="flex-shrink:0">
@@ -1332,16 +1383,42 @@ footer a:hover{color:#F8904D}
 
       <!-- Golden Chariot -->
       <article class="card">
-        <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.26)),url('/images/luxury-trains/golden-chariot/hero.jpg')">
-          <span>South India</span>
+        <div class="photo" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.35) 0%, rgba(0,0,0,.08) 40%, rgba(0,0,0,.85) 100%),url('/images/luxury-trains/golden-chariot/hero.jpg');position:relative;padding:0;overflow:hidden">
+          <!-- Top Left: Journey Badge & Region -->
+          <div style="position:absolute;top:18px;left:18px;z-index:3;display:flex;flex-direction:column;gap:7px">
+            <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(15,23,42,0.88);backdrop-filter:blur(10px);color:#ffffff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:7px 16px;border-radius:999px;border:1px solid rgba(248,144,77,0.4);box-shadow:0 4px 16px rgba(0,0,0,0.35)">
+              <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F8904D"></span>
+              <span>3 Curated Circuits · 3N &amp; 5N</span>
+            </div>
+            <div style="display:inline-flex;align-items:center;background:rgba(15,23,42,0.75);backdrop-filter:blur(8px);color:#cbd5e1;font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:0.08em;text-transform:uppercase;width:fit-content">
+              South India
+            </div>
+          </div>
+
+          <!-- Top Right: Train Logo -->
           <div class="train-badge">
             <img src="/images/luxury-trains/golden-chariot/logo.png" alt="Golden Chariot Logo">
           </div>
+
+          <!-- Bottom: Solid Departure Highlight Strip -->
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 18px;background:linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.80) 75%, transparent 100%);z-index:3;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <div style="display:inline-flex;align-items:center;gap:9px;color:#ffffff;font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700">
+              <div style="width:30px;height:30px;border-radius:8px;background:#F8904D;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(248,144,77,0.4)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              </div>
+              <span>Departs Saturdays &amp; Sundays <span style="font-weight:500;color:#cbd5e1;font-size:12.5px">(from Bengaluru)</span></span>
+            </div>
+            <span style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#F8904D;text-transform:uppercase;letter-spacing:0.5px;background:rgba(248,144,77,0.18);padding:4px 10px;border-radius:6px;border:1px solid rgba(248,144,77,0.35)">Oct – Mar Season</span>
+          </div>
         </div>
         <div class="body">
-          <div style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#d96b27;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Starts from Bengaluru</div>
-          <h3 style="margin-bottom:2px">Golden Chariot</h3>
-          <div class="sub" style="margin-bottom:12px">South India's luxury train</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#d96b27;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">South India's Only Luxury Train · KSTDC &amp; IRCTC</div>
+          <h3 style="margin-bottom:6px">Golden Chariot</h3>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+            <span style="background:#f1f5f9;color:#334155;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;font-family:'Outfit',sans-serif">3 Curated Circuits</span>
+            <span style="background:#f1f5f9;color:#334155;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;font-family:'Outfit',sans-serif">18 Dynastic Coaches</span>
+            <span style="background:#f1f5f9;color:#334155;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;font-family:'Outfit',sans-serif">Ruchi &amp; Nalapaka Dining</span>
+          </div>
           <p>Mysore palaces, Hampi ruins, Bandipur wildlife and the beaches of Goa, all starting from Bengaluru.</p>
 
           <!-- Focused Lowest Starting Price Highlight -->
@@ -1357,14 +1434,14 @@ footer a:hover{color:#F8904D}
           </div>
 
           <!-- Journeys List (Chardham Table Style) -->
-          <div class="card-journeys-list" style="margin-bottom:18px;border:1px solid #cbd5e1;border-radius:12px;overflow:hidden;background:#fff">
-            <div style="background:#eef2f6;padding:10px 16px;border-bottom:1.5px solid #cbd5e1;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:700;color:#334155;text-transform:uppercase;letter-spacing:0.5px">
+          <div class="card-journeys-list" style="margin-bottom:18px;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#fff">
+            <div style="background:#f8fafc;padding:10px 16px;border-bottom:1px solid #e2e8f0;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:0.5px">
               3 Curated Southern Circuits
             </div>
 
-            <div class="journey-row journey-row-odd" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #e2e8f0;background:#ffffff;gap:12px">
+            <div class="journey-row" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #f1f5f9;background:#ffffff;gap:12px">
               <div>
-                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">Pride of Karnataka <span style="font-size:13px;font-weight:600;color:#d96b27;margin-left:4px">(5 Nights / 6 Days)</span></div>
+                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">Pride of Karnataka <span style="font-size:13px;font-weight:500;color:#64748b;margin-left:4px">(5 Nights / 6 Days)</span></div>
                 <div style="font-size:12.5px;color:#64748b;margin-top:2px;line-height:1.35">Bengaluru &rarr; Bandipur &rarr; Mysore &rarr; Halebidu &rarr; Hampi &rarr; Goa &rarr; Bengaluru</div>
               </div>
               <div style="flex-shrink:0">
@@ -1372,9 +1449,9 @@ footer a:hover{color:#F8904D}
               </div>
             </div>
 
-            <div class="journey-row journey-row-even" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #e2e8f0;background:#f1f5f9;gap:12px">
+            <div class="journey-row" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #f1f5f9;background:#ffffff;gap:12px">
               <div>
-                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">Jewels of South <span style="font-size:13px;font-weight:600;color:#d96b27;margin-left:4px">(5 Nights / 6 Days)</span></div>
+                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">Jewels of South <span style="font-size:13px;font-weight:500;color:#64748b;margin-left:4px">(5 Nights / 6 Days)</span></div>
                 <div style="font-size:12.5px;color:#64748b;margin-top:2px;line-height:1.35">Bengaluru &rarr; Mysore &rarr; Kanchipuram &rarr; Mahabalipuram &rarr; Thanjavur &rarr; Chettinad &rarr; Cochin &rarr; Kumarakom &rarr; Bengaluru</div>
               </div>
               <div style="flex-shrink:0">
@@ -1382,9 +1459,9 @@ footer a:hover{color:#F8904D}
               </div>
             </div>
 
-            <div class="journey-row journey-row-odd" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#ffffff;gap:12px">
+            <div class="journey-row" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#ffffff;gap:12px">
               <div>
-                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">Glimpses of Karnataka <span style="font-size:13px;font-weight:600;color:#d96b27;margin-left:4px">(3 Nights / 4 Days)</span></div>
+                <div style="font-weight:700;font-size:15px;color:#0f172a;line-height:1.3">Glimpses of Karnataka <span style="font-size:13px;font-weight:500;color:#64748b;margin-left:4px">(3 Nights / 4 Days)</span></div>
                 <div style="font-size:12.5px;color:#64748b;margin-top:2px;line-height:1.35">Bengaluru &rarr; Bandipur &rarr; Mysore &rarr; Hampi &rarr; Bengaluru</div>
               </div>
               <div style="flex-shrink:0">
@@ -1432,16 +1509,42 @@ footer a:hover{color:#F8904D}
 
       <!-- Deccan Odyssey -->
       <article class="card">
-        <div class="photo" style="background-image:linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.26)),url('/images/luxury-trains/deccan-odyssey/hero.jpg')">
-          <span>Maharashtra, Rajasthan &amp; Gujarat</span>
+        <div class="photo" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.35) 0%, rgba(0,0,0,.08) 40%, rgba(0,0,0,.85) 100%),url('/images/luxury-trains/deccan-odyssey/hero.jpg');position:relative;padding:0;overflow:hidden">
+          <!-- Top Left: Journey Badge & Region -->
+          <div style="position:absolute;top:18px;left:18px;z-index:3;display:flex;flex-direction:column;gap:7px">
+            <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(15,23,42,0.88);backdrop-filter:blur(10px);color:#ffffff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:7px 16px;border-radius:999px;border:1px solid rgba(248,144,77,0.4);box-shadow:0 4px 16px rgba(0,0,0,0.35)">
+              <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F8904D"></span>
+              <span>6 Signature Journeys · 7N / 8D</span>
+            </div>
+            <div style="display:inline-flex;align-items:center;background:rgba(15,23,42,0.75);backdrop-filter:blur(8px);color:#cbd5e1;font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:0.08em;text-transform:uppercase;width:fit-content">
+              Maharashtra &amp; Gujarat
+            </div>
+          </div>
+
+          <!-- Top Right: Train Logo -->
           <div class="train-badge">
             <img src="/images/luxury-trains/deccan-odyssey/logo.png" alt="Deccan Odyssey Logo">
           </div>
+
+          <!-- Bottom: Solid Departure Highlight Strip -->
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 18px;background:linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.80) 75%, transparent 100%);z-index:3;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <div style="display:inline-flex;align-items:center;gap:9px;color:#ffffff;font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700">
+              <div style="width:30px;height:30px;border-radius:8px;background:#F8904D;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(248,144,77,0.4)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              </div>
+              <span>Departs Selected Saturdays <span style="font-weight:500;color:#cbd5e1;font-size:12.5px">(Mumbai &amp; Delhi)</span></span>
+            </div>
+            <span style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#F8904D;text-transform:uppercase;letter-spacing:0.5px;background:rgba(248,144,77,0.18);padding:4px 10px;border-radius:6px;border:1px solid rgba(248,144,77,0.35)">Sep – May Season</span>
+          </div>
         </div>
         <div class="body">
-          <div style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#d96b27;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Starts from Mumbai &amp; Delhi</div>
-          <h3 style="margin-bottom:2px">Deccan Odyssey</h3>
-          <div class="sub" style="margin-bottom:12px">Six 7-night journeys</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#d96b27;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Blue Limousine on Wheels · MTDC &amp; IRCTC</div>
+          <h3 style="margin-bottom:6px">Deccan Odyssey</h3>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+            <span style="background:#f1f5f9;color:#334155;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;font-family:'Outfit',sans-serif">6 Signature Journeys</span>
+            <span style="background:#f1f5f9;color:#334155;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;font-family:'Outfit',sans-serif">21 Royal Coaches</span>
+            <span style="background:#f1f5f9;color:#334155;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;font-family:'Outfit',sans-serif">Waavan &amp; Utsav Dining</span>
+          </div>
           <p>Ajanta and Ellora caves, Goa, Udaipur, the Golden Triangle and even Tadoba tiger country, on one train.</p>
 
           <!-- Focused Lowest Starting Price Highlight -->
