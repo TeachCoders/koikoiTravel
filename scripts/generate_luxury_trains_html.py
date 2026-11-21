@@ -2597,8 +2597,44 @@ def generate_all_for_base(base_dir, base_path):
       {get_me_video_spotlight_component()}
     </div>
 
-    <!-- 5. Photo Gallery Section (At the very bottom) -->
-    <div id="gallery">
+    <!-- 5. Onboard Carriages & Amenities (Life On Board) -->
+    <div id="facilities" style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:28px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">Life On Board</div>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
+          Royal Carriages &amp; Amenities
+        </h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          23 carriages stretching half a mile, accommodating 88 guests across 14 gemstone-named guest carriages with pneumatic suspension.
+        </p>
+      </div>
+
+      <div class="grid-4">
+        <div class="card" style="padding:28px 24px;border-radius:16px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div style="font-size:28px;margin-bottom:12px">🛏️</div>
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:19px;color:#0f172a;margin-bottom:8px">14 Gemstone Guest Carriages</h3>
+          <p style="font-size:14px;color:#64748b;line-height:1.6;margin:0">Deluxe Cabins, Junior Suites, Suites, and the Presidential Suite (Navratna) named after precious gems (Moti, Panna, Manik, Neelam...) with private en-suite bathroom, Wi-Fi, and 24/7 personal butler.</p>
+        </div>
+        <div class="card" style="padding:28px 24px;border-radius:16px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div style="font-size:28px;margin-bottom:12px">🍽️</div>
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:19px;color:#0f172a;margin-bottom:8px">Rang Mahal &amp; Mayur Mahal Dining</h3>
+          <p style="font-size:14px;color:#64748b;line-height:1.6;margin:0">Two fine-dining restaurant cars seating 42 guests each, featuring peacock fresco ceilings and gold-edged Limoges fine porcelain, serving authentic Indian regional specialties and international cuisine.</p>
+        </div>
+        <div class="card" style="padding:28px 24px;border-radius:16px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div style="font-size:28px;margin-bottom:12px">🍸</div>
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:19px;color:#0f172a;margin-bottom:8px">The Rajah Club &amp; Safari Bar</h3>
+          <p style="font-size:14px;color:#64748b;line-height:1.6;margin:0">Two thematic lounge bars serving curated single malts, house wines, and classic cocktails in plush leather armchairs, with observation lounge seating and board games.</p>
+        </div>
+        <div class="card" style="padding:28px 24px;border-radius:16px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div style="font-size:28px;margin-bottom:12px">✨</div>
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:19px;color:#0f172a;margin-bottom:8px">Onboard Facilities &amp; Boutique</h3>
+          <p style="font-size:14px;color:#64748b;line-height:1.6;margin:0">Dedicated onboard library, souvenir boutique with handcrafted Indian heritage items, climate control with pneumatic suspension, and an emergency paramedic onboard.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Photo Gallery Section -->
+    <div id="gallery" style="margin-bottom:64px">
       <div class="sec-head" style="margin-bottom:8px">
         <div class="eyebrow">Photo Gallery</div>
         <h2 style="font-size:clamp(26px,3vw,36px)">Glimpse Inside Maharajas' Express</h2>
@@ -2607,6 +2643,102 @@ def generate_all_for_base(base_dir, base_path):
         </p>
       </div>
       {get_me_gallery_component()}
+    </div>
+
+    <!-- 7. How Booking Works -->
+    <div id="booking-steps" style="margin-bottom:64px">
+      <div class="sec-head" style="margin-bottom:28px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">How It Works</div>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
+          3 Simple Steps to Book
+        </h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          No complicated forms or pressure. Just direct travel advice from our dedicated team.
+        </p>
+      </div>
+
+      <div class="step-grid">
+        <div class="step" style="border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div class="n" style="color:#d96b27">01</div>
+          <h3 style="color:#0f172a">Share Your Preferred Dates</h3>
+          <p style="color:#64748b">Tell us your circuit, travel dates, passenger count, and preferred cabin (Deluxe, Junior Suite, Suite, or Presidential Suite).</p>
+        </div>
+        <div class="step" style="border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div class="n" style="color:#d96b27">02</div>
+          <h3 style="color:#0f172a">Live Cabin Availability &amp; Itemized Quote</h3>
+          <p style="color:#64748b">We confirm live cabin inventory directly with IRCTC and provide you with an itemized, transparent quote with all official inclusions.</p>
+        </div>
+        <div class="step" style="border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+          <div class="n" style="color:#d96b27">03</div>
+          <h3 style="color:#0f172a">Confirm with 25% Deposit</h3>
+          <p style="color:#64748b">Secure your berth with an initial 25% deposit. The remaining balance is payable 60 days before your train departs.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Frequently Asked Questions (FAQ) -->
+    <div id="faq">
+      <div class="sec-head" style="margin-bottom:28px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">FAQs</div>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
+          Frequently Asked Questions
+        </h2>
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+          Everything you need to know about traveling on Maharajas' Express.
+        </p>
+      </div>
+
+      <div class="faq" style="background:#fff;border-radius:16px;border:1px solid #e2e8f0;padding:8px 24px;box-shadow:0 4px 16px rgba(0,0,0,0.03)">
+        <details open style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">Where do Maharajas' Express journeys begin and conclude?</summary>
+          <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+            Departures depend on your chosen circuit:
+            <ul style="margin:8px 0 0;padding-left:20px">
+              <li><strong>The Heritage of India (7 Days):</strong> Begins at Chhatrapati Shivaji Maharaj Terminus (CSMT), Mumbai and concludes at Safdarjung Railway Station, Delhi.</li>
+              <li><strong>The Indian Panorama (7 Days):</strong> Round-trip starting and ending at Safdarjung Railway Station, Delhi.</li>
+              <li><strong>The Indian Splendour (7 Days):</strong> Starts at Safdarjung Railway Station, Delhi and concludes at CSMT, Mumbai.</li>
+              <li><strong>Treasures of India (4 Days):</strong> Round-trip starting and ending at Safdarjung Railway Station, Delhi.</li>
+            </ul>
+            All guests are welcomed at the station lounge with a traditional red-carpet ceremonial welcome and briefing before boarding.
+          </div>
+        </details>
+        <details style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">What is included in the Maharajas' Express ticket price?</summary>
+          <p style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">Your ticket is fully inclusive: air-conditioned accommodation with private en-suite bathroom, all gourmet meals at Rang Mahal and Mayur Mahal, complimentary house wines, beers, and spirits, round-the-clock tea, coffee, and bottled water, 24/7 dedicated personal butler (Khidmatgar) service, guided off-train sightseeing in deluxe coaches, all monument admission tickets, standard still-camera fees, Ranthambore wildlife safari permits, and traditional cultural performances. Suite and Presidential Suite guests also enjoy private luxury cars and dedicated guides for all excursions.</p>
+        </details>
+        <details style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">What costs are not included in the fare?</summary>
+          <p style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">Items outside the ticket fare include: 5% Government GST, optional off-train excursions (such as hotel spa treatments), professional video/filming permits at monuments, premium spirits or champagnes beyond the house pour selection, telephone calls, laundry services, and personal gratuities for tour guides and train staff.</p>
+        </details>
+        <details style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">What are the differences between Deluxe Cabins, Junior Suites, Suites, and the Presidential Suite?</summary>
+          <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+            Maharajas' Express offers 4 cabin categories:
+            <ul style="margin:8px 0 0;padding-left:20px">
+              <li><strong>Deluxe Cabin (112 sq. ft.):</strong> Available with twin or double beds, equipped with private bathroom, shower stall, electronic safe, wardrobe, and live television.</li>
+              <li><strong>Junior Suite (150 sq. ft.):</strong> Features expansive picture windows, a separate writing desk, and twin or double bed layouts.</li>
+              <li><strong>Suite (220 sq. ft.):</strong> Includes a separate living salon, private bedroom, full en-suite bathtub, mini-bar, and a complimentary private luxury car with exclusive guide during all excursions.</li>
+              <li><strong>Presidential Suite 'Navratna' (448 sq. ft.):</strong> Spans an entire railway carriage featuring two full bedrooms, two bathrooms (one with bathtub), living area, private dining salon, personal valet, and dedicated private car throughout the journey.</li>
+            </ul>
+          </div>
+        </details>
+        <details style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">Can vegetarian, Jain, vegan, or special diets be accommodated?</summary>
+          <p style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">Yes, with ease. The onboard chefs prepare fresh meals for all dietary preferences. Pure vegetarian, Jain (prepared without onion or garlic), vegan, gluten-free, lactose-free, and Halal meals are carefully arranged. Please share any dietary restrictions with us when booking so the onboard culinary team can prepare in advance.</p>
+        </details>
+        <details style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">What is the recommended dress code?</summary>
+          <p style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">During daytime excursions, monument visits, and the Ranthambore wildlife safari, smart-casual and comfortable lightweight clothing is ideal, paired with sturdy walking shoes and sun protection. In the evenings, dinners at Rang Mahal and Mayur Mahal welcome smart-casual or semi-formal dress. For special theme evenings and palace dinners, guests often enjoy wearing festive traditional Indian or formal attire.</p>
+        </details>
+        <details style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">How is luggage managed inside the cabins?</summary>
+          <p style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">Each cabin has designated storage space under the beds and overhead racks, best suited for medium soft-sided suitcases or standard trolley bags. If you have extra or oversized baggage, it can be safely stored in the train's secure luggage van throughout the trip at no extra charge.</p>
+        </details>
+        <details style="padding:16px 0">
+          <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">Can KoiKoi Travel arrange pre-tour and post-tour hotels and airport transfers?</summary>
+          <p style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">Yes, absolutely. We arrange complete luxury extensions, including five-star hotel stays in Delhi or Mumbai before and after your rail journey, private airport transfers, domestic flight connections, and customized private city tours across India.</p>
+        </details>
+      </div>
     </div>
 
   </div>
