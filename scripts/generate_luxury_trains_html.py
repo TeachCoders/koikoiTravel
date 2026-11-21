@@ -6,6 +6,7 @@ Using local downloaded images from user and removing the stats section.
 
 import os
 import shutil
+import urllib.parse
 
 OUTPUT_DIRS = [
     "frontend/public/luxury-trains",
@@ -2611,6 +2612,8 @@ function switchCircuitPrice(curr) {{
 
     # Helper components for Palace on Wheels Home / Overview Page
     def get_pow_cards_component():
+        wa_text = "Hi KoiKoi Travel, please share details for Palace on Wheels - Classic Rajasthan Tour (8 Days)."
+        wa_encoded = urllib.parse.quote(wa_text)
         return f"""
 <div class="koikoi-card-grid" style="margin-top:24px">
   <!-- Card 1: Classic Rajasthan -->
@@ -2625,26 +2628,29 @@ function switchCircuitPrice(curr) {{
       <div class="koikoi-card-route">
         🚂 Delhi · Jaipur · Ranthambore · Chittorgarh · Udaipur · Jaisalmer · Jodhpur · Bharatpur · Agra · Delhi
       </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Early morning Ranthambore tiger safari &amp; sunset camel trek at Sam Sand Dunes, Jaisalmer</span>
+      <div class="koikoi-card-highlights" style="margin-bottom:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+          <span style="font-size:13px;font-weight:700;color:#0f172a;display:inline-flex;align-items:center;gap:6px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Departs: <strong style="color:#d96b27">Every Wednesday</strong>
+          </span>
+          <span style="font-size:11.5px;font-weight:700;background:#0f172a;color:#fff;padding:2px 8px;border-radius:4px">New Delhi (Safdarjung)</span>
         </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Hilltop Amber Fort Jaipur, Mehrangarh Fort Jodhpur &amp; Lake Pichola boat cruise Udaipur</span>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12.5px;color:#475569">
+          <span><strong style="color:#0f172a">Ends:</strong> Wednesday at Delhi (Safdarjung)</span>
+          <span style="font-weight:600;color:#64748b;font-size:11.5px">7N / 8D</span>
         </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Keoladeo Ghana Bird Sanctuary dawn rickshaw safari &amp; iconic Taj Mahal, Agra</span>
+        <div style="font-size:12px;color:#334155;line-height:1.45;border-top:1px dashed #cbd5e1;padding-top:6px;margin-top:2px">
+          <strong style="color:#0f172a">Day-by-Day Destinations:</strong><br>
+          Wed: Delhi (Depart) &bull; Thu: Jaipur &bull; Fri: Ranthambore &bull; Sat: Udaipur &bull; Sun: Jaisalmer &bull; Mon: Jodhpur &bull; Tue: Bharatpur &amp; Agra &bull; Wed: Delhi (Return)
         </div>
       </div>
       <div class="koikoi-card-footer">
         <div class="koikoi-card-amenities">
-          Deluxe Cabins &amp; Super Deluxe Suites · All Meals · Guided Sightseeing · Khidmatgar Service
+          Deluxe &amp; Super Deluxe Saloons · Maharaja &amp; Maharani Dining · Butler (Khidmatgar)
         </div>
         <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Palace%20on%20Wheels%20-%20Classic%20Rajasthan%20(8%20Days)." target="_blank" rel="noopener">
+          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text={wa_encoded}" target="_blank" rel="noopener">
             Get a quote
           </a>
           <a class="koikoi-btn-details" href="{base_path}/palace-on-wheels/itinerary">
@@ -3383,175 +3389,119 @@ function switchPowHomePrice(curr) {{
 
     # 4 Signature Journey Cards Component (KoiKoi Signature Style)
     def get_me_cards_component():
+        me_cards_data = [
+            {
+                "id": "card-heritage",
+                "slug": "the-heritage-of-india",
+                "img": "/images/luxury-trains/maharajas-express/hero.jpg",
+                "alt": "The Heritage of India - Maharajas' Express Tour Package | KoiKoi Travel",
+                "title": "7 Days - The Heritage of India Luxury Rail Tour",
+                "route": "🚂 Mumbai · Udaipur · Jodhpur · Bikaner · Jaipur · Ranthambore · Agra · Delhi",
+                "departs": "Every Sunday",
+                "from_station": "Mumbai (CSMT)",
+                "ends": "Saturday at New Delhi (Safdarjung)",
+                "duration": "6N / 7D",
+                "schedule": "Sun: Mumbai (Depart) &bull; Mon: Udaipur &bull; Tue: Jodhpur &bull; Wed: Bikaner &bull; Thu: Jaipur &bull; Fri: Ranthambore &amp; Agra &bull; Sat: Delhi (Arrival)",
+                "inquire": "Maharajas' Express - The Heritage of India (Mumbai to Delhi, 7 Days)"
+            },
+            {
+                "id": "card-panorama",
+                "slug": "the-indian-panorama",
+                "img": "/images/luxury-trains/maharajas-express/dining-pink.jpg",
+                "alt": "The Indian Panorama - Maharajas' Express Tour Package | KoiKoi Travel",
+                "title": "7 Days - The Indian Panorama Heritage Rail Tour",
+                "route": "🚂 Delhi · Jaipur · Ranthambore · Agra · Orchha · Khajuraho · Varanasi · Delhi",
+                "departs": "Every Sunday",
+                "from_station": "New Delhi (Safdarjung)",
+                "ends": "Saturday at New Delhi (Safdarjung)",
+                "duration": "6N / 7D",
+                "schedule": "Sun: Delhi (Depart) &bull; Mon: Jaipur &bull; Tue: Ranthambore &amp; Agra &bull; Wed: Orchha &amp; Khajuraho &bull; Thu: Varanasi &bull; Fri: Delhi (Return)",
+                "inquire": "Maharajas' Express - The Indian Panorama (Delhi to Delhi, 7 Days)"
+            },
+            {
+                "id": "card-splendour",
+                "slug": "the-indian-splendour",
+                "img": "/images/luxury-trains/maharajas-express/suite.jpg",
+                "alt": "The Indian Splendour - Maharajas' Express Tour Package | KoiKoi Travel",
+                "title": "7 Days - The Indian Splendour Royal Rajasthan Tour",
+                "route": "🚂 Delhi · Agra · Ranthambore · Jaipur · Bikaner · Jodhpur · Udaipur · Mumbai",
+                "departs": "Every Sunday",
+                "from_station": "New Delhi (Safdarjung)",
+                "ends": "Saturday at Mumbai (CSMT)",
+                "duration": "6N / 7D",
+                "schedule": "Sun: Delhi (Depart) &bull; Mon: Agra &bull; Tue: Ranthambore &amp; Jaipur &bull; Wed: Bikaner &bull; Thu: Jodhpur &bull; Fri: Udaipur &bull; Sat: Mumbai (Arrival)",
+                "inquire": "Maharajas' Express - The Indian Splendour (Delhi to Mumbai, 7 Days)"
+            },
+            {
+                "id": "card-treasures",
+                "slug": "treasures-of-india",
+                "img": "/images/luxury-trains/maharajas-express/deluxe-cabin.jpg",
+                "alt": "Treasures of India - Maharajas' Express Tour Package | KoiKoi Travel",
+                "title": "4 Days - Treasures of India Golden Triangle Rail Tour",
+                "route": "🚂 Delhi · Agra · Ranthambore · Jaipur · Delhi",
+                "departs": "Every Sunday",
+                "from_station": "New Delhi (Safdarjung)",
+                "ends": "Wednesday at New Delhi (Safdarjung)",
+                "duration": "3N / 4D",
+                "schedule": "Sun: Delhi (Depart) &bull; Mon: Agra &amp; Ranthambore &bull; Tue: Jaipur &bull; Wed: Delhi (Return)",
+                "inquire": "Maharajas' Express - Treasures of India (Golden Triangle, 4 Days)"
+            }
+        ]
+
+        cards_html = []
+        for c in me_cards_data:
+            wa_text = f"Hi KoiKoi Travel, please share details for {c['inquire']}."
+            wa_encoded = urllib.parse.quote(wa_text)
+            c_html = f"""  <!-- Card: {c['slug']} -->
+  <div class="koikoi-tour-card" id="{c['id']}">
+    <a href="{base_path}/maharajas-express/{c['slug']}" class="koikoi-card-img-wrap">
+      <img src="{c['img']}" alt="{c['alt']}">
+    </a>
+    <div class="koikoi-card-body">
+      <a href="{base_path}/maharajas-express/{c['slug']}" class="koikoi-card-title">
+        {c['title']}
+      </a>
+      <div class="koikoi-card-route">
+        {c['route']}
+      </div>
+      <div class="koikoi-card-highlights" style="margin-bottom:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+          <span style="font-size:13px;font-weight:700;color:#0f172a;display:inline-flex;align-items:center;gap:6px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Departs: <strong style="color:#d96b27">{c['departs']}</strong>
+          </span>
+          <span style="font-size:11.5px;font-weight:700;background:#0f172a;color:#fff;padding:2px 8px;border-radius:4px">{c['from_station']}</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12.5px;color:#475569">
+          <span><strong style="color:#0f172a">Ends:</strong> {c['ends']}</span>
+          <span style="font-weight:600;color:#64748b;font-size:11.5px">{c['duration']}</span>
+        </div>
+        <div style="font-size:12px;color:#334155;line-height:1.45;border-top:1px dashed #cbd5e1;padding-top:6px;margin-top:2px">
+          <strong style="color:#0f172a">Day-by-Day Destinations:</strong><br>
+          {c['schedule']}
+        </div>
+      </div>
+      <div class="koikoi-card-footer">
+        <div class="koikoi-card-amenities">
+          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
+        </div>
+        <div class="koikoi-card-btn-row">
+          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text={wa_encoded}" target="_blank" rel="noopener">
+            Get a quote
+          </a>
+          <a class="koikoi-btn-details" href="{base_path}/maharajas-express/{c['slug']}">
+            Details
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>"""
+            cards_html.append(c_html)
+
+        inner = "\n\n".join(cards_html)
         return f"""
 <div class="koikoi-card-grid" style="margin-top:24px">
-  <!-- Card 1: The Heritage of India -->
-  <div class="koikoi-tour-card" id="card-heritage">
-    <a href="{base_path}/maharajas-express/the-heritage-of-india" class="koikoi-card-img-wrap">
-      <img src="/images/luxury-trains/maharajas-express/hero.jpg" alt="The Heritage of India - Maharajas' Express Tour Package | KoiKoi Travel">
-    </a>
-    <div class="koikoi-card-body">
-      <a href="{base_path}/maharajas-express/the-heritage-of-india" class="koikoi-card-title">
-        7 Days - The Heritage of India Luxury Rail Tour
-      </a>
-      <div class="koikoi-card-route">
-        Mumbai · Udaipur · Jodhpur · Bikaner · Jaipur · Ranthambore · Agra · Delhi
-      </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Lake Pichola Boat Cruise & City Palace Udaipur</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Bikaner Thar Sand Dunes Banquet & Folk Music</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Ranthambore Tiger Safari & Sunrise at Taj Mahal</span>
-        </div>
-      </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
-          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
-        </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Maharajas%27%20Express%20-%20The%20Heritage%20of%20India%20(Mumbai%20to%20Delhi%2C%207%20Days)." target="_blank" rel="noopener">
-            Get a quote
-          </a>
-          <a class="koikoi-btn-details" href="{base_path}/maharajas-express/the-heritage-of-india">
-            Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Card 2: The Indian Panorama -->
-  <div class="koikoi-tour-card" id="card-panorama">
-    <a href="{base_path}/maharajas-express/the-indian-panorama" class="koikoi-card-img-wrap">
-      <img src="/images/luxury-trains/maharajas-express/dining-pink.jpg" alt="The Indian Panorama - Maharajas' Express Tour Package | KoiKoi Travel">
-    </a>
-    <div class="koikoi-card-body">
-      <a href="{base_path}/maharajas-express/the-indian-panorama" class="koikoi-card-title">
-        7 Days - The Indian Panorama Luxury Rail Tour
-      </a>
-      <div class="koikoi-card-route">
-        Delhi · Jaipur · Ranthambore · Fatehpur Sikri · Agra · Orchha · Khajuraho · Varanasi · Delhi
-      </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Varanasi Ganges Sunset Cruise & Maha Ganga Aarti</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>UNESCO World Heritage Temples of Khajuraho & Orchha</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Amber Fort Jeep Ride, Tigers & Sunrise Taj Mahal</span>
-        </div>
-      </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
-          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
-        </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Maharajas%27%20Express%20-%20The%20Indian%20Panorama%20(Delhi%20to%20Delhi%2C%207%20Days)." target="_blank" rel="noopener">
-            Get a quote
-          </a>
-          <a class="koikoi-btn-details" href="{base_path}/maharajas-express/the-indian-panorama">
-            Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Card 3: The Indian Splendour -->
-  <div class="koikoi-tour-card" id="card-splendour">
-    <a href="{base_path}/maharajas-express/the-indian-splendour" class="koikoi-card-img-wrap">
-      <img src="/images/luxury-trains/maharajas-express/suite.jpg" alt="The Indian Splendour - Maharajas' Express Tour Package | KoiKoi Travel">
-    </a>
-    <div class="koikoi-card-body">
-      <a href="{base_path}/maharajas-express/the-indian-splendour" class="koikoi-card-title">
-        7 Days - The Indian Splendour Luxury Rail Tour
-      </a>
-      <div class="koikoi-card-route">
-        Delhi · Agra · Ranthambore · Jaipur · Bikaner · Jodhpur · Udaipur · Mumbai
-      </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Sunrise Taj Mahal & Champagne Breakfast at Taj Khema</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Bikaner Sand Dunes Sundowner & Mehrangarh Fort Cocktail</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Ranthambore Tigers & Lake Pichola Royal Cruise</span>
-        </div>
-      </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
-          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
-        </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Maharajas%27%20Express%20-%20The%20Indian%20Splendour%20(Delhi%20to%20Mumbai%2C%207%20Days)." target="_blank" rel="noopener">
-            Get a quote
-          </a>
-          <a class="koikoi-btn-details" href="{base_path}/maharajas-express/the-indian-splendour">
-            Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Card 4: Treasures of India -->
-  <div class="koikoi-tour-card" id="card-treasures">
-    <a href="{base_path}/maharajas-express/treasures-of-india" class="koikoi-card-img-wrap">
-      <img src="/images/luxury-trains/maharajas-express/deluxe-cabin.jpg" alt="Treasures of India - Maharajas' Express Tour Package | KoiKoi Travel">
-    </a>
-    <div class="koikoi-card-body">
-      <a href="{base_path}/maharajas-express/treasures-of-india" class="koikoi-card-title">
-        4 Days - Treasures of India Golden Triangle Tour
-      </a>
-      <div class="koikoi-card-route">
-        Delhi · Agra · Ranthambore · Jaipur · Delhi
-      </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Iconic Golden Triangle Packed in Royal 4-Day Luxury</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Sunrise at Taj Mahal & Majestic Agra Red Fort</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Ranthambore Jungle Safari & Amber Fort Elephant Welcome</span>
-        </div>
-      </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
-          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
-        </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Maharajas%27%20Express%20-%20Treasures%20of%20India%20(4%20Days%20Golden%20Triangle)." target="_blank" rel="noopener">
-            Get a quote
-          </a>
-          <a class="koikoi-btn-details" href="{base_path}/maharajas-express/treasures-of-india">
-            Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
+{inner}
 </div>
 """
 
@@ -4877,133 +4827,105 @@ function switchPriceCurrency(curr) {{
     }
 
     def get_gc_cards_component():
+        gc_cards_data = [
+            {
+                "id": "card-pride",
+                "slug": "pride-of-karnataka",
+                "img": "/images/luxury-trains/golden-chariot/sitting-room.jpg",
+                "alt": "Pride of Karnataka - Golden Chariot Tour Package | KoiKoi Travel",
+                "title": "6 Days - Pride of Karnataka Luxury Rail Tour",
+                "route": "🚂 Bengaluru · Bandipur · Mysore · Halebidu · Hampi · Goa · Bengaluru",
+                "departs": "Every Saturday",
+                "from_station": "Bengaluru (Yeshwantpur)",
+                "ends": "Thursday at Bengaluru (Yeshwantpur)",
+                "duration": "5N / 6D",
+                "schedule": "Sat: Bengaluru (Depart) &bull; Sun: Bandipur &bull; Mon: Mysore &bull; Tue: Halebidu &amp; Hampi &bull; Wed: Goa &bull; Thu: Bengaluru (Return)",
+                "inquire": "Golden Chariot - Pride of Karnataka (6 Days)"
+            },
+            {
+                "id": "card-jewels",
+                "slug": "jewels-of-south",
+                "img": "/images/luxury-trains/golden-chariot/restaurant-1.jpg",
+                "alt": "Jewels of South - Golden Chariot Tour Package | KoiKoi Travel",
+                "title": "6 Days - Jewels of South Luxury Rail Tour",
+                "route": "🚂 Bengaluru · Mysore · Kanchipuram · Mahabalipuram · Thanjavur · Chettinad · Cochin · Kumarakom · Bengaluru",
+                "departs": "Every Saturday",
+                "from_station": "Bengaluru (Yeshwantpur)",
+                "ends": "Thursday at Bengaluru (Yeshwantpur)",
+                "duration": "5N / 6D",
+                "schedule": "Sat: Bengaluru (Depart) &bull; Sun: Mysore &bull; Mon: Kanchipuram &amp; Mahabalipuram &bull; Tue: Thanjavur &amp; Chettinad &bull; Wed: Cochin &amp; Kumarakom &bull; Thu: Bengaluru",
+                "inquire": "Golden Chariot - Jewels of South (6 Days)"
+            },
+            {
+                "id": "card-glimpses",
+                "slug": "glimpses-of-karnataka",
+                "img": "/images/luxury-trains/golden-chariot/double-bed.jpg",
+                "alt": "Glimpses of Karnataka - Golden Chariot Tour Package | KoiKoi Travel",
+                "title": "4 Days - Glimpses of Karnataka Express Rail Tour",
+                "route": "🚂 Bengaluru · Bandipur · Mysore · Hampi · Bengaluru",
+                "departs": "Every Saturday",
+                "from_station": "Bengaluru (Yeshwantpur)",
+                "ends": "Tuesday at Bengaluru (Yeshwantpur)",
+                "duration": "3N / 4D",
+                "schedule": "Sat: Bengaluru (Depart) &bull; Sun: Bandipur &amp; Mysore &bull; Mon: Hampi &bull; Tue: Bengaluru (Return)",
+                "inquire": "Golden Chariot - Glimpses of Karnataka (4 Days)"
+            }
+        ]
+
+        cards_html = []
+        for c in gc_cards_data:
+            wa_text = f"Hi KoiKoi Travel, please share details for {c['inquire']}."
+            wa_encoded = urllib.parse.quote(wa_text)
+            c_html = f"""  <!-- Card: {c['slug']} -->
+  <div class="koikoi-tour-card" id="{c['id']}">
+    <a href="{base_path}/golden-chariot/{c['slug']}" class="koikoi-card-img-wrap">
+      <img src="{c['img']}" alt="{c['alt']}">
+    </a>
+    <div class="koikoi-card-body">
+      <a href="{base_path}/golden-chariot/{c['slug']}" class="koikoi-card-title">
+        {c['title']}
+      </a>
+      <div class="koikoi-card-route">
+        {c['route']}
+      </div>
+      <div class="koikoi-card-highlights" style="margin-bottom:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+          <span style="font-size:13px;font-weight:700;color:#0f172a;display:inline-flex;align-items:center;gap:6px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Departs: <strong style="color:#d96b27">{c['departs']}</strong>
+          </span>
+          <span style="font-size:11.5px;font-weight:700;background:#0f172a;color:#fff;padding:2px 8px;border-radius:4px">{c['from_station']}</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12.5px;color:#475569">
+          <span><strong style="color:#0f172a">Ends:</strong> {c['ends']}</span>
+          <span style="font-weight:600;color:#64748b;font-size:11.5px">{c['duration']}</span>
+        </div>
+        <div style="font-size:12px;color:#334155;line-height:1.45;border-top:1px dashed #cbd5e1;padding-top:6px;margin-top:2px">
+          <strong style="color:#0f172a">Day-by-Day Destinations:</strong><br>
+          {c['schedule']}
+        </div>
+      </div>
+      <div class="koikoi-card-footer">
+        <div class="koikoi-card-amenities">
+          Royal Cabins · Multi-Cuisine Dining · Butler Service · Guided Sights
+        </div>
+        <div class="koikoi-card-btn-row">
+          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text={wa_encoded}" target="_blank" rel="noopener">
+            Get a quote
+          </a>
+          <a class="koikoi-btn-details" href="{base_path}/golden-chariot/{c['slug']}">
+            Details
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>"""
+            cards_html.append(c_html)
+
+        inner = "\n\n".join(cards_html)
         return f"""
 <div class="koikoi-card-grid" style="margin-top:24px">
-  <!-- Card 1: Pride of Karnataka -->
-  <div class="koikoi-tour-card" id="card-pride">
-    <a href="{base_path}/golden-chariot/pride-of-karnataka" class="koikoi-card-img-wrap">
-      <img src="/images/luxury-trains/golden-chariot/sitting-room.jpg" alt="Pride of Karnataka - The Golden Chariot Tour Package | KoiKoi Travel">
-    </a>
-    <div class="koikoi-card-body">
-      <a href="{base_path}/golden-chariot/pride-of-karnataka" class="koikoi-card-title">
-        6 Days - Pride of Karnataka Luxury Rail Tour
-      </a>
-      <div class="koikoi-card-route">
-        Bengaluru · Bandipur · Mysore · Halebidu · Chikmagalur · Hampi · Goa · Bengaluru
-      </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Bandipur National Park Morning Open-Jeep Safari</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Illuminated Mysore Palace & Hoysala Temples of Halebidu</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>UNESCO World Heritage Hampi Ruins & Old Goa Sunset Beach</span>
-        </div>
-      </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
-          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
-        </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20The%20Golden%20Chariot%20-%20Pride%20of%20Karnataka%20(6%20Days)." target="_blank" rel="noopener">
-            Get a quote
-          </a>
-          <a class="koikoi-btn-details" href="{base_path}/golden-chariot/pride-of-karnataka">
-            Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Card 2: Jewels of South -->
-  <div class="koikoi-tour-card" id="card-jewels">
-    <a href="{base_path}/golden-chariot/jewels-of-south" class="koikoi-card-img-wrap">
-      <img src="/images/luxury-trains/golden-chariot/restaurant-1.jpg" alt="Jewels of South - The Golden Chariot Tour Package | KoiKoi Travel">
-    </a>
-    <div class="koikoi-card-body">
-      <a href="{base_path}/golden-chariot/jewels-of-south" class="koikoi-card-title">
-        6 Days - Jewels of South Heritage Rail Tour
-      </a>
-      <div class="koikoi-card-route">
-        Bengaluru · Mysore · Mahabalipuram · Thanjavur · Chettinad · Cochin · Kumarakom · Bengaluru
-      </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>11th-Century Chola Architecture at Brihadisvara Temple, Thanjavur</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Chettinad Heritage Mansions & Authentic Regional Dining</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Kumarakom Traditional Houseboat Cruise along Kerala Backwaters</span>
-        </div>
-      </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
-          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
-        </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20The%20Golden%20Chariot%20-%20Jewels%20of%20South%20(6%20Days)." target="_blank" rel="noopener">
-            Get a quote
-          </a>
-          <a class="koikoi-btn-details" href="{base_path}/golden-chariot/jewels-of-south">
-            Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Card 3: Glimpses of Karnataka -->
-  <div class="koikoi-tour-card" id="card-glimpses">
-    <a href="{base_path}/golden-chariot/glimpses-of-karnataka" class="koikoi-card-img-wrap">
-      <img src="/images/luxury-trains/golden-chariot/double-bed.jpg" alt="Glimpses of Karnataka - The Golden Chariot Tour Package | KoiKoi Travel">
-    </a>
-    <div class="koikoi-card-body">
-      <a href="{base_path}/golden-chariot/glimpses-of-karnataka" class="koikoi-card-title">
-        4 Days - Glimpses of Karnataka Weekend Rail Tour
-      </a>
-      <div class="koikoi-card-route">
-        Bengaluru · Bandipur · Mysore · Hampi · Bengaluru
-      </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Compact 4-Day Royal Weekend Combining Wildlife & Imperial History</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Dawn Wildlife Safari inside Bandipur Tiger Reserve</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Guided Heritage Walk through Hampi's Stone Chariot & Vitthala Temple</span>
-        </div>
-      </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
-          Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
-        </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20The%20Golden%20Chariot%20-%20Glimpses%20of%20Karnataka%20(4%20Days)." target="_blank" rel="noopener">
-            Get a quote
-          </a>
-          <a class="koikoi-btn-details" href="{base_path}/golden-chariot/glimpses-of-karnataka">
-            Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
+{inner}
 </div>
 """
 
@@ -6698,259 +6620,147 @@ function switchPriceCurrency(curr) {{
 
     # --- 5.8 DECCAN ODYSSEY OVERVIEW PAGE (ROYAL REBUILD MATCHING MAHARAJAS' EXPRESS & GOLDEN CHARIOT) ---
     def get_do_cards_component():
+        do_cards_data = [
+            {
+                "id": "card-maharashtra",
+                "slug": "maharashtra-splendour",
+                "img": "/images/luxury-trains/deccan-odyssey/exterior.jpg",
+                "alt": "Maharashtra Splendour - Deccan Odyssey Tour Package | KoiKoi Travel",
+                "title": "8 Days - Maharashtra Splendour Luxury Rail Tour",
+                "route": "🚂 Mumbai · Goa · Kolhapur · Daulatabad · Chandor · Ajanta & Ellora · Mumbai",
+                "departs": "Every Saturday",
+                "from_station": "Mumbai (CSMT)",
+                "ends": "Saturday at Mumbai (CSMT)",
+                "duration": "7N / 8D",
+                "schedule": "Sat: Mumbai (Depart) &bull; Sun: Nashik &bull; Mon: Aurangabad (Ellora) &bull; Tue: Jalgaon (Ajanta) &bull; Wed: Kolhapur &bull; Thu: Goa &bull; Fri: Sindhudurg &bull; Sat: Mumbai",
+                "inquire": "Deccan Odyssey - Maharashtra Splendour (8 Days)"
+            },
+            {
+                "id": "card-indian-odyssey",
+                "slug": "indian-odyssey",
+                "img": "/images/luxury-trains/deccan-odyssey/hero.jpg",
+                "alt": "Indian Odyssey - Deccan Odyssey Tour Package | KoiKoi Travel",
+                "title": "8 Days - Indian Odyssey Grand Trans-India Tour",
+                "route": "🚂 New Delhi · Sawai Madhopur · Agra · Jaipur · Udaipur · Vadodara · Mumbai",
+                "departs": "Every Saturday",
+                "from_station": "New Delhi (Safdarjung)",
+                "ends": "Saturday at Mumbai (CSMT)",
+                "duration": "7N / 8D",
+                "schedule": "Sat: Delhi (Depart) &bull; Sun: Sawai Madhopur &bull; Mon: Agra &bull; Tue: Jaipur &bull; Wed: Udaipur &bull; Thu: Vadodara &bull; Fri: Aurangabad &bull; Sat: Mumbai",
+                "inquire": "Deccan Odyssey - Indian Odyssey (8 Days)"
+            },
+            {
+                "id": "card-indian-sojourn",
+                "slug": "indian-sojourn",
+                "img": "/images/luxury-trains/deccan-odyssey/deluxe-cabin-double.jpg",
+                "alt": "Indian Sojourn - Deccan Odyssey Tour Package | KoiKoi Travel",
+                "title": "8 Days - Indian Sojourn Heritage Rail Tour",
+                "route": "🚂 Mumbai · Vadodara · Udaipur · Jodhpur · Agra · Sawai Madhopur · Jaipur · New Delhi",
+                "departs": "Every Saturday",
+                "from_station": "Mumbai (CSMT)",
+                "ends": "Saturday at New Delhi (Safdarjung)",
+                "duration": "7N / 8D",
+                "schedule": "Sat: Mumbai (Depart) &bull; Sun: Vadodara &bull; Mon: Udaipur &bull; Tue: Jodhpur &bull; Wed: Agra &bull; Thu: Sawai Madhopur &bull; Fri: Jaipur &bull; Sat: Delhi",
+                "inquire": "Deccan Odyssey - Indian Sojourn (8 Days)"
+            },
+            {
+                "id": "card-wild-trail",
+                "slug": "maharashtra-wild-trail",
+                "img": "/images/luxury-trains/deccan-odyssey/train-exterior.jpg",
+                "alt": "Maharashtra Wild Trail - Deccan Odyssey Tour Package | KoiKoi Travel",
+                "title": "8 Days - Maharashtra Wild Trail Wildlife & Heritage Tour",
+                "route": "🚂 Mumbai · Aurangabad · Pench · Tadoba · Ajanta Caves · Nashik · Mumbai",
+                "departs": "Every Saturday",
+                "from_station": "Mumbai (CSMT)",
+                "ends": "Saturday at Mumbai (CSMT)",
+                "duration": "7N / 8D",
+                "schedule": "Sat: Mumbai (Depart) &bull; Sun: Aurangabad &bull; Mon: Daulatabad &bull; Tue: Pench Safari &bull; Wed: Tadoba Safari &bull; Thu: Ajanta &bull; Fri: Nashik &bull; Sat: Mumbai",
+                "inquire": "Deccan Odyssey - Maharashtra Wild Trail (8 Days)"
+            },
+            {
+                "id": "card-heritage-odyssey",
+                "slug": "heritage-odyssey",
+                "img": "/images/luxury-trains/deccan-odyssey/presidential-suite.jpg",
+                "alt": "Heritage Odyssey - Deccan Odyssey Tour Package | KoiKoi Travel",
+                "title": "8 Days - Heritage Odyssey Royal Rajasthan Tour",
+                "route": "🚂 New Delhi · Agra · Jaipur · Bikaner · Jaisalmer · Jodhpur · Udaipur · New Delhi",
+                "departs": "Every Saturday",
+                "from_station": "New Delhi (Safdarjung)",
+                "ends": "Saturday at New Delhi (Safdarjung)",
+                "duration": "7N / 8D",
+                "schedule": "Sat: Delhi (Depart) &bull; Sun: Agra &bull; Mon: Sawai Madhopur &bull; Tue: Udaipur &bull; Wed: Jodhpur &bull; Thu: Jaisalmer &bull; Fri: Jaipur &bull; Sat: Delhi",
+                "inquire": "Deccan Odyssey - Heritage Odyssey (8 Days)"
+            },
+            {
+                "id": "card-cultural-odyssey",
+                "slug": "cultural-odyssey",
+                "img": "/images/luxury-trains/deccan-odyssey/restaurant.jpg",
+                "alt": "Cultural Odyssey - Deccan Odyssey Tour Package | KoiKoi Travel",
+                "title": "8 Days - Cultural Odyssey Heritage & Spiritual Tour",
+                "route": "🚂 New Delhi · Sawai Madhopur · Agra · Jaipur · Gwalior · Khajuraho · Varanasi · New Delhi",
+                "departs": "Every Saturday",
+                "from_station": "New Delhi (Safdarjung)",
+                "ends": "Saturday at New Delhi (Safdarjung)",
+                "duration": "7N / 8D",
+                "schedule": "Sat: Delhi (Depart) &bull; Sun: Sawai Madhopur &bull; Mon: Jaipur &bull; Tue: Agra &bull; Wed: Gwalior &bull; Thu: Orchha & Khajuraho &bull; Fri: Varanasi &bull; Sat: Delhi",
+                "inquire": "Deccan Odyssey - Cultural Odyssey (8 Days)"
+            }
+        ]
+
+        cards_html = []
+        for c in do_cards_data:
+            wa_text = f"Hi KoiKoi Travel, please share details for {c['inquire']}."
+            wa_encoded = urllib.parse.quote(wa_text)
+            c_html = f"""  <!-- Card: {c['slug']} -->
+  <div class="koikoi-tour-card" id="{c['id']}">
+    <a href="{base_path}/deccan-odyssey/{c['slug']}" class="koikoi-card-img-wrap">
+      <img src="{c['img']}" alt="{c['alt']}">
+    </a>
+    <div class="koikoi-card-body">
+      <a href="{base_path}/deccan-odyssey/{c['slug']}" class="koikoi-card-title">
+        {c['title']}
+      </a>
+      <div class="koikoi-card-route">
+        {c['route']}
+      </div>
+      <div class="koikoi-card-highlights" style="margin-bottom:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+          <span style="font-size:13px;font-weight:700;color:#0f172a;display:inline-flex;align-items:center;gap:6px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Departs: <strong style="color:#d96b27">{c['departs']}</strong>
+          </span>
+          <span style="font-size:11.5px;font-weight:700;background:#0f172a;color:#fff;padding:2px 8px;border-radius:4px">{c['from_station']}</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12.5px;color:#475569">
+          <span><strong style="color:#0f172a">Ends:</strong> {c['ends']}</span>
+          <span style="font-weight:600;color:#64748b;font-size:11.5px">{c['duration']}</span>
+        </div>
+        <div style="font-size:12px;color:#334155;line-height:1.45;border-top:1px dashed #cbd5e1;padding-top:6px;margin-top:2px">
+          <strong style="color:#0f172a">Day-by-Day Destinations:</strong><br>
+          {c['schedule']}
+        </div>
+      </div>
+      <div class="koikoi-card-footer">
+        <div class="koikoi-card-amenities">
+          Deluxe &amp; Presidential Cabins · All Meals · Guided Sightseeing · Butler Service
+        </div>
+        <div class="koikoi-card-btn-row">
+          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text={wa_encoded}" target="_blank" rel="noopener">
+            Get a quote
+          </a>
+          <a class="koikoi-btn-details" href="{base_path}/deccan-odyssey/{c['slug']}">
+            Details
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>"""
+            cards_html.append(c_html)
+
+        inner = "\n\n".join(cards_html)
         return f"""
 <div class="koikoi-card-grid" style="margin-top:24px">
-  <!-- Card 1: Maharashtra Splendour -->
-  <div class="koikoi-tour-card" id="card-maharashtra">
-    <a href="{base_path}/deccan-odyssey/maharashtra-splendour" class="koikoi-card-img-wrap">
-      <img src="/images/luxury-trains/deccan-odyssey/exterior.jpg" alt="Maharashtra Splendour - Deccan Odyssey Tour Package | KoiKoi Travel">
-    </a>
-    <div class="koikoi-card-body">
-      <a href="{base_path}/deccan-odyssey/maharashtra-splendour" class="koikoi-card-title">
-        8 Days - Maharashtra Splendour Luxury Rail Tour
-      </a>
-      <div class="koikoi-card-route">
-        🚂 Mumbai · Goa · Kolhapur · Daulatabad · Chandor · Ajanta &amp; Ellora · Mumbai
-      </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>UNESCO World Heritage Kailash Temple at Ellora &amp; Ajanta Caves</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Sula Vineyards wine tasting &amp; cellar tour in Nashik</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Portuguese Latin Quarter, historic churches &amp; spice farm in Goa</span>
-        </div>
-      </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
-          Deluxe &amp; Presidential Cabins · All Meals · Guided Sightseeing · Butler Service
-        </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Deccan%20Odyssey%20-%20Maharashtra%20Splendour%20(8%20Days)." target="_blank" rel="noopener">
-            Get a quote
-          </a>
-          <a class="koikoi-btn-details" href="{base_path}/deccan-odyssey/maharashtra-splendour">
-            Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Card 2: Indian Odyssey -->
-  <div class="koikoi-tour-card" id="card-indian-odyssey">
-    <a href="{base_path}/deccan-odyssey/indian-odyssey" class="koikoi-card-img-wrap">
-      <img src="/images/luxury-trains/deccan-odyssey/hero.jpg" alt="Indian Odyssey - Deccan Odyssey Tour Package | KoiKoi Travel">
-    </a>
-    <div class="koikoi-card-body">
-      <a href="{base_path}/deccan-odyssey/indian-odyssey" class="koikoi-card-title">
-        8 Days - Indian Odyssey Grand Trans-India Tour
-      </a>
-      <div class="koikoi-card-route">
-        🚂 New Delhi · Sawai Madhopur · Agra · Jaipur · Udaipur · Vadodara · Mumbai
-      </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Sunrise at the Taj Mahal &amp; UNESCO Agra Fort</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Ranthambore National Park morning tiger safari in open canter</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Amber Fort in Jaipur &amp; Lake Pichola boat cruise in Udaipur</span>
-        </div>
-      </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
-          Deluxe &amp; Presidential Cabins · All Meals · Guided Sightseeing · Butler Service
-        </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Deccan%20Odyssey%20-%20Indian%20Odyssey%20(8%20Days)." target="_blank" rel="noopener">
-            Get a quote
-          </a>
-          <a class="koikoi-btn-details" href="{base_path}/deccan-odyssey/indian-odyssey">
-            Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Card 3: Indian Sojourn -->
-  <div class="koikoi-tour-card" id="card-indian-sojourn">
-    <a href="{base_path}/deccan-odyssey/indian-sojourn" class="koikoi-card-img-wrap">
-      <img src="/images/luxury-trains/deccan-odyssey/deluxe-cabin-double.jpg" alt="Indian Sojourn - Deccan Odyssey Tour Package | KoiKoi Travel">
-    </a>
-    <div class="koikoi-card-body">
-      <a href="{base_path}/deccan-odyssey/indian-sojourn" class="koikoi-card-title">
-        8 Days - Indian Sojourn Heritage Rail Tour
-      </a>
-      <div class="koikoi-card-route">
-        🚂 Mumbai · Vadodara · Udaipur · Jodhpur · Agra · Sawai Madhopur · Jaipur · New Delhi
-      </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Royal Laxmi Vilas Palace in Vadodara &amp; Mehrangarh Fort in Jodhpur</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Ranthambore Tiger Safari &amp; high-tea at Sawai Madhopur Lodge</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Sunrise at the Taj Mahal, Agra Fort &amp; Pink City Jaipur</span>
-        </div>
-      </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
-          Deluxe &amp; Presidential Cabins · All Meals · Guided Sightseeing · Butler Service
-        </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Deccan%20Odyssey%20-%20Indian%20Sojourn%20(8%20Days)." target="_blank" rel="noopener">
-            Get a quote
-          </a>
-          <a class="koikoi-btn-details" href="{base_path}/deccan-odyssey/indian-sojourn">
-            Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Card 4: Maharashtra Wild Trail -->
-  <div class="koikoi-tour-card" id="card-wild-trail">
-    <a href="{base_path}/deccan-odyssey/maharashtra-wild-trail" class="koikoi-card-img-wrap">
-      <img src="/images/luxury-trains/deccan-odyssey/train-exterior.jpg" alt="Maharashtra Wild Trail - Deccan Odyssey Tour Package | KoiKoi Travel">
-    </a>
-    <div class="koikoi-card-body">
-      <a href="{base_path}/deccan-odyssey/maharashtra-wild-trail" class="koikoi-card-title">
-        8 Days - Maharashtra Wild Trail Wildlife &amp; Heritage Tour
-      </a>
-      <div class="koikoi-card-route">
-        🚂 Mumbai · Aurangabad · Pench · Tadoba · Ajanta Caves · Nashik · Mumbai
-      </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Morning &amp; afternoon wildlife safaris in Pench Tiger Reserve</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Deep jungle open-jeep safari inside Tadoba Andhari Tiger Reserve</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Ancient Buddhist murals at UNESCO Ajanta &amp; Grover Zampa winery tasting</span>
-        </div>
-      </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
-          Deluxe &amp; Presidential Cabins · All Meals · Guided Sightseeing · Butler Service
-        </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Deccan%20Odyssey%20-%20Maharashtra%20Wild%20Trail%20(8%20Days)." target="_blank" rel="noopener">
-            Get a quote
-          </a>
-          <a class="koikoi-btn-details" href="{base_path}/deccan-odyssey/maharashtra-wild-trail">
-            Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Card 5: Heritage Odyssey -->
-  <div class="koikoi-tour-card" id="card-heritage-odyssey">
-    <a href="{base_path}/deccan-odyssey/heritage-odyssey" class="koikoi-card-img-wrap">
-      <img src="/images/luxury-trains/deccan-odyssey/presidential-suite.jpg" alt="Heritage Odyssey - Deccan Odyssey Tour Package | KoiKoi Travel">
-    </a>
-    <div class="koikoi-card-body">
-      <a href="{base_path}/deccan-odyssey/heritage-odyssey" class="koikoi-card-title">
-        8 Days - Heritage Odyssey Royal Rajasthan Tour
-      </a>
-      <div class="koikoi-card-route">
-        🚂 New Delhi · Agra · Jaipur · Bikaner · Jaisalmer · Jodhpur · Udaipur · New Delhi
-      </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Sunset camel safari over Sam Sand Dunes in the Thar Desert, Jaisalmer</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Junagarh Fort in Bikaner &amp; massive Mehrangarh Fort in Jodhpur</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Taj Mahal sunrise tour, Amber Fort in Jaipur &amp; Lake Pichola Udaipur</span>
-        </div>
-      </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
-          Deluxe &amp; Presidential Cabins · All Meals · Guided Sightseeing · Butler Service
-        </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Deccan%20Odyssey%20-%20Heritage%20Odyssey%20(8%20Days)." target="_blank" rel="noopener">
-            Get a quote
-          </a>
-          <a class="koikoi-btn-details" href="{base_path}/deccan-odyssey/heritage-odyssey">
-            Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Card 6: Cultural Odyssey -->
-  <div class="koikoi-tour-card" id="card-cultural-odyssey">
-    <a href="{base_path}/deccan-odyssey/cultural-odyssey" class="koikoi-card-img-wrap">
-      <img src="/images/luxury-trains/deccan-odyssey/restaurant.jpg" alt="Cultural Odyssey - Deccan Odyssey Tour Package | KoiKoi Travel">
-    </a>
-    <div class="koikoi-card-body">
-      <a href="{base_path}/deccan-odyssey/cultural-odyssey" class="koikoi-card-title">
-        8 Days - Cultural Odyssey Heritage &amp; Spiritual Tour
-      </a>
-      <div class="koikoi-card-route">
-        🚂 New Delhi · Sawai Madhopur · Agra · Jaipur · Gwalior · Khajuraho · Varanasi · New Delhi
-      </div>
-      <div class="koikoi-card-highlights">
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Sunset boat cruise along the holy Ganges &amp; evening Ganga Aarti in Varanasi</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>UNESCO World Heritage Khajuraho Western Group of Chandela Temples</span>
-        </div>
-        <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Gwalior Fort &amp; Jai Vilas Palace, Taj Mahal, and Ranthambore Safari</span>
-        </div>
-      </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
-          Deluxe &amp; Presidential Cabins · All Meals · Guided Sightseeing · Butler Service
-        </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Deccan%20Odyssey%20-%20Cultural%20Odyssey%20(8%20Days)." target="_blank" rel="noopener">
-            Get a quote
-          </a>
-          <a class="koikoi-btn-details" href="{base_path}/deccan-odyssey/cultural-odyssey">
-            Details
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
+{inner}
 </div>
 """
     do_cards_html = get_do_cards_component()
