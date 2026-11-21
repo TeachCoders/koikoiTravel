@@ -274,7 +274,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
    ======================================================== */
 .kb-train-select-box {
   background: #0f766e;
-  border-radius: 14px;
+  border-radius: 14px 0 0 14px;
   padding: 22px 24px;
   color: #ffffff;
   box-shadow: 0 4px 18px rgba(15, 118, 110, 0.2);
