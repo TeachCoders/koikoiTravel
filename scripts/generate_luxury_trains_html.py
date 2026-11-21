@@ -2549,12 +2549,12 @@ def generate_all_for_base(base_dir, base_path):
     
     <!-- 1. The 4 Signature Journeys -->
     <div id="journeys" style="margin-bottom:64px">
-      <div class="sec-head" style="margin-bottom:28px">
+      <div class="sec-head" style="margin-bottom:28px;text-align:left">
         <div class="eyebrow" style="color:#d96b27">Royal Circuits</div>
-        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a">
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
           4 Signature Journeys
         </h2>
-        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6">
+        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
           Select a royal circuit below to explore complete day-by-day itineraries and departure dates.
         </p>
       </div>
