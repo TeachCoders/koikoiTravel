@@ -245,13 +245,25 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   overflow: hidden;
 }
 .kb-form-body {
-  padding: 26px 30px;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 22px;
 }
 @media (max-width: 640px) {
   .kb-form-body {
+    padding: 0;
+    gap: 18px;
+  }
+}
+.kb-step-inner {
+  padding: 24px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+@media (max-width: 640px) {
+  .kb-step-inner {
     padding: 18px 16px;
     gap: 18px;
   }
@@ -455,7 +467,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
    Zebra Striped Month Table (Light Golden & White alternate)
    ======================================================== */
 .kb-dates-container {
-  border: none;
+  /* border: 1px solid #ece5da; */
   border-radius: 12px;
   overflow: hidden;
   background: #ffffff;
@@ -491,9 +503,9 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 }
 .kb-month-name {
   font-size: 17.5px;
-  font-weight: 800;
   color: var(--brand);
   letter-spacing: -0.01em;
+  font-weight: 500;
 }
 
 /* Dates Grid inside row */
@@ -1452,6 +1464,7 @@ function render() {
   // STEP 2: TRAVELERS & CONTACT DETAILS (Zero Text Overlap)
   // =========================================================================
   else if (S.currentStep === 2) {
+    h += '<div class="kb-step-inner">';
     // Summary Pill of Chosen Train & Date with Edit Button
     h += '<div class="kb-step2-summary-card">' +
       '<div>' +
@@ -1511,6 +1524,7 @@ function render() {
       '</div>' +
       '</div>';
 
+    h += '</div>'; // end kb-step-inner
     h += '</div>'; // end kb-form-body
 
     // Step 2 Footer Bar
@@ -1526,6 +1540,7 @@ function render() {
   // STEP 3: REVIEW & CONFIRM (Full Visibility + Instant Edit)
   // =========================================================================
   else if (S.currentStep === 3) {
+    h += '<div class="kb-step-inner">';
     h += '<div class="kb-review-header">' +
       '<span class="kb-review-badge">Step 3 of 3 · Final Verification</span>' +
       '<h2 class="kb-sec-title" style="font-size:24px;margin:8px 0 4px">Review Your Booking Inquiry</h2>' +
@@ -1583,6 +1598,7 @@ function render() {
       '</div>' +
       '</div>';
 
+    h += '</div>'; // end kb-step-inner
     h += '</div>'; // end kb-form-body
 
     // Step 3 Footer Bar
