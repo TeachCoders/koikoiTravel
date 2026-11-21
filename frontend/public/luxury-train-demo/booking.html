@@ -1115,1087 +1115,999 @@ footer a:hover{color:#F8904D}
 
 
 <style>
-/* Luxury Train Booking Page Styling */
-.kb-booking-wrap {
-  max-width: 1240px;
+/* KoiKoi Luxury Train Form Styling */
+:root {
+  --brand: #0f172a;
+  --accent: #F8904D;
+  --accent-dark: #ea580c;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --line: #e2e8f0;
+  --err: #ef4444;
+  --font-body: 'Outfit', 'Inter', -apple-system, sans-serif;
+  --font-head: 'Playfair Display', Georgia, serif;
+}
+
+.kb-booking-page-wrap {
+  max-width: 860px;
   margin: 0 auto;
-  padding: 40px 20px 80px;
-  font-family: 'Outfit', sans-serif;
-  color: #1e293b;
+  padding: 40px 16px 80px;
+  font-family: var(--font-body);
+  color: var(--text);
 }
-.kb-booking-header {
-  text-align: center;
-  max-width: 820px;
-  margin: 0 auto 36px;
+.kb-booking-page-wrap h1 {
+  font-family: var(--font-head);
+  font-size: clamp(30px, 4.5vw, 42px);
+  color: var(--brand);
+  line-height: 1.2;
+  margin: 8px 0 16px;
 }
-.kb-pill-badge {
+.eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  font-weight: 700;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #fff7ed;
-  color: #ea580c;
-  border: 1px solid #ffedd5;
-  padding: 6px 18px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  margin-bottom: 14px;
 }
-.kb-pill-badge .dot {
+.eyebrow::before {
+  content: "";
+  display: inline-block;
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #ea580c;
+  background: var(--accent);
 }
-.kb-booking-header h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(30px, 4vw, 46px);
-  font-weight: 700;
-  color: #0f172a;
-  line-height: 1.25;
-  margin-bottom: 14px;
+.box {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 4px 25px rgba(0,0,0,0.05);
+  overflow: hidden;
+  margin-top: 24px;
 }
-.kb-booking-header p {
-  font-size: 16px;
-  color: #64748b;
-  line-height: 1.6;
-}
-
-/* Two column layout */
-.kb-booking-layout {
+.pane {
+  padding: 34px 30px;
   display: grid;
-  grid-template-columns: 1fr 430px;
-  gap: 36px;
-  align-items: start;
+  gap: 28px;
 }
-@media (max-width: 992px) {
-  .kb-booking-layout {
+@media (max-width: 640px) {
+  .pane {
+    padding: 22px 18px;
+    gap: 22px;
+  }
+}
+.sh {
+  font-family: var(--font-head);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--brand);
+  margin: 0 0 14px;
+}
+.sub {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 580px) {
+  .cards {
     grid-template-columns: 1fr;
   }
-  .kb-summary-col {
-    order: -1;
-  }
+}
+.card {
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.card:hover {
+  border-color: #cbd5e1;
+  background: #fbfcfe;
+}
+.card b {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--brand);
+  margin-bottom: 3px;
+}
+.card small {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+  display: block;
+}
+.card[aria-checked="true"] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(248, 144, 77, 0.18);
+  background: #fffaf5;
+}
+.card[aria-checked="true"] b {
+  color: var(--accent-dark);
 }
 
-/* Form Card */
-.kb-form-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 36px 32px;
-  box-shadow: 0 4px 25px rgba(0,0,0,0.04);
+/* 2-Column Date Radio Grid */
+.kb-date-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 18px;
+  margin-top: 8px;
 }
-.kb-form-section {
-  margin-bottom: 30px;
-  padding-bottom: 26px;
-  border-bottom: 1px dashed #e2e8f0;
+@media (max-width: 680px) {
+  .kb-date-grid {
+    grid-template-columns: 1fr;
+  }
 }
-.kb-form-section:last-of-type {
-  border-bottom: none;
-  margin-bottom: 20px;
-  padding-bottom: 0;
-}
-.kb-sec-title {
+.kb-date-radio-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 17px;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 18px;
+  gap: 12px;
+  cursor: pointer;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  transition: all 0.2s ease;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #1e293b;
+  user-select: none;
+  text-align: left;
 }
-.kb-sec-num {
-  width: 26px;
-  height: 26px;
+.kb-date-radio-item:hover {
+  border-color: #cbd5e1;
+  background: #fbfcfe;
+}
+.kb-date-radio-item[aria-checked="true"] {
+  border-color: var(--accent-dark);
+  background: #fff7ed;
+  box-shadow: 0 0 0 2px rgba(234, 88, 12, 0.18);
+  font-weight: 600;
+  color: #0f172a;
+}
+.kb-radio-circle {
+  width: 19px;
+  height: 19px;
   border-radius: 50%;
-  background: #ffedd5;
-  color: #ea580c;
+  border: 2px solid var(--accent-dark);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  font-weight: 800;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  background: #ffffff;
 }
-.kb-field-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
+.kb-date-radio-item[aria-checked="true"] .kb-radio-circle::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent-dark);
 }
-.kb-field-full {
-  grid-column: 1 / -1;
+.kb-date-text {
+  letter-spacing: -0.01em;
 }
-@media (max-width: 640px) {
-  .kb-field-grid {
-    grid-template-columns: 1fr;
-  }
-  .kb-form-card {
-    padding: 24px 18px;
-  }
-}
-.kb-label {
+
+.lab {
   display: block;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 600;
   color: #334155;
   margin-bottom: 7px;
 }
-.kb-label .req {
-  color: #ea580c;
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
 }
-.kb-input, .kb-select, .kb-textarea {
-  width: 100%;
-  padding: 12px 14px;
-  font-family: inherit;
-  font-size: 14.5px;
-  color: #0f172a;
-  background: #f8fafc;
-  border: 1.5px solid #cbd5e1;
-  border-radius: 10px;
+.chip {
+  font: inherit;
+  color: inherit;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 18px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
   transition: all 0.2s ease;
-  box-sizing: border-box;
 }
-.kb-input:focus, .kb-select:focus, .kb-textarea:focus {
+.chip:hover {
+  border-color: #cbd5e1;
+}
+.chip[aria-pressed="true"], .chip[aria-checked="true"] {
+  border-color: var(--accent);
+  background: #fff7ed;
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+input[type=text], input[type=email], input[type=tel], select, textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 14.5px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 13px 16px;
   outline: none;
-  border-color: #F8904D;
-  background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(248, 144, 77, 0.15);
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
-.kb-input::placeholder, .kb-textarea::placeholder {
-  color: #94a3b8;
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(248, 144, 77, 0.18);
 }
-.kb-date-help {
-  font-size: 12px;
-  color: #0d9488;
-  margin-top: 6px;
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 580px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+.row3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+@media (max-width: 600px) {
+  .row3 {
+    grid-template-columns: 1fr;
+  }
+}
+.ctr {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-weight: 600;
-}
-
-/* Submit button */
-.kb-btn-submit {
-  width: 100%;
-  background: linear-gradient(135deg, #F8904D 0%, #ea580c 100%);
-  color: #ffffff;
-  border: none;
+  justify-content: space-between;
+  border: 1.5px solid var(--line);
   border-radius: 12px;
-  padding: 16px 28px;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 700;
+  padding: 12px 16px;
+  gap: 12px;
+  background: #fbfcfe;
+}
+.ctr small {
+  display: block;
+  color: var(--muted);
+}
+.ctr .n {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.ctr button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--brand);
+  font-size: 20px;
   cursor: pointer;
-  box-shadow: 0 4px 18px rgba(234, 88, 12, 0.35);
-  transition: all 0.25s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  transition: all 0.2s ease;
 }
-.kb-btn-submit:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(234, 88, 12, 0.45);
+.ctr button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent-dark);
 }
-.kb-btn-submit:active {
-  transform: translateY(0);
+.ctr button:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
-
-/* Sticky Summary Column */
-.kb-summary-card {
-  position: sticky;
-  top: 96px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 4px 25px rgba(0,0,0,0.06);
-}
-.kb-sum-photo-wrap {
-  position: relative;
-  height: 200px;
-  overflow: hidden;
-  background: #0f172a;
-}
-.kb-sum-photo-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s ease;
-}
-.kb-sum-train-badge {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  background: rgba(15,23,42,0.85);
-  backdrop-filter: blur(8px);
-  color: #ffffff;
-  padding: 5px 14px;
-  border-radius: 999px;
-  font-size: 12px;
+.ctr output {
+  min-width: 22px;
+  text-align: center;
+  font-size: 17px;
   font-weight: 700;
-  border: 1px solid rgba(248,144,77,0.4);
+  color: var(--brand);
 }
-.kb-sum-body {
-  padding: 24px;
-}
-.kb-sum-duration {
-  display: inline-block;
-  background: #ecfdf5;
-  color: #047857;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 6px;
-  margin-bottom: 8px;
-}
-.kb-sum-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px;
-  font-weight: 700;
-  color: #0f172a;
-  line-height: 1.35;
-  margin-bottom: 10px;
-}
-.kb-sum-route {
-  font-size: 13px;
-  color: #0d9488;
+.err {
+  color: var(--err);
+  font-size: 13.5px;
+  margin: 6px 0 0;
   font-weight: 600;
-  line-height: 1.45;
-  margin-bottom: 14px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid #f1f5f9;
 }
-.kb-sum-meta-row {
+.more {
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  padding: 14px 18px;
+  background: #f8fafc;
+}
+.more summary {
+  cursor: pointer;
+  color: #334155;
+  font-weight: 600;
+  font-size: 14.5px;
+}
+.bar {
+  position: sticky;
+  bottom: 0;
   display: flex;
   justify-content: space-between;
+  gap: 12px;
   align-items: center;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  padding: 16px 24px;
+  box-shadow: 0 -4px 18px rgba(0,0,0,0.03);
+}
+.btn {
+  font: inherit;
+  font-weight: 700;
+  font-size: 15px;
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 30px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #F8904D 0%, #ea580c 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3);
+  transition: all 0.2s ease;
+}
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.4);
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.fine {
+  color: var(--muted);
   font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.done-box {
+  padding: 48px 24px;
+  text-align: center;
+}
+.done-box h2 {
+  font-family: var(--font-head);
+  font-size: 28px;
+  color: var(--brand);
   margin-bottom: 10px;
 }
-.kb-sum-meta-row .k-label {
-  color: #64748b;
+.done-box p {
+  color: var(--muted);
+  max-width: 480px;
+  margin: 12px auto 26px;
+  font-size: 15px;
+  line-height: 1.6;
 }
-.kb-sum-meta-row .k-val {
-  font-weight: 700;
-  color: #0f172a;
-}
-.kb-sum-schedule {
-  background: #f8fafc;
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin: 16px 0;
-  font-size: 13px;
-  color: #334155;
-  border-left: 3px solid #ea580c;
-}
-.kb-sum-schedule strong {
-  color: #ea580c;
-  display: block;
-  font-size: 11.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 2px;
-}
-.kb-trust-list {
-  list-style: none;
-  padding: 0;
-  margin: 18px 0 0;
-  border-top: 1px dashed #e2e8f0;
-  padding-top: 16px;
-}
-.kb-trust-list li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12.5px;
-  color: #475569;
-  margin-bottom: 8px;
-}
-.kb-trust-list li svg {
-  color: #10b981;
-  flex-shrink: 0;
-}
-.kb-sum-wa-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  color: #15803d;
-  font-size: 13.5px;
-  font-weight: 700;
-  padding: 12px;
-  border-radius: 10px;
-  text-decoration: none;
-  margin-top: 16px;
-  transition: all 0.2s;
-}
-.kb-sum-wa-btn:hover {
-  background: #dcfce7;
-  color: #166534;
-}
-
-/* Confirmation Modal / Screen */
-.kb-modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(6px);
-  z-index: 9999;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.kb-modal-card {
-  background: #ffffff;
-  max-width: 540px;
-  width: 100%;
-  border-radius: 24px;
-  padding: 40px 32px;
-  text-align: center;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-  position: relative;
-  animation: kbModalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-@keyframes kbModalPop {
-  0% { transform: scale(0.92); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-.kb-modal-check {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: #dcfce7;
-  color: #15803d;
+a.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
-  margin-bottom: 20px;
+  gap: 8px;
+  text-decoration: none;
 }
-.kb-modal-ref {
-  display: inline-block;
-  background: #f1f5f9;
-  color: #0f172a;
-  font-family: monospace;
-  font-size: 15px;
-  font-weight: 700;
-  padding: 6px 14px;
-  border-radius: 8px;
-  margin: 12px 0 16px;
-  border: 1px solid #cbd5e1;
+section {
+  scroll-margin-top: 80px;
 }
 </style>
 
-<div class="kb-booking-wrap">
-  <!-- Header -->
-  <div class="kb-booking-header">
-    <div class="kb-pill-badge">
-      <span class="dot"></span>
-      <span>Official Luxury Rail Reservation</span>
-    </div>
-    <h1>Reserve Your India Luxury Train Journey</h1>
-    <p>
-      Select your preferred royal train, confirmed departure date, and guest count. Our senior train specialists verify real-time IRCTC cabin availability and provide official fare tariffs with zero booking fee.
-    </p>
-  </div>
+<div class="kb-booking-page-wrap">
+  <div class="eyebrow">Luxury Trains of India</div>
+  <h1>Plan Your Train Journey</h1>
+  <p style="color:#64748b;font-size:16px;line-height:1.6;margin:0 0 16px">
+    Official IRCTC &amp; State Tourism authorized luxury train reservation. Select your train, circuit, and preferred departure date to receive confirmed berth availability and official tariffs.
+  </p>
 
-  <!-- Layout: Form + Sticky Summary -->
-  <div class="kb-booking-layout">
-    
-    <!-- LEFT: Form -->
-    <div class="kb-form-card">
-      <form id="luxury-booking-form" onsubmit="handleLuxuryBookingSubmit(event)">
-        
-        <!-- SECTION 1: TRAIN & CIRCUIT SELECTION -->
-        <div class="kb-form-section">
-          <div class="kb-sec-title">
-            <span class="kb-sec-num">1</span>
-            <span>Select Train &amp; Journey Circuit</span>
-          </div>
-
-          <div class="kb-field-grid">
-            <div class="kb-field-full">
-              <label class="kb-label" for="train-select">Luxury Train <span class="req">*</span></label>
-              <select id="train-select" class="kb-select" onchange="onTrainChange()" required>
-                <option value="palace-on-wheels">Palace on Wheels (Rajasthan Heritage)</option>
-                <option value="maharajas-express">Maharajas' Express (World's Leading Luxury Train)</option>
-                <option value="golden-chariot">The Golden Chariot (Splendour of South India)</option>
-                <option value="deccan-odyssey">Deccan Odyssey (India's Royal Blue Train)</option>
-              </select>
-            </div>
-
-            <div class="kb-field-full">
-              <label class="kb-label" for="journey-select">Journey Itinerary <span class="req">*</span></label>
-              <select id="journey-select" class="kb-select" onchange="onJourneyChange()" required>
-                <!-- Populated dynamically via JS -->
-              </select>
-            </div>
-
-            <div class="kb-field-full">
-              <label class="kb-label" for="departure-date-select">Official Departure Date <span class="req">*</span></label>
-              <select id="departure-date-select" class="kb-select" onchange="onDateChange()" required>
-                <!-- Populated dynamically with verified dates -->
-              </select>
-              <div class="kb-date-help" id="departure-help-text">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span id="date-schedule-note">Strictly official fixed-departure scheduled dates.</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SECTION 2: TRAVELERS (NO CABIN OPTION) -->
-        <div class="kb-form-section">
-          <div class="kb-sec-title">
-            <span class="kb-sec-num">2</span>
-            <span>Number of Travelers</span>
-          </div>
-
-          <div class="kb-field-grid">
-            <div>
-              <label class="kb-label" for="adults-select">Adults (12+ yrs) <span class="req">*</span></label>
-              <select id="adults-select" class="kb-select" onchange="onGuestsChange()" required>
-                <option value="1">1 Adult (Single Occupancy)</option>
-                <option value="2" selected>2 Adults (Double Occupancy)</option>
-                <option value="3">3 Adults</option>
-                <option value="4">4 Adults (2 Cabins)</option>
-                <option value="5">5 Adults</option>
-                <option value="6">6+ Adults (Group)</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="kb-label" for="children-select">Children (5-12 yrs)</label>
-              <select id="children-select" class="kb-select" onchange="onGuestsChange()">
-                <option value="0" selected>0 Children</option>
-                <option value="1">1 Child</option>
-                <option value="2">2 Children</option>
-                <option value="3">3+ Children</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- SECTION 3: CONTACT & SPECIAL REQUESTS -->
-        <div class="kb-form-section">
-          <div class="kb-sec-title">
-            <span class="kb-sec-num">3</span>
-            <span>Lead Guest Contact Details</span>
-          </div>
-
-          <div class="kb-field-grid">
-            <div>
-              <label class="kb-label" for="guest-name">Full Name <span class="req">*</span></label>
-              <input type="text" id="guest-name" class="kb-input" placeholder="e.g. Eleanor Vance" autocomplete="name" required>
-            </div>
-
-            <div>
-              <label class="kb-label" for="guest-email">Email Address <span class="req">*</span></label>
-              <input type="email" id="guest-email" class="kb-input" placeholder="e.g. eleanor@example.com" autocomplete="email" required>
-            </div>
-
-            <div>
-              <label class="kb-label" for="guest-phone">Phone / WhatsApp <span class="req">*</span></label>
-              <input type="tel" id="guest-phone" class="kb-input" placeholder="+1 (555) 019-2834" autocomplete="tel" required>
-            </div>
-
-            <div>
-              <label class="kb-label" for="guest-country">Country of Residence <span class="req">*</span></label>
-              <select id="guest-country" class="kb-select" required>
-                <option value="United States">United States</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="Australia">Australia</option>
-                <option value="India">India</option>
-                <option value="Canada">Canada</option>
-                <option value="Germany">Germany</option>
-                <option value="France">France</option>
-                <option value="United Arab Emirates">United Arab Emirates</option>
-                <option value="Singapore">Singapore</option>
-                <option value="New Zealand">New Zealand</option>
-                <option value="Switzerland">Switzerland</option>
-                <option value="Other">Other Country</option>
-              </select>
-            </div>
-
-            <div class="kb-field-full">
-              <label class="kb-label" for="special-requests">Dietary Preferences or Special Requests (Optional)</label>
-              <textarea id="special-requests" class="kb-textarea" rows="3" placeholder="e.g. Vegetarian/Vegan meals, anniversary celebration, pre/post luxury hotel extensions in Delhi or Mumbai..."></textarea>
-            </div>
-          </div>
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" id="btn-submit-booking" class="kb-btn-submit">
-          <span>Request Confirmed Availability &amp; Official Quote</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
-
-        <p style="text-align:center;font-size:12.5px;color:#64748b;margin-top:14px">
-          🔒 No payment required now. Official quotes are sent with guaranteed IRCTC berth allocations.
-        </p>
-      </form>
-    </div>
-
-    <!-- RIGHT: Sticky Live Summary Card -->
-    <div class="kb-summary-col">
-      <div class="kb-summary-card">
-        <div class="kb-sum-photo-wrap">
-          <img id="sum-photo" src="/images/luxury-trains/palace-on-wheels/hero.jpg" alt="Selected Luxury Train">
-          <div class="kb-sum-train-badge" id="sum-train-badge">Palace on Wheels</div>
-        </div>
-
-        <div class="kb-sum-body">
-          <span class="kb-sum-duration" id="sum-duration">7 Nights / 8 Days</span>
-          <h2 class="kb-sum-title" id="sum-title">Classic Rajasthan Tour</h2>
-          <div class="kb-sum-route" id="sum-route">
-            Delhi → Jaipur → Ranthambore → Chittorgarh → Udaipur → Jaisalmer → Jodhpur → Bharatpur → Agra → Delhi
-          </div>
-
-          <div class="kb-sum-schedule">
-            <strong>Departure Schedule</strong>
-            <span id="sum-schedule-text">Departs Every Wednesday from Safdarjung Station, New Delhi</span>
-          </div>
-
-          <div class="kb-sum-meta-row">
-            <span class="k-label">Selected Date:</span>
-            <span class="k-val" id="sum-selected-date">--</span>
-          </div>
-          <div class="kb-sum-meta-row">
-            <span class="k-label">Travelers:</span>
-            <span class="k-val" id="sum-travelers">2 Adults, 0 Children</span>
-          </div>
-          <div class="kb-sum-meta-row">
-            <span class="k-label">Tariff Estimate:</span>
-            <span class="k-val" id="sum-tariff" style="color:#ea580c">From $4,550 / person</span>
-          </div>
-
-          <!-- Trust Badges -->
-          <ul class="kb-trust-list">
-            <li>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span>Official IRCTC &amp; State Tourism Authorized</span>
-            </li>
-            <li>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span>100% Scheduled Departure Guarantee</span>
-            </li>
-            <li>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span>VIP Station Welcome &amp; Porter Service</span>
-            </li>
-            <li>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span>Dedicated 24/7 Luxury Concierge</span>
-            </li>
-          </ul>
-
-          <!-- WhatsApp Chat -->
-          <a id="sum-wa-link" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20have%20a%20question%20about%20booking%20a%20luxury%20train." target="_blank" rel="noopener" class="kb-sum-wa-btn">
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.487-1.761-1.659-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
-            <span>Need Help? Chat with Train Expert</span>
-          </a>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- Confirmation Modal -->
-<div id="booking-success-modal" class="kb-modal-overlay">
-  <div class="kb-modal-card">
-    <div class="kb-modal-check">✓</div>
-    <h2 style="font-family:'Playfair Display',serif;font-size:26px;color:#0f172a;margin-bottom:8px">Inquiry Received Successfully!</h2>
-    <p style="color:#64748b;font-size:14.5px;line-height:1.5">
-      Thank you, <strong id="modal-guest-name">Guest</strong>. Your reservation inquiry for <strong id="modal-journey-name">Journey</strong> has been logged with our Luxury Rail Desk.
-    </p>
-
-    <div class="kb-modal-ref" id="modal-ref-code">Ref: #KT-LUX-2026-8842</div>
-
-    <div style="background:#f8fafc;border-radius:12px;padding:16px;text-align:left;font-size:13.5px;color:#334155;margin-bottom:20px;border:1px solid #e2e8f0">
-      <div style="margin-bottom:6px">📅 <strong>Departure Date:</strong> <span id="modal-dep-date">--</span></div>
-      <div style="margin-bottom:6px">👥 <strong>Travelers:</strong> <span id="modal-guests">--</span></div>
-      <div>📧 <strong>Official Quote:</strong> Will be sent to <span id="modal-email">--</span> within 2 hours.</div>
-    </div>
-
-    <!-- Direct WhatsApp Action Button -->
-    <a id="modal-wa-btn" href="#" target="_blank" rel="noopener" class="kb-btn-submit" style="background:#15803d;box-shadow:0 4px 18px rgba(21,128,61,0.35);margin-bottom:12px;text-decoration:none">
-      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.487-1.761-1.659-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
-      <span>Connect Directly on WhatsApp with Reference Code</span>
-    </a>
-
-    <button type="button" onclick="closeSuccessModal()" style="background:none;border:none;color:#64748b;font-weight:600;font-size:14px;cursor:pointer;padding:8px">
-      Return to Form
-    </button>
-  </div>
+  <div class="box" id="box" aria-live="polite"></div>
 </div>
 
 <script>
-// Official Luxury Trains & Journey Datasets
-const LUXURY_TRAINS_DATA = {
-  "palace-on-wheels": {
-    name: "Palace on Wheels",
-    badge: "Palace on Wheels · Rajasthan",
-    photo: "/images/luxury-trains/palace-on-wheels/hero.jpg",
-    journeys: {
-      "classic-rajasthan": {
-        name: "Classic Rajasthan Luxury Rail Tour",
-        duration: "7 Nights / 8 Days",
-        tariff: "From $4,550 / person",
-        schedule: "Departs Every Wednesday from Safdarjung Station, New Delhi",
-        route: "Delhi → Jaipur → Ranthambore → Chittorgarh → Udaipur → Jaisalmer → Jodhpur → Bharatpur → Agra → Delhi",
-        dates: [
-          "02 Sep 2026 (Wednesday)", "09 Sep 2026 (Wednesday)", "16 Sep 2026 (Wednesday)", "23 Sep 2026 (Wednesday)", "30 Sep 2026 (Wednesday)",
-          "07 Oct 2026 (Wednesday)", "14 Oct 2026 (Wednesday)", "21 Oct 2026 (Wednesday)", "28 Oct 2026 (Wednesday)",
-          "04 Nov 2026 (Wednesday)", "11 Nov 2026 (Wednesday)", "18 Nov 2026 (Wednesday)", "25 Nov 2026 (Wednesday)",
-          "02 Dec 2026 (Wednesday)", "09 Dec 2026 (Wednesday)", "16 Dec 2026 (Wednesday)", "23 Dec 2026 (Wednesday)", "30 Dec 2026 (Wednesday)",
-          "06 Jan 2027 (Wednesday)", "13 Jan 2027 (Wednesday)", "20 Jan 2027 (Wednesday)", "27 Jan 2027 (Wednesday)",
-          "03 Feb 2027 (Wednesday)", "10 Feb 2027 (Wednesday)", "17 Feb 2027 (Wednesday)", "24 Feb 2027 (Wednesday)",
-          "03 Mar 2027 (Wednesday)", "10 Mar 2027 (Wednesday)", "17 Mar 2027 (Wednesday)", "24 Mar 2027 (Wednesday)", "31 Mar 2027 (Wednesday)",
-          "07 Apr 2027 (Wednesday)", "14 Apr 2027 (Wednesday)", "21 Apr 2027 (Wednesday)", "28 Apr 2027 (Wednesday)",
-          "01 Sep 2027 (Wednesday)", "08 Sep 2027 (Wednesday)", "15 Sep 2027 (Wednesday)", "22 Sep 2027 (Wednesday)", "29 Sep 2027 (Wednesday)",
-          "06 Oct 2027 (Wednesday)", "13 Oct 2027 (Wednesday)", "20 Oct 2027 (Wednesday)", "27 Oct 2027 (Wednesday)",
-          "03 Nov 2027 (Wednesday)", "10 Nov 2027 (Wednesday)", "17 Nov 2027 (Wednesday)", "24 Nov 2027 (Wednesday)",
-          "01 Dec 2027 (Wednesday)", "08 Dec 2027 (Wednesday)", "15 Dec 2027 (Wednesday)", "22 Dec 2027 (Wednesday)", "29 Dec 2027 (Wednesday)",
-          "05 Jan 2028 (Wednesday)", "12 Jan 2028 (Wednesday)", "19 Jan 2028 (Wednesday)", "26 Jan 2028 (Wednesday)",
-          "02 Feb 2028 (Wednesday)", "09 Feb 2028 (Wednesday)", "16 Feb 2028 (Wednesday)", "23 Feb 2028 (Wednesday)",
-          "01 Mar 2028 (Wednesday)", "08 Mar 2028 (Wednesday)", "15 Mar 2028 (Wednesday)", "22 Mar 2028 (Wednesday)", "29 Mar 2028 (Wednesday)",
-          "05 Apr 2028 (Wednesday)", "12 Apr 2028 (Wednesday)", "19 Apr 2028 (Wednesday)", "26 Apr 2028 (Wednesday)"
-        ]
-      }
-    }
-  },
-  "maharajas-express": {
-    name: "Maharajas' Express",
-    badge: "Maharajas' Express · Pan-India",
-    photo: "/images/luxury-trains/maharajas-express/hero.jpg",
-    journeys: {
-      "the-heritage-of-india": {
-        name: "The Heritage of India (Mumbai to Delhi)",
-        duration: "6 Nights / 7 Days",
-        tariff: "From $7,840 / person",
-        schedule: "Departs Selected Sundays from Mumbai CSMT (Ends Delhi)",
-        route: "Mumbai → Udaipur → Jodhpur → Bikaner → Jaipur → Ranthambore → Agra → Delhi",
-        dates: [
-          "18 Oct 2026 (Sunday)", "15 Nov 2026 (Sunday)", "13 Dec 2026 (Sunday)",
-          "10 Jan 2027 (Sunday)", "07 Feb 2027 (Sunday)", "07 Mar 2027 (Sunday)",
-          "17 Oct 2027 (Sunday)", "14 Nov 2027 (Sunday)", "12 Dec 2027 (Sunday)",
-          "09 Jan 2028 (Sunday)", "06 Feb 2028 (Sunday)", "05 Mar 2028 (Sunday)"
-        ]
-      },
-      "the-indian-panorama": {
-        name: "The Indian Panorama (Delhi to Delhi)",
-        duration: "6 Nights / 7 Days",
-        tariff: "From $7,840 / person",
-        schedule: "Departs Selected Sundays from Safdarjung Station, New Delhi",
-        route: "Delhi → Jaipur → Ranthambore → Fatehpur Sikri → Agra → Orchha → Khajuraho → Varanasi → Delhi",
-        dates: [
-          "04 Oct 2026 (Sunday)", "01 Nov 2026 (Sunday)", "29 Nov 2026 (Sunday)", "27 Dec 2026 (Sunday)",
-          "24 Jan 2027 (Sunday)", "21 Feb 2027 (Sunday)", "21 Mar 2027 (Sunday)",
-          "03 Oct 2027 (Sunday)", "31 Oct 2027 (Sunday)", "28 Nov 2027 (Sunday)", "26 Dec 2027 (Sunday)",
-          "23 Jan 2028 (Sunday)", "20 Feb 2028 (Sunday)", "19 Mar 2028 (Sunday)"
-        ]
-      },
-      "the-indian-splendour": {
-        name: "The Indian Splendour (Delhi to Mumbai)",
-        duration: "6 Nights / 7 Days",
-        tariff: "From $7,840 / person",
-        schedule: "Departs Selected Sundays from Safdarjung Station, New Delhi (Ends Mumbai)",
-        route: "Delhi → Agra → Ranthambore → Jaipur → Bikaner → Jodhpur → Udaipur → Mumbai",
-        dates: [
-          "11 Oct 2026 (Sunday)", "08 Nov 2026 (Sunday)", "06 Dec 2026 (Sunday)",
-          "03 Jan 2027 (Sunday)", "31 Jan 2027 (Sunday)", "28 Feb 2027 (Sunday)", "28 Mar 2027 (Sunday)",
-          "10 Oct 2027 (Sunday)", "07 Nov 2027 (Sunday)", "05 Dec 2027 (Sunday)",
-          "02 Jan 2028 (Sunday)", "30 Jan 2028 (Sunday)", "27 Feb 2028 (Sunday)", "26 Mar 2028 (Sunday)"
-        ]
-      },
-      "treasures-of-india": {
-        name: "Treasures of India (Golden Triangle)",
-        duration: "3 Nights / 4 Days",
-        tariff: "From $4,850 / person",
-        schedule: "Departs Selected Sundays from Safdarjung Station, New Delhi",
-        route: "Delhi → Agra → Ranthambore → Jaipur → Delhi",
-        dates: [
-          "25 Oct 2026 (Sunday)", "22 Nov 2026 (Sunday)", "20 Dec 2026 (Sunday)",
-          "17 Jan 2027 (Sunday)", "14 Feb 2027 (Sunday)", "14 Mar 2027 (Sunday)",
-          "24 Oct 2027 (Sunday)", "21 Nov 2027 (Sunday)", "19 Dec 2027 (Sunday)",
-          "16 Jan 2028 (Sunday)", "13 Feb 2028 (Sunday)", "12 Mar 2028 (Sunday)"
-        ]
-      }
-    }
-  },
-  "golden-chariot": {
-    name: "The Golden Chariot",
-    badge: "The Golden Chariot · South India",
-    photo: "/images/luxury-trains/golden-chariot/hero.jpg",
-    journeys: {
-      "pride-of-karnataka": {
-        name: "Pride of Karnataka",
-        duration: "5 Nights / 6 Days",
-        tariff: "From $4,990 / person",
-        schedule: "Departs Selected Saturdays from Yashwantpur, Bengaluru",
-        route: "Bengaluru → Nanjangud → Mysore → Halebidu → Chikmagalur → Hampi → Badami → Goa → Bengaluru",
-        dates: [
-          "03 Oct 2026 (Saturday)", "07 Nov 2026 (Saturday)", "05 Dec 2026 (Saturday)",
-          "02 Jan 2027 (Saturday)", "06 Feb 2027 (Saturday)", "06 Mar 2027 (Saturday)",
-          "02 Oct 2027 (Saturday)", "06 Nov 2027 (Saturday)", "04 Dec 2027 (Saturday)",
-          "01 Jan 2028 (Saturday)", "05 Feb 2028 (Saturday)", "04 Mar 2028 (Saturday)"
-        ]
-      },
-      "jewels-of-south": {
-        name: "Jewels of South",
-        duration: "5 Nights / 6 Days",
-        tariff: "From $4,990 / person",
-        schedule: "Departs Selected Saturdays from Yashwantpur, Bengaluru",
-        route: "Bengaluru → Mysore → Kanchipuram → Mahabalipuram → Thanjavur → Chettinad → Cochin → Kumarakom → Bengaluru",
-        dates: [
-          "17 Oct 2026 (Saturday)", "21 Nov 2026 (Saturday)", "19 Dec 2026 (Saturday)",
-          "16 Jan 2027 (Saturday)", "20 Feb 2027 (Saturday)", "20 Mar 2027 (Saturday)",
-          "16 Oct 2027 (Saturday)", "20 Nov 2027 (Saturday)", "18 Dec 2027 (Saturday)",
-          "15 Jan 2028 (Saturday)", "19 Feb 2028 (Saturday)", "18 Mar 2028 (Saturday)"
-        ]
-      },
-      "glimpses-of-karnataka": {
-        name: "Glimpses of Karnataka",
-        duration: "3 Nights / 4 Days",
-        tariff: "From $3,320 / person",
-        schedule: "Departs Selected Saturdays from Yashwantpur, Bengaluru",
-        route: "Bengaluru → Nanjangud → Mysore → Hampi → Bengaluru",
-        dates: [
-          "24 Oct 2026 (Saturday)", "28 Nov 2026 (Saturday)", "26 Dec 2026 (Saturday)",
-          "23 Jan 2027 (Saturday)", "27 Feb 2027 (Saturday)", "27 Mar 2027 (Saturday)",
-          "23 Oct 2027 (Saturday)", "27 Nov 2027 (Saturday)", "25 Dec 2027 (Saturday)",
-          "22 Jan 2028 (Saturday)", "26 Feb 2028 (Saturday)", "25 Mar 2028 (Saturday)"
-        ]
-      }
-    }
-  },
-  "deccan-odyssey": {
-    name: "Deccan Odyssey",
-    badge: "Deccan Odyssey · Maharashtra & West",
-    photo: "/images/luxury-trains/deccan-odyssey/hero.jpg",
-    journeys: {
-      "maharashtra-splendour": {
-        name: "Maharashtra Splendour",
-        duration: "7 Nights / 8 Days",
-        tariff: "From $8,330 / person",
-        schedule: "Departs Selected Saturdays from Mumbai CSMT",
-        route: "Mumbai → Nashik → Aurangabad (Ellora) → Jalgaon (Ajanta) → Kolhapur → Goa → Sindhudurg → Mumbai",
-        dates: [
-          "03 Oct 2026 (Saturday)", "14 Nov 2026 (Saturday)", "12 Dec 2026 (Saturday)",
-          "09 Jan 2027 (Saturday)", "13 Feb 2027 (Saturday)", "13 Mar 2027 (Saturday)",
-          "02 Oct 2027 (Saturday)", "13 Nov 2027 (Saturday)", "11 Dec 2027 (Saturday)",
-          "08 Jan 2028 (Saturday)", "12 Feb 2028 (Saturday)", "11 Mar 2028 (Saturday)"
-        ]
-      },
-      "indian-odyssey": {
-        name: "Indian Odyssey (Delhi to Mumbai)",
-        duration: "7 Nights / 8 Days",
-        tariff: "From $8,330 / person",
-        schedule: "Departs Selected Saturdays from New Delhi (Ends Mumbai)",
-        route: "Delhi → Sawai Madhopur → Agra → Jaipur → Udaipur → Vadodara → Ellora Caves → Mumbai",
-        dates: [
-          "17 Oct 2026 (Saturday)", "28 Nov 2026 (Saturday)", "26 Dec 2026 (Saturday)",
-          "23 Jan 2027 (Saturday)", "27 Feb 2027 (Saturday)", "27 Mar 2027 (Saturday)",
-          "16 Oct 2027 (Saturday)", "27 Nov 2027 (Saturday)", "25 Dec 2027 (Saturday)",
-          "22 Jan 2028 (Saturday)", "26 Feb 2028 (Saturday)", "25 Mar 2028 (Saturday)"
-        ]
-      },
-      "indian-sojourn": {
-        name: "Indian Sojourn (Mumbai to Delhi)",
-        duration: "7 Nights / 8 Days",
-        tariff: "From $8,330 / person",
-        schedule: "Departs Selected Saturdays from Mumbai (Ends Delhi)",
-        route: "Mumbai → Vadodara → Udaipur → Jodhpur → Agra → Sawai Madhopur → Jaipur → Delhi",
-        dates: [
-          "24 Oct 2026 (Saturday)", "05 Dec 2026 (Saturday)", "16 Jan 2027 (Saturday)",
-          "20 Feb 2027 (Saturday)", "20 Mar 2027 (Saturday)",
-          "23 Oct 2027 (Saturday)", "04 Dec 2027 (Saturday)", "15 Jan 2028 (Saturday)",
-          "19 Feb 2028 (Saturday)", "18 Mar 2028 (Saturday)"
-        ]
-      },
-      "maharashtra-wild-trail": {
-        name: "Maharashtra Wild Trail (Tiger Circuit)",
-        duration: "7 Nights / 8 Days",
-        tariff: "From $8,330 / person",
-        schedule: "Departs Selected Saturdays from Mumbai CSMT",
-        route: "Mumbai → Aurangabad → Ramtek (Pench) → Tadoba → Ajanta → Nashik → Mumbai",
-        dates: [
-          "10 Oct 2026 (Saturday)", "21 Nov 2026 (Saturday)", "19 Dec 2026 (Saturday)",
-          "02 Jan 2027 (Saturday)", "06 Feb 2027 (Saturday)", "06 Mar 2027 (Saturday)",
-          "09 Oct 2027 (Saturday)", "20 Nov 2027 (Saturday)", "18 Dec 2027 (Saturday)",
-          "01 Jan 2028 (Saturday)", "05 Feb 2028 (Saturday)", "04 Mar 2028 (Saturday)"
-        ]
-      },
-      "heritage-odyssey": {
-        name: "Heritage Odyssey (Delhi to Delhi)",
-        duration: "7 Nights / 8 Days",
-        tariff: "From $8,330 / person",
-        schedule: "Departs Selected Saturdays from New Delhi",
-        route: "Delhi → Agra → Jaipur → Bikaner → Jaisalmer → Jodhpur → Udaipur → Delhi",
-        dates: [
-          "31 Oct 2026 (Saturday)", "07 Nov 2026 (Saturday)", "30 Jan 2027 (Saturday)",
-          "30 Oct 2027 (Saturday)", "06 Nov 2027 (Saturday)", "29 Jan 2028 (Saturday)"
-        ]
-      },
-      "cultural-odyssey": {
-        name: "Cultural Odyssey (Delhi to Delhi)",
-        duration: "7 Nights / 8 Days",
-        tariff: "From $8,330 / person",
-        schedule: "Departs Selected Saturdays from New Delhi",
-        route: "Delhi → Sawai Madhopur → Agra → Jaipur → Gwalior → Orchha → Khajuraho → Varanasi → Delhi",
-        dates: [
-          "07 Nov 2026 (Saturday)", "05 Dec 2026 (Saturday)", "02 Jan 2027 (Saturday)", "06 Feb 2027 (Saturday)",
-          "06 Nov 2027 (Saturday)", "04 Dec 2027 (Saturday)", "01 Jan 2028 (Saturday)", "05 Feb 2028 (Saturday)"
-        ]
-      }
-    }
-  }
+// Official WhatsApp Contact & API Endpoint
+var WHATSAPP = "919136739178";
+var ENDPOINT = "/api/leads";
+
+var FULL_MN = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+var DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+function getOrdinal(n) {
+  var s = ["th", "st", "nd", "rd"],
+      v = n % 100;
+  return s[(v - 20) % 10] || s[v] || s[0];
+}
+
+// Format date into: "Saturday, 12th December, 2026"
+function formatLuxuryDate(dateStr) {
+  if (!dateStr || dateStr === "flex") return "Not sure, suggest best date";
+  var p = dateStr.split("-");
+  if (p.length < 3) return dateStr;
+  var year = p[0];
+  var monthIdx = parseInt(p[1], 10) - 1;
+  var dayNum = parseInt(p[2], 10);
+  var dt = new Date(year, monthIdx, dayNum);
+  var dayName = DAYS[dt.getDay()];
+  var dayPad = (dayNum < 10 ? "0" : "") + dayNum;
+  var ord = getOrdinal(dayNum);
+  return dayName + ", " + dayPad + ord + " " + FULL_MN[monthIdx] + ", " + year;
+}
+
+// Official Scheduled Departure Dates Dataset
+var DATES = {
+  "Palace on Wheels|Royal Rajasthan Circuit": [
+    "2026-09-02", "2026-09-09", "2026-09-16", "2026-09-23", "2026-09-30",
+    "2026-10-07", "2026-10-14", "2026-10-21", "2026-10-28",
+    "2026-11-04", "2026-11-11", "2026-11-18", "2026-11-25",
+    "2026-12-02", "2026-12-09", "2026-12-16", "2026-12-23", "2026-12-30",
+    "2027-01-06", "2027-01-13", "2027-01-20", "2027-01-27",
+    "2027-02-03", "2027-02-10", "2027-02-17", "2027-02-24",
+    "2027-03-03", "2027-03-10", "2027-03-17", "2027-03-24", "2027-03-31",
+    "2027-04-07", "2027-04-14", "2027-04-21", "2027-04-28",
+    "2027-09-01", "2027-09-08", "2027-09-15", "2027-09-22", "2027-09-29",
+    "2027-10-06", "2027-10-13", "2027-10-20", "2027-10-27",
+    "2027-11-03", "2027-11-10", "2027-11-17", "2027-11-24",
+    "2027-12-01", "2027-12-08", "2027-12-15", "2027-12-22", "2027-12-29",
+    "2028-01-05", "2028-01-12", "2028-01-19", "2028-01-26",
+    "2028-02-02", "2028-02-09", "2028-02-16", "2028-02-23",
+    "2028-03-01", "2028-03-08", "2028-03-15", "2028-03-22", "2028-03-29",
+    "2028-04-05", "2028-04-12", "2028-04-19", "2028-04-26"
+  ],
+  "Maharajas’ Express|Heritage of India": [
+    "2026-10-18", "2026-11-15", "2026-12-13", "2027-01-10", "2027-02-07", "2027-03-07",
+    "2027-10-17", "2027-11-14", "2027-12-12", "2028-01-09", "2028-02-06", "2028-03-05"
+  ],
+  "Maharajas’ Express|The Indian Panorama": [
+    "2026-10-04", "2026-11-01", "2026-11-29", "2026-12-27", "2027-01-24", "2027-02-21", "2027-03-21",
+    "2027-10-03", "2027-10-31", "2027-11-28", "2027-12-26", "2028-01-23", "2028-02-20", "2028-03-19"
+  ],
+  "Maharajas’ Express|Indian Splendor": [
+    "2026-10-11", "2026-11-08", "2026-12-06", "2027-01-03", "2027-01-31", "2027-02-28", "2027-03-28",
+    "2027-10-10", "2027-11-07", "2027-12-05", "2028-01-02", "2028-01-30", "2028-02-27", "2028-03-26"
+  ],
+  "Maharajas’ Express|Treasures of India": [
+    "2026-10-25", "2026-11-22", "2026-12-20", "2027-01-17", "2027-02-14", "2027-03-14",
+    "2027-10-24", "2027-11-21", "2027-12-19", "2028-01-16", "2028-02-13", "2028-03-12"
+  ],
+  "Golden Chariot|Pride of Karnataka": [
+    "2026-10-03", "2026-11-07", "2026-12-05", "2027-01-02", "2027-02-06", "2027-03-06",
+    "2027-10-02", "2027-11-06", "2027-12-04", "2028-01-01", "2028-02-05", "2028-03-04"
+  ],
+  "Golden Chariot|Jewels of South": [
+    "2026-10-17", "2026-11-21", "2026-12-19", "2027-01-16", "2027-02-20", "2027-03-20",
+    "2027-10-16", "2027-11-20", "2027-12-18", "2028-01-15", "2028-02-19", "2028-03-18"
+  ],
+  "Golden Chariot|Glimpses of Karnataka": [
+    "2026-10-24", "2026-11-28", "2026-12-26", "2027-01-23", "2027-02-27", "2027-03-27",
+    "2027-10-23", "2027-11-27", "2027-12-25", "2028-01-22", "2028-02-26", "2028-03-25"
+  ],
+  "Deccan Odyssey|Maharashtra Splendor": [
+    "2026-10-03", "2026-11-14", "2026-12-12", "2027-01-09", "2027-02-13", "2027-03-13",
+    "2027-10-02", "2027-11-13", "2027-12-11", "2028-01-08", "2028-02-12", "2028-03-11"
+  ],
+  "Deccan Odyssey|Indian Odyssey": [
+    "2026-10-17", "2026-11-28", "2026-12-26", "2027-01-23", "2027-02-27", "2027-03-27",
+    "2027-10-16", "2027-11-27", "2027-12-25", "2028-01-22", "2028-02-26", "2028-03-25"
+  ],
+  "Deccan Odyssey|Indian Sojourn": [
+    "2026-10-24", "2026-12-05", "2027-01-16", "2027-02-20", "2027-03-20",
+    "2027-10-23", "2027-12-04", "2028-01-15", "2028-02-19", "2028-03-18"
+  ],
+  "Deccan Odyssey|Maharashtra Wild Trail": [
+    "2026-10-10", "2026-11-21", "2026-12-19", "2027-01-02", "2027-02-06", "2027-03-06",
+    "2027-09-25", "2027-10-09", "2027-11-20", "2027-12-18", "2028-01-01", "2028-02-05", "2028-03-04"
+  ],
+  "Deccan Odyssey|Heritage Odyssey": [
+    "2026-10-31", "2026-11-07", "2027-01-30", "2027-10-30", "2027-11-06", "2028-01-29"
+  ],
+  "Deccan Odyssey|Cultural Odyssey": [
+    "2026-11-07", "2026-12-05", "2027-01-02", "2027-02-06",
+    "2027-11-06", "2027-12-04", "2028-01-01", "2028-02-05"
+  ]
 };
 
-// Aliases mapping for user-friendly query string support
-const TRAIN_ALIASES = {
-  "pow": "palace-on-wheels",
-  "palace": "palace-on-wheels",
-  "palace-on-wheels": "palace-on-wheels",
-  "me": "maharajas-express",
-  "maharaja": "maharajas-express",
-  "maharajas": "maharajas-express",
-  "maharajas-express": "maharajas-express",
-  "gc": "golden-chariot",
-  "golden": "golden-chariot",
-  "golden-chariot": "golden-chariot",
-  "do": "deccan-odyssey",
-  "deccan": "deccan-odyssey",
-  "deccan-odyssey": "deccan-odyssey"
-};
+var TRAINS = [
+  {
+    id: "Palace on Wheels",
+    slug: "palace-on-wheels",
+    info: "Every Wednesday · Sep to Apr",
+    dow: 3,
+    season: [9,10,11,12,1,2,3,4],
+    cabins: [],
+    journeys: [
+      {
+        n: "Royal Rajasthan Circuit",
+        slug: "classic-rajasthan",
+        d: "7 nights / 8 days",
+        r: "Delhi round trip via Jaipur, Ranthambore, Udaipur, Jaisalmer, Jodhpur and Agra",
+        from: "Delhi (Safdarjung Station)"
+      }
+    ]
+  },
+  {
+    id: "Maharajas’ Express",
+    slug: "maharajas-express",
+    info: "Every Sunday · Oct to Apr",
+    dow: 0,
+    season: [10,11,12,1,2,3,4],
+    cabins: [],
+    journeys: [
+      {
+        n: "Indian Splendor",
+        slug: "the-indian-splendour",
+        d: "6 nights / 7 days",
+        r: "Delhi to Mumbai via Agra, Ranthambore, Jaipur, Bikaner, Jodhpur, Udaipur",
+        from: "Delhi (Safdarjung Station)"
+      },
+      {
+        n: "Heritage of India",
+        slug: "the-heritage-of-india",
+        d: "6 nights / 7 days",
+        r: "Mumbai to Delhi via Udaipur, Jodhpur, Bikaner, Jaipur, Ranthambore, Agra",
+        from: "Mumbai (CSMT)"
+      },
+      {
+        n: "The Indian Panorama",
+        slug: "the-indian-panorama",
+        d: "6 nights / 7 days",
+        r: "Delhi round trip via Jaipur, Agra, Orchha, Khajuraho, Varanasi",
+        from: "Delhi (Safdarjung Station)"
+      },
+      {
+        n: "Treasures of India",
+        slug: "treasures-of-india",
+        d: "3 nights / 4 days",
+        r: "Delhi round trip via Agra, Ranthambore, Jaipur",
+        from: "Delhi (Safdarjung Station)"
+      }
+    ]
+  },
+  {
+    id: "Golden Chariot",
+    slug: "golden-chariot",
+    info: "Fixed Saturdays · Oct to Mar",
+    dow: 6,
+    season: [10,11,12,1,2,3],
+    cabins: [],
+    journeys: [
+      {
+        n: "Pride of Karnataka",
+        slug: "pride-of-karnataka",
+        d: "5 nights / 6 days",
+        r: "Bengaluru round trip via Mysuru, Hampi, Badami and Goa",
+        from: "Bengaluru (Yeshvantpur)"
+      },
+      {
+        n: "Jewels of South",
+        slug: "jewels-of-south",
+        d: "5 nights / 6 days",
+        r: "Bengaluru round trip via Mahabalipuram, Thanjavur, Chettinad, Kochi, Kumarakom",
+        from: "Bengaluru (Yeshvantpur)"
+      },
+      {
+        n: "Glimpses of Karnataka",
+        slug: "glimpses-of-karnataka",
+        d: "3 nights / 4 days",
+        r: "Bengaluru round trip via Mysuru and Hampi",
+        from: "Bengaluru (Yeshvantpur)"
+      }
+    ]
+  },
+  {
+    id: "Deccan Odyssey",
+    slug: "deccan-odyssey",
+    info: "Fixed Saturdays · Oct to Mar",
+    dow: 6,
+    season: [10,11,12,1,2,3],
+    cabins: [],
+    journeys: [
+      {
+        n: "Maharashtra Splendor",
+        slug: "maharashtra-splendour",
+        d: "7 nights / 8 days",
+        r: "Mumbai round trip via Nashik, Ajanta, Ellora, Kolhapur, Goa",
+        from: "Mumbai (CSMT)"
+      },
+      {
+        n: "Indian Odyssey",
+        slug: "indian-odyssey",
+        d: "7 nights / 8 days",
+        r: "Delhi to Mumbai via Agra, Ranthambore, Jaipur, Udaipur, Vadodara, Ellora",
+        from: "Delhi"
+      },
+      {
+        n: "Indian Sojourn",
+        slug: "indian-sojourn",
+        d: "7 nights / 8 days",
+        r: "Mumbai to Delhi via Vadodara, Udaipur, Jodhpur, Agra, Ranthambore, Jaipur",
+        from: "Mumbai (CSMT)"
+      },
+      {
+        n: "Maharashtra Wild Trail",
+        slug: "maharashtra-wild-trail",
+        d: "7 nights / 8 days",
+        r: "Mumbai round trip via Aurangabad, Ramtek (Pench), Tadoba, Ajanta, Nashik",
+        from: "Mumbai (CSMT)"
+      },
+      {
+        n: "Heritage Odyssey",
+        slug: "heritage-odyssey",
+        d: "7 nights / 8 days",
+        r: "Delhi round trip via Agra, Jaipur, Bikaner, Jaisalmer, Jodhpur, Udaipur",
+        from: "Delhi"
+      },
+      {
+        n: "Cultural Odyssey",
+        slug: "cultural-odyssey",
+        d: "7 nights / 8 days",
+        r: "Delhi round trip via Agra, Jaipur, Gwalior, Orchha, Khajuraho, Varanasi",
+        from: "Delhi"
+      }
+    ]
+  }
+];
 
-// State variables
-let currentTrain = "palace-on-wheels";
-let currentJourney = "classic-rajasthan";
+function T() {
+  return TRAINS.filter(function(t) { return t.id === S.train; })[0];
+}
 
-// Initialize on page load
-document.addEventListener("DOMContentLoaded", () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const qTrain = urlParams.get("train");
-  const qJourney = urlParams.get("journey");
-  const qDate = urlParams.get("date");
+function J(t) {
+  return t.journeys.filter(function(j) { return j.n === S.journey; })[0];
+}
 
-  // Parse train from query param
-  if (qTrain) {
-    const normTrain = qTrain.toLowerCase().trim();
-    if (TRAIN_ALIASES[normTrain] && LUXURY_TRAINS_DATA[TRAIN_ALIASES[normTrain]]) {
-      currentTrain = TRAIN_ALIASES[normTrain];
+function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+function iso(d) {
+  return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+}
+
+function avail(t, j) {
+  var fixed = DATES[t.id + "|" + j.n] || j.dates;
+  if (fixed && fixed.length) {
+    return fixed;
+  }
+  if (t.dow === null) return null;
+  var out = [], d = new Date(), end = new Date();
+  end.setDate(end.getDate() + 540);
+  for (; d <= end; d.setDate(d.getDate() + 1)) {
+    if (d.getDay() === t.dow && t.season.indexOf(d.getMonth() + 1) > -1) {
+      out.push(iso(d));
     }
   }
+  return out;
+}
 
-  const trainSelect = document.getElementById("train-select");
-  trainSelect.value = currentTrain;
+var EXTRAS = ["Hotels before/after", "Flights", "Airport transfers", "Extra sightseeing", "Visa help"];
+var KEY = "koikoi-luxury-draft-v3";
+var S = {
+  train: "",
+  journey: "",
+  month: "",
+  date: "",
+  more: false,
+  adults: 2,
+  kids: 0,
+  cabins: 1,
+  extras: [],
+  name: "",
+  email: "",
+  phone: "",
+  country: "",
+  msg: ""
+};
 
-  // Populate journeys for selected train
-  populateJourneys();
+var err = {}, status = "idle", scrollTo = "";
+var box = document.getElementById("box");
 
-  // Parse journey from query param
-  if (qJourney) {
-    const normJourney = qJourney.toLowerCase().trim();
-    const journeys = LUXURY_TRAINS_DATA[currentTrain].journeys;
-    if (journeys[normJourney]) {
-      currentJourney = normJourney;
+try {
+  var d0 = JSON.parse(localStorage.getItem(KEY) || "null");
+  if (d0) {
+    Object.assign(S, d0);
+    S.more = false;
+  }
+} catch(e) {}
+
+// Parse URL query params (?train=...&journey=...)
+var urlParams = new URLSearchParams(location.search);
+var qTrain = urlParams.get("train");
+var qJourney = urlParams.get("journey");
+
+if (qTrain) {
+  var cleanQ = qTrain.toLowerCase().replace(/[^a-z]/g, "");
+  var matchedTrain = TRAINS.filter(function(t) {
+    var tClean = t.id.toLowerCase().replace(/[^a-z]/g, "");
+    var sClean = (t.slug || "").toLowerCase().replace(/[^a-z]/g, "");
+    return tClean.indexOf(cleanQ) === 0 || cleanQ.indexOf(tClean) === 0 || sClean.indexOf(cleanQ) === 0 || cleanQ.indexOf(sClean) === 0;
+  })[0];
+
+  if (matchedTrain) {
+    S.train = matchedTrain.id;
+    S.month = S.date = "";
+    if (matchedTrain.journeys.length === 1) {
+      S.journey = matchedTrain.journeys[0].n;
+    }
+  }
+}
+
+if (qJourney && S.train) {
+  var trObj = T();
+  if (trObj) {
+    var cleanJ = qJourney.toLowerCase().replace(/[^a-z]/g, "");
+    var matchedJourney = trObj.journeys.filter(function(j) {
+      var jClean = j.n.toLowerCase().replace(/[^a-z]/g, "");
+      var sClean = (j.slug || "").toLowerCase().replace(/[^a-z]/g, "");
+      return jClean.indexOf(cleanJ) > -1 || cleanJ.indexOf(jClean) > -1 || sClean.indexOf(cleanJ) > -1 || cleanJ.indexOf(sClean) > -1;
+    })[0];
+    if (matchedJourney) {
+      S.journey = matchedJourney.n;
+    }
+  }
+}
+
+function esc(s) {
+  return String(s || "").replace(/[&<>"']/g, function(c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {}
+}
+
+function summary() {
+  return "Train: " + (S.train || "-") +
+    (S.journey ? " (" + S.journey + ")" : "") +
+    " | Departure: " + (S.date ? formatLuxuryDate(S.date) : "-") +
+    " | Guests: " + S.adults + " adults, " + S.kids + " children" +
+    (S.extras.length ? " | Extras: " + S.extras.join(", ") : "");
+}
+
+function E(k) {
+  return err[k] ? '<p class="err" role="alert">' + err[k] + '</p>' : "";
+}
+
+function ctr(k, label, min, max) {
+  return '<div class="ctr"><div><b>' + label + '</b></div><div class="n"><button type="button" data-dec="' + k + '" aria-label="Fewer ' + label + '"' + (S[k] <= min ? " disabled" : "") + '>−</button><output>' + S[k] + '</output><button type="button" data-inc="' + k + '" aria-label="More ' + label + '"' + (S[k] >= max ? " disabled" : "") + '>+</button></div></div>';
+}
+
+function render() {
+  if (status === "done") {
+    box.innerHTML = '<div class="done-box">' +
+      '<div style="width:60px;height:60px;border-radius:50%;background:#dcfce7;color:#15803d;display:inline-flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:16px">✓</div>' +
+      '<h2>Thank you, ' + esc(S.name.split(" ")[0]) + '!</h2>' +
+      '<p>Your luxury train reservation inquiry has been sent to our rail desk. We will verify cabin availability and email your official quote to <b>' + esc(S.email) + '</b> within 2 hours.</p>' +
+      '<a class="btn" href="https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent("Hi KoiKoi Travel, I just sent an enquiry: " + summary() + ". My name is " + S.name + " (" + S.phone + "). Please confirm cabin availability.") + '" target="_blank" rel="noopener">' +
+      '<svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.487-1.761-1.659-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>' +
+      '<span>Continue Instantly on WhatsApp</span>' +
+      '</a></div>';
+    return;
+  }
+
+  var tr = T(), jn = tr ? J(tr) : null, av = jn ? avail(tr, jn) : null, ready = !!S.date, h = '<div class="pane">';
+
+  // 1. CHOOSE TRAIN
+  h += '<section id="s-train"><h2 class="sh">1. Choose your luxury train</h2><div class="cards" role="radiogroup" aria-label="Train">' +
+    TRAINS.map(function(t) {
+      return '<button type="button" class="card" role="radio" aria-checked="' + (S.train === t.id) + '" data-train="' + esc(t.id) + '"><b>' + t.id + '</b><small>' + t.info + '</small></button>';
+    }).join("") + '</div>' + E("train") + '</section>';
+
+  // 2. CHOOSE JOURNEY
+  if (tr) {
+    h += '<section id="s-journey">';
+    if (tr.journeys.length > 1) {
+      h += '<h2 class="sh">2. Choose your journey circuit</h2><div class="cards" role="radiogroup" aria-label="Journey">' +
+        tr.journeys.map(function(j) {
+          return '<button type="button" class="card" role="radio" aria-checked="' + (S.journey === j.n) + '" data-journey="' + j.n + '"><b>' + j.n + '</b><small>' + (j.d || "Details on request") + (j.r ? " · " + j.r : "") + '</small></button>';
+        }).join("") + '</div>' + E("journey");
     } else {
-      // Find partial or slug match
-      for (const k in journeys) {
-        if (k.includes(normJourney) || normJourney.includes(k)) {
-          currentJourney = k;
-          break;
-        }
-      }
+      h += '<h2 class="sh">2. Journey Circuit</h2><div style="background:#fffaf5;border:1.5px solid var(--accent);border-radius:14px;padding:16px 18px"><b style="color:var(--accent-dark);font-size:16px">' + jn.n + '</b><p class="sub" style="margin-top:4px">' + jn.d + ' · ' + jn.r + '. Departs from ' + jn.from + '.</p></div>';
     }
+    h += '</section>';
   }
 
-  const journeySelect = document.getElementById("journey-select");
-  journeySelect.value = currentJourney;
-
-  // Populate dates for selected journey
-  populateDates();
-
-  // If date specified in query, select it
-  if (qDate) {
-    const dateSelect = document.getElementById("departure-date-select");
-    for (let i = 0; i < dateSelect.options.length; i++) {
-      if (dateSelect.options[i].value.toLowerCase().includes(qDate.toLowerCase())) {
-        dateSelect.selectedIndex = i;
-        break;
-      }
+  // 3. CHOOSE DATE - 2-COLUMN RADIO BUTTON GRID
+  if (jn) {
+    h += '<section id="s-date"><h2 class="sh">3. Select Departure Date</h2>';
+    if (jn.from && tr.journeys.length > 1) {
+      h += '<p class="sub" style="margin:-6px 0 14px;color:#0d9488;font-weight:600">📍 Departs from ' + jn.from + '.</p>';
     }
+
+    if (av && av.length) {
+      var shown = S.more ? av : av.slice(0, 10);
+      h += '<div class="kb-date-grid" role="radiogroup" aria-label="Departure date">';
+      shown.forEach(function(x) {
+        var isChecked = S.date === x;
+        h += '<button type="button" class="kb-date-radio-item" role="radio" aria-checked="' + isChecked + '" data-date="' + x + '">' +
+          '<span class="kb-radio-circle"></span>' +
+          '<span class="kb-date-text">' + formatLuxuryDate(x) + '</span>' +
+          '</button>';
+      });
+      h += '</div>';
+
+      if (!S.more && av.length > 10) {
+        h += '<div style="margin-top:12px"><button type="button" class="chip" data-more="1" style="font-weight:700;color:var(--accent-dark);border-color:var(--accent-dark)">Show more departure dates (' + (av.length - 10) + ' more) ▾</button></div>';
+      }
+
+      // Flexible option
+      h += '<div style="margin-top:14px">' +
+        '<button type="button" class="kb-date-radio-item" style="max-width:320px" role="radio" aria-checked="' + (S.date === "flex") + '" data-date="flex">' +
+        '<span class="kb-radio-circle"></span>' +
+        '<span class="kb-date-text">Not sure, suggest best date</span>' +
+        '</button></div>';
+
+      h += '<p class="sub" style="font-size:13.5px;margin-top:12px">🔒 Official fixed-departure schedule. Real-time berth allocation is confirmed directly with the railway board.</p>';
+    }
+    h += E("date");
+    h += '</section>';
   }
 
-  // Update summary card
-  updateSummaryCard();
-});
+  // 4. TRAVELER DETAILS & CONTACT
+  if (ready) {
+    h += '<section id="s-details"><h2 class="sh">4. Who is travelling?</h2><div class="row3">' +
+      ctr("adults", "Adults (12+ yrs)", 1, 20) +
+      ctr("kids", "Children (5-12 yrs)", 0, 10) +
+      ctr("cabins", "Cabins needed", 1, 10) +
+      '</div>';
 
-function populateJourneys() {
-  const trainObj = LUXURY_TRAINS_DATA[currentTrain];
-  const journeySelect = document.getElementById("journey-select");
-  journeySelect.innerHTML = "";
+    h += '<h2 class="sh" style="margin-top:30px">5. Where should we send your official plan &amp; quote?</h2><div class="row">';
+    h += '<div><label class="lab" for="name">Full Name *</label><input type="text" id="name" autocomplete="name" placeholder="Eleanor Vance" value="' + esc(S.name) + '">' + E("name") + '</div>';
+    h += '<div><label class="lab" for="phone">WhatsApp or Phone *</label><input type="tel" id="phone" inputmode="tel" autocomplete="tel" placeholder="+1 (555) 019-2834" value="' + esc(S.phone) + '">' + E("phone") + '</div>';
+    h += '<div style="grid-column:1/-1"><label class="lab" for="email">Email Address *</label><input type="email" id="email" inputmode="email" autocomplete="email" placeholder="eleanor@example.com" value="' + esc(S.email) + '">' + E("email") + '</div></div>';
 
-  const journeyKeys = Object.keys(trainObj.journeys);
-  journeyKeys.forEach((key) => {
-    const opt = document.createElement("option");
-    opt.value = key;
-    opt.textContent = trainObj.journeys[key].name + " (" + trainObj.journeys[key].duration + ")";
-    journeySelect.appendChild(opt);
-  });
+    h += '<details class="more" style="margin-top:18px"><summary>Add hotels, flights, dietary needs or notes (optional)</summary>' +
+      '<div class="chips" style="margin:14px 0 10px">' +
+      EXTRAS.map(function(x) {
+        return '<button type="button" class="chip" aria-pressed="' + (S.extras.indexOf(x) > -1) + '" data-extra="' + x + '">' + x + '</button>';
+      }).join("") +
+      '</div>' +
+      '<textarea id="msg" rows="3" placeholder="Anniversary celebration, vegan meals, wheelchair assistance, pre/post luxury hotel extensions...">' + esc(S.msg) + '</textarea>' +
+      '</details>';
 
-  if (!trainObj.journeys[currentJourney]) {
-    currentJourney = journeyKeys[0];
+    if (status === "error") {
+      h += '<p class="err" role="alert">Could not send via network. Please <a href="https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent("Hi KoiKoi Travel, " + summary()) + '">send directly on WhatsApp</a>.</p>';
+    }
+    h += '</section>';
   }
-  journeySelect.value = currentJourney;
-}
 
-function populateDates() {
-  const trainObj = LUXURY_TRAINS_DATA[currentTrain];
-  const journeyObj = trainObj.journeys[currentJourney];
-  const dateSelect = document.getElementById("departure-date-select");
-  dateSelect.innerHTML = "";
+  h += '</div>' +
+    '<div class="bar">' +
+    '<span class="fine">🔒 Free official quote · Zero booking fee</span>' +
+    '<button type="button" class="btn" id="send"' + (status === "sending" ? " disabled" : "") + '>' +
+    (status === "sending" ? "Securing allocation..." : "Get My Free Quote →") +
+    '</button></div>';
 
-  journeyObj.dates.forEach(d => {
-    const opt = document.createElement("option");
-    opt.value = d;
-    opt.textContent = d;
-    dateSelect.appendChild(opt);
-  });
+  box.innerHTML = h;
 
-  const noteEl = document.getElementById("date-schedule-note");
-  if (noteEl) {
-    noteEl.textContent = journeyObj.schedule;
+  if (scrollTo) {
+    var el = document.getElementById(scrollTo);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollTo = "";
   }
 }
 
-function onTrainChange() {
-  const trainSelect = document.getElementById("train-select");
-  currentTrain = trainSelect.value;
-  const trainObj = LUXURY_TRAINS_DATA[currentTrain];
-  currentJourney = Object.keys(trainObj.journeys)[0];
-  populateJourneys();
-  populateDates();
-  updateSummaryCard();
+function check() {
+  err = {};
+  if (!S.train) err.train = "Please choose a train.";
+  else if (!S.journey) err.journey = "Please choose a journey.";
+  else if (!S.date) err.date = "Please pick a departure date or choose 'Not sure'.";
+  if (S.name.trim().length < 2) err.name = "Please enter your full name.";
+  if (S.phone.replace(/\D/g, "").length < 8) err.phone = "Enter a valid phone number with country code.";
+  if (!/^\S+@\S+\.\S+$/.test(S.email)) err.email = "Enter a valid email address.";
+  return Object.keys(err).length === 0;
 }
 
-function onJourneyChange() {
-  const journeySelect = document.getElementById("journey-select");
-  currentJourney = journeySelect.value;
-  populateDates();
-  updateSummaryCard();
+function firstErr() {
+  var k = ["train", "journey", "date", "name", "phone", "email"].filter(function(x) { return err[x]; })[0];
+  return k === "train" ? "s-train" : k === "journey" ? "s-journey" : k === "date" ? "s-date" : "s-details";
 }
 
-function onDateChange() {
-  updateSummaryCard();
-}
+function send() {
+  if (!check()) {
+    scrollTo = firstErr();
+    render();
+    return;
+  }
+  status = "sending";
+  render();
 
-function onGuestsChange() {
-  updateSummaryCard();
-}
-
-function updateSummaryCard() {
-  const trainObj = LUXURY_TRAINS_DATA[currentTrain];
-  const journeyObj = trainObj.journeys[currentJourney];
-  const dateSelect = document.getElementById("departure-date-select");
-  const selectedDate = dateSelect.value || (journeyObj.dates[0] || "--");
-
-  const adults = document.getElementById("adults-select").value;
-  const children = document.getElementById("children-select").value;
-
-  // Update DOM elements
-  document.getElementById("sum-photo").src = trainObj.photo;
-  document.getElementById("sum-train-badge").textContent = trainObj.badge;
-  document.getElementById("sum-duration").textContent = journeyObj.duration;
-  document.getElementById("sum-title").textContent = journeyObj.name;
-  document.getElementById("sum-route").textContent = journeyObj.route;
-  document.getElementById("sum-schedule-text").textContent = journeyObj.schedule;
-  document.getElementById("sum-selected-date").textContent = selectedDate;
-  document.getElementById("sum-travelers").textContent = adults + " Adults, " + children + " Children";
-  document.getElementById("sum-tariff").textContent = journeyObj.tariff;
-
-  // Update WhatsApp quick chat link
-  const waMsg = "Hi KoiKoi Travel, I am inquiring about booking " + trainObj.name + " - " + journeyObj.name + " for " + selectedDate + " (" + adults + " Adults, " + children + " Children).";
-  document.getElementById("sum-wa-link").href = "https://wa.me/919136739178?text=" + encodeURIComponent(waMsg);
-}
-
-async function handleLuxuryBookingSubmit(e) {
-  e.preventDefault();
-  const btn = document.getElementById("btn-submit-booking");
-  const origBtnText = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = "<span>Securing verified allocation...</span>";
-
-  const trainObj = LUXURY_TRAINS_DATA[currentTrain];
-  const journeyObj = trainObj.journeys[currentJourney];
-  const dateSelect = document.getElementById("departure-date-select");
-  const selectedDate = dateSelect.value;
-  const adults = document.getElementById("adults-select").value;
-  const children = document.getElementById("children-select").value;
-  const name = document.getElementById("guest-name").value.trim();
-  const email = document.getElementById("guest-email").value.trim();
-  const phone = document.getElementById("guest-phone").value.trim();
-  const country = document.getElementById("guest-country").value;
-  const notes = document.getElementById("special-requests").value.trim();
-
-  const refCode = "KT-LUX-" + Math.floor(100000 + Math.random() * 900000);
-
-  const payload = {
-    refCode: refCode,
-    train: trainObj.name,
-    journey: journeyObj.name,
-    departureDate: selectedDate,
-    adults: parseInt(adults),
-    children: parseInt(children),
-    name: name,
-    email: email,
-    phone: phone,
-    country: country,
-    notes: notes,
-    source: "Luxury Train Booking Page"
+  var body = {
+    train: S.train,
+    journey: S.journey,
+    departureDate: S.date === "flex" ? "Flexible / Advise Best Date" : formatLuxuryDate(S.date),
+    adults: S.adults,
+    children: S.kids,
+    cabins: S.cabins,
+    name: S.name,
+    email: S.email,
+    phone: S.phone,
+    notes: S.msg,
+    extras: S.extras.join(", "),
+    summary: summary(),
+    source: "KoiKoi Luxury Train Booking Form"
   };
 
-  try {
-    // Attempt post to existing leads API
-    await fetch("/api/leads", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    }).catch(() => null);
-  } catch (err) {
-    // Ignore network failure, still present confirmation
+  fetch(ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  })
+  .then(function(r) {
+    status = "done";
+    try { localStorage.removeItem(KEY); } catch(e) {}
+    render();
+  })
+  .catch(function() {
+    // Graceful fallback: show done screen with direct WhatsApp hand-off
+    status = "done";
+    render();
+  });
+}
+
+box.addEventListener("click", function(e) {
+  var t = e.target.closest("button");
+  if (!t) return;
+  var d = t.dataset;
+
+  if (d.train !== undefined) {
+    var nt = TRAINS.filter(function(x) { return x.id === d.train; })[0];
+    S.train = d.train;
+    S.month = S.date = "";
+    S.more = false;
+    S.journey = nt.journeys.length === 1 ? nt.journeys[0].n : "";
+    err = {};
+    scrollTo = nt.journeys.length === 1 ? "s-date" : "s-journey";
+  } else if (d.journey) {
+    S.journey = d.journey;
+    S.month = S.date = "";
+    S.more = false;
+    err = {};
+    scrollTo = "s-date";
+  } else if (d.date) {
+    S.date = d.date;
+    err = {};
+    scrollTo = "s-details";
+  } else if (d.more) {
+    S.more = true;
+  } else if (d.inc) {
+    S[d.inc]++;
+  } else if (d.dec) {
+    S[d.dec]--;
+  } else if (d.extra) {
+    var i = S.extras.indexOf(d.extra);
+    i > -1 ? S.extras.splice(i, 1) : S.extras.push(d.extra);
+  } else if (t.id === "send") {
+    send();
+    return;
+  } else {
+    return;
   }
+  save();
+  render();
+});
 
-  // Populate modal
-  document.getElementById("modal-guest-name").textContent = name;
-  document.getElementById("modal-journey-name").textContent = trainObj.name + " (" + journeyObj.name + ")";
-  document.getElementById("modal-ref-code").textContent = "Booking Ref: #" + refCode;
-  document.getElementById("modal-dep-date").textContent = selectedDate;
-  document.getElementById("modal-guests").textContent = adults + " Adults, " + children + " Children (" + country + ")";
-  document.getElementById("modal-email").textContent = email;
+box.addEventListener("input", function(e) {
+  var id = e.target.id;
+  if (["name", "email", "phone", "msg"].indexOf(id) > -1) {
+    S[id] = e.target.value;
+    save();
+  }
+});
 
-  // Prepare direct WhatsApp button link
-  const waConfirmMsg = "Hello KoiKoi Travel, I just submitted luxury train booking inquiry #" + refCode + " for " + trainObj.name + " - " + journeyObj.name + " departing " + selectedDate + ". My name is " + name + " (" + phone + "). Please confirm cabin availability.";
-  document.getElementById("modal-wa-btn").href = "https://wa.me/919136739178?text=" + encodeURIComponent(waConfirmMsg);
-
-  // Show modal
-  const modal = document.getElementById("booking-success-modal");
-  modal.style.display = "flex";
-
-  btn.disabled = false;
-  btn.innerHTML = origBtnText;
-}
-
-function closeSuccessModal() {
-  document.getElementById("booking-success-modal").style.display = "none";
-}
+render();
 </script>
 
 
