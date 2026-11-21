@@ -375,32 +375,38 @@ footer a:hover{color:#F8904D}
   color: #F8904D;
 }
 .koikoi-card-route {
-  font-size: 13.5px;
-  color: #2E8B8B;
+  font-size: 14px;
+  color: #0f766e;
   font-weight: 600;
-  margin-bottom: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-bottom: 14px;
+  line-height: 1.5;
+  white-space: normal;
+  word-break: normal;
 }
 .koikoi-card-highlights {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  margin-bottom: 16px;
+  gap: 9px;
+  margin-bottom: 18px;
 }
 .koikoi-card-hl-item {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  font-size: 13px;
+  gap: 9px;
+  font-size: 14.5px;
   color: #334155;
-  line-height: 1.4;
+  line-height: 1.5;
+}
+.koikoi-card-hl-item strong, .koikoi-card-hl-item b {
+  color: #0f172a;
+  font-weight: 700;
 }
 .koikoi-card-hl-item svg {
   flex-shrink: 0;
-  color: #2E8B8B;
-  margin-top: 2px;
+  color: #0d9488;
+  margin-top: 3px;
+  width: 15px;
+  height: 15px;
 }
 .koikoi-card-footer {
   margin-top: auto;
@@ -2633,16 +2639,16 @@ function switchCircuitPrice(curr) {{
       </div>
       <div class="koikoi-card-highlights">
         <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Reva Wellness Spa: Ayurvedic massages, therapies &amp; beauty salon</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span><strong>Reva Wellness Spa:</strong> Ayurvedic massages, therapies &amp; beauty salon</span>
         </div>
         <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Maharaja &amp; Maharani: Authentic Rajasthani, Mughlai &amp; continental dining</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span><strong>Maharaja &amp; Maharani:</strong> Authentic Rajasthani, Mughlai &amp; continental dining</span>
         </div>
         <div class="koikoi-card-hl-item">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          <span>Royal Saloon Bar: Premium spirits &amp; 24/7 personal Khidmatgar service</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span><strong>Royal Saloon Bar:</strong> Premium spirits &amp; 24/7 personal Khidmatgar service</span>
         </div>
       </div>
       <div class="koikoi-card-footer">
@@ -3457,7 +3463,12 @@ function switchPowHomePrice(curr) {{
             wa_encoded = urllib.parse.quote(wa_text)
             hl_items = []
             for f_text in c['facilities']:
-                hl_items.append('        <div class="koikoi-card-hl-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>' + f_text + '</span></div>')
+                if ':' in f_text:
+                    parts = f_text.split(':', 1)
+                    fmt = f'<strong>{parts[0]}:</strong> {parts[1].strip()}'
+                else:
+                    fmt = f'<strong>{f_text}</strong>'
+                hl_items.append('        <div class="koikoi-card-hl-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>' + fmt + '</span></div>')
             hl_html = "\n".join(hl_items)
 
             c_html = f"""  <!-- Card: {c['slug']} -->
@@ -4876,7 +4887,12 @@ function switchPriceCurrency(curr) {{
             wa_encoded = urllib.parse.quote(wa_text)
             hl_items = []
             for f_text in c['facilities']:
-                hl_items.append('        <div class="koikoi-card-hl-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>' + f_text + '</span></div>')
+                if ':' in f_text:
+                    parts = f_text.split(':', 1)
+                    fmt = f'<strong>{parts[0]}:</strong> {parts[1].strip()}'
+                else:
+                    fmt = f'<strong>{f_text}</strong>'
+                hl_items.append('        <div class="koikoi-card-hl-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>' + fmt + '</span></div>')
             hl_html = "\n".join(hl_items)
 
             c_html = f"""  <!-- Card: {c['slug']} -->
@@ -6710,7 +6726,12 @@ function switchPriceCurrency(curr) {{
             wa_encoded = urllib.parse.quote(wa_text)
             hl_items = []
             for f_text in c['facilities']:
-                hl_items.append('        <div class="koikoi-card-hl-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>' + f_text + '</span></div>')
+                if ':' in f_text:
+                    parts = f_text.split(':', 1)
+                    fmt = f'<strong>{parts[0]}:</strong> {parts[1].strip()}'
+                else:
+                    fmt = f'<strong>{f_text}</strong>'
+                hl_items.append('        <div class="koikoi-card-hl-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>' + fmt + '</span></div>')
             hl_html = "\n".join(hl_items)
 
             c_html = f"""  <!-- Card: {c['slug']} -->
