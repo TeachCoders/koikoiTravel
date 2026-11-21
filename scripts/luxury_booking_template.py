@@ -389,6 +389,15 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   color: var(--brand);
   margin: 0;
 }
+.kb-dep-schedule-hint {
+  font-size: 13.5px;
+  color: #0f766e;
+  margin: 4px 0 0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 .kb-year-wrap {
   display: flex;
   align-items: center;
@@ -907,7 +916,14 @@ function getOrdinal(n) {
   return s[(v - 20) % 10] || s[v] || s[0];
 }
 
-function formatLuxuryDate(dateStr) {
+var TRAIN_SCHEDULE_NOTES = {
+  "Palace on Wheels": "Palace on Wheels departures start every Wednesday from Delhi (Safdarjung)",
+  "Maharajas’ Express": "Maharajas' Express departures start every Sunday (Delhi / Mumbai)",
+  "Golden Chariot": "Golden Chariot departures start on scheduled Saturdays from Bengaluru",
+  "Deccan Odyssey": "Deccan Odyssey departures start on scheduled Saturdays from Mumbai / Delhi"
+};
+
+function formatLuxuryDate(dateStr, includeDay) {
   if (!dateStr || dateStr === "flex") return "Flexible (Suggest best date)";
   var p = dateStr.split("-");
   if (p.length < 3) return dateStr;
@@ -918,7 +934,10 @@ function formatLuxuryDate(dateStr) {
   var dayName = DAYS[dt.getDay()];
   var dayPad = (dayNum < 10 ? "0" : "") + dayNum;
   var ord = getOrdinal(dayNum);
-  return dayName + ", " + dayPad + ord + " " + FULL_MN[monthIdx] + ", " + year;
+  if (includeDay) {
+    return dayName + ", " + dayPad + ord + " " + FULL_MN[monthIdx] + ", " + year;
+  }
+  return dayPad + ord + " " + FULL_MN[monthIdx] + ", " + year;
 }
 
 // Official Scheduled Departure Dates Dataset
@@ -1331,9 +1350,14 @@ function render() {
       '</div>';
 
     // Dates Section: Header + Filter Year
+    var schedHint = TRAIN_SCHEDULE_NOTES[S.train] || (S.train + " departures start on scheduled dates");
+
     h += '<div style="margin-top:8px">' +
       '<div class="kb-date-header-row">' +
+      '<div>' +
       '<h2 class="kb-sec-title">Select Scheduled Departure Date <span class="req" style="color:var(--gold-dark);font-size:16px">*</span></h2>' +
+      '<p class="kb-dep-schedule-hint">🗓️ ' + esc(schedHint) + '</p>' +
+      '</div>' +
       '<div class="kb-year-wrap">' +
       '<span class="kb-year-label">Filter Year:</span>' +
       '<select class="kb-year-select" onchange="onYearSelect(this.value)">' +
