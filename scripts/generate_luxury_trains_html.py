@@ -3404,9 +3404,10 @@ function switchPowHomePrice(curr) {{
                 "title": "7 Days - The Heritage of India Luxury Rail Tour",
                 "route": "🚂 Mumbai · Udaipur · Jodhpur · Bikaner · Jaipur · Ranthambore · Agra · Delhi",
                 "facilities": [
-                    "Mayur Mahal & Rang Mahal: Twin royal fine-dining restaurants",
-                    "The Safari Bar & Rajah Club: House wines, cocktails & lounge",
-                    "24/7 Dedicated Butler: Personal valet service for every cabin"
+                    "Mayur Mahal & Rang Mahal: Twin royal fine-dining restaurants on tracks",
+                    "The Safari Bar & Rajah Club: Plush lounge bars, library & board games",
+                    "Palace Spa & Gym Access: Luxury wellness therapies & 5-star fitness",
+                    "Outdoor Games & Safaris: Ranthambore tiger safari & desert camel trek"
                 ],
                 "inquire": "Maharajas' Express - The Heritage of India (Mumbai to Delhi, 7 Days)"
             },
@@ -3419,9 +3420,10 @@ function switchPowHomePrice(curr) {{
                 "title": "7 Days - The Indian Panorama Heritage Rail Tour",
                 "route": "🚂 Delhi · Jaipur · Ranthambore · Agra · Orchha · Khajuraho · Varanasi · Delhi",
                 "facilities": [
-                    "Two Thematic Restaurants: Gourmet Indian & international dining",
-                    "The Safari Bar: Curated spirits, sommelier wines & library",
-                    "Private Valet Service: Round-the-clock personal cabin attendant"
+                    "Two Thematic Restaurants: Gourmet multi-course Indian & international dining",
+                    "The Safari Bar & Lounge: Curated spirits, cocktails & table games",
+                    "Palace Hotel Spa & Gym: Rejuvenating royal wellness & fitness suite",
+                    "Outdoor Safaris & Sports: Ranthambore tiger safari & palace golf"
                 ],
                 "inquire": "Maharajas' Express - The Indian Panorama (Delhi to Delhi, 7 Days)"
             },
@@ -3434,9 +3436,10 @@ function switchPowHomePrice(curr) {{
                 "title": "7 Days - The Indian Splendour Royal Rajasthan Tour",
                 "route": "🚂 Delhi · Agra · Ranthambore · Jaipur · Bikaner · Jodhpur · Udaipur · Mumbai",
                 "facilities": [
-                    "Mayur Mahal & Rang Mahal: Handcrafted gold-accented dining",
-                    "Rajah Club Lounge Bar: Panoramic drinks, games & relaxation",
-                    "Personal Butler Service: 24/7 assistance & luxury ensuite amenities"
+                    "Mayur Mahal & Rang Mahal: Handcrafted gold-accented fine dining saloons",
+                    "Rajah Club Lounge Bar: Panoramic drinks, parlor games & relaxation",
+                    "Palace Spa & Fitness: 5-star heritage wellness & personal butler",
+                    "Outdoor Adventures: Ranthambore wildlife drive & desert sand dunes"
                 ],
                 "inquire": "Maharajas' Express - The Indian Splendour (Delhi to Mumbai, 7 Days)"
             },
@@ -3449,9 +3452,10 @@ function switchPowHomePrice(curr) {{
                 "title": "4 Days - Treasures of India Golden Triangle Rail Tour",
                 "route": "🚂 Delhi · Agra · Ranthambore · Jaipur · Delhi",
                 "facilities": [
-                    "Twin Gourmet Dining Cars: Royal Rajasthani & continental meals",
-                    "The Safari Bar: Handcrafted cocktails with scenic rail views",
-                    "24/7 Dedicated Butler: Attentive personal service in all cabins"
+                    "Twin Gourmet Dining Cars: Royal Rajasthani & continental creations",
+                    "The Safari Bar Lounge: Handcrafted cocktails & scenic rail views",
+                    "Palace Spa & Butler: 24/7 personal attendant & luxury wellness",
+                    "Outdoor Game Drive: Morning 4x4 tiger safari in Ranthambore"
                 ],
                 "inquire": "Maharajas' Express - Treasures of India (Golden Triangle, 4 Days)"
             }
