@@ -851,8 +851,74 @@ footer a:hover{color:#F8904D}
     grid-template-columns: 1fr !important;
   }
   .gallery-hero-grid {
-    height: 320px !important;
+    height: 340px !important;
   }
+}
+
+.hero-photo-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.hero-photo-card:hover img {
+  transform: scale(1.05);
+}
+.hero-photo-card:hover .more-overlay {
+  background: rgba(15, 23, 42, 0.50) !important;
+}
+.hero-photo-card:hover .more-overlay span {
+  transform: scale(1.06);
+}
+
+/* Circuit Photo Lightbox Modal (Matching KoiKoi JourneyLightbox) */
+.circuit-lb-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: rgba(6, 9, 15, 0.97);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.circuit-lb-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.circuit-lb-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.circuit-lb-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.06);
+}
+.circuit-lb-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  z-index: 20;
+}
+.circuit-lb-arrow.prev { left: 24px; }
+.circuit-lb-arrow.next { right: 24px; }
+@media (max-width: 768px) {
+  .circuit-lb-arrow { width: 38px; height: 38px; }
+  .circuit-lb-arrow.prev { left: 10px; }
+  .circuit-lb-arrow.next { right: 10px; }
 }
 
 .circuit-highlights-grid {
@@ -1429,12 +1495,12 @@ footer a:hover{color:#F8904D}
 
     <!-- 7. FAQ -->
     <div id="faq">
-      <div class="sec-head" style="margin-bottom:28px;text-align:left">
-        <div class="eyebrow" style="color:#d96b27">FAQs</div>
-        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
-          Frequently Asked Questions
+      <div class="sec-head center" style="margin-bottom:28px;text-align:center;max-width:850px;margin-left:auto;margin-right:auto">
+        <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">HELPFUL FAQS</span>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:center">
+          Frequently Asked Questions · <span style="color:#F8904D">The Golden Chariot</span>
         </h2>
-        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+        <p style="max-width:860px;margin:8px auto 0;color:#64748b;font-size:15px;line-height:1.6;text-align:center">
           Everything you need to know about traveling on South India's luxury train.
         </p>
       </div>

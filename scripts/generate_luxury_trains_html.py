@@ -854,8 +854,74 @@ footer a:hover{color:#F8904D}
     grid-template-columns: 1fr !important;
   }
   .gallery-hero-grid {
-    height: 320px !important;
+    height: 340px !important;
   }
+}
+
+.hero-photo-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.hero-photo-card:hover img {
+  transform: scale(1.05);
+}
+.hero-photo-card:hover .more-overlay {
+  background: rgba(15, 23, 42, 0.50) !important;
+}
+.hero-photo-card:hover .more-overlay span {
+  transform: scale(1.06);
+}
+
+/* Circuit Photo Lightbox Modal (Matching KoiKoi JourneyLightbox) */
+.circuit-lb-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: rgba(6, 9, 15, 0.97);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.circuit-lb-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.circuit-lb-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.circuit-lb-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.06);
+}
+.circuit-lb-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  z-index: 20;
+}
+.circuit-lb-arrow.prev { left: 24px; }
+.circuit-lb-arrow.next { right: 24px; }
+@media (max-width: 768px) {
+  .circuit-lb-arrow { width: 38px; height: 38px; }
+  .circuit-lb-arrow.prev { left: 10px; }
+  .circuit-lb-arrow.next { right: 10px; }
 }
 
 .circuit-highlights-grid {
@@ -2759,13 +2825,13 @@ def generate_all_for_base(base_dir, base_path):
 
     <!-- 8. Frequently Asked Questions (FAQ) -->
     <div id="faq">
-      <div class="sec-head" style="margin-bottom:28px;text-align:left">
-        <div class="eyebrow" style="color:#d96b27">FAQs</div>
-        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
-          Frequently Asked Questions
+      <div class="sec-head center" style="margin-bottom:28px;text-align:center;max-width:850px;margin-left:auto;margin-right:auto">
+        <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">HELPFUL FAQS</span>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:center">
+          Frequently Asked Questions · <span style="color:#F8904D">Maharajas' Express</span>
         </h2>
-        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
-          Everything you need to know about traveling on Maharajas' Express.
+        <p style="max-width:860px;margin:8px auto 0;color:#64748b;font-size:15px;line-height:1.6;text-align:center">
+          Everything you need to know about cabins, dining, schedules, and reservations.
         </p>
       </div>
 
@@ -2955,6 +3021,186 @@ function switchPriceCurrency(curr) {{
 </tr>
 """
 
+        # Build Dynamic Photo Grid HTML (4+ photos support with +N Photos badge)
+        extra_count = len(hero_imgs) - 4
+        more_badge_html = f"""
+        <div style="position:absolute;inset:0;background:rgba(15,23,42,0.38);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;transition:background .25s" class="more-overlay">
+          <span style="padding:10px 18px;border-radius:12px;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);color:#0f172a;font-family:\'Outfit\',sans-serif;font-size:13px;font-weight:800;box-shadow:0 10px 25px rgba(0,0,0,0.25);display:inline-flex;align-items:center;gap:6px;transition:transform .2s">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            +{extra_count} Photos
+          </span>
+        </div>
+""" if extra_count > 0 else ""
+
+        if len(hero_imgs) >= 4:
+            gallery_grid_html = f"""
+    <!-- Left: 4-Photo Showcase Grid with Lightbox Trigger -->
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:12px;height:100%;min-height:380px" class="gallery-hero-grid">
+      <!-- Photo 1 (Top Left) -->
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(0)" class="hero-photo-card" title="Click to open photo lightbox">
+        <img src="{hero_imgs[0]['src']}" alt="{hero_imgs[0].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[0]['title']}</span>
+      </div>
+
+      <!-- Photo 2 (Top Right) -->
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(1)" class="hero-photo-card" title="Click to open photo lightbox">
+        <img src="{hero_imgs[1]['src']}" alt="{hero_imgs[1].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[1]['title']}</span>
+      </div>
+
+      <!-- Photo 3 (Bottom Left) -->
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(2)" class="hero-photo-card" title="Click to open photo lightbox">
+        <img src="{hero_imgs[2]['src']}" alt="{hero_imgs[2].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[2]['title']}</span>
+      </div>
+
+      <!-- Photo 4 (Bottom Right + Optional Overlay) -->
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(3)" class="hero-photo-card" title="Click to view all photos">
+        <img src="{hero_imgs[3]['src']}" alt="{hero_imgs[3].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[3]['title']}</span>
+        {more_badge_html}
+      </div>
+    </div>
+"""
+        else:
+            gallery_grid_html = f"""
+    <!-- Left: 3-Photo Showcase Grid with Lightbox Trigger -->
+    <div style="display:grid;grid-template-columns:1.2fr 1fr;grid-template-rows:repeat(2,1fr);gap:12px;height:100%" class="gallery-hero-grid">
+      <div style="grid-row:1 / -1;border-radius:20px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(0)" class="hero-photo-card" title="Click to open photo lightbox">
+        <img src="{hero_imgs[0]['src']}" alt="{hero_imgs[0].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:12px 16px;font-size:13px;font-weight:600">{hero_imgs[0]['title']}</span>
+      </div>
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(1)" class="hero-photo-card" title="Click to open photo lightbox">
+        <img src="{hero_imgs[1]['src']}" alt="{hero_imgs[1].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[1]['title']}</span>
+      </div>
+      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b;cursor:pointer" onclick="openCircuitLightbox(2)" class="hero-photo-card" title="Click to open photo lightbox">
+        <img src="{hero_imgs[2]['src']}" alt="{hero_imgs[2].get('title', name)}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease">
+        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[2]['title']}</span>
+      </div>
+    </div>
+"""
+
+        # Serialize slides json for frontend JS
+        import json as _py_json
+        slides_json = _py_json.dumps(hero_imgs)
+
+        lightbox_modal_html = f"""
+<!-- Circuit Photo Lightbox Modal -->
+<div id="circuitLightbox" class="circuit-lb-overlay" onclick="onLightboxBackdropClick(event)">
+  <!-- Header: Counter & Close -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;z-index:30">
+    <span id="lbCounter" style="display:inline-block;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.10);padding:6px 14px;border-radius:9999px;font-size:11px;font-weight:700;letter-spacing:0.18em;color:rgba(255,255,255,0.9);backdrop-filter:blur(10px);text-transform:uppercase">1 / {len(hero_imgs)}</span>
+    <button class="circuit-lb-btn" onclick="closeCircuitLightbox()" aria-label="Close photo gallery">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </div>
+
+  <!-- Main View Area with Prev / Next Arrows -->
+  <div style="position:relative;flex:1;display:flex;align-items:center;justify-content:center;padding:10px 80px;min-height:0">
+    <button class="circuit-lb-btn circuit-lb-arrow prev" onclick="prevCircuitLightbox()" aria-label="Previous photo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+    <img id="lbMainImage" src="" alt="" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;box-shadow:0 25px 60px rgba(0,0,0,0.8);transition:opacity 0.2s ease, transform 0.2s ease">
+    <button class="circuit-lb-btn circuit-lb-arrow next" onclick="nextCircuitLightbox()" aria-label="Next photo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+  </div>
+
+  <!-- Footer: Caption -->
+  <div style="padding:16px 24px 22px;text-align:center;z-index:30">
+    <div id="lbCaption" style="color:#ffffff;font-size:15px;font-weight:600;font-family:\'Outfit\',sans-serif;letter-spacing:0.3px;text-shadow:0 2px 8px rgba(0,0,0,0.8)"></div>
+  </div>
+</div>
+
+<script>
+const circuitSlides = {slides_json};
+let curLbIndex = 0;
+
+function openCircuitLightbox(index) {{
+  curLbIndex = index;
+  updateLightboxContent();
+  const lb = document.getElementById('circuitLightbox');
+  if (!lb) return;
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}}
+
+function closeCircuitLightbox() {{
+  const lb = document.getElementById('circuitLightbox');
+  if (!lb) return;
+  lb.classList.remove('active');
+  document.body.style.overflow = '';
+}}
+
+function updateLightboxContent() {{
+  if (!circuitSlides || !circuitSlides.length) return;
+  const slide = circuitSlides[curLbIndex];
+  const imgEl = document.getElementById('lbMainImage');
+  const counterEl = document.getElementById('lbCounter');
+  const captionEl = document.getElementById('lbCaption');
+  if (imgEl) {{
+    imgEl.style.opacity = '0.3';
+    imgEl.style.transform = 'scale(0.98)';
+    imgEl.src = slide.src;
+    imgEl.alt = slide.title || '';
+    setTimeout(() => {{
+      imgEl.style.opacity = '1';
+      imgEl.style.transform = 'scale(1)';
+    }}, 80);
+  }}
+  if (counterEl) {{
+    counterEl.textContent = `${{curLbIndex + 1}} / ${{circuitSlides.length}}`;
+  }}
+  if (captionEl) {{
+    captionEl.textContent = slide.title || '';
+  }}
+}}
+
+function nextCircuitLightbox() {{
+  if (!circuitSlides.length) return;
+  curLbIndex = (curLbIndex + 1) % circuitSlides.length;
+  updateLightboxContent();
+}}
+
+function prevCircuitLightbox() {{
+  if (!circuitSlides.length) return;
+  curLbIndex = (curLbIndex - 1 + circuitSlides.length) % circuitSlides.length;
+  updateLightboxContent();
+}}
+
+function onLightboxBackdropClick(e) {{
+  if (e.target.id === 'circuitLightbox' || e.target.tagName === 'DIV') {{
+    if (e.target.closest('button') || e.target.tagName === 'IMG') return;
+    closeCircuitLightbox();
+  }}
+}}
+
+document.addEventListener('keydown', (e) => {{
+  const lb = document.getElementById('circuitLightbox');
+  if (!lb || !lb.classList.contains('active')) return;
+  if (e.key === 'Escape') closeCircuitLightbox();
+  if (e.key === 'ArrowRight') nextCircuitLightbox();
+  if (e.key === 'ArrowLeft') prevCircuitLightbox();
+}});
+
+// Swipe support for mobile touch
+let lbTouchStartX = 0;
+let lbTouchEndX = 0;
+const lbContainer = document.getElementById('circuitLightbox');
+if (lbContainer) {{
+  lbContainer.addEventListener('touchstart', (e) => {{
+    lbTouchStartX = e.changedTouches[0].screenX;
+  }}, {{ passive: true }});
+  lbContainer.addEventListener('touchend', (e) => {{
+    lbTouchEndX = e.changedTouches[0].screenX;
+    if (lbTouchStartX - lbTouchEndX > 50) nextCircuitLightbox();
+    if (lbTouchEndX - lbTouchStartX > 50) prevCircuitLightbox();
+  }}, {{ passive: true }});
+}}
+</script>
+"""
+
         # Build Pricing Table HTML
         if train_slug == "golden-chariot":
             price_table_html = f"""
@@ -3110,22 +3356,7 @@ function switchPriceCurrency(curr) {{
 <div class="wrap" style="margin-bottom:44px">
   <div style="display:grid;grid-template-columns:1.8fr 1.2fr;gap:24px" class="hero-inner-split">
     
-    <!-- Left: 3-Photo Showcase -->
-    <div style="display:grid;grid-template-columns:1.2fr 1fr;grid-template-rows:repeat(2,1fr);gap:12px;height:100%" class="gallery-hero-grid">
-      <div style="grid-row:1 / -1;border-radius:20px;overflow:hidden;position:relative;background:#1e293b">
-        <img src="{hero_imgs[0]['src']}" alt="{name}" style="width:100%;height:100%;object-fit:cover;display:block">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:12px 16px;font-size:13px;font-weight:600">{hero_imgs[0]['title']}</span>
-      </div>
-      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b">
-        <img src="{hero_imgs[1]['src']}" alt="{name}" style="width:100%;height:100%;object-fit:cover;display:block">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[1]['title']}</span>
-      </div>
-      <div style="border-radius:16px;overflow:hidden;position:relative;background:#1e293b">
-        <img src="{hero_imgs[2]['src']}" alt="{name}" style="width:100%;height:100%;object-fit:cover;display:block">
-        <span style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));color:#fff;padding:8px 12px;font-size:12px;font-weight:600">{hero_imgs[2]['title']}</span>
-      </div>
-    </div>
-
+    {gallery_grid_html}
     <!-- Right: Tour Snapshot Card (Exact Clean & Authentic Style) -->
     <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:24px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between">
       <div>
@@ -3331,6 +3562,8 @@ function switchPriceCurrency(curr) {{
   </div>
 </div>
 
+{lightbox_modal_html}
+
 <script>
 function switchCircuitPrice(curr) {{
   const usd = document.getElementById('circuitPriceUsd');
@@ -3438,7 +3671,8 @@ function switchCircuitPrice(curr) {{
         hero_imgs=[
             {"src": "/images/luxury-trains/maharajas-express/hero.jpg", "title": "Maharajas' Express Livery"},
             {"src": "/images/luxury-trains/maharajas-express/dining-pink.jpg", "title": "Rang Mahal Fine Dining"},
-            {"src": "/images/luxury-trains/maharajas-express/suite.jpg", "title": "Royal Suite Salon"}
+            {"src": "/images/luxury-trains/maharajas-express/deluxe-cabin.jpg", "title": "Deluxe Cabin"},
+            {"src": "/images/luxury-trains/maharajas-express/suite.jpg", "title": "Royal Presidential Suite Salon"}
         ],
         highlights=[
             "Gala welcome with shehnai & marigold garlands at Mumbai CSMT",
@@ -4442,12 +4676,12 @@ function switchCircuitPrice(curr) {{
 
     <!-- 7. FAQ -->
     <div id="faq">
-      <div class="sec-head" style="margin-bottom:28px;text-align:left">
-        <div class="eyebrow" style="color:#d96b27">FAQs</div>
-        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:left">
-          Frequently Asked Questions
+      <div class="sec-head center" style="margin-bottom:28px;text-align:center;max-width:850px;margin-left:auto;margin-right:auto">
+        <span style="color:#F8904D;font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px">HELPFUL FAQS</span>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a;text-align:center">
+          Frequently Asked Questions · <span style="color:#F8904D">The Golden Chariot</span>
         </h2>
-        <p style="max-width:860px;margin:8px 0 0;color:#64748b;font-size:15px;line-height:1.6;text-align:left">
+        <p style="max-width:860px;margin:8px auto 0;color:#64748b;font-size:15px;line-height:1.6;text-align:center">
           Everything you need to know about traveling on South India's luxury train.
         </p>
       </div>
@@ -4624,9 +4858,12 @@ function switchCircuitPrice(curr) {{
         destinations_count="7 Destinations · Karnataka & Goa",
         starting_price="$5,000 USD / ₹4,87,500 INR",
         hero_imgs=[
-            {"src": "/images/luxury-trains/golden-chariot/hero.jpg", "title": "The Golden Chariot Livery"},
-            {"src": "/images/luxury-trains/golden-chariot/restaurant-1.jpg", "title": "Ruchi Fine Dining"},
-            {"src": "/images/luxury-trains/golden-chariot/double-bed.jpg", "title": "Deluxe Cabin"}
+            {"src": "/images/luxury-trains/golden-chariot/restaurant-1.jpg", "title": "Ruchi Fine Dining Restaurant"},
+            {"src": "/images/luxury-trains/golden-chariot/bar.jpg", "title": "Madira Royal Lounge Bar"},
+            {"src": "/images/luxury-trains/golden-chariot/double-bed.jpg", "title": "Deluxe Double Bed Cabin"},
+            {"src": "/images/luxury-trains/golden-chariot/hero.jpg", "title": "The Golden Chariot Royal Livery"},
+            {"src": "/images/luxury-trains/golden-chariot/restaurant-2.jpg", "title": "Nalapaka Fine Dining Restaurant"},
+            {"src": "/images/luxury-trains/golden-chariot/sitting-room.jpg", "title": "Deluxe Twin Bed Cabin"}
         ],
         highlights=[
             "Open-top 4x4 safari in Bandipur Tiger Reserve tracking wild elephants and leopards",
@@ -4753,9 +4990,12 @@ function switchCircuitPrice(curr) {{
         destinations_count="8 Destinations · Karnataka, Tamil Nadu & Kerala",
         starting_price="$5,000 USD / ₹4,87,500 INR",
         hero_imgs=[
-            {"src": "/images/luxury-trains/golden-chariot/restaurant-1.jpg", "title": "Nalapaka Dining Car"},
-            {"src": "/images/luxury-trains/golden-chariot/bar.jpg", "title": "Madira Lounge Bar"},
-            {"src": "/images/luxury-trains/golden-chariot/hero.jpg", "title": "The Golden Chariot Livery"}
+            {"src": "/images/luxury-trains/golden-chariot/restaurant-2.jpg", "title": "Nalapaka Fine Dining Restaurant"},
+            {"src": "/images/luxury-trains/golden-chariot/bar.jpg", "title": "Madira Royal Lounge Bar"},
+            {"src": "/images/luxury-trains/golden-chariot/sitting-room.jpg", "title": "Deluxe Twin Bed Cabin"},
+            {"src": "/images/luxury-trains/golden-chariot/hero.jpg", "title": "The Golden Chariot Royal Livery"},
+            {"src": "/images/luxury-trains/golden-chariot/restaurant-1.jpg", "title": "Ruchi Fine Dining Restaurant"},
+            {"src": "/images/luxury-trains/golden-chariot/double-bed.jpg", "title": "Deluxe Double Bed Cabin"}
         ],
         highlights=[
             "Guided visit to Mysore Palace (Amba Vilas) and royal Srirangapatna mausoleum",
@@ -4860,9 +5100,12 @@ function switchCircuitPrice(curr) {{
         destinations_count="4 Destinations · Karnataka",
         starting_price="$3,400 USD / ₹3,31,500 INR",
         hero_imgs=[
-            {"src": "/images/luxury-trains/golden-chariot/double-bed.jpg", "title": "Deluxe Twin Cabin"},
-            {"src": "/images/luxury-trains/golden-chariot/restaurant-2.jpg", "title": "Ruchi Dining Car"},
-            {"src": "/images/luxury-trains/golden-chariot/hero.jpg", "title": "The Golden Chariot in Karnataka"}
+            {"src": "/images/luxury-trains/golden-chariot/double-bed.jpg", "title": "Deluxe Double Bed Cabin"},
+            {"src": "/images/luxury-trains/golden-chariot/restaurant-1.jpg", "title": "Ruchi Fine Dining Restaurant"},
+            {"src": "/images/luxury-trains/golden-chariot/bar.jpg", "title": "Madira Royal Lounge Bar"},
+            {"src": "/images/luxury-trains/golden-chariot/hero.jpg", "title": "The Golden Chariot in Karnataka"},
+            {"src": "/images/luxury-trains/golden-chariot/restaurant-2.jpg", "title": "Nalapaka Fine Dining Restaurant"},
+            {"src": "/images/luxury-trains/golden-chariot/sitting-room.jpg", "title": "Deluxe Twin Bed Cabin"}
         ],
         highlights=[
             "Early morning open-top safari inside Bandipur Tiger Reserve tracking elephants & leopards",
