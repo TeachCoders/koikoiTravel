@@ -1396,9 +1396,21 @@ footer a:hover{color:#F8904D}
   border-radius: 10px;
   padding: 12px 16px;
   display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.kb-train-select-box .kb-strip-top {
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px 18px;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+.kb-train-select-box .kb-strip-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
 }
 .kb-train-select-box .kb-strip-dur {
   color: #ffffff;
@@ -1407,18 +1419,37 @@ footer a:hover{color:#F8904D}
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 6px;
-  font-size: 13.5px;
+  font-size: 13px;
+  white-space: nowrap;
 }
-.kb-train-select-box .kb-strip-route {
-  color: #ffffff;
+.kb-train-select-box .kb-strip-dep {
+  color: #fef08a;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(254, 240, 138, 0.35);
   font-weight: 600;
-  font-size: 14.5px;
-  flex: 1;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  white-space: nowrap;
 }
 .kb-train-select-box .kb-strip-from {
   color: #ccfbf1;
   font-weight: 500;
   font-size: 13.5px;
+}
+.kb-train-select-box .kb-strip-from b {
+  color: #ffffff;
+}
+.kb-train-select-box .kb-strip-route {
+  color: #f0fdfa;
+  font-weight: 500;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+.kb-train-select-box .kb-strip-route-lbl {
+  color: #99f6e4;
+  font-weight: 700;
+  margin-right: 6px;
 }
 
 /* Row Grids */
@@ -2018,6 +2049,13 @@ var TRAIN_SCHEDULE_NOTES = {
   "Deccan Odyssey": "Deccan Odyssey departures start on scheduled Saturdays from Mumbai / Delhi"
 };
 
+var TRAIN_DEP_DAYS = {
+  "Palace on Wheels": "Every Wednesday",
+  "Maharajas’ Express": "Every Sunday",
+  "Golden Chariot": "Select Saturdays",
+  "Deccan Odyssey": "Select Saturdays"
+};
+
 function formatLuxuryDate(dateStr, includeDay) {
   if (!dateStr || dateStr === "flex") return "Flexible (Suggest best date)";
   var p = dateStr.split("-");
@@ -2437,21 +2475,23 @@ function render() {
       '</div>' +
       '</div>' +
       '<div class="kb-info-strip">' +
+      '<div class="kb-strip-top">' +
+      '<div class="kb-strip-tags">' +
       '<span class="kb-strip-dur">' + jn.d + '</span>' +
-      '<span class="kb-strip-route">' + jn.r + '</span>' +
-      '<span class="kb-strip-from">📍 ' + jn.from + '</span>' +
+      '<span class="kb-strip-dep">🗓️ Departs: <b>' + (TRAIN_DEP_DAYS[S.train] || 'Scheduled Dates') + '</b></span>' +
+      '</div>' +
+      '<span class="kb-strip-from">📍 Journey starts from: <b>' + jn.from + '</b></span>' +
+      '</div>' +
+      '<div class="kb-strip-route"><span class="kb-strip-route-lbl">Route:</span> ' + jn.r + '</div>' +
       '</div>' +
       E("train") + E("journey") +
       '</div>';
 
     // Dates Section: Header + Filter Year
-    var schedHint = TRAIN_SCHEDULE_NOTES[S.train] || (S.train + " departures start on scheduled dates");
-
-    h += '<div style="margin-top:8px">' +
+    h += '<div style="margin-top:10px">' +
       '<div class="kb-date-header-row">' +
       '<div>' +
       '<h2 class="kb-sec-title">Select Scheduled Departure Date <span class="req" style="color:var(--gold-dark);font-size:16px">*</span></h2>' +
-      '<p class="kb-dep-schedule-hint">🗓️ ' + esc(schedHint) + '</p>' +
       '</div>' +
       '<div class="kb-year-wrap">' +
       '<span class="kb-year-label">Filter Year:</span>' +
@@ -2524,7 +2564,7 @@ function render() {
     h += '<div class="kb-step2-summary-card">' +
       '<div>' +
       '<div class="kb-s2-train">' + esc(S.train) + ' · ' + esc(S.journey) + '</div>' +
-      '<div class="kb-s2-details">📅 Departure: <b>' + formatLuxuryDate(S.date) + '</b> (' + jn.d + ')</div>' +
+      '<div class="kb-s2-details">📅 Departure: <b>' + formatLuxuryDate(S.date) + '</b> (' + jn.d + ') &nbsp;·&nbsp; 📍 Journey starts from: <b>' + jn.from + '</b></div>' +
       '</div>' +
       '<button type="button" class="kb-btn-edit" id="btn-back-step1">Change Train / Date</button>' +
       '</div>';

@@ -41,6 +41,7 @@ if __name__ == "__main__":
         "cp -rn /var/www/koikoitravel-app/frontend/public/images/luxury-trains/* /var/www/koikoitravel-app/Backend/public/images/luxury-trains/ 2>/dev/null || true && "
         "echo '=== STEP 2: BUILD FRONTEND ===' && "
         "cd /var/www/koikoitravel-app/frontend && "
+        "rm -rf .next && "
         "node -e \"const fs=require('fs');const p='/var/www/koikoitravel-app/frontend/node_modules/next/dist/compiled/@next/font/dist/google/loader.js';if(fs.existsSync(p)){let c=fs.readFileSync(p,'utf8');c=c.replace(/const ext = \\/\\\\.\\(woff\\|woff2\\|eot\\|ttf\\|otf\\)\\$\\/.exec\\(googleFontFileUrl\\)\\[1\\];/, \\\"const ext = (googleFontFileUrl.match(/\\\\.(woff|woff2|eot|ttf|otf)/) || [null, 'woff2'])[1];\\\");fs.writeFileSync(p,c);console.log('loader.js patched');}\" && "
         "npm run build && "
         "echo '=== STEP 3: RESTART PM2 ===' && "
