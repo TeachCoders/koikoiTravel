@@ -1256,12 +1256,12 @@ def generate_all_for_base(base_dir, base_path):
   <div class="wrap">
     <div class="hero-tag-pill">
       <span class="dot"></span>
-      <span>Private Customized &amp; Luxury Rail Journeys</span>
+      <span>India's Premier Luxury Rail Journeys</span>
     </div>
     <div class="hero-display-title">
       <span>Luxury Train India</span>
     </div>
-    <p class="hero-desc">Bespoke luxury rail journeys across India, crafted with personalized pre and post-tour extensions.</p>
+    <p class="hero-desc">Experience India's most prestigious luxury trains with curated royal circuits, verified tariffs, and 5-star pre and post-tour extensions.</p>
     <div class="hero-ctas">
       <a class="btn-koikoi-orange" href="#trains">
         <span>Explore the 4 Trains</span>
