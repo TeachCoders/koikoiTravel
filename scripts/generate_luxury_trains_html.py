@@ -2538,7 +2538,7 @@ def generate_all_for_base(base_dir, base_path):
       Maharaja Express Train
     </h1>
     <p style="color:#475569;font-size:clamp(15px,1.25vw,17.5px);max-width:1050px;line-height:1.75;margin:0">
-      Experience half a mile of royal opulence across India aboard 23 carriages with two five-star fine-dining restaurants and pneumatic suspension. Choose from 4 legendary circuits connecting Mumbai, Delhi, Rajasthan, Agra, and Varanasi. Each journey features its own complete day-by-day itinerary.
+      Experience half a mile of royal opulence across India aboard 23 carriages with two five-star fine-dining restaurants, dedicated butler service, and pneumatic suspension. Connecting iconic heritage destinations across Mumbai, Delhi, Rajasthan, Agra, and Varanasi.
     </p>
   </div>
 </div>
@@ -2552,10 +2552,10 @@ def generate_all_for_base(base_dir, base_path):
       <div class="sec-head" style="margin-bottom:28px;text-align:center">
         <div class="eyebrow" style="color:#d96b27">Royal Circuits</div>
         <h2 style="font-size:clamp(26px,3.2vw,38px);font-family:'Outfit',sans-serif;font-weight:800;color:#0f172a">
-          Signature Journeys of Maharaja Express Train
+          4 Signature Journeys
         </h2>
         <p style="max-width:860px;margin:8px auto 0;color:#64748b;font-size:15px;line-height:1.6">
-          Choose from 4 royal circuits connecting Mumbai, Delhi, Rajasthan, Agra, and Varanasi.
+          Select a royal circuit below to explore complete day-by-day itineraries and departure dates.
         </p>
       </div>
       {get_me_cards_component()}
