@@ -1510,34 +1510,42 @@ footer a:hover{color:#F8904D}
 }
 
 /* ========================================================
-   Clean Month & Dates Table (NO CARDS / NO BOXED BORDERS)
-   Matches user screenshot media_1795258321228_8ca0a09f.png
+   Zebra Striped Month Table (Light Golden & White alternate)
    ======================================================== */
 .kb-dates-container {
-  border: none;
-  background: transparent;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
 }
 .kb-month-row {
   display: flex;
-  padding: 16px 0;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--line);
-  align-items: flex-start;
+  align-items: center;
   gap: 24px;
+  transition: background 0.15s ease;
 }
 .kb-month-row:last-child {
   border-bottom: none;
 }
+.kb-month-row:nth-child(odd) {
+  background: #fdfaf3; /* Light golden champagne */
+}
+.kb-month-row:nth-child(even) {
+  background: #ffffff; /* White */
+}
 @media (max-width: 680px) {
   .kb-month-row {
     flex-direction: column;
-    gap: 10px;
-    padding: 14px 0;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
   }
 }
 .kb-month-col {
   width: 155px;
   flex-shrink: 0;
-  padding-top: 4px;
 }
 .kb-month-name {
   font-size: 17.5px;
@@ -1545,34 +1553,28 @@ footer a:hover{color:#F8904D}
   color: var(--brand);
   letter-spacing: -0.01em;
 }
-.kb-month-sub {
-  font-size: 13px;
-  color: var(--gold-dark);
-  font-weight: 600;
-  margin-top: 2px;
-}
 
 /* Dates Grid inside row */
 .kb-dates-col {
   flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px 22px;
+  gap: 12px 18px;
 }
 @media (max-width: 600px) {
   .kb-dates-col {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 10px;
   }
 }
 
-/* Individual Pill Radio Button (Matches homepage background #faf8f5 with #e2e8f0 border) */
+/* Individual Pill Radio Button */
 .kb-date-item {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
-  background: #faf8f5;
+  background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   cursor: pointer;
@@ -1583,13 +1585,21 @@ footer a:hover{color:#F8904D}
   user-select: none;
   text-align: left;
 }
-.kb-date-item:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+.kb-month-row:nth-child(odd) .kb-date-item {
+  background: #ffffff;
+  border-color: #ebdcb9;
 }
-.kb-date-item[aria-checked="true"] {
+.kb-month-row:nth-child(even) .kb-date-item {
+  background: #faf8f5;
+  border-color: #e2e8f0;
+}
+.kb-date-item:hover {
   background: #f0fdfa;
   border-color: #0d9488;
+}
+.kb-date-item[aria-checked="true"] {
+  background: #f0fdfa !important;
+  border-color: #0d9488 !important;
   box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.2);
   color: #0f766e;
   font-weight: 700;
@@ -1620,9 +1630,9 @@ footer a:hover{color:#F8904D}
 }
 
 .kb-flex-date-wrap {
-  padding: 14px 0 6px;
-  border-top: 1px dashed var(--line);
-  margin-top: 6px;
+  padding: 14px 20px;
+  background: #faf8f5;
+  border-top: 1px solid var(--line);
 }
 
 /* Step 2 Summary Pill - Teal Green Theme */
@@ -2442,7 +2452,6 @@ function render() {
         h += '<div class="kb-month-row">' +
           '<div class="kb-month-col">' +
           '<div class="kb-month-name">' + mName + ' ' + yName + '</div>' +
-          '<div class="kb-month-sub">' + datesInMonth.length + ' Departure' + (datesInMonth.length > 1 ? 's' : '') + '</div>' +
           '</div>' +
           '<div class="kb-dates-col">';
 
