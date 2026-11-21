@@ -224,16 +224,15 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 }
 
 /* ========================================================
-   Dark Luxury Train & Circuit Selector Box
-   Deep royal navy with gold accent trim & high contrast
+   Teal Green Luxury Train & Circuit Selector Box
    ======================================================== */
 .kb-train-select-box {
-  background: linear-gradient(135deg, #091e2b 0%, #0f2738 100%);
+  background: linear-gradient(135deg, #115e59 0%, #042f2e 100%);
   border-radius: 14px;
   padding: 22px 24px;
   color: #ffffff;
-  box-shadow: 0 4px 20px rgba(9, 30, 43, 0.15);
-  border: 1.5px solid var(--gold-dark);
+  box-shadow: 0 4px 20px rgba(4, 47, 46, 0.2);
+  border: 1.5px solid #14b8a6;
 }
 .kb-train-select-box .kb-label {
   color: #ffffff;
@@ -245,25 +244,25 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   gap: 4px;
 }
 .kb-train-select-box .kb-label .req {
-  color: #f59e0b;
+  color: #5eead4;
 }
 .kb-train-select-box .kb-select {
   background: #ffffff;
   color: #0f172a;
-  border: 1.5px solid var(--gold-border);
+  border: 1.5px solid #99f6e4;
   font-weight: 600;
   font-size: 15.5px;
   padding: 12px 14px;
   border-radius: 10px;
 }
 .kb-train-select-box .kb-select:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.35);
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.35);
 }
 .kb-train-select-box .kb-info-strip {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(232, 215, 176, 0.25);
-  color: #f1f5f9;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f0fdfa;
   margin-top: 14px;
   border-radius: 10px;
   padding: 12px 16px;
@@ -274,21 +273,21 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 }
 .kb-train-select-box .kb-strip-dur {
   color: #ffffff;
-  background: var(--gold);
-  border: 1px solid #f59e0b;
+  background: #0d9488;
+  border: 1px solid #2dd4bf;
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 6px;
   font-size: 13.5px;
 }
 .kb-train-select-box .kb-strip-route {
-  color: #fef3c7;
+  color: #ffffff;
   font-weight: 600;
   font-size: 14.5px;
   flex: 1;
 }
 .kb-train-select-box .kb-strip-from {
-  color: #cbd5e1;
+  color: #ccfbf1;
   font-weight: 500;
   font-size: 13.5px;
 }
@@ -495,45 +494,47 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   margin-top: 6px;
 }
 
-/* Step 2 Summary Pill */
+/* Step 2 Summary Pill - Teal Green Theme */
 .kb-step2-summary-card {
-  background: linear-gradient(135deg, #091e2b 0%, #0f2738 100%);
-  border: 1.5px solid var(--gold-dark);
+  background: linear-gradient(135deg, #115e59 0%, #042f2e 100%);
+  border: 1.5px solid #14b8a6;
   border-radius: 12px;
   padding: 16px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
+  box-shadow: 0 4px 18px rgba(4, 47, 46, 0.18);
 }
 .kb-s2-train {
-  font-size: 16px;
+  font-size: 16.5px;
   font-weight: 700;
   color: #ffffff;
 }
 .kb-s2-details {
   font-size: 14px;
-  color: #cbd5e1;
+  color: #ccfbf1;
   margin-top: 3px;
 }
 .kb-s2-details b {
-  color: #fef3c7;
+  color: #ffffff;
 }
 .kb-btn-edit {
   font: inherit;
   font-size: 13px;
   font-weight: 700;
-  color: var(--gold-dark);
+  color: #0f766e;
   background: #ffffff;
-  border: 1.5px solid var(--gold);
-  padding: 7px 16px;
+  border: 1.5px solid #ffffff;
+  padding: 8px 18px;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
 }
 .kb-btn-edit:hover {
-  background: var(--gold-bg);
+  background: #f0fdfa;
+  color: #042f2e;
 }
 
 /* ========================================================
