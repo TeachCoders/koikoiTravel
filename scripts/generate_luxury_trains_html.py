@@ -858,6 +858,20 @@ footer a:hover{color:#F8904D}
   }
 }
 
+.circuit-highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 28px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+@media (max-width: 768px) {
+  .circuit-highlights-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 /* floating whatsapp */
 .wa{position:fixed;right:18px;bottom:18px;z-index:60;background:#25d366;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.25);display:flex;align-items:center;gap:6px}
 .wa:hover{background:#20ba5a}
@@ -3006,7 +3020,7 @@ function switchPriceCurrency(curr) {{
         {name} <span style="color:#F8904D">Highlights</span>
       </h2>
       <div style="background:rgba(204,251,241,0.25);border:1px solid #ccfbf1;border-radius:24px;padding:24px">
-        <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;list-style:none;padding:0;margin:0">
+        <ul class="circuit-highlights-grid">
           {hl_html}
         </ul>
       </div>
