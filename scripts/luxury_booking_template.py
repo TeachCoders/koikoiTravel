@@ -110,11 +110,11 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   left: 60px;
   height: 3px;
   width: 0%;
-  background: linear-gradient(90deg, #10b981 0%, #0d9488 100%);
+  background: #10b981;
   z-index: 1;
   border-radius: 999px;
   transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
 }
 .kb-timeline-arrow {
   position: absolute;
@@ -261,11 +261,11 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
    Teal Green Luxury Train & Circuit Selector Box
    ======================================================== */
 .kb-train-select-box {
-  background: linear-gradient(135deg, #115e59 0%, #042f2e 100%);
+  background: #0f766e;
   border-radius: 14px;
   padding: 22px 24px;
   color: #ffffff;
-  box-shadow: 0 4px 20px rgba(4, 47, 46, 0.2);
+  box-shadow: 0 4px 18px rgba(15, 118, 110, 0.2);
   border: 1.5px solid #14b8a6;
 }
 .kb-train-select-box .kb-label {
@@ -532,7 +532,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 
 /* Step 2 Summary Pill - Teal Green Theme */
 .kb-step2-summary-card {
-  background: linear-gradient(135deg, #115e59 0%, #042f2e 100%);
+  background: #0f766e;
   border: 1.5px solid #14b8a6;
   border-radius: 12px;
   padding: 16px 20px;
@@ -540,7 +540,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  box-shadow: 0 4px 18px rgba(4, 47, 46, 0.18);
+  box-shadow: 0 4px 16px rgba(15, 118, 110, 0.15);
 }
 .kb-s2-train {
   font-size: 16.5px;
@@ -789,9 +789,9 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   border-radius: 999px;
   padding: 13px 34px;
   cursor: pointer;
-  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  background: #F8904D;
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(180, 83, 9, 0.35);
+  box-shadow: 0 4px 14px rgba(248, 144, 77, 0.35);
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
@@ -799,8 +799,9 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   gap: 8px;
 }
 .kb-btn-primary:hover:not(:disabled) {
+  background: #e07b3b;
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(180, 83, 9, 0.45);
+  box-shadow: 0 6px 18px rgba(248, 144, 77, 0.45);
 }
 .kb-btn-primary:disabled {
   opacity: 0.6;
