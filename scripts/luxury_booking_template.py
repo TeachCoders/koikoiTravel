@@ -110,9 +110,9 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   text-align: center;
 }
 .kb-step-label-top {
-  font-size: 12px;
+  font-size: 13.5px;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   margin-bottom: 8px;
   color: #94a3b8;
@@ -204,7 +204,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
     margin: 14px auto 20px;
   }
   .kb-step-label-top {
-    font-size: 10.5px;
+    font-size: 11.5px;
     letter-spacing: 0.02em;
     margin-bottom: 6px;
     white-space: normal;
@@ -271,7 +271,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 }
 .kb-train-select-box .kb-label {
   color: #ffffff;
-  font-size: 15.5px;
+  font-size: 16.5px;
   font-weight: 700;
   margin-bottom: 8px;
   display: flex;
@@ -413,7 +413,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 }
 .kb-sec-title {
   font-family: var(--font-body);
-  font-size: 18.5px;
+  font-size: 20.5px;
   font-weight: 700;
   color: #1e293b;
   margin: 0;
@@ -491,10 +491,10 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   flex-shrink: 0;
 }
 .kb-month-name {
-  font-size: 17.5px;
+  font-size: 18.5px;
   color: var(--brand);
   letter-spacing: -0.01em;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* Dates Grid inside row */
@@ -592,7 +592,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   box-shadow: 0 4px 18px rgba(15, 118, 110, 0.2);
 }
 .kb-s2-train {
-  font-size: 19px;
+  font-size: 21.5px;
   font-weight: 700;
   color: #ffffff;
 }
@@ -760,7 +760,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   margin-bottom: 14px;
 }
 .kb-review-sec-title {
-  font-size: 17px;
+  font-size: 19.5px;
   font-weight: 700;
   color: #1e293b;
   display: flex;
