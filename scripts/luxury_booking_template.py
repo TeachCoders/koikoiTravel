@@ -562,7 +562,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  border: 1.5px solid #14b8a6;
+  border: 1.5px solid #989085;
   display: inline-flex;
   align-items: center;
   justify-content: center;
