@@ -90,48 +90,14 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
    ======================================================== */
 .kb-timeline-wrap {
   position: relative;
-  max-width: 780px;
-  margin: 24px auto 36px;
-  padding: 0 24px;
-}
-.kb-timeline-bar-line {
-  position: absolute;
-  top: 32px;
-  left: 60px;
-  right: 60px;
-  height: 3px;
-  background: #e2e8f0;
-  z-index: 1;
-  border-radius: 999px;
-}
-.kb-timeline-bar-fill {
-  position: absolute;
-  top: 32px;
-  left: 60px;
-  height: 3px;
-  width: 0%;
-  background: #10b981;
-  z-index: 1;
-  border-radius: 999px;
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
-}
-.kb-timeline-arrow {
-  position: absolute;
-  right: 48px;
-  top: 27px;
-  width: 0;
-  height: 0;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  border-left: 9px solid #94a3b8;
-  z-index: 1;
-  transition: border-left-color 0.4s ease;
+  max-width: 820px;
+  margin: 18px auto 26px;
+  padding: 0 16px;
 }
 .kb-timeline-steps {
   position: relative;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   z-index: 2;
 }
 .kb-timeline-step {
@@ -140,13 +106,13 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   align-items: center;
   position: relative;
   cursor: pointer;
-  width: 220px;
   user-select: none;
+  text-align: center;
 }
 .kb-step-label-top {
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   margin-bottom: 8px;
   color: #94a3b8;
@@ -161,78 +127,101 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   color: #10b981;
 }
 .kb-timeline-node {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: #ffffff;
   border: 3px solid #cbd5e1;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.35s ease;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
   font-weight: 800;
+  z-index: 3;
 }
 .kb-timeline-step.active .kb-timeline-node {
   border-color: #0d9488;
   background: #0d9488;
-  box-shadow: 0 0 0 5px rgba(13, 148, 136, 0.25);
-  transform: scale(1.15);
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.25);
+  transform: scale(1.1);
 }
 .kb-timeline-step.completed .kb-timeline-node {
   border-color: #10b981;
   background: #10b981;
   color: #ffffff;
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
-  transform: scale(1.05);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
 }
 .kb-timeline-step.completed .kb-timeline-node::before {
   content: "✓";
   color: #ffffff;
   display: block;
 }
+
+/* Horizontal Track Line starts at Node 1 center (16.67%) and ends at Node 3 center (83.33%) */
+.kb-timeline-bar-line {
+  position: absolute;
+  top: 33px;
+  left: 16.67%;
+  right: 16.67%;
+  height: 3px;
+  background: #e2e8f0;
+  z-index: 1;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.kb-timeline-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: #10b981;
+  border-radius: 999px;
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+}
+
 /* Vertical drop pin connecting active node to form card below */
 .kb-timeline-step.active::after {
   content: "";
   position: absolute;
   top: 45px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 2.5px;
-  height: 42px;
+  height: 34px;
   background: #0d9488;
   border-radius: 2px;
   animation: dropPinSlide 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 @keyframes dropPinSlide {
   from { height: 0; opacity: 0; }
-  to { height: 20px; opacity: 1; }
+  to { height: 34px; opacity: 1; }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 680px) {
   .kb-timeline-wrap {
-    padding: 0 10px;
-    margin: 16px auto 26px;
-  }
-  .kb-timeline-bar-line, .kb-timeline-bar-fill {
-    left: 40px;
-    right: 40px;
-    top: 30px;
-  }
-  .kb-timeline-arrow {
-    right: 30px;
-    top: 26px;
-  }
-  .kb-timeline-step {
-    width: auto;
+    padding: 0 8px;
+    margin: 14px auto 20px;
   }
   .kb-step-label-top {
-    font-size: 10px;
-    letter-spacing: 0.04em;
+    font-size: 10.5px;
+    letter-spacing: 0.02em;
     margin-bottom: 6px;
+    white-space: normal;
+    line-height: 1.25;
+  }
+  .kb-timeline-node {
+    width: 20px;
+    height: 20px;
+    border-width: 2.5px;
+  }
+  .kb-timeline-bar-line {
+    top: 31px;
+    height: 2.5px;
   }
   .kb-timeline-step.active::after {
-    top: 40px;
-    height: 18px;
+    top: 39px;
+    height: 22px;
   }
 }
 
@@ -398,19 +387,19 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 .kb-select, .kb-input, .kb-textarea {
   width: 100%;
   font: inherit;
-  font-size: 15.5px;
-  color: var(--text);
+  font-size: 15px;
+  color: #0f172a;
   background: #ffffff;
-  border: 1.5px solid var(--line);
-  border-radius: 10px;
-  padding: 12px 16px;
+  border: 1px solid #f2ede4;
+  border-radius: 8px;
+  padding: 12px 14px;
   outline: none;
   box-sizing: border-box;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 .kb-select:focus, .kb-input:focus, .kb-textarea:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.18);
+  border-color: #0d9488;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
 }
 
 /* Date Header with Year Select */
@@ -424,9 +413,9 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 }
 .kb-sec-title {
   font-family: var(--font-body);
-  font-size: 21px;
+  font-size: 18.5px;
   font-weight: 700;
-  color: var(--brand);
+  color: #1e293b;
   margin: 0;
 }
 .kb-dep-schedule-hint {
@@ -589,47 +578,61 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   border-top: 1px solid #f5efe6;
 }
 
-/* Step 2 Summary Pill - Teal Green Theme */
+/* Step 2 & 3 Top Header Banner (Matches Step 1 Charcoal Theme) */
 .kb-step2-summary-card {
-  background: #0f766e;
-  border: 1.5px solid #14b8a6;
-  border-radius: 12px;
-  padding: 16px 20px;
+  background: #3c4041;
+  border: 1.5px solid #2f3233;
+  border-radius: 14px 14px 0 0px;
+  padding: 22px 24px;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  box-shadow: 0 4px 16px rgba(15, 118, 110, 0.15);
+  gap: 16px;
+  box-shadow: 0 4px 18px rgba(15, 118, 110, 0.2);
 }
 .kb-s2-train {
-  font-size: 16.5px;
+  font-size: 19px;
   font-weight: 700;
   color: #ffffff;
 }
 .kb-s2-details {
-  font-size: 14px;
-  color: #ccfbf1;
-  margin-top: 3px;
+  font-size: 13.5px;
+  color: #f1f5f9;
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
 }
 .kb-s2-details b {
-  color: #ffffff;
+  color: #fef08a;
+}
+.kb-s2-pill {
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #f1f5f9;
 }
 .kb-btn-edit {
   font: inherit;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
-  color: #0f766e;
+  color: #0f172a;
   background: #ffffff;
-  border: 1.5px solid #ffffff;
-  padding: 8px 18px;
+  border: 1.5px solid #3c4041;
+  padding: 10px 18px;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
 }
 .kb-btn-edit:hover {
-  background: #f0fdfa;
-  color: #042f2e;
+  background: #f8fafc;
+  border-color: #0d9488;
+  color: #0d9488;
 }
 
 /* ========================================================
@@ -639,11 +642,15 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1.5px solid var(--line);
-  border-radius: 12px;
-  padding: 14px 18px;
+  border: 1px solid #f2ede4;
+  border-radius: 10px;
+  padding: 12px 16px;
   gap: 12px;
   background: #ffffff;
+  transition: border-color 0.15s ease;
+}
+.kb-ctr:hover {
+  border-color: #14b8a6;
 }
 .kb-ctr-label-wrap {
   display: flex;
@@ -722,24 +729,23 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   margin-bottom: 6px;
 }
 .kb-review-section {
-  border: 1.5px solid var(--line);
-  border-radius: 14px;
+  border: 1px solid #f2ede4;
+  border-radius: 12px;
   background: #ffffff;
-  padding: 18px 22px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  padding: 18px 20px;
 }
 .kb-review-sec-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid #f5efe6;
   padding-bottom: 10px;
   margin-bottom: 14px;
 }
 .kb-review-sec-title {
   font-size: 16.5px;
   font-weight: 700;
-  color: var(--brand);
+  color: #1e293b;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -748,13 +754,17 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   font: inherit;
   font-size: 12.5px;
   font-weight: 700;
-  color: var(--gold-dark);
-  background: var(--gold-bg);
-  border: 1px solid var(--gold-border);
-  padding: 5px 14px;
+  color: #0f766e;
+  background: #faf8f5;
+  border: 1px solid #eee8de;
   border-radius: 6px;
+  padding: 5px 14px;
   cursor: pointer;
   transition: all 0.15s ease;
+}
+.kb-btn-edit-sm:hover {
+  border-color: #0d9488;
+  background: #f0fdfa;
 }
 .kb-btn-edit-sm:hover {
   background: #fef3c7;
@@ -811,8 +821,8 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   line-height: 1.45;
 }
 .kb-review-guarantee {
-  background: var(--gold-bg);
-  border: 1.5px solid var(--gold-border);
+  background: #faf8f5;
+  border: 1px solid #f2ede4;
   border-radius: 12px;
   padding: 14px 18px;
   display: flex;
@@ -919,11 +929,11 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
     </p>
   </div>
 
-  <!-- Timeline Stepper (Matches user reference image) -->
+  <!-- Timeline Stepper -->
   <div class="kb-timeline-wrap">
-    <div class="kb-timeline-bar-line"></div>
-    <div class="kb-timeline-bar-fill" id="timeline-progress-fill"></div>
-    <div class="kb-timeline-arrow"></div>
+    <div class="kb-timeline-bar-line">
+      <div class="kb-timeline-bar-fill" id="timeline-progress-fill"></div>
+    </div>
     <div class="kb-timeline-steps">
       <div class="kb-timeline-step active" id="step-node-1" onclick="goToStep(1)">
         <span class="kb-step-label-top">STEP 01 • TRAIN &amp; DATE</span>
@@ -1273,7 +1283,6 @@ function updateTimeline() {
   var n2 = document.getElementById("step-node-2");
   var n3 = document.getElementById("step-node-3");
   var fill = document.getElementById("timeline-progress-fill");
-  var arr = document.querySelector(".kb-timeline-arrow");
   if (!n1 || !n2 || !n3) return;
 
   if (S.currentStep === 1) {
@@ -1281,19 +1290,16 @@ function updateTimeline() {
     n2.className = "kb-timeline-step";
     n3.className = "kb-timeline-step";
     if (fill) fill.style.width = "0%";
-    if (arr) arr.style.borderLeftColor = "#94a3b8";
   } else if (S.currentStep === 2) {
     n1.className = "kb-timeline-step completed";
     n2.className = "kb-timeline-step active";
     n3.className = "kb-timeline-step";
     if (fill) fill.style.width = "50%";
-    if (arr) arr.style.borderLeftColor = "#94a3b8";
   } else if (S.currentStep === 3) {
     n1.className = "kb-timeline-step completed";
     n2.className = "kb-timeline-step completed";
     n3.className = "kb-timeline-step active";
     if (fill) fill.style.width = "100%";
-    if (arr) arr.style.borderLeftColor = "#0d9488";
   }
 }
 
@@ -1464,15 +1470,19 @@ function render() {
   // STEP 2: TRAVELERS & CONTACT DETAILS (Zero Text Overlap)
   // =========================================================================
   else if (S.currentStep === 2) {
-    h += '<div class="kb-step-inner">';
-    // Summary Pill of Chosen Train & Date with Edit Button
+    // Summary Pill of Chosen Train & Date with Edit Button (Flush at top like Step 1)
     h += '<div class="kb-step2-summary-card">' +
       '<div>' +
       '<div class="kb-s2-train">' + esc(S.train) + ' · ' + esc(S.journey) + '</div>' +
-      '<div class="kb-s2-details">📅 Departure: <b>' + formatLuxuryDate(S.date) + '</b> (' + jn.d + ') &nbsp;·&nbsp; 📍 Journey starts from: <b>' + jn.from + '</b></div>' +
+      '<div class="kb-s2-details">' +
+      '<span class="kb-s2-pill">🗓️ Departure: <b>' + formatLuxuryDate(S.date) + '</b> (' + jn.d + ')</span>' +
+      '<span class="kb-s2-pill">📍 Starts: <b>' + jn.from + '</b></span>' +
       '</div>' +
-      '<button type="button" class="kb-btn-edit" id="btn-back-step1">Change Train / Date</button>' +
+      '</div>' +
+      '<button type="button" class="kb-btn-edit" id="btn-back-step1">Change Train / Date ✎</button>' +
       '</div>';
+
+    h += '<div class="kb-step-inner">';
 
     // 1. Number of Travelers Counters
     h += '<div>' +
@@ -1540,14 +1550,18 @@ function render() {
   // STEP 3: REVIEW & CONFIRM (Full Visibility + Instant Edit)
   // =========================================================================
   else if (S.currentStep === 3) {
-    h += '<div class="kb-step-inner">';
-    h += '<div class="kb-review-header">' +
-      '<span class="kb-review-badge">Step 3 of 3 · Final Verification</span>' +
-      '<h2 class="kb-sec-title" style="font-size:24px;margin:8px 0 4px">Review Your Booking Inquiry</h2>' +
-      '<p style="font-size:15px;color:var(--muted);margin:0">' +
-      'Please verify your selected royal train, departure date, and guest information before requesting your official quote.' +
-      '</p>' +
+    // Top Charcoal Banner (Flush at top, matches Step 1 & Step 2)
+    h += '<div class="kb-step2-summary-card">' +
+      '<div>' +
+      '<div class="kb-s2-train">Review Your Luxury Train Booking Inquiry</div>' +
+      '<div class="kb-s2-details">' +
+      '<span class="kb-s2-pill">Step 3 of 3 · Final Verification</span>' +
+      '<span style="font-size:13px;color:#f1f5f9">Please verify your details before requesting your official IRCTC quote.</span>' +
+      '</div>' +
+      '</div>' +
       '</div>';
+
+    h += '<div class="kb-step-inner">';
 
     // Section 1: Train & Journey Details
     h += '<div class="kb-review-section">' +
