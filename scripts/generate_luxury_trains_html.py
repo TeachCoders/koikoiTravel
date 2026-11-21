@@ -794,6 +794,11 @@ footer a:hover{color:#F8904D}
 .day-accordion-item summary::-webkit-details-marker {
   display: none;
 }
+.day-accordion-item summary::after,
+.day-accordion-item[open] summary::after {
+  content: none !important;
+  display: none !important;
+}
 .day-accordion-item summary h3 {
   font-size: 16.5px;
   font-weight: 700;
@@ -2821,7 +2826,9 @@ function switchPriceCurrency(curr) {{
 """
 
     def build_koikoi_circuit_page(circuit_tag, name, duration, title, route, starting_price,
-                                  hero_imgs, highlights, overview, days_data):
+                                  origin, destination, destinations_count,
+                                  hero_imgs, highlights, overview, days_data,
+                                  departures_data, price_data, faqs_data):
         hl_html = "".join([f"""<li style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#334155;line-height:1.5">
   <svg style="color:#2E8B8B;margin-top:2px;flex-shrink:0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
   <span>{h}</span>
@@ -2855,6 +2862,35 @@ function switchPriceCurrency(curr) {{
 </details>
 """
 
+        # Build departure rows
+        dep_rows_html = ""
+        for month_name, date_str in departures_data:
+            dep_rows_html += f"""
+<tr style="border-bottom:1px solid #f1f5f9">
+  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">{month_name}</td>
+  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">{date_str}</td>
+  <td style="padding:14px 20px">
+    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20{name}%20departing%20on%20{date_str}." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
+      Check Availability &rarr;
+    </a>
+  </td>
+</tr>
+"""
+
+        # Build FAQs HTML
+        faqs_html = ""
+        for idx, faq in enumerate(faqs_data):
+            open_attr = "open" if idx == 0 else ""
+            border_style = "border-bottom:1px solid #f1f5f9;" if idx < len(faqs_data) - 1 else ""
+            faqs_html += f"""
+<details {open_attr} style="{border_style}padding:16px 0">
+  <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">{faq['q']}</summary>
+  <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+    {faq['a']}
+  </div>
+</details>
+"""
+
         return f"""
 <div class="wrap" style="padding-top:28px;padding-bottom:12px">
   <div class="koikoi-breadcrumb" style="margin-bottom:12px">
@@ -2864,11 +2900,10 @@ function switchPriceCurrency(curr) {{
     <span style="color:#94a3b8;margin:0 6px">›</span>
     <span style="color:#0f172a;font-weight:600">{name}</span>
   </div>
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
     <span style="background:rgba(248,144,77,0.12);color:#d96b27;border:1px solid rgba(248,144,77,0.25);font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;padding:4px 12px;border-radius:999px">
-      {circuit_tag} · {duration}
+      {circuit_tag}
     </span>
-    <span style="color:#64748b;font-size:13.5px;font-weight:500">Signature Luxury Circuit · Handcrafted by KoiKoi Travel</span>
   </div>
   <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
     {title}
@@ -2897,7 +2932,7 @@ function switchPriceCurrency(curr) {{
       </div>
     </div>
 
-    <!-- Right: Tour Snapshot Card (Exact KoiKoi Tour Package Style) -->
+    <!-- Right: Tour Snapshot Card (Exact Clean & Authentic Style) -->
     <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:24px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between">
       <div>
         <div style="display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid #f1f5f9;margin-bottom:16px">
@@ -2905,34 +2940,43 @@ function switchPriceCurrency(curr) {{
           <h3 style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0f172a;margin:0">Tour Snapshot</h3>
         </div>
         
-        <div style="margin-bottom:12px">
-          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Duration:</div>
-          <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:#0f172a">{duration}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+          <div>
+            <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Duration</div>
+            <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:#0f172a">{duration}</div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Destinations</div>
+            <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:#0f172a">{destinations_count}</div>
+          </div>
         </div>
 
-        <div style="margin-bottom:12px">
-          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Route:</div>
-          <div style="font-size:13.5px;font-weight:600;color:#1e293b;line-height:1.5">{route}</div>
+        <div style="background:#f8fafc;border-radius:12px;padding:12px;margin-bottom:14px;border:1px solid #e2e8f0">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span style="font-size:12px;color:#64748b">Boarding Station:</span>
+            <span style="font-size:12.5px;font-weight:700;color:#0f172a">{origin}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between">
+            <span style="font-size:12px;color:#64748b">Deboarding Station:</span>
+            <span style="font-size:12.5px;font-weight:700;color:#0f172a">{destination}</span>
+          </div>
         </div>
 
         <div style="margin-bottom:14px">
-          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Starting Tariff:</div>
-          <div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:#F8904D">{starting_price}</div>
-          <div style="font-size:11px;color:#64748b;margin-top:2px">Per Person (Deluxe Twin Sharing) · 5% GST extra</div>
+          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Starting Tariff</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:#F8904D">{starting_price}</div>
+          <div style="font-size:11px;color:#64748b;margin-top:2px">Per Person (Deluxe Twin Sharing) · 5% Govt. GST extra</div>
         </div>
 
-        <!-- Special Offer Tag Box (Like 8-days-golden-triangle Line 500) -->
-        <div style="background:linear-gradient(to right,rgba(248,144,77,0.08),rgba(251,191,36,0.06));border:1.5px dashed rgba(248,144,77,0.5);border-radius:14px;padding:10px 14px;margin-bottom:16px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-            <span style="background:linear-gradient(to right,#F8904D,#E96A1E);color:#fff;font-size:10px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:999px">Special Offer</span>
-            <span style="color:#d96b27;font-size:11px;font-weight:700">Pre/Post Extensions</span>
-          </div>
-          <div style="font-size:12px;color:#475569;line-height:1.4">Special discounts available on 5-star private hotel extensions & chauffeured airport transfers.</div>
+        <!-- Clean Authentic Booking Policy Box -->
+        <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:12px;padding:12px 14px;margin-bottom:16px">
+          <div style="font-size:11px;font-weight:700;color:#c2410c;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Booking Policy</div>
+          <div style="font-size:12px;color:#475569;line-height:1.5">Reserve your cabin with 25% advance deposit. Remaining 75% balance payable 60 days before departure.</div>
         </div>
       </div>
 
       <div>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
           <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20send%20quote%20for%20Maharajas%20Express%20{name}." target="_blank" rel="noopener" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px;border-radius:10px;text-align:center;text-decoration:none;display:block">
             Request Quote &rarr;
           </a>
@@ -2941,19 +2985,19 @@ function switchPriceCurrency(curr) {{
           </a>
         </div>
 
-        <!-- 4 Verified Trust Badges -->
+        <!-- Real Authentic Inclusions (NO FAKE BADGES) -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;border-top:1px solid #f1f5f9;padding-top:12px">
           <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
-            <span style="color:#10b981;font-weight:800">✓</span> 100% Free Plan
+            <span style="color:#10b981;font-weight:800">✓</span> All Gourmet Meals
           </div>
           <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
-            <span style="color:#10b981;font-weight:800">✓</span> Verified Guides
+            <span style="color:#10b981;font-weight:800">✓</span> House Wines/Spirits
           </div>
           <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
-            <span style="color:#10b981;font-weight:800">✓</span> Personal Butler
+            <span style="color:#10b981;font-weight:800">✓</span> Dedicated Butler
           </div>
           <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
-            <span style="color:#10b981;font-weight:800">✓</span> 24/7 Concierge
+            <span style="color:#10b981;font-weight:800">✓</span> Guided Excursions
           </div>
         </div>
       </div>
@@ -3012,8 +3056,171 @@ function switchPriceCurrency(curr) {{
 
     <!-- 4. Inclusions & Exclusions -->
     {inc_exc_snippet}
+
+    <!-- 5. Scheduled Departures -->
+    <div id="departures" style="margin-top:16px">
+      <div class="sec-head" style="margin-bottom:20px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">Schedules</div>
+        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px">
+          {name} <span style="color:#F8904D">Departure Dates (2026 – 2027)</span>
+        </h2>
+        <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">
+          Official scheduled Sunday departures for Season 2026-27. Reserve your cabin in advance.
+        </p>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:14px;text-align:left">
+            <thead>
+              <tr style="background:#1e255e;color:#fff;font-family:'Outfit',sans-serif">
+                <th style="padding:14px 20px;border-right:1px solid rgba(255,255,255,0.15)">Month</th>
+                <th style="padding:14px 20px;border-right:1px solid rgba(255,255,255,0.15)">Scheduled Departure Date</th>
+                <th style="padding:14px 20px">Cabin Availability &amp; Inquiries</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dep_rows_html}
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:14px 20px;background:#fdfcfb;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+          <span style="font-size:13px;color:#64748b">✦ Departures commence with an afternoon check-in and traditional garland welcome ceremony.</span>
+          <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20{name}." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;padding:8px 18px;border-radius:999px;text-decoration:none">
+            Inquire Specific Date on WhatsApp &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Official Tariffs & Prices -->
+    <div id="pricing" style="margin-top:16px">
+      <div class="sec-head" style="margin-bottom:20px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">Official Fares</div>
+        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px">
+          {name} <span style="color:#F8904D">Tariffs &amp; Cabin Prices (2026 – 2027)</span>
+        </h2>
+        <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">
+          Official published IRCTC tariffs per person. 5% Govt. GST extra.
+        </p>
+      </div>
+
+      <!-- Currency Switcher Buttons -->
+      <div style="display:flex;gap:10px;margin-bottom:16px">
+        <button id="circuitBtnUsd" onclick="switchCircuitPrice('usd')" style="font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700;padding:8px 18px;border-radius:999px;background:#0f172a;color:#fff;border:none;cursor:pointer">
+          USD Tariffs ($)
+        </button>
+        <button id="circuitBtnInr" onclick="switchCircuitPrice('inr')" style="font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700;padding:8px 18px;border-radius:999px;background:#fff;border:1px solid #cbd5e1;color:#64748b;cursor:pointer">
+          INR Tariffs (₹)
+        </button>
+      </div>
+
+      <!-- USD Table -->
+      <div id="circuitPriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:14px;text-align:center">
+            <thead>
+              <tr style="background:#991b1b;color:#fff;font-family:'Outfit',sans-serif">
+                <th style="padding:14px;text-align:left;border-right:1px solid rgba(255,255,255,0.15)">Rooming Category</th>
+                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Deluxe Cabin</th>
+                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Junior Suite</th>
+                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Suite</th>
+                <th style="padding:14px">Presidential Suite</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:14px;font-weight:700;color:#0f172a;text-align:left;background:#fafafa;border-right:1px solid #e2e8f0">Adult (Twin Sharing)</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">{price_data['usd']['deluxe_twin']}</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">{price_data['usd']['junior_twin']}</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">{price_data['usd']['suite_twin']}</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a">{price_data['usd']['presidential']}</td>
+              </tr>
+              <tr style="background:#fcfcfd">
+                <td style="padding:14px;color:#64748b;text-align:left;background:#fafafa;border-right:1px solid #e2e8f0">Single Supplement</td>
+                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">{price_data['usd']['deluxe_single']}</td>
+                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">{price_data['usd']['junior_single']}</td>
+                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">{price_data['usd']['suite_single']}</td>
+                <td style="padding:14px;color:#64748b">{price_data['usd']['presidential']}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- INR Table -->
+      <div id="circuitPriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:14px;text-align:center">
+            <thead>
+              <tr style="background:#991b1b;color:#fff;font-family:'Outfit',sans-serif">
+                <th style="padding:14px;text-align:left;border-right:1px solid rgba(255,255,255,0.15)">Rooming Category</th>
+                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Deluxe Cabin</th>
+                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Junior Suite</th>
+                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Suite</th>
+                <th style="padding:14px">Presidential Suite</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:14px;font-weight:700;color:#0f172a;text-align:left;background:#fafafa;border-right:1px solid #e2e8f0">Adult (Twin Sharing)</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">{price_data['inr']['deluxe_twin']}</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">{price_data['inr']['junior_twin']}</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">{price_data['inr']['suite_twin']}</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a">{price_data['inr']['presidential']}</td>
+              </tr>
+              <tr style="background:#fcfcfd">
+                <td style="padding:14px;color:#64748b;text-align:left;background:#fafafa;border-right:1px solid #e2e8f0">Single Supplement</td>
+                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">{price_data['inr']['deluxe_single']}</td>
+                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">{price_data['inr']['junior_single']}</td>
+                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">{price_data['inr']['suite_single']}</td>
+                <td style="padding:14px;color:#64748b">{price_data['inr']['presidential']}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. FAQs for this Itinerary -->
+    <div id="faqs" style="margin-top:16px">
+      <div class="sec-head" style="margin-bottom:20px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">Helpful FAQs</div>
+        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px">
+          Frequently Asked Questions · <span style="color:#F8904D">{name}</span>
+        </h2>
+        <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">
+          Everything you need to know about departures, excursions, dining, and reservations for this circuit.
+        </p>
+      </div>
+
+      <div class="faq" style="background:#fff;border-radius:18px;border:1px solid #e2e8f0;padding:8px 24px;box-shadow:0 4px 16px rgba(0,0,0,0.02)">
+        {faqs_html}
+      </div>
+    </div>
+
   </div>
 </div>
+
+<script>
+function switchCircuitPrice(curr) {{
+  const usd = document.getElementById('circuitPriceUsd');
+  const inr = document.getElementById('circuitPriceInr');
+  const btnUsd = document.getElementById('circuitBtnUsd');
+  const btnInr = document.getElementById('circuitBtnInr');
+  if (curr === 'usd') {{
+    if (usd) usd.style.display = 'block';
+    if (inr) inr.style.display = 'none';
+    if (btnUsd) {{ btnUsd.style.background = '#0f172a'; btnUsd.style.color = '#fff'; btnUsd.style.border = 'none'; }}
+    if (btnInr) {{ btnInr.style.background = '#fff'; btnInr.style.color = '#64748b'; btnInr.style.border = '1px solid #cbd5e1'; }}
+  }} else {{
+    if (usd) usd.style.display = 'none';
+    if (inr) inr.style.display = 'block';
+    if (btnInr) {{ btnInr.style.background = '#0f172a'; btnInr.style.color = '#fff'; btnInr.style.border = 'none'; }}
+    if (btnUsd) {{ btnUsd.style.background = '#fff'; btnUsd.style.color = '#64748b'; btnUsd.style.border = '1px solid #cbd5e1'; }}
+  }}
+}}
+</script>
 """
 
     # 1. The Heritage of India (Mumbai to Delhi · 6N/7D)
@@ -3062,12 +3269,42 @@ function switchPriceCurrency(curr) {{
          "overnight": "Tour Concludes in Delhi · Airport Transfers"}
     ]
 
+    # 1. The Heritage of India (Mumbai to Delhi · 6N/7D)
+    me_heritage_departures = [
+        ("October 2026", "18 Oct 2026 (Sunday)"),
+        ("November 2026", "15 Nov 2026 (Sunday)"),
+        ("December 2026", "13 Dec 2026 (Sunday)"),
+        ("January 2027", "10 Jan 2027 (Sunday)"),
+        ("February 2027", "07 Feb 2027 (Sunday)"),
+        ("March 2027", "07 Mar 2027 (Sunday)"),
+        ("April 2027", "04 Apr 2027 (Sunday)"),
+    ]
+    me_heritage_prices = {
+        "usd": {"deluxe_twin": "$8,800", "deluxe_single": "$6,600", "junior_twin": "$11,200", "junior_single": "$10,100", "suite_twin": "$15,600", "suite_single": "$15,600", "presidential": "$26,800"},
+        "inr": {"deluxe_twin": "₹8,58,000", "deluxe_single": "₹6,43,500", "junior_twin": "₹10,92,000", "junior_single": "₹9,84,750", "suite_twin": "₹15,21,000", "suite_single": "₹15,21,000", "presidential": "₹26,13,000"}
+    }
+    me_heritage_faqs = [
+        {"q": "Where does The Heritage of India journey depart from and terminate?",
+         "a": "This journey departs from Mumbai at Chhatrapati Shivaji Maharaj Terminus (CSMT) on scheduled Sunday afternoons and concludes 7 days later at Delhi Safdarjung Railway Station."},
+        {"q": "Is the Ranthambore tiger safari included on this route?",
+         "a": "Yes, an early morning open-top jungle game drive in Ranthambore National Park with experienced naturalists and park permits is fully included in your ticket."},
+        {"q": "What exclusive royal banquets are included in this journey?",
+         "a": "Guests enjoy a private royal cocktail reception and Marwari banquet dinner at Hanwant Mahal overlooking illuminated Umaid Bhawan Palace in Jodhpur, and a gala barbecue feast with folk music on the Thar Desert sand dunes in Bikaner."},
+        {"q": "What is the difference between Deluxe Cabin and Suite categories on this train?",
+         "a": "Deluxe Cabins (112 sq. ft.) offer twin or double beds with attached en-suite shower bathrooms and shared group excursions in AC coaches. Suites (220 sq. ft.) provide a separate living room, bedroom, full bathtub, and a complimentary private luxury car with exclusive guide during all excursions."},
+        {"q": "How do I book The Heritage of India and what deposit is required?",
+         "a": "An advance deposit of 25% of the fare secures your reservation. The remaining 75% balance is payable 60 days before your departure. KoiKoi Travel assists with IRCTC seat allocation, pre/post luxury hotels in Mumbai or Delhi, and airport transfers."}
+    ]
+
     me_heritage_html = build_koikoi_circuit_page(
-        circuit_tag="CIRCUIT 1 · 7 DAYS / 6 NIGHTS",
+        circuit_tag="Circuit 1 · 6 Nights / 7 Days",
         name="The Heritage of India",
         duration="6 Nights / 7 Days",
         title="The Heritage of India (Mumbai to Delhi · 7D/6N)",
         route="Mumbai → Udaipur → Jodhpur → Bikaner → Jaipur → Ranthambore → Fatehpur Sikri → Agra → Delhi",
+        origin="Mumbai (CSMT Station)",
+        destination="Delhi (Safdarjung Station)",
+        destinations_count="8 Royal Cities",
         starting_price="Starts $8,800 USD / ₹8,58,000 INR",
         hero_imgs=[
             {"src": "/images/luxury-trains/maharajas-express/hero.jpg", "title": "Maharajas' Express Livery"},
@@ -3084,7 +3321,10 @@ function switchPriceCurrency(curr) {{
             "Sunrise champagne visit to the Taj Mahal in Agra"
         ],
         overview="Departing from India's commercial capital Mumbai, this flagship journey winds through royal Rajasthan's lake palaces, desert citadels, and tiger reserves, before reaching the Taj Mahal and capital city Delhi. Experience 7 days of unparalleled IRCTC luxury aboard the World's Leading Luxury Train.",
-        days_data=me_heritage_days
+        days_data=me_heritage_days,
+        departures_data=me_heritage_departures,
+        price_data=me_heritage_prices,
+        faqs_data=me_heritage_faqs
     )
 
     write_page(f"{base_dir}/maharajas-express/the-heritage-of-india/index.html", 
@@ -3093,6 +3333,31 @@ function switchPriceCurrency(curr) {{
                me_heritage_html, active_train="maharajas-express", active_tab="itinerary", base_path=base_path)
 
     # 2. The Indian Panorama (Delhi to Delhi · 6N/7D)
+    me_panorama_departures = [
+        ("October 2026", "04 Oct 2026 (Sunday)"),
+        ("November 2026", "01 Nov 2026 (Sunday), 29 Nov 2026 (Sunday)"),
+        ("December 2026", "27 Dec 2026 (Sunday)"),
+        ("January 2027", "24 Jan 2027 (Sunday)"),
+        ("February 2027", "21 Feb 2027 (Sunday)"),
+        ("March 2027", "21 Mar 2027 (Sunday)"),
+    ]
+    me_panorama_prices = {
+        "usd": {"deluxe_twin": "$8,400", "deluxe_single": "$6,300", "junior_twin": "$10,700", "junior_single": "$9,700", "suite_twin": "$15,600", "suite_single": "$15,600", "presidential": "$26,800"},
+        "inr": {"deluxe_twin": "₹8,19,000", "deluxe_single": "₹6,14,250", "junior_twin": "₹10,43,250", "junior_single": "₹9,45,750", "suite_twin": "₹15,21,000", "suite_single": "₹15,21,000", "presidential": "₹26,13,000"}
+    }
+    me_panorama_faqs = [
+        {"q": "What makes The Indian Panorama distinct from other luxury train circuits?",
+         "a": "It is the only luxury rail circuit that combines Rajasthan's palaces (Jaipur), the tiger wilderness of Ranthambore, the Taj Mahal in Agra, the UNESCO erotic stone temples of Khajuraho, and the sacred ghats of Varanasi on the River Ganges."},
+        {"q": "What experiences are included in Varanasi on this circuit?",
+         "a": "Guests take a private sunset boat cruise on the River Ganges to witness the Maha Ganga Aarti from the water, visit the historic Sarnath deer park where Buddha delivered his first sermon, and tour a traditional Varanasi silk weaving center."},
+        {"q": "Where does this journey start and conclude?",
+         "a": "It is a round-trip tour starting and ending at Safdarjung Railway Station, New Delhi, making flight connections very convenient."},
+        {"q": "Are monument admission fees and Khajuraho temple tickets included?",
+         "a": "Yes, all entrance tickets to monuments, including the Western Group of Temples in Khajuraho and Agra's Taj Mahal, along with expert English-speaking guides, are included in the fare."},
+        {"q": "How are meals arranged during excursions?",
+         "a": "All meals are included. Gourmet breakfast, lunch, and dinner are served in Rang Mahal and Mayur Mahal dining cars, while select lunches are hosted at heritage palace hotels during off-train tours."}
+    ]
+
     me_panorama_days = [
         {"day": 1, "title": "Delhi to Jaipur – Registration & Welcome Dinner", "meals": "Dinner Included",
          "paragraphs": [
@@ -3139,11 +3404,14 @@ function switchPriceCurrency(curr) {{
     ]
 
     me_panorama_html = build_koikoi_circuit_page(
-        circuit_tag="CIRCUIT 2 · 7 DAYS / 6 NIGHTS",
+        circuit_tag="Circuit 2 · 6 Nights / 7 Days",
         name="The Indian Panorama",
         duration="6 Nights / 7 Days",
         title="The Indian Panorama (Delhi to Delhi · 7D/6N)",
         route="Delhi → Jaipur → Ranthambore → Fatehpur Sikri → Agra → Orchha → Khajuraho → Varanasi → Delhi",
+        origin="Delhi (Safdarjung Station)",
+        destination="Delhi (Safdarjung Station)",
+        destinations_count="7 Iconic Cities",
         starting_price="Starts $8,400 USD / ₹8,19,000 INR",
         hero_imgs=[
             {"src": "/images/luxury-trains/maharajas-express/hero.jpg", "title": "Maharajas' Express"},
@@ -3160,7 +3428,10 @@ function switchPriceCurrency(curr) {{
             "Sarnath deer park where Lord Buddha preached his first sermon"
         ],
         overview="A cultural deep-dive connecting Rajasthan's royal heritage, the tiger wilderness of Ranthambore, the Taj Mahal, the UNESCO erotic temples of Khajuraho, and the sacred river ghats of Varanasi. The only luxury train circuit covering both Rajasthan and the spiritual heart of Varanasi.",
-        days_data=me_panorama_days
+        days_data=me_panorama_days,
+        departures_data=me_panorama_departures,
+        price_data=me_panorama_prices,
+        faqs_data=me_panorama_faqs
     )
 
     write_page(f"{base_dir}/maharajas-express/the-indian-panorama/index.html", 
@@ -3169,6 +3440,31 @@ function switchPriceCurrency(curr) {{
                me_panorama_html, active_train="maharajas-express", active_tab="itinerary", base_path=base_path)
 
     # 3. The Indian Splendour (Delhi to Mumbai · 6N/7D)
+    me_splendour_departures = [
+        ("October 2026", "11 Oct 2026 (Sunday)"),
+        ("November 2026", "08 Nov 2026 (Sunday)"),
+        ("December 2026", "06 Dec 2026 (Sunday)"),
+        ("January 2027", "03 Jan 2027 (Sunday), 31 Jan 2027 (Sunday)"),
+        ("February 2027", "28 Feb 2027 (Sunday)"),
+        ("March 2027", "28 Mar 2027 (Sunday)"),
+    ]
+    me_splendour_prices = {
+        "usd": {"deluxe_twin": "$8,400", "deluxe_single": "$6,300", "junior_twin": "$10,700", "junior_single": "$9,700", "suite_twin": "$15,600", "suite_single": "$15,600", "presidential": "$26,800"},
+        "inr": {"deluxe_twin": "₹8,19,000", "deluxe_single": "₹6,14,250", "junior_twin": "₹10,43,250", "junior_single": "₹9,45,750", "suite_twin": "₹15,21,000", "suite_single": "₹15,21,000", "presidential": "₹26,13,000"}
+    }
+    me_splendour_faqs = [
+        {"q": "Where does The Indian Splendour begin and conclude?",
+         "a": "The tour departs from Safdarjung Railway Station in Delhi on scheduled Sunday afternoons, travels through Rajasthan, and concludes at Chhatrapati Shivaji Maharaj Terminus (CSMT) in Mumbai."},
+        {"q": "What are the highlights of the Agra visit on this route?",
+         "a": "An early morning sunrise viewing of the Taj Mahal to enjoy its beauty before public crowds arrive, followed by a champagne breakfast at Taj Khema and a guided tour of Agra Fort."},
+        {"q": "How is Udaipur explored on Day 6?",
+         "a": "Guests enjoy a private boat cruise across Lake Pichola, visit the grand City Palace and Crystal Gallery, and savor a royal lunch at Fateh Prakash Palace."},
+        {"q": "Can solo travelers book this circuit?",
+         "a": "Yes, single supplement rates are available for all 4 cabin categories, providing private occupancy with all meals, excursions, and butler services included."},
+        {"q": "What is the booking deposit for The Indian Splendour?",
+         "a": "A 25% deposit is required at booking, with the remaining 75% balance due 60 days before departure."}
+    ]
+
     me_splendour_days = [
         {"day": 1, "title": "Delhi to Agra – Boarding & Royal Welcome", "meals": "Dinner Included",
          "paragraphs": [
@@ -3215,11 +3511,14 @@ function switchPriceCurrency(curr) {{
     ]
 
     me_splendour_html = build_koikoi_circuit_page(
-        circuit_tag="CIRCUIT 3 · 7 DAYS / 6 NIGHTS",
+        circuit_tag="Circuit 3 · 6 Nights / 7 Days",
         name="The Indian Splendour",
         duration="6 Nights / 7 Days",
         title="The Indian Splendour (Delhi to Mumbai · 7D/6N)",
         route="Delhi → Agra → Ranthambore → Jaipur → Bikaner → Jodhpur → Udaipur → Mumbai",
+        origin="Delhi (Safdarjung Station)",
+        destination="Mumbai (CSMT Station)",
+        destinations_count="8 Royal Destinations",
         starting_price="Starts $8,400 USD / ₹8,19,000 INR",
         hero_imgs=[
             {"src": "/images/luxury-trains/maharajas-express/hero.jpg", "title": "Maharajas' Express Train"},
@@ -3236,7 +3535,10 @@ function switchPriceCurrency(curr) {{
             "Grand arrival celebration at Mumbai CSMT terminus"
         ],
         overview="The classic reverse royal tour from Delhi across Agra, Ranthambore, Jaipur, Bikaner sand dunes, Mehrangarh Fort, Lake Pichola, culminating in Mumbai. Seven unforgettable days capturing the grandeur of north and western India in absolute 5-star comfort.",
-        days_data=me_splendour_days
+        days_data=me_splendour_days,
+        departures_data=me_splendour_departures,
+        price_data=me_splendour_prices,
+        faqs_data=me_splendour_faqs
     )
 
     write_page(f"{base_dir}/maharajas-express/the-indian-splendour/index.html", 
@@ -3245,6 +3547,31 @@ function switchPriceCurrency(curr) {{
                me_splendour_html, active_train="maharajas-express", active_tab="itinerary", base_path=base_path)
 
     # 4. Treasures of India (Delhi to Delhi · 3N/4D)
+    me_treasures_departures = [
+        ("October 2026", "25 Oct 2026 (Sunday)"),
+        ("November 2026", "22 Nov 2026 (Sunday)"),
+        ("December 2026", "20 Dec 2026 (Sunday)"),
+        ("January 2027", "17 Jan 2027 (Sunday)"),
+        ("February 2027", "14 Feb 2027 (Sunday)"),
+        ("March 2027", "14 Mar 2027 (Sunday)"),
+    ]
+    me_treasures_prices = {
+        "usd": {"deluxe_twin": "$5,300", "deluxe_single": "$4,000", "junior_twin": "$5,700", "junior_single": "$5,200", "suite_twin": "$8,600", "suite_single": "$8,600", "presidential": "$14,600"},
+        "inr": {"deluxe_twin": "₹5,16,750", "deluxe_single": "₹3,90,000", "junior_twin": "₹5,55,750", "junior_single": "₹5,07,000", "suite_twin": "₹8,38,500", "suite_single": "₹8,38,500", "presidential": "₹14,23,500"}
+    }
+    me_treasures_faqs = [
+        {"q": "Who is the Treasures of India 4-day tour designed for?",
+         "a": "It is crafted for travelers who want to experience India's famous Golden Triangle (Delhi, Agra Taj Mahal, Jaipur) plus a wild tiger safari in Ranthambore over a compact 4-day royal weekend."},
+        {"q": "Is the tiger safari included in this short 4-day tour?",
+         "a": "Yes, an early morning open-top jeep safari in Ranthambore Tiger Reserve on Day 3 is fully included with forest permits and naturalists."},
+        {"q": "Where does this tour start and conclude?",
+         "a": "Round-trip from Safdarjung Railway Station, New Delhi. The train returns to Delhi on Day 4 at approximately 12:30 PM."},
+        {"q": "What is included in the ticket fare?",
+         "a": "3 nights of luxury accommodation on board, all meals, house wines/beers, guided tours of Taj Mahal, Agra Fort, Fatehpur Sikri, and Amber Fort, Ranthambore game drive, monument entry tickets, and 24/7 dedicated butler service."},
+        {"q": "How far in advance should I book?",
+         "a": "Because of high demand for this compact weekend circuit, cabins often book out several months ahead. We recommend booking 3 to 6 months in advance with a 25% deposit."}
+    ]
+
     me_treasures_days = [
         {"day": 1, "title": "Delhi to Agra – Agra Fort", "meals": "Lunch & Dinner Included",
          "paragraphs": [
@@ -3273,11 +3600,14 @@ function switchPriceCurrency(curr) {{
     ]
 
     me_treasures_html = build_koikoi_circuit_page(
-        circuit_tag="CIRCUIT 4 · 4 DAYS / 3 NIGHTS",
+        circuit_tag="Circuit 4 · 3 Nights / 4 Days",
         name="Treasures of India",
         duration="3 Nights / 4 Days",
-        title="Treasures of India Itinerary (4 Days / 3 Nights)",
+        title="Treasures of India Itinerary (Delhi to Delhi · 4D/3N)",
         route="Delhi → Agra → Ranthambore → Jaipur → Delhi",
+        origin="Delhi (Safdarjung Station)",
+        destination="Delhi (Safdarjung Station)",
+        destinations_count="4 Iconic Destinations",
         starting_price="Starts $5,300 USD / ₹5,16,750 INR",
         hero_imgs=[
             {"src": "/images/luxury-trains/maharajas-express/hero.jpg", "title": "Maharajas' Express Train"},
@@ -3293,7 +3623,10 @@ function switchPriceCurrency(curr) {{
             "Royal farewell dinner and cultural folk performances"
         ],
         overview="The ultimate 4-day royal weekend tour covering India's world-famous Golden Triangle (Delhi, Agra, Jaipur) with an exhilarating tiger safari in Ranthambore. Designed for busy travelers seeking maximum royal luxury in minimum time.",
-        days_data=me_treasures_days
+        days_data=me_treasures_days,
+        departures_data=me_treasures_departures,
+        price_data=me_treasures_prices,
+        faqs_data=me_treasures_faqs
     )
 
     write_page(f"{base_dir}/maharajas-express/treasures-of-india/index.html", 

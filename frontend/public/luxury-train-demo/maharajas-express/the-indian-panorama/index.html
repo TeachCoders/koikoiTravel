@@ -791,6 +791,11 @@ footer a:hover{color:#F8904D}
 .day-accordion-item summary::-webkit-details-marker {
   display: none;
 }
+.day-accordion-item summary::after,
+.day-accordion-item[open] summary::after {
+  content: none !important;
+  display: none !important;
+}
 .day-accordion-item summary h3 {
   font-size: 16.5px;
   font-weight: 700;
@@ -917,11 +922,10 @@ footer a:hover{color:#F8904D}
     <span style="color:#94a3b8;margin:0 6px">›</span>
     <span style="color:#0f172a;font-weight:600">The Indian Panorama</span>
   </div>
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
     <span style="background:rgba(248,144,77,0.12);color:#d96b27;border:1px solid rgba(248,144,77,0.25);font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;padding:4px 12px;border-radius:999px">
-      CIRCUIT 2 · 7 DAYS / 6 NIGHTS · 6 Nights / 7 Days
+      Circuit 2 · 6 Nights / 7 Days
     </span>
-    <span style="color:#64748b;font-size:13.5px;font-weight:500">Signature Luxury Circuit · Handcrafted by KoiKoi Travel</span>
   </div>
   <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
     The Indian Panorama (Delhi to Delhi · 7D/6N)
@@ -950,7 +954,7 @@ footer a:hover{color:#F8904D}
       </div>
     </div>
 
-    <!-- Right: Tour Snapshot Card (Exact KoiKoi Tour Package Style) -->
+    <!-- Right: Tour Snapshot Card (Exact Clean & Authentic Style) -->
     <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:24px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between">
       <div>
         <div style="display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid #f1f5f9;margin-bottom:16px">
@@ -958,34 +962,43 @@ footer a:hover{color:#F8904D}
           <h3 style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0f172a;margin:0">Tour Snapshot</h3>
         </div>
         
-        <div style="margin-bottom:12px">
-          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Duration:</div>
-          <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:#0f172a">6 Nights / 7 Days</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+          <div>
+            <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Duration</div>
+            <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:#0f172a">6 Nights / 7 Days</div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Destinations</div>
+            <div style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:#0f172a">7 Iconic Cities</div>
+          </div>
         </div>
 
-        <div style="margin-bottom:12px">
-          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Route:</div>
-          <div style="font-size:13.5px;font-weight:600;color:#1e293b;line-height:1.5">Delhi → Jaipur → Ranthambore → Fatehpur Sikri → Agra → Orchha → Khajuraho → Varanasi → Delhi</div>
+        <div style="background:#f8fafc;border-radius:12px;padding:12px;margin-bottom:14px;border:1px solid #e2e8f0">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span style="font-size:12px;color:#64748b">Boarding Station:</span>
+            <span style="font-size:12.5px;font-weight:700;color:#0f172a">Delhi (Safdarjung Station)</span>
+          </div>
+          <div style="display:flex;justify-content:space-between">
+            <span style="font-size:12px;color:#64748b">Deboarding Station:</span>
+            <span style="font-size:12.5px;font-weight:700;color:#0f172a">Delhi (Safdarjung Station)</span>
+          </div>
         </div>
 
         <div style="margin-bottom:14px">
-          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Starting Tariff:</div>
-          <div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:#F8904D">Starts $8,400 USD / ₹8,19,000 INR</div>
-          <div style="font-size:11px;color:#64748b;margin-top:2px">Per Person (Deluxe Twin Sharing) · 5% GST extra</div>
+          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Starting Tariff</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:#F8904D">Starts $8,400 USD / ₹8,19,000 INR</div>
+          <div style="font-size:11px;color:#64748b;margin-top:2px">Per Person (Deluxe Twin Sharing) · 5% Govt. GST extra</div>
         </div>
 
-        <!-- Special Offer Tag Box (Like 8-days-golden-triangle Line 500) -->
-        <div style="background:linear-gradient(to right,rgba(248,144,77,0.08),rgba(251,191,36,0.06));border:1.5px dashed rgba(248,144,77,0.5);border-radius:14px;padding:10px 14px;margin-bottom:16px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-            <span style="background:linear-gradient(to right,#F8904D,#E96A1E);color:#fff;font-size:10px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:999px">Special Offer</span>
-            <span style="color:#d96b27;font-size:11px;font-weight:700">Pre/Post Extensions</span>
-          </div>
-          <div style="font-size:12px;color:#475569;line-height:1.4">Special discounts available on 5-star private hotel extensions & chauffeured airport transfers.</div>
+        <!-- Clean Authentic Booking Policy Box -->
+        <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:12px;padding:12px 14px;margin-bottom:16px">
+          <div style="font-size:11px;font-weight:700;color:#c2410c;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Booking Policy</div>
+          <div style="font-size:12px;color:#475569;line-height:1.5">Reserve your cabin with 25% advance deposit. Remaining 75% balance payable 60 days before departure.</div>
         </div>
       </div>
 
       <div>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
           <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20send%20quote%20for%20Maharajas%20Express%20The Indian Panorama." target="_blank" rel="noopener" style="background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;padding:12px;border-radius:10px;text-align:center;text-decoration:none;display:block">
             Request Quote &rarr;
           </a>
@@ -994,19 +1007,19 @@ footer a:hover{color:#F8904D}
           </a>
         </div>
 
-        <!-- 4 Verified Trust Badges -->
+        <!-- Real Authentic Inclusions (NO FAKE BADGES) -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;border-top:1px solid #f1f5f9;padding-top:12px">
           <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
-            <span style="color:#10b981;font-weight:800">✓</span> 100% Free Plan
+            <span style="color:#10b981;font-weight:800">✓</span> All Gourmet Meals
           </div>
           <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
-            <span style="color:#10b981;font-weight:800">✓</span> Verified Guides
+            <span style="color:#10b981;font-weight:800">✓</span> House Wines/Spirits
           </div>
           <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
-            <span style="color:#10b981;font-weight:800">✓</span> Personal Butler
+            <span style="color:#10b981;font-weight:800">✓</span> Dedicated Butler
           </div>
           <div style="font-size:11px;font-weight:600;color:#334155;background:#f8fafc;padding:5px 8px;border-radius:8px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:4px">
-            <span style="color:#10b981;font-weight:800">✓</span> 24/7 Concierge
+            <span style="color:#10b981;font-weight:800">✓</span> Guided Excursions
           </div>
         </div>
       </div>
@@ -1249,8 +1262,266 @@ footer a:hover{color:#F8904D}
   </div>
 </div>
 
+
+    <!-- 5. Scheduled Departures -->
+    <div id="departures" style="margin-top:16px">
+      <div class="sec-head" style="margin-bottom:20px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">Schedules</div>
+        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px">
+          The Indian Panorama <span style="color:#F8904D">Departure Dates (2026 – 2027)</span>
+        </h2>
+        <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">
+          Official scheduled Sunday departures for Season 2026-27. Reserve your cabin in advance.
+        </p>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:14px;text-align:left">
+            <thead>
+              <tr style="background:#1e255e;color:#fff;font-family:'Outfit',sans-serif">
+                <th style="padding:14px 20px;border-right:1px solid rgba(255,255,255,0.15)">Month</th>
+                <th style="padding:14px 20px;border-right:1px solid rgba(255,255,255,0.15)">Scheduled Departure Date</th>
+                <th style="padding:14px 20px">Cabin Availability &amp; Inquiries</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+<tr style="border-bottom:1px solid #f1f5f9">
+  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">October 2026</td>
+  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">04 Oct 2026 (Sunday)</td>
+  <td style="padding:14px 20px">
+    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20The Indian Panorama%20departing%20on%2004 Oct 2026 (Sunday)." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
+      Check Availability &rarr;
+    </a>
+  </td>
+</tr>
+
+<tr style="border-bottom:1px solid #f1f5f9">
+  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">November 2026</td>
+  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">01 Nov 2026 (Sunday), 29 Nov 2026 (Sunday)</td>
+  <td style="padding:14px 20px">
+    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20The Indian Panorama%20departing%20on%2001 Nov 2026 (Sunday), 29 Nov 2026 (Sunday)." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
+      Check Availability &rarr;
+    </a>
+  </td>
+</tr>
+
+<tr style="border-bottom:1px solid #f1f5f9">
+  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">December 2026</td>
+  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">27 Dec 2026 (Sunday)</td>
+  <td style="padding:14px 20px">
+    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20The Indian Panorama%20departing%20on%2027 Dec 2026 (Sunday)." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
+      Check Availability &rarr;
+    </a>
+  </td>
+</tr>
+
+<tr style="border-bottom:1px solid #f1f5f9">
+  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">January 2027</td>
+  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">24 Jan 2027 (Sunday)</td>
+  <td style="padding:14px 20px">
+    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20The Indian Panorama%20departing%20on%2024 Jan 2027 (Sunday)." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
+      Check Availability &rarr;
+    </a>
+  </td>
+</tr>
+
+<tr style="border-bottom:1px solid #f1f5f9">
+  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">February 2027</td>
+  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">21 Feb 2027 (Sunday)</td>
+  <td style="padding:14px 20px">
+    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20The Indian Panorama%20departing%20on%2021 Feb 2027 (Sunday)." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
+      Check Availability &rarr;
+    </a>
+  </td>
+</tr>
+
+<tr style="border-bottom:1px solid #f1f5f9">
+  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">March 2027</td>
+  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">21 Mar 2027 (Sunday)</td>
+  <td style="padding:14px 20px">
+    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20The Indian Panorama%20departing%20on%2021 Mar 2027 (Sunday)." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
+      Check Availability &rarr;
+    </a>
+  </td>
+</tr>
+
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:14px 20px;background:#fdfcfb;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+          <span style="font-size:13px;color:#64748b">✦ Departures commence with an afternoon check-in and traditional garland welcome ceremony.</span>
+          <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20The Indian Panorama." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;padding:8px 18px;border-radius:999px;text-decoration:none">
+            Inquire Specific Date on WhatsApp &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Official Tariffs & Prices -->
+    <div id="pricing" style="margin-top:16px">
+      <div class="sec-head" style="margin-bottom:20px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">Official Fares</div>
+        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px">
+          The Indian Panorama <span style="color:#F8904D">Tariffs &amp; Cabin Prices (2026 – 2027)</span>
+        </h2>
+        <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">
+          Official published IRCTC tariffs per person. 5% Govt. GST extra.
+        </p>
+      </div>
+
+      <!-- Currency Switcher Buttons -->
+      <div style="display:flex;gap:10px;margin-bottom:16px">
+        <button id="circuitBtnUsd" onclick="switchCircuitPrice('usd')" style="font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700;padding:8px 18px;border-radius:999px;background:#0f172a;color:#fff;border:none;cursor:pointer">
+          USD Tariffs ($)
+        </button>
+        <button id="circuitBtnInr" onclick="switchCircuitPrice('inr')" style="font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700;padding:8px 18px;border-radius:999px;background:#fff;border:1px solid #cbd5e1;color:#64748b;cursor:pointer">
+          INR Tariffs (₹)
+        </button>
+      </div>
+
+      <!-- USD Table -->
+      <div id="circuitPriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:14px;text-align:center">
+            <thead>
+              <tr style="background:#991b1b;color:#fff;font-family:'Outfit',sans-serif">
+                <th style="padding:14px;text-align:left;border-right:1px solid rgba(255,255,255,0.15)">Rooming Category</th>
+                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Deluxe Cabin</th>
+                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Junior Suite</th>
+                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Suite</th>
+                <th style="padding:14px">Presidential Suite</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:14px;font-weight:700;color:#0f172a;text-align:left;background:#fafafa;border-right:1px solid #e2e8f0">Adult (Twin Sharing)</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$8,400</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$10,700</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">$15,600</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a">$26,800</td>
+              </tr>
+              <tr style="background:#fcfcfd">
+                <td style="padding:14px;color:#64748b;text-align:left;background:#fafafa;border-right:1px solid #e2e8f0">Single Supplement</td>
+                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">$6,300</td>
+                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">$9,700</td>
+                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">$15,600</td>
+                <td style="padding:14px;color:#64748b">$26,800</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- INR Table -->
+      <div id="circuitPriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:14px;text-align:center">
+            <thead>
+              <tr style="background:#991b1b;color:#fff;font-family:'Outfit',sans-serif">
+                <th style="padding:14px;text-align:left;border-right:1px solid rgba(255,255,255,0.15)">Rooming Category</th>
+                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Deluxe Cabin</th>
+                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Junior Suite</th>
+                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Suite</th>
+                <th style="padding:14px">Presidential Suite</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:14px;font-weight:700;color:#0f172a;text-align:left;background:#fafafa;border-right:1px solid #e2e8f0">Adult (Twin Sharing)</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹8,19,000</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹10,43,250</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">₹15,21,000</td>
+                <td style="padding:14px;font-weight:700;color:#0f172a">₹26,13,000</td>
+              </tr>
+              <tr style="background:#fcfcfd">
+                <td style="padding:14px;color:#64748b;text-align:left;background:#fafafa;border-right:1px solid #e2e8f0">Single Supplement</td>
+                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">₹6,14,250</td>
+                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">₹9,45,750</td>
+                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">₹15,21,000</td>
+                <td style="padding:14px;color:#64748b">₹26,13,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. FAQs for this Itinerary -->
+    <div id="faqs" style="margin-top:16px">
+      <div class="sec-head" style="margin-bottom:20px;text-align:left">
+        <div class="eyebrow" style="color:#d96b27">Helpful FAQs</div>
+        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px">
+          Frequently Asked Questions · <span style="color:#F8904D">The Indian Panorama</span>
+        </h2>
+        <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">
+          Everything you need to know about departures, excursions, dining, and reservations for this circuit.
+        </p>
+      </div>
+
+      <div class="faq" style="background:#fff;border-radius:18px;border:1px solid #e2e8f0;padding:8px 24px;box-shadow:0 4px 16px rgba(0,0,0,0.02)">
+        
+<details open style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+  <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">What makes The Indian Panorama distinct from other luxury train circuits?</summary>
+  <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+    It is the only luxury rail circuit that combines Rajasthan's palaces (Jaipur), the tiger wilderness of Ranthambore, the Taj Mahal in Agra, the UNESCO erotic stone temples of Khajuraho, and the sacred ghats of Varanasi on the River Ganges.
+  </div>
+</details>
+
+<details  style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+  <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">What experiences are included in Varanasi on this circuit?</summary>
+  <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+    Guests take a private sunset boat cruise on the River Ganges to witness the Maha Ganga Aarti from the water, visit the historic Sarnath deer park where Buddha delivered his first sermon, and tour a traditional Varanasi silk weaving center.
+  </div>
+</details>
+
+<details  style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+  <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">Where does this journey start and conclude?</summary>
+  <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+    It is a round-trip tour starting and ending at Safdarjung Railway Station, New Delhi, making flight connections very convenient.
+  </div>
+</details>
+
+<details  style="border-bottom:1px solid #f1f5f9;padding:16px 0">
+  <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">Are monument admission fees and Khajuraho temple tickets included?</summary>
+  <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+    Yes, all entrance tickets to monuments, including the Western Group of Temples in Khajuraho and Agra's Taj Mahal, along with expert English-speaking guides, are included in the fare.
+  </div>
+</details>
+
+<details  style="padding:16px 0">
+  <summary style="font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;color:#0f172a;cursor:pointer">How are meals arranged during excursions?</summary>
+  <div style="color:#64748b;font-size:14.5px;line-height:1.7;margin:10px 0 0">
+    All meals are included. Gourmet breakfast, lunch, and dinner are served in Rang Mahal and Mayur Mahal dining cars, while select lunches are hosted at heritage palace hotels during off-train tours.
+  </div>
+</details>
+
+      </div>
+    </div>
+
   </div>
 </div>
+
+<script>
+function switchCircuitPrice(curr) {
+  const usd = document.getElementById('circuitPriceUsd');
+  const inr = document.getElementById('circuitPriceInr');
+  const btnUsd = document.getElementById('circuitBtnUsd');
+  const btnInr = document.getElementById('circuitBtnInr');
+  if (curr === 'usd') {
+    if (usd) usd.style.display = 'block';
+    if (inr) inr.style.display = 'none';
+    if (btnUsd) { btnUsd.style.background = '#0f172a'; btnUsd.style.color = '#fff'; btnUsd.style.border = 'none'; }
+    if (btnInr) { btnInr.style.background = '#fff'; btnInr.style.color = '#64748b'; btnInr.style.border = '1px solid #cbd5e1'; }
+  } else {
+    if (usd) usd.style.display = 'none';
+    if (inr) inr.style.display = 'block';
+    if (btnInr) { btnInr.style.background = '#0f172a'; btnInr.style.color = '#fff'; btnInr.style.border = 'none'; }
+    if (btnUsd) { btnUsd.style.background = '#fff'; btnUsd.style.color = '#64748b'; btnUsd.style.border = '1px solid #cbd5e1'; }
+  }
+}
+</script>
 
 
 <footer>
