@@ -198,7 +198,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   position: absolute;
   top: 45px;
   width: 2.5px;
-  height: 20px;
+  height: 42px;
   background: #0d9488;
   border-radius: 2px;
   animation: dropPinSlide 0.35s cubic-bezier(0.4, 0, 0.2, 1);
