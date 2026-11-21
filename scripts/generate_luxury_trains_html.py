@@ -2631,6 +2631,20 @@ function switchCircuitPrice(curr) {{
       <div class="koikoi-card-route">
         🚂 Delhi · Jaipur · Ranthambore · Chittorgarh · Udaipur · Jaisalmer · Jodhpur · Bharatpur · Agra · Delhi
       </div>
+      <div class="koikoi-card-highlights">
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Reva Wellness Spa: Ayurvedic massages, therapies &amp; beauty salon</span>
+        </div>
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Maharaja &amp; Maharani: Authentic Rajasthani, Mughlai &amp; continental dining</span>
+        </div>
+        <div class="koikoi-card-hl-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Royal Saloon Bar: Premium spirits &amp; 24/7 personal Khidmatgar service</span>
+        </div>
+      </div>
       <div class="koikoi-card-footer">
         <div class="koikoi-card-amenities">
           Deluxe &amp; Super Deluxe Saloons · Maharaja &amp; Maharani Dining · Butler (Khidmatgar)
@@ -3383,6 +3397,11 @@ function switchPowHomePrice(curr) {{
                 "departs": "Departs Every Sunday from Mumbai",
                 "title": "7 Days - The Heritage of India Luxury Rail Tour",
                 "route": "🚂 Mumbai · Udaipur · Jodhpur · Bikaner · Jaipur · Ranthambore · Agra · Delhi",
+                "facilities": [
+                    "Mayur Mahal & Rang Mahal: Twin royal fine-dining restaurants",
+                    "The Safari Bar & Rajah Club: House wines, cocktails & lounge",
+                    "24/7 Dedicated Butler: Personal valet service for every cabin"
+                ],
                 "inquire": "Maharajas' Express - The Heritage of India (Mumbai to Delhi, 7 Days)"
             },
             {
@@ -3393,6 +3412,11 @@ function switchPowHomePrice(curr) {{
                 "departs": "Departs Every Sunday from Delhi",
                 "title": "7 Days - The Indian Panorama Heritage Rail Tour",
                 "route": "🚂 Delhi · Jaipur · Ranthambore · Agra · Orchha · Khajuraho · Varanasi · Delhi",
+                "facilities": [
+                    "Two Thematic Restaurants: Gourmet Indian & international dining",
+                    "The Safari Bar: Curated spirits, sommelier wines & library",
+                    "Private Valet Service: Round-the-clock personal cabin attendant"
+                ],
                 "inquire": "Maharajas' Express - The Indian Panorama (Delhi to Delhi, 7 Days)"
             },
             {
@@ -3403,6 +3427,11 @@ function switchPowHomePrice(curr) {{
                 "departs": "Departs Every Sunday from Delhi",
                 "title": "7 Days - The Indian Splendour Royal Rajasthan Tour",
                 "route": "🚂 Delhi · Agra · Ranthambore · Jaipur · Bikaner · Jodhpur · Udaipur · Mumbai",
+                "facilities": [
+                    "Mayur Mahal & Rang Mahal: Handcrafted gold-accented dining",
+                    "Rajah Club Lounge Bar: Panoramic drinks, games & relaxation",
+                    "Personal Butler Service: 24/7 assistance & luxury ensuite amenities"
+                ],
                 "inquire": "Maharajas' Express - The Indian Splendour (Delhi to Mumbai, 7 Days)"
             },
             {
@@ -3413,6 +3442,11 @@ function switchPowHomePrice(curr) {{
                 "departs": "Departs Every Sunday from Delhi",
                 "title": "4 Days - Treasures of India Golden Triangle Rail Tour",
                 "route": "🚂 Delhi · Agra · Ranthambore · Jaipur · Delhi",
+                "facilities": [
+                    "Twin Gourmet Dining Cars: Royal Rajasthani & continental meals",
+                    "The Safari Bar: Handcrafted cocktails with scenic rail views",
+                    "24/7 Dedicated Butler: Attentive personal service in all cabins"
+                ],
                 "inquire": "Maharajas' Express - Treasures of India (Golden Triangle, 4 Days)"
             }
         ]
@@ -3421,6 +3455,11 @@ function switchPowHomePrice(curr) {{
         for c in me_cards_data:
             wa_text = f"Hi KoiKoi Travel, please share details for {c['inquire']}."
             wa_encoded = urllib.parse.quote(wa_text)
+            hl_items = []
+            for f_text in c['facilities']:
+                hl_items.append('        <div class="koikoi-card-hl-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>' + f_text + '</span></div>')
+            hl_html = "\n".join(hl_items)
+
             c_html = f"""  <!-- Card: {c['slug']} -->
   <div class="koikoi-tour-card" id="{c['id']}">
     <a href="{base_path}/maharajas-express/{c['slug']}" class="koikoi-card-img-wrap">
@@ -3435,6 +3474,9 @@ function switchPowHomePrice(curr) {{
       </a>
       <div class="koikoi-card-route">
         {c['route']}
+      </div>
+      <div class="koikoi-card-highlights">
+{hl_html}
       </div>
       <div class="koikoi-card-footer">
         <div class="koikoi-card-amenities">
@@ -4789,6 +4831,11 @@ function switchPriceCurrency(curr) {{
                 "departs": "Departs Every Saturday from Bengaluru",
                 "title": "6 Days - Pride of Karnataka Luxury Rail Tour",
                 "route": "🚂 Bengaluru · Bandipur · Mysore · Halebidu · Hampi · Goa · Bengaluru",
+                "facilities": [
+                    "Arogya Ayurvedic Spa: Rejuvenating body therapies & mini-gym",
+                    "Ruchi & Nalapaka: Authentic South Indian & global gourmet dining",
+                    "Madira Lounge Bar: Royal Mysore palace-themed bar & spirits"
+                ],
                 "inquire": "Golden Chariot - Pride of Karnataka (6 Days)"
             },
             {
@@ -4799,6 +4846,11 @@ function switchPriceCurrency(curr) {{
                 "departs": "Departs Every Saturday from Bengaluru",
                 "title": "6 Days - Jewels of South Luxury Rail Tour",
                 "route": "🚂 Bengaluru · Mysore · Kanchipuram · Mahabalipuram · Thanjavur · Chettinad · Cochin · Kumarakom · Bengaluru",
+                "facilities": [
+                    "Arogya Wellness Center: Traditional holistic therapies & workout car",
+                    "Twin Royal Restaurants: Fresh coastal, Chettinad & international dining",
+                    "Madira Bar Lounge: Handcrafted cocktails & plush royal seating"
+                ],
                 "inquire": "Golden Chariot - Jewels of South (6 Days)"
             },
             {
@@ -4809,6 +4861,11 @@ function switchPriceCurrency(curr) {{
                 "departs": "Departs Every Saturday from Bengaluru",
                 "title": "4 Days - Glimpses of Karnataka Express Rail Tour",
                 "route": "🚂 Bengaluru · Bandipur · Mysore · Hampi · Bengaluru",
+                "facilities": [
+                    "Arogya Spa & Mini-Gym: Ayurvedic relaxation & fitness equipment",
+                    "Ruchi & Nalapaka: Royal dining with vegetarian & non-vegetarian menus",
+                    "Madira Lounge Bar: Fine spirits with panoramic window views"
+                ],
                 "inquire": "Golden Chariot - Glimpses of Karnataka (4 Days)"
             }
         ]
@@ -4817,6 +4874,11 @@ function switchPriceCurrency(curr) {{
         for c in gc_cards_data:
             wa_text = f"Hi KoiKoi Travel, please share details for {c['inquire']}."
             wa_encoded = urllib.parse.quote(wa_text)
+            hl_items = []
+            for f_text in c['facilities']:
+                hl_items.append('        <div class="koikoi-card-hl-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>' + f_text + '</span></div>')
+            hl_html = "\n".join(hl_items)
+
             c_html = f"""  <!-- Card: {c['slug']} -->
   <div class="koikoi-tour-card" id="{c['id']}">
     <a href="{base_path}/golden-chariot/{c['slug']}" class="koikoi-card-img-wrap">
@@ -4831,6 +4893,9 @@ function switchPriceCurrency(curr) {{
       </a>
       <div class="koikoi-card-route">
         {c['route']}
+      </div>
+      <div class="koikoi-card-highlights">
+{hl_html}
       </div>
       <div class="koikoi-card-footer">
         <div class="koikoi-card-amenities">
@@ -6555,6 +6620,11 @@ function switchPriceCurrency(curr) {{
                 "departs": "Departs Every Saturday from Mumbai",
                 "title": "8 Days - Maharashtra Splendour Luxury Rail Tour",
                 "route": "🚂 Mumbai · Goa · Kolhapur · Daulatabad · Chandor · Ajanta & Ellora · Mumbai",
+                "facilities": [
+                    "Ayush Wellness Spa: Ayurvedic therapies & salon onboard",
+                    "Waavar & Utsav: Twin gourmet fine-dining restaurants",
+                    "Gateway Bar & Gym: Stocked lounge & modern fitness center"
+                ],
                 "inquire": "Deccan Odyssey - Maharashtra Splendour (8 Days)"
             },
             {
@@ -6565,6 +6635,11 @@ function switchPriceCurrency(curr) {{
                 "departs": "Departs Every Saturday from Delhi",
                 "title": "8 Days - Indian Odyssey Grand Trans-India Tour",
                 "route": "🚂 New Delhi · Sawai Madhopur · Agra · Jaipur · Udaipur · Vadodara · Mumbai",
+                "facilities": [
+                    "Ayush Royal Spa: Traditional wellness & rejuvenation therapies",
+                    "Waavar & Utsav Dining: Multi-course regional & continental feasts",
+                    "Gateway Lounge & Gym: Panoramic bar & onboard gymnasium"
+                ],
                 "inquire": "Deccan Odyssey - Indian Odyssey (8 Days)"
             },
             {
@@ -6575,6 +6650,11 @@ function switchPriceCurrency(curr) {{
                 "departs": "Departs Every Saturday from Mumbai",
                 "title": "8 Days - Indian Sojourn Heritage Rail Tour",
                 "route": "🚂 Mumbai · Vadodara · Udaipur · Jodhpur · Agra · Sawai Madhopur · Jaipur · New Delhi",
+                "facilities": [
+                    "Onboard Ayurvedic Spa: Body massages, reflexology & salon",
+                    "Twin Dining Cars: Gourmet Indian & international menus",
+                    "Gateway Bar Lounge: Fine spirits, wine cellar & fitness suite"
+                ],
                 "inquire": "Deccan Odyssey - Indian Sojourn (8 Days)"
             },
             {
@@ -6585,6 +6665,11 @@ function switchPriceCurrency(curr) {{
                 "departs": "Departs Every Saturday from Mumbai",
                 "title": "8 Days - Maharashtra Wild Trail Wildlife & Heritage Tour",
                 "route": "🚂 Mumbai · Aurangabad · Pench · Tadoba · Ajanta Caves · Nashik · Mumbai",
+                "facilities": [
+                    "Ayush Wellness Spa: Relaxing therapies after wildlife game drives",
+                    "Waavar & Utsav Dining: Chef-crafted fresh seasonal dining",
+                    "Gateway Bar & Gym: Full-view lounge & modern workout machines"
+                ],
                 "inquire": "Deccan Odyssey - Maharashtra Wild Trail (8 Days)"
             },
             {
@@ -6595,6 +6680,11 @@ function switchPriceCurrency(curr) {{
                 "departs": "Departs Every Saturday from Delhi",
                 "title": "8 Days - Heritage Odyssey Royal Rajasthan Tour",
                 "route": "🚂 New Delhi · Agra · Jaipur · Bikaner · Jaisalmer · Jodhpur · Udaipur · New Delhi",
+                "facilities": [
+                    "Ayush Spa & Beauty Salon: Therapeutic royal treatments on tracks",
+                    "Twin Fine-Dining Cars: Royal Maratha & Rajasthani culinary feast",
+                    "Gateway Lounge: Premium bar, library & cardio fitness room"
+                ],
                 "inquire": "Deccan Odyssey - Heritage Odyssey (8 Days)"
             },
             {
@@ -6605,6 +6695,11 @@ function switchPriceCurrency(curr) {{
                 "departs": "Departs Every Saturday from Delhi",
                 "title": "8 Days - Cultural Odyssey Heritage & Spiritual Tour",
                 "route": "🚂 New Delhi · Sawai Madhopur · Agra · Jaipur · Gwalior · Khajuraho · Varanasi · New Delhi",
+                "facilities": [
+                    "Ayush Wellness Spa: Ancient holistic therapies & relaxation",
+                    "Waavar & Utsav: Fine-dining vegetarian & non-vegetarian creations",
+                    "Gateway Bar Lounge: Evening cocktails, music & fitness center"
+                ],
                 "inquire": "Deccan Odyssey - Cultural Odyssey (8 Days)"
             }
         ]
@@ -6613,6 +6708,11 @@ function switchPriceCurrency(curr) {{
         for c in do_cards_data:
             wa_text = f"Hi KoiKoi Travel, please share details for {c['inquire']}."
             wa_encoded = urllib.parse.quote(wa_text)
+            hl_items = []
+            for f_text in c['facilities']:
+                hl_items.append('        <div class="koikoi-card-hl-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg><span>' + f_text + '</span></div>')
+            hl_html = "\n".join(hl_items)
+
             c_html = f"""  <!-- Card: {c['slug']} -->
   <div class="koikoi-tour-card" id="{c['id']}">
     <a href="{base_path}/deccan-odyssey/{c['slug']}" class="koikoi-card-img-wrap">
@@ -6627,6 +6727,9 @@ function switchPriceCurrency(curr) {{
       </a>
       <div class="koikoi-card-route">
         {c['route']}
+      </div>
+      <div class="koikoi-card-highlights">
+{hl_html}
       </div>
       <div class="koikoi-card-footer">
         <div class="koikoi-card-amenities">
