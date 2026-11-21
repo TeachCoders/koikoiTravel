@@ -295,7 +295,6 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 }
 .kb-train-select-box .kb-info-strip {
   background: rgba(0, 0, 0, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.2);
   color: #f0fdfa;
   margin-top: 14px;
   border-radius: 10px;
@@ -320,19 +319,17 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 .kb-train-select-box .kb-strip-dur {
   color: #ffffff;
   background: #0d9488;
-  border: 1px solid #2dd4bf;
   font-weight: 700;
-  padding: 3px 10px;
+  padding: 4px 11px;
   border-radius: 6px;
   font-size: 13px;
   white-space: nowrap;
 }
 .kb-train-select-box .kb-strip-dep {
   color: #fef08a;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(254, 240, 138, 0.35);
+  background: rgba(0, 0, 0, 0.28);
   font-weight: 600;
-  padding: 3px 10px;
+  padding: 4px 11px;
   border-radius: 6px;
   font-size: 13px;
   white-space: nowrap;
@@ -458,7 +455,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
    Zebra Striped Month Table (Light Golden & White alternate)
    ======================================================== */
 .kb-dates-container {
-  border: 1.5px solid var(--line);
+  border: 1px solid #ece5da;
   border-radius: 12px;
   overflow: hidden;
   background: #ffffff;
@@ -466,7 +463,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 .kb-month-row {
   display: flex;
   padding: 16px 20px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid #f5efe6;
   align-items: center;
   gap: 24px;
   transition: background 0.15s ease;
@@ -513,47 +510,47 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
   }
 }
 
-/* Individual Pill Radio Button */
+/* Individual Pill Radio Button - Very Light Subtle Border */
 .kb-date-item {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
   background: #ffffff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #f2ede4;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 15.5px;
   font-weight: 600;
-  color: #0f172a;
+  color: #1e293b;
   user-select: none;
   text-align: left;
 }
 .kb-month-row:nth-child(odd) .kb-date-item {
   background: #ffffff;
-  border-color: #ebdcb9;
+  border-color: #f2ede4;
 }
 .kb-month-row:nth-child(even) .kb-date-item {
   background: #faf8f5;
-  border-color: #e2e8f0;
+  border-color: #f2ede4;
 }
 .kb-date-item:hover {
   background: #f0fdfa;
-  border-color: #0d9488;
+  border-color: #14b8a6;
 }
 .kb-date-item[aria-checked="true"] {
   background: #f0fdfa !important;
   border-color: #0d9488 !important;
-  box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 0 0 1.5px rgba(13, 148, 136, 0.25);
   color: #0f766e;
   font-weight: 700;
 }
 .kb-radio-circle {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  border: 2px solid #0d9488;
+  border: 1.5px solid #14b8a6;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -568,8 +565,8 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 }
 .kb-date-item[aria-checked="true"] .kb-radio-circle::after {
   content: "";
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #ffffff;
 }
@@ -577,7 +574,7 @@ def get_luxury_booking_page_content(base_path="/luxury-trains"):
 .kb-flex-date-wrap {
   padding: 14px 20px;
   background: #faf8f5;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid #f5efe6;
 }
 
 /* Step 2 Summary Pill - Teal Green Theme */
@@ -1434,13 +1431,6 @@ function render() {
 
         h += '</div></div>';
       });
-
-      // Flexible Date Option
-      h += '<div class="kb-flex-date-wrap">' +
-        '<button type="button" class="kb-date-item" role="radio" aria-checked="' + (S.date === "flex") + '" data-date="flex">' +
-        '<span class="kb-radio-circle"></span>' +
-        '<span>Not sure, suggest best departure date</span>' +
-        '</button></div>';
 
       h += '</div>';
     } else {
