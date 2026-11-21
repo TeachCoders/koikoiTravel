@@ -198,7 +198,7 @@ export default function TourPackageCard({
           <>
             {/* Route / Destination in Teal */}
             {(journey.destination || state || (journey.route && journey.route.length > 0) || (journey.cities && journey.cities.length > 0)) && (
-              <div className="text-[13px] sm:text-[13.5px] text-[#2E8B8B] font-medium mb-3 truncate">
+              <div className="text-[13px] sm:text-[13.5px] text-[#2E8B8B] font-medium mb-3 leading-snug">
                 {formatRouteText(journey, state)}
               </div>
             )}
@@ -206,12 +206,27 @@ export default function TourPackageCard({
             {/* Highlights List with Teal Checks */}
             {(journey.highlights?.length ?? 0) > 0 ? (
               <div className="space-y-1.5 mb-3">
-                {journey.highlights!.slice(0, 3).map((hl, i) => (
-                  <div key={i} className="flex items-start gap-2 text-[13px] text-slate-700 font-normal leading-[1.4]">
-                    <Check size={14} className="shrink-0 text-[#2E8B8B] stroke-[2.5] mt-0.5" />
-                    <span className="line-clamp-1">{hl}</span>
-                  </div>
-                ))}
+                {journey.highlights!.slice(0, 3).map((hl, i) => {
+                  const colonIdx = hl.indexOf(':');
+                  const hasPrefix = colonIdx !== -1 && colonIdx < 45;
+                  const prefix = hasPrefix ? hl.slice(0, colonIdx + 1) : '';
+                  const rest = hasPrefix ? hl.slice(colonIdx + 1) : hl;
+                  return (
+                    <div key={i} className="flex items-start gap-2 text-[13.5px] sm:text-[14px] text-slate-700 font-normal leading-[1.45]">
+                      <Check size={15} className="shrink-0 text-[#2E8B8B] stroke-[2.5] mt-0.5" />
+                      <span>
+                        {hasPrefix ? (
+                          <>
+                            <strong className="font-semibold text-slate-900">{prefix}</strong>
+                            {rest}
+                          </>
+                        ) : (
+                          hl
+                        )}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <div className="mb-3" />

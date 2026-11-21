@@ -7,6 +7,7 @@ Using local downloaded images from user and removing the stats section.
 import os
 import shutil
 import urllib.parse
+from luxury_booking_template import get_luxury_booking_page_content
 
 OUTPUT_DIRS = [
     "frontend/public/luxury-trains",
@@ -1111,7 +1112,7 @@ def get_header(active_train=None, base_path="/luxury-trains"):
         </div>
       </li>
     </ul>
-    <a class="btn btn-gold" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20want%20to%20inquire%20about%20a%20luxury%20train%20journey." target="_blank" rel="noopener">Create My Trip</a>
+    <a class="btn btn-gold" href="{base_path}/booking">Book a Train</a>
   </div>
 </header>
 """
@@ -2712,7 +2713,7 @@ function switchCircuitPrice(curr) {{
           Deluxe &amp; Super Deluxe Saloons · Maharaja &amp; Maharani Dining · Butler (Khidmatgar)
         </div>
         <div style="display:flex;gap:12px;align-items:center">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text={wa_encoded}" target="_blank" rel="noopener" style="padding:0 24px;min-width:130px">
+          <a class="koikoi-btn-quote" href="{base_path}/booking?train=palace-on-wheels&journey=classic-rajasthan" style="padding:0 24px;min-width:130px">
             Get a quote
           </a>
           <a class="koikoi-btn-details" href="{base_path}/palace-on-wheels/itinerary" style="padding:0 24px;min-width:110px">
@@ -3555,7 +3556,7 @@ function switchPowHomePrice(curr) {{
           Royal Cabins · Onboard Dining · Butler Service · Guided Excursions
         </div>
         <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text={wa_encoded}" target="_blank" rel="noopener">
+          <a class="koikoi-btn-quote" href="{base_path}/booking?train=maharajas-express&journey={c['slug']}">
             Get a quote
           </a>
           <a class="koikoi-btn-details" href="{base_path}/maharajas-express/{c['slug']}">
@@ -4979,7 +4980,7 @@ function switchPriceCurrency(curr) {{
           Royal Cabins · Multi-Cuisine Dining · Butler Service · Guided Sights
         </div>
         <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text={wa_encoded}" target="_blank" rel="noopener">
+          <a class="koikoi-btn-quote" href="{base_path}/booking?train=golden-chariot&journey={c['slug']}">
             Get a quote
           </a>
           <a class="koikoi-btn-details" href="{base_path}/golden-chariot/{c['slug']}">
@@ -6818,7 +6819,7 @@ function switchPriceCurrency(curr) {{
           Deluxe &amp; Presidential Cabins · All Meals · Guided Sightseeing · Butler Service
         </div>
         <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text={wa_encoded}" target="_blank" rel="noopener">
+          <a class="koikoi-btn-quote" href="{base_path}/booking?train=deccan-odyssey&journey={c['slug']}">
             Get a quote
           </a>
           <a class="koikoi-btn-details" href="{base_path}/deccan-odyssey/{c['slug']}">
@@ -7545,6 +7546,15 @@ if (window.location.pathname.endsWith('/deccan-odyssey/itinerary') || window.loc
                do_gallery, active_train="deccan-odyssey", active_tab="photo-gallery", base_path=base_path)
 
     # Also create flat .html files alongside directory/index.html
+    
+    # --- 6. UNIFIED LUXURY TRAIN BOOKING PAGE ---
+    booking_html = get_luxury_booking_page_content(base_path=base_path)
+    write_page(f"{base_dir}/booking/index.html",
+               "Book Luxury Train in India | Palace on Wheels, Maharajas' Express, Golden Chariot, Deccan Odyssey | KoiKoi Travel",
+               "Reserve confirmed departures for India's 4 premier luxury trains with official IRCTC & state tourism tariffs, zero booking fee, and dedicated concierge.",
+               booking_html, active_train=None, active_tab="booking", base_path=base_path)
+    shutil.copyfile(f"{base_dir}/booking/index.html", f"{base_dir}/booking.html")
+
     for train in ["palace-on-wheels", "maharajas-express", "golden-chariot", "deccan-odyssey"]:
         for tab in ["itinerary", "departures", "price", "cabins", "photo-gallery",
                     "the-heritage-of-india", "the-indian-panorama", "the-indian-splendour", "treasures-of-india",

@@ -90,22 +90,37 @@ export default function PackageCard({ item }: { item: PackageCardItem }) {
         </h3>
 
         {destination && (
-          <div className="flex items-center gap-1.5 text-xs font-medium mt-1.5 mb-1 text-brand-500">
-            <MapPin className="w-3.5 h-3.5" />
-            <span className="truncate">{destination}</span>
+          <div className="flex items-center gap-1.5 text-xs font-medium mt-1.5 mb-1 text-brand-500 leading-snug">
+            <MapPin className="w-3.5 h-3.5 shrink-0" />
+            <span>{destination}</span>
           </div>
         )}
 
         {highlights.length > 0 && (
           <div className="mt-4 space-y-1.5">
             <span className="text-xs font-bold text-brand-300">Highlights</span>
-            <div className="grid grid-cols-1 gap-1">
-              {highlights.slice(0, 3).map((hl, i) => (
-                <div key={i} className="flex items-center gap-2 text-xs font-medium text-brand-500">
-                  <CheckCircle className="w-4 h-4 shrink-0 text-brand-gold" />
-                  <span className="truncate">{hl}</span>
-                </div>
-              ))}
+            <div className="grid grid-cols-1 gap-1.5">
+              {highlights.slice(0, 3).map((hl, i) => {
+                const colonIdx = hl.indexOf(':');
+                const hasPrefix = colonIdx !== -1 && colonIdx < 45;
+                const prefix = hasPrefix ? hl.slice(0, colonIdx + 1) : '';
+                const rest = hasPrefix ? hl.slice(colonIdx + 1) : hl;
+                return (
+                  <div key={i} className="flex items-start gap-2 text-xs font-medium text-brand-500 leading-snug">
+                    <CheckCircle className="w-4 h-4 shrink-0 text-brand-gold mt-0.5" />
+                    <span>
+                      {hasPrefix ? (
+                        <>
+                          <strong className="font-semibold text-slate-900">{prefix}</strong>
+                          {rest}
+                        </>
+                      ) : (
+                        hl
+                      )}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
