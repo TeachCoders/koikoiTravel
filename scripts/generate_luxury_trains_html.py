@@ -872,6 +872,65 @@ footer a:hover{color:#F8904D}
   }
 }
 
+.circuit-price-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  background: #ffffff;
+}
+.circuit-price-table th {
+  background: #0f172a !important;
+  color: #ffffff !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 700 !important;
+  padding: 15px 16px !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
+  text-align: center !important;
+  width: 18% !important;
+}
+.circuit-price-table th:first-child {
+  text-align: left !important;
+  padding-left: 20px !important;
+  width: 28% !important;
+}
+.circuit-price-table th:last-child {
+  border-right: none !important;
+}
+.circuit-price-table td {
+  padding: 15px 16px !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  border-right: 1px solid #f1f5f9 !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  font-size: 14.5px !important;
+}
+.circuit-price-table td:first-child {
+  text-align: left !important;
+  padding-left: 20px !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  background: #f8fafc !important;
+  border-right: 1px solid #e2e8f0 !important;
+}
+.circuit-price-table td:last-child {
+  border-right: none !important;
+}
+.circuit-price-table tbody tr:nth-child(even) td {
+  background: #fcfcfd !important;
+}
+.circuit-price-table tbody tr:nth-child(even) td:first-child {
+  background: #f1f5f9 !important;
+}
+.circuit-price-table tbody tr:hover td {
+  background: #f8fafc !important;
+}
+.circuit-price-table tbody tr:hover td:first-child {
+  background: #e2e8f0 !important;
+}
+
 /* floating whatsapp */
 .wa{position:fixed;right:18px;bottom:18px;z-index:60;background:#25d366;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.25);display:flex;align-items:center;gap:6px}
 .wa:hover{background:#20ba5a}
@@ -2965,10 +3024,19 @@ function switchPriceCurrency(curr) {{
           </div>
         </div>
 
-        <div style="margin-bottom:14px">
-          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Starting Tariff</div>
-          <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:#F8904D">{starting_price}</div>
-          <div style="font-size:11px;color:#64748b;margin-top:2px">Per Person (Deluxe Twin Sharing) · 5% Govt. GST extra</div>
+        <!-- Starting Tariff Box -->
+        <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:12px;padding:12px 14px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+            <span style="font-size:11px;font-weight:700;color:#9a3412;text-transform:uppercase;letter-spacing:0.5px">Official Starting Tariff</span>
+            <span style="font-size:11px;font-weight:600;color:#2E8B8B;background:rgba(46,139,139,0.1);padding:2px 8px;border-radius:999px">Deluxe Twin</span>
+          </div>
+          <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:#ea580c;line-height:1.2;margin-bottom:2px">
+            {starting_price}
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;flex-wrap:wrap;gap:4px">
+            <span style="font-size:11px;color:#64748b">Per Person · 5% Govt. GST extra</span>
+            <a href="#pricing" style="font-size:11.5px;font-weight:700;color:#2E8B8B;text-decoration:none">View Full Table &darr;</a>
+          </div>
         </div>
 
         <!-- Clean Authentic Booking Policy Box -->
@@ -3122,30 +3190,30 @@ function switchPriceCurrency(curr) {{
       <!-- USD Table -->
       <div id="circuitPriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
         <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-size:14px;text-align:center">
+          <table class="circuit-price-table">
             <thead>
-              <tr style="background:#991b1b;color:#fff;font-family:'Outfit',sans-serif">
-                <th style="padding:14px;text-align:left;border-right:1px solid rgba(255,255,255,0.15)">Rooming Category</th>
-                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Deluxe Cabin</th>
-                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Junior Suite</th>
-                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Suite</th>
-                <th style="padding:14px">Presidential Suite</th>
+              <tr>
+                <th>Rooming Category</th>
+                <th>Deluxe Cabin</th>
+                <th>Junior Suite</th>
+                <th>Suite</th>
+                <th>Presidential Suite</th>
               </tr>
             </thead>
             <tbody>
-              <tr style="border-bottom:1px solid #f1f5f9">
-                <td style="padding:14px;font-weight:700;color:#0f172a;text-align:left;background:#fafafa;border-right:1px solid #e2e8f0">Adult (Twin Sharing)</td>
-                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">{price_data['usd']['deluxe_twin']}</td>
-                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">{price_data['usd']['junior_twin']}</td>
-                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">{price_data['usd']['suite_twin']}</td>
-                <td style="padding:14px;font-weight:700;color:#0f172a">{price_data['usd']['presidential']}</td>
+              <tr>
+                <td>Adult (Twin Sharing)</td>
+                <td style="font-weight:700">{price_data['usd']['deluxe_twin']}</td>
+                <td style="font-weight:700">{price_data['usd']['junior_twin']}</td>
+                <td style="font-weight:700">{price_data['usd']['suite_twin']}</td>
+                <td style="font-weight:700">{price_data['usd']['presidential']}</td>
               </tr>
-              <tr style="background:#fcfcfd">
-                <td style="padding:14px;color:#64748b;text-align:left;background:#fafafa;border-right:1px solid #e2e8f0">Single Supplement</td>
-                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">{price_data['usd']['deluxe_single']}</td>
-                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">{price_data['usd']['junior_single']}</td>
-                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">{price_data['usd']['suite_single']}</td>
-                <td style="padding:14px;color:#64748b">{price_data['usd']['presidential']}</td>
+              <tr>
+                <td>Single Supplement</td>
+                <td style="color:#64748b">{price_data['usd']['deluxe_single']}</td>
+                <td style="color:#64748b">{price_data['usd']['junior_single']}</td>
+                <td style="color:#64748b">{price_data['usd']['suite_single']}</td>
+                <td style="color:#64748b">{price_data['usd']['presidential']}</td>
               </tr>
             </tbody>
           </table>
@@ -3155,30 +3223,30 @@ function switchPriceCurrency(curr) {{
       <!-- INR Table -->
       <div id="circuitPriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
         <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-size:14px;text-align:center">
+          <table class="circuit-price-table">
             <thead>
-              <tr style="background:#991b1b;color:#fff;font-family:'Outfit',sans-serif">
-                <th style="padding:14px;text-align:left;border-right:1px solid rgba(255,255,255,0.15)">Rooming Category</th>
-                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Deluxe Cabin</th>
-                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Junior Suite</th>
-                <th style="padding:14px;border-right:1px solid rgba(255,255,255,0.15)">Suite</th>
-                <th style="padding:14px">Presidential Suite</th>
+              <tr>
+                <th>Rooming Category</th>
+                <th>Deluxe Cabin</th>
+                <th>Junior Suite</th>
+                <th>Suite</th>
+                <th>Presidential Suite</th>
               </tr>
             </thead>
             <tbody>
-              <tr style="border-bottom:1px solid #f1f5f9">
-                <td style="padding:14px;font-weight:700;color:#0f172a;text-align:left;background:#fafafa;border-right:1px solid #e2e8f0">Adult (Twin Sharing)</td>
-                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">{price_data['inr']['deluxe_twin']}</td>
-                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">{price_data['inr']['junior_twin']}</td>
-                <td style="padding:14px;font-weight:700;color:#0f172a;border-right:1px solid #f1f5f9">{price_data['inr']['suite_twin']}</td>
-                <td style="padding:14px;font-weight:700;color:#0f172a">{price_data['inr']['presidential']}</td>
+              <tr>
+                <td>Adult (Twin Sharing)</td>
+                <td style="font-weight:700">{price_data['inr']['deluxe_twin']}</td>
+                <td style="font-weight:700">{price_data['inr']['junior_twin']}</td>
+                <td style="font-weight:700">{price_data['inr']['suite_twin']}</td>
+                <td style="font-weight:700">{price_data['inr']['presidential']}</td>
               </tr>
-              <tr style="background:#fcfcfd">
-                <td style="padding:14px;color:#64748b;text-align:left;background:#fafafa;border-right:1px solid #e2e8f0">Single Supplement</td>
-                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">{price_data['inr']['deluxe_single']}</td>
-                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">{price_data['inr']['junior_single']}</td>
-                <td style="padding:14px;color:#64748b;border-right:1px solid #f1f5f9">{price_data['inr']['suite_single']}</td>
-                <td style="padding:14px;color:#64748b">{price_data['inr']['presidential']}</td>
+              <tr>
+                <td>Single Supplement</td>
+                <td style="color:#64748b">{price_data['inr']['deluxe_single']}</td>
+                <td style="color:#64748b">{price_data['inr']['junior_single']}</td>
+                <td style="color:#64748b">{price_data['inr']['suite_single']}</td>
+                <td style="color:#64748b">{price_data['inr']['presidential']}</td>
               </tr>
             </tbody>
           </table>
@@ -3309,7 +3377,7 @@ function switchCircuitPrice(curr) {{
         origin="Mumbai (CSMT Station)",
         destination="Delhi (Safdarjung Station)",
         destinations_count="8 Royal Cities",
-        starting_price="Starts $8,800 USD / ₹8,58,000 INR",
+        starting_price="$8,800 USD / ₹8,58,000 INR",
         hero_imgs=[
             {"src": "/images/luxury-trains/maharajas-express/hero.jpg", "title": "Maharajas' Express Livery"},
             {"src": "/images/luxury-trains/maharajas-express/dining-pink.jpg", "title": "Rang Mahal Fine Dining"},
@@ -3416,7 +3484,7 @@ function switchCircuitPrice(curr) {{
         origin="Delhi (Safdarjung Station)",
         destination="Delhi (Safdarjung Station)",
         destinations_count="7 Iconic Cities",
-        starting_price="Starts $8,400 USD / ₹8,19,000 INR",
+        starting_price="$8,400 USD / ₹8,19,000 INR",
         hero_imgs=[
             {"src": "/images/luxury-trains/maharajas-express/hero.jpg", "title": "Maharajas' Express"},
             {"src": "/images/luxury-trains/maharajas-express/dining-pink.jpg", "title": "Rang Mahal Restaurant"},
@@ -3523,7 +3591,7 @@ function switchCircuitPrice(curr) {{
         origin="Delhi (Safdarjung Station)",
         destination="Mumbai (CSMT Station)",
         destinations_count="8 Royal Destinations",
-        starting_price="Starts $8,400 USD / ₹8,19,000 INR",
+        starting_price="$8,400 USD / ₹8,19,000 INR",
         hero_imgs=[
             {"src": "/images/luxury-trains/maharajas-express/hero.jpg", "title": "Maharajas' Express Train"},
             {"src": "/images/luxury-trains/maharajas-express/dining-pink.jpg", "title": "Rang Mahal Restaurant"},
@@ -3612,7 +3680,7 @@ function switchCircuitPrice(curr) {{
         origin="Delhi (Safdarjung Station)",
         destination="Delhi (Safdarjung Station)",
         destinations_count="4 Iconic Destinations",
-        starting_price="Starts $5,300 USD / ₹5,16,750 INR",
+        starting_price="$5,300 USD / ₹5,16,750 INR",
         hero_imgs=[
             {"src": "/images/luxury-trains/maharajas-express/hero.jpg", "title": "Maharajas' Express Train"},
             {"src": "/images/luxury-trains/maharajas-express/deluxe-cabin.jpg", "title": "Deluxe Double Cabin"},
