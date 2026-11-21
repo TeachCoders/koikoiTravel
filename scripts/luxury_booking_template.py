@@ -1604,14 +1604,6 @@ function render() {
       '</div>' +
       '</div>'; // end review section
 
-    // Guarantee Notice
-    h += '<div class="kb-review-guarantee">' +
-      '<div style="font-size:24px">🛡️</div>' +
-      '<div style="font-size:13.5px;color:#475569;line-height:1.5">' +
-      '<b>Zero Obligation · No Booking Fees:</b> Submitting this inquiry secures a priority hold with our IRCTC Luxury Train Desk. We will verify real-time berth availability and email you an official itemized quote with all seasonal offers within 2 hours.' +
-      '</div>' +
-      '</div>';
-
     h += '</div>'; // end kb-step-inner
     h += '</div>'; // end kb-form-body
 
