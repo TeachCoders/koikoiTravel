@@ -2622,28 +2622,14 @@ function switchCircuitPrice(curr) {{
       <img src="/images/luxury-trains/palace-on-wheels/deluxe-cabin.jpg" alt="Classic Rajasthan - Palace on Wheels Tour Package | KoiKoi Travel">
     </a>
     <div class="koikoi-card-body">
+      <div style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:#ea580c;margin-bottom:6px;letter-spacing:0.2px">
+        Departs Every Wednesday from Delhi
+      </div>
       <a href="{base_path}/palace-on-wheels/itinerary" class="koikoi-card-title">
         8 Days - Classic Rajasthan Luxury Rail Tour
       </a>
       <div class="koikoi-card-route">
         🚂 Delhi · Jaipur · Ranthambore · Chittorgarh · Udaipur · Jaisalmer · Jodhpur · Bharatpur · Agra · Delhi
-      </div>
-      <div class="koikoi-card-highlights" style="margin-bottom:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-          <span style="font-size:13px;font-weight:700;color:#0f172a;display:inline-flex;align-items:center;gap:6px">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            Departs: <strong style="color:#d96b27">Every Wednesday</strong>
-          </span>
-          <span style="font-size:11.5px;font-weight:700;background:#0f172a;color:#fff;padding:2px 8px;border-radius:4px">New Delhi (Safdarjung)</span>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12.5px;color:#475569">
-          <span><strong style="color:#0f172a">Ends:</strong> Wednesday at Delhi (Safdarjung)</span>
-          <span style="font-weight:600;color:#64748b;font-size:11.5px">7N / 8D</span>
-        </div>
-        <div style="font-size:12px;color:#334155;line-height:1.45;border-top:1px dashed #cbd5e1;padding-top:6px;margin-top:2px">
-          <strong style="color:#0f172a">Day-by-Day Destinations:</strong><br>
-          Wed: Delhi (Depart) &bull; Thu: Jaipur &bull; Fri: Ranthambore &bull; Sat: Udaipur &bull; Sun: Jaisalmer &bull; Mon: Jodhpur &bull; Tue: Bharatpur &amp; Agra &bull; Wed: Delhi (Return)
-        </div>
       </div>
       <div class="koikoi-card-footer">
         <div class="koikoi-card-amenities">
@@ -2662,7 +2648,6 @@ function switchCircuitPrice(curr) {{
   </div>
 </div>
 """
-
     def get_pow_departures_table_component():
         return f"""
 <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:32px">
@@ -3395,13 +3380,9 @@ function switchPowHomePrice(curr) {{
                 "slug": "the-heritage-of-india",
                 "img": "/images/luxury-trains/maharajas-express/hero.jpg",
                 "alt": "The Heritage of India - Maharajas' Express Tour Package | KoiKoi Travel",
+                "departs": "Departs Every Sunday from Mumbai",
                 "title": "7 Days - The Heritage of India Luxury Rail Tour",
                 "route": "🚂 Mumbai · Udaipur · Jodhpur · Bikaner · Jaipur · Ranthambore · Agra · Delhi",
-                "departs": "Every Sunday",
-                "from_station": "Mumbai (CSMT)",
-                "ends": "Saturday at New Delhi (Safdarjung)",
-                "duration": "6N / 7D",
-                "schedule": "Sun: Mumbai (Depart) &bull; Mon: Udaipur &bull; Tue: Jodhpur &bull; Wed: Bikaner &bull; Thu: Jaipur &bull; Fri: Ranthambore &amp; Agra &bull; Sat: Delhi (Arrival)",
                 "inquire": "Maharajas' Express - The Heritage of India (Mumbai to Delhi, 7 Days)"
             },
             {
@@ -3409,13 +3390,9 @@ function switchPowHomePrice(curr) {{
                 "slug": "the-indian-panorama",
                 "img": "/images/luxury-trains/maharajas-express/dining-pink.jpg",
                 "alt": "The Indian Panorama - Maharajas' Express Tour Package | KoiKoi Travel",
+                "departs": "Departs Every Sunday from Delhi",
                 "title": "7 Days - The Indian Panorama Heritage Rail Tour",
                 "route": "🚂 Delhi · Jaipur · Ranthambore · Agra · Orchha · Khajuraho · Varanasi · Delhi",
-                "departs": "Every Sunday",
-                "from_station": "New Delhi (Safdarjung)",
-                "ends": "Saturday at New Delhi (Safdarjung)",
-                "duration": "6N / 7D",
-                "schedule": "Sun: Delhi (Depart) &bull; Mon: Jaipur &bull; Tue: Ranthambore &amp; Agra &bull; Wed: Orchha &amp; Khajuraho &bull; Thu: Varanasi &bull; Fri: Delhi (Return)",
                 "inquire": "Maharajas' Express - The Indian Panorama (Delhi to Delhi, 7 Days)"
             },
             {
@@ -3423,13 +3400,9 @@ function switchPowHomePrice(curr) {{
                 "slug": "the-indian-splendour",
                 "img": "/images/luxury-trains/maharajas-express/suite.jpg",
                 "alt": "The Indian Splendour - Maharajas' Express Tour Package | KoiKoi Travel",
+                "departs": "Departs Every Sunday from Delhi",
                 "title": "7 Days - The Indian Splendour Royal Rajasthan Tour",
                 "route": "🚂 Delhi · Agra · Ranthambore · Jaipur · Bikaner · Jodhpur · Udaipur · Mumbai",
-                "departs": "Every Sunday",
-                "from_station": "New Delhi (Safdarjung)",
-                "ends": "Saturday at Mumbai (CSMT)",
-                "duration": "6N / 7D",
-                "schedule": "Sun: Delhi (Depart) &bull; Mon: Agra &bull; Tue: Ranthambore &amp; Jaipur &bull; Wed: Bikaner &bull; Thu: Jodhpur &bull; Fri: Udaipur &bull; Sat: Mumbai (Arrival)",
                 "inquire": "Maharajas' Express - The Indian Splendour (Delhi to Mumbai, 7 Days)"
             },
             {
@@ -3437,13 +3410,9 @@ function switchPowHomePrice(curr) {{
                 "slug": "treasures-of-india",
                 "img": "/images/luxury-trains/maharajas-express/deluxe-cabin.jpg",
                 "alt": "Treasures of India - Maharajas' Express Tour Package | KoiKoi Travel",
+                "departs": "Departs Every Sunday from Delhi",
                 "title": "4 Days - Treasures of India Golden Triangle Rail Tour",
                 "route": "🚂 Delhi · Agra · Ranthambore · Jaipur · Delhi",
-                "departs": "Every Sunday",
-                "from_station": "New Delhi (Safdarjung)",
-                "ends": "Wednesday at New Delhi (Safdarjung)",
-                "duration": "3N / 4D",
-                "schedule": "Sun: Delhi (Depart) &bull; Mon: Agra &amp; Ranthambore &bull; Tue: Jaipur &bull; Wed: Delhi (Return)",
                 "inquire": "Maharajas' Express - Treasures of India (Golden Triangle, 4 Days)"
             }
         ]
@@ -3458,28 +3427,14 @@ function switchPowHomePrice(curr) {{
       <img src="{c['img']}" alt="{c['alt']}">
     </a>
     <div class="koikoi-card-body">
+      <div style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:#ea580c;margin-bottom:6px;letter-spacing:0.2px">
+        {c['departs']}
+      </div>
       <a href="{base_path}/maharajas-express/{c['slug']}" class="koikoi-card-title">
         {c['title']}
       </a>
       <div class="koikoi-card-route">
         {c['route']}
-      </div>
-      <div class="koikoi-card-highlights" style="margin-bottom:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-          <span style="font-size:13px;font-weight:700;color:#0f172a;display:inline-flex;align-items:center;gap:6px">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            Departs: <strong style="color:#d96b27">{c['departs']}</strong>
-          </span>
-          <span style="font-size:11.5px;font-weight:700;background:#0f172a;color:#fff;padding:2px 8px;border-radius:4px">{c['from_station']}</span>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12.5px;color:#475569">
-          <span><strong style="color:#0f172a">Ends:</strong> {c['ends']}</span>
-          <span style="font-weight:600;color:#64748b;font-size:11.5px">{c['duration']}</span>
-        </div>
-        <div style="font-size:12px;color:#334155;line-height:1.45;border-top:1px dashed #cbd5e1;padding-top:6px;margin-top:2px">
-          <strong style="color:#0f172a">Day-by-Day Destinations:</strong><br>
-          {c['schedule']}
-        </div>
       </div>
       <div class="koikoi-card-footer">
         <div class="koikoi-card-amenities">
@@ -3504,8 +3459,6 @@ function switchPowHomePrice(curr) {{
 {inner}
 </div>
 """
-
-    # Image 2 Departure Dates Table Component (2026-27 Schedules)
     def get_me_departures_table_component():
         return f"""
 <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04);margin-top:20px">
@@ -4833,13 +4786,9 @@ function switchPriceCurrency(curr) {{
                 "slug": "pride-of-karnataka",
                 "img": "/images/luxury-trains/golden-chariot/sitting-room.jpg",
                 "alt": "Pride of Karnataka - Golden Chariot Tour Package | KoiKoi Travel",
+                "departs": "Departs Every Saturday from Bengaluru",
                 "title": "6 Days - Pride of Karnataka Luxury Rail Tour",
                 "route": "🚂 Bengaluru · Bandipur · Mysore · Halebidu · Hampi · Goa · Bengaluru",
-                "departs": "Every Saturday",
-                "from_station": "Bengaluru (Yeshwantpur)",
-                "ends": "Thursday at Bengaluru (Yeshwantpur)",
-                "duration": "5N / 6D",
-                "schedule": "Sat: Bengaluru (Depart) &bull; Sun: Bandipur &bull; Mon: Mysore &bull; Tue: Halebidu &amp; Hampi &bull; Wed: Goa &bull; Thu: Bengaluru (Return)",
                 "inquire": "Golden Chariot - Pride of Karnataka (6 Days)"
             },
             {
@@ -4847,13 +4796,9 @@ function switchPriceCurrency(curr) {{
                 "slug": "jewels-of-south",
                 "img": "/images/luxury-trains/golden-chariot/restaurant-1.jpg",
                 "alt": "Jewels of South - Golden Chariot Tour Package | KoiKoi Travel",
+                "departs": "Departs Every Saturday from Bengaluru",
                 "title": "6 Days - Jewels of South Luxury Rail Tour",
                 "route": "🚂 Bengaluru · Mysore · Kanchipuram · Mahabalipuram · Thanjavur · Chettinad · Cochin · Kumarakom · Bengaluru",
-                "departs": "Every Saturday",
-                "from_station": "Bengaluru (Yeshwantpur)",
-                "ends": "Thursday at Bengaluru (Yeshwantpur)",
-                "duration": "5N / 6D",
-                "schedule": "Sat: Bengaluru (Depart) &bull; Sun: Mysore &bull; Mon: Kanchipuram &amp; Mahabalipuram &bull; Tue: Thanjavur &amp; Chettinad &bull; Wed: Cochin &amp; Kumarakom &bull; Thu: Bengaluru",
                 "inquire": "Golden Chariot - Jewels of South (6 Days)"
             },
             {
@@ -4861,13 +4806,9 @@ function switchPriceCurrency(curr) {{
                 "slug": "glimpses-of-karnataka",
                 "img": "/images/luxury-trains/golden-chariot/double-bed.jpg",
                 "alt": "Glimpses of Karnataka - Golden Chariot Tour Package | KoiKoi Travel",
+                "departs": "Departs Every Saturday from Bengaluru",
                 "title": "4 Days - Glimpses of Karnataka Express Rail Tour",
                 "route": "🚂 Bengaluru · Bandipur · Mysore · Hampi · Bengaluru",
-                "departs": "Every Saturday",
-                "from_station": "Bengaluru (Yeshwantpur)",
-                "ends": "Tuesday at Bengaluru (Yeshwantpur)",
-                "duration": "3N / 4D",
-                "schedule": "Sat: Bengaluru (Depart) &bull; Sun: Bandipur &amp; Mysore &bull; Mon: Hampi &bull; Tue: Bengaluru (Return)",
                 "inquire": "Golden Chariot - Glimpses of Karnataka (4 Days)"
             }
         ]
@@ -4882,28 +4823,14 @@ function switchPriceCurrency(curr) {{
       <img src="{c['img']}" alt="{c['alt']}">
     </a>
     <div class="koikoi-card-body">
+      <div style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:#ea580c;margin-bottom:6px;letter-spacing:0.2px">
+        {c['departs']}
+      </div>
       <a href="{base_path}/golden-chariot/{c['slug']}" class="koikoi-card-title">
         {c['title']}
       </a>
       <div class="koikoi-card-route">
         {c['route']}
-      </div>
-      <div class="koikoi-card-highlights" style="margin-bottom:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-          <span style="font-size:13px;font-weight:700;color:#0f172a;display:inline-flex;align-items:center;gap:6px">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            Departs: <strong style="color:#d96b27">{c['departs']}</strong>
-          </span>
-          <span style="font-size:11.5px;font-weight:700;background:#0f172a;color:#fff;padding:2px 8px;border-radius:4px">{c['from_station']}</span>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12.5px;color:#475569">
-          <span><strong style="color:#0f172a">Ends:</strong> {c['ends']}</span>
-          <span style="font-weight:600;color:#64748b;font-size:11.5px">{c['duration']}</span>
-        </div>
-        <div style="font-size:12px;color:#334155;line-height:1.45;border-top:1px dashed #cbd5e1;padding-top:6px;margin-top:2px">
-          <strong style="color:#0f172a">Day-by-Day Destinations:</strong><br>
-          {c['schedule']}
-        </div>
       </div>
       <div class="koikoi-card-footer">
         <div class="koikoi-card-amenities">
@@ -4928,7 +4855,6 @@ function switchPriceCurrency(curr) {{
 {inner}
 </div>
 """
-
     def get_gc_departures_table_component():
         return f"""
 <div class="table-wrap" style="box-shadow:0 8px 30px rgba(15,23,42,0.06);border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;background:#ffffff">
@@ -6626,13 +6552,9 @@ function switchPriceCurrency(curr) {{
                 "slug": "maharashtra-splendour",
                 "img": "/images/luxury-trains/deccan-odyssey/exterior.jpg",
                 "alt": "Maharashtra Splendour - Deccan Odyssey Tour Package | KoiKoi Travel",
+                "departs": "Departs Every Saturday from Mumbai",
                 "title": "8 Days - Maharashtra Splendour Luxury Rail Tour",
                 "route": "🚂 Mumbai · Goa · Kolhapur · Daulatabad · Chandor · Ajanta & Ellora · Mumbai",
-                "departs": "Every Saturday",
-                "from_station": "Mumbai (CSMT)",
-                "ends": "Saturday at Mumbai (CSMT)",
-                "duration": "7N / 8D",
-                "schedule": "Sat: Mumbai (Depart) &bull; Sun: Nashik &bull; Mon: Aurangabad (Ellora) &bull; Tue: Jalgaon (Ajanta) &bull; Wed: Kolhapur &bull; Thu: Goa &bull; Fri: Sindhudurg &bull; Sat: Mumbai",
                 "inquire": "Deccan Odyssey - Maharashtra Splendour (8 Days)"
             },
             {
@@ -6640,13 +6562,9 @@ function switchPriceCurrency(curr) {{
                 "slug": "indian-odyssey",
                 "img": "/images/luxury-trains/deccan-odyssey/hero.jpg",
                 "alt": "Indian Odyssey - Deccan Odyssey Tour Package | KoiKoi Travel",
+                "departs": "Departs Every Saturday from Delhi",
                 "title": "8 Days - Indian Odyssey Grand Trans-India Tour",
                 "route": "🚂 New Delhi · Sawai Madhopur · Agra · Jaipur · Udaipur · Vadodara · Mumbai",
-                "departs": "Every Saturday",
-                "from_station": "New Delhi (Safdarjung)",
-                "ends": "Saturday at Mumbai (CSMT)",
-                "duration": "7N / 8D",
-                "schedule": "Sat: Delhi (Depart) &bull; Sun: Sawai Madhopur &bull; Mon: Agra &bull; Tue: Jaipur &bull; Wed: Udaipur &bull; Thu: Vadodara &bull; Fri: Aurangabad &bull; Sat: Mumbai",
                 "inquire": "Deccan Odyssey - Indian Odyssey (8 Days)"
             },
             {
@@ -6654,13 +6572,9 @@ function switchPriceCurrency(curr) {{
                 "slug": "indian-sojourn",
                 "img": "/images/luxury-trains/deccan-odyssey/deluxe-cabin-double.jpg",
                 "alt": "Indian Sojourn - Deccan Odyssey Tour Package | KoiKoi Travel",
+                "departs": "Departs Every Saturday from Mumbai",
                 "title": "8 Days - Indian Sojourn Heritage Rail Tour",
                 "route": "🚂 Mumbai · Vadodara · Udaipur · Jodhpur · Agra · Sawai Madhopur · Jaipur · New Delhi",
-                "departs": "Every Saturday",
-                "from_station": "Mumbai (CSMT)",
-                "ends": "Saturday at New Delhi (Safdarjung)",
-                "duration": "7N / 8D",
-                "schedule": "Sat: Mumbai (Depart) &bull; Sun: Vadodara &bull; Mon: Udaipur &bull; Tue: Jodhpur &bull; Wed: Agra &bull; Thu: Sawai Madhopur &bull; Fri: Jaipur &bull; Sat: Delhi",
                 "inquire": "Deccan Odyssey - Indian Sojourn (8 Days)"
             },
             {
@@ -6668,13 +6582,9 @@ function switchPriceCurrency(curr) {{
                 "slug": "maharashtra-wild-trail",
                 "img": "/images/luxury-trains/deccan-odyssey/train-exterior.jpg",
                 "alt": "Maharashtra Wild Trail - Deccan Odyssey Tour Package | KoiKoi Travel",
+                "departs": "Departs Every Saturday from Mumbai",
                 "title": "8 Days - Maharashtra Wild Trail Wildlife & Heritage Tour",
                 "route": "🚂 Mumbai · Aurangabad · Pench · Tadoba · Ajanta Caves · Nashik · Mumbai",
-                "departs": "Every Saturday",
-                "from_station": "Mumbai (CSMT)",
-                "ends": "Saturday at Mumbai (CSMT)",
-                "duration": "7N / 8D",
-                "schedule": "Sat: Mumbai (Depart) &bull; Sun: Aurangabad &bull; Mon: Daulatabad &bull; Tue: Pench Safari &bull; Wed: Tadoba Safari &bull; Thu: Ajanta &bull; Fri: Nashik &bull; Sat: Mumbai",
                 "inquire": "Deccan Odyssey - Maharashtra Wild Trail (8 Days)"
             },
             {
@@ -6682,13 +6592,9 @@ function switchPriceCurrency(curr) {{
                 "slug": "heritage-odyssey",
                 "img": "/images/luxury-trains/deccan-odyssey/presidential-suite.jpg",
                 "alt": "Heritage Odyssey - Deccan Odyssey Tour Package | KoiKoi Travel",
+                "departs": "Departs Every Saturday from Delhi",
                 "title": "8 Days - Heritage Odyssey Royal Rajasthan Tour",
                 "route": "🚂 New Delhi · Agra · Jaipur · Bikaner · Jaisalmer · Jodhpur · Udaipur · New Delhi",
-                "departs": "Every Saturday",
-                "from_station": "New Delhi (Safdarjung)",
-                "ends": "Saturday at New Delhi (Safdarjung)",
-                "duration": "7N / 8D",
-                "schedule": "Sat: Delhi (Depart) &bull; Sun: Agra &bull; Mon: Sawai Madhopur &bull; Tue: Udaipur &bull; Wed: Jodhpur &bull; Thu: Jaisalmer &bull; Fri: Jaipur &bull; Sat: Delhi",
                 "inquire": "Deccan Odyssey - Heritage Odyssey (8 Days)"
             },
             {
@@ -6696,13 +6602,9 @@ function switchPriceCurrency(curr) {{
                 "slug": "cultural-odyssey",
                 "img": "/images/luxury-trains/deccan-odyssey/restaurant.jpg",
                 "alt": "Cultural Odyssey - Deccan Odyssey Tour Package | KoiKoi Travel",
+                "departs": "Departs Every Saturday from Delhi",
                 "title": "8 Days - Cultural Odyssey Heritage & Spiritual Tour",
                 "route": "🚂 New Delhi · Sawai Madhopur · Agra · Jaipur · Gwalior · Khajuraho · Varanasi · New Delhi",
-                "departs": "Every Saturday",
-                "from_station": "New Delhi (Safdarjung)",
-                "ends": "Saturday at New Delhi (Safdarjung)",
-                "duration": "7N / 8D",
-                "schedule": "Sat: Delhi (Depart) &bull; Sun: Sawai Madhopur &bull; Mon: Jaipur &bull; Tue: Agra &bull; Wed: Gwalior &bull; Thu: Orchha & Khajuraho &bull; Fri: Varanasi &bull; Sat: Delhi",
                 "inquire": "Deccan Odyssey - Cultural Odyssey (8 Days)"
             }
         ]
@@ -6717,28 +6619,14 @@ function switchPriceCurrency(curr) {{
       <img src="{c['img']}" alt="{c['alt']}">
     </a>
     <div class="koikoi-card-body">
+      <div style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:#ea580c;margin-bottom:6px;letter-spacing:0.2px">
+        {c['departs']}
+      </div>
       <a href="{base_path}/deccan-odyssey/{c['slug']}" class="koikoi-card-title">
         {c['title']}
       </a>
       <div class="koikoi-card-route">
         {c['route']}
-      </div>
-      <div class="koikoi-card-highlights" style="margin-bottom:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-          <span style="font-size:13px;font-weight:700;color:#0f172a;display:inline-flex;align-items:center;gap:6px">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            Departs: <strong style="color:#d96b27">{c['departs']}</strong>
-          </span>
-          <span style="font-size:11.5px;font-weight:700;background:#0f172a;color:#fff;padding:2px 8px;border-radius:4px">{c['from_station']}</span>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12.5px;color:#475569">
-          <span><strong style="color:#0f172a">Ends:</strong> {c['ends']}</span>
-          <span style="font-weight:600;color:#64748b;font-size:11.5px">{c['duration']}</span>
-        </div>
-        <div style="font-size:12px;color:#334155;line-height:1.45;border-top:1px dashed #cbd5e1;padding-top:6px;margin-top:2px">
-          <strong style="color:#0f172a">Day-by-Day Destinations:</strong><br>
-          {c['schedule']}
-        </div>
       </div>
       <div class="koikoi-card-footer">
         <div class="koikoi-card-amenities">
