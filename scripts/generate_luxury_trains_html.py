@@ -1414,7 +1414,7 @@ def generate_all_for_base(base_dir, base_path):
               <div style="width:30px;height:30px;border-radius:8px;background:#F8904D;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(248,144,77,0.4)">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
               </div>
-              <span>Departs Scheduled Sundays <span style="font-weight:500;color:#cbd5e1;font-size:12.5px">(Delhi &amp; Mumbai)</span></span>
+              <span>Departs Every Sunday <span style="font-weight:500;color:#cbd5e1;font-size:12.5px">(from Delhi &amp; Mumbai)</span></span>
             </div>
             <span style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#F8904D;text-transform:uppercase;letter-spacing:0.5px;background:rgba(248,144,77,0.18);padding:4px 10px;border-radius:6px;border:1px solid rgba(248,144,77,0.35)">Oct – Apr Season</span>
           </div>
@@ -1519,7 +1519,7 @@ def generate_all_for_base(base_dir, base_path):
               <div style="width:30px;height:30px;border-radius:8px;background:#F8904D;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(248,144,77,0.4)">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
               </div>
-              <span>Departs Saturdays &amp; Sundays <span style="font-weight:500;color:#cbd5e1;font-size:12.5px">(from Bengaluru)</span></span>
+              <span>Departs Every Saturday <span style="font-weight:500;color:#cbd5e1;font-size:12.5px">(from Bengaluru)</span></span>
             </div>
             <span style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#F8904D;text-transform:uppercase;letter-spacing:0.5px;background:rgba(248,144,77,0.18);padding:4px 10px;border-radius:6px;border:1px solid rgba(248,144,77,0.35)">Oct – Mar Season</span>
           </div>
@@ -1614,7 +1614,7 @@ def generate_all_for_base(base_dir, base_path):
               <div style="width:30px;height:30px;border-radius:8px;background:#F8904D;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(248,144,77,0.4)">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
               </div>
-              <span>Departs Selected Saturdays <span style="font-weight:500;color:#cbd5e1;font-size:12.5px">(Mumbai &amp; Delhi)</span></span>
+              <span>Departs Every Saturday <span style="font-weight:500;color:#cbd5e1;font-size:12.5px">(from Mumbai &amp; Delhi)</span></span>
             </div>
             <span style="font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;color:#F8904D;text-transform:uppercase;letter-spacing:0.5px;background:rgba(248,144,77,0.18);padding:4px 10px;border-radius:6px;border:1px solid rgba(248,144,77,0.35)">Sep – May Season</span>
           </div>
