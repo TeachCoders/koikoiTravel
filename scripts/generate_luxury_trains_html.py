@@ -7,7 +7,7 @@ Using local downloaded images from user and removing the stats section.
 import os
 import shutil
 import urllib.parse
-from luxury_booking_template import get_luxury_booking_page_content
+from luxury_booking_template import get_luxury_booking_page_content, OFFICIAL_DEPARTURE_DATES
 
 OUTPUT_DIRS = [
     "frontend/public/luxury-trains",
@@ -1058,6 +1058,282 @@ footer a:hover{color:#F8904D}
 /* floating whatsapp */
 .wa{position:fixed;right:24px;bottom:24px;z-index:60;background:#17806f;color:#fff;padding:10px 20px;border-radius:9999px;font-family:'Outfit',sans-serif;font-weight:600;font-size:14px;box-shadow:0 4px 18px rgba(23,128,111,0.42);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;gap:10px;text-decoration:none;transition:all .3s ease;cursor:pointer}
 .wa:hover{background:#12685a;box-shadow:0 8px 25px rgba(23,128,111,0.55);transform:scale(1.04);color:#fff}
+
+/* ========================================================
+   Interactive Circuit Page Departure Date Selector
+   ======================================================== */
+.circuit-date-selector-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  overflow: hidden;
+  margin-top: 14px;
+}
+.circuit-date-header {
+  padding: 20px 24px;
+  background: #3c4041;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.circuit-date-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 17.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+.circuit-date-instruction {
+  font-size: 13.5px;
+  color: #f1f5f9;
+  margin-top: 4px;
+}
+.circuit-date-action-bar {
+  padding: 18px 24px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-shadow: 0 -4px 18px rgba(0,0,0,0.02);
+}
+.circuit-date-action-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.c-action-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0d9488;
+}
+.c-action-date-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.circuit-date-action-btns {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.c-btn-primary {
+  background: #F8904D;
+  color: #ffffff !important;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(248, 144, 77, 0.35);
+  cursor: pointer;
+}
+.c-btn-primary:hover:not(.disabled) {
+  background: #e07b3b;
+  transform: translateY(-1px);
+}
+.c-btn-primary.disabled {
+  opacity: 0.55;
+  pointer-events: none;
+  background: #94a3b8;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.c-btn-secondary {
+  background: #f8fafc;
+  color: #0f172a !important;
+  border: 1.5px solid #cbd5e1;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.c-btn-secondary:hover {
+  background: #ffffff;
+  border-color: #22c55e;
+  color: #15803d !important;
+}
+
+/* Zebra Month Rows & Radio Items */
+.kb-dates-container {
+  border-radius: 0;
+  overflow: hidden;
+  background: #ffffff;
+}
+.kb-month-row {
+  display: flex;
+  padding: 16px 22px;
+  border-bottom: 1px solid #f5efe6;
+  align-items: center;
+  gap: 24px;
+  transition: background 0.15s ease;
+}
+.kb-month-row:last-child {
+  border-bottom: none;
+}
+.kb-month-row:nth-child(odd) {
+  background: #faf8f5;
+}
+.kb-month-row:nth-child(even) {
+  background: #ffffff;
+}
+.kb-month-col {
+  width: 160px;
+  flex-shrink: 0;
+}
+.kb-month-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  color: #1e293b;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+.kb-dates-col {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 18px;
+}
+.kb-date-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 1px solid #f2ede4;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  user-select: none;
+  text-align: left;
+  outline: none;
+}
+.kb-month-row:nth-child(odd) .kb-date-item {
+  background: #ffffff;
+  border-color: #f2ede4;
+}
+.kb-month-row:nth-child(even) .kb-date-item {
+  background: #faf8f5;
+  border-color: #f2ede4;
+}
+.kb-date-item:hover {
+  background: #f0fdfa;
+  border-color: #14b8a6;
+}
+.kb-date-item[aria-checked="true"], .kb-date-item.active {
+  background: #f0fdfa !important;
+  border-color: #0d9488 !important;
+  box-shadow: 0 0 0 1.5px rgba(13, 148, 136, 0.25);
+  color: #0f766e !important;
+  font-weight: 700;
+}
+.kb-radio-circle {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1.5px solid #989085;
+  background: #ffffff;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.kb-date-item:hover .kb-radio-circle {
+  border-color: #0d9488;
+}
+.kb-date-item[aria-checked="true"] .kb-radio-circle,
+.kb-date-item.active .kb-radio-circle {
+  border-color: #0d9488;
+  background: #0d9488;
+}
+.kb-date-item[aria-checked="true"] .kb-radio-circle::after,
+.kb-date-item.active .kb-radio-circle::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.kb-year-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.kb-year-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+.kb-year-select {
+  padding: 8px 14px;
+  font-size: 14.5px;
+  font-weight: 700;
+  border: 1.5px solid #3c4041;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0f172a;
+  outline: none;
+  cursor: pointer;
+}
+
+@media (max-width: 680px) {
+  .circuit-date-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 12px;
+  }
+  .circuit-date-action-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+  }
+  .circuit-date-action-btns {
+    flex-direction: column;
+    width: 100%;
+  }
+  .c-btn-primary, .c-btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+  .kb-month-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+  .kb-dates-col {
+    grid-template-columns: 1fr;
+    width: 100%;
+    gap: 10px;
+  }
+}
 """
 
 def get_header(active_train=None, base_path="/luxury-trains"):
@@ -1876,6 +2152,162 @@ def generate_all_for_base(base_dir, base_path):
                "Plan a luxury train journey in India with KoiKoi Travel. Palace on Wheels, Maharajas' Express, Golden Chariot and Deccan Odyssey.",
                home_content, base_path=base_path)
 
+    def match_circuit_key(t, c):
+        ct = t.lower().replace(' ', '').replace("'", '').replace('’', '').replace('the', '')
+        cc = c.lower().replace(' ', '').replace('the', '').replace('circuit', '').replace('tour', '')
+        for ok in OFFICIAL_DEPARTURE_DATES.keys():
+            kt, kc = ok.split('|')
+            ckt = kt.lower().replace(' ', '').replace("'", '').replace('’', '').replace('the', '')
+            ckc = kc.lower().replace(' ', '').replace('the', '').replace('circuit', '').replace('tour', '')
+            if ct == ckt:
+                if cc in ckc or ckc in cc or ('rajasthan' in cc and 'rajasthan' in ckc) or ('splend' in cc and 'splend' in ckc):
+                    return ok
+        return None
+
+    def build_circuit_departures_selector_component(train_name, circuit_name, base_path="/luxury-trains"):
+        matched_key = match_circuit_key(train_name, circuit_name)
+        dates_list = OFFICIAL_DEPARTURE_DATES.get(matched_key, []) if matched_key else []
+        if not dates_list:
+            return ""
+        
+        canonical_train, canonical_circuit = matched_key.split("|")
+        canonical_train_display = canonical_train.replace("’", "'")
+        
+        years = sorted(list(set(d.split("-")[0] for d in dates_list)))
+        default_year = years[0] if years else "2026"
+        
+        months_full = ['January','February','March','April','May','June','July','August','September','October','November','December']
+        
+        def format_date_str(d_str):
+            p = d_str.split('-')
+            y, m, d = p[0], int(p[1]), int(p[2])
+            if 11 <= d <= 13: ord_s = "th"
+            else: ord_s = {1:"st", 2:"nd", 3:"rd"}.get(d % 10, "th")
+            return f"{d:02d}{ord_s} {months_full[m-1]}, {y}"
+        
+        months_dict = {}
+        for d in dates_list:
+            m_key = d[:7]
+            if m_key not in months_dict:
+                months_dict[m_key] = []
+            months_dict[m_key].append(d)
+            
+        year_options_html = "".join([f'<option value="{y}" {"selected" if y == default_year else ""}>Year {y}</option>' for y in years])
+        year_options_html += '<option value="all">All Years</option>'
+        
+        month_rows_html = ""
+        for m_key in sorted(months_dict.keys()):
+            y_val = m_key.split("-")[0]
+            m_idx = int(m_key.split("-")[1]) - 1
+            m_name = f"{months_full[m_idx]} {y_val}"
+            m_dates = months_dict[m_key]
+            
+            date_btns_html = ""
+            for d in m_dates:
+                d_formatted = format_date_str(d)
+                date_btns_html += f'''
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="{d}" data-formatted="{d_formatted}" onclick="onCircuitDateClick(this, '{d}', '{d_formatted}')">
+  <span class="kb-radio-circle"></span>
+  <span>{d_formatted}</span>
+</button>'''
+                
+            is_hidden = 'style="display:none"' if y_val != default_year else ''
+            month_rows_html += f'''
+<div class="kb-month-row c-month-row" data-year="{y_val}" {is_hidden}>
+  <div class="kb-month-col">
+    <div class="kb-month-name">{m_name}</div>
+  </div>
+  <div class="kb-dates-col">
+    {date_btns_html}
+  </div>
+</div>'''
+
+        comp_html = f'''
+<div class="circuit-date-selector-card">
+  <!-- Top Header with Year Dropdown -->
+  <div class="circuit-date-header">
+    <div>
+      <div class="circuit-date-subtitle">Scheduled Departures · {canonical_train_display}</div>
+      <div class="circuit-date-instruction">Select your preferred departure date to check real-time IRCTC cabin availability:</div>
+    </div>
+    <div class="kb-year-wrap">
+      <span class="kb-year-label" style="color:#ffffff">Select Year:</span>
+      <select class="kb-year-select" id="cYearSelect" onchange="onCircuitYearFilter(this.value)">
+        {year_options_html}
+      </select>
+    </div>
+  </div>
+
+  <!-- Dates Grid -->
+  <div class="kb-dates-container" id="cDatesContainer" role="radiogroup" aria-label="Departure date">
+    {month_rows_html}
+  </div>
+
+  <!-- Bottom Action Bar (Direct Booking & WhatsApp Handoff) -->
+  <div class="circuit-date-action-bar">
+    <div class="circuit-date-action-info">
+      <span class="c-action-badge">SELECTED DEPARTURE</span>
+      <span class="c-action-date-val" id="cSelectedDateLabel">Select a departure date above to proceed</span>
+    </div>
+    <div class="circuit-date-action-btns">
+      <a id="cWaBtn" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20{urllib.parse.quote(canonical_train_display)}%20({urllib.parse.quote(canonical_circuit)})." target="_blank" rel="noopener" class="c-btn-secondary">
+        <span>💬 Check on WhatsApp</span>
+      </a>
+      <a id="cBookBtn" href="{base_path}/booking?train={urllib.parse.quote(canonical_train)}&journey={urllib.parse.quote(canonical_circuit)}" class="c-btn-primary disabled" data-base-href="{base_path}/booking?train={urllib.parse.quote(canonical_train)}&journey={urllib.parse.quote(canonical_circuit)}">
+        <span>Select Date to Book &rarr;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+var curSelectedDate = "";
+var curSelectedFormatted = "";
+var canonicalTrainName = "{canonical_train_display}";
+var canonicalJourneyName = "{canonical_circuit}";
+var baseBookingUrl = "{base_path}/booking?train=" + encodeURIComponent(canonicalTrainName) + "&journey=" + encodeURIComponent(canonicalJourneyName);
+
+function onCircuitYearFilter(y) {{
+  var rows = document.querySelectorAll('.c-month-row');
+  rows.forEach(function(r) {{
+    if (y === 'all' || r.getAttribute('data-year') === y) {{
+      r.style.display = 'flex';
+    }} else {{
+      r.style.display = 'none';
+    }}
+  }});
+}}
+
+function onCircuitDateClick(btn, dateStr, formattedStr) {{
+  document.querySelectorAll('.c-dep-item').forEach(function(b) {{
+    b.setAttribute('aria-checked', 'false');
+    b.classList.remove('active');
+  }});
+  btn.setAttribute('aria-checked', 'true');
+  btn.classList.add('active');
+  curSelectedDate = dateStr;
+  curSelectedFormatted = formattedStr;
+
+  var lbl = document.getElementById('cSelectedDateLabel');
+  if (lbl) lbl.innerHTML = 'Selected: <b>' + formattedStr + '</b>';
+
+  var bookBtn = document.getElementById('cBookBtn');
+  if (bookBtn) {{
+    bookBtn.classList.remove('disabled');
+    bookBtn.href = baseBookingUrl + '&date=' + encodeURIComponent(dateStr);
+    bookBtn.innerHTML = '<span>Book for ' + formattedStr + ' &rarr;</span>';
+  }}
+
+  var waBtn = document.getElementById('cWaBtn');
+  if (waBtn) {{
+    var waMsg = "Hi KoiKoi Travel, I am interested in booking " + canonicalTrainName + " (" + canonicalJourneyName + ") departing on " + formattedStr + ". Please check real-time cabin availability.";
+    waBtn.href = "https://wa.me/919136739178?text=" + encodeURIComponent(waMsg);
+  }}
+}}
+</script>
+'''
+        return comp_html
+
     def build_koikoi_circuit_page(circuit_tag, name, duration, title, route, starting_price,
                                   origin, destination, destinations_count,
                                   hero_imgs, highlights, overview, days_data,
@@ -2365,6 +2797,8 @@ if (lbContainer) {{
 </details>
 """
 
+        circuit_departures_selector_html = build_circuit_departures_selector_component(train_name, name, base_path)
+
         return f"""
 <div class="wrap" style="padding-top:28px;padding-bottom:12px">
   <div class="koikoi-breadcrumb" style="margin-bottom:12px">
@@ -2553,37 +2987,16 @@ if (lbContainer) {{
     <!-- 5. Scheduled Departures -->
     <div id="departures" style="margin-top:16px">
       <div class="sec-head" style="margin-bottom:20px;text-align:left">
-        <div class="eyebrow" style="color:#d96b27">Schedules</div>
+        <div class="eyebrow" style="color:#d96b27">Schedules &amp; Availability</div>
         <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px">
-          {name} <span style="color:#F8904D">Departure Dates (2026 – 2027)</span>
+          {name} <span style="color:#F8904D">Departure Dates (2026 – 2028)</span>
         </h2>
         <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">
-          Official scheduled Sunday departures for Season 2026-27. Reserve your cabin in advance.
+          Official IRCTC scheduled departures for Season 2026–2028. Select your preferred departure date to check real-time cabin availability:
         </p>
       </div>
 
-      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
-        <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-size:14px;text-align:left">
-            <thead>
-              <tr style="background:#1e255e;color:#fff;font-family:'Outfit',sans-serif">
-                <th style="padding:14px 20px;border-right:1px solid rgba(255,255,255,0.15)">Month</th>
-                <th style="padding:14px 20px;border-right:1px solid rgba(255,255,255,0.15)">Scheduled Departure Date</th>
-                <th style="padding:14px 20px">Cabin Availability &amp; Inquiries</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dep_rows_html}
-            </tbody>
-          </table>
-        </div>
-        <div style="padding:14px 20px;background:#fdfcfb;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-          <span style="font-size:13px;color:#64748b">✦ Departures commence with an afternoon check-in and traditional garland welcome ceremony.</span>
-          <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20{name}." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;padding:8px 18px;border-radius:999px;text-decoration:none">
-            Inquire Specific Date on WhatsApp &rarr;
-          </a>
-        </div>
-      </div>
+      {circuit_departures_selector_html}
     </div>
 
     <!-- 6. Official Tariffs & Prices -->

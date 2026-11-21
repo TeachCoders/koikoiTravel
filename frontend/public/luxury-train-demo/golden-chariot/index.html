@@ -1054,6 +1054,282 @@ footer a:hover{color:#F8904D}
 .wa{position:fixed;right:24px;bottom:24px;z-index:60;background:#17806f;color:#fff;padding:10px 20px;border-radius:9999px;font-family:'Outfit',sans-serif;font-weight:600;font-size:14px;box-shadow:0 4px 18px rgba(23,128,111,0.42);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;gap:10px;text-decoration:none;transition:all .3s ease;cursor:pointer}
 .wa:hover{background:#12685a;box-shadow:0 8px 25px rgba(23,128,111,0.55);transform:scale(1.04);color:#fff}
 
+/* ========================================================
+   Interactive Circuit Page Departure Date Selector
+   ======================================================== */
+.circuit-date-selector-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  overflow: hidden;
+  margin-top: 14px;
+}
+.circuit-date-header {
+  padding: 20px 24px;
+  background: #3c4041;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.circuit-date-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 17.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+.circuit-date-instruction {
+  font-size: 13.5px;
+  color: #f1f5f9;
+  margin-top: 4px;
+}
+.circuit-date-action-bar {
+  padding: 18px 24px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-shadow: 0 -4px 18px rgba(0,0,0,0.02);
+}
+.circuit-date-action-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.c-action-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0d9488;
+}
+.c-action-date-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.circuit-date-action-btns {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.c-btn-primary {
+  background: #F8904D;
+  color: #ffffff !important;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(248, 144, 77, 0.35);
+  cursor: pointer;
+}
+.c-btn-primary:hover:not(.disabled) {
+  background: #e07b3b;
+  transform: translateY(-1px);
+}
+.c-btn-primary.disabled {
+  opacity: 0.55;
+  pointer-events: none;
+  background: #94a3b8;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.c-btn-secondary {
+  background: #f8fafc;
+  color: #0f172a !important;
+  border: 1.5px solid #cbd5e1;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.c-btn-secondary:hover {
+  background: #ffffff;
+  border-color: #22c55e;
+  color: #15803d !important;
+}
+
+/* Zebra Month Rows & Radio Items */
+.kb-dates-container {
+  border-radius: 0;
+  overflow: hidden;
+  background: #ffffff;
+}
+.kb-month-row {
+  display: flex;
+  padding: 16px 22px;
+  border-bottom: 1px solid #f5efe6;
+  align-items: center;
+  gap: 24px;
+  transition: background 0.15s ease;
+}
+.kb-month-row:last-child {
+  border-bottom: none;
+}
+.kb-month-row:nth-child(odd) {
+  background: #faf8f5;
+}
+.kb-month-row:nth-child(even) {
+  background: #ffffff;
+}
+.kb-month-col {
+  width: 160px;
+  flex-shrink: 0;
+}
+.kb-month-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  color: #1e293b;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+.kb-dates-col {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 18px;
+}
+.kb-date-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 1px solid #f2ede4;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  user-select: none;
+  text-align: left;
+  outline: none;
+}
+.kb-month-row:nth-child(odd) .kb-date-item {
+  background: #ffffff;
+  border-color: #f2ede4;
+}
+.kb-month-row:nth-child(even) .kb-date-item {
+  background: #faf8f5;
+  border-color: #f2ede4;
+}
+.kb-date-item:hover {
+  background: #f0fdfa;
+  border-color: #14b8a6;
+}
+.kb-date-item[aria-checked="true"], .kb-date-item.active {
+  background: #f0fdfa !important;
+  border-color: #0d9488 !important;
+  box-shadow: 0 0 0 1.5px rgba(13, 148, 136, 0.25);
+  color: #0f766e !important;
+  font-weight: 700;
+}
+.kb-radio-circle {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1.5px solid #989085;
+  background: #ffffff;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.kb-date-item:hover .kb-radio-circle {
+  border-color: #0d9488;
+}
+.kb-date-item[aria-checked="true"] .kb-radio-circle,
+.kb-date-item.active .kb-radio-circle {
+  border-color: #0d9488;
+  background: #0d9488;
+}
+.kb-date-item[aria-checked="true"] .kb-radio-circle::after,
+.kb-date-item.active .kb-radio-circle::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.kb-year-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.kb-year-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+.kb-year-select {
+  padding: 8px 14px;
+  font-size: 14.5px;
+  font-weight: 700;
+  border: 1.5px solid #3c4041;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0f172a;
+  outline: none;
+  cursor: pointer;
+}
+
+@media (max-width: 680px) {
+  .circuit-date-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 12px;
+  }
+  .circuit-date-action-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+  }
+  .circuit-date-action-btns {
+    flex-direction: column;
+    width: 100%;
+  }
+  .c-btn-primary, .c-btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+  .kb-month-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+  .kb-dates-col {
+    grid-template-columns: 1fr;
+    width: 100%;
+    gap: 10px;
+  }
+}
+
 </style>
 </head>
 <body>

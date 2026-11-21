@@ -1054,6 +1054,282 @@ footer a:hover{color:#F8904D}
 .wa{position:fixed;right:24px;bottom:24px;z-index:60;background:#17806f;color:#fff;padding:10px 20px;border-radius:9999px;font-family:'Outfit',sans-serif;font-weight:600;font-size:14px;box-shadow:0 4px 18px rgba(23,128,111,0.42);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;gap:10px;text-decoration:none;transition:all .3s ease;cursor:pointer}
 .wa:hover{background:#12685a;box-shadow:0 8px 25px rgba(23,128,111,0.55);transform:scale(1.04);color:#fff}
 
+/* ========================================================
+   Interactive Circuit Page Departure Date Selector
+   ======================================================== */
+.circuit-date-selector-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  overflow: hidden;
+  margin-top: 14px;
+}
+.circuit-date-header {
+  padding: 20px 24px;
+  background: #3c4041;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.circuit-date-subtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 17.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+.circuit-date-instruction {
+  font-size: 13.5px;
+  color: #f1f5f9;
+  margin-top: 4px;
+}
+.circuit-date-action-bar {
+  padding: 18px 24px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-shadow: 0 -4px 18px rgba(0,0,0,0.02);
+}
+.circuit-date-action-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.c-action-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0d9488;
+}
+.c-action-date-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.circuit-date-action-btns {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.c-btn-primary {
+  background: #F8904D;
+  color: #ffffff !important;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(248, 144, 77, 0.35);
+  cursor: pointer;
+}
+.c-btn-primary:hover:not(.disabled) {
+  background: #e07b3b;
+  transform: translateY(-1px);
+}
+.c-btn-primary.disabled {
+  opacity: 0.55;
+  pointer-events: none;
+  background: #94a3b8;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.c-btn-secondary {
+  background: #f8fafc;
+  color: #0f172a !important;
+  border: 1.5px solid #cbd5e1;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.c-btn-secondary:hover {
+  background: #ffffff;
+  border-color: #22c55e;
+  color: #15803d !important;
+}
+
+/* Zebra Month Rows & Radio Items */
+.kb-dates-container {
+  border-radius: 0;
+  overflow: hidden;
+  background: #ffffff;
+}
+.kb-month-row {
+  display: flex;
+  padding: 16px 22px;
+  border-bottom: 1px solid #f5efe6;
+  align-items: center;
+  gap: 24px;
+  transition: background 0.15s ease;
+}
+.kb-month-row:last-child {
+  border-bottom: none;
+}
+.kb-month-row:nth-child(odd) {
+  background: #faf8f5;
+}
+.kb-month-row:nth-child(even) {
+  background: #ffffff;
+}
+.kb-month-col {
+  width: 160px;
+  flex-shrink: 0;
+}
+.kb-month-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  color: #1e293b;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+.kb-dates-col {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 18px;
+}
+.kb-date-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 1px solid #f2ede4;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  user-select: none;
+  text-align: left;
+  outline: none;
+}
+.kb-month-row:nth-child(odd) .kb-date-item {
+  background: #ffffff;
+  border-color: #f2ede4;
+}
+.kb-month-row:nth-child(even) .kb-date-item {
+  background: #faf8f5;
+  border-color: #f2ede4;
+}
+.kb-date-item:hover {
+  background: #f0fdfa;
+  border-color: #14b8a6;
+}
+.kb-date-item[aria-checked="true"], .kb-date-item.active {
+  background: #f0fdfa !important;
+  border-color: #0d9488 !important;
+  box-shadow: 0 0 0 1.5px rgba(13, 148, 136, 0.25);
+  color: #0f766e !important;
+  font-weight: 700;
+}
+.kb-radio-circle {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1.5px solid #989085;
+  background: #ffffff;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.kb-date-item:hover .kb-radio-circle {
+  border-color: #0d9488;
+}
+.kb-date-item[aria-checked="true"] .kb-radio-circle,
+.kb-date-item.active .kb-radio-circle {
+  border-color: #0d9488;
+  background: #0d9488;
+}
+.kb-date-item[aria-checked="true"] .kb-radio-circle::after,
+.kb-date-item.active .kb-radio-circle::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.kb-year-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.kb-year-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+.kb-year-select {
+  padding: 8px 14px;
+  font-size: 14.5px;
+  font-weight: 700;
+  border: 1.5px solid #3c4041;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0f172a;
+  outline: none;
+  cursor: pointer;
+}
+
+@media (max-width: 680px) {
+  .circuit-date-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 12px;
+  }
+  .circuit-date-action-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+  }
+  .circuit-date-action-btns {
+    flex-direction: column;
+    width: 100%;
+  }
+  .c-btn-primary, .c-btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+  .kb-month-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+  .kb-dates-col {
+    grid-template-columns: 1fr;
+    width: 100%;
+    gap: 10px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1542,117 +1818,507 @@ footer a:hover{color:#F8904D}
     <!-- 5. Scheduled Departures -->
     <div id="departures" style="margin-top:16px">
       <div class="sec-head" style="margin-bottom:20px;text-align:left">
-        <div class="eyebrow" style="color:#d96b27">Schedules</div>
+        <div class="eyebrow" style="color:#d96b27">Schedules &amp; Availability</div>
         <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:800;color:#0f172a;margin:0 0 8px">
-          Classic Rajasthan <span style="color:#F8904D">Departure Dates (2026 – 2027)</span>
+          Classic Rajasthan <span style="color:#F8904D">Departure Dates (2026 – 2028)</span>
         </h2>
         <p style="color:#64748b;font-size:14.5px;margin:0;line-height:1.6">
-          Official scheduled Sunday departures for Season 2026-27. Reserve your cabin in advance.
+          Official IRCTC scheduled departures for Season 2026–2028. Select your preferred departure date to check real-time cabin availability:
         </p>
       </div>
 
-      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
-        <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-size:14px;text-align:left">
-            <thead>
-              <tr style="background:#1e255e;color:#fff;font-family:'Outfit',sans-serif">
-                <th style="padding:14px 20px;border-right:1px solid rgba(255,255,255,0.15)">Month</th>
-                <th style="padding:14px 20px;border-right:1px solid rgba(255,255,255,0.15)">Scheduled Departure Date</th>
-                <th style="padding:14px 20px">Cabin Availability &amp; Inquiries</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-<tr style="border-bottom:1px solid #f1f5f9">
-  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">Sep 2026</td>
-  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">02, 09, 16, 23, 30</td>
-  <td style="padding:14px 20px">
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Palace on Wheels%20Classic Rajasthan%20departing%20on%2002, 09, 16, 23, 30." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
-      Check Availability &rarr;
-    </a>
-  </td>
-</tr>
+      
+<div class="circuit-date-selector-card">
+  <!-- Top Header with Year Dropdown -->
+  <div class="circuit-date-header">
+    <div>
+      <div class="circuit-date-subtitle">Scheduled Departures · Palace on Wheels</div>
+      <div class="circuit-date-instruction">Select your preferred departure date to check real-time IRCTC cabin availability:</div>
+    </div>
+    <div class="kb-year-wrap">
+      <span class="kb-year-label" style="color:#ffffff">Select Year:</span>
+      <select class="kb-year-select" id="cYearSelect" onchange="onCircuitYearFilter(this.value)">
+        <option value="2026" selected>Year 2026</option><option value="2027" >Year 2027</option><option value="2028" >Year 2028</option><option value="all">All Years</option>
+      </select>
+    </div>
+  </div>
 
-<tr style="border-bottom:1px solid #f1f5f9">
-  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">Oct 2026</td>
-  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">07, 14, 21, 28</td>
-  <td style="padding:14px 20px">
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Palace on Wheels%20Classic Rajasthan%20departing%20on%2007, 14, 21, 28." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
-      Check Availability &rarr;
-    </a>
-  </td>
-</tr>
+  <!-- Dates Grid -->
+  <div class="kb-dates-container" id="cDatesContainer" role="radiogroup" aria-label="Departure date">
+    
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">September 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-09-02" data-formatted="02nd September, 2026" onclick="onCircuitDateClick(this, '2026-09-02', '02nd September, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>02nd September, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-09-09" data-formatted="09th September, 2026" onclick="onCircuitDateClick(this, '2026-09-09', '09th September, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>09th September, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-09-16" data-formatted="16th September, 2026" onclick="onCircuitDateClick(this, '2026-09-16', '16th September, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>16th September, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-09-23" data-formatted="23rd September, 2026" onclick="onCircuitDateClick(this, '2026-09-23', '23rd September, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>23rd September, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-09-30" data-formatted="30th September, 2026" onclick="onCircuitDateClick(this, '2026-09-30', '30th September, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>30th September, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-07" data-formatted="07th October, 2026" onclick="onCircuitDateClick(this, '2026-10-07', '07th October, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>07th October, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-14" data-formatted="14th October, 2026" onclick="onCircuitDateClick(this, '2026-10-14', '14th October, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>14th October, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-21" data-formatted="21st October, 2026" onclick="onCircuitDateClick(this, '2026-10-21', '21st October, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>21st October, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-10-28" data-formatted="28th October, 2026" onclick="onCircuitDateClick(this, '2026-10-28', '28th October, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>28th October, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-04" data-formatted="04th November, 2026" onclick="onCircuitDateClick(this, '2026-11-04', '04th November, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>04th November, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-11" data-formatted="11th November, 2026" onclick="onCircuitDateClick(this, '2026-11-11', '11th November, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>11th November, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-18" data-formatted="18th November, 2026" onclick="onCircuitDateClick(this, '2026-11-18', '18th November, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>18th November, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-11-25" data-formatted="25th November, 2026" onclick="onCircuitDateClick(this, '2026-11-25', '25th November, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>25th November, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2026" >
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2026</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-02" data-formatted="02nd December, 2026" onclick="onCircuitDateClick(this, '2026-12-02', '02nd December, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>02nd December, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-09" data-formatted="09th December, 2026" onclick="onCircuitDateClick(this, '2026-12-09', '09th December, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>09th December, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-16" data-formatted="16th December, 2026" onclick="onCircuitDateClick(this, '2026-12-16', '16th December, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>16th December, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-23" data-formatted="23rd December, 2026" onclick="onCircuitDateClick(this, '2026-12-23', '23rd December, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>23rd December, 2026</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2026-12-30" data-formatted="30th December, 2026" onclick="onCircuitDateClick(this, '2026-12-30', '30th December, 2026')">
+  <span class="kb-radio-circle"></span>
+  <span>30th December, 2026</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-06" data-formatted="06th January, 2027" onclick="onCircuitDateClick(this, '2027-01-06', '06th January, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>06th January, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-13" data-formatted="13th January, 2027" onclick="onCircuitDateClick(this, '2027-01-13', '13th January, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>13th January, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-20" data-formatted="20th January, 2027" onclick="onCircuitDateClick(this, '2027-01-20', '20th January, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>20th January, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-01-27" data-formatted="27th January, 2027" onclick="onCircuitDateClick(this, '2027-01-27', '27th January, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>27th January, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-03" data-formatted="03rd February, 2027" onclick="onCircuitDateClick(this, '2027-02-03', '03rd February, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>03rd February, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-10" data-formatted="10th February, 2027" onclick="onCircuitDateClick(this, '2027-02-10', '10th February, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>10th February, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-17" data-formatted="17th February, 2027" onclick="onCircuitDateClick(this, '2027-02-17', '17th February, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>17th February, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-02-24" data-formatted="24th February, 2027" onclick="onCircuitDateClick(this, '2027-02-24', '24th February, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>24th February, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-03" data-formatted="03rd March, 2027" onclick="onCircuitDateClick(this, '2027-03-03', '03rd March, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>03rd March, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-10" data-formatted="10th March, 2027" onclick="onCircuitDateClick(this, '2027-03-10', '10th March, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>10th March, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-17" data-formatted="17th March, 2027" onclick="onCircuitDateClick(this, '2027-03-17', '17th March, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>17th March, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-24" data-formatted="24th March, 2027" onclick="onCircuitDateClick(this, '2027-03-24', '24th March, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>24th March, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-03-31" data-formatted="31st March, 2027" onclick="onCircuitDateClick(this, '2027-03-31', '31st March, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>31st March, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">April 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-04-07" data-formatted="07th April, 2027" onclick="onCircuitDateClick(this, '2027-04-07', '07th April, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>07th April, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-04-14" data-formatted="14th April, 2027" onclick="onCircuitDateClick(this, '2027-04-14', '14th April, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>14th April, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-04-21" data-formatted="21st April, 2027" onclick="onCircuitDateClick(this, '2027-04-21', '21st April, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>21st April, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-04-28" data-formatted="28th April, 2027" onclick="onCircuitDateClick(this, '2027-04-28', '28th April, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>28th April, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">September 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-09-01" data-formatted="01st September, 2027" onclick="onCircuitDateClick(this, '2027-09-01', '01st September, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>01st September, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-09-08" data-formatted="08th September, 2027" onclick="onCircuitDateClick(this, '2027-09-08', '08th September, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>08th September, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-09-15" data-formatted="15th September, 2027" onclick="onCircuitDateClick(this, '2027-09-15', '15th September, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>15th September, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-09-22" data-formatted="22nd September, 2027" onclick="onCircuitDateClick(this, '2027-09-22', '22nd September, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>22nd September, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-09-29" data-formatted="29th September, 2027" onclick="onCircuitDateClick(this, '2027-09-29', '29th September, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>29th September, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">October 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-06" data-formatted="06th October, 2027" onclick="onCircuitDateClick(this, '2027-10-06', '06th October, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>06th October, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-13" data-formatted="13th October, 2027" onclick="onCircuitDateClick(this, '2027-10-13', '13th October, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>13th October, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-20" data-formatted="20th October, 2027" onclick="onCircuitDateClick(this, '2027-10-20', '20th October, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>20th October, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-10-27" data-formatted="27th October, 2027" onclick="onCircuitDateClick(this, '2027-10-27', '27th October, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>27th October, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">November 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-03" data-formatted="03rd November, 2027" onclick="onCircuitDateClick(this, '2027-11-03', '03rd November, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>03rd November, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-10" data-formatted="10th November, 2027" onclick="onCircuitDateClick(this, '2027-11-10', '10th November, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>10th November, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-17" data-formatted="17th November, 2027" onclick="onCircuitDateClick(this, '2027-11-17', '17th November, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>17th November, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-11-24" data-formatted="24th November, 2027" onclick="onCircuitDateClick(this, '2027-11-24', '24th November, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>24th November, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2027" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">December 2027</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-01" data-formatted="01st December, 2027" onclick="onCircuitDateClick(this, '2027-12-01', '01st December, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>01st December, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-08" data-formatted="08th December, 2027" onclick="onCircuitDateClick(this, '2027-12-08', '08th December, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>08th December, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-15" data-formatted="15th December, 2027" onclick="onCircuitDateClick(this, '2027-12-15', '15th December, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>15th December, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-22" data-formatted="22nd December, 2027" onclick="onCircuitDateClick(this, '2027-12-22', '22nd December, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>22nd December, 2027</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2027-12-29" data-formatted="29th December, 2027" onclick="onCircuitDateClick(this, '2027-12-29', '29th December, 2027')">
+  <span class="kb-radio-circle"></span>
+  <span>29th December, 2027</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">January 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-05" data-formatted="05th January, 2028" onclick="onCircuitDateClick(this, '2028-01-05', '05th January, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>05th January, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-12" data-formatted="12th January, 2028" onclick="onCircuitDateClick(this, '2028-01-12', '12th January, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>12th January, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-19" data-formatted="19th January, 2028" onclick="onCircuitDateClick(this, '2028-01-19', '19th January, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>19th January, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-01-26" data-formatted="26th January, 2028" onclick="onCircuitDateClick(this, '2028-01-26', '26th January, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>26th January, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">February 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-02" data-formatted="02nd February, 2028" onclick="onCircuitDateClick(this, '2028-02-02', '02nd February, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>02nd February, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-09" data-formatted="09th February, 2028" onclick="onCircuitDateClick(this, '2028-02-09', '09th February, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>09th February, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-16" data-formatted="16th February, 2028" onclick="onCircuitDateClick(this, '2028-02-16', '16th February, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>16th February, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-02-23" data-formatted="23rd February, 2028" onclick="onCircuitDateClick(this, '2028-02-23', '23rd February, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>23rd February, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">March 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-01" data-formatted="01st March, 2028" onclick="onCircuitDateClick(this, '2028-03-01', '01st March, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>01st March, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-08" data-formatted="08th March, 2028" onclick="onCircuitDateClick(this, '2028-03-08', '08th March, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>08th March, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-15" data-formatted="15th March, 2028" onclick="onCircuitDateClick(this, '2028-03-15', '15th March, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>15th March, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-22" data-formatted="22nd March, 2028" onclick="onCircuitDateClick(this, '2028-03-22', '22nd March, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>22nd March, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-03-29" data-formatted="29th March, 2028" onclick="onCircuitDateClick(this, '2028-03-29', '29th March, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>29th March, 2028</span>
+</button>
+  </div>
+</div>
+<div class="kb-month-row c-month-row" data-year="2028" style="display:none">
+  <div class="kb-month-col">
+    <div class="kb-month-name">April 2028</div>
+  </div>
+  <div class="kb-dates-col">
+    
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-04-05" data-formatted="05th April, 2028" onclick="onCircuitDateClick(this, '2028-04-05', '05th April, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>05th April, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-04-12" data-formatted="12th April, 2028" onclick="onCircuitDateClick(this, '2028-04-12', '12th April, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>12th April, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-04-19" data-formatted="19th April, 2028" onclick="onCircuitDateClick(this, '2028-04-19', '19th April, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>19th April, 2028</span>
+</button>
+<button type="button" class="kb-date-item c-dep-item" role="radio" aria-checked="false" data-date="2028-04-26" data-formatted="26th April, 2028" onclick="onCircuitDateClick(this, '2028-04-26', '26th April, 2028')">
+  <span class="kb-radio-circle"></span>
+  <span>26th April, 2028</span>
+</button>
+  </div>
+</div>
+  </div>
 
-<tr style="border-bottom:1px solid #f1f5f9">
-  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">Nov 2026</td>
-  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">04, 11, 18, 25</td>
-  <td style="padding:14px 20px">
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Palace on Wheels%20Classic Rajasthan%20departing%20on%2004, 11, 18, 25." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
-      Check Availability &rarr;
-    </a>
-  </td>
-</tr>
+  <!-- Bottom Action Bar (Direct Booking & WhatsApp Handoff) -->
+  <div class="circuit-date-action-bar">
+    <div class="circuit-date-action-info">
+      <span class="c-action-badge">SELECTED DEPARTURE</span>
+      <span class="c-action-date-val" id="cSelectedDateLabel">Select a departure date above to proceed</span>
+    </div>
+    <div class="circuit-date-action-btns">
+      <a id="cWaBtn" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Palace%20on%20Wheels%20(Royal%20Rajasthan%20Circuit)." target="_blank" rel="noopener" class="c-btn-secondary">
+        <span>💬 Check on WhatsApp</span>
+      </a>
+      <a id="cBookBtn" href="/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit" class="c-btn-primary disabled" data-base-href="/luxury-train-demo/booking?train=Palace%20on%20Wheels&journey=Royal%20Rajasthan%20Circuit">
+        <span>Select Date to Book &rarr;</span>
+      </a>
+    </div>
+  </div>
+</div>
 
-<tr style="border-bottom:1px solid #f1f5f9">
-  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">Dec 2026</td>
-  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">02, 09, 16, 23, 30</td>
-  <td style="padding:14px 20px">
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Palace on Wheels%20Classic Rajasthan%20departing%20on%2002, 09, 16, 23, 30." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
-      Check Availability &rarr;
-    </a>
-  </td>
-</tr>
+<script>
+var curSelectedDate = "";
+var curSelectedFormatted = "";
+var canonicalTrainName = "Palace on Wheels";
+var canonicalJourneyName = "Royal Rajasthan Circuit";
+var baseBookingUrl = "/luxury-train-demo/booking?train=" + encodeURIComponent(canonicalTrainName) + "&journey=" + encodeURIComponent(canonicalJourneyName);
 
-<tr style="border-bottom:1px solid #f1f5f9">
-  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">Jan 2027</td>
-  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">06, 13, 20, 27</td>
-  <td style="padding:14px 20px">
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Palace on Wheels%20Classic Rajasthan%20departing%20on%2006, 13, 20, 27." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
-      Check Availability &rarr;
-    </a>
-  </td>
-</tr>
+function onCircuitYearFilter(y) {
+  var rows = document.querySelectorAll('.c-month-row');
+  rows.forEach(function(r) {
+    if (y === 'all' || r.getAttribute('data-year') === y) {
+      r.style.display = 'flex';
+    } else {
+      r.style.display = 'none';
+    }
+  });
+}
 
-<tr style="border-bottom:1px solid #f1f5f9">
-  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">Feb 2027</td>
-  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">03, 10, 17, 24</td>
-  <td style="padding:14px 20px">
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Palace on Wheels%20Classic Rajasthan%20departing%20on%2003, 10, 17, 24." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
-      Check Availability &rarr;
-    </a>
-  </td>
-</tr>
+function onCircuitDateClick(btn, dateStr, formattedStr) {
+  document.querySelectorAll('.c-dep-item').forEach(function(b) {
+    b.setAttribute('aria-checked', 'false');
+    b.classList.remove('active');
+  });
+  btn.setAttribute('aria-checked', 'true');
+  btn.classList.add('active');
+  curSelectedDate = dateStr;
+  curSelectedFormatted = formattedStr;
 
-<tr style="border-bottom:1px solid #f1f5f9">
-  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">Mar 2027</td>
-  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">03, 10, 17, 24, 31</td>
-  <td style="padding:14px 20px">
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Palace on Wheels%20Classic Rajasthan%20departing%20on%2003, 10, 17, 24, 31." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
-      Check Availability &rarr;
-    </a>
-  </td>
-</tr>
+  var lbl = document.getElementById('cSelectedDateLabel');
+  if (lbl) lbl.innerHTML = 'Selected: <b>' + formattedStr + '</b>';
 
-<tr style="border-bottom:1px solid #f1f5f9">
-  <td style="padding:14px 20px;font-weight:700;color:#0f172a;background:#fafafa;border-right:1px solid #e2e8f0">Apr 2027</td>
-  <td style="padding:14px 20px;color:#0f172a;font-weight:600;border-right:1px solid #f1f5f9">07, 14, 21, 28</td>
-  <td style="padding:14px 20px">
-    <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Palace on Wheels%20Classic Rajasthan%20departing%20on%2007, 14, 21, 28." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:6px;text-decoration:none">
-      Check Availability &rarr;
-    </a>
-  </td>
-</tr>
+  var bookBtn = document.getElementById('cBookBtn');
+  if (bookBtn) {
+    bookBtn.classList.remove('disabled');
+    bookBtn.href = baseBookingUrl + '&date=' + encodeURIComponent(dateStr);
+    bookBtn.innerHTML = '<span>Book for ' + formattedStr + ' &rarr;</span>';
+  }
 
-            </tbody>
-          </table>
-        </div>
-        <div style="padding:14px 20px;background:#fdfcfb;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-          <span style="font-size:13px;color:#64748b">✦ Departures commence with an afternoon check-in and traditional garland welcome ceremony.</span>
-          <a href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20check%20cabin%20availability%20for%20Maharajas%27%20Express%20Classic Rajasthan." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#F8904D;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;padding:8px 18px;border-radius:999px;text-decoration:none">
-            Inquire Specific Date on WhatsApp &rarr;
-          </a>
-        </div>
-      </div>
+  var waBtn = document.getElementById('cWaBtn');
+  if (waBtn) {
+    var waMsg = "Hi KoiKoi Travel, I am interested in booking " + canonicalTrainName + " (" + canonicalJourneyName + ") departing on " + formattedStr + ". Please check real-time cabin availability.";
+    waBtn.href = "https://wa.me/919136739178?text=" + encodeURIComponent(waMsg);
+  }
+}
+</script>
+
     </div>
 
     <!-- 6. Official Tariffs & Prices -->
