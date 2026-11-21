@@ -166,6 +166,14 @@ const nextConfig: NextConfig = {
     ];
     return [
       {
+        source: "/luxury-train-demo/booking",
+        destination: "/luxury-train-demo/booking.html",
+      },
+      {
+        source: "/luxury-train-demo/booking/",
+        destination: "/luxury-train-demo/booking.html",
+      },
+      {
         source: "/luxury-train-demo",
         destination: "/luxury-train-demo/index.html",
       },
