@@ -345,6 +345,52 @@ footer a:hover{color:#F8904D}
 .koikoi-tour-card:hover .koikoi-card-img-wrap img {
   transform: scale(1.06);
 }
+
+.koikoi-horizontal-tour-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  display: grid;
+  grid-template-columns: 44% 56%;
+  transition: all 0.35s ease-out;
+}
+.koikoi-horizontal-tour-card:hover {
+  box-shadow: 0 16px 36px rgba(0,0,0,0.09);
+  transform: translateY(-4px);
+}
+.koikoi-horiz-img-wrap {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: #f1f5f9;
+  min-height: 400px;
+}
+.koikoi-horiz-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease-out;
+  display: block;
+}
+.koikoi-horizontal-tour-card:hover .koikoi-horiz-img-wrap img {
+  transform: scale(1.05);
+}
+.koikoi-horizontal-tour-card:hover .horiz-title {
+  color: #F8904D;
+}
+@media (max-width: 850px) {
+  .koikoi-horizontal-tour-card {
+    grid-template-columns: 1fr;
+  }
+  .koikoi-horiz-img-wrap {
+    min-height: 240px;
+  }
+  .koikoi-horiz-body {
+    padding: 22px 20px !important;
+  }
+}
 .koikoi-card-body {
   display: flex;
   flex-direction: column;
@@ -1111,23 +1157,32 @@ footer a:hover{color:#F8904D}
         </p>
       </div>
       
-<div class="koikoi-card-grid" style="margin-top:24px">
-  <!-- Card 1: Classic Rajasthan -->
-  <div class="koikoi-tour-card" id="card-classic-rajasthan">
-    <a href="/luxury-train-demo/palace-on-wheels/itinerary" class="koikoi-card-img-wrap">
+<div class="koikoi-single-showcase-wrap" style="margin-top:28px">
+  <!-- Horizontal Card: Classic Rajasthan -->
+  <div class="koikoi-horizontal-tour-card" id="card-classic-rajasthan">
+    
+    <!-- LEFT SIDE: Full-height Luxury Train Image -->
+    <a href="/luxury-train-demo/palace-on-wheels/itinerary" class="koikoi-horiz-img-wrap">
       <img src="/images/luxury-trains/palace-on-wheels/deluxe-cabin.jpg" alt="Classic Rajasthan - Palace on Wheels Tour Package | KoiKoi Travel">
+      <div style="position:absolute;top:18px;left:18px;background:rgba(15,23,42,0.85);backdrop-filter:blur(8px);color:#ffffff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;padding:6px 16px;border-radius:999px;border:1px solid rgba(248,144,77,0.4);display:flex;align-items:center;gap:6px">
+        <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#F8904D"></span>
+        <span>7 Nights / 8 Days · Iconic Royal Circuit</span>
+      </div>
     </a>
-    <div class="koikoi-card-body">
-      <div style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:#ea580c;margin-bottom:6px;letter-spacing:0.2px">
+
+    <!-- RIGHT SIDE: Rich Details Content -->
+    <div class="koikoi-horiz-body" style="padding:30px 36px;display:flex;flex-direction:column;justify-content:center;background:#ffffff">
+      <div style="font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700;color:#ea580c;margin-bottom:8px;letter-spacing:0.3px">
         Departs Every Wednesday from Delhi
       </div>
-      <a href="/luxury-train-demo/palace-on-wheels/itinerary" class="koikoi-card-title">
+      <a href="/luxury-train-demo/palace-on-wheels/itinerary" style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:700;color:#0f172a;line-height:1.3;margin-bottom:10px;text-decoration:none;transition:color 0.2s" class="horiz-title">
         8 Days - Classic Rajasthan Luxury Rail Tour
       </a>
-      <div class="koikoi-card-route">
+      <div style="font-size:14.5px;color:#0f766e;font-weight:600;margin-bottom:18px;line-height:1.55">
         🚂 Delhi · Jaipur · Ranthambore · Chittorgarh · Udaipur · Jaisalmer · Jodhpur · Bharatpur · Agra · Delhi
       </div>
-      <div class="koikoi-card-highlights">
+      
+      <div class="koikoi-card-highlights" style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px">
         <div class="koikoi-card-hl-item">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg>
           <span><strong>Reva Wellness Spa:</strong> Ayurvedic massages, therapies &amp; beauty salon</span>
@@ -1141,20 +1196,22 @@ footer a:hover{color:#F8904D}
           <span><strong>Royal Saloon Bar:</strong> Premium spirits &amp; 24/7 personal Khidmatgar service</span>
         </div>
       </div>
-      <div class="koikoi-card-footer">
-        <div class="koikoi-card-amenities">
+
+      <div style="padding-top:18px;border-top:1px dashed #e2e8f0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:auto">
+        <div style="font-size:13.5px;color:#64748b">
           Deluxe &amp; Super Deluxe Saloons · Maharaja &amp; Maharani Dining · Butler (Khidmatgar)
         </div>
-        <div class="koikoi-card-btn-row">
-          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Palace%20on%20Wheels%20-%20Classic%20Rajasthan%20Tour%20%288%20Days%29." target="_blank" rel="noopener">
+        <div style="display:flex;gap:12px;align-items:center">
+          <a class="koikoi-btn-quote" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20please%20share%20details%20for%20Palace%20on%20Wheels%20-%20Classic%20Rajasthan%20Tour%20%288%20Days%29." target="_blank" rel="noopener" style="padding:0 24px;min-width:130px">
             Get a quote
           </a>
-          <a class="koikoi-btn-details" href="/luxury-train-demo/palace-on-wheels/itinerary">
+          <a class="koikoi-btn-details" href="/luxury-train-demo/palace-on-wheels/itinerary" style="padding:0 24px;min-width:110px">
             Details
           </a>
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
