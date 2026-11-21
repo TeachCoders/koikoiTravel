@@ -1318,7 +1318,7 @@ def generate_all_for_base(base_dir, base_path):
   <div class="wrap">
     <div class="sec-head center" style="text-align:center">
       <div class="eyebrow">Choose Your Train</div>
-      <h2>India's Luxury Trains</h2>
+      <h2>Indian Luxury Train</h2>
       <p>Each train has its own route, season and style. Open any train to see its itinerary, departure dates, price, cabins and photos.</p>
     </div>
 
