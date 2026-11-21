@@ -965,7 +965,6 @@ def get_header(active_train=None, base_path="/luxury-trains"):
       <li class="dd"><a href="{base_path}/golden-chariot" class="{'on' if active_train=='golden-chariot' else ''}">Golden Chariot</a>
         <div class="menu">
           <a href="{base_path}/golden-chariot">Overview</a>
-          <a href="{base_path}/golden-chariot/itinerary">All Itineraries</a>
           <a href="{base_path}/golden-chariot/pride-of-karnataka">Pride of Karnataka (6D)</a>
           <a href="{base_path}/golden-chariot/jewels-of-south">Jewels of South (6D)</a>
           <a href="{base_path}/golden-chariot/glimpses-of-karnataka">Glimpses of Karnataka (4D)</a>
@@ -1126,9 +1125,10 @@ def generate_all_for_base(base_dir, base_path):
     os.makedirs(base_dir, exist_ok=True)
 
     def get_card_links(train_slug):
+        itin_link = f"{base_path}/golden-chariot/pride-of-karnataka" if train_slug == "golden-chariot" else f"{base_path}/{train_slug}/itinerary"
         return f'''
           <div class="links">
-            <a href="{base_path}/{train_slug}/itinerary">
+            <a href="{itin_link}">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="10" r="3"></circle><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path></svg>
               <span>Itinerary</span>
               <span class="link-arr">&rarr;</span>
@@ -4888,7 +4888,7 @@ function switchCircuitPrice(curr) {{
                gc_glimpses_html, active_train="golden-chariot", active_tab="itinerary", base_path=base_path)
 
     # ================= 4. REVAMPED MASTER ITINERARY HUB PAGE =================
-    gc_itinerary = f"""
+    gc_itinerary = f"""<script>window.location.replace("{base_path}/golden-chariot/pride-of-karnataka");</script>
 <div style="background:#ffffff;border-bottom:1px solid #e2e8f0;padding:40px 0 36px">
   <div class="wrap">
     <div class="koikoi-breadcrumb" style="margin-bottom:14px">
