@@ -1042,12 +1042,15 @@ def get_header(active_train=None, base_path="/luxury-trains"):
       </li>
       <li class="dd"><a href="{base_path}/deccan-odyssey" class="{'on' if active_train=='deccan-odyssey' else ''}">Deccan Odyssey</a>
         <div class="menu">
-          <a href="{base_path}/deccan-odyssey">Overview</a>
-          <a href="{base_path}/deccan-odyssey/itinerary">Itinerary</a>
-          <a href="{base_path}/deccan-odyssey/departures">Departures</a>
-          <a href="{base_path}/deccan-odyssey/price">Price</a>
-          <a href="{base_path}/deccan-odyssey/cabins">Cabins</a>
-          <a href="{base_path}/deccan-odyssey/photo-gallery">Photo Gallery</a>
+          <a href="{base_path}/deccan-odyssey">Train Overview</a>
+          <a href="{base_path}/deccan-odyssey/maharashtra-splendour">Maharashtra Splendour (8D)</a>
+          <a href="{base_path}/deccan-odyssey/indian-odyssey">Indian Odyssey (8D)</a>
+          <a href="{base_path}/deccan-odyssey/indian-sojourn">Indian Sojourn (8D)</a>
+          <a href="{base_path}/deccan-odyssey/maharashtra-wild-trail">Maharashtra Wild Trail (8D)</a>
+          <a href="{base_path}/deccan-odyssey/heritage-odyssey">Heritage Odyssey (8D)</a>
+          <a href="{base_path}/deccan-odyssey/cultural-odyssey">Cultural Odyssey (8D)</a>
+          <a href="{base_path}/deccan-odyssey/departures">Departures &amp; Calendar</a>
+          <a href="{base_path}/deccan-odyssey/price">Fares &amp; Tariffs</a>
         </div>
       </li>
     </ul>
@@ -3245,6 +3248,62 @@ if (lbContainer) {{
                 <td>Indian Nationals Tariff (INR)</td>
                 <td style="font-weight:700">{price_data['inr']['deluxe_twin']}</td>
                 <td style="color:#64748b">{price_data['inr']['deluxe_single']}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+"""
+        elif train_slug == "deccan-odyssey":
+            price_table_html = f"""
+      <!-- USD Table -->
+      <div id="circuitPriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table class="circuit-price-table">
+            <thead>
+              <tr>
+                <th style="width:34%">Occupancy Category</th>
+                <th style="width:33%">Deluxe Cabin (Twin / Double)</th>
+                <th style="width:33%">Presidential Suite (Per Cabin)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Twin / Double Sharing (Per Person)</td>
+                <td style="font-weight:700">{price_data['usd']['deluxe_twin']}</td>
+                <td style="font-weight:700">{price_data['usd']['presidential']}</td>
+              </tr>
+              <tr>
+                <td>Single Occupancy (Solo Cabin)</td>
+                <td style="color:#64748b">{price_data['usd']['deluxe_single']}</td>
+                <td style="color:#64748b">{price_data['usd']['presidential']}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- INR Table -->
+      <div id="circuitPriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03)">
+        <div style="overflow-x:auto">
+          <table class="circuit-price-table">
+            <thead>
+              <tr>
+                <th style="width:34%">Occupancy Category</th>
+                <th style="width:33%">Deluxe Cabin (Twin / Double)</th>
+                <th style="width:33%">Presidential Suite (Per Cabin)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Twin / Double Sharing (Per Person)</td>
+                <td style="font-weight:700">{price_data['inr']['deluxe_twin']}</td>
+                <td style="font-weight:700">{price_data['inr']['presidential']}</td>
+              </tr>
+              <tr>
+                <td>Single Occupancy (Solo Cabin)</td>
+                <td style="color:#64748b">{price_data['inr']['deluxe_single']}</td>
+                <td style="color:#64748b">{price_data['inr']['presidential']}</td>
               </tr>
             </tbody>
           </table>
@@ -5528,50 +5587,835 @@ function switchCircuitPrice(curr) {{
                gc_gallery, active_train="golden-chariot", active_tab="photo-gallery", base_path=base_path)
 
     # ================= 5. DECCAN ODYSSEY SUBPAGES =================
-    do_data = {
-        "slug": "deccan-odyssey",
-        "name": "Deccan Odyssey",
-        "tagline": "The Blue Limousine on Tracks",
-        "banner": "/images/luxury-trains/deccan-odyssey/hero.jpg",
+    do_hero_imgs = [
+        {"src": "/images/luxury-trains/deccan-odyssey/deluxe-cabin-twin.jpg", "title": "Deluxe Twin Cabin"},
+        {"src": "/images/luxury-trains/deccan-odyssey/restaurant.jpg", "title": "Waavar & Utsav Dining Cars"},
+        {"src": "/images/luxury-trains/deccan-odyssey/lounge-bar.jpg", "title": "Gateway Lounge Bar"},
+        {"src": "/images/luxury-trains/deccan-odyssey/train-exterior.jpg", "title": "Royal Blue Livery on Tracks"},
+        {"src": "/images/luxury-trains/deccan-odyssey/presidential-suite.jpg", "title": "Presidential Suite Lounge"},
+        {"src": "/images/luxury-trains/deccan-odyssey/deluxe-cabin-double.jpg", "title": "Deluxe Double Bed Cabin"}
+    ]
+
+    do_price_data = {
+        "usd": {
+            "deluxe_twin": "$6,650",
+            "deluxe_single": "$9,330",
+            "presidential": "$20,000"
+        },
+        "inr": {
+            "deluxe_twin": "₹5,52,000",
+            "deluxe_single": "₹7,75,000",
+            "presidential": "₹16,60,000"
+        }
     }
 
-    # Deccan Odyssey Overview
+    do_inc_exc = """
+<div style="background:#fdfcfb;border:1px solid #f1f5f9;border-radius:20px;padding:32px;margin:36px 0;box-shadow:0 4px 20px rgba(0,0,0,0.02)">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px" class="grid-1-mob">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:rgba(46,139,139,0.12);color:#2E8B8B;font-weight:800">✓</span>
+        <h3 style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:#0f172a;margin:0">Official Published Inclusions</h3>
+      </div>
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px;font-size:14px;color:#334155;line-height:1.55">
+        <li style="display:flex;gap:10px">✦ <span>Accommodation in royal air-conditioned cabins with private ensuite bathroom and 24/7 personal valet butler service.</span></li>
+        <li style="display:flex;gap:10px">✦ <span>All meals onboard in the royal Waavar &amp; Utsav dining cars: daily gourmet breakfasts, table-service lunches, and multi-course royal dinners.</span></li>
+        <li style="display:flex;gap:10px">✦ <span>Complimentary mineral water, tea, coffee, and soft beverages throughout your rail journey.</span></li>
+        <li style="display:flex;gap:10px">✦ <span>All scheduled guided off-train excursions in deluxe air-conditioned coaches accompanied by English-speaking government-licensed tour guides.</span></li>
+        <li style="display:flex;gap:10px">✦ <span>All monument entry fees, palace permissions, still camera permits, and jungle safari jeep charges as per itinerary.</span></li>
+        <li style="display:flex;gap:10px">✦ <span>Curated cultural experiences: Sula Vineyards wine tasting in Nashik, Kolhapur martial arts, Goan spice farm lunch, and Rajasthani royal feasts.</span></li>
+        <li style="display:flex;gap:10px">✦ <span>Arrival welcome garland ceremony, porterage assistance, and station baggage handling.</span></li>
+      </ul>
+    </div>
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:rgba(225,29,72,0.1);color:#e11d48;font-weight:800">✕</span>
+        <h3 style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:#0f172a;margin:0">Official Exclusions &amp; Extras</h3>
+      </div>
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px;font-size:14px;color:#64748b;line-height:1.55">
+        <li style="display:flex;gap:10px">✕ <span>5% Government Service Tax (GST) charged extra over and above published tariffs as per Govt. of India rules.</span></li>
+        <li style="display:flex;gap:10px">✕ <span>Optional double bed supplement in Deluxe Cabin ($500 USD + GST extra).</span></li>
+        <li style="display:flex;gap:10px">✕ <span>Alcoholic beverages, vintage liquors, and personal bar orders outside scheduled wine tastings.</span></li>
+        <li style="display:flex;gap:10px">✕ <span>Ayush Spa therapy treatments, laundry service, international phone calls, and video camera fees at monuments.</span></li>
+        <li style="display:flex;gap:10px">✕ <span>Pre and post-tour 5-star hotel accommodations in Mumbai or Delhi, airport luxury transfers, and flights (KoiKoi Travel custom-curates these on request).</span></li>
+        <li style="display:flex;gap:10px">✕ <span>Personal travel insurance, Indian visa fees, and gratuities for chauffeurs and private guides.</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+"""
+
+    do_common_faqs = [
+        {"q": "What is the difference between Deluxe Cabin and Presidential Suite on Deccan Odyssey?",
+         "a": "A Deluxe Cabin measures approximately 95 sq. ft. and features twin single beds or a double bed, private ensuite bathroom with hot shower, electronic safe, individual climate control, and a dedicated 24/7 personal valet. A Presidential Suite spans an expansive 205 sq. ft., occupying an entire carriage section with a separate living lounge, master bedroom, two private bathrooms, and complimentary minibar."},
+        {"q": "What is the booking deposit and cancellation policy?",
+         "a": "To confirm your reservation, a 25% advance deposit is payable at the time of booking. The remaining 75% balance is due 60 days prior to train departure. If booking within 60 days of travel, 100% full payment is required. Standard IRCTC/MTDC cancellation terms apply."},
+        {"q": "How does dining work onboard Deccan Odyssey?",
+         "a": "Deccan Odyssey houses two beautifully decorated fine-dining restaurants: Waavar and Utsav. Both offer rotating menus prepared fresh daily by onboard executive chefs, featuring authentic regional Indian specialties (Maharashtrian, Goan, Rajasthani, Mughlai) as well as international continental gourmet dishes."},
+        {"q": "Can KoiKoi Travel arrange hotel stays in Mumbai or Delhi before and after the train?",
+         "a": "Yes, absolutely. We arrange complete 5-star heritage extensions: booking luxury stays at The Taj Mahal Palace in Mumbai or The Imperial in New Delhi, private chauffeured airport transfers, and private guided city tours tailored to your schedule."},
+        {"q": "What dress code is recommended for off-train excursions?",
+         "a": "Smart casual, lightweight cotton clothing and comfortable walking shoes are ideal for daytime temple, fort, and cave explorations. When visiting sacred temples and mosques, shoulders and knees must be respectfully covered. For evening dinners onboard and palace events, smart elegant attire is welcomed."}
+    ]
+
+    # --- 5.1 CIRCUIT: Maharashtra Splendour ---
+    ms_days = [
+        {"day": 1, "title": "Boarding at Mumbai (CSMT) & Welcome Aboard",
+         "paragraphs": [
+             "Your royal rail journey begins at Mumbai's iconic UNESCO World Heritage station, Chhatrapati Shivaji Maharaj Terminus (CSMT). Arrive by 15:30 hrs at the dedicated platform for a traditional royal welcome with fresh floral garlands, vermilion tilak, and celebratory dhol-tasha music.",
+             "After completing smooth check-in formalities, your personal valet escorts you to your private air-conditioned cabin. Settle in and enjoy a welcome drink as the Deccan Odyssey gently pulls out of Mumbai, tracing the Konkan rail route north-east toward the wine hills of Nashik. Savor your first gourmet dinner onboard at Waavar or Utsav dining car."
+         ],
+         "overnight": "Onboard Deccan Odyssey heading toward Nashik", "meals": "Dinner onboard"},
+        {"day": 2, "title": "Nashik – Godavari Ghats & Sula Vineyards Wine Tasting",
+         "paragraphs": [
+             "Wake up to rolling Sahyadri countryside as the train pulls into Nashik, the ancient spiritual hub on the banks of the sacred Godavari River and India's wine capital. After a leisurely breakfast onboard, disembark for an authentic morning heritage walk along the Panchavati river ghats, observing priests performing timeless morning prayers.",
+             "In the afternoon, travel to the renowned Grover Zampa or Sula Vineyards nestled against the Gangapur hills. Walk through lush grape arbor rows, learn traditional crushing and barrel-aging techniques from an expert sommelier, and enjoy a private tasting of select award-winning Chenin Blanc, Shiraz, and sparkling wines paired with a gourmet vineyard lunch before reboarding."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Aurangabad", "meals": "Breakfast & Dinner onboard · Vineyard Lunch in Nashik"},
+        {"day": 3, "title": "Aurangabad – The Monolithic Kailash Temple at Ellora Caves",
+         "paragraphs": [
+             "Arrive early morning in Aurangabad, historic Mughal gateway of the Deccan plateau. After breakfast, head to the world-famous UNESCO World Heritage site of Ellora Caves. Your certified guide leads you straight to Cave 16: the awe-inspiring Kailash Temple.",
+             "Carved entirely top-down from a single volcanic basalt cliff in the 8th century under the Rashtrakuta dynasty, Kailash is the largest monolithic rock excavation on Earth—twice the footprint of the Parthenon in Athens. Marvel at colossal elephant friezes, Ramayana wall carvings, and intricate acoustic courtyards. Return to the train for lunch, followed by an afternoon visit to Bibi Ka Maqbara, the striking 17th-century marble mausoleum known as the 'Taj of the Deccan'."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Jalgaon", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 4, "title": "Jalgaon – 2,200-Year-Old Buddhist Frescoes at Ajanta Caves",
+         "paragraphs": [
+             "Today is dedicated to one of humanity's greatest art treasures: the UNESCO-listed Ajanta Caves, dramatically carved into a horseshoe-shaped gorge overlooking the roaring Waghur River ravine.",
+             "Dating from the 2nd century BCE to the 5th century CE, these 30 rock-cut Buddhist monasteries and prayer halls preserve masterwork fresco wall paintings that redefined Asian classical art. Walk through Cave 1 and Cave 2 with your specialist guide, admiring the luminous depictions of Bodhisattvas Padmapani and Vajrapani painted with natural lapis lazuli and mineral pigments that still glow in low light. Return to the train for a relaxed afternoon tea and scenic cruising south toward Kolhapur."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Kolhapur", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 5, "title": "Kolhapur – Mahalakshmi Temple & Royal Martial Arts (Mardani Khel)",
+         "paragraphs": [
+             "Cross into Southern Maharashtra and arrive in the royal city of Kolhapur, seat of the proud Bhonsle Maratha dynasty. Disembark after breakfast to visit the 1,300-year-old Mahalakshmi Temple, a revered Shakti peetha renowned for its Chalukyan black-stone architecture and spiritual fervor.",
+             "Next, visit the sprawling New Palace Museum, designed by Major Mant in an opulent Indo-Saracenic style, showcasing vintage Maratha weaponry, royal attire, and tiger-hunting memorabilia of Chhatrapati Shahu Maharaj. In the afternoon, witness an exclusive live demonstration of 'Mardani Khel', the ancient Maratha martial art of swords and spears, and explore local artisanal workshops where world-famous handmade Kolhapuri leather chappals are hand-braided."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Goa", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 6, "title": "Goa – Latin Quarter Fontainhas, Old Goa Cathedrals & Spice Feast",
+         "paragraphs": [
+             "Wake up to swaying coconut palms and tropical breezes as Deccan Odyssey enters the sunny coastal state of Goa. After breakfast, embark on a walking tour of Old Goa (Velha Goa), the former imperial capital of the Portuguese empire in the East.",
+             "Visit the Basilica of Bom Jesus, a UNESCO World Heritage site holding the sacred relics of St. Francis Xavier, and the grand Se Cathedral with its famous Golden Bell. Continue with a heritage walk through Fontainhas, Panaji's vibrant Latin Quarter with pastel-painted Portuguese villas, azulejo ceramic tiles, and quaint balconies. Conclude with an authentic Goan spice plantation banquet featuring fresh Goan fish curry, peri-peri delicacies, feni, and folk dance performances before reboarding."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Sindhudurg", "meals": "Breakfast & Dinner onboard · Traditional Goan Spice Lunch"},
+        {"day": 7, "title": "Sindhudurg & Sawantwadi – Kurte Island Sea Fort & Ganjifa Art",
+         "paragraphs": [
+             "The train glides along the picturesque Konkan coastline to Sindhudurg. Board a private boat across the Arabian Sea waves to Sindhudurg Fort, a formidable sea fortress built in 1664 by Chhatrapati Shivaji Maharaj upon a 48-acre rocky island to protect Maharashtra's trade routes from European and Siddi fleets.",
+             "After exploring the bastions and hidden water wells of the fort, travel inland to the artisan hamlet of Sawantwadi. Visit the 18th-century Sawantwadi Royal Palace to observe masters painting ancient circular 'Ganjifa' cards and wooden lacquer toys. Enjoy a royal Konkani high tea hosted with local delicacies like Solkadhi and Malvani snacks before returning to the train for your farewell captain's dinner."
+         ],
+         "overnight": "Onboard Deccan Odyssey heading toward Mumbai", "meals": "Breakfast, Lunch & Farewell Gala Dinner onboard"},
+        {"day": 8, "title": "Arrival at Mumbai (CSMT) & Farewell",
+         "paragraphs": [
+             "Wake up at your own pace as the Deccan Odyssey gently arrives back at Chhatrapati Shivaji Maharaj Terminus (CSMT) in Mumbai around 08:15 hrs. Enjoy a final lavish breakfast served in the dining cars with freshly brewed coffee and fresh tropical fruits.",
+             "Bid farewell to your dedicated carriage valet and train crew as you disembark with unforgettable memories of Maharashtra's ancient caves, royal fortresses, lush vineyards, and tropical beaches. KoiKoi Travel chauffeurs are ready on the platform for your airport transfer or luxury hotel check-in in Mumbai."
+         ],
+         "overnight": "Tour Concludes", "meals": "Breakfast onboard"}
+    ]
+
+    ms_departures = [
+        ("September 2026", "26 Sep 2026 (Saturday)"),
+        ("March 2027", "20 Mar 2027 (Saturday)"),
+        ("September 2027", "11 Sep, 18 Sep, 25 Sep 2027 (Saturday)"),
+        ("March 2028", "18 Mar 2028 (Saturday)"),
+        ("April 2028", "29 Apr 2028 (Saturday)")
+    ]
+
+    # --- 5.2 CIRCUIT: Indian Odyssey ---
+    io_days = [
+        {"day": 1, "title": "Boarding at New Delhi (Safdarjung) & Departure",
+         "paragraphs": [
+             "Assemble at Delhi Safdarjung Railway Station by 18:00 hrs where a red carpet, traditional shehnai musicians, and royal Rajasthani welcome await you. Complete quick check-in formalities as your luggage is escorted to your suite by your personal butler.",
+             "Familiarize yourself with your cabin's modern comforts and enjoy an introductory briefing in the Gateway lounge bar with a signature cocktail. The train departs into the evening countryside heading south towards Rajasthan's premier tiger reserve."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Sawai Madhopur", "meals": "Dinner onboard"},
+        {"day": 2, "title": "Sawai Madhopur – Morning Safari in Ranthambore Tiger Reserve",
+         "paragraphs": [
+             "Early morning arrival at Sawai Madhopur, the gateway to Ranthambore National Park. Board an open-top 4x4 safari vehicle with a licensed park naturalist to explore the former hunting grounds of the Maharajas of Jaipur.",
+             "Scan ancient banyan trees, crumbling medieval pavilions, and water bodies for Royal Bengal tigers, leopards, marsh crocodiles, sambar deer, and sloth bears. Return to the train for a hearty breakfast and afternoon relaxation as the train rolls on toward the Mughal city of Agra."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Agra", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 3, "title": "Agra – Sunrise at Taj Mahal, Agra Fort & Marble Inlay Art",
+         "paragraphs": [
+             "Begin your day at sunrise before the crowds arrive at the timeless Taj Mahal. Watch the ivory-white marble change from pale blush to brilliant gold in the morning sunlight as your historian guide reveals Emperor Shah Jahan's eternal tribute to Mumtaz Mahal.",
+             "After champagne breakfast at a 5-star luxury hotel, visit the colossal red sandstone Agra Fort, seat of the Mughal Empire for four generations. In the afternoon, watch master marble artisans demonstrate the delicate 'Pietra Dura' inlay craft practiced since the 17th century before boarding for dinner."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Jaipur", "meals": "Breakfast at 5-star Hotel · Lunch & Dinner onboard"},
+        {"day": 4, "title": "Jaipur – Amber Fort, City Palace & Royal Gala Dinner",
+         "paragraphs": [
+             "Arrive in Jaipur, Rajasthan's legendary Pink City. Drive past the honeycomb facade of Hawa Mahal (Palace of Winds) to the hilltop Amber Fort. Ascend the cobbled ramparts to tour the breathtaking Sheesh Mahal (Mirror Palace) where thousands of convex mirrors sparkle in candle reflections.",
+             "Enjoy lunch at a heritage palace, followed by visits to the City Palace Museum—home to the titular Maharaja of Jaipur—and Jantar Mantar, the world's largest stone astronomical observatory built by Sawai Jai Singh II. The evening concludes with a private Rajasthani cultural gala dinner."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Udaipur", "meals": "Breakfast onboard · Lunch in Jaipur · Dinner onboard"},
+        {"day": 5, "title": "Udaipur – Lake Pichola Boat Cruise & City Palace",
+         "paragraphs": [
+             "Wake up in romantic Udaipur, the City of Lakes nestled against the Aravali range. Disembark after breakfast to explore the City Palace, Rajasthan's largest palace complex, admiring its peacock mosaics, mirrored galleries, and private royal courtyards overlooking the water.",
+             "Board a private motorboat for a serene cruise on Lake Pichola, gliding past the floating marble Lake Palace (Jag Niwas) and stepping ashore on Jag Mandir island. After lunch, take a relaxed stroll through Sahelion Ki Bari (Courtyard of the Maids of Honor) with its marble fountains, lotus pools, and shaded gazebos."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Vadodara", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 6, "title": "Vadodara – UNESCO Champaner & Laxmi Vilas Palace High Tea",
+         "paragraphs": [
+             "Cross the state border into Gujarat, arriving at Vishwamitri station in Vadodara (Baroda). Travel first to Champaner-Pavagadh Archaeological Park, a UNESCO World Heritage site showcasing a complete, unexcavated medieval Hindu-Muslim capital with the striking 16th-century Jami Masjid.",
+             "In the afternoon, visit Laxmi Vilas Palace, the private residence of the royal Gaekwad dynasty. Four times the size of Buckingham Palace, this Indo-Saracenic wonder features Venetian mosaic floors, European stained-glass windows, and the Maharaja's personal armory. Enjoy a private royal high tea with authentic Gujarati savory snacks in the palace banquet hall."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Aurangabad", "meals": "Breakfast onboard · High Tea at Palace · Dinner onboard"},
+        {"day": 7, "title": "Aurangabad – The Monolithic Kailash Temple at Ellora Caves",
+         "paragraphs": [
+             "Arrive at Aurangabad in Maharashtra. Today's crowning highlight is Cave 16 of the Ellora Caves: the world-famous Kailash Temple. Learn how ancient artisans chiseled over 200,000 tonnes of solid basalt rock from the top down without structural scaffolding.",
+             "Admire the soaring multi-tiered gopuram, massive sculpted elephants, and mythological relief panels. Following lunch onboard, explore Bibi Ka Maqbara, built by Mughal Emperor Aurangzeb's son Azam Shah in tribute to his mother Dilras Banu Begum."
+         ],
+         "overnight": "Onboard Deccan Odyssey heading toward Mumbai", "meals": "Breakfast, Lunch & Farewell Gala Dinner onboard"},
+        {"day": 8, "title": "Arrival at Mumbai (CSMT) & Farewell",
+         "paragraphs": [
+             "Your grand trans-India odyssey draws to a close as Deccan Odyssey rolls into Mumbai's Chhatrapati Shivaji Maharaj Terminus (CSMT) around 08:15 hrs. Enjoy your final gourmet breakfast onboard.",
+             "Disembark with fond farewells from your carriage attendants and train staff. Private chauffeurs assist with your onward transfer to Mumbai international airport or your luxury hotel in South Mumbai."
+         ],
+         "overnight": "Tour Concludes", "meals": "Breakfast onboard"}
+    ]
+
+    io_departures = [
+        ("November 2026", "07 Nov 2026 (Saturday)"),
+        ("December 2026", "12 Dec 2026 (Saturday)"),
+        ("January 2027", "09 Jan, 30 Jan 2027 (Saturday)"),
+        ("March 2027", "13 Mar 2027 (Saturday)"),
+        ("April 2027", "24 Apr 2027 (Saturday)"),
+        ("October 2027", "16 Oct 2027 (Saturday)"),
+        ("November 2027", "06 Nov 2027 (Saturday)"),
+        ("December 2027", "11 Dec 2027 (Saturday)"),
+        ("January 2028", "08 Jan 2028 (Saturday)"),
+        ("March 2028", "11 Mar 2028 (Saturday)"),
+        ("April 2028", "22 Apr 2028 (Saturday)")
+    ]
+
+    # --- 5.3 CIRCUIT: Indian Sojourn ---
+    is_days = [
+        {"day": 1, "title": "Boarding at Mumbai (CSMT) & Departure Northward",
+         "paragraphs": [
+             "Check in at Mumbai CSMT station by 15:30 hrs with a grand red-carpet reception, marigold garlands, and traditional coastal musical welcome. Board the Deccan Odyssey and settle into your suite before the train sets off northward toward Gujarat.",
+             "Gather in the Gateway Lounge for a champagne toast with your fellow travelers, followed by a multi-course dinner prepared by the train's master chefs as you cross the Western Ghats."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Vadodara", "meals": "Dinner onboard"},
+        {"day": 2, "title": "Vadodara – UNESCO Champaner-Pavagadh & Laxmi Vilas Palace",
+         "paragraphs": [
+             "Arrive at Vadodara in Gujarat. Disembark after breakfast to explore the UNESCO World Heritage monuments of Champaner-Pavagadh, where pre-Mughal Islamic architecture blends with traditional Gujarati stonework at the Jami Masjid.",
+             "After returning to the train for lunch, visit Laxmi Vilas Palace, one of the world's largest private residences with an eclectic mix of Hindu, Gothic, and Mughal design. Tour the Durbar Hall with its Belgian stained glass, and savor high tea on the palace grounds."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Udaipur", "meals": "Breakfast & Lunch onboard · Royal High Tea in Vadodara · Dinner onboard"},
+        {"day": 3, "title": "Udaipur – Lake Pichola Boat Cruise & City Palace",
+         "paragraphs": [
+             "The train arrives in Udaipur, Rajasthan's romantic lake city. Visit the sprawling City Palace complex overlooking Lake Pichola, exploring the ornate Mor Chowk with its jewel-toned peacock mosaics and the Zenana Mahal queen's quarters.",
+             "Cruise along Lake Pichola in a private motorboat, viewing Jag Mandir and the Taj Lake Palace glistening on the water. In the afternoon, explore the tranquil royal fountains of Sahelion Ki Bari before returning to the train."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Jodhpur", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 4, "title": "Jodhpur – Mehrangarh Fort & Old Blue City Bazaar Walk",
+         "paragraphs": [
+             "Roll into Jodhpur, the Sun City. Drive up to the mighty Mehrangarh Fort, perched on a 400-foot perpendicular cliff. Walk through the Daulat Khana museum housing gilded palanquins, elephant howdahs, and royal Marwar miniatures.",
+             "Visit the serene white marble cenotaphs of Jaswant Thada, then take a private guided tuk-tuk walk through the blue-painted lanes around the historic Clock Tower and Sardar Market, famous for spices, Mathaniya chilies, and handwoven textiles."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Agra", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 5, "title": "Agra – The Taj Mahal at Sunrise & Imperial Agra Fort",
+         "paragraphs": [
+             "Experience the Taj Mahal at first light, when the morning mist rises off the Yamuna River and the white Makrana marble glows in golden dawn colors. Your expert guide shares the architectural secrets and romantic history of the monument.",
+             "Following breakfast at a 5-star hotel, explore the massive red sandstone walls and palaces of Agra Fort, including the Khas Mahal and the Musamman Burj tower where Shah Jahan spent his final years gazing at the Taj Mahal."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Sawai Madhopur", "meals": "Breakfast at 5-star Hotel · Lunch & Dinner onboard"},
+        {"day": 6, "title": "Sawai Madhopur – Jungle Safari in Ranthambore Tiger Reserve",
+         "paragraphs": [
+             "Early morning arrival at Sawai Madhopur. Board open safari jeeps for an exhilarating game drive into Ranthambore National Park, one of India's most celebrated wildlife reserves.",
+             "Track Royal Bengal tigers along ancient lakes and under the shadow of the 10th-century Ranthambore Fort. Watch for leopards, spotted deer, marsh crocodiles, and rare bird species. Return to the train for lunch and an afternoon village walk before dinner."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Jaipur", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 7, "title": "Jaipur – Amber Fort, City Palace & Gala Dinner",
+         "paragraphs": [
+             "Spend the day exploring Jaipur, the Pink City. Ascend to Amber Fort, admiring the Sheesh Mahal mirror palace and panoramic views of Maota Lake. Visit City Palace, the astronomical observatory Jantar Mantar, and make a photo stop at Hawa Mahal.",
+             "In the evening, attend a private royal banquet with folk musicians, Kalbeliya dancers, and authentic Rajasthani culinary specialties."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward New Delhi", "meals": "Breakfast onboard · Lunch in Jaipur · Dinner onboard"},
+        {"day": 8, "title": "Arrival at New Delhi (Safdarjung) & Farewell",
+         "paragraphs": [
+             "The Deccan Odyssey arrives at Delhi Safdarjung Railway Station around 08:00 hrs. Enjoy your final gourmet breakfast in the dining car before completing disembarkation formalities.",
+             "Bid farewell to the crew with royal memories of India's palaces, tiger sanctuaries, and UNESCO monuments. Private airport transfers and Delhi extensions are arranged seamlessly by KoiKoi Travel."
+         ],
+         "overnight": "Tour Concludes", "meals": "Breakfast onboard"}
+    ]
+
+    is_departures = [
+        ("October 2026", "03 Oct, 24 Oct 2026 (Saturday)"),
+        ("December 2026", "19 Dec 2026 (Saturday)"),
+        ("January 2027", "23 Jan 2027 (Saturday)"),
+        ("February 2027", "20 Feb 2027 (Saturday)"),
+        ("April 2027", "03 Apr 2027 (Saturday)"),
+        ("October 2027", "09 Oct, 23 Oct 2027 (Saturday)"),
+        ("November 2027", "13 Nov 2027 (Saturday)"),
+        ("December 2027", "18 Dec 2027 (Saturday)"),
+        ("February 2028", "19 Feb 2028 (Saturday)"),
+        ("April 2028", "01 Apr 2028 (Saturday)")
+    ]
+
+    # --- 5.4 CIRCUIT: Maharashtra Wild Trail ---
+    mwt_days = [
+        {"day": 1, "title": "Boarding at Mumbai (CSMT) & Departure toward Marathwada",
+         "paragraphs": [
+             "Board the royal blue carriages of Deccan Odyssey at Mumbai CSMT by 15:30 hrs. Receive a traditional Maharashtrian welcome with garlands, tutari horns, and sweet offerings.",
+             "Settle into your deluxe cabin as the train departs Mumbai, climbing through the Western Ghats tunnels toward Aurangabad. Enjoy dinner onboard in the Waavar restaurant."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Aurangabad", "meals": "Dinner onboard"},
+        {"day": 2, "title": "Aurangabad – Kailash Temple at Ellora Caves & Bibi Ka Maqbara",
+         "paragraphs": [
+             "Morning arrival in Aurangabad. Disembark after breakfast to explore the UNESCO World Heritage Ellora Caves, focusing on Cave 16: the breathtaking monolithic Kailash Temple carved from top to bottom out of a single rock cliff.",
+             "Return to the train for lunch, followed by an afternoon visit to Bibi Ka Maqbara, the graceful 17th-century mausoleum built by Prince Azam Shah, and explore local workshops weaving traditional gold-bordered Paithani silk sarees."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Ramtek", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 3, "title": "Aurangabad & Daulatabad Hill Fortress",
+         "paragraphs": [
+             "Today explore the impregnable medieval hill citadel of Daulatabad (Devgiri), rising dramatically on a conical hill. Walk across the moat and through the ingenious dark labyrinth ('Andhari') designed to confuse invading armies.",
+             "Return to the Deccan Odyssey for an afternoon of leisure, spa treatments in the Ayush wellness car, and scenic cruising through the heart of the Deccan plateau toward Central India's tiger country."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Ramtek (Pench)", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 4, "title": "Ramtek – Morning & Afternoon Safaris in Pench Tiger Reserve",
+         "paragraphs": [
+             "Arrive at Ramtek station, gateway to Pench National Park—the legendary jungle setting of Rudyard Kipling's *The Jungle Book*. Board open 4x4 safari vehicles for an early morning game drive through teak and bamboo forests.",
+             "Search for Royal Bengal tigers, leopards, wild dogs (dhole), gaur (Indian bison), and spotted deer. After lunch at a luxury jungle resort, embark on a late afternoon safari to catch predators on the prowl at sunset."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Warora", "meals": "Breakfast onboard · Resort Lunch in Pench · Dinner onboard"},
+        {"day": 5, "title": "Warora – Twin Safaris in Tadoba-Andhari Tiger Reserve",
+         "paragraphs": [
+             "Arrive in Warora for a full day inside Tadoba-Andhari Tiger Reserve, Maharashtra's oldest, largest, and most tiger-dense national park. Known as 'The Land of the Tigers', Tadoba offers some of the highest tiger-sighting probabilities in the world.",
+             "Enjoy both morning and afternoon game drives through the Moharli and Kolara zones, tracking tigers near waterholes, observing sloth bears foraging for termites, and spotting marsh crocodiles in Tadoba Lake. Return to the train for evening celebrations."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Jalgaon", "meals": "Breakfast onboard · Safari Lodge Lunch · Dinner onboard"},
+        {"day": 6, "title": "Jalgaon – Ancient Buddhist Caves of Ajanta",
+         "paragraphs": [
+             "Disembark at Jalgaon for the UNESCO World Heritage site of Ajanta Caves. Explore the 30 rock-cut Buddhist chaityas and viharas perched above the scenic river bend.",
+             "Marvel at the remarkably preserved 2nd-century BCE mural paintings narrating Jataka tales of Buddha's previous lives. Return to the train for afternoon high tea and relaxation."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Nashik", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 7, "title": "Nashik – Godavari Temple Ghats & Sula Vineyards Wine Tasting",
+         "paragraphs": [
+             "Arrive in Nashik, Maharashtra's holy river city and premier wine valley. Visit the sacred Ramkund ghats on the Godavari River and the historic black-stone Kalaram Temple.",
+             "In the afternoon, tour Sula or Grover Zampa Vineyards for an exclusive barrel-room tasting of fine Indian wines paired with lunch. Reboard Deccan Odyssey for your farewell gala dinner as the train journeys back to Mumbai."
+         ],
+         "overnight": "Onboard Deccan Odyssey heading toward Mumbai", "meals": "Breakfast onboard · Vineyard Lunch · Farewell Gala Dinner"},
+        {"day": 8, "title": "Arrival at Mumbai (CSMT) & Farewell",
+         "paragraphs": [
+             "Arrive back at Mumbai CSMT around 08:15 hrs. Enjoy a hearty farewell breakfast onboard before concluding your wilderness and heritage expedition through Maharashtra.",
+             "Disembark with personalized assistance from your train crew. Chauffeur transfers to Mumbai airports or hotels are arranged by KoiKoi Travel."
+         ],
+         "overnight": "Tour Concludes", "meals": "Breakfast onboard"}
+    ]
+
+    mwt_departures = [
+        ("January 2027", "16 Jan 2027 (Saturday)"),
+        ("March 2027", "27 Mar 2027 (Saturday)"),
+        ("May 2027", "01 May 2027 (Saturday)"),
+        ("October 2027", "02 Oct 2027 (Saturday)"),
+        ("March 2028", "25 Mar 2028 (Saturday)"),
+        ("May 2028", "06 May 2028 (Saturday)")
+    ]
+
+    # --- 5.5 CIRCUIT: Heritage Odyssey ---
+    ho_days = [
+        {"day": 1, "title": "Boarding at New Delhi (Safdarjung) & Departure",
+         "paragraphs": [
+             "Arrive at Delhi Safdarjung Station by 18:00 hrs for a traditional red-carpet welcome with folk drummers and flower garlands. Meet your carriage attendant and settle into your suite.",
+             "The Deccan Odyssey departs into the evening heading toward Agra. Enjoy a welcoming dinner in the Waavar dining car as royal rail life begins."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Agra", "meals": "Dinner onboard"},
+        {"day": 2, "title": "Agra – Sunrise at Taj Mahal & Agra Fort",
+         "paragraphs": [
+             "Experience the Taj Mahal at dawn, witnessing the morning light illuminate Shah Jahan's marble masterpiece without the crowds. Return for a lavish breakfast at a 5-star hotel.",
+             "Visit the imposing Agra Fort, exploring the Diwan-i-Am, Diwan-i-Khas, and Jahangiri Mahal. In the afternoon, browse local handicrafts and marble inlay workshops before the train heads to Ranthambore."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Sawai Madhopur", "meals": "Breakfast at 5-star Hotel · Lunch & Dinner onboard"},
+        {"day": 3, "title": "Sawai Madhopur – Ranthambore Tiger Safari",
+         "paragraphs": [
+             "Early morning safari in Ranthambore National Park in open 4x4 vehicles. Track Royal Bengal tigers, leopards, marsh crocodiles, and sambar deer through deciduous forests.",
+             "Return to the train for lunch and an afternoon village visit or high tea at a heritage lodge before departing westward toward the Lake City."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Udaipur", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 4, "title": "Udaipur – Lake Pichola Cruise & City Palace",
+         "paragraphs": [
+             "Disembark in Udaipur after breakfast to explore the City Palace, Rajasthan's largest royal residence. Walk through the mirrored halls of Sheesh Mahal and the peacock courtyards.",
+             "Enjoy a scenic boat cruise on Lake Pichola with views of Jag Mandir and the Lake Palace, followed by a visit to the royal gardens of Sahelion Ki Bari."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Jodhpur", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 5, "title": "Jodhpur – Mehrangarh Fort & Jaswant Thada",
+         "paragraphs": [
+             "Arrive in Jodhpur, the Blue City. Climb to Mehrangarh Fort, towering 400 feet above the city skyline. Tour the royal palanquins, weaponry, and miniature painting galleries.",
+             "Visit the white marble memorial of Jaswant Thada and take a guided walk through the lively spice and textile markets surrounding the Clock Tower."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Jaisalmer", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 6, "title": "Jaisalmer – The Living Golden Fort & Sam Sand Dunes Camel Safari",
+         "paragraphs": [
+             "Wake up in the Golden City of Jaisalmer in the heart of the Great Indian Thar Desert. Walk inside the 12th-century living Jaisalmer Fort, home to thousands of residents, ancient Jain temples, and ornate merchant havelis like Patwon Ki Haveli.",
+             "In the afternoon, travel to the Sam Sand Dunes. Mount camels for a sunset desert trek over golden rippling dunes, followed by a traditional Rajasthani campfire dinner with folk music and Kalbeliya fire dancers under the starlit desert sky."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Jaipur", "meals": "Breakfast & Lunch onboard · Desert Camp Dinner on Sam Dunes"},
+        {"day": 7, "title": "Jaipur – Amber Fort, City Palace & Royal Banquet",
+         "paragraphs": [
+             "Explore Jaipur's architectural wonders starting with the hilltop Amber Fort. Tour the mirror-encrusted Sheesh Mahal and scenic courtyards.",
+             "In the afternoon, visit the City Palace museum and Jantar Mantar observatory, followed by a royal farewell banquet with authentic Rajasthani cuisine."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward New Delhi", "meals": "Breakfast onboard · Lunch in Jaipur · Farewell Dinner onboard"},
+        {"day": 8, "title": "Arrival at New Delhi (Safdarjung) & Farewell",
+         "paragraphs": [
+             "The train arrives at Delhi Safdarjung Station around 08:00 hrs. Enjoy your final breakfast onboard before completing disembarkation formalities.",
+             "Disembark with indelible memories of Rajasthan's royal capitals, forts, and desert dunes. Transfers and Delhi city tours arranged by KoiKoi Travel."
+         ],
+         "overnight": "Tour Concludes", "meals": "Breakfast onboard"}
+    ]
+
+    ho_departures = [
+        ("October 2026", "31 Oct 2026 (Saturday)"),
+        ("November 2026", "21 Nov 2026 (Saturday)"),
+        ("December 2026", "05 Dec 2026 (Saturday)"),
+        ("January 2027", "02 Jan 2027 (Saturday)"),
+        ("February 2027", "27 Feb 2027 (Saturday)"),
+        ("April 2027", "17 Apr 2027 (Saturday)"),
+        ("October 2027", "30 Oct 2027 (Saturday)"),
+        ("November 2027", "20 Nov 2027 (Saturday)"),
+        ("December 2027", "04 Dec 2027 (Saturday)"),
+        ("January 2028", "01 Jan 2028 (Saturday)"),
+        ("February 2028", "26 Feb 2028 (Saturday)"),
+        ("April 2028", "15 Apr 2028 (Saturday)")
+    ]
+
+    # --- 5.6 CIRCUIT: Cultural Odyssey ---
+    co_days = [
+        {"day": 1, "title": "Boarding at New Delhi (Safdarjung) & Departure",
+         "paragraphs": [
+             "Check in at Delhi Safdarjung station by 18:00 hrs with a celebratory garland welcome and traditional music. Settle into your suite as the Deccan Odyssey departs into the evening.",
+             "Meet your tour directors in the Gateway Lounge for a welcome toast before dinner in the dining car."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Sawai Madhopur", "meals": "Dinner onboard"},
+        {"day": 2, "title": "Sawai Madhopur – Ranthambore Tiger Safari",
+         "paragraphs": [
+             "Morning game drive in Ranthambore National Park tracking Royal Bengal tigers and diverse wildlife across lakes and forest ravines.",
+             "Return to the train for lunch and afternoon relaxation as the train journeys toward the Pink City of Jaipur."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Jaipur", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 3, "title": "Jaipur – Amber Fort, City Palace & Observatory",
+         "paragraphs": [
+             "Tour Amber Fort with its mirror-encrusted Sheesh Mahal, followed by the City Palace museum and Jantar Mantar stone observatory. Photo stop at Hawa Mahal.",
+             "Enjoy an afternoon shopping excursion for authentic Jaipur block prints and blue pottery before dinner onboard."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Agra", "meals": "Breakfast & Dinner onboard · Heritage Lunch in Jaipur"},
+        {"day": 4, "title": "Agra – Taj Mahal Sunrise & Agra Fort",
+         "paragraphs": [
+             "Sunrise visit to the iconic Taj Mahal, followed by breakfast at a 5-star hotel and a comprehensive tour of the massive red sandstone Agra Fort.",
+             "In the afternoon, watch master artisans create intricate marble inlay art before reboarding as the train heads toward the princely state of Gwalior."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Gwalior", "meals": "Breakfast at 5-star Hotel · Lunch & Dinner onboard"},
+        {"day": 5, "title": "Gwalior – Hilltop Gwalior Fort & Jai Vilas Palace",
+         "paragraphs": [
+             "Arrive in Gwalior, dominated by its ancient hilltop fort known as the 'Pearl of Indian Citadels'. Tour Man Mandir Palace with its turquoise tilework and the colossal 15th-century rock-cut Jain sculptures.",
+             "Visit Jai Vilas Palace, residence of the Scindia dynasty. Marvel at the grand Durbar Hall holding the world's largest crystal chandeliers and the famous solid silver model train that transported cigars and spirits across the dining table."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Orchha & Khajuraho", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 6, "title": "Orchha & Khajuraho – Bundela Palaces & UNESCO Temples",
+         "paragraphs": [
+             "Morning exploration of Orchha on the banks of the Betwa River. Visit Jahangir Mahal, Raj Mahal, and the royal chhatri cenotaphs.",
+             "In the afternoon, visit the world-renowned UNESCO World Heritage Western Group of Temples at Khajuraho, admiring the intricate 10th-century Chandela stone sculptures representing the full spectrum of medieval Indian life and spiritual love."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward Varanasi", "meals": "Breakfast, Lunch & Dinner onboard"},
+        {"day": 7, "title": "Varanasi – Sarnath & Sacred Ganga Aarti by Boat",
+         "paragraphs": [
+             "Arrive in Varanasi, the spiritual heart of India. Visit Sarnath where Lord Buddha preached his first sermon after enlightenment, seeing the Dhamek Stupa and the Ashoka Pillar capital.",
+             "At dusk, board a private wooden boat on the holy River Ganges to witness the mesmerizing Ganga Aarti ceremony at Dashashwamedh Ghat: priests chanting, brass lamps blazing, and thousands of floating flower diyas illuminating the sacred waters."
+         ],
+         "overnight": "Onboard Deccan Odyssey toward New Delhi", "meals": "Breakfast & Lunch onboard · Dinner onboard"},
+        {"day": 8, "title": "Arrival at New Delhi (Safdarjung) & Farewell",
+         "paragraphs": [
+             "Deccan Odyssey arrives at Delhi Safdarjung Station around 08:00 hrs. Enjoy your final gourmet breakfast onboard before disembarking with lifelong memories of India's cultural treasures.",
+             "Private transfers and post-tour extensions arranged by KoiKoi Travel."
+         ],
+         "overnight": "Tour Concludes", "meals": "Breakfast onboard"}
+    ]
+
+    co_departures = [
+        ("November 2026", "28 Nov 2026 (Saturday)"),
+        ("December 2026", "26 Dec 2026 (Saturday)"),
+        ("March 2027", "06 Mar 2027 (Saturday)"),
+        ("April 2027", "10 Apr 2027 (Saturday)"),
+        ("November 2027", "27 Nov 2027 (Saturday)"),
+        ("December 2027", "25 Dec 2027 (Saturday)"),
+        ("March 2028", "04 Mar 2028 (Saturday)"),
+        ("April 2028", "08 Apr 2028 (Saturday)")
+    ]
+
+    # --- 5.7 BUILD ALL 6 CIRCUIT PAGES ---
+    do_circuits_list = [
+        ("Circuit 1 · 7 Nights / 8 Days", "Maharashtra Splendour", "7 Nights / 8 Days",
+         "Maharashtra Splendour (Mumbai to Mumbai · 8D/7N)",
+         "Mumbai → Nashik → Aurangabad (Ellora Caves) → Ajanta Caves → Kolhapur → Goa → Sindhudurg → Mumbai",
+         "$6,650 USD / ₹5,52,000 INR", "Mumbai (CSMT)", "Mumbai (CSMT)", "8 Destinations",
+         do_hero_imgs,
+         ["UNESCO Ellora Caves: Kailash Monolithic Rock Temple (Cave 16)",
+          "UNESCO Ajanta Caves: 30 Buddhist Rock-Cut Fresco Sanctuaries",
+          "Private Sommelier Wine Tasting at Sula & Grover Vineyards in Nashik",
+          "Kolhapur Royal Martial Arts (Mardani Khel) & 1,300-Year-Old Mahalakshmi Temple",
+          "Goa Heritage Walk in Fontainhas Latin Quarter & Spice Plantation Lunch",
+          "Historic 17th-Century Island Sea Fortress of Sindhudurg on the Konkan Coast"],
+         "<p>The Maharashtra Splendour is Deccan Odyssey's signature royal voyage through the heart of the Maratha Empire. Departing from Mumbai's UNESCO-listed Victorian terminus, this week-long journey covers Western India's greatest historical monuments, premier vineyards, and coastal wonders without ever changing your hotel room.</p><p>Marvel at the monumental engineering of Kailash Temple at Ellora, the luminous Buddhist frescoes of Ajanta, the martial heritage of Kolhapur, and the sun-kissed Portuguese heritage of Goa. Every evening, return to your private air-conditioned suite, gourmet multi-course dinners, and the Gateway lounge bar.</p>",
+         ms_days, ms_departures, do_price_data, do_common_faqs, "maharashtra-splendour"),
+
+        ("Circuit 2 · 7 Nights / 8 Days", "Indian Odyssey", "7 Nights / 8 Days",
+         "Indian Odyssey (New Delhi to Mumbai · 8D/7N)",
+         "New Delhi → Sawai Madhopur → Agra → Jaipur → Udaipur → Vadodara → Aurangabad (Ellora) → Mumbai",
+         "$6,650 USD / ₹5,52,000 INR", "New Delhi (Safdarjung)", "Mumbai (CSMT)", "8 Destinations",
+         do_hero_imgs,
+         ["Sunrise at the Taj Mahal & Imperial Agra Fort in Uttar Pradesh",
+          "Morning 4x4 Tiger Safari in Ranthambore National Park",
+          "Amber Fort & City Palace in Rajasthan's Royal Pink City of Jaipur",
+          "Lake Pichola Private Boat Cruise & City Palace in Romantic Udaipur",
+          "UNESCO Champaner-Pavagadh & Grand Laxmi Vilas Palace in Gujarat",
+          "Monolithic Kailash Temple (Cave 16) at Ellora Caves in Maharashtra"],
+         "<p>Connecting the national capital of New Delhi with the coastal commercial capital of Mumbai, the Indian Odyssey is a majestic trans-India rail expedition spanning four distinct states: Delhi, Rajasthan, Gujarat, and Maharashtra.</p><p>Experience sunrise at the Taj Mahal, track Royal Bengal tigers in Ranthambore, explore lakeside palaces in Udaipur, admire royal Gaekwad opulence at Laxmi Vilas Palace, and marvel at the rock-cut wonders of Ellora.</p>",
+         io_days, io_departures, do_price_data, do_common_faqs, "indian-odyssey"),
+
+        ("Circuit 3 · 7 Nights / 8 Days", "Indian Sojourn", "7 Nights / 8 Days",
+         "Indian Sojourn (Mumbai to New Delhi · 8D/7N)",
+         "Mumbai → Vadodara → Udaipur → Jodhpur → Agra → Sawai Madhopur → Jaipur → New Delhi",
+         "$6,650 USD / ₹5,52,000 INR", "Mumbai (CSMT)", "New Delhi (Safdarjung)", "8 Destinations",
+         do_hero_imgs,
+         ["UNESCO Champaner-Pavagadh & Royal High Tea at Laxmi Vilas Palace",
+          "Lake Pichola Cruise & City Palace Exploration in White City Udaipur",
+          "Imposing Mehrangarh Fort & Blue City Bazaars in Jodhpur",
+          "Mughal Grandeur: Taj Mahal Sunrise Visit & Red Sandstone Agra Fort",
+          "Wildlife Game Drives Tracking Tigers in Ranthambore National Park",
+          "Amber Fort & Royal Rajasthani Banquet Dinner in Jaipur"],
+         "<p>Traversing from the Arabian Sea coast of Mumbai up to the historic capital of New Delhi, the Indian Sojourn is a luxurious 8-day rail voyage through the royal heartlands of Gujarat and Rajasthan.</p><p>Discover the colossal Laxmi Vilas Palace in Vadodara, romantic lake islands in Udaipur, the blue city and cliff-top fortress of Jodhpur, tiger-rich jungles of Ranthambore, and the timeless beauty of the Taj Mahal.</p>",
+         is_days, is_departures, do_price_data, do_common_faqs, "indian-sojourn"),
+
+        ("Circuit 4 · 7 Nights / 8 Days", "Maharashtra Wild Trail", "7 Nights / 8 Days",
+         "Maharashtra Wild Trail (Mumbai to Mumbai · 8D/7N)",
+         "Mumbai → Aurangabad (Ellora Caves) → Pench (Ramtek) → Tadoba (Warora) → Ajanta Caves → Nashik → Mumbai",
+         "$6,650 USD / ₹5,52,000 INR", "Mumbai (CSMT)", "Mumbai (CSMT)", "7 Destinations",
+         do_hero_imgs,
+         ["Twin Tiger Safaris in Maharashtra's Premier Reserves: Tadoba & Pench",
+          "Pench National Park: The Iconic Setting of Kipling's Jungle Book",
+          "Tadoba-Andhari Tiger Reserve: Prime Tiger & Sloth Bear Habitats",
+          "Both UNESCO World Heritage Cave Complexes: Monolithic Ellora & Buddhist Ajanta",
+          "Bibi Ka Maqbara & Daulatabad Hill Fortress in Historic Aurangabad",
+          "Godavari River Ghats Heritage Walk & Sula Vineyards Wine Tasting in Nashik"],
+         "<p>Designed for wildlife enthusiasts and heritage travelers, the Maharashtra Wild Trail pairs two of India's most celebrated tiger reserves—Tadoba-Andhari and Pench—with the monumental rock-cut art of Ellora and Ajanta.</p><p>Track apex predators on open-top jeep safaris through dense teak forests by day, and return each evening to 5-star comfort, gourmet dining, and royal hospitality onboard the blue limousine of Indian rails.</p>",
+         mwt_days, mwt_departures, do_price_data, do_common_faqs, "maharashtra-wild-trail"),
+
+        ("Circuit 5 · 7 Nights / 8 Days", "Heritage Odyssey", "7 Nights / 8 Days",
+         "Heritage Odyssey (New Delhi to New Delhi · 8D/7N)",
+         "New Delhi → Agra → Sawai Madhopur → Udaipur → Jodhpur → Jaisalmer → Jaipur → New Delhi",
+         "$6,650 USD / ₹5,52,000 INR", "New Delhi (Safdarjung)", "New Delhi (Safdarjung)", "8 Destinations",
+         do_hero_imgs,
+         ["Complete Princely Rajasthan Circle: Jaipur, Jodhpur, Udaipur & Jaisalmer",
+          "Living Golden Fort & Sam Sand Dunes Sunset Camel Safari in Jaisalmer",
+          "Mehrangarh Fort & Jaswant Thada Cenotaphs in Sun City Jodhpur",
+          "Lake Pichola Cruise & City Palace in Romantic Udaipur",
+          "Ranthambore National Park Morning 4x4 Tiger Safari",
+          "Taj Mahal Sunrise Experience & Imperial Agra Fort in Agra"],
+         "<p>The Heritage Odyssey is the definitive royal Rajasthan rail journey, sweeping across the desert realm of kings in complete 5-star elegance. From the golden dunes of Jaisalmer to the blue lanes of Jodhpur and the marble palaces of Udaipur, experience the magic of the Thar Desert without the fatigue of long highway drives.</p><p>Complete your week with thrilling tiger safaris in Ranthambore and sunrise at the Taj Mahal before returning gracefully to New Delhi.</p>",
+         ho_days, ho_departures, do_price_data, do_common_faqs, "heritage-odyssey"),
+
+        ("Circuit 6 · 7 Nights / 8 Days", "Cultural Odyssey", "7 Nights / 8 Days",
+         "Cultural Odyssey (New Delhi to New Delhi · 8D/7N)",
+         "New Delhi → Sawai Madhopur → Jaipur → Agra → Gwalior → Orchha & Khajuraho → Varanasi → New Delhi",
+         "$6,650 USD / ₹5,52,000 INR", "New Delhi (Safdarjung)", "New Delhi (Safdarjung)", "8 Destinations",
+         do_hero_imgs,
+         ["Sacred Varanasi: Evening Ganga Aarti Ceremony by Private Boat on the Holy Ghats",
+          "UNESCO Western Group of Temples in Khajuraho with Exquisite Chandela Sculptures",
+          "Medieval Riverside Palaces & Chhatris of Orchha on the Betwa River",
+          "Imposing Hilltop Gwalior Fort & Scindia Dynasty's Jai Vilas Palace",
+          "Taj Mahal Sunrise & Imperial Agra Fort in Agra",
+          "Amber Fort in Jaipur & Tiger Safari in Ranthambore National Park"],
+         "<p>The Cultural Odyssey is an unmatched spiritual and architectural voyage connecting India's most venerated cultural landmarks. From the royal palaces of Rajasthan to the celestial erotic temples of Khajuraho and the timeless spiritual energy of Varanasi on the sacred Ganges, this journey encompasses the philosophical soul of India.</p><p>Experience evening Ganga Aarti from a private boat, explore Bundela river palaces in Orchha, and marvel at the colossal rock carvings of Gwalior in supreme comfort.</p>",
+         co_days, co_departures, do_price_data, do_common_faqs, "cultural-odyssey")
+    ]
+
+    for c in do_circuits_list:
+        c_tag, c_name, c_dur, c_title, c_route, c_sp, c_orig, c_dest, c_count, c_imgs, c_hl, c_ov, c_days, c_deps, c_prices, c_faqs, c_slug = c
+        c_html = build_koikoi_circuit_page(
+            c_tag, c_name, c_dur, c_title, c_route, c_sp,
+            c_orig, c_dest, c_count,
+            c_imgs, c_hl, c_ov, c_days,
+            c_deps, c_prices, c_faqs,
+            train_slug="deccan-odyssey", train_name="Deccan Odyssey",
+            inc_exc_html=do_inc_exc
+        )
+        write_page(f"{base_dir}/deccan-odyssey/{c_slug}/index.html",
+                   f"{c_title} | Deccan Odyssey Luxury Train | KoiKoi Travel",
+                   f"Official {c_name} itinerary on Deccan Odyssey luxury train: {c_dur}, day-by-day sightseeing, route, official tariffs, and 2026–2028 departures.",
+                   c_html, active_train="deccan-odyssey", active_tab=c_slug, base_path=base_path)
+
+    # --- 5.8 DECCAN ODYSSEY OVERVIEW PAGE (UPGRADED WITH ALL 6 CIRCUIT CARDS) ---
+    do_cards_html = """
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin-top:28px">
+      <!-- Circuit 1: Maharashtra Splendour -->
+      <article style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <div style="height:210px;position:relative;background-image:linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.55)),url('/images/luxury-trains/deccan-odyssey/exterior.jpg');background-size:cover;background-position:center;padding:16px;display:flex;flex-direction:column;justify-content:space-between">
+            <span style="align-self:flex-start;background:rgba(2,6,23,0.7);backdrop-filter:blur(6px);color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.2)">
+              7 Nights / 8 Days
+            </span>
+            <div style="color:#fff">
+              <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#F8904D">Signature Circuit 1</span>
+              <h3 style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;margin:2px 0 0;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,0.8)">Maharashtra Splendour</h3>
+            </div>
+          </div>
+          <div style="padding:20px">
+            <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">
+              <span>Mumbai → Goa → Ajanta &amp; Ellora → Mumbai</span>
+            </div>
+            <p style="font-size:13.5px;color:#475569;line-height:1.6;margin-bottom:14px">
+              Explore the monumental rock-cut Kailash temple at Ellora, 2,200-year-old Buddhist murals at Ajanta, Sula vineyard tastings in Nashik, and Goan Latin Quarter heritage.
+            </p>
+            <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:10px;padding:10px 12px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+              <div>
+                <div style="font-size:10px;font-weight:700;color:#9a3412;text-transform:uppercase">Official Starting Tariff</div>
+                <div style="font-size:11px;color:#64748b">Per Person · Deluxe Twin</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-family:'Outfit',sans-serif;font-weight:800;font-size:16px;color:#ea580c">$6,650 USD</div>
+                <div style="font-size:11px;font-weight:700;color:#64748b">₹5,52,000 INR</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:0 20px 20px">
+          <a href="{base_path}/deccan-odyssey/maharashtra-splendour" style="display:block;background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:11px 16px;border-radius:10px;text-align:center;text-decoration:none;transition:background .2s">
+            View Itinerary &amp; Tariffs &rarr;
+          </a>
+        </div>
+      </article>
+
+      <!-- Circuit 2: Indian Odyssey -->
+      <article style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <div style="height:210px;position:relative;background-image:linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.55)),url('/images/luxury-trains/deccan-odyssey/hero.jpg');background-size:cover;background-position:center;padding:16px;display:flex;flex-direction:column;justify-content:space-between">
+            <span style="align-self:flex-start;background:rgba(2,6,23,0.7);backdrop-filter:blur(6px);color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.2)">
+              7 Nights / 8 Days
+            </span>
+            <div style="color:#fff">
+              <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#F8904D">Grand Trans-India · Circuit 2</span>
+              <h3 style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;margin:2px 0 0;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,0.8)">Indian Odyssey</h3>
+            </div>
+          </div>
+          <div style="padding:20px">
+            <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">
+              <span>New Delhi → Agra → Rajasthan → Mumbai</span>
+            </div>
+            <p style="font-size:13.5px;color:#475569;line-height:1.6;margin-bottom:14px">
+              Connecting Delhi to Mumbai via the Taj Mahal, Ranthambore tiger safari, Amber Fort in Jaipur, Lake Pichola in Udaipur, and Laxmi Vilas Palace in Vadodara.
+            </p>
+            <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:10px;padding:10px 12px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+              <div>
+                <div style="font-size:10px;font-weight:700;color:#9a3412;text-transform:uppercase">Official Starting Tariff</div>
+                <div style="font-size:11px;color:#64748b">Per Person · Deluxe Twin</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-family:'Outfit',sans-serif;font-weight:800;font-size:16px;color:#ea580c">$6,650 USD</div>
+                <div style="font-size:11px;font-weight:700;color:#64748b">₹5,52,000 INR</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:0 20px 20px">
+          <a href="{base_path}/deccan-odyssey/indian-odyssey" style="display:block;background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:11px 16px;border-radius:10px;text-align:center;text-decoration:none;transition:background .2s">
+            View Itinerary &amp; Tariffs &rarr;
+          </a>
+        </div>
+      </article>
+
+      <!-- Circuit 3: Indian Sojourn -->
+      <article style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <div style="height:210px;position:relative;background-image:linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.55)),url('/images/luxury-trains/deccan-odyssey/dining-lounge.jpg');background-size:cover;background-position:center;padding:16px;display:flex;flex-direction:column;justify-content:space-between">
+            <span style="align-self:flex-start;background:rgba(2,6,23,0.7);backdrop-filter:blur(6px);color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.2)">
+              7 Nights / 8 Days
+            </span>
+            <div style="color:#fff">
+              <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#F8904D">Royal Heritage · Circuit 3</span>
+              <h3 style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;margin:2px 0 0;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,0.8)">Indian Sojourn</h3>
+            </div>
+          </div>
+          <div style="padding:20px">
+            <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">
+              <span>Mumbai → Vadodara → Jodhpur → New Delhi</span>
+            </div>
+            <p style="font-size:13.5px;color:#475569;line-height:1.6;margin-bottom:14px">
+              From Mumbai to Delhi via Gujarat's royal palace in Vadodara, Udaipur's lakes, Jodhpur's cliff-top Mehrangarh Fort, Ranthambore tigers, and the Taj Mahal.
+            </p>
+            <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:10px;padding:10px 12px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+              <div>
+                <div style="font-size:10px;font-weight:700;color:#9a3412;text-transform:uppercase">Official Starting Tariff</div>
+                <div style="font-size:11px;color:#64748b">Per Person · Deluxe Twin</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-family:'Outfit',sans-serif;font-weight:800;font-size:16px;color:#ea580c">$6,650 USD</div>
+                <div style="font-size:11px;font-weight:700;color:#64748b">₹5,52,000 INR</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:0 20px 20px">
+          <a href="{base_path}/deccan-odyssey/indian-sojourn" style="display:block;background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:11px 16px;border-radius:10px;text-align:center;text-decoration:none;transition:background .2s">
+            View Itinerary &amp; Tariffs &rarr;
+          </a>
+        </div>
+      </article>
+
+      <!-- Circuit 4: Maharashtra Wild Trail -->
+      <article style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <div style="height:210px;position:relative;background-image:linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.55)),url('/images/luxury-trains/deccan-odyssey/train-exterior.jpg');background-size:cover;background-position:center;padding:16px;display:flex;flex-direction:column;justify-content:space-between">
+            <span style="align-self:flex-start;background:rgba(2,6,23,0.7);backdrop-filter:blur(6px);color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.2)">
+              7 Nights / 8 Days
+            </span>
+            <div style="color:#fff">
+              <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#F8904D">Wildlife &amp; Caves · Circuit 4</span>
+              <h3 style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;margin:2px 0 0;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,0.8)">Maharashtra Wild Trail</h3>
+            </div>
+          </div>
+          <div style="padding:20px">
+            <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">
+              <span>Mumbai → Pench → Tadoba → Ajanta → Mumbai</span>
+            </div>
+            <p style="font-size:13.5px;color:#475569;line-height:1.6;margin-bottom:14px">
+              The ultimate nature circuit: game drives in Tadoba and Pench tiger reserves, paired with the ancient rock-cut cave temples of Ellora and Ajanta.
+            </p>
+            <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:10px;padding:10px 12px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+              <div>
+                <div style="font-size:10px;font-weight:700;color:#9a3412;text-transform:uppercase">Official Starting Tariff</div>
+                <div style="font-size:11px;color:#64748b">Per Person · Deluxe Twin</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-family:'Outfit',sans-serif;font-weight:800;font-size:16px;color:#ea580c">$6,650 USD</div>
+                <div style="font-size:11px;font-weight:700;color:#64748b">₹5,52,000 INR</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:0 20px 20px">
+          <a href="{base_path}/deccan-odyssey/maharashtra-wild-trail" style="display:block;background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:11px 16px;border-radius:10px;text-align:center;text-decoration:none;transition:background .2s">
+            View Itinerary &amp; Tariffs &rarr;
+          </a>
+        </div>
+      </article>
+
+      <!-- Circuit 5: Heritage Odyssey -->
+      <article style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <div style="height:210px;position:relative;background-image:linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.55)),url('/images/luxury-trains/deccan-odyssey/presidential-suite.jpg');background-size:cover;background-position:center;padding:16px;display:flex;flex-direction:column;justify-content:space-between">
+            <span style="align-self:flex-start;background:rgba(2,6,23,0.7);backdrop-filter:blur(6px);color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.2)">
+              7 Nights / 8 Days
+            </span>
+            <div style="color:#fff">
+              <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#F8904D">Desert Grand Circle · Circuit 5</span>
+              <h3 style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;margin:2px 0 0;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,0.8)">Heritage Odyssey</h3>
+            </div>
+          </div>
+          <div style="padding:20px">
+            <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">
+              <span>Delhi → Jaisalmer Dunes → Udaipur → Delhi</span>
+            </div>
+            <p style="font-size:13.5px;color:#475569;line-height:1.6;margin-bottom:14px">
+              Complete Rajasthan grand tour: living fort and Sam dunes sunset camel trek in Jaisalmer, Mehrangarh in Jodhpur, Udaipur lakes, and Taj Mahal.
+            </p>
+            <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:10px;padding:10px 12px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+              <div>
+                <div style="font-size:10px;font-weight:700;color:#9a3412;text-transform:uppercase">Official Starting Tariff</div>
+                <div style="font-size:11px;color:#64748b">Per Person · Deluxe Twin</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-family:'Outfit',sans-serif;font-weight:800;font-size:16px;color:#ea580c">$6,650 USD</div>
+                <div style="font-size:11px;font-weight:700;color:#64748b">₹5,52,000 INR</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:0 20px 20px">
+          <a href="{base_path}/deccan-odyssey/heritage-odyssey" style="display:block;background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:11px 16px;border-radius:10px;text-align:center;text-decoration:none;transition:background .2s">
+            View Itinerary &amp; Tariffs &rarr;
+          </a>
+        </div>
+      </article>
+
+      <!-- Circuit 6: Cultural Odyssey -->
+      <article style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <div style="height:210px;position:relative;background-image:linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.55)),url('/images/luxury-trains/deccan-odyssey/deluxe-cabin-double.jpg');background-size:cover;background-position:center;padding:16px;display:flex;flex-direction:column;justify-content:space-between">
+            <span style="align-self:flex-start;background:rgba(2,6,23,0.7);backdrop-filter:blur(6px);color:#fff;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.2)">
+              7 Nights / 8 Days
+            </span>
+            <div style="color:#fff">
+              <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#F8904D">Spiritual &amp; Temples · Circuit 6</span>
+              <h3 style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;margin:2px 0 0;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,0.8)">Cultural Odyssey</h3>
+            </div>
+          </div>
+          <div style="padding:20px">
+            <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">
+              <span>Delhi → Khajuraho → Varanasi Aarti → Delhi</span>
+            </div>
+            <p style="font-size:13.5px;color:#475569;line-height:1.6;margin-bottom:14px">
+              Evening Ganga Aarti by private boat in Varanasi, UNESCO Khajuraho temples, Orchha Bundela river palaces, Gwalior Fort, Taj Mahal, and Ranthambore tigers.
+            </p>
+            <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:10px;padding:10px 12px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+              <div>
+                <div style="font-size:10px;font-weight:700;color:#9a3412;text-transform:uppercase">Official Starting Tariff</div>
+                <div style="font-size:11px;color:#64748b">Per Person · Deluxe Twin</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-family:'Outfit',sans-serif;font-weight:800;font-size:16px;color:#ea580c">$6,650 USD</div>
+                <div style="font-size:11px;font-weight:700;color:#64748b">₹5,52,000 INR</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:0 20px 20px">
+          <a href="{base_path}/deccan-odyssey/cultural-odyssey" style="display:block;background:#0f172a;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:13.5px;padding:11px 16px;border-radius:10px;text-align:center;text-decoration:none;transition:background .2s">
+            View Itinerary &amp; Tariffs &rarr;
+          </a>
+        </div>
+      </article>
+    </div>
+"""
+
     do_overview = f"""
-<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{do_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.65) 0%,rgba(0,0,0,.30) 45%,transparent 80%),url('/images/luxury-trains/deccan-odyssey/hero.jpg');">
   <div class="wrap">
-    <span class="tag">DECCAN ODYSSEY · OVERVIEW</span>
-    <h1>The Blue Limousine on Rails</h1>
-    <p>Journey across ancient caves of Ajanta & Ellora, wine country Nashik, Goa, and tiger reserves in central India.</p>
-    <div class="cta">
-      <a class="btn btn-gold" href="{base_path}/deccan-odyssey/itinerary">View 6 Circuits</a>
-      <a class="btn btn-line" href="{base_path}/deccan-odyssey/price">Check Tariffs</a>
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(2,6,23,0.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);padding:6px 16px;border-radius:999px;color:#fff;font-size:11.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px">
+      <span style="width:6px;height:6px;border-radius:50%;background:#F8904D"></span>
+      <span>Asia's Leading Luxury Train</span>
+    </div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(30px,4.5vw,56px);font-weight:700;color:#fff;line-height:1.15;margin-bottom:12px">The Blue Limousine on Rails</h1>
+    <p style="font-size:clamp(14px,1.4vw,18px);color:#e2e8f0;max-width:720px;line-height:1.6;margin-bottom:24px">
+      Experience ancient caves of Ajanta &amp; Ellora, wine tastings in Nashik, royal palaces in Rajasthan, and tiger safaris across Maharashtra in 21 opulent royal carriages.
+    </p>
+    <div class="cta" style="display:flex;gap:12px;flex-wrap:wrap">
+      <a class="btn btn-gold" href="#circuits">Explore 6 Circuits &rarr;</a>
+      <a class="btn btn-line" href="{base_path}/deccan-odyssey/price">View Official Tariffs</a>
     </div>
   </div>
 </section>
 
-<!-- DECCAN ODYSSEY VIDEO SPOTLIGHT (SPLIT ROYAL LAYOUT) -->
+<!-- DECCAN ODYSSEY VIDEO SPOTLIGHT -->
 <section class="train-video-sec">
   <div class="wrap">
-    <div class="train-video-box" style="background:#262463">
+    <div class="train-video-box" style="background:#1a237e">
       <!-- Left: Train Details & Logo -->
-      <div class="train-video-content" style="background:#262463">
+      <div class="train-video-content" style="background:#1a237e">
         <div class="train-video-logo">
           <img src="/images/luxury-trains/deccan-odyssey/logo.png" alt="Deccan Odyssey Logo">
         </div>
         <h2 class="train-video-title">Deccan Odyssey</h2>
         <p class="train-video-desc">
-          <strong>Worlds leading luxury trains</strong> Modelled along the lines of the Palace on Wheels, the Deccan Odyssey is a royal 5 star resort on wheels taking guests across a splendorous journey over the Western Ghats, the Konkan coast and the Deccan Plateau.
+          <strong>The Jewel of Indian Rail Travel:</strong> Operated with Maharashtra Tourism (MTDC) and IRCTC, the Deccan Odyssey is an imperial 5-star hotel on tracks. Featuring 21 royal blue carriages, two fine-dining restaurants, an Ayurvedic wellness spa, and private en-suite suites with 24/7 personal valets.
         </p>
         <p class="train-video-desc">
-          <strong>Deccan Odyssey Luxury Train in India -</strong> In operation since 2004, the luxury train of India offers 6 itineraries each of 7 nights and 8 days. The journeys are labelled Maharashtra Splendor, Indian Odyssey, Indian Sojourn, Jewels of the Deccan, Hidden Treasures of Gujarat and Maharashtra-a Wild Trail.
+          Choose from 6 meticulously curated 8-day circuits covering Western, Central, and Northern India with guaranteed scheduled departures from Mumbai and New Delhi.
         </p>
         <div class="train-video-ctas">
-          <a class="btn-koikoi-orange" href="{base_path}/deccan-odyssey/itinerary">
+          <a class="btn-koikoi-orange" href="#circuits">
             <span>View 6 Circuits</span>
             <span>&rarr;</span>
           </a>
           <a class="btn-koikoi-white" href="https://wa.me/919136739178?text=Hi%20KoiKoi%20Travel%2C%20I%20am%20interested%20in%20the%20Deccan%20Odyssey%20journey." target="_blank" rel="noopener">
-            <span>Get a Quote</span>
+            <span>Inquire on WhatsApp</span>
           </a>
         </div>
       </div>
@@ -5583,165 +6427,337 @@ function switchCircuitPrice(curr) {{
           <div class="video-play-btn" aria-label="Play Deccan Odyssey Video">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" style="margin-left:3px"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           </div>
-          <span class="video-caption-pill">Deccan Odyssey &middot; Experience Video</span>
+          <span class="video-caption-pill">Deccan Odyssey &middot; Royal Experience Video</span>
         </div>
       </div>
     </div>
   </div>
 </section>
-<section>
+
+<!-- CURATED CIRCUITS SECTION -->
+<section id="circuits" style="padding:60px 0;background:#f8fafc">
   <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">Asia's Leading Luxury Train</div>
-      <h2>21 Imperial Royal Carriages</h2>
-      <p>Decorated in royal blue and gold, inspired by the personal carriages of Maratha rulers and the Nizam of Hyderabad.</p>
+    <div style="text-align:center;max-width:760px;margin:0 auto 36px">
+      <div style="display:inline-block;background:rgba(248,144,77,0.12);color:#ea580c;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:4px 14px;border-radius:999px;margin-bottom:8px">
+        6 Curated Royal Circuits
+      </div>
+      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(24px,3.2vw,38px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+        Choose Your Deccan Odyssey Journey
+      </h2>
+      <p style="font-size:14.5px;color:#64748b;line-height:1.6;margin:0">
+        Each circuit is an all-inclusive 7 Nights / 8 Days voyage through ancient cave temples, princely palaces, wildlife reserves, and scenic coastlines.
+      </p>
     </div>
-    <div class="grid-4">
-      <div class="card" style="padding:24px">
-        <h3>6 Different 7-Night Journeys</h3>
-        <p>From Maharashtra Splendour and Wild Trail to the Indian Odyssey across Rajasthan and Gujarat.</p>
+    {do_cards_html}
+  </div>
+</section>
+
+<!-- WHY BOOK WITH KOIKOI -->
+<section style="padding:60px 0;background:#ffffff;border-top:1px solid #f1f5f9">
+  <div class="wrap">
+    <div style="text-align:center;max-width:760px;margin:0 auto 36px">
+      <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(22px,2.8vw,34px);font-weight:800;color:#0f172a;margin-bottom:8px">Why Book Deccan Odyssey with KoiKoi Travel</h2>
+      <p style="font-size:14px;color:#64748b">Direct official booking partner offering personalized pre &amp; post rail vacations.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px">
+      <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:16px;padding:24px;text-align:center">
+        <div style="font-size:28px;margin-bottom:10px">📜</div>
+        <h4 style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0f172a;margin-bottom:6px">Official Published Tariffs</h4>
+        <p style="font-size:13px;color:#64748b;line-height:1.5;margin:0">Zero hidden markups. We charge official IRCTC &amp; MTDC published rates in USD or INR.</p>
       </div>
-      <div class="card" style="padding:24px">
-        <h3>Waah! Maula & Waah! Rasoi</h3>
-        <p>Two gourmet restaurant cars serving Maharashtrian specialties and international fusion cuisine.</p>
+      <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:16px;padding:24px;text-align:center">
+        <div style="font-size:28px;margin-bottom:10px">🏨</div>
+        <h4 style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0f172a;margin-bottom:6px">5-Star Hotel Extensions</h4>
+        <p style="font-size:13px;color:#64748b;line-height:1.5;margin:0">We arrange stays at The Taj Mahal Palace Mumbai or The Imperial Delhi before &amp; after your journey.</p>
       </div>
-      <div class="card" style="padding:24px">
-        <h3>Gateway Lounge Bar</h3>
-        <p>Relaxed cocktail bar with sommelier selections and views of the Western Ghats.</p>
+      <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:16px;padding:24px;text-align:center">
+        <div style="font-size:28px;margin-bottom:10px">🚘</div>
+        <h4 style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0f172a;margin-bottom:6px">Private Chauffeured Cars</h4>
+        <p style="font-size:13px;color:#64748b;line-height:1.5;margin:0">Airport pickups and private station transfers in luxury sedans so every part of your trip connects.</p>
       </div>
-      <div class="card" style="padding:24px">
-        <h3>Ayush Wellness & Spa</h3>
-        <p>Full-size spa car offering Ayurvedic treatments, sauna, and fitness gym.</p>
+      <div style="background:#fffdfa;border:1px solid #fed7aa;border-radius:16px;padding:24px;text-align:center">
+        <div style="font-size:28px;margin-bottom:10px">💬</div>
+        <h4 style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0f172a;margin-bottom:6px">24/7 Personal WhatsApp Support</h4>
+        <p style="font-size:13px;color:#64748b;line-height:1.5;margin:0">One dedicated journey planner on WhatsApp from your first inquiry until you return home safely.</p>
       </div>
     </div>
   </div>
 </section>
 """
     write_page(f"{base_dir}/deccan-odyssey/index.html", 
-               "Deccan Odyssey Luxury Train | 6 Journeys & Fares | KoiKoi Travel",
-               "Explore the Deccan Odyssey: Ajanta & Ellora caves, Goa, Nashik vineyards and Pench-Tadoba tigers.",
+               "Deccan Odyssey Luxury Train | 6 Royal Circuits & Official Tariffs | KoiKoi Travel",
+               "Experience Deccan Odyssey: Maharashtra Splendour, Indian Odyssey, Wild Trail & Heritage circuits. Official tariffs, dates, and tailor-made packages.",
                do_overview, active_train="deccan-odyssey", active_tab="overview", base_path=base_path)
 
-    # Deccan Odyssey Itinerary
-    do_itinerary = f"""
-<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{do_data["banner"]}');">
-  <div class="wrap">
-    <span class="tag">DECCAN ODYSSEY · ITINERARIES</span>
-    <h1>6 Distinct 7 Nights / 8 Days Circuits</h1>
-    <p>Covering Western, Central, and Northern India from Mumbai and Delhi.</p>
+    # --- 5.9 ITINERARY REDIRECT / LIST PAGE ---
+    do_itinerary_page = f"""
+<div class="wrap" style="padding:40px 24px">
+  <div style="text-align:center;max-width:760px;margin:0 auto 32px">
+    <div style="display:inline-block;background:rgba(248,144,77,0.12);color:#ea580c;font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:4px 14px;border-radius:999px;margin-bottom:8px">
+      Official Journeys
+    </div>
+    <h1 style="font-family:'Outfit',sans-serif;font-size:clamp(26px,3.5vw,40px);font-weight:800;color:#0f172a;line-height:1.2;margin:0 0 10px">
+      Deccan Odyssey Itineraries
+    </h1>
+    <p style="font-size:14.5px;color:#64748b;line-height:1.6;margin:0">
+      Click on any circuit below to view its complete day-by-day sightseeing plan, route map, high-res photos, and departure schedule.
+    </p>
   </div>
-</section>
-<section>
-  <div class="wrap">
-    <div class="day-card">
-      <span class="day-badge">Circuit 1 · 7 Nights / 8 Days</span>
-      <h3>Maharashtra Splendour (Mumbai to Mumbai)</h3>
-      <p><strong>Route:</strong> Mumbai → Nashik → Aurangabad (Ellora Caves) → Ajanta Caves → Kolhapur → Goa → Sindhudurg → Mumbai.<br>
-      Highlights include UNESCO Ellora rock-cut temples, Nashik wine tasting, Kolhapur martial arts, and Goa beach gala.</p>
-    </div>
-    <div class="day-card">
-      <span class="day-badge">Circuit 2 · 7 Nights / 8 Days</span>
-      <h3>Indian Odyssey (Delhi to Mumbai)</h3>
-      <p><strong>Route:</strong> Delhi → Sawai Madhopur → Agra → Jaipur → Udaipur → Vadodara → Ellora Caves → Mumbai.<br>
-      Highlights include Taj Mahal, Ranthambore tiger safari, Amber Fort, Laxmi Vilas Palace and Kailasa temple.</p>
-    </div>
-    <div class="day-card">
-      <span class="day-badge">Circuit 3 · 7 Nights / 8 Days</span>
-      <h3>Maharashtra Wild Trail (Mumbai to Mumbai)</h3>
-      <p><strong>Route:</strong> Mumbai → Aurangabad → Pench National Park → Tadoba Tiger Reserve → Ajanta → Nashik → Mumbai.<br>
-      Twin tiger reserve safaris in Mowgli's jungle (Pench) and Tadoba along with ancient Buddhist fresco caves.</p>
-    </div>
-  </div>
-</section>
+  {do_cards_html}
+</div>
+<script>
+// If arrived directly at itinerary, redirect to signature circuit
+if (window.location.pathname.endsWith('/deccan-odyssey/itinerary') || window.location.pathname.endsWith('/deccan-odyssey/itinerary.html')) {{
+  window.location.replace('{base_path}/deccan-odyssey/maharashtra-splendour');
+}}
+</script>
 """
-    write_page(f"{base_dir}/deccan-odyssey/itinerary/index.html", 
-               "Deccan Odyssey Itineraries: Maharashtra Splendour & Wild Trail | KoiKoi Travel",
-               "All 6 itineraries for Deccan Odyssey luxury train: Ajanta, Ellora, Goa, Nashik, Pench and Tadoba.",
-               do_itinerary, active_train="deccan-odyssey", active_tab="itinerary", base_path=base_path)
+    write_page(f"{base_dir}/deccan-odyssey/itinerary/index.html",
+               "Deccan Odyssey Itineraries: 6 Royal 8-Day Circuits | KoiKoi Travel",
+               "Compare all 6 Deccan Odyssey itineraries: Maharashtra Splendour, Indian Odyssey, Wild Trail, Sojourn, Heritage and Cultural Odyssey.",
+               do_itinerary_page, active_train="deccan-odyssey", active_tab="itinerary", base_path=base_path)
 
-    # Deccan Odyssey Departures
+    # --- 5.10 DECCAN ODYSSEY DEPARTURES CALENDAR ---
     do_departures = f"""
-<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{do_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.65) 0%,rgba(0,0,0,.30) 45%,transparent 80%),url('/images/luxury-trains/deccan-odyssey/hero.jpg');">
   <div class="wrap">
-    <span class="tag">DECCAN ODYSSEY · DEPARTURES</span>
-    <h1>2024–2025 & 2025–2026 Departure Schedule</h1>
-    <p>Seasonal departures from Mumbai CSMT and New Delhi.</p>
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(2,6,23,0.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);padding:6px 16px;border-radius:999px;color:#fff;font-size:11.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px">
+      <span style="width:6px;height:6px;border-radius:50%;background:#F8904D"></span>
+      <span>Official Schedule</span>
+    </div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,50px);font-weight:700;color:#fff;margin-bottom:12px">Deccan Odyssey Departure Dates</h1>
+    <p style="font-size:clamp(14px,1.4vw,18px);color:#e2e8f0;max-width:720px;line-height:1.6;margin-bottom:24px">
+      Official seasonal departure calendar for 2026–2027 and 2027–2028 from Mumbai CSMT and New Delhi.
+    </p>
   </div>
 </section>
-<section>
+<section style="padding:48px 0;background:#ffffff">
   <div class="wrap">
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Circuit Name</th><th>Duration</th><th>2024–2025 Departures</th><th>2025–2026 Departures</th></tr></thead>
-        <tbody>
-          <tr><td>Maharashtra Splendour</td><td>7N / 8D</td><td>05 Oct, 02 Nov, 07 Dec 2024; 04 Jan, 01 Feb, 01 Mar 2025</td><td>04 Oct, 01 Nov, 06 Dec 2025; 03 Jan, 31 Jan, 28 Feb 2026</td></tr>
-          <tr><td>Indian Odyssey</td><td>7N / 8D</td><td>19 Oct, 16 Nov, 14 Dec 2024; 18 Jan, 15 Feb, 15 Mar 2025</td><td>18 Oct, 15 Nov, 13 Dec 2025; 17 Jan, 14 Feb, 14 Mar 2026</td></tr>
-          <tr><td>Maharashtra Wild Trail</td><td>7N / 8D</td><td>26 Oct, 23 Nov, 21 Dec 2024; 25 Jan, 22 Feb, 22 Mar 2025</td><td>25 Oct, 22 Nov, 20 Dec 2025; 24 Jan, 21 Feb, 21 Mar 2026</td></tr>
-        </tbody>
-      </table>
+    <div class="sec-head" style="margin-bottom:28px">
+      <div class="eyebrow">2026–2027 &amp; 2027–2028 Departure Calendars</div>
+      <h2>Select Your Travel Dates</h2>
+      <p>All Deccan Odyssey departures operate on Saturday mornings/evenings and complete in 7 Nights / 8 Days.</p>
+    </div>
+
+    <!-- Season 2026-2027 Table -->
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:32px">
+      <div style="background:#0f172a;color:#fff;padding:14px 20px;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:space-between">
+        <span>🗓 Season 2026 – 2027 Departures</span>
+        <span style="font-size:12px;color:#F8904D">Official MTDC/IRCTC Published</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="circuit-price-table">
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Maharashtra Splendour</th>
+              <th>Indian Odyssey</th>
+              <th>Indian Sojourn</th>
+              <th>Maharashtra Wild Trail</th>
+              <th>Heritage Odyssey</th>
+              <th>Cultural Odyssey</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="font-weight:700">Sep 2026</td><td style="font-weight:700;color:#ea580c">26</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+            <tr><td style="font-weight:700">Oct 2026</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">03, 24</td><td>-</td><td style="font-weight:700;color:#ea580c">31</td><td>-</td></tr>
+            <tr><td style="font-weight:700">Nov 2026</td><td>-</td><td style="font-weight:700;color:#ea580c">07</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">21</td><td style="font-weight:700;color:#ea580c">28</td></tr>
+            <tr><td style="font-weight:700">Dec 2026</td><td>-</td><td style="font-weight:700;color:#ea580c">12</td><td style="font-weight:700;color:#ea580c">19</td><td>-</td><td style="font-weight:700;color:#ea580c">05</td><td style="font-weight:700;color:#ea580c">26</td></tr>
+            <tr><td style="font-weight:700">Jan 2027</td><td>-</td><td style="font-weight:700;color:#ea580c">09, 30</td><td style="font-weight:700;color:#ea580c">23</td><td style="font-weight:700;color:#ea580c">16</td><td style="font-weight:700;color:#ea580c">02</td><td>-</td></tr>
+            <tr><td style="font-weight:700">Feb 2027</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">20</td><td>-</td><td style="font-weight:700;color:#ea580c">27</td><td>-</td></tr>
+            <tr><td style="font-weight:700">Mar 2027</td><td style="font-weight:700;color:#ea580c">20</td><td style="font-weight:700;color:#ea580c">13</td><td>-</td><td style="font-weight:700;color:#ea580c">27</td><td>-</td><td style="font-weight:700;color:#ea580c">06</td></tr>
+            <tr><td style="font-weight:700">Apr 2027</td><td>-</td><td style="font-weight:700;color:#ea580c">24</td><td style="font-weight:700;color:#ea580c">03</td><td>-</td><td style="font-weight:700;color:#ea580c">17</td><td style="font-weight:700;color:#ea580c">10</td></tr>
+            <tr><td style="font-weight:700">May 2027</td><td>-</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">01</td><td>-</td><td>-</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Season 2027-2028 Table -->
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:32px">
+      <div style="background:#0f172a;color:#fff;padding:14px 20px;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:space-between">
+        <span>🗓 Season 2027 – 2028 Departures</span>
+        <span style="font-size:12px;color:#F8904D">Advance Reservations Open</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="circuit-price-table">
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Maharashtra Splendour</th>
+              <th>Indian Odyssey</th>
+              <th>Indian Sojourn</th>
+              <th>Maharashtra Wild Trail</th>
+              <th>Heritage Odyssey</th>
+              <th>Cultural Odyssey</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="font-weight:700">Sep 2027</td><td style="font-weight:700;color:#ea580c">11, 18, 25</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+            <tr><td style="font-weight:700">Oct 2027</td><td>-</td><td style="font-weight:700;color:#ea580c">16</td><td style="font-weight:700;color:#ea580c">09, 23</td><td style="font-weight:700;color:#ea580c">02</td><td style="font-weight:700;color:#ea580c">30</td><td>-</td></tr>
+            <tr><td style="font-weight:700">Nov 2027</td><td>-</td><td style="font-weight:700;color:#ea580c">06</td><td style="font-weight:700;color:#ea580c">13</td><td>-</td><td style="font-weight:700;color:#ea580c">20</td><td style="font-weight:700;color:#ea580c">27</td></tr>
+            <tr><td style="font-weight:700">Dec 2027</td><td>-</td><td style="font-weight:700;color:#ea580c">11</td><td style="font-weight:700;color:#ea580c">18</td><td>-</td><td style="font-weight:700;color:#ea580c">04</td><td style="font-weight:700;color:#ea580c">25</td></tr>
+            <tr><td style="font-weight:700">Jan 2028</td><td>-</td><td style="font-weight:700;color:#ea580c">08</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">01</td><td>-</td></tr>
+            <tr><td style="font-weight:700">Feb 2028</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">19</td><td>-</td><td style="font-weight:700;color:#ea580c">26</td><td>-</td></tr>
+            <tr><td style="font-weight:700">Mar 2028</td><td style="font-weight:700;color:#ea580c">18</td><td style="font-weight:700;color:#ea580c">11</td><td>-</td><td style="font-weight:700;color:#ea580c">25</td><td>-</td><td style="font-weight:700;color:#ea580c">04</td></tr>
+            <tr><td style="font-weight:700">Apr 2028</td><td style="font-weight:700;color:#ea580c">29</td><td style="font-weight:700;color:#ea580c">22</td><td style="font-weight:700;color:#ea580c">01</td><td>-</td><td style="font-weight:700;color:#ea580c">15</td><td style="font-weight:700;color:#ea580c">08</td></tr>
+            <tr><td style="font-weight:700">May 2028</td><td>-</td><td>-</td><td>-</td><td style="font-weight:700;color:#ea580c">06</td><td>-</td><td>-</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
 """
     write_page(f"{base_dir}/deccan-odyssey/departures/index.html", 
-               "Deccan Odyssey Departure Dates 2024-2025 & 2026 | KoiKoi Travel",
-               "Official departure calendar for Deccan Odyssey luxury train journeys from Mumbai and Delhi.",
+               "Deccan Odyssey Departure Dates 2026-2027 & 2027-2028 | KoiKoi Travel",
+               "Official departure calendar for Deccan Odyssey luxury train journeys from Mumbai and New Delhi.",
                do_departures, active_train="deccan-odyssey", active_tab="departures", base_path=base_path)
 
-    # Deccan Odyssey Price
+    # --- 5.11 DECCAN ODYSSEY PRICE PAGE ---
     do_price = f"""
-<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{do_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.65) 0%,rgba(0,0,0,.30) 45%,transparent 80%),url('/images/luxury-trains/deccan-odyssey/hero.jpg');">
   <div class="wrap">
-    <span class="tag">DECCAN ODYSSEY · TARIFF</span>
-    <h1>Official Ticket Prices (7 Nights / 8 Days)</h1>
-    <p>All-inclusive fares covering luxury suite, dining, wine tastings, and safaris.</p>
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(2,6,23,0.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);padding:6px 16px;border-radius:999px;color:#fff;font-size:11.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px">
+      <span style="width:6px;height:6px;border-radius:50%;background:#F8904D"></span>
+      <span>Official Tariffs</span>
+    </div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,50px);font-weight:700;color:#fff;margin-bottom:12px">Deccan Odyssey Ticket Prices &amp; Fares</h1>
+    <p style="font-size:clamp(14px,1.4vw,18px);color:#e2e8f0;max-width:720px;line-height:1.6;margin-bottom:24px">
+      Published tariffs for Season 2026–2027 and 2027–2028 in USD ($) and INR (₹). All-inclusive 7 Nights / 8 Days luxury rail experience.
+    </p>
   </div>
 </section>
-<section>
+<section style="padding:48px 0;background:#ffffff">
   <div class="wrap">
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Cabin Category</th><th>Single Occupancy</th><th>Twin/Double Sharing (Per Person)</th></tr></thead>
-        <tbody>
-          <tr><td>Deluxe Cabin</td><td>$9,750 USD</td><td>$7,320 USD</td></tr>
-          <tr><td>Presidential Suite</td><td>$19,500 USD</td><td>$14,640 USD</td></tr>
-        </tbody>
-      </table>
+    <div class="sec-head" style="margin-bottom:28px">
+      <div class="eyebrow">Season 2026–2027 Fares</div>
+      <h2>Deluxe Cabin &amp; Presidential Suite Tariffs</h2>
+      <p>Rates are per cabin/person for the complete 7 Nights / 8 Days journey. 5% Govt. GST extra.</p>
     </div>
+
+    <!-- Currency Switcher Buttons -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+      <button id="doBtnUsd" onclick="switchDoPrice('usd')" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:8px 18px;border-radius:999px;background:#0f172a;color:#fff;border:none;cursor:pointer">
+        🌐 Visa / Foreign (USD $)
+      </button>
+      <button id="doBtnInr" onclick="switchDoPrice('inr')" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:8px 18px;border-radius:999px;background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1;cursor:pointer">
+        🇮🇳 For Indian (INR ₹)
+      </button>
+    </div>
+
+    <!-- USD Table -->
+    <div id="doPriceUsd" style="background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:32px">
+      <div style="overflow-x:auto">
+        <table class="circuit-price-table">
+          <thead>
+            <tr>
+              <th style="width:34%">Occupancy Category</th>
+              <th style="width:33%">Deluxe Cabin</th>
+              <th style="width:33%">Presidential Suite</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Twin / Double Sharing (Per Person)</td>
+              <td style="font-weight:700">$6,650 USD <span style="font-size:11.5px;color:#64748b;font-weight:500">($13,300 / cabin)</span></td>
+              <td style="font-weight:700">$20,000 USD <span style="font-size:11.5px;color:#64748b;font-weight:500">(Full Suite)</span></td>
+            </tr>
+            <tr>
+              <td>Single Occupancy (Solo Traveler)</td>
+              <td style="color:#64748b">$9,330 USD</td>
+              <td style="color:#64748b">$20,000 USD</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- INR Table -->
+    <div id="doPriceInr" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.03);margin-bottom:32px">
+      <div style="overflow-x:auto">
+        <table class="circuit-price-table">
+          <thead>
+            <tr>
+              <th style="width:34%">Occupancy Category</th>
+              <th style="width:33%">Deluxe Cabin</th>
+              <th style="width:33%">Presidential Suite</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Twin / Double Sharing (Per Person)</td>
+              <td style="font-weight:700">₹5,52,000 INR <span style="font-size:11.5px;color:#64748b;font-weight:500">(₹11,04,000 / cabin)</span></td>
+              <td style="font-weight:700">₹16,60,000 INR <span style="font-size:11.5px;color:#64748b;font-weight:500">(Full Suite)</span></td>
+            </tr>
+            <tr>
+              <td>Single Occupancy (Solo Traveler)</td>
+              <td style="color:#64748b">₹7,75,000 INR</td>
+              <td style="color:#64748b">₹16,60,000 INR</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+    function switchDoPrice(curr) {{
+      const u = document.getElementById('doPriceUsd');
+      const i = document.getElementById('doPriceInr');
+      const bU = document.getElementById('doBtnUsd');
+      const bI = document.getElementById('doBtnInr');
+      if (curr === 'usd') {{
+        u.style.display = 'block'; i.style.display = 'none';
+        bU.style.background = '#0f172a'; bU.style.color = '#fff'; bU.style.borderColor = '#0f172a';
+        bI.style.background = '#f1f5f9'; bI.style.color = '#64748b'; bI.style.borderColor = '#cbd5e1';
+      }} else {{
+        u.style.display = 'none'; i.style.display = 'block';
+        bI.style.background = '#0f172a'; bI.style.color = '#fff'; bI.style.borderColor = '#0f172a';
+        bU.style.background = '#f1f5f9'; bU.style.color = '#64748b'; bU.style.borderColor = '#cbd5e1';
+      }}
+    }}
+    </script>
+
+    {do_inc_exc}
   </div>
 </section>
 """
     write_page(f"{base_dir}/deccan-odyssey/price/index.html", 
-               "Deccan Odyssey Ticket Price & Tariff | KoiKoi Travel",
-               "Official prices for Deccan Odyssey luxury train: Deluxe cabin and Presidential suite tariffs in USD and INR.",
+               "Deccan Odyssey Ticket Price & Tariffs 2026-2028 | KoiKoi Travel",
+               "Official prices for Deccan Odyssey luxury train: Deluxe cabin and Presidential suite tariffs in USD and INR with booking policies.",
                do_price, active_train="deccan-odyssey", active_tab="price", base_path=base_path)
 
-    # Deccan Odyssey Cabins
+    # --- 5.12 DECCAN ODYSSEY CABINS PAGE ---
     do_cabins = f"""
-<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{do_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.65) 0%,rgba(0,0,0,.30) 45%,transparent 80%),url('/images/luxury-trains/deccan-odyssey/hero.jpg');">
   <div class="wrap">
-    <span class="tag">DECCAN ODYSSEY · CABINS</span>
-    <h1>Maratha Inspired Suites on Rails</h1>
-    <p>Elegantly decorated with royal motifs, electronic safe, en-suite bathroom with hot shower.</p>
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(2,6,23,0.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);padding:6px 16px;border-radius:999px;color:#fff;font-size:11.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px">
+      <span style="width:6px;height:6px;border-radius:50%;background:#F8904D"></span>
+      <span>Onboard Accommodations</span>
+    </div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,50px);font-weight:700;color:#fff;margin-bottom:12px">Deccan Odyssey Cabins &amp; Suites</h1>
+    <p style="font-size:clamp(14px,1.4vw,18px);color:#e2e8f0;max-width:720px;line-height:1.6;margin-bottom:24px">
+      Elegantly furnished in Maratha royal motifs, featuring climate control, attached en-suite bathrooms with hot showers, electronic safes, and 24/7 personal butler service.
+    </p>
   </div>
 </section>
-<section>
+<section style="padding:48px 0;background:#ffffff">
   <div class="wrap">
     <div class="cabin-grid">
       <div class="cabin-card">
-        <div class="cabin-photo" style="background-image:url('/images/luxury-trains/deccan-odyssey/cabin.jpg')"></div>
+        <div class="cabin-photo" style="background-image:url('/images/luxury-trains/deccan-odyssey/deluxe-cabin-twin.jpg')"></div>
         <div class="cabin-body">
-          <span class="cabin-size">105 sq. ft.</span>
+          <span class="cabin-size">95 sq. ft. · Deluxe Twin / Double</span>
           <h3>Deluxe Cabin</h3>
-          <p>Features handcrafted wood carvings, personal safe, wardrobe, en-suite bathroom with pressurized shower and Wi-Fi.</p>
+          <p>Features two twin beds or a cozy double bed, private ensuite bathroom with shower, vanity counter, electronic safe, individual climate control, and personal butler.</p>
         </div>
       </div>
       <div class="cabin-card">
-        <div class="cabin-photo" style="background-image:url('/images/luxury-trains/deccan-odyssey/dining-lounge.jpg')"></div>
+        <div class="cabin-photo" style="background-image:url('/images/luxury-trains/deccan-odyssey/presidential-suite.jpg')"></div>
         <div class="cabin-body">
-          <span class="cabin-size">205 sq. ft.</span>
+          <span class="cabin-size">205 sq. ft. · Imperial Luxury</span>
           <h3>Presidential Suite</h3>
-          <p>Dedicated living room lounge, master bedroom, two lavish bathrooms, private minibar, and 24/7 personal valet.</p>
+          <p>Dedicated living room lounge, master bedroom, two private bathrooms, personalized minibar, panoramic windows, and round-the-clock dedicated valet butler.</p>
         </div>
       </div>
     </div>
@@ -5753,36 +6769,45 @@ function switchCircuitPrice(curr) {{
                "View cabin dimensions, floor plans, and amenities on Deccan Odyssey luxury train.",
                do_cabins, active_train="deccan-odyssey", active_tab="cabins", base_path=base_path)
 
-    # Deccan Odyssey Gallery
+    # --- 5.13 DECCAN ODYSSEY PHOTO GALLERY ---
     do_gallery = f"""
-<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 45%,transparent 80%),url('{do_data["banner"]}');">
+<section class="hero" style="background-image:linear-gradient(90deg,rgba(0,0,0,.65) 0%,rgba(0,0,0,.30) 45%,transparent 80%),url('/images/luxury-trains/deccan-odyssey/hero.jpg');">
   <div class="wrap">
-    <span class="tag">DECCAN ODYSSEY · GALLERY</span>
-    <h1>Photo Gallery</h1>
-    <p>Inside the royal blue dream train.</p>
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(2,6,23,0.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);padding:6px 16px;border-radius:999px;color:#fff;font-size:11.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px">
+      <span style="width:6px;height:6px;border-radius:50%;background:#F8904D"></span>
+      <span>Authentic Photo Showcase</span>
+    </div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,50px);font-weight:700;color:#fff;margin-bottom:12px">Deccan Odyssey Photo Gallery</h1>
+    <p style="font-size:clamp(14px,1.4vw,18px);color:#e2e8f0;max-width:720px;line-height:1.6;margin-bottom:24px">
+      Step inside the royal blue dream train: luxurious suites, fine dining restaurants, panoramic bar lounge, and exterior livery.
+    </p>
   </div>
 </section>
-<section>
+<section style="padding:48px 0;background:#ffffff">
   <div class="wrap">
     <div class="gallery-grid">
-      <div class="g-item"><img src="/images/luxury-trains/deccan-odyssey/hero.jpg"><span>Deccan Odyssey Train</span></div>
-      <div class="g-item"><img src="/images/luxury-trains/deccan-odyssey/exterior.jpg"><span>Royal Carriage Exterior</span></div>
-      <div class="g-item"><img src="/images/luxury-trains/deccan-odyssey/dining-lounge.jpg"><span>Restaurant & Lounge Car</span></div>
-      <div class="g-item"><img src="/images/luxury-trains/deccan-odyssey/cabin.jpg"><span>Deluxe Cabin</span></div>
+      <div class="g-item"><img src="/images/luxury-trains/deccan-odyssey/deluxe-cabin-twin.jpg" alt="Deluxe Twin Cabin"><span>Deluxe Twin Cabin</span></div>
+      <div class="g-item"><img src="/images/luxury-trains/deccan-odyssey/restaurant.jpg" alt="Waavar & Utsav Restaurant"><span>Waavar &amp; Utsav Dining Cars</span></div>
+      <div class="g-item"><img src="/images/luxury-trains/deccan-odyssey/lounge-bar.jpg" alt="Gateway Lounge Bar"><span>Gateway Lounge Bar</span></div>
+      <div class="g-item"><img src="/images/luxury-trains/deccan-odyssey/train-exterior.jpg" alt="Deccan Odyssey Train Exterior"><span>Royal Blue Livery on Tracks</span></div>
+      <div class="g-item"><img src="/images/luxury-trains/deccan-odyssey/presidential-suite.jpg" alt="Presidential Suite Lounge"><span>Presidential Suite Lounge</span></div>
+      <div class="g-item"><img src="/images/luxury-trains/deccan-odyssey/deluxe-cabin-double.jpg" alt="Deluxe Double Bed"><span>Deluxe Double Bed Cabin</span></div>
     </div>
   </div>
 </section>
 """
     write_page(f"{base_dir}/deccan-odyssey/photo-gallery/index.html", 
-               "Deccan Odyssey Photo Gallery | Blue Train & Western India | KoiKoi Travel",
-               "High resolution photos of Deccan Odyssey luxury train: Ajanta & Ellora caves, cabins and lounges.",
+               "Deccan Odyssey Photo Gallery | Interior & Exterior | KoiKoi Travel",
+               "High resolution photos of Deccan Odyssey luxury train: deluxe suites, dining cars, lounge bar and royal livery.",
                do_gallery, active_train="deccan-odyssey", active_tab="photo-gallery", base_path=base_path)
 
     # Also create flat .html files alongside directory/index.html
     for train in ["palace-on-wheels", "maharajas-express", "golden-chariot", "deccan-odyssey"]:
         for tab in ["itinerary", "departures", "price", "cabins", "photo-gallery",
                     "the-heritage-of-india", "the-indian-panorama", "the-indian-splendour", "treasures-of-india",
-                    "pride-of-karnataka", "jewels-of-south", "glimpses-of-karnataka"]:
+                    "pride-of-karnataka", "jewels-of-south", "glimpses-of-karnataka",
+                    "maharashtra-splendour", "indian-odyssey", "indian-sojourn",
+                    "maharashtra-wild-trail", "heritage-odyssey", "cultural-odyssey"]:
             src = f"{base_dir}/{train}/{tab}/index.html"
             dst = f"{base_dir}/{train}/{tab}.html"
             if os.path.exists(src):
