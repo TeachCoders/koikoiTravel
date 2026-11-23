@@ -22,18 +22,6 @@ type Props = { params: Promise<{ country: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { country: slug } = await params;
 
-  const journey = await fetchBySlugCached<Journey>("/journey/by-slug", slug);
-  if (journey) {
-    const title = journey.seoTitle || journey.title;
-    const description = truncateMeta(journey.seoDescription || journey.overView || "");
-    return {
-      title,
-      description,
-      keywords: journey.seoKeyword,
-      alternates: { canonical: `/tour-packages/${journey.slug}` },
-    };
-  }
-
   const country = await fetchBySlugCached<Country>("/country/by-slug", slug);
   if (country) {
     const title =
@@ -49,6 +37,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       keywords: country.seoKeyword,
       alternates: { canonical: `/tour-packages/${country.slug}` },
+    };
+  }
+
+  const journey = await fetchBySlugCached<Journey>("/journey/by-slug", slug);
+  if (journey) {
+    const title = journey.seoTitle || journey.title;
+    const description = truncateMeta(journey.seoDescription || journey.overView || "");
+    return {
+      title,
+      description,
+      keywords: journey.seoKeyword,
+      alternates: { canonical: `/tour-packages/${journey.slug}` },
     };
   }
 
@@ -95,11 +95,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function OldCountryRedirectPage({ params }: Props) {
   const { country: slug } = await params;
 
-  const journey = await fetchBySlugCached<Journey>("/journey/by-slug", slug);
-  if (journey) redirect(`/tour-packages/${journey.slug}`);
-
   const country = await fetchBySlugCached<Country>("/country/by-slug", slug);
   if (country) redirect(`/tour-packages/${country.slug}`);
+
+  const journey = await fetchBySlugCached<Journey>("/journey/by-slug", slug);
+  if (journey) redirect(`/tour-packages/${journey.slug}`);
 
   const season = await fetchBySlugCached<Season>("/season/by-slug", slug);
   if (season) redirect(`/season/${season.slug}`);
