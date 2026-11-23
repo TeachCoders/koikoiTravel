@@ -119,7 +119,7 @@ export const requestLogger = (req, res, next) => {
       ip: req.ip,
     };
     if (res.statusCode >= 500) logger.error("request failed", entry);
-    else if (res.statusCode >= 400) logger.warn("request", entry);
+    else if (res.statusCode >= 400 && res.statusCode !== 404) logger.warn("request", entry);
     else logger.info("request", entry);
   });
   next();
